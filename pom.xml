@@ -54,6 +54,8 @@
 
     <mysql.version>5.1.33</mysql.version>
     <druid.version>1.0.15</druid.version>
+    <dbcp.version>2.1.1</dbcp.version>
+
     <mybatis.version>3.3.0</mybatis.version>
     <mybatis-spring.version>1.2.1</mybatis-spring.version>
     <mybatis-pagehelper.version>4.0.1</mybatis-pagehelper.version>
@@ -158,6 +160,13 @@
       <groupId>com.alibaba</groupId>
       <artifactId>druid</artifactId>
       <version>${druid.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>${dbcp.version}</version>
     </dependency>
 
     <dependency>
