@@ -37,7 +37,7 @@
 		<property name="maxIdle" value="8" />
 		<property name="minIdle" value="5" />
 
-		<property name="maxWaitMillis" value="1000*50*5"/>
+		<property name="maxWaitMillis" value="250000"/>
 
 		<property name="testWhileIdle" value="true" />
 		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
@@ -56,16 +56,13 @@
 		<property name="maxIdle" value="8" />
 		<property name="minIdle" value="5" />
 
-		<property name="maxWaitMillis" value="1000*50*5"/>
+		<property name="maxWaitMillis" value="250000"/>
 
 		<property name="poolPreparedStatements" value="true" />
 
 		<property name="testWhileIdle" value="true" />
 		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
 
-	</bean>
-	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
-		<property name="mergeSql" value="true" />
 	</bean>
 	<bean id="readSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="read_dataSource" />
