@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+
+	<description>FuncUtil</description>
+	<tlib-version>1.0</tlib-version>
+	<short-name>func</short-name>
+	
+	<function>
+		<name>isInString</name>
+		<function-class>com.gqhmt.util.FuncUtil</function-class>
+		<function-signature>java.lang.Boolean isInString(java.lang.Integer,java.lang.String)</function-signature>
+	</function>
+</taglib>
