@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd "  >
+	<!--  -->
+	<mvc:default-servlet-handler/>
+	<!--<mvc:annotation-driven enable-matrix-variables="true">
+		&lt;!&ndash;<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" ref="objectMapper"/>
+			</bean>
+			<bean class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter">
+				<property name="objectMapper" ref="xmlMapper"/>
+			</bean>
+		</mvc:message-converters>&ndash;&gt;
+	</mvc:annotation-driven>-->
+
+
+
+	<context:component-scan base-package="com.gqhmt.sys.web,com.gqhmt.sys.controller">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+    </context:component-scan>
+
+
+<!--	<mvc:view-resolvers>
+		<mvc:content-negotiation>
+			<mvc:default-views>
+				<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+			</mvc:default-views>
+		</mvc:content-negotiation>
+		<mvc:freemarker cache-views="false"/>
+	</mvc:view-resolvers>
+-->
+<!--	<mvc:freemarker-configurer>
+		<mvc:template-loader-path location="WEB-INF/ftl"/>
+	</mvc:freemarker-configurer>/-->
+
+
+	<!-- freemarker config -->
+	<!--<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
+	</bean>-->
+	<!--
+    View resolvers can also be configured with ResourceBundles or XML files. If you need
+    different view resolving based on Locale, you have to use the resource bundle resolver.
+    -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true"/>
+		<property name="prefix" value="/WEB-INF/ftl/"/>
+		<property name="suffix" value=".ftl"/>
+	</bean>
+
+<!--	<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+		  p:indentOutput="true"
+		  p:simpleDateFormat="yyyy-MM-dd"
+		  p:modulesToInstall="com.fasterxml.jackson.module.paramnames.ParameterNamesModule"/>
+
+	<bean id="xmlMapper" parent="objectMapper" p:createXmlMapper="true"/>-->
+
+
+        <!-- 公共异常转向错误页面-->
+	<!--<bean id="exceptionResolver" class="com.gq.core.exception.DefaultHandlerExceptionResolver">
+		<property name="errorView">
+			<value>common/error</value>
+		</property>
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.sql.SQLException">common/error</prop>
+				<prop key="java.lang.RuntimeException">common/500</prop>
+				<prop key="java.lang.Exception">common/500</prop>
+			</props>
+		</property>
+        &lt;!&ndash; 默认HTTP状态码 &ndash;&gt;
+        <property name="defaultStatusCode" value="500"></property>  
+	</bean>
+
+	&lt;!&ndash; 开启注解 &ndash;&gt;
+	<mvc:annotation-driven />
+
+    <bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="p2p_openSessionInViewInterceptor"/>
+                <ref bean="lend_openSessionInViewInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+	&lt;!&ndash; 定义视图解析器 &ndash;&gt;
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>-->
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>10240000000000</value>
+		</property>
+	</bean>
+
+</beans>
