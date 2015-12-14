@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.sys.beans.SysAuthFunc;
 import com.gqhmt.sys.mapper.read.FuncListReadMapper;
 
+import javax.annotation.Resource;
+
 @Service
 public class FuncListService {
 	
-	@Autowired
+	@Resource
 	private FuncListReadMapper funcListReadMapper;
 	
 	public List<SysAuthFunc> selectFuncList(Map<String,Object> map){

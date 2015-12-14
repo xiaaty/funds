@@ -24,7 +24,7 @@
 
 
 
-	<context:component-scan base-package="com.gqhmt.sys.web,com.gqhmt.sys.controller">
+	<context:component-scan base-package="com.gqhmt.sys.controller">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
     </context:component-scan>
 

@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-config.dtd">
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
         <setting name="cacheEnabled" value="false"/>
         <!--<setting name="logImpl" value="logback"/>-->
     </settings>
-	<!--<typeAliases >
-		<typeAlias type="com.gq.sys.bean.SysUsers" alias="SysUsers"/>
-		<typeAlias type="com.gq.sys.bean.SysAuth" alias="SysAuth"/>
-		<typeAlias type="com.gq.sys.bean.Roles" alias="Roles"/>
-		<typeAlias type="com.gq.sys.bean.FuncList" alias="FuncList"/>
-		<typeAlias type="com.gq.sys.bean.SysAuthFunc" alias="SysAuthFunc"/>
-		<typeAlias type="com.gq.sys.bean.SysLog" alias="SysLog"/>
-	</typeAliases>-->
+	<typeAliases >
+		<typeAlias type="com.gqhmt.sys.beans.SysUsers" alias="SysUsers"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysAuth" alias="SysAuth"/>
+		<typeAlias type="com.gqhmt.sys.beans.Roles" alias="Roles"/>
+		<typeAlias type="com.gqhmt.sys.beans.FuncList" alias="FuncList"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysAuthFunc" alias="SysAuthFunc"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysLog" alias="SysLog"/>
+	</typeAliases>
 
    <!-- <plugins>
         <plugin interceptor="com.gqhmt.interceptor.PageInterceptor">

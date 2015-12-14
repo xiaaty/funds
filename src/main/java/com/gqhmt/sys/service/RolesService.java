@@ -10,11 +10,13 @@ import com.gqhmt.sys.beans.Roles;
 import com.gqhmt.sys.mapper.read.RolesReadMapper;
 import com.gqhmt.sys.mapper.write.RolesWriteMapper;
 
+import javax.annotation.Resource;
+
 @Service
 public class RolesService {
-	@Autowired
+	@Resource
 	private RolesReadMapper rolesReadMapper;
-	@Autowired
+	@Resource
 	private RolesWriteMapper rolesWriteMapper;
 	
 	

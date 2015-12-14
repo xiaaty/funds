@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sys.mapper.write.RolesWriteMapper">
+	<insert id="insertRole">
+			<selectKey resultType="int"  keyProperty="id" order="BEFORE">   
+            	SELECT role_seq.NEXTVAL AS ID FROM DUAL
+          	</selectKey>
+		insert into t_roles 
+			(id,role_name,status,create_id,create_time,description)
+		values (#{id},#{roleName},#{status},#{createId},#{createTime},#{description})
+	</insert>
+	
+	<update id="updateRole" parameterType="Roles">
+		update t_roles
+			set role_name=#{roleName},
+				status=#{status},
+				description=#{description},
+				modify_date=#{modifyDate},
+				modify_id=#{modifyId}
+		where id=#{id}
+	</update>
+	
+	<update id="updateRoleDel">
+		update t_roles set is_del=#{isDel} where id in (${rid})
+	</update>
+</mapper>

@@ -16,11 +16,13 @@ import com.gqhmt.sys.beans.SysAuthFunc;
 import com.gqhmt.sys.mapper.read.SysAuthReadMapper;
 import com.gqhmt.sys.mapper.write.SysAuthWriteMapper;
 
+import javax.annotation.Resource;
+
 @Service
 public class SysAuthService {
-	@Autowired
+	@Resource
 	private SysAuthReadMapper sysAuthReadMapper;
-	@Autowired
+	@Resource
 	private SysAuthWriteMapper sysAuthWriteMapper;
 	
 	public Map<Long,List<SysAuthFunc>> selectRoleAuth(){

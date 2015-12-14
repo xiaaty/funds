@@ -3,6 +3,7 @@ package com.gqhmt.sys.controller;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.gqhmt.sys.beans.MenuFunc;
@@ -24,9 +25,9 @@ import com.gqhmt.sys.service.SysUsersService;
 
 @Controller
 public class LoginController {
-		@Autowired
+		@Resource
 		SysUsersService sysUsersService;
-		@Autowired
+		@Resource
 		SysLogWriteMapper sysLogWriteMapper;
 		
 		@RequestMapping(value="/login",method=RequestMethod.POST)
