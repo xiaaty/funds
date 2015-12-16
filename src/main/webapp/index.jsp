@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <title>冠群驰骋资金清结算系统</title>
     <link type="image/x-icon" rel="shortcut icon" href="<%=request.getContextPath()%>/img/favicon.ico" >
     <link href="<%=request.getContextPath()%>/css/base.css" rel="stylesheet" type="text/css" />
