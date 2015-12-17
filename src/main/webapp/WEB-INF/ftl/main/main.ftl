@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -6,9 +5,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
-    <%@include file="/WEB-INF/jsp/inc/common_css_js.inc" %>
+    <#include "../include/common_css_js.ftl">
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -28,8 +25,7 @@
 </head>
 
 <body>
-
-<#include "/WEB-INF/ftl/include/menu.ftl">
+<#include "../include/menu.ftl">
 <div id="main" role="main">
 
     <!-- RIBBON -->
@@ -54,7 +50,7 @@
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="logListForm" action="${contextPath}/sys/log" method="post">
+                            <form class="smart-form" id="logListForm" action="/sys/log" method="post">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -74,7 +70,7 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                            <input type="text" name="loginName" value="${logSearch.loginName}">
+                                                            <input type="text" name="loginName" value="">
                                                         </label>
                                                     </section>
                                                 </td>
@@ -82,13 +78,13 @@
                                                 <td >
                                                     <section class="fl">
                                                         <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                            <input type="text" name="map[importStart]" class="selectdate" placeholder="请选择时间" value="${logSearch.loginTime1}">
+                                                            <input type="text" name="map[importStart]" class="selectdate" placeholder="请选择时间" value="">
                                                         </label>
                                                     </section>
                                                     <span class="fl">&nbsp;至&nbsp;</span>
                                                     <section class="fl">
                                                         <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                            <input type="text" name="map[importEnd]" class="selectdate" placeholder="请选择时间" value="${logSearch.loginTime2}">
+                                                            <input type="text" name="map[importEnd]" class="selectdate" placeholder="请选择时间" value="">
                                                         </label>
                                                     </section>
                                                 </td>
@@ -159,13 +155,12 @@
 
 </div>
 
-
-<#include "/WEB-INF/ftl/include/common_footer_css_js.ftl" >
-<%-- <script type="text/javascript" charset="utf-8">
+<#include "../include/common_footer_css_js.ftl">
+ <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
 
-        DT_page("borrow-rep-table12",true,'${page.JSON}',$("#logListForm"));
+        DT_page("borrow-rep-table12",true,'',$("#logListForm"));
 
         $('.selectdate').datetimepicker({
             language:  'zh-CN',
@@ -180,7 +175,7 @@
 
         //添加按钮按下
         $("#btn_add").button().click(function() {
-            window.open("${contextPath}/loan/loanAdd?","_self");
+            window.open("/loan/loanAdd?","_self");
         });
 
         //删除按钮
@@ -197,7 +192,7 @@
             no.each(function(){
                 param.push($(this).val());
             })
-            $.post("${contextPath}/loan/loanDelete?",{'no':param.toString()},function(data){
+            $.post("/loan/loanDelete?",{'no':param.toString()},function(data){
                 if(data>0){
                     alert("删除成功!");
                     //jAlert("删除成功!",'确认信息');
@@ -260,7 +255,7 @@
         });
     }
 
-</script>--%>
+</script>
 
 </body>
 

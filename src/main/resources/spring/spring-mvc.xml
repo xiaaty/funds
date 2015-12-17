@@ -11,7 +11,7 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd "  >
 	<!--  -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager"/>
 	<mvc:default-servlet-handler/>
 	<!--<mvc:annotation-driven enable-matrix-variables="true">
 		&lt;!&ndash;<mvc:message-converters>
@@ -53,10 +53,10 @@
     View resolvers can also be configured with ResourceBundles or XML files. If you need
     different view resolving based on Locale, you have to use the resource bundle resolver.
     -->
-	<bean  class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+	<bean id="viewResolver"  class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 		<property name="cache" value="false"/>
 		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
-		<property name="contentType" value="test/html;charset=UTF-8"/>
+		<property name="contentType" value="text/html;charset=UTF-8"/>
 		<property name="prefix" value="/"/>
 		<property name="suffix" value=".ftl"/>
 		<!--<property name="exposeRequestAttributes" value="true" />
@@ -69,6 +69,11 @@
 	<bean id="freemarkerConfig"  class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
 		<property name="defaultEncoding" value="UTF-8" />
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape"/>
+			</map>
+		</property>
 		<!--<property name="freemarkerVariables">
 			&lt;!&ndash;<map>
 				<entry key="indexContent"
@@ -92,117 +97,41 @@
 				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
 				<prop key="date_format">yyyy-MM-dd</prop>
 				<prop key="time_format">HH:mm:ss</prop>
-				<prop key="number_format">0.######</prop>
+				<prop key="number_format">###,###,###,##0.00</prop>
 				<prop key="whitespace_stripping">true</prop>
 				<!--空值处理<prop key="classic_compatible">true</prop>-->
 				<!--  <prop key="auto_import">/ftl/tags/index.ftl as p,/ftl/spring.ftl as s</prop>-->
 			</props>
 		</property>
 	</bean>
-
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 
 	<bean id="viewResolverCommon"
 		  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
 				  value="org.springframework.web.servlet.view.JstlView" />
-		<property name="order" value="1"></property>
+		<property name="order" value="5"></property>
 		<property name="prefix" value="/WEB-INF/jsp" />
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
-	<bean
-			class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-		<property name="messageConverters">
-			<list>
 
-				<!-- 解析json请求数据，将json转换为java对象-->
-				<bean
-						class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
-				<!-- 解析xml请求数据，将xml转换为java对象-->
-
-				<bean
-						class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
-					<constructor-arg>
-						<bean
-								class="org.springframework.oxm.xstream.XStreamMarshaller">
-							<property name="streamDriver">
-								<bean
-										class="com.thoughtworks.xstream.io.xml.DomDriver" />
-							</property>
-
-							<property name="autodetectAnnotations">
-								<value>true</value>
-							</property>
-							<!--可以与xml互换的对象，需要使用XStream的注解，注解的使用方法请参XStream官网-->
-							<!--
-                                <property name="annotatedClasses">
-                                <list>
-                                <value>com.xxx.XxxxDTO</value>
-                                </list>
-                                </property>
-                            -->
-						</bean>
-					</constructor-arg>
-				</bean>
-				<bean
-						class="org.springframework.http.converter.FormHttpMessageConverter" />
-				<bean
-						class="org.springframework.http.converter.BufferedImageHttpMessageConverter" />
-				<bean
-						class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
-				<bean
-						class="org.springframework.http.converter.StringHttpMessageConverter" />
-				<!--
-                    <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
-                -->
-				<!--可以增加其他数据类型,请参考spring的API-->
-			</list>
-		</property>
-	</bean>
-
-	<bean id="fmXmlEscape"
-		  class="freemarker.template.utility.XmlEscape" />
-	<bean
-			class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="ignoreAcceptHeader" value="true" />
-		<property name="defaultContentType" value="text/html" />
-
-		<!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
-		<property name="mediaTypes">
-			<map>
-				<entry key="html" value="text/html" />
-				<entry key="json" value="application/json" />
-				<entry key="xml" value="application/xml" />
-			</map>
-		</property>
-		<!-- 用于开启 /userinfo/123?format=json 的支持 -->
-		<property name="favorParameter" value="false" />
-
-		<property name="viewResolvers">
-			<list>
-				<bean
-						class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-			</list>
-		</property>
-		<property name="defaultViews">
-			<list>
-				<!-- for application/json -->
-				<bean
-						class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
-				<!-- for application/xml -->
-				<bean
-						class="org.springframework.web.servlet.view.xml.MappingJackson2XmlView">
-				</bean>
-			</list>
-		</property>
-	</bean>
-		<!--<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+		<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
               p:indentOutput="true"
               p:simpleDateFormat="yyyy-MM-dd"
              />
 
         <bean id="xmlMapper" parent="objectMapper" p:createXmlMapper="true"/>
--->
+
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="mediaTypes">
+			<value>
+				html=text/html
+				json=application/json
+				xml=application/xml
+			</value>
+		</property>
+	</bean>
 
         <!-- 公共异常转向错误页面-->
 	<!--<bean id="exceptionResolver" class="com.gq.core.exception.DefaultHandlerExceptionResolver">

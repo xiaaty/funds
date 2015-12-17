@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -68,8 +69,8 @@ public class LoginController {
             return getUrl(func.getChild().get(0));
         }
 
-	@RequestMapping("/main")
-	public String menu(){
+	@RequestMapping(value="/main")
+	public String menu(HttpServletRequest request, HttpServletResponse response){
 
 		return "main/main";
 	}

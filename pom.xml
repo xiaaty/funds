@@ -126,11 +126,11 @@
           <artifactId>spring-oxm</artifactId>
           <version>${spring.version}</version>
       </dependency>
-      <dependency>
-          <groupId>xstream</groupId>
-          <artifactId>xstream</artifactId>
-          <version>1.1.2</version>
-      </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.4.7</version>
+    </dependency>
     <!-- spring 配置结束 -->
 
     <!-- page 配置   -->

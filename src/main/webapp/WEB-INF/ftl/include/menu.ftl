@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <header id="header">
 			<div id="logo-group">
 
@@ -19,7 +18,7 @@
 
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
-					<span> <a href="${contextPath}/loginout.jsp" title="退出登录"><i class="fa fa-sign-out"></i></a> </span>
+					<span> <a href="/loginout.jsp" title="退出登录"><i class="fa fa-sign-out"></i></a> </span>
 				</div>
 				<!-- end logout button -->
 
@@ -42,7 +41,6 @@
                         <a href="javascript:void(0);" id="show-shortcut">
                             <img src="../img/avatars/sunny.png" alt="me" class="online" />
                             <span>
-                                ${user.userName}
                             </span>
                             <i class="fa fa-angle-down"></i>
                         </a>
