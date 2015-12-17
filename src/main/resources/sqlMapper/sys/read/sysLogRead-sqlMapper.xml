@@ -24,18 +24,18 @@
 			and  #{loginTime2}>= to_char(login_time,'yyyy-mm-dd')
 		</if>
 	</sql>
-	<select id="selectLogs" resultType="SysLog">
+	<select id="selectLogs" resultType="com.gqhmt.sys.beans.SysLog">
 		<include refid="fieldSql"/>
 		<include refid="whereSql"/>
 		order by id desc
 	</select>
 
-    <select id="selectMyLogs" resultType="SysLog">
+    <select id="selectMyLogs" resultType="com.gqhmt.sys.beans.SysLog">
         <include refid="fieldSql"/>
         and user_id = #{userID} and login_time >= sysdate-15
         order by id desc
     </select>
-	<select id="selectLogs1" resultType="SysLog">
+	<select id="selectLogs1" resultType="com.gqhmt.sys.beans.SysLog">
 		<include refid="fieldSql"/>
 		<include refid="whereSql"/>
 		 order by id desc

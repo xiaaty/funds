@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.sys.mapper.write.SysUsersWriteMapper">
-	<insert id="insertSysUsers">
-			<selectKey resultType="int"  keyProperty="id" order="BEFORE">   
-            	SELECT emp_seq.NEXTVAL AS ID FROM DUAL
-          	</selectKey>
-		insert into t_sys_users 
-			(id,employee_no,password,user_name,department,description,create_time,create_id,status,login_name,user_tel,leader,company,job,sex)
-		values (#{id},#{employeeNo},#{password},#{userName},#{department},#{description},#{createTime},#{createId},#{status},#{loginName},#{userTel},#{leader},#{company},#{job},#{sex})
+	<insert id="insertSysUsers" useGeneratedKeys="true" keyProperty="id" parameterType="com.gqhmt.sys.beans.SysUsers">
+		insert into t_sys_users
+			(employee_no,password,user_name,department,description,create_time,create_id,status,login_name,user_tel,leader,company,job,sex)
+		values (#{employeeNo},#{password},#{userName},#{department},#{description},#{createTime},#{createId},#{status},#{loginName},#{userTel},#{leader},#{company},#{job},#{sex})
 	</insert>
 	
-	<update id="updateSysUsers" parameterType="SysUsers">
+	<update id="updateSysUsers" parameterType="com.gqhmt.sys.beans.SysUsers">
 		update t_sys_users
 			set employee_no=#{employeeNo},
 				user_name=#{userName},

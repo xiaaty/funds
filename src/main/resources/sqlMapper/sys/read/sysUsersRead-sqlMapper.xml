@@ -37,21 +37,21 @@
              and leader like '%'||#{leader}||'%'
          </if>
 	</sql>
-	<select id="selectSysUsersByLoginName" resultType="SysUsers">
+	<select id="selectSysUsersByLoginName" resultType="com.gqhmt.sys.beans.SysUsers">
 		<include refid="fieldSql"/>
 		and login_name=#{loginName}
 	</select>
-	<select id="selectSysUsersById" resultType="SysUsers">
+	<select id="selectSysUsersById" resultType="com.gqhmt.sys.beans.SysUsers">
 		<include refid="fieldSql"/>
 		and id=#{id} and is_del=1
 	</select>
-	<select id="selectSysUsers" resultType="SysUsers">
+	<select id="selectSysUsers" resultType="com.gqhmt.sys.beans.SysUsers">
         <include refid="fieldSql"/>
         <include refid="whereSql"/>
         order by id desc
 	</select>
 	
-	<select id="selectUsers" resultType="SysUsers">
+	<select id="selectUsers" resultType="com.gqhmt.sys.beans.SysUsers">
 		<include refid="fieldSql"/>
 	</select>
 	
@@ -70,5 +70,13 @@
 			and id!=#{id}
 		</if>
 	</sql>
+	
+	<select id="querySysUsers" resultType="com.gqhmt.sys.beans.SysUsers">
+        <include refid="fieldSql"/>
+        <if test="userName != null and userName !=''">
+            and (user_name like #{userName} or employee_no like #{userName})
+		</if>
+        order by id desc
+	</select>
 
 </mapper>

@@ -10,7 +10,7 @@
 			type,
 			ico_class icoClass
 
-		from t_func_list where 1=1 and is_del=1
+		from t_sys_func_list where 1=1 and is_del=1
 	</sql>
 	<sql id="whereSql">
 		
@@ -25,7 +25,7 @@
 		</otherwise>
 		</choose>
 	</sql>
-	<select id="selectFuncList" resultType="SysAuthFunc">
+	<select id="selectFuncList" resultType="com.gqhmt.sys.beans.SysAuthFunc">
 		<include refid="fieldSql"/>
 		<include refid="whereSql"/>
 		order by parent_id asc,sort desc

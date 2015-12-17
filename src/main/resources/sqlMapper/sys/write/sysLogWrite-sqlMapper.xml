@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.sys.mapper.write.SysLogWriteMapper">
-	<insert id="insertSysLog">
-			<selectKey resultType="int"  keyProperty="id" order="BEFORE">   
-            	SELECT log_seq.NEXTVAL AS ID FROM DUAL
-          	</selectKey>
-		insert into t_sys_log 
-			(id,user_id,ip,login_name,department)
-		values (#{id},#{userId},#{ip},#{loginName},#{department})
+	<insert id="insertSysLog" useGeneratedKeys="true" keyProperty="id">
+		insert into t_sys_log
+			(user_id,ip,login_name,department,LOGIN_TIME)
+		values (#{userId},#{ip},#{loginName},#{department},#{loginTime})
 	</insert>
 </mapper>

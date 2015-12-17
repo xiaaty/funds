@@ -1,27 +1,23 @@
 package com.gqhmt.sys.controller;
 
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import com.gqhmt.sys.beans.MenuFunc;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gqhmt.sys.beans.SysUsers;
+import com.gqhmt.sys.mapper.write.SysLogWriteMapper;
+import com.gqhmt.sys.service.SysUsersService;
+import com.gqhmt.util.Auth;
+import com.gqhmt.util.Encriptor;
+import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gqhmt.util.Auth;
-import com.gqhmt.util.Encriptor;
-import com.gqhmt.util.GlobalConstants;
-import com.gqhmt.util.StringUtils;
-import com.gqhmt.sys.beans.SysLog;
-import com.gqhmt.sys.beans.SysUsers;
-import com.gqhmt.sys.mapper.write.SysLogWriteMapper;
-import com.gqhmt.sys.service.SysUsersService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -75,7 +71,7 @@ public class LoginController {
 	@RequestMapping("/main")
 	public String menu(){
 
-		return "main";
+		return "main/main";
 	}
 		
 }

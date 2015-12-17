@@ -11,7 +11,7 @@
 			modify_id modifyId,
 			status,
 			description
-		from t_roles where 1=1 and is_del=1
+		from t_sys_roles where 1=1 and is_del=1
 	</sql>
 	<sql id="whereSql">
 		<if test="roleName != null || roleName != ''" >
@@ -22,16 +22,16 @@
       	</if>
       		and is_del=1
 	</sql>
-	<select id="selectRoles" resultType="Roles">
+	<select id="selectRoles" resultType="com.gqhmt.sys.beans.Roles">
 		<include refid="fieldSql"/>
 	</select>
 	
-	<select id="selectRolesList" resultType="Roles">
+	<select id="selectRolesList" resultType="com.gqhmt.sys.beans.Roles">
         <include refid="fieldSql"/>
         <include refid="whereSql"/>
         order by id desc
 	</select>
-    <select id="selectRolesListAll" resultType="Roles">
+    <select id="selectRolesListAll" resultType="com.gqhmt.sys.beans.Roles">
         <include refid="fieldSql"/>
         order by id desc
     </select>
@@ -41,7 +41,7 @@
 			<include refid="whereSql"/>
 	</select>
 	
-	<select id="selectRoleById" resultType="Roles">
+	<select id="selectRoleById" resultType="com.gqhmt.sys.beans.Roles">
 		<include refid="fieldSql"/>
 		and id=#{id} and is_del=1
 	</select>
