@@ -19,11 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gqhmt.sys.service.RestApiService;
 import com.gqhmt.util.Encriptor;
 import com.gqhmt.util.LogUtil;
+import com.gqhmt.util.SpringUtils;
 
 public class RestApiFilter implements Filter {
-	
-	@Resource
-	private RestApiService restApiService;
 	
 	private Pattern pattern = null;
 	
@@ -40,24 +38,34 @@ public class RestApiFilter implements Filter {
 		Matcher matcher = pattern.matcher(url);
         LogUtil.debug(this.getClass(), "url:" + url);
         LogUtil.debug(this.getClass(), "httpServletRequest.getRequestURI():" + httpServletRequest.getRequestURI());
+        Map<String, String> dataMap = null;
+        String busiCode = null;
         if (matcher.find()) {
-			// 商户权限验证
-			String apiJson = (String) request.getAttribute("apiJson");
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, String> dataMap = mapper.readValue(apiJson, Map.class);
-			String data = dataMap.get("data");
-			// 获得MD5密文(加密解密方式验证签名)
-			String signature = dataMap.get("signature");
-			String serviceSign = Encriptor.getMD5(data);
-			if(!signature.equals(serviceSign)) {
-				//throw new Exception(new IllegalAccessException("IP address " + ipAddress + " is stint"));
-				return;
-			}
+        	try {
+				// 商户权限验证
+				String apiJson = (String) request.getAttribute("apiJson");
+				ObjectMapper mapper = new ObjectMapper();
+				dataMap = mapper.readValue(apiJson, Map.class);
+				String data = dataMap.get("data");
+				// 获得MD5密文(加密解密方式验证签名)
+				String signature = dataMap.get("signature");
+				String serviceSign = Encriptor.getMD5(data);
+				if(!signature.equals(serviceSign)) {
+					//throw new Exception(new IllegalAccessException("IP address " + ipAddress + " is stint"));
+					return;
+				}
+				// 获取系统标识对应的拦截规则
+				busiCode = dataMap.get("busiCode");
+        	} catch(Exception e) {
+        		 LogUtil.error(this.getClass(), "商户请求参数有误:" + e.getMessage());
+        		 e.printStackTrace();
+        		 chain.doFilter(request, response);
+        	}
 			// 根据商户认证规则，验证IP
 			String ipAddress = getUserIpAddr(httpServletRequest);
 			LogUtil.debug(this.getClass(), "请求客户端的IP地址:" + ipAddress);
-			// 获取系统标识对应的拦截规则
-			String busiCode = dataMap.get("busiCode");
+			// 获取service
+			RestApiService restApiService = SpringUtils.getBean(RestApiService.class);
 			Map<String, Object> busiInfo = restApiService.getAuthTypeByCode(busiCode);
 			String authType = String.valueOf(busiInfo.get("auth_type"));
 			if("0".equals(authType)) {// 不校验IP
