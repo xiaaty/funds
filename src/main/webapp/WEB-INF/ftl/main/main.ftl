@@ -20,6 +20,10 @@
         .button-icon i{
             line-height:32px;
         }
+        #footer{position: absolute;bottom: 10px;z-index: 100px;}
+        .footer-bottom{font-size:13px}
+        .footer-bottom ul>li{padding:0}
+        .footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
     </style>
 
 </head>
@@ -150,12 +154,13 @@
 
                 </article>
             </div>
+
         </section>
     </div>
-
+<#include "../include/common_footer_css_js.ftl">
 </div>
 
-<#include "../include/common_footer_css_js.ftl">
+
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();

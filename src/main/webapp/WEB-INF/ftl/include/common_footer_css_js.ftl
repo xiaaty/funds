@@ -10,11 +10,11 @@
 		<script src="/js/smartwidgets/jarvis.widget.min.js"></script>
 
 		<!-------datatables Jquery plugin-------->
-		<%--<script src="/js/plugin/datatables.1.10.4/media/js/jquery.dataTables.js"></script>
+		<#--<script src="/js/plugin/datatables.1.10.4/media/js/jquery.dataTables.js"></script>
 		<script src="/js/plugin/datatables.1.10.4/extensions/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 
         <link rel="stylesheet" type="text/css" media="screen" href="/js/plugin/datatables.1.10.4/extensions/integration/bootstrap/3/dataTables.bootstrap.css">
-		<--%>
+		-->
 		<script src="/js/plugin/datatables/jquery.dataTables-cust.js"></script>
         		<script src="/js/plugin/datatables/DT_bootstrap.js"></script>
 		<!-- MAIN APP JS FILE -->
