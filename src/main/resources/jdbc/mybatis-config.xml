@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-config.dtd">
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
         <setting name="cacheEnabled" value="false"/>
         <!--<setting name="logImpl" value="logback"/>-->
     </settings>
-	<!--<typeAliases >
-		<typeAlias type="com.gq.sys.bean.SysUsers" alias="SysUsers"/>
-		<typeAlias type="com.gq.sys.bean.SysAuth" alias="SysAuth"/>
-		<typeAlias type="com.gq.sys.bean.Roles" alias="Roles"/>
-		<typeAlias type="com.gq.sys.bean.FuncList" alias="FuncList"/>
-		<typeAlias type="com.gq.sys.bean.SysAuthFunc" alias="SysAuthFunc"/>
-		<typeAlias type="com.gq.sys.bean.SysLog" alias="SysLog"/>
-	</typeAliases>-->
+	<typeAliases >
+		<typeAlias type="com.gqhmt.sys.beans.SysUsers" alias="SysUsers"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysAuth" alias="SysAuth"/>
+		<typeAlias type="com.gqhmt.sys.beans.Roles" alias="Roles"/>
+		<typeAlias type="com.gqhmt.sys.beans.FuncList" alias="FuncList"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysAuthFunc" alias="SysAuthFunc"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysLog" alias="SysLog"/>
+	</typeAliases>
 
    <!-- <plugins>
         <plugin interceptor="com.gqhmt.interceptor.PageInterceptor">
@@ -22,24 +21,24 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             <property name="pageSqlId" value=".*Page$" />
         </plugin>
     </plugins>-->
-    <!--<plugins>
-        &lt;!&ndash; com.github.pagehelper为PageHelper类所在包名 &ndash;&gt;
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
         <plugin interceptor="com.github.pagehelper.PageHelper">
             <property name="dialect" value="mysql"/>
-            &lt;!&ndash; 该参数默认为false &ndash;&gt;
-            &lt;!&ndash; 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 &ndash;&gt;
-            &lt;!&ndash; 和startPage中的pageNum效果一样&ndash;&gt;
+            <!-- 该参数默认为false -->
+            <!-- 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 -->
+            <!-- 和startPage中的pageNum效果一样-->
             <property name="offsetAsPageNum" value="true"/>
-            &lt;!&ndash; 该参数默认为false &ndash;&gt;
-            &lt;!&ndash; 设置为true时，使用RowBounds分页会进行count查询 &ndash;&gt;
+            <!-- 该参数默认为false -->
+            <!-- 设置为true时，使用RowBounds分页会进行count查询 -->
             <property name="rowBoundsWithCount" value="true"/>
-            &lt;!&ndash; 设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果 &ndash;&gt;
-            &lt;!&ndash; （相当于没有执行分页查询，但是返回结果仍然是Page类型）&ndash;&gt;
+            <!-- 设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果 -->
+            <!-- （相当于没有执行分页查询，但是返回结果仍然是Page类型）-->
             <property name="pageSizeZero" value="true"/>
-            &lt;!&ndash; 3.3.0版本可用 - 分页参数合理化，默认false禁用 &ndash;&gt;
-            &lt;!&ndash; 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 &ndash;&gt;
-            &lt;!&ndash; 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 &ndash;&gt;
+            <!-- 3.3.0版本可用 - 分页参数合理化，默认false禁用 -->
+            <!-- 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 -->
+            <!-- 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 -->
             <property name="reasonable" value="true"/>
         </plugin>
-    </plugins>-->
+    </plugins>
 </configuration>

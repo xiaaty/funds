@@ -3,6 +3,7 @@ package com.gqhmt.sys.controller;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.gqhmt.sys.beans.MenuFunc;
@@ -24,9 +25,9 @@ import com.gqhmt.sys.service.SysUsersService;
 
 @Controller
 public class LoginController {
-		@Autowired
+		@Resource
 		SysUsersService sysUsersService;
-		@Autowired
+		@Resource
 		SysLogWriteMapper sysLogWriteMapper;
 		
 		@RequestMapping(value="/login",method=RequestMethod.POST)
@@ -57,7 +58,7 @@ public class LoginController {
 //				sysLogWriteMapper.insertSysLog(new SysLog(request,sysUsers));
 				GlobalConstants.setSession(request, GlobalConstants.SESSION_MENU, sessionMenu);
 				if(sessionMenu.size() >= 0){
-                    return "redirect:"+getUrl(sessionMenu.get(0));
+                    return "redirect:/main";
 				}
 			}
 			model.addAttribute("errorCode","0003");
@@ -70,5 +71,11 @@ public class LoginController {
             }
             return getUrl(func.getChild().get(0));
         }
+
+	@RequestMapping("/main")
+	public String menu(){
+
+		return "main";
+	}
 		
 }

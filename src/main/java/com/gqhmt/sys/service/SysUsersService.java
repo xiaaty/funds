@@ -3,6 +3,7 @@ package com.gqhmt.sys.service;
 import java.util.List;
 import java.util.Map;
 
+import jdk.nashorn.internal.ir.annotations.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,13 @@ import com.gqhmt.sys.beans.SysUsers;
 import com.gqhmt.sys.mapper.read.SysUsersReadMapper;
 import com.gqhmt.sys.mapper.write.SysUsersWriteMapper;
 
+import javax.annotation.Resource;
+
 @Service
 public class SysUsersService {
-	@Autowired
+	@Resource
 	SysUsersReadMapper sysUsersReadMapper;
-	@Autowired
+	@Resource
 	SysUsersWriteMapper sysUsersWriteMapper;
 	
 	public SysUsers selectSysUsersByLoginName(String loginName){

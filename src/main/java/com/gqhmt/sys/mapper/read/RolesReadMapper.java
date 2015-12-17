@@ -3,6 +3,7 @@ package com.gqhmt.sys.mapper.read;
 import java.util.List;
 import java.util.Map;
 
+import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sys.beans.Roles;
 
 public interface RolesReadMapper {

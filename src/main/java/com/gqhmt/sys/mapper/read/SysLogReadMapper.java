@@ -2,6 +2,7 @@ package com.gqhmt.sys.mapper.read;
 
 import java.util.List;
 
+import com.gqhmt.core.mybatis.ReadMapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.gqhmt.sys.beans.LogSearch;
