@@ -54,7 +54,7 @@
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="logListForm" action="/sys/log" method="post">
+                            <form class="smart-form" id="logListForm" action="${contextPath}/sys/log" method="post">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
