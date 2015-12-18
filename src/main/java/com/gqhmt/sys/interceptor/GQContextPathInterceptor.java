@@ -1,19 +1,17 @@
-package com.gqhmt.interceptor;
+package com.gqhmt.sys.interceptor;
 
-import com.gqhmt.util.LogUtil;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.gqhmt.sys.session.Application;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Filename:    com.gqhmt.interceptor
+ * Filename:    com.gqhmt.sys.interceptor
  * Copyright:   Copyright (c)2014
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
@@ -96,6 +94,9 @@ public class GQContextPathInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if(modelAndView != null && modelAndView.getModelMap() != null){
             modelAndView.getModelMap().addAttribute("contextPath",request.getContextPath());
+            String context = request.getContextPath();
+            String url  =  request.getServletPath();
+            modelAndView.getModelMap().addAttribute("menu", Application.getInstance().getMenu(context,url));
         }
 
 //        Class class1 = handler.getClass();

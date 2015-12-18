@@ -2,6 +2,8 @@ package com.gqhmt.sys.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.entity.Menu
@@ -48,6 +50,9 @@ public class Menu implements Serializable{
 
     @Column(name = "sort")
     private Long sort;                  //int(11) NOT NULL COMMENT '排序',
+
+    @Transient
+    private List<Menu> list = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -111,5 +116,13 @@ public class Menu implements Serializable{
 
     public void setSort(Long sort) {
         this.sort = sort;
+    }
+
+
+    public List<Menu> getList() {
+        return list;
+    }
+    public void addMenu(Menu menu){
+        this.list.add(menu);
     }
 }

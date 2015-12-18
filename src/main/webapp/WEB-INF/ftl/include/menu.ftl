@@ -41,7 +41,6 @@
                         <a href="javascript:void(0);" id="show-shortcut">
                             <img src="../img/avatars/sunny.png" alt="me" class="online" />
                             <span>
-                                ${user.userName}
                             </span>
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -51,7 +50,8 @@
         <!-- end user info -->
         <nav>
             <#--<menu:menu menuMap="${menu}" fid="${fid}"/>-->
+            ${menu}
         </nav>
         <span class="minifyme"> <i class="fa fa-arrow-circle-left hit"></i> </span>
-
+        
     </aside>
