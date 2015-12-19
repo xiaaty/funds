@@ -2,17 +2,16 @@ package com.gqhmt.sys.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.sys.entity.Menu;
 import com.gqhmt.sys.service.MenuService;
 import com.gqhmt.util.GlobalConstants;
 import com.gqhmt.util.RequestUtil;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.support.HttpRequestHandlerServlet;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -40,14 +39,15 @@ public class MenuController {
     @Resource
     private MenuService menuService;
 
-    @RequestMapping(value = "/sys/menu",method = RequestMethod.GET)
-    public Object MenuList(HttpServletRequest request,ModelMap model){
+    @RequestMapping(value = "/sys/menu/{pid}",method = RequestMethod.GET)
+    public Object MenuList(HttpServletRequest request,ModelMap model,@PathVariable Long pid){
         int pageNum= RequestUtil.getInt(request, "pageNum1", 0);
         pageNum=pageNum>0?pageNum: GlobalConstants.PAGE_SIZE;
         int cpage = RequestUtil.getInt(request, "pageNum",0);
-        PageHelper.startPage(cpage, pageNum);
-        List<Menu> menus  = menuService.findMenuAll();
-        model.addAttribute("page",menus);
-        return "/sys/menu/menuList";
+        Page<Menu> page =  PageHelper.startPage(cpage, pageNum);
+        List<Menu> menus  = menuService.findMenu(pid);
+        GqPageInfo pageInfo = new GqPageInfo(menus);
+        model.addAttribute("page",pageInfo);
+        return "sys/menu/menuList";
     }
 }

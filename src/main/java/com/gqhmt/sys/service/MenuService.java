@@ -33,4 +33,8 @@ public class MenuService {
         return  this.menuReadMapper.selectAll();
     }
 
+    public List<Menu> findMenu(Long pId){
+        return this.menuReadMapper.selectAllMenuByParentId(pId);
+    }
+
 }

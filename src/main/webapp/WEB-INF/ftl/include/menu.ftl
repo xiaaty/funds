@@ -2,7 +2,7 @@
 			<div id="logo-group">
 
 				<!-- PLACE YOUR LOGO HERE -->
-				<span id="logo"> <img src="../img/logo.png" alt="SmartAdmin"> </span>
+				<span id="logo"> <img src="${contextPath}/img/logo.png" alt="SmartAdmin"> </span>
 				<!-- END LOGO PLACEHOLDER -->
 
             </div>
@@ -39,8 +39,9 @@
         <div class="login-info">
                     <span> <!-- User image size is adjusted inside CSS, it should stay as it -->
                         <a href="javascript:void(0);" id="show-shortcut">
-                            <img src="../img/avatars/sunny.png" alt="me" class="online" />
+                            <img src="${contextPath}/img/avatars/sunny.png" alt="me" class="online" />
                             <span>
+                                于泳
                             </span>
                             <i class="fa fa-angle-down"></i>
                         </a>

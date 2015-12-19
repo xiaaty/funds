@@ -1,4 +1,4 @@
-<footer id="footer" class="footer" style="margin-bottom: 10px">
+<footer id="footer" >
     <div class="container">
         <hr/>
         <div class="row footer-bottom">

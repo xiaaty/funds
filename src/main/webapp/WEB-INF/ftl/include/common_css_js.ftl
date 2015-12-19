@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="${contextPath}/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/smartadmin-production_unminified.css">
 <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/base.css">
-<link rel="stylesheet" type="text/css" media="screen" href="../css/common.css">
+<link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/common.css">
 
 <link rel="shortcut icon" href="${contextPath}/img/favicon.ico" type="image/x-icon">
 <link rel="icon" href="${contextPath}/img/favicon.ico" type="image/x-icon">

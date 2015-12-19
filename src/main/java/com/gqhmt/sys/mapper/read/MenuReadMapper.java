@@ -24,4 +24,6 @@ import java.util.List;
 public interface MenuReadMapper extends ReadMapper<Menu> {
 
     public List<Menu> selectAllMenu();
+
+    public List<Menu> selectAllMenuByParentId(Long pId);
 }

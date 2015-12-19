@@ -29,7 +29,7 @@
 </head>
 
 <body>
-<#include "../include/menu.ftl">
+<#include "../../include/menu.ftl">
 <div id="main" role="main">
 
     <!-- RIBBON -->
@@ -37,8 +37,8 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>系统管理</li>
-            <li>登录日志</li>
+            <li>菜单管理</li>
+            <li>菜单列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -48,73 +48,15 @@
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
-                        <header>
-                            <h2>快速搜索</h2>
-                        </header>
-                        <!-- widget div-->
-                        <div>
-                            <form class="smart-form" id="logListForm" action="${contextPath}/sys/log" method="post">
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <!-- This area used as dropdown edit box -->
-                                </div>
-                                <!-- end widget edit box -->
-                                <!-- widget content -->
-                                <div class="widget-body no-padding">
-                                    <div class="mt10 mb10">
-                                        <table class="table">
-                                            <col width="100" />
-                                            <col width="220" />
-                                            <col width="100" />
-                                            <col />
-                                            <tbody>
-                                            <tr class="lh32">
-                                                <td class="tr">登录名：</td>
-                                                <td>
-                                                    <section style="width:210px">
-                                                        <label class="input">
-                                                            <input type="text" name="loginName" value="">
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                                <td class="tr">登录时间：</td>
-                                                <td >
-                                                    <section class="fl">
-                                                        <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                            <input type="text" name="map[importStart]" class="selectdate" placeholder="请选择时间" value="">
-                                                        </label>
-                                                    </section>
-                                                    <span class="fl">&nbsp;至&nbsp;</span>
-                                                    <section class="fl">
-                                                        <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                            <input type="text" name="map[importEnd]" class="selectdate" placeholder="请选择时间" value="">
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                            </tr>
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <footer>
-                                        <button class="btn btn-primary" onclick="javascript:void(0);">确认</button>
-                                    </footer>
-                                </div>
-                                <!-- end widget content -->
-                            </form>
-                        </div>
-
-
-                    </div>
                     <!--
                          -->
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="wid-id-642"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>登录日志列表</h2>
+                            <h2>菜单列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -131,13 +73,16 @@
                                         <col />
                                         <thead>
                                         <tr>
-                                            <td>登录名</td>
-                                            <td>所属部门</td>
-                                            <td>登录时间</td>
-                                            <td>登录IP</td>
+                                            <td>菜单名</td>
+                                            <td>菜单URL</td>
+                                            <td>创建时间</td>
+                                            <td>修改时间</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
+
+
 
                                         </tbody>
                                     </table>
@@ -157,7 +102,7 @@
 
         </section>
     </div>
-<#include "../include/common_footer_css_js.ftl">
+<#include "../../include/common_footer_css_js.ftl">
 </div>
 
 
@@ -165,103 +110,16 @@
     $(document).ready(function() {
         pageSetUp();
 
-        DT_page("borrow-rep-table12",true,'',$("#logListForm"));
-
-        $('.selectdate').datetimepicker({
-            language:  'zh-CN',
-            weekStart: 1,
-            autoclose: 1,
-            format:'yyyy-mm-dd',
-            todayHighlight: 1,
-            startView: 2,
-            minView: 2,
-            forceParse: 0
-        });
-
-        //添加按钮按下
-        $("#btn_add").button().click(function() {
-            window.open("/loan/loanAdd?","_self");
-        });
-
-        //删除按钮
-        $('#btn_delete').click(function(){
-            var no=$('#borrow-rep-table1 tbody :checkbox:checked');
-            if(no.size()==0){
-                alert("请选择要删除的合同！");
-                return false;
-            }
-            if(!confirm("确认删除借款合同吗?")){
-                return false;
-            }
-            var param=[];
-            no.each(function(){
-                param.push($(this).val());
-            })
-            $.post("/loan/loanDelete?",{'no':param.toString()},function(data){
-                if(data>0){
-                    alert("删除成功!");
-                    //jAlert("删除成功!",'确认信息');
-                    $("#loanListForm").submit();
-                    return false;
-                }
-                return false;
-            });
-
-        });
-
-        //日期型判断
-        dateCheck() ;
+        DT_page("borrow-rep-table12",true,'${page.JSON}',$("#logListForm"));
 
 
-        $('#checkAll').bind('click',function(){
-            var that=this;
-            $('.checkBoxAll').each(function(){
-                this.checked=that.checked;
-            });
-        });
 
-        $('.checkBoxAll').each(function(){
-            $(this).click(function() {
-                if (this.checked == false ) {
-                    $("#checkAll").removeAttr("checked");
-                    return;
-                }
-            });
-        });
 
-    });
 
-    function dateCheck() {
-        var $selectdate = $(".selectdate");
-        $selectdate.each(function() {
-            //$(this).off();
-            $(this).focus(function() {
-                        //
-                        this.select();
-                    })
-                    .blur(function() {
-                        if($(this).val() != "") {
-                            var val = $(this).val();
-                            if (val.indexOf("\-") > 0 ) {
-                            } else {
-                                if (val.length == 8) {
-                                    val = val.substr(0,4) + "-" + val.substr(4,2) + "-" + val.substr(6,2);
-                                    $(this).val(val);
-                                }
-                            }
-                            var msg= isDate($(this).val());
-                            if (msg != "") {
-                                alert(msg);
-                                this.focus();
-                            }
-
-                        }
-                    });
-        });
-    }
 
 </script>
 
+<#include "../../include/foot.ftl">
 </body>
 
 </html>

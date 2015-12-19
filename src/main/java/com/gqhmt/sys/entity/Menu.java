@@ -45,6 +45,9 @@ public class Menu implements Serializable{
     @Column(name = "parma")
     private String parma;               //varchar(300) DEFAULT NULL COMMENT '菜单对应参数，无参数不显示',
 
+    @Column(name="parmaDefaule")
+    private String parmaDefaule;
+
     @Column(name = "parent_id")
     private Long parent_id;             // bigint(20) NOT NULL DEFAULT '0' COMMENT '上级菜单',
 
@@ -124,5 +127,13 @@ public class Menu implements Serializable{
     }
     public void addMenu(Menu menu){
         this.list.add(menu);
+    }
+
+    public String getParmaDefaule() {
+        return parmaDefaule;
+    }
+
+    public void setParmaDefaule(String parmaDefaule) {
+        this.parmaDefaule = parmaDefaule;
     }
 }
