@@ -27,48 +27,56 @@ public class User implements Serializable{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                // bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    private Long id;                                // int(11) NOT NULL AUTO_INCREMENT,
 
-    @Column(name="login_name")
-    private String loginName;                      // varchar(20) NOT NULL COMMENT '登陆名',
-
-    @Column(name="password")
-    private String password;                        // varchar(40) NOT NULL COMMENT '密码',
+    @Column(name = "login_name")
+    private String loginName;                      // varchar(20) NOT NULL DEFAULT '',
 
     @Column(name="user_name")
-    private String userName;                       // varchar(300) NOT NULL COMMENT '姓名',
-
-    @Column(name="role_id")
-    private Long   roleId;                         // bigint(20) DEFAULT NULL COMMENT '权限组id',
-
-    @Column(name="state")
-    private int state;                              // int(11) DEFAULT NULL COMMENT '员工状态，1试用期，2正式员工，离职员工',
-
-    @Column(name="dept")
-    private int dept;                               // int(11) DEFAULT NULL,
+    private String userName;                       // varchar(20) NOT NULL DEFAULT '',
 
 
-    @Column(name="company")
-    private int company;                            // int(11) DEFAULT NULL COMMENT '所属公司',
+    @Column(name="password")
+    private String password;                        //` varchar(32) NOT NULL DEFAULT '',
 
-    @Column(name="area")
-    private int area;                               //         `area` int(11) DEFAULT NULL COMMENT '所属大区',
+    @Column(name = "employee_no")
+    private String employeeNo;                     // varchar(30) NOT NULL DEFAULT '',
+    @Column(name="sex")
+    private Integer sex;                            // int(11) NOT NULL DEFAULT '0',
 
-    @Column(name="leader")
-    private String leader;                       // varchar(100) DEFAULT NULL COMMENT '上级',
+    @Column(name = "department")
+    private String department;                      // varchar(20) NOT NULL DEFAULT '',
+
+    @Column(name="description")
+    private String description;                     // varchar(100) NOT NULL DEFAULT '',
+
+    @Column(name="status")
+    private Integer status;                         // int(11) NOT NULL DEFAULT '0',
+
+    @Column(name="is_del")
+    private int isDel;                             // int(11) NOT NULL DEFAULT '1',
+
+
+    @Column(name="create_id")
+    private Long createId;                         // int(11) NOT NULL DEFAULT '0',
 
     @Column(name="create_time")
-    private Date createTime;                       // datetime NOT NULL COMMENT '创建时间',
+    private Date createTime;                       //` datetime DEFAULT NULL,
 
-    @Column(name="modify_time")
-    private Date modifyTime;                       // datetime DEFAULT NULL COMMENT '最后修改时间',
+    @Column(name="modify_id") private Long modifyId;                         // int(11) NOT NULL DEFAULT '0',
+    private Date modify_date;                       // datetime DEFAULT NULL,
 
-    @Column(name="create_user_id")
-    private Long createUserId;                    // bigint(20) DEFAULT NULL COMMENT '创建人',
+    @Column(name="user_tel")
+    private String userTel;                        // varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
 
-    @Column(name="modify_user_id")
-    private Long modifyUserId;                    // bigint(20) DEFAULT NULL COMMENT '最后修改人',
+    @Column(name="company")
+    private String  company;                        // varchar(50) DEFAULT NULL,
 
+    @Column(name="leader")
+    private String leader;                          //` varchar(50) DEFAULT NULL,
+
+    @Column(name="job")
+    private String job;                             //` varchar(20) DEFAULT NULL,
 
     public Long getId() {
         return id;
@@ -86,14 +94,6 @@ public class User implements Serializable{
         this.loginName = loginName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -102,52 +102,68 @@ public class User implements Serializable{
         this.userName = userName;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public String getPassword() {
+        return password;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public int getState() {
-        return state;
+    public String getEmployeeNo() {
+        return employeeNo;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setEmployeeNo(String employeeNo) {
+        this.employeeNo = employeeNo;
     }
 
-    public int getDept() {
-        return dept;
+    public Integer getSex() {
+        return sex;
     }
 
-    public void setDept(int dept) {
-        this.dept = dept;
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
-    public int getCompany() {
-        return company;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setCompany(int company) {
-        this.company = company;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
-    public int getArea() {
-        return area;
+    public String getDescription() {
+        return description;
     }
 
-    public void setArea(int area) {
-        this.area = area;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getLeader() {
-        return leader;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setLeader(String leader) {
-        this.leader = leader;
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public int getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(int isDel) {
+        this.isDel = isDel;
+    }
+
+    public Long getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(Long createId) {
+        this.createId = createId;
     }
 
     public Date getCreateTime() {
@@ -158,27 +174,62 @@ public class User implements Serializable{
         this.createTime = createTime;
     }
 
-    public Date getModifyTime() {
-        return modifyTime;
+    public Long getModifyId() {
+        return modifyId;
     }
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setModifyId(Long modifyId) {
+        this.modifyId = modifyId;
     }
 
-    public Long getCreateUserId() {
-        return createUserId;
+    public Date getModify_date() {
+        return modify_date;
     }
 
-    public void setCreateUserId(Long createUserId) {
-        this.createUserId = createUserId;
+    public void setModify_date(Date modify_date) {
+        this.modify_date = modify_date;
     }
 
-    public Long getModifyUserId() {
-        return modifyUserId;
+    public String getUserTel() {
+        return userTel;
     }
 
-    public void setModifyUserId(Long modifyUserId) {
-        this.modifyUserId = modifyUserId;
+    public void setUserTel(String userTel) {
+        this.userTel = userTel;
     }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getLeader() {
+        return leader;
+    }
+
+    public void setLeader(String leader) {
+        this.leader = leader;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getDeptCode() {
+        return deptCode;
+    }
+
+    public void setDeptCode(String deptCode) {
+        this.deptCode = deptCode;
+    }
+
+    @Column(name="dept_code")
+    private String deptCode;                       //` varchar(20) DEFAULT NULL,
 }

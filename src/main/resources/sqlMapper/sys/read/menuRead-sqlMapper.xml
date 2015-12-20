@@ -23,7 +23,9 @@
 		parma,
 		roles,
 		sort,
-		url_type urlType
+		url_type urlType,
+		create_time createTime,
+		modify_time modifyTime
 		FROM `t_gq_fss_sys_menu` menu  WHERE parent_id=#{pId}
 	</select>
 

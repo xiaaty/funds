@@ -80,7 +80,7 @@ public class Application {
         }
         sb.append("<ul>");
         for(Menu menu : func){
-            com.gqhmt.util.LogUtil.debug(this.getClass(),"tag:"+url+"___"+menu.getMenurl());
+            com.gqhmt.util.LogUtil.debug(this.getClass(),"tag:"+url+"___"+menu.getMenuUrl());
             if(checkMenu(url,menu)){
                 sb.append(" <li class='active'>");
             }else{
@@ -88,7 +88,7 @@ public class Application {
             }
 
             sb.append("<a href='");
-            if(!menu.getMenurl().substring(0,1).equals("#")) {
+            if(!menu.getMenuUrl().substring(0,1).equals("#")) {
                 sb.append(context);
             }
             sb.append(parse(menu,url));//添加链接
@@ -122,10 +122,10 @@ public class Application {
 
     private boolean checkMenu(String url, Menu menu) {
         if(menu.getParma()==null){
-            return url.equals(menu.getMenurl());
+            return url.equals(menu.getMenuUrl());
         }
         String[] param = menu.getParma().split(",");
-        String[] menuUrlLength = menu.getMenurl().split("/");
+        String[] menuUrlLength = menu.getMenuUrl().split("/");
         String[] urlLength = url.split("/");
         if (menuUrlLength.length != urlLength.length) return false;
         boolean flag = true;
@@ -158,12 +158,12 @@ public class Application {
 
     private String parse(Menu menu,String url){
         if(menu.getParma() == null || "".equals(menu.getParma())){
-            return menu.getMenurl();
+            return menu.getMenuUrl();
         }
 
         String returnUrl = null;
         String[] urlLength = url.split("/");
-        String[] menuUrlLength = menu.getMenurl().split("/");
+        String[] menuUrlLength = menu.getMenuUrl().split("/");
         if(urlLength.length == menuUrlLength.length){
             returnUrl = replaceUrlValue(menu,url);
         }else{
@@ -175,10 +175,10 @@ public class Application {
     }
 
     private String replaceUrlValue(Menu menu, String url) {
-        if(checkMenu(url,menu)){
+       /* if(checkMenu(url,menu)){
             return url;
         }
-
+*/
         return relpaceDefaultValue(menu);
     }
 
@@ -186,7 +186,7 @@ public class Application {
     private String relpaceDefaultValue(Menu menu){
         String[] param = menu.getParma().split(",");
         String[] paramValue = menu.getParmaDefaule().split(",");
-        String url  = menu.getMenurl();
+        String url  = menu.getMenuUrl();
 
         for(int i =0;i<param.length;i++){
             String paramTmp = param[i];

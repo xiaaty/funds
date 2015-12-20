@@ -3,6 +3,7 @@ package com.gqhmt.sys.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class Menu implements Serializable{
     private String menuName;           // varchar(30) NOT NULL COMMENT '菜单名',
 
     @Column(name = "menu_url")
-    private String menurl;            // varchar(200) NOT NULL COMMENT '菜单链接',
+    private String menuUrl;            // varchar(200) NOT NULL COMMENT '菜单链接',
 
     @Column(name = "url_type")
     private int urlype;               // int(11) DEFAULT NULL COMMENT '重复菜单类别',
@@ -53,6 +54,13 @@ public class Menu implements Serializable{
 
     @Column(name = "sort")
     private Long sort;                  //int(11) NOT NULL COMMENT '排序',
+
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name="modify_time")
+    private Date modifyTime;
+
 
     @Transient
     private List<Menu> list = new ArrayList<>();
@@ -73,13 +81,6 @@ public class Menu implements Serializable{
         this.menuName = menuName;
     }
 
-    public String getMenurl() {
-        return menurl;
-    }
-
-    public void setMenurl(String menurl) {
-        this.menurl = menurl;
-    }
 
     public int getUrlype() {
         return urlype;
@@ -135,5 +136,33 @@ public class Menu implements Serializable{
 
     public void setParmaDefaule(String parmaDefaule) {
         this.parmaDefaule = parmaDefaule;
+    }
+
+    public String getMenuUrl() {
+        return menuUrl;
+    }
+
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
+    }
+
+    public boolean getIsChild(){
+        return "#".equals(menuUrl.substring(0,1))?true:false;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

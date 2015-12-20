@@ -81,7 +81,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-
+                                            <#list page.list as t>
+                                                <tr>
+                                                    <td>${t.menuName}</td>
+                                                    <td>${t.menuUrl}</td>
+                                                    <td>${(t.createTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+                                                    <td>${(t.modifyTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+                                                    <td>
+                                                        <#if t.isChild == true>
+                                                            <a href="/sys/menu/${t.id?c}">查看</a>
+                                                        </#if>
+                                                    </td>
+                                                </tr>
+                                            </#list>
 
 
                                         </tbody>
@@ -109,9 +121,8 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-
-        DT_page("borrow-rep-table12",true,'${page.JSON}',$("#logListForm"));
-
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#logListForm"));
+    });
 
 
 
