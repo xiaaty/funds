@@ -143,10 +143,10 @@ public class RestApiFilter implements Filter {
 		if("0".equals(authApiType)) {// 不校验API
 			return true;
 		} else if("1".equals(authApiType)) { //校验API
-			List<Map<String, String>> ipList = service.getApiListByCode(busiCode);
+			List<Map<String, String>> apiList = service.getApiListByCode(busiCode);
 			boolean flag = false;
-			for (Map<String, String> ipMap : ipList) {
-				if (url.indexOf(ipMap.get("api_addr")) > 0) {
+			for (Map<String, String> apiMap : apiList) {
+				if (url.indexOf(apiMap.get("api_addr")) > 0) {
 					flag = true;
 					break;
 				}
