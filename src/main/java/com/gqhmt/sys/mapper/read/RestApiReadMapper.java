@@ -19,4 +19,11 @@ public interface RestApiReadMapper{
 	 * @return
 	 */
 	public List<Map<String, String>> getIpAddrListByCode(String busiCode);
+
+	/**
+	 * 获取api列表
+	 * @param busiCode
+	 * @return
+	 */
+	public List<Map<String, String>> getApiListByCode(String busiCode);
 }

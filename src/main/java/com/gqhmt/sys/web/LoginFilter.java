@@ -22,7 +22,7 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		SysUsers sysUsers = null;
+		/*SysUsers sysUsers = null;
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String contextPath = httpServletRequest.getContextPath();
 		String url = httpServletRequest.getServletPath();
@@ -72,9 +72,9 @@ public class LoginFilter implements Filter {
                     LogUtil.debug(this.getClass(),GlobalConstants.getSession((HttpServletRequest)request,GlobalConstants.SESSION_MENU));
 
 				}
-			}
+			}*/
 			chain.doFilter(request, response);
-		}
+//		}
 		
 	}
 
