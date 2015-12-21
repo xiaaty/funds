@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sys.mapper.read.MenuReadMapper">
+	<select id="selectAllMenu" resultType="com.gqhmt.sys.entity.Menu">
+		SELECT
+			id,
+			menu_name menuName,
+			menu_url menuUrl,
+			parent_id parentId,
+			parma,
+			roles,
+			sort,
+			url_type urlType
+		FROM `t_gq_fss_sys_menu` menu  ORDER BY menu.`sort` DESC
+	</select>
+
+	<select id="selectAllMenuByParentId" parameterType="java.lang.Long" resultType="com.gqhmt.sys.entity.Menu">
+		SELECT
+		id,
+		menu_name menuName,
+		menu_url menuUrl,
+		parent_id parentId,
+		parma,
+		roles,
+		sort,
+		url_type urlType,
+		create_time createTime,
+		modify_time modifyTime
+		FROM `t_gq_fss_sys_menu` menu  WHERE parent_id=#{pId}
+	</select>
+
+	<select id="selectMenu" resultType="java.util.HashMap">
+		SELECT menu.`menu_name`,menu.`menu_url`,role.`name` FROM `t_gq_fss_sys_menu` menu,`t_gq_fss_sys_role` role WHERE menu.`roles` = role.`id`
+	</select>
+</mapper>
