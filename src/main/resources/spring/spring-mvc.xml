@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -10,6 +11,7 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd "  >
 	<!--  -->
+	<mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager"/>
 	<mvc:default-servlet-handler/>
 	<!--<mvc:annotation-driven enable-matrix-variables="true">
 		&lt;!&ndash;<mvc:message-converters>
@@ -25,7 +27,7 @@
 
 
 	<context:component-scan base-package="com.gqhmt.sys.controller">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
 
@@ -51,19 +53,88 @@
     View resolvers can also be configured with ResourceBundles or XML files. If you need
     different view resolving based on Locale, you have to use the resource bundle resolver.
     -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="cache" value="true"/>
-		<property name="prefix" value="/WEB-INF/ftl/"/>
+	<bean id="viewResolver"  class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="false"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<property name="prefix" value="/"/>
 		<property name="suffix" value=".ftl"/>
+		<!--<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="requestContextAttribute" value="base"></property>-->
+		<property name="order" value="0"></property>
 	</bean>
 
-<!--	<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
-		  p:indentOutput="true"
-		  p:simpleDateFormat="yyyy-MM-dd"
-		  p:modulesToInstall="com.fasterxml.jackson.module.paramnames.ParameterNamesModule"/>
+	<mvc:interceptors>
+		<bean class="com.gqhmt.sys.interceptor.GQContextPathInterceptor"></bean>
+	</mvc:interceptors>
+	<bean id="freemarkerConfig"  class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape"/>
+			</map>
+		</property>
+		<!--<property name="freemarkerVariables">
+			&lt;!&ndash;<map>
+				<entry key="indexContent"
+					   value-ref="IndexContentListTag">
+				</entry>
+				<entry key="bkContent"
+					   value-ref="BKIndexContentListTag">
+				</entry>
+				<entry key="blogContent" value-ref="contentTag"></entry>
+				<entry key="hotContent" value-ref="HotBlogContentTag"></entry>
+			</map>&ndash;&gt;
+		</property>-->
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="tag_syntax">auto_detect</prop>
+				<prop key="template_update_delay">5</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<!--<prop key="locale">zh_CN</prop>-->
+				<prop key="boolean_format">true,false</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">###,###,###,##0.00</prop>
+				<prop key="whitespace_stripping">true</prop>
+				<!--空值处理<prop key="classic_compatible">true</prop>-->
+				<!--  <prop key="auto_import">/ftl/tags/index.ftl as p,/ftl/spring.ftl as s</prop>-->
+			</props>
+		</property>
+	</bean>
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 
-	<bean id="xmlMapper" parent="objectMapper" p:createXmlMapper="true"/>-->
+	<bean id="viewResolverCommon"
+		  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+				  value="org.springframework.web.servlet.view.JstlView" />
+		<property name="order" value="5"></property>
+		<property name="prefix" value="/WEB-INF/jsp" />
+		<property name="suffix" value=".jsp"></property>
+	</bean>
 
+
+		<bean id="objectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
+              p:indentOutput="true"
+              p:simpleDateFormat="yyyy-MM-dd"
+             />
+
+        <bean id="xmlMapper" parent="objectMapper" p:createXmlMapper="true"/>
+
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="mediaTypes">
+			<value>
+				html=text/html
+				json=application/json
+				xml=application/xml
+			</value>
+		</property>
+	</bean>
 
         <!-- 公共异常转向错误页面-->
 	<!--<bean id="exceptionResolver" class="com.gq.core.exception.DefaultHandlerExceptionResolver">
