@@ -32,4 +32,13 @@ public class RestApiService {
 	public List<Map<String, String>> getIpAddrListByCode(String busiCode) {
 		return restApiReadMapper.getIpAddrListByCode(busiCode);
 	}
+	
+	/**
+	 * 获取商户api列表
+	 * @param busiCode
+	 * @return
+	 */
+	public List<Map<String, String>> getApiListByCode(String busiCode) {
+		return restApiReadMapper.getApiListByCode(busiCode);
+	}
 }

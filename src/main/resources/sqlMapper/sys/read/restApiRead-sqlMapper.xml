@@ -17,11 +17,16 @@
 	</sql>
 	<!-- 获取商户授权类型 -->
 	<select id="getAuthTypeByCode" resultType="map">
-		SELECT a.auth_type,a.busi_name
-		FROM t_gq_fund_api_business a WHERE a.busi_code = #{busiCode}
+		SELECT a.auth_ip_type,a.auth_api_type,a.busi_name
+		FROM t_gq_fss_api_business a WHERE a.busi_code = #{busiCode}
 	</select>
 	<select id="getIpAddrListByCode" resultType="map">
 		SELECT a.ip_addr,a.ip_addr_section
-		FROM t_gq_fund_api_ipconfig a WHERE a.busi_code = #{busiCode}
+		FROM t_gq_fss_api_ipconfig a WHERE a.busi_code = #{busiCode}
+	</select>
+	<!-- 获取商户api列表 -->
+	<select id="getIpAddrListByCode" resultType="map">
+		SELECT a.busi_code,a.api_addr
+		FROM t_gq_fss_api_addr a WHERE a.busi_code = #{busiCode}
 	</select>
 </mapper>
