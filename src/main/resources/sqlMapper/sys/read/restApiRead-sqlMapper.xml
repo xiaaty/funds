@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sys.mapper.read.RestApiReadMapper">
+	<sql id="fieldSql">
+	</sql>
+	<sql id="whereSql">
+	</sql>
+	<sql id="otherSql">
+		<choose>
+		<when test="orderStr != null">
+			order by ${orderStr}
+		</when>
+		<otherwise>
+			order by auth_type asc
+		</otherwise>
+		</choose>
+	</sql>
+	<!-- 获取商户授权类型 -->
+	<select id="getAuthTypeByCode" resultType="map">
+		SELECT a.auth_type,a.busi_name
+		FROM t_gq_fund_api_business a WHERE a.busi_code = #{busiCode}
+	</select>
+	<select id="getIpAddrListByCode" resultType="map">
+		SELECT a.ip_addr,a.ip_addr_section
+		FROM t_gq_fund_api_ipconfig a WHERE a.busi_code = #{busiCode}
+	</select>
+</mapper>
