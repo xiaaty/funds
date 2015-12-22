@@ -72,6 +72,14 @@ public class RestApiService {
 	}
 
 	/**
+	 * 新增商户信息
+	 * @param busi
+	 */
+	public void insertBusiness(Business busi) {
+		restApiWriteMapper.insertSelective(busi);
+	}
+	
+	/**
 	 * 修改商户信息
 	 * @param busi
 	 */

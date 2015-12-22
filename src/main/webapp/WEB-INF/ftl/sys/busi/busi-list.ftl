@@ -57,7 +57,7 @@
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form">
+                            <form class="smart-form" id="busiListForm">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -87,7 +87,7 @@
                                                     	<#if t.authIpType == '0'>
                                                     		IP不校验
                                                     	<#elseif t.authIpType == '1'>
-                                                    		IP段校验
+                                                    		IP校验
                                                     	</#if>
                                                     </td>
                                                     <td>
@@ -98,7 +98,7 @@
                                                     	</#if>
                                                     </td>
                                                     <td>${(t.createTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-                                                    <td>
+                                                    <td style="text-align:left;">
                                                         <a href="${contextPath}/sys/busi/update/${t.busiCode}">修改</a>
                                                         <#if t.authIpType != '0'>
                                                         	<a href="${contextPath}/sys/busi/ipupdate/${t.busiCode}">IP地址管理</a>
@@ -109,8 +109,6 @@
                                                     </td>
                                                 </tr>
                                             </#list>
-
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -130,12 +128,8 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#logListForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#busiListForm"));
     });
-
-
-
-
 
 </script>
 

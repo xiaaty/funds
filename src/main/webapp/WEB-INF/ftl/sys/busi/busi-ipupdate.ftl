@@ -64,7 +64,7 @@
                         		<tr class="lh32">
                                 	<td class="tr">IP地址：</td>
                                     <td>           	
-						      			<input type="text" name="ipAddr" value="${ip.ipAddr}" placeholder="请输入ip">
+						      			<input type="text" name="ipAddr" value="${ip.ipAddr!}" placeholder="请输入ip">
 						      		</td>
 						      	</tr>
 	             			</#list>

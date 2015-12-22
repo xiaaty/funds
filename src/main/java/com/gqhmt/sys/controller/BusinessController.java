@@ -17,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.sys.entity.ApiAddr;
 import com.gqhmt.sys.entity.ApiIpConfig;
 import com.gqhmt.sys.entity.Business;
 import com.gqhmt.sys.service.RestApiService;
+import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.util.RequestUtil;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
@@ -53,14 +57,62 @@ public class BusinessController {
      */
     @RequestMapping(value = "/sys/busi/list",method = RequestMethod.GET)
     public Object businessList(HttpServletRequest request,ModelMap model){
-//		int pageNum = RequestUtil.getInt(request, "pageNum1", 0);
-//		pageNum = pageNum > 0 ? pageNum : GlobalConstants.PAGE_SIZE;
-//		int cpage = RequestUtil.getInt(request, "pageNum", 0);
-//		Page<Business> page = PageHelper.startPage(cpage, pageNum);
+		int pageNum = RequestUtil.getInt(request, "pageNum1", 0);
+		pageNum = pageNum > 0 ? pageNum : GlobalConstants.PAGE_SIZE;
+		int cpage = RequestUtil.getInt(request, "pageNum", 0);
+		Page<Business> page = PageHelper.startPage(cpage, pageNum);
 		List<Business> businessList = restApiService.findBusinessList(null);
 		GqPageInfo pageInfo = new GqPageInfo(businessList);
 		model.addAttribute("page", pageInfo);
 		return "sys/busi/busi-list";
+    }
+    
+    /**
+     * 跳转至商户新增
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/sys/busi/add",method = RequestMethod.GET)
+    public Object businessAdd(HttpServletRequest request,ModelMap model){
+		return "sys/busi/busi-add";
+    }
+    
+    /**
+     * 商户新增确认
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/sys/busi/addConfirm")
+    @ResponseBody
+    public Object businessAddConfirm(HttpServletRequest request,@ModelAttribute(value="busi")Business busi){
+    	restApiService.insertBusiness(busi);
+    	Map<String, String> map = new HashMap<String, String>();
+        map.put("code", "0000");
+        map.put("message", "success");
+		return map;
+    }
+    
+    /**
+     * 商户新增确认
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/sys/busi/checkCode")
+    @ResponseBody
+    public Object busiCheckCode(HttpServletRequest request,@ModelAttribute(value="busiCode")String busiCode){
+    	Map<String, Object> param =  new HashMap<>();
+    	param.put("busiCode", busiCode);
+    	List<Business> busiList = restApiService.findBusinessList(param);
+    	Map<String, String> map = new HashMap<String, String>();
+    	if(null != busiList && !busiList.isEmpty()) {
+    		map.put("code", "0000");
+    	} else {
+    		map.put("code", "0001");
+    	}
+		return map;
     }
     
     /**
@@ -85,7 +137,7 @@ public class BusinessController {
      */
     @RequestMapping(value = "/sys/busi/updateConfirm")
     @ResponseBody
-    public Object businessUpdateConfirm(HttpServletRequest request,@ModelAttribute(value="busi")Business busi, ModelMap model){
+    public Object businessUpdateConfirm(HttpServletRequest request,@ModelAttribute(value="busi")Business busi){
     	busi.setModifyTime(new Date());
     	restApiService.updateBusiness(busi);
     	Map<String, String> map = new HashMap<String, String>();

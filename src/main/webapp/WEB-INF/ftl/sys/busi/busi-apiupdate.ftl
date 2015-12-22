@@ -64,7 +64,7 @@
                         		<tr class="lh32">
                                 	<td class="tr">API地址：</td>
                                     <td>           	
-						      			<input type="text" name="apiAddr" value="${api.apiAddr}" placeholder="请输入api">
+						      			<input type="text" name="apiAddr" value="${api.apiAddr!}" placeholder="请输入api">
 						      		</td>
 						      	</tr>
 	             			</#list>
