@@ -64,7 +64,7 @@ public class BusinessController {
 		List<Business> businessList = restApiService.findBusinessList(null);
 		GqPageInfo pageInfo = new GqPageInfo(businessList);
 		model.addAttribute("page", pageInfo);
-		return "sys/busi/busi-list";
+		return "sys/busi/busiList";
     }
     
     /**
@@ -75,7 +75,7 @@ public class BusinessController {
      */
     @RequestMapping(value = "/sys/busi/add",method = RequestMethod.GET)
     public Object businessAdd(HttpServletRequest request,ModelMap model){
-		return "sys/busi/busi-add";
+		return "sys/busi/busiAdd";
     }
     
     /**
@@ -127,7 +127,7 @@ public class BusinessController {
 		param.put("busiCode", busiCode);
     	List<Business> busiList = restApiService.findBusinessList(param);
 		model.addAttribute("busi", busiList.get(0));
-		return "sys/busi/busi-update";
+		return "sys/busi/busiUpdate";
     }
     /**
      * 商户修改确认
@@ -158,7 +158,7 @@ public class BusinessController {
     	List<ApiIpConfig> apiIpList = restApiService.findApiIpList(apiIpConfig);
 		model.addAttribute("apiIpList", apiIpList);
 		model.addAttribute("busiCode", busiCode);
-		return "sys/busi/busi-ipupdate";
+		return "sys/busi/busiIpUpdate";
     }
     /**
      * 商户修改确认
@@ -201,7 +201,7 @@ public class BusinessController {
     	List<ApiAddr> apiAddrList = restApiService.findApiAddrList(apiAddr);
 		model.addAttribute("apiList", apiAddrList);
 		model.addAttribute("busiCode", busiCode);
-		return "sys/busi/busi-apiupdate";
+		return "sys/busi/busiApiUpdate";
     }
     /**
      * 商户修改确认
