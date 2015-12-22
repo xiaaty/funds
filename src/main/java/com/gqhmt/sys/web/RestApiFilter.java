@@ -108,21 +108,11 @@ public class RestApiFilter implements Filter {
 		LogUtil.debug(this.getClass(), "请求客户端的IP地址:" + ipAddress);
 		if("0".equals(authIpType)) {// 不校验IP
 			return true;
-		} else if("1".equals(authIpType)) { //IP全校验
+		} else if("1".equals(authIpType)) { //IP段校验
 			List<Map<String, String>> ipList = service.getIpAddrListByCode(busiCode);
 			boolean flag = false;
 			for (Map<String, String> ipMap : ipList) {
 				if (ipAddress.indexOf(ipMap.get("ip_addr")) > 0) {
-					flag = true;
-					break;
-				}
-			}
-			return flag;
-		} else if("2".equals(authIpType)) { // IP段校验
-			List<Map<String, String>> ipList = service.getIpAddrListByCode(busiCode);
-			boolean flag = false;
-			for (Map<String, String> ipMap : ipList) {
-				if (ipAddress.indexOf(ipMap.get("ip_addr_section")) > 0) {
 					flag = true;
 					break;
 				}
