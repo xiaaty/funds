@@ -4,6 +4,9 @@
 	<sql id="fieldSql">
 	</sql>
 	<sql id="whereSql">
+		<if test="busiCode != null and busiCode != ''" >
+        	and a.busi_code = #{busiCode}
+      	</if>
 	</sql>
 	<sql id="otherSql">
 		<choose>
@@ -17,11 +20,24 @@
 	</sql>
 	<!-- 获取商户授权类型 -->
 	<select id="getAuthTypeByCode" resultType="map">
-		SELECT a.auth_type,a.busi_name
-		FROM t_gq_fund_api_business a WHERE a.busi_code = #{busiCode}
+		SELECT a.auth_ip_type,a.auth_api_type,a.busi_name
+		FROM t_gq_fss_api_business a WHERE a.busi_code = #{busiCode}
 	</select>
 	<select id="getIpAddrListByCode" resultType="map">
-		SELECT a.ip_addr,a.ip_addr_section
-		FROM t_gq_fund_api_ipconfig a WHERE a.busi_code = #{busiCode}
+		SELECT a.ip_addr,a.busi_code
+		FROM t_gq_fss_api_ipconfig a WHERE a.busi_code = #{busiCode}
+	</select>
+	<!-- 获取商户api列表 -->
+	<select id="getApiListByCode" resultType="map">
+		SELECT a.busi_code,a.api_addr
+		FROM t_gq_fss_api_addr a WHERE a.busi_code = #{busiCode}
+	</select>
+	
+	<select id="findBusinessList" parameterType="java.lang.Long" resultType="com.gqhmt.sys.entity.Business">
+		SELECT a.id,a.busi_name busiName,a.busi_code busiCode,
+			a.auth_ip_type authIpType,a.auth_api_type authApiType,
+			remark,create_time createTime,modify_time modifyTime
+		FROM t_gq_fss_api_business a where 1=1
+		<include refid="whereSql"/>
 	</select>
 </mapper>
