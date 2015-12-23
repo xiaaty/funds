@@ -14,4 +14,4 @@
  * -----------------------------------------------------------------
  * 2015/3/29  于泳      1.0     1.0 Version
  */
-package com.fuiou;
+package com.gqhmt.fss.pay.fuiou;

@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gqhmt.sys.service.RestApiService;
-import com.gqhmt.util.Encriptor;
 import com.gqhmt.util.LogUtil;
+import com.gqhmt.util.MD5Util;
 import com.gqhmt.util.SpringUtils;
 
 /**
@@ -60,7 +60,7 @@ public class RestApiFilter implements Filter {
 				String data = dataMap.get("data");
 				// 获得MD5密文(加密解密方式验证签名)
 				String signature = dataMap.get("signature");
-				String serviceSign = Encriptor.getMD5(data);
+				String serviceSign = MD5Util.encryption(data);
 				if(!signature.equals(serviceSign)) {
 					//throw new Exception(new IllegalAccessException("IP address " + ipAddress + " is stint"));
 					return;
