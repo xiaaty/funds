@@ -4,6 +4,7 @@ import com.gqhmt.sys.beans.SysAuthFunc;
 import com.gqhmt.sys.beans.SysUsers;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -13,6 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class GlobalConstants {
+	
+    public  static final int RESERVED_CUSTOMERID_LIMIT = 100;
+
 	public static final String USER_HOME = "/";
 	public static final String ERROR_PAGE = "/error.jsp";
 	public static final String SESSION_EMP = "emp_session";
@@ -26,7 +30,14 @@ public class GlobalConstants {
 	public static final int DEL=-1;
 	public static final String SYSTEM_CODE="";
 	
-	
+	//账户类型
+    public static final int ACCOUNT_TYPE_PRIMARY=0;             //主账户
+    public static final int ACCOUNT_TYPE_LOAN=1;            //借款账户
+    public static final int ACCOUNT_TYPE_LEND_OFF=2;        //线下出借账户
+    public static final int ACCOUNT_TYPE_LEND_ON=3;         //线上出借账户
+    public static final int ACCOUNT_TYPE_PAYMENT=96;       //应付账户
+    public static final int ACCOUNT_TYPE_FREEZE=99;         //冻结金账户
+    
 	//所有账目状态
 	public static final int NO_ACCOUNT=1;
 	public static final int ACCOUNTING=2;
@@ -48,7 +59,14 @@ public class GlobalConstants {
 
     public static final int ACCOUNT_FUND_TRANSACTIONS=7;
 	
-	
+    //业务映射流水类型
+
+    public static final int BUSINESS_MAPPINF_CUSTOMER=1;
+    public static final int BUSINESS_MAPPINF_BID=2;
+    public static final int BUSINESS_MAPPINF_TENDER=3;
+    public static final int BUSINESS_MAPPINF_DEBT=4;
+    public static final int BUSINESS_MAPPINF_WITHDRAWAPPLY=5;
+    public static final int BUSINESS_MAPPINF_REPAYMENT=6;
 	
 	public static final String ROLE_URL_MAP="roleUrlMap";
 	public static final String ROLE_MAP="roleMap";
@@ -85,8 +103,8 @@ public class GlobalConstants {
     public static Map<String,String> AccountMap=new LinkedHashMap<String,String>();
     public static Map<String,String> AccountLoanRepaymentMap=new LinkedHashMap<String,String>();
 
-
-
+    public static Map<Integer,String> thirdpartyType=new ConcurrentHashMap<Integer,String>();
+    public static Map<Integer,String> thirdpartyTypeEN=new ConcurrentHashMap<Integer,String>();
 
     private static long getMenuId(Long fid) {
         if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
@@ -269,7 +287,12 @@ public class GlobalConstants {
         AccountLoanRepaymentMap.put("10002110","展期费");
         AccountLoanRepaymentMap.put("10002111","挂账");
         AccountLoanRepaymentMap.put("10002201","退款");
-
+        
+        thirdpartyType.put(1,"大钱");
+        thirdpartyType.put(2,"富友");
+        
+        thirdpartyTypeEN.put(1,"daqian_");
+        thirdpartyTypeEN.put(2,"");
 
 	}
 }

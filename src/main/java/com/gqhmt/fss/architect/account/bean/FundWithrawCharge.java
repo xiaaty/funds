@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 public class FundWithrawCharge {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private Long id;                                                                    //bigint(20) NOT NULL
     @Column(name = "order_no",updatable = false)

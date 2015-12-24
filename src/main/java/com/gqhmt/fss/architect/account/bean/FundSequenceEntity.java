@@ -1,8 +1,18 @@
 package com.gqhmt.fss.architect.account.bean;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.gqhmt.util.ThirdPartyType;
 
 /**
  * Filename:    com.gq.p2p.account.entity
@@ -36,7 +46,7 @@ public class FundSequenceEntity  implements java.io.Serializable{
     private String currency;
     private Date createTime;
     private Date modifyTime;
-//    private ThirdPartyType thirdPartyType;
+    private ThirdPartyType thirdPartyType;
     private String orderNo;
 
     private String  sumary;
@@ -47,7 +57,7 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -162,15 +172,14 @@ public class FundSequenceEntity  implements java.io.Serializable{
         return result.intValue();
     }
 
-//    @Column(name = "thirdparty_type",updatable = false,nullable = false)
-//    @Type(type = "com.gq.funds.type.ThirdPartyUserType")
-//    public ThirdPartyType getThirdPartyType() {
-//        return thirdPartyType;
-//    }
-//
-//    public void setThirdPartyType(ThirdPartyType thirdPartyType) {
-//        this.thirdPartyType = thirdPartyType;
-//    }
+    @Column(name = "thirdparty_type",updatable = false,nullable = false)
+    public ThirdPartyType getThirdPartyType() {
+        return thirdPartyType;
+    }
+
+    public void setThirdPartyType(ThirdPartyType thirdPartyType) {
+        this.thirdPartyType = thirdPartyType;
+    }
 
     @Column(name = "order_no",updatable = false)
     public String getOrderNo() {
