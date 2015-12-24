@@ -26,42 +26,59 @@ import java.util.Date;
 @Entity
 @Table(name = "t_gq_fund_account")
 public class FundAccountEntity {
+	@Id
+    @Column(name = "id",updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //客户id
+	@Column(name = "cust_id",updatable = false)
     private Integer custId;
     //用户id
+	@Column(name = "user_id")
     private Integer userId;
+	@Column(name = "amount")
     private BigDecimal amount;
+	@Column(name = "freeze_amount")
     private BigDecimal freezeAmount;
     //1： 客户账户 2 ：A0 3： AX
+	@Column(name = "account_type",updatable = false)
     private Integer accountType;
     //1借款客户 2 线下出借客户 3线上出借客户 99冻结金账户
+	@Column(name = "busi_type",updatable = false)
     private Integer busiType;
+	@Column(name = "parent_id")
     private Long parentId;
+	@Column(name = "trade_password")
     private String tradePassword;
+	@Column(name = "CREATE_TIME",updatable = false)
     private Date createTime;
+	@Column(name = "CREATE_USER_ID",updatable = false)
     private Integer createUserId;
+	@Column(name = "MODIFY_TIME")
     private Date modifyTime;
+	@Column(name = "MODIFY_USER_ID")
     private Integer modifyUserId;
+	@Column(name = "account_no",updatable = false)
     private String accountNo;
+	@Column(name = "user_name",updatable = false)
     private String userName;
+	@Column(name = "cust_name",updatable = false)
     private String custName;
-
+	@Column(name = "city_id",updatable = false)
     private String cityId;
+	@Column(name = "parent_bank_id",insertable = false,updatable = false)
     private String parentBankId;
+    @Column(name = "bankNo",updatable = false)
     private String bankNo;
-
+    @Column(name = "has_Third_Account",insertable = false)
     private int hasThirdAccount = 1;
-
-
+    @Column(name="is_change_bank_card",insertable = false)
+    private int ishangeBankCard;
 
     //结算类型；0 T+0 ; 1 T+1
+    @Column(name = "settle_type")
     private Integer settleType ;
 
-
-    @Id
-    @Column(name = "id",updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -70,8 +87,7 @@ public class FundAccountEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "cust_id",updatable = false)
+    
     public Integer getCustId() {
         return custId;
     }
@@ -80,8 +96,6 @@ public class FundAccountEntity {
         this.custId = custId;
     }
     
-    @Basic
-    @Column(name = "user_id")
     public Integer getUserId() {
         return userId;
     }
@@ -90,8 +104,7 @@ public class FundAccountEntity {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "amount")
+    
     public BigDecimal getAmount() {
         return amount;
     }
@@ -100,8 +113,6 @@ public class FundAccountEntity {
         this.amount = amount;
     }
 
-    @Basic
-    @Column(name = "freeze_amount")
     public BigDecimal getFreezeAmount() {
         return freezeAmount;
     }
@@ -110,8 +121,6 @@ public class FundAccountEntity {
         this.freezeAmount = freezeAmount;
     }
 
-    @Basic
-    @Column(name = "account_type",updatable = false)
     public Integer getAccountType() {
         return accountType;
     }
@@ -120,8 +129,6 @@ public class FundAccountEntity {
         this.accountType = accountType;
     }
 
-    @Basic
-    @Column(name = "busi_type",updatable = false)
     public Integer getBusiType() {
         return busiType;
     }
@@ -130,8 +137,6 @@ public class FundAccountEntity {
         this.busiType = busiType;
     }
 
-    @Basic
-    @Column(name = "parent_id")
     public Long getParentId() {
         return parentId;
     }
@@ -140,8 +145,6 @@ public class FundAccountEntity {
         this.parentId = parentId;
     }
 
-    @Basic
-    @Column(name = "trade_password")
     public String getTradePassword() {
         return tradePassword;
     }
@@ -150,8 +153,6 @@ public class FundAccountEntity {
         this.tradePassword = tradePassword;
     }
 
-    @Basic
-    @Column(name = "CREATE_TIME",updatable = false)
     public Date getCreateTime() {
         return createTime;
     }
@@ -160,8 +161,6 @@ public class FundAccountEntity {
         this.createTime = createTime;
     }
 
-    @Basic
-    @Column(name = "CREATE_USER_ID",updatable = false)
     public Integer getCreateUserId() {
         return createUserId;
     }
@@ -170,8 +169,6 @@ public class FundAccountEntity {
         this.createUserId = createUserId;
     }
 
-    @Basic
-    @Column(name = "MODIFY_TIME")
     public Date getModifyTime() {
         return modifyTime;
     }
@@ -180,8 +177,6 @@ public class FundAccountEntity {
         this.modifyTime = modifyTime;
     }
 
-    @Basic
-    @Column(name = "MODIFY_USER_ID")
     public Integer getModifyUserId() {
         return modifyUserId;
     }
@@ -190,8 +185,6 @@ public class FundAccountEntity {
         this.modifyUserId = modifyUserId;
     }
     
-    @Basic
-    @Column(name = "account_no",updatable = false)
 	public String getAccountNo() {
 		return accountNo;
 	}
@@ -247,7 +240,6 @@ public class FundAccountEntity {
         return result.intValue();
     }
 
-    @Column(name = "has_Third_Account",insertable = false)
     public int getHasThirdAccount() {
         return hasThirdAccount;
     }
@@ -256,9 +248,6 @@ public class FundAccountEntity {
         this.hasThirdAccount = hasThirdAccount;
     }
 
-
-
-    @Column(name = "user_name",updatable = false)
     public String getUserName() {
         return userName;
     }
@@ -267,7 +256,6 @@ public class FundAccountEntity {
         this.userName = userName;
     }
 
-    @Column(name = "cust_name",updatable = false)
     public String getCustName() {
         return custName;
     }
@@ -276,7 +264,6 @@ public class FundAccountEntity {
         this.custName = custName;
     }
 
-    @Column(name = "city_id",updatable = false)
     public String getCityId() {
         return cityId;
     }
@@ -285,7 +272,6 @@ public class FundAccountEntity {
         this.cityId = cityId;
     }
 
-    @Column(name = "parent_bank_id",insertable = false,updatable = false)
     public String getParentBankId() {
         return parentBankId;
     }
@@ -294,7 +280,7 @@ public class FundAccountEntity {
         this.parentBankId = parenBankId;
     }
 
-    @Column(updatable = false)
+    
     public String getBankNo() {
         return bankNo;
     }
@@ -303,7 +289,6 @@ public class FundAccountEntity {
         this.bankNo = bankNo;
     }
 
-    @Column(name = "settle_type")
     public Integer getSettleType() {
         return settleType;
     }
@@ -312,7 +297,12 @@ public class FundAccountEntity {
         this.settleType = settleType;
     }
 
+	public int getIshangeBankCard() {
+		return ishangeBankCard;
+	}
 
+	public void setIshangeBankCard(int ishangeBankCard) {
+		this.ishangeBankCard = ishangeBankCard;
+	}
 
-    
 }

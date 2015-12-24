@@ -20,7 +20,7 @@ import com.gqhmt.core.FssException;
  * -----------------------------------------------------------------
  * 15/11/28  于泳      1.0     1.0 Version
  */
-public class CommandParmException extends FssException {
+public class CommandParmException extends RuntimeException {
     public CommandParmException(String message) {
         super(message);
     }

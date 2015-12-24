@@ -13,15 +13,18 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.bean.BankCardinfoEntity;
+import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
+import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
 import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
 import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
 import com.gqhmt.fss.architect.account.command.AccountCommand;
 import com.gqhmt.fss.architect.account.command.CommandEnum;
+import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FundAccountWriteMapper;
 import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.ThirdPartyType;
 
 /**
@@ -48,23 +51,23 @@ public class FundAccountService {
     @Resource
     private FundAccountWriteMapper fundAccountWriteMapper;
 
-
     @Resource
     private FundSequenceService fundSequenceService;
 
-
     @Resource
-//    private BankCardinfoService bankCardinfoService;
+    private BankCardInfoService bankCardInfoService;
     
-    
-    public void  insert(FundAccountEntity entity) throws FssException {
-        fundAccountWriteMapper.insertSelective(entity);
+    public int insert(FundAccountEntity entity) throws FssException {
+        return fundAccountWriteMapper.insertSelective(entity);
     }
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
-
+    
+    public void delete(Long id) {
+    	fundAccountWriteMapper.deleteByPrimaryKey(id);
+    }
     /**
      * 创建客户主账户
      * @param customerInfoEntity
@@ -72,14 +75,12 @@ public class FundAccountService {
      * @param type  账户类型  1，借款 ，2线下出借，3线上出借，99冻结
      * @throws CreateAccountFailException
      */
-//    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,int type) throws CreateAccountFailException {
-//
-//        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
-//        LogUtil.debug(this.getClass(),entity);
-//        this.update(entity);
-//
-//        return entity;
-//    }
+    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,int type) throws CreateAccountFailException {
+        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
+        LogUtil.debug(this.getClass(),entity);
+        update(entity);
+        return entity;
+    }
     /**
      * 创建客户子账户
      * @param customerInfoEntity
@@ -87,32 +88,31 @@ public class FundAccountService {
      * @param type  账户类型  1，借款 ，2线下出借，3线上出借，99冻结
      * @throws CreateAccountFailException
      */
-//    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,int type,Long pID) throws CreateAccountFailException{
-//
-//        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
-//        entity.setParentId(pID);
-//        LogUtil.debug(this.getClass(), entity);
-//        this.update(entity);
-//        return entity;
-//    }
+    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,int type,Long pID) throws CreateAccountFailException{
+        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
+        entity.setParentId(pID);
+        LogUtil.debug(this.getClass(), entity);
+        update(entity);
+        return entity;
+    }
 
-//    protected FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
-//        FundAccountEntity entity = new FundAccountEntity();
-//        entity.setCustId(customerInfoEntity.getId());
-//        entity.setUserName(customerInfoEntity.getMobilePhone());
-//        entity.setAmount(BigDecimal.ZERO);
-//        entity.setFreezeAmount(BigDecimal.ZERO);
-//        entity.setAccountType(accountType);
-//        entity.setBusiType(busiType);
-//        entity.setUserId(userID);
-//        entity.setAccountNo(getAccountNo());
-//        entity.setBankNo(customerInfoEntity.getBankNo());
-//        entity.setCityId(customerInfoEntity.getCityCode());
-//        entity.setParentBankId(customerInfoEntity.getParentBankCode());
-//        entity.setCustName(customerInfoEntity.getCustomerName());
-//        entity.setCreateTime(new Date());
-//        return entity;
-//    }
+    protected FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
+        FundAccountEntity entity = new FundAccountEntity();
+        entity.setCustId(customerInfoEntity.getId());
+        entity.setUserName(customerInfoEntity.getMobilePhone());
+        entity.setAmount(BigDecimal.ZERO);
+        entity.setFreezeAmount(BigDecimal.ZERO);
+        entity.setAccountType(accountType);
+        entity.setBusiType(busiType);
+        entity.setUserId(userID);
+        entity.setAccountNo(getAccountNo());
+        entity.setBankNo(customerInfoEntity.getBankNo());
+        entity.setCityId(customerInfoEntity.getCityCode());
+        entity.setParentBankId(customerInfoEntity.getParentBankCode());
+        entity.setCustName(customerInfoEntity.getCustomerName());
+        entity.setCreateTime(new Date());
+        return entity;
+    }
     
     /**
      * 根据条件查询返回所有资金账户列表
@@ -227,10 +227,8 @@ public class FundAccountService {
         String msg = "账户充值成功";
         String orderNo = "";
 
-//        BankCardinfoEntity bankCardinfoEntity  = bankCardinfoService.queryBankCardinfoById(bankId);
-//        
-//        String cardIndex = bankCardinfoEntity.getCardIndex();
-        String cardIndex=null;
+        BankCardInfoEntity bankCardinfoEntity  = bankCardInfoService.queryBankCardinfoById(bankId);
+        String cardIndex = bankCardinfoEntity.getCardIndex();
         try{
             AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_CHARGE,ThirdPartyType.DAQIAN,customId,1,new BigDecimal(amount),password,cardIndex);
         }catch (CommandParmException e){
@@ -243,32 +241,6 @@ public class FundAccountService {
         return map;
     }
     
-	/**
-	 * 大钱验证码校验
-	 * @param orderNo
-	 * @return
-	 * guofu 2015-04-20
-	 */
-	public Object validSMS (String orderNo, String validSms){
-        String code = "0000";
-        String msg = "成功";
-        try{
-            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_SMS_VALID,ThirdPartyType.DAQIAN,orderNo,validSms);
-        }catch (CommandParmException e){
-            code = "0001";
-            msg = e.getMessage();
-        }catch (NeedSMSValidException e){
-            code = "0002";
-            String mmsTmp =e.getMessage();
-            String[] tmp = mmsTmp.split(":");
-            msg = tmp[1];
-        }
-        Map<String,String> map = new HashMap<>();
-        map.put("code",code);
-        map.put("msg",msg);
-        return map;
-	}
-	
     /**
      * 借款账户提现
      * @param request
@@ -279,7 +251,6 @@ public class FundAccountService {
      * @return
      */
     public Object withdraw(HttpServletRequest request, int customId,Integer bankId,String amount,String pwd){
-    	
     	
 		Map<String,String> map = new HashMap<String,String>();
 		if(null == amount){

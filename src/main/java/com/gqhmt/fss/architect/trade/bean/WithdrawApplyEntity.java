@@ -1,8 +1,16 @@
 package com.gqhmt.fss.architect.trade.bean;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.gqhmt.util.ThirdPartyType;
 
 /**
  * AbstractTGqWithdrawApply entity provides the base persistence definition of
@@ -18,6 +26,9 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Fields
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private Integer accountId;
 	private Integer custId;
@@ -39,7 +50,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	private Integer bussinessType;
 	private String bussinessContractNo;
 	private String bussinessCompany;
-//    private ThirdPartyType thirdPartyType;
+    private ThirdPartyType thirdPartyType;
     private Integer debtId;
     // 结算类型，0 T+1; 1 T+0; 
  	private Integer settleType = 1;
@@ -49,9 +60,6 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	public WithdrawApplyEntity() {
 	}
 
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public long getId() {
 		return this.id;
 	}
@@ -261,15 +269,14 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.bussinessCompany = bussinessCompany;
 	}
 
-//	@Column(name = "thirdparty_type",updatable = false,nullable = false)
-//    @Type(type = "com.gq.funds.type.ThirdPartyUserType")
-//    public ThirdPartyType getThirdPartyType() {
-//        return thirdPartyType;
-//    }
-//
-//    public void setThirdPartyType(ThirdPartyType thirdPartyType) {
-//        this.thirdPartyType = thirdPartyType;
-//    }
+	@Column(name = "thirdparty_type",updatable = false,nullable = false)
+    public ThirdPartyType getThirdPartyType() {
+        return thirdPartyType;
+    }
+
+    public void setThirdPartyType(ThirdPartyType thirdPartyType) {
+        this.thirdPartyType = thirdPartyType;
+    }
     
     @Column(name = "debt_id")
     public Integer getDebtId() {
@@ -288,6 +295,5 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	public void setSettleType(Integer settleType) {
 		this.settleType = settleType;
 	}
-   
 	
 }

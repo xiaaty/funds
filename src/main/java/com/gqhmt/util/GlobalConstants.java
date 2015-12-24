@@ -30,7 +30,14 @@ public class GlobalConstants {
 	public static final int DEL=-1;
 	public static final String SYSTEM_CODE="";
 	
-	
+	//账户类型
+    public static final int ACCOUNT_TYPE_PRIMARY=0;             //主账户
+    public static final int ACCOUNT_TYPE_LOAN=1;            //借款账户
+    public static final int ACCOUNT_TYPE_LEND_OFF=2;        //线下出借账户
+    public static final int ACCOUNT_TYPE_LEND_ON=3;         //线上出借账户
+    public static final int ACCOUNT_TYPE_PAYMENT=96;       //应付账户
+    public static final int ACCOUNT_TYPE_FREEZE=99;         //冻结金账户
+    
 	//所有账目状态
 	public static final int NO_ACCOUNT=1;
 	public static final int ACCOUNTING=2;
