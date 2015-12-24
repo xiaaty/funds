@@ -103,7 +103,7 @@ public class InvestmentInfo {
     // Constructors
 
     /** default constructor */
-    public InvestmentEntity() {
+    public InvestmentInfo() {
     }
 
     @Id
