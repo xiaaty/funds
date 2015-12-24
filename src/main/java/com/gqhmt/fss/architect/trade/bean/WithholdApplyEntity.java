@@ -14,6 +14,9 @@ public class WithholdApplyEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Fields
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;                     //流水编号
 	private Integer accountId;           //账户id(代扣账户)
 	private Integer accountType;         //账户类型(1-借款客户;2-线下出借客户)
@@ -40,9 +43,6 @@ public class WithholdApplyEntity implements java.io.Serializable {
 	public WithholdApplyEntity() {
 	}
 
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return this.id;
 	}

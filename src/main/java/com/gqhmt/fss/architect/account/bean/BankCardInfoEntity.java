@@ -9,9 +9,12 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_gq_bank_info")
-public class BankCardinfoEntity implements java.io.Serializable {
+public class BankCardInfoEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	// Fields
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	//客户id
 	private Integer custId;
@@ -49,9 +52,6 @@ public class BankCardinfoEntity implements java.io.Serializable {
 	
 
 	// Property accessors
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Integer getId() {
 		return this.id;
 	}

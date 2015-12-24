@@ -14,7 +14,7 @@
 		</otherwise>
 		</choose>
 	</sql>
-	<select id="queryFundsAccountList" parameterType="fundWithrawCharge" resultType="fundWithrawCharge">
+	<select id="queryFundWithrawChargeList" parameterType="fundWithrawCharge" resultType="fundWithrawCharge">
 		
 	</select>
 </mapper>
