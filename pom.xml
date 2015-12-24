@@ -58,6 +58,8 @@
     <log4j.version>1.2.17</log4j.version>
 
     <cglib.version>2.2.2</cglib.version>
+
+    <quartz.varsion>2.2.1</quartz.varsion>
   </properties>
 
   <dependencies>
@@ -322,6 +324,12 @@
           <artifactId>jcaptcha-api</artifactId>
           <version>1.0</version>
       </dependency>
+
+    <dependency>
+      <groupId>org.quartz-scheduler</groupId>
+      <artifactId>quartz</artifactId>
+      <version>${quartz.varsion}</version>
+    </dependency>
   </dependencies>
 
 
