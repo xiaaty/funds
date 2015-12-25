@@ -48,11 +48,11 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
 ////                FuiouPreauth fuiouPreauth = new FuiouPreauth();
 ////                FundAccountEntity entity = (FundAccountEntity)object[0];
 ////                FundAccountEntity toEntity = (FundAccountEntity)object[4];
-////                String  bid = (String)object[1];
+////                String  loan = (String)object[1];
 ////                fuiouPreauth.setAccountId(entity.getId());
 ////                Double amt = (Double)object[2];
 ////                fuiouPreauth.setAmount((new BigDecimal(amt).multiply(new BigDecimal(100))).longValue());
-////                fuiouPreauth.setSourceId(Integer.parseInt(bid));
+////                fuiouPreauth.setSourceId(Integer.parseInt(loan));
 ////                fuiouPreauth.setType(com.gq.funds.util.GlobalConstants.ORDER_BID);
 ////                fuiouPreauth.setUserName(entity.getUserName());
 ////                fuiouPreauth.setState(1);
