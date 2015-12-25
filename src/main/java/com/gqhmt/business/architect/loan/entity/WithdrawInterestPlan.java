@@ -1,6 +1,7 @@
 package com.gqhmt.business.architect.loan.entity;
 
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -24,6 +25,9 @@ import java.util.Date;
 @Table(name = "t_gq_withdraw_interest_plan")
 public class WithdrawInterestPlan {
     //主键
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     //标的ID
     private Integer bidId;
@@ -116,10 +120,6 @@ public class WithdrawInterestPlan {
     private Integer oldTenderId;
     private Integer debtStatus;
 
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return this.id;
     }

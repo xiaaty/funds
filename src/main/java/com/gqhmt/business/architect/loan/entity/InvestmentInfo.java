@@ -1,6 +1,7 @@
 package com.gqhmt.business.architect.loan.entity;
 
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -23,6 +24,9 @@ import java.util.Date;
 @Entity
 @Table(name = "t_gq_investment_info")
 public class InvestmentInfo {
+	@Id
+ 	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     // 客户编号
     private Integer custId;
@@ -106,9 +110,6 @@ public class InvestmentInfo {
     public InvestmentInfo() {
     }
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return this.id;
     }

@@ -23,6 +23,9 @@ import java.util.Date;
 @Entity
 @Table(name = "t_gq_bonus")
 public class Bonus {
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer promoteRuleId;
     private Integer promoteType;
@@ -48,9 +51,6 @@ public class Bonus {
     protected Integer updateBy; // 更新者
     protected Date updateTime;// 更新日期
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return this.id;
     }

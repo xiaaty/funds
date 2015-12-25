@@ -27,6 +27,8 @@ import com.gqhmt.fss.architect.account.command.CommandEnum;
 import com.gqhmt.fss.architect.account.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.CustomerInfoWriteMapper;
+import com.gqhmt.fss.architect.mapping.service.FuiouAreaService;
+import com.gqhmt.fss.architect.mapping.service.FuiouBankCodeService;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.util.CommonUtil;
 import com.gqhmt.util.MD5Util;
@@ -53,14 +55,14 @@ public class CustomerInfoService {
 	private FundAccountReadMapper fundAccountReadMapper;
 
 	@Autowired
-	BankCardInfoService bankCardinfoService;
+	private BankCardInfoService bankCardinfoService;
 
 //	@Autowired
 //	private UserDao userDao;
-//	@Autowired
-//	FuiouAreaService fuiouAreaService;
-//	@Autowired
-//	FuiouBankCodeService fuiouBankCodeService;
+	@Autowired
+	private FuiouAreaService fuiouAreaService;
+	@Autowired
+	private FuiouBankCodeService fuiouBankCodeService;
 
 	@Autowired
 	FundAccountService fundAccountService;
@@ -129,15 +131,15 @@ public class CustomerInfoService {
 			customerInfoEntity.setCreateUserId(Integer.parseInt(sysUserId));
 
 			// 如果地区code填写有误 error列表里面添加
-//			if (!fuiouAreaService.queryFuiouAreaCodeValueByCode(customerInfoEntity.getCityCode())) {
-//				areaCodeList.add(customerInfoEntity.getCityCode());
-//				continue;
-//			}
+			if (!fuiouAreaService.queryFuiouAreaCodeValueByCode(customerInfoEntity.getCityCode())) {
+				areaCodeList.add(customerInfoEntity.getCityCode());
+				continue;
+			}
 			// 如果银行code填写有误 error列表里面添加
-//			if (!fuiouBankCodeService.queryFuiouBankCodeValueByCode(customerInfoEntity.getParentBankCode())) {
-//				bankCodeList.add(customerInfoEntity.getParentBankCode());
-//				continue;
-//			}
+			if (!fuiouBankCodeService.queryFuiouBankCodeValueByCode(customerInfoEntity.getParentBankCode())) {
+				bankCodeList.add(customerInfoEntity.getParentBankCode());
+				continue;
+			}
 			if (custNoList.size() > 0 || phoneNoList.size() > 0 || bankNoList.size() > 0 || areaCodeList.size() > 0 || bankCodeList.size() > 0) {
 				continue;
 			}
@@ -156,9 +158,9 @@ public class CustomerInfoService {
 			// 银行卡号
 			bankCardinfoEntity.setBankNo(customerInfoEntity.getBankNo());
 			// 开户行地区代码
-//			bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoEntity.getCityCode()));
+			bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoEntity.getCityCode()));
 			// 开户行行别
-//			bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoEntity.getParentBankCode()));
+			bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoEntity.getParentBankCode()));
 			// 是否个人银行卡 1：个人
 			bankCardinfoEntity.setIsPersonalCard(1);
 			// 富友默认卡已经签约
@@ -228,9 +230,9 @@ public class CustomerInfoService {
 			customerInfoEntity.setEmailIdentification(0);
 
 			// 开户行地区代码
-//			customerInfoEntity.setCityCode(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoEntity.getCityCode()));
+			customerInfoEntity.setCityCode(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoEntity.getCityCode()));
 			// 开户行行别
-//			customerInfoEntity.setParentBankCode(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoEntity.getParentBankCode()));
+			customerInfoEntity.setParentBankCode(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoEntity.getParentBankCode()));
 
 			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
 
@@ -346,13 +348,13 @@ public class CustomerInfoService {
 		// 富友渠道判断code的有效性
 		if (2 == customerInfoDetialBean.getPayChannel().intValue()) {
 			// 如果地区code填写有误 error列表里面添加
-//			if (!fuiouAreaService.queryFuiouAreaCodeValueByCode(customerInfoDetialBean.getCityCode())) {
-//				return "0016";
-//			}
+			if (!fuiouAreaService.queryFuiouAreaCodeValueByCode(customerInfoDetialBean.getCityCode())) {
+				return "0016";
+			}
 			// 如果银行code填写有误 error列表里面添加
-//			if (!fuiouBankCodeService.queryFuiouBankCodeValueByCode(customerInfoDetialBean.getParentBankCode())) {
-//				return "0017";
-//			}
+			if (!fuiouBankCodeService.queryFuiouBankCodeValueByCode(customerInfoDetialBean.getParentBankCode())) {
+				return "0017";
+			}
 		}
 
 		customerInfo = new CustomerInfoEntity();
@@ -426,9 +428,9 @@ public class CustomerInfoService {
 			// 银行卡号
 			bankCardinfoEntity.setBankNo(customerInfo.getBankNo());
 			// 开户行地区代码
-//			bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfo.getCityCode()));
+			bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfo.getCityCode()));
 			// 开户行行别
-//			bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfo.getParentBankCode()));
+			bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfo.getParentBankCode()));
 			// 是否个人银行卡 1：个人
 			bankCardinfoEntity.setIsPersonalCard(1);
 			// 富友默认卡已经签约 冠群标注用
@@ -633,9 +635,9 @@ public class CustomerInfoService {
 			if (entity.getBankId() != null) {
 				BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(entity.getBankId());
 				// 开户行地区(富友开户用)
-//				customerInfoDetialBean.setCityCode(fuiouAreaService.queryFuiouAreaValueByCode(bankCardinfoEntity.getCityId()));
+				customerInfoDetialBean.setCityCode(fuiouAreaService.queryFuiouAreaValueByCode(bankCardinfoEntity.getCityId()));
 				// 开户行行别(富友开户用)
-//				customerInfoDetialBean.setParentBankCode(fuiouBankCodeService.queryFuiouBankValueByCode(bankCardinfoEntity.getParentBankId()));
+				customerInfoDetialBean.setParentBankCode(fuiouBankCodeService.queryFuiouBankValueByCode(bankCardinfoEntity.getParentBankId()));
 				// 开户银行名称
 				customerInfoDetialBean.setBankSortName(bankCardinfoEntity.getBankSortName());
 				// 开户银行具体地址
@@ -675,13 +677,13 @@ public class CustomerInfoService {
 		// 富友渠道判断code的有效性
 		if (2 == customerInfo.getPayChannel().intValue() && "2".equals(customerInfoDetialBean.getIsChangeBankCard())) {
 			// 如果地区code填写有误 error列表里面添加
-//			if (!fuiouAreaService.queryFuiouAreaCodeValueByCode(customerInfoDetialBean.getCityCode())) {
-//				return "0018";
-//			}
+			if (!fuiouAreaService.queryFuiouAreaCodeValueByCode(customerInfoDetialBean.getCityCode())) {
+				return "0018";
+			}
 			// 如果银行code填写有误 error列表里面添加
-//			if (!fuiouBankCodeService.queryFuiouBankCodeValueByCode(customerInfoDetialBean.getParentBankCode())) {
-//				return "0019";
-//			}
+			if (!fuiouBankCodeService.queryFuiouBankCodeValueByCode(customerInfoDetialBean.getParentBankCode())) {
+				return "0019";
+			}
 		}
 
 		// 是否需要掉用富友银行卡变更接口
@@ -833,7 +835,7 @@ public class CustomerInfoService {
 		//上传图片暂不处理
 		if(customerInfo.getHasAcount() == 1){
 			if("2".equals(isChangeFuiouBankCard)) {
-//				changeCardService.addChangeCard(customerInfo, customerInfoDetialBean.getBankNo(), fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoDetialBean.getParentBankCode()), customerInfoDetialBean.getBankLongName(), fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoDetialBean.getCityCode()), customerInfoDetialBean.getImageFileName(), 2, "");
+				changeCardService.addChangeCard(customerInfo, customerInfoDetialBean.getBankNo(), fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoDetialBean.getParentBankCode()), customerInfoDetialBean.getBankLongName(), fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoDetialBean.getCityCode()), customerInfoDetialBean.getImageFileName(), 2, "");
 				return;
 			}
 		}
@@ -862,9 +864,9 @@ public class CustomerInfoService {
 					bankCardinfoEntity.setBankNo(customerInfoDetialBean.getBankNo());
 
 					// 开户行地区代码
-//					bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoDetialBean.getCityCode()));
+					bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoDetialBean.getCityCode()));
 					// 开户行行别
-//					bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoDetialBean.getParentBankCode()));
+					bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoDetialBean.getParentBankCode()));
 
 					// 修改时间
 					bankCardinfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
@@ -893,9 +895,9 @@ public class CustomerInfoService {
 				bankCardinfoEntity.setBankNo(customerInfo.getBankNo());
 
 				// 开户行地区代码
-//				bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfo.getCityCode()));
+				bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfo.getCityCode()));
 				// 开户行行别
-//				bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfo.getParentBankCode()));
+				bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfo.getParentBankCode()));
 
 				// 是否个人银行卡 1：个人
 				bankCardinfoEntity.setIsPersonalCard(1);

@@ -17,7 +17,9 @@ public class FundOrderEntity implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long accountId;
     private Long toAccountId;             //to_account_id
@@ -34,10 +36,6 @@ public class FundOrderEntity implements java.io.Serializable {
 //    private ThirdPartyType thirdPartyType;
     private BigDecimal chargeAmount;
 
-
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return this.id;
 	}

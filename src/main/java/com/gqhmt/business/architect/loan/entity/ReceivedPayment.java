@@ -1,6 +1,7 @@
 package com.gqhmt.business.architect.loan.entity;
 
 import javax.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -22,8 +23,11 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_gq_received_payment")
-public class ReceviedPayment {
+public class ReceivedPayment {
     private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer repaymentId;
     private Integer customerId;
@@ -41,9 +45,6 @@ public class ReceviedPayment {
     protected Integer updateBy; // 更新者
     protected Date updateDate;// 更新日期
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }

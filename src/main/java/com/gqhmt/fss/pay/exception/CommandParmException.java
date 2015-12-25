@@ -24,4 +24,7 @@ public class CommandParmException extends RuntimeException {
     public CommandParmException(String message) {
         super(message);
     }
+    public CommandParmException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
