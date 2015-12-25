@@ -38,7 +38,11 @@ public class FundSequenceEntity  implements java.io.Serializable{
      *
      */
     private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "actionType")
     private Integer actionType;
     private Long accountId;
     private Integer fundType;
@@ -46,18 +50,13 @@ public class FundSequenceEntity  implements java.io.Serializable{
     private String currency;
     private Date createTime;
     private Date modifyTime;
-    private ThirdPartyType thirdPartyType;
+    @Column(name = "thirdparty_type",updatable = false,nullable = false)
+    private Integer thirdPartyType;
     private String orderNo;
-
     private String  sumary;
-//O_ACCOUNT_ID
     private Long oAccountId;
-
     private String token;
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -66,8 +65,6 @@ public class FundSequenceEntity  implements java.io.Serializable{
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "actionType")
     public Integer getActionType() {
         return actionType;
     }
@@ -172,12 +169,11 @@ public class FundSequenceEntity  implements java.io.Serializable{
         return result.intValue();
     }
 
-    @Column(name = "thirdparty_type",updatable = false,nullable = false)
-    public ThirdPartyType getThirdPartyType() {
+    public Integer getThirdPartyType() {
         return thirdPartyType;
     }
 
-    public void setThirdPartyType(ThirdPartyType thirdPartyType) {
+    public void setThirdPartyType(Integer thirdPartyType) {
         this.thirdPartyType = thirdPartyType;
     }
 
