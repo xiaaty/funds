@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
 import com.gqhmt.fss.architect.bid.bean.FuiouPreauth;
 import com.gqhmt.fss.architect.bid.mapper.read.FuiouPreauthReadMapper;
@@ -63,14 +64,14 @@ public class FuiouPreauthService {
         return fuiouPreauthReadMapper.getFuiouPreauth(bid);
     }
 
-    //,Tender tender
-    public void addFuiouPreauth(FundAccountEntity fromEntity,FundAccountEntity toSFEntity,String contractNo,FundOrderEntity fundOrderEntity){
+    //
+    public void addFuiouPreauth(FundAccountEntity fromEntity,FundAccountEntity toSFEntity,Tender tender,String contractNo,FundOrderEntity fundOrderEntity){
         FuiouPreauth fuiouPreauth = new FuiouPreauth();
         fuiouPreauth.setAccountId(fromEntity.getId());
-//        fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));
-//        fuiouPreauth.setSourceId(tender.getBidId());
-//        fuiouPreauth.setBid(tender.getBidId());
-//        fuiouPreauth.setTenderid(tender.getId());
+        fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));
+        fuiouPreauth.setSourceId(tender.getBidId());
+        fuiouPreauth.setBid(tender.getBidId());
+        fuiouPreauth.setTenderid(tender.getId());
         fuiouPreauth.setType(GlobalConstants.ORDER_BID);
         fuiouPreauth.setUserName(fromEntity.getUserName());
         fuiouPreauth.setState(1);

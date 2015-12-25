@@ -16,7 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GlobalConstants {
 	
     public  static final int RESERVED_CUSTOMERID_LIMIT = 100;
-
+    public static final  int CHECK_WITHRAW_NUM = 3;
+    
 	public static final String USER_HOME = "/";
 	public static final String ERROR_PAGE = "/error.jsp";
 	public static final String SESSION_EMP = "emp_session";
@@ -124,6 +125,29 @@ public class GlobalConstants {
     public static final int BUSINESS_MAPPINF_DEBT=4;
     public static final int BUSINESS_MAPPINF_WITHDRAWAPPLY=5;
     public static final int BUSINESS_MAPPINF_REPAYMENT=6;
+    
+    /*================================冠钱积分====================================*/
+
+    public static final int POINT_GQ = 1;               //冠钱账户
+    public static final int POINT_GQ_FREE = 1001;       //冠钱冻结
+
+    public static final int POINT_JF = 2;               //积分
+    public static final int POINT_JF_FREE = 1002;       //积分冻结
+
+    //入账类型
+    public static final int POINT_SEQ_RECHAGE = 1001;       //普通入账
+    public static final int POINT_SEQ_RECHAGE_TG = 1002;       //活动赠送
+    public static final int POINT_SEQ_RECHAGE_BID = 1003;       //投标赠送
+    public static final int POINT_SEQ_RECHAGE_JF = 1010;  //积分转换冠钱
+    //冻结解冻
+    public static final int POINT_SEQ_FEEE = 2001;
+    public static final int POINT_SEQ_UNFEEE = 2002;
+
+    //消费类型
+
+    public static final int POINT_SEQ_PAYMENT_RETUEN_FEE = 3001;  //返现
+    public static final int POINT_SEQ_PAYMENT_SHOPMALL = 3002;  //商城消费
+    
 	
 	public static final String ROLE_URL_MAP="roleUrlMap";
 	public static final String ROLE_MAP="roleMap";

@@ -48,13 +48,13 @@ public class BankCardInfoService {
 //    @Autowired
 //    private BaseService baseService;
     
-//	@Autowired
+//	@Resource
 //	FuiouAreaService fuiouAreaService;
 	
-//	@Autowired
+//	@Resource
 //	FuiouBankCodeService fuiouBankCodeService;
 	
-	@Autowired
+    @Resource
 	private CustomerInfoService customerInfoService;
 
     public int insert(BankCardInfoEntity entity){

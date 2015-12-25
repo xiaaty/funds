@@ -2,16 +2,6 @@ package com.gqhmt.fss.architect.account.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.core.util.ResourceUtil;
+import com.gqhmt.business.architect.loan.service.InvestmentService;
 import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.bean.ChangeCardBean;
 import com.gqhmt.fss.architect.account.bean.ChangeCardEntity;
@@ -29,6 +19,7 @@ import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.ChangeCardReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.ChangeCardWriteMapper;
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
+import com.gqhmt.fss.architect.order.service.FundOrderService;
 import com.gqhmt.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
 
@@ -65,11 +56,11 @@ public class ChangeCardService {
     @Resource
     private FundAccountService fundAccountService;
     
-//    @Resource
-//    private FundOrderService fundOrderService;
+    @Resource
+    private FundOrderService fundOrderService;
 
-//    @Resource
-//    private InvestmentService investmentService;
+    @Resource
+    private InvestmentService investmentService;
 
 //    @Resource
 //    private NoticeService noticeService;
@@ -277,13 +268,11 @@ public class ChangeCardService {
     }
 
     public void fuiouCallback(String orderNo,String bankNo,String resCode,String resMess) throws Exception {
-//TODO        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
-//        if(fundOrderEntity == null){
-//            throw new Exception("未找到对应订单");
-//        }
-//
-//        long id = fundOrderEntity.getOrderFrormId();
-    	long id = 0l;
+        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+        if(fundOrderEntity == null){
+            throw new Exception("未找到对应订单");
+        }
+        long id = fundOrderEntity.getOrderFrormId();
         ChangeCardEntity changeCardEntity = this.get(id);
 
         if(changeCardEntity == null){

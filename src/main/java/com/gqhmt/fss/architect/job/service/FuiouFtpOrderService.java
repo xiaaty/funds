@@ -13,6 +13,7 @@ import com.gqhmt.fss.architect.job.bean.FundOrder;
 import com.gqhmt.fss.architect.job.mapper.read.FuiouFtpOrderReadMapper;
 import com.gqhmt.fss.architect.job.mapper.write.FuiouFtpOrderWriteMapper;
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
+import com.gqhmt.fss.architect.order.service.FundOrderService;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 
 /**
@@ -39,8 +40,8 @@ public class FuiouFtpOrderService {
     @Resource
     private FuiouFtpOrderWriteMapper fuiouFtpOrderWriteMapper;
 
-//    @Resource
-//    private FundOrderService fundOrderService;
+    @Resource
+    private FundOrderService fundOrderService;
 
     private FuiouUploadFileService fuiouUploadFileService;
 
@@ -115,15 +116,6 @@ public class FuiouFtpOrderService {
         return fuiouFtpOrderReadMapper.listFile();
     }
 
-
-    public void upload(){
-        List<FuiouFtpOrder> list =  listNotUpload();
-        for(FuiouFtpOrder fuiouFtpOrder:list){
-
-        }
-    }
-
-
     public List<FuiouFtpOrder> listNotReturnResult(){
         return fuiouFtpOrderReadMapper.listNoReturnResult();
     }
@@ -154,13 +146,13 @@ public class FuiouFtpOrderService {
         fuiouFtpOrder.setResult(0);
         fuiouFtpOrder.setRetrunResultStatus(0);
         insert(fuiouFtpOrder);
-//        FundOrderEntity order =fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
-//        order.setOrderState(6);
-//        try {
-//            fundOrderService.update(order);
-//        } catch (Exception e) {
-//            throw new CommandParmException("数据库录入错误",e);
-//        }
+        FundOrderEntity order =fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
+        order.setOrderState(6);
+        try {
+            fundOrderService.update(order);
+        } catch (Exception e) {
+            throw new CommandParmException("数据库录入错误",e);
+        }
     }
 
     public void repeatDownload(long id){
@@ -179,26 +171,26 @@ public class FuiouFtpOrderService {
             fuiouUploadFileService.update(fuiouUploadFile);
         }
         //
-//        FundOrderEntity order =fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
-//        order.setOrderState(6);
-//        try {
-//            fundOrderService.saveOrUpdate(order);
-//        } catch (Exception e) {
-//            throw new CommandParmException("数据库录入错误",e);
-//        }
+        FundOrderEntity order =fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
+        order.setOrderState(6);
+        try {
+            fundOrderService.update(order);
+        } catch (Exception e) {
+            throw new CommandParmException("数据库录入错误",e);
+        }
     }
 
     public void repeatAccount(long id){
         FuiouFtpOrder fuiouFtpOrder = select(id);
         fuiouFtpOrder.setResultStatus(0);
         update(fuiouFtpOrder);
-//        FundOrderEntity order =fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
-//        order.setOrderState(6);
-//        try {
-//            fundOrderService.saveOrUpdate(order);
-//        } catch (Exception e) {
-//            throw new CommandParmException("数据库录入错误",e);
-//        }
+        FundOrderEntity order =fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
+        order.setOrderState(6);
+        try {
+            fundOrderService.update(order);
+        } catch (Exception e) {
+            throw new CommandParmException("数据库录入错误",e);
+        }
     }
 
 }
