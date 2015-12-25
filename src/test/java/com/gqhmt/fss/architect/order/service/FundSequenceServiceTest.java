@@ -1,7 +1,9 @@
 package com.gqhmt.fss.architect.order.service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -15,7 +17,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
-import com.gqhmt.fss.architect.account.service.FundAccountService;
+import com.gqhmt.fss.architect.account.bean.FundSequenceEntity;
+import com.gqhmt.fss.architect.account.service.FundSequenceService;
+import com.gqhmt.util.ThirdPartyType;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest
@@ -35,43 +39,40 @@ import com.gqhmt.fss.architect.account.service.FundAccountService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/*.xml")
-public class FundAccountServiceTest extends AbstractJUnit4SpringContextTests {
+public class FundSequenceServiceTest extends AbstractJUnit4SpringContextTests {
 
     @Resource
-    private FundAccountService fundAccountService;
+    private FundSequenceService fundSequenceService;
 
-    private FundAccountEntity entity;
+    private FundSequenceEntity entity;
     @Before
     public void setUp() throws FssException {
-    	entity = new FundAccountEntity();
-        entity.setCustId(1);
-        entity.setUserName("name");
-        entity.setAmount(BigDecimal.ZERO);
-        entity.setFreezeAmount(BigDecimal.ZERO);
-        entity.setAccountType(0);
-        entity.setBusiType(1);
-        entity.setUserId(1);
-        entity.setAccountNo("123");
-        entity.setBankNo("456");
-        entity.setCityId("001");
-        entity.setParentBankId("002");
-        entity.setCustName("custName1");
-        entity.setCreateTime(new Date());
+    	entity = new FundSequenceEntity();
+    	entity.setCreateTime(new Timestamp(new Date().getTime()));
+		entity.setAmount(new BigDecimal(0));
+		entity.setAccountId(1l);
+		entity.setCurrency("0001");
+		entity.setFundType(1);
+		entity.setActionType(1);
+		entity.setThirdPartyType(ThirdPartyType.FUIOU.getKey());
+	    entity.setOrderNo("12");
+	    entity.setModifyTime(new Date());
+	    entity.setoAccountId(2l);
     }
     
     @Test
     public void testInsert() throws Exception {
-    	fundAccountService.insert(entity);
+    	fundSequenceService.save(entity);
     	
-    	FundAccountEntity entity1 = fundAccountService.getFundAccountInfo(entity.getId());
-    	Assert.assertEquals("name", entity1.getUserName());
+    	FundSequenceEntity entity1 = fundSequenceService.selectByPrimaryKey(entity.getId());
+    	Assert.assertEquals("1", entity1.getAccountId().toString());
     	
-    	entity1.setUserName("updateName");
-    	fundAccountService.update(entity1);
-    	Assert.assertEquals("updateName", entity1.getUserName());
+    	entity1.setAccountId(2l);
+    	fundSequenceService.update(entity1);
+    	Assert.assertEquals("2", entity1.getAccountId().toString());
     	
-    	fundAccountService.delete(entity1.getId());
-    	FundAccountEntity entity2 = fundAccountService.getFundAccountInfo(entity.getId());
+    	fundSequenceService.delete(entity1.getId());
+    	FundSequenceEntity entity2 = fundSequenceService.selectByPrimaryKey(entity.getId());
     	Assert.assertEquals(null, entity2);
     	
     }

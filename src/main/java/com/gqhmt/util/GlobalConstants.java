@@ -59,6 +59,63 @@ public class GlobalConstants {
 
     public static final int ACCOUNT_FUND_TRANSACTIONS=7;
 	
+	//  1-充值 2-提现 3-代偿 4-投标 5-转账 6-还款 7-流标
+	
+    public static final int ORDER_CHARGE = 1;
+	public static final int ORDER_WITHHOLDING = 2;
+	public static final int ORDER_COMPENSATORY = 3;
+	public static final int ORDER_BID = 4;
+	public static final int ORDER_TRANSFER = 5;
+	public static final int ORDER_REPAYMENT = 6;
+	public static final int ORDER_ABORT_BID = 7;
+	public static final int ORDER_SETTLE = 8;
+	public static final int ORDER_WITHDRAW = 9;
+	public static final int ORDER_DEBT = 10;
+	public static final int ORDER_BUSINESS_WITHDRAW = 11;
+	public static final int ORDER_AGENT_WITHDRAW = 12;
+	public static final int ORDER_CREATE_ACCOUNT = 13;
+	public static final int ORDER_CREATE_PWD = 14;
+	public static final int ORDER_UPDATE_PWD = 15;
+	public static final int ORDER_BIND_CARD = 16;
+	public static final int ORDER_UNBIND_CARD = 17;
+	public static final int ORDER_QUERY_CARD = 18;
+	public static final int ORDER_FUNDS_FROZEN = 19;
+	public static final int ORDER_FUNDS_UNFROZEN =20;
+	public static final int ORDER_BID_NOTIFY =21;
+	public static final int ORDER_REPAYMENT_FORZEN = 22;
+	public static final int ORDER_FUNDS_THIRD_FROZEN = 23;
+	public static final int ORDER_FUNDS_THIRD_UNFROZEN = 24;
+	public static final int ORDER_WITHDRAW_UNFREEZE = 25;
+	public static final int ORDER_BID_UNFREEZE = 26;
+	public static final int ORDER_ABORT_BID_FREEZE = 27;
+	public static final int ORDER_SETTLE_UNFORZEN = 28;
+	public static final int ORDER_BALANCE = 29;
+	public static final int ORDER_ABORT_BID_AYSN=30;
+	public static final int ORDER_BID_TRANSFER = 31;
+	public static final int ORDER_BID_FAILED_RETURN = 32;
+	public static final int ORDER_WITHDRAW_CHARGE_AMOUNT = 33;
+	public static final int ORDER_MORTGAGE_TRANSFER = 34;
+	public static final int ORDER_UPDATE_CARD = 35;
+	public static final int ORDER_SET_FUIOU_MMS = 36;
+	public static final int ORDER_POINT_GQ_RETURN_FEE = 37;  //冠钱返现
+	public static final int ORDER_MOBILE_CHECK_CARD = 38;  //手机签约
+
+	public static final int ORDER_DROP_USER = 39;
+	public static final int ORDER_UPDATE_CARD_QUERY = 40;
+
+	public static final int ORDER_STATUS_SUBMIT = 1;        //新增
+	public static final int ORDER_STATUS_SUCCESS = 2;      //成功
+	public static final int ORDER_STATUS_FAILED = 3;      //失败
+	public static final int ORDER_STATUS_TIMEOUT = 4;      // 超时
+	public static final int ORDER_STATUS_VALIDSMS = 5;      //短信校验
+	public static final int ORDER_STATUS_AYSN = 6;          //异步处理
+	public static final int ORDER_STATUS_THIRDNULL = 7;
+
+	public static final int ORDER_STATUS_RETURN_WITHDRAW = 21; //提现退票
+
+	public static final int ORDER_STATUS_PART = 998;       //异常
+	public static final int ORDER_STATUS_THIRDERROR = 999; //异常手动处理
+	public static final int ORDER_STATUS_CLOSE = 1000;     //交易关闭
     //业务映射流水类型
 
     public static final int BUSINESS_MAPPINF_CUSTOMER=1;
