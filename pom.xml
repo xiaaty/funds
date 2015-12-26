@@ -335,6 +335,18 @@
       <artifactId>quartz</artifactId>
       <version>${quartz.varsion}</version>
     </dependency>
+
+    <dependency>
+      <groupId>fakepath</groupId>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>150</version>
+    </dependency>
+
+    <dependency>
+      <groupId>fakepath</groupId>
+      <artifactId>bcpkix-jdk15on</artifactId>
+      <version>150</version>
+    </dependency>
   </dependencies>
 
 

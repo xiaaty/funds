@@ -88,6 +88,16 @@ public class LogUtil {
         logger.error(message,throwable);
     }
 
+    public final static void error(Class class1,Throwable throwable){
+        Logger logger = loggerMap.get(class1.getName());
+        if(logger == null){
+            logger = LoggerFactory.getLogger(class1);
+            loggerMap.put(class1.getName(),logger);
+        }
+
+        logger.error(throwable.getMessage(),throwable);
+    }
+
     public final static boolean isDebug(Class class1){
         Logger logger = loggerMap.get(class1.getName());
         if(logger == null){
