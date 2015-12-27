@@ -53,7 +53,7 @@
 							<%= mess %>
 						</span></li>
 						<li><input type="text" class="input_login" value="" maxlength="6" name="verifyCode" placeholder="验证码" id="validCode" onkeydown="if(event.keyCode==13){return false;}"/><br><span class="login_error color04"><%= codeMess %></span>
-						    <span class="validcode_span"><a id="changeCode" class="ml5" href="javascript:void(0);"><img height="28" width="84" id="imgVerify" src="<%=request.getContextPath()%>/verify.jsp"/></a></span>
+						    <span class="validcode_span"><a id="changeCode" class="ml5" href="javascript:void(0);"><img height="28" width="84" id="imgVerify" src="<%=request.getContextPath()%>/captcha"/></a></span>
 						</li>
 						<!-- <li class="color04">
 						    <span class="fl f12"><input type="checkbox" class="mr5" name="remPwd" id="r_pwd"/><label>记住密码</label></span>
@@ -89,7 +89,7 @@
         }
     });
     $('#changeCode').click(function(){
-    	$('#imgVerify').attr('src','<%=request.getContextPath()%>/verify.jsp?t='+(new Date()).valueOf());
+    	$('#imgVerify').attr('src','<%=request.getContextPath()%>/captcha?t='+(new Date()).valueOf());
     });
 </script>
     </body>

@@ -39,10 +39,6 @@ public class PayCommondConstants {
     public static final String COMMAND_ACCOUNT_FUIOU_MMS = "0132";              //富友短信配置
     public static final String COMMAND_ACCOUNT_FUIOU_CASHWITHSET = "0133";      //提现时效
 
-
-
-
-
     /**
      * 异步回调处理
      */
