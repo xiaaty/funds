@@ -124,10 +124,6 @@
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#logListForm"));
     });
 
-
-
-
-
 </script>
 
 <#include "../../include/foot.ftl">

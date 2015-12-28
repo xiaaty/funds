@@ -68,6 +68,7 @@
 
 	<mvc:interceptors>
 		<bean class="com.gqhmt.sys.interceptor.GQContextPathInterceptor"></bean>
+		<bean class="com.gqhmt.sys.interceptor.PageInterceptor"></bean>
 	</mvc:interceptors>
 	<bean id="freemarkerConfig"  class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/ftl/"/>

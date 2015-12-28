@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gqhmt.annotations.AutoPage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -56,14 +57,10 @@ public class BusinessController {
      * @return
      */
     @RequestMapping(value = "/sys/busi/list",method = RequestMethod.GET)
+	@AutoPage
     public Object businessList(HttpServletRequest request,ModelMap model){
-		int pageNum = RequestUtil.getInt(request, "pageNum1", 0);
-		pageNum = pageNum > 0 ? pageNum : GlobalConstants.PAGE_SIZE;
-		int cpage = RequestUtil.getInt(request, "pageNum", 0);
-		Page<Business> page = PageHelper.startPage(cpage, pageNum);
 		List<Business> businessList = restApiService.findBusinessList(null);
-		GqPageInfo pageInfo = new GqPageInfo(businessList);
-		model.addAttribute("page", pageInfo);
+		model.addAttribute("page", businessList);
 		return "sys/busi/busiList";
     }
     
@@ -81,7 +78,7 @@ public class BusinessController {
     /**
      * 商户新增确认
      * @param request
-     * @param model
+     * @param busi
      * @return
      */
     @RequestMapping(value = "/sys/busi/addConfirm")
@@ -97,13 +94,13 @@ public class BusinessController {
     /**
      * 商户新增确认
      * @param request
-     * @param model
+     * @param busiCode
      * @return
      */
     @RequestMapping(value = "/sys/busi/checkCode")
     @ResponseBody
     public Object busiCheckCode(HttpServletRequest request,@ModelAttribute(value="busiCode")String busiCode){
-    	Map<String, Object> param =  new HashMap<>();
+    	Map<String, Object> param =  new HashMap<String, Object>();
     	param.put("busiCode", busiCode);
     	List<Business> busiList = restApiService.findBusinessList(param);
     	Map<String, String> map = new HashMap<String, String>();
@@ -132,7 +129,7 @@ public class BusinessController {
     /**
      * 商户修改确认
      * @param request
-     * @param model
+     * @param busi
      * @return
      */
     @RequestMapping(value = "/sys/busi/updateConfirm")

@@ -2,6 +2,7 @@ package com.gqhmt.sys.controller;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.sys.entity.Menu;
 import com.gqhmt.sys.service.MenuService;
@@ -40,12 +41,14 @@ public class MenuController {
     private MenuService menuService;
 
     @RequestMapping(value = "/sys/menu/{pid}",method = RequestMethod.GET)
+    @AutoPage
     public Object MenuList(HttpServletRequest request,ModelMap model,@PathVariable Long pid){
-        int pageNum= RequestUtil.getInt(request, "pageNum1", 0);
-        pageNum=pageNum>0?pageNum: GlobalConstants.PAGE_SIZE;
-        int cpage = RequestUtil.getInt(request, "pageNum",0);
-        Page<Menu> page =  PageHelper.startPage(cpage, pageNum);
+//        int pageNum= RequestUtil.getInt(request, "pageNum", 0);
+//        pageNum=pageNum>0?pageNum: GlobalConstants.PAGE_SIZE;
+//        int cpage = RequestUtil.getInt(request, "cpage",0);
+//       PageHelper.startPage(cpage, pageNum);
         List<Menu> menus  = menuService.findMenu(pid);
+        System.out.println(menus.getClass().getName());
         GqPageInfo pageInfo = new GqPageInfo(menus);
         model.addAttribute("page",pageInfo);
         return "sys/menu/menuList";
