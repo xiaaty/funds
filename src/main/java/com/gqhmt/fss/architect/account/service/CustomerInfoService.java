@@ -948,7 +948,6 @@ public class CustomerInfoService {
 				} catch (CommandParmException e) {
 					throw new Exception("0002" + e.getMessage());
 				}
-
 			}
 		}
 		// 是否签署第三方协议 默认导入的客户都是签署的
