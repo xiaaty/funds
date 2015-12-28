@@ -1,6 +1,7 @@
 package com.gqhmt.business.architect.loan.entity;
 
 import javax.persistence.*;
+
 import java.util.Date;
 
 /**
@@ -22,6 +23,9 @@ import java.util.Date;
 @Entity
 @Table(name = "t_gq_points_sequence")
 public class PointSequence {
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long accountId;
     //来源（1收入 2支出  3冻结 4解冻）
@@ -32,9 +36,6 @@ public class PointSequence {
     private Long oid;
     private Date expiryDate;
 
-    @Id
-    @Column(name = "id",updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }

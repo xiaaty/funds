@@ -9,20 +9,14 @@ import com.gqhmt.fss.pay.fuiou.command.FuiouCommand;
  * Created by yuyonf on 15/3/29.
  */
 public class FuiouFactory extends ThirdpartyAbstractFactory {
-    private ThirdpartyCommand command;
+    private ThirdpartyCommand command =  new FuiouCommand();;
     private static final ThirdpartyAbstractFactory factory = new FuiouFactory();
 
-    private  FuiouFactory(){
-        command = new FuiouCommand();
-    }
 
     @Override
     public ThirdpartyCommand getCommand() {
         return command;
     }
 
-    public static ThirdpartyAbstractFactory getFactory(){
-        return  factory;
-    }
 
 }

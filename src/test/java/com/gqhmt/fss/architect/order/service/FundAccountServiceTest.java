@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.service.FundAccountService;
 
 /**
@@ -57,11 +57,11 @@ public class FundAccountServiceTest extends AbstractJUnit4SpringContextTests {
         entity.setParentBankId("002");
         entity.setCustName("custName1");
         entity.setCreateTime(new Date());
-    	fundAccountService.insert(entity);
     }
     
     @Test
     public void testInsert() throws Exception {
+    	fundAccountService.insert(entity);
     	
     	FundAccountEntity entity1 = fundAccountService.getFundAccountInfo(entity.getId());
     	Assert.assertEquals("name", entity1.getUserName());

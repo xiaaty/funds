@@ -1,11 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.write;
 
-import java.math.BigDecimal;
-
-import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.architect.account.bean.FundSequenceEntity;
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
+import com.gqhmt.fss.architect.account.entity.FundSequenceEntity;
 
 /**
  * Filename:    com.gq.p2p.account.Bean

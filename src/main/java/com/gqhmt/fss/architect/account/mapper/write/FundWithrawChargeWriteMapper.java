@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.architect.account.bean.FundWithrawCharge;
+import com.gqhmt.fss.architect.account.entity.FundWithrawCharge;
 
 /**
  * Filename:    com.gq.funds.dao

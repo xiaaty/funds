@@ -5,7 +5,7 @@ import java.util.List;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.trade.bean.WithdrawApplyBean;
-import com.gqhmt.fss.architect.trade.bean.WithdrawApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.WithdrawApplyEntity;
 
 /**
  * Filename:    com.gq.p2p.account.dao

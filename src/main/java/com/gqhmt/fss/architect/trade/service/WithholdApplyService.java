@@ -10,12 +10,10 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
-import com.gqhmt.fss.architect.account.command.AccountCommand;
-import com.gqhmt.fss.architect.account.command.CommandEnum;
+import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.architect.trade.bean.WithholdApplyBean;
-import com.gqhmt.fss.architect.trade.bean.WithholdApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.fss.architect.trade.bean.WithholdApplyFormBean;
 import com.gqhmt.fss.architect.trade.mapper.read.WithholdApplyReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.WithholdApplyWriteMapper;
@@ -23,7 +21,6 @@ import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.fss.pay.exception.LazyDealException;
 import com.gqhmt.fss.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.util.CommonUtil;
-import com.gqhmt.util.ThirdPartyType;
 
 /**
  * Filename: com.gq.funds.service Copyright: Copyright (c)2014 Company:
@@ -181,7 +178,7 @@ public class WithholdApplyService {
 			try {
 				//WithholdApplyCallback withholdApplyCallback = new WithholdApplyCallback();
 				// 代扣
-				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, withholdApplyEntity.getDrawAmount(), withholdApplyEntity.getId().intValue());
+//				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, withholdApplyEntity.getDrawAmount(), withholdApplyEntity.getId().intValue());
 			
 			}catch (ThirdpartyErrorAsyncException e){
 				//需要手动核对
@@ -576,7 +573,7 @@ public class WithholdApplyService {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, drawMoney, withholdApplyEntity.getId().intValue(), withholdApplyCallback.getClass());
 				} else {
 					// 代扣
-					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, drawMoney, withholdApplyEntity.getId().intValue());
+//					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, drawMoney, withholdApplyEntity.getId().intValue());
 				}
 	
 			} catch (ThirdpartyErrorAsyncException e){

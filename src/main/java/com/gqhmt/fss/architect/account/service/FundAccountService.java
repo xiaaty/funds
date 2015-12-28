@@ -9,23 +9,21 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gqhmt.fss.architect.customer.service.BankCardInfoService;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
-import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
-import com.gqhmt.fss.architect.account.command.AccountCommand;
-import com.gqhmt.fss.architect.account.command.CommandEnum;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FundAccountWriteMapper;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.util.LogUtil;
-import com.gqhmt.util.ThirdPartyType;
 
 /**
  * Filename:    com.gq.p2p.account.service
@@ -230,7 +228,7 @@ public class FundAccountService {
         BankCardInfoEntity bankCardinfoEntity  = bankCardInfoService.queryBankCardinfoById(bankId);
         String cardIndex = bankCardinfoEntity.getCardIndex();
         try{
-            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_CHARGE,ThirdPartyType.DAQIAN,customId,1,new BigDecimal(amount),password,cardIndex);
+//            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_CHARGE,ThirdPartyType.DAQIAN,customId,1,new BigDecimal(amount),password,cardIndex);
         }catch (CommandParmException e){
             code = "0001";
             msg = e.getMessage();
@@ -279,7 +277,7 @@ public class FundAccountService {
         String msg = "账户提现已申请";
         String orderNo = "";
         try{
-            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHDRAW,ThirdPartyType.DAQIAN,customId,1,pwd,new BigDecimal(amount),bankId);
+//            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHDRAW,ThirdPartyType.DAQIAN,customId,1,pwd,new BigDecimal(amount),bankId);
         }catch (CommandParmException e){
             code = "0001";
             msg = e.getMessage();
