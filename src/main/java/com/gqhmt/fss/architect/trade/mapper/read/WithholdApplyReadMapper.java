@@ -1,10 +1,12 @@
 package com.gqhmt.fss.architect.trade.mapper.read;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.trade.bean.WithholdApplyBean;
+import com.gqhmt.fss.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.fss.architect.trade.entity.WithholdApplyEntity;
 
 /**
@@ -40,5 +42,5 @@ public interface WithholdApplyReadMapper extends ReadMapper<WithholdApplyEntity>
 	 * @return list
 	 */
 	public List<WithholdApplyEntity> queryWithholdListByBussinessIdAndType(int bussid ,int busstype);
-	
+
 }

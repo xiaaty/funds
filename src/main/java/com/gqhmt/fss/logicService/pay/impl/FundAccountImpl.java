@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
+import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
