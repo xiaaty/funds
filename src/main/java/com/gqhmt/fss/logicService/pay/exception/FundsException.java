@@ -17,4 +17,8 @@ package com.gqhmt.fss.logicService.pay.exception;
  * 15/11/18  于泳      1.0     1.0 Version
  */
 public class FundsException extends Exception {
+
+	public FundsException(String msg) {
+		super(msg);
+	}
 }

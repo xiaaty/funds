@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
-import com.gqhmt.fss.architect.account.command.AccountCommand;
-import com.gqhmt.fss.architect.account.command.CommandEnum;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.fss.architect.trade.bean.WithdrawApplyEntity;
@@ -149,7 +147,7 @@ public class WithdrawApplyService {
 			
 			//资金解冻 1借款客户   2 线下出借客户 3线上出借客户 96线下用应付款账户 
 			//业务类型(1.满标提现 2-月月通代付申请,3-还款归还保证金，4-债权赎回提现申请;5-抵押标借款人提现)  
-			if (entity.getBussinessType().intValue() == 1) {
+			/*TODO if (entity.getBussinessType().intValue() == 1) {
 	            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_UNFREEZE,ThirdPartyType.getThirdPartyType(2), entity.getCustId(), 1, entity.getDrawAmount(),
 	                    "满标提现资金解冻" + entity.getDrawAmount());
 			} else if (entity.getBussinessType().intValue() == 2) {
@@ -164,7 +162,7 @@ public class WithdrawApplyService {
 			} else if (entity.getBussinessType().intValue() == 5) {
 	            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_UNFREEZE,ThirdPartyType.getThirdPartyType(2), entity.getCustId(), 1, entity.getDrawAmount(),
 	                    "抵押标借款人提现资金解冻" + entity.getDrawAmount());
-			}
+			}*/
 
 			
 			
@@ -305,7 +303,7 @@ public class WithdrawApplyService {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity,withdrawApplyCallback.getClass());
 				} else {
 					// 提现
-					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
+//					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
 				}
 	
 			} catch (ThirdpartyErrorAsyncException e){
@@ -460,7 +458,7 @@ public class WithdrawApplyService {
 						if (withdrawApplyEntity.getThirdPartyType() ==ThirdPartyType.FUIOU) {
 							try {
 								// 代扣
-								AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
+//								AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
 							}catch (ThirdpartyErrorAsyncException e){
 								//需要手动核对
 								returnSubCode = "0002";
