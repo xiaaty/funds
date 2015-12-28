@@ -8,17 +8,16 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.service.FundAccountService;
-import org.springframework.stereotype.Service;
-
-import com.github.pagehelper.Page;
-import com.gqhmt.business.architect.loan.service.InvestmentService;
 import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
 import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.ChangeCardReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.ChangeCardWriteMapper;
+import org.springframework.stereotype.Service;
+
+
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
 import com.gqhmt.fss.architect.order.service.FundOrderService;
 import com.gqhmt.util.GlobalConstants;
@@ -60,8 +59,8 @@ public class ChangeCardService {
     @Resource
     private FundOrderService fundOrderService;
 
-    @Resource
-    private InvestmentService investmentService;
+//    @Resource
+//    private InvestmentService investmentService;
 
 //    @Resource
 //    private NoticeService noticeService;
@@ -79,9 +78,9 @@ public class ChangeCardService {
         return changeCardReadMapper.selectByPrimaryKey(id);
     }
 
-    public Page query(FundsAccountBean.ChangeCardBean changeCardEntity){
-        return changeCardReadMapper.query(changeCardEntity);
-    }
+//    public Page query(FundsAccountBean.ChangeCardBean changeCardEntity){
+//        return changeCardReadMapper.query(changeCardEntity);
+//    }
 
     /**
      * 录入客户修改银行卡信息,前台传入,需要根据id获取客户实体bean

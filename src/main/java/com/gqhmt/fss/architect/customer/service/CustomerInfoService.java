@@ -28,6 +28,7 @@ import com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.fss.architect.mapping.service.FuiouAreaService;
 import com.gqhmt.fss.architect.mapping.service.FuiouBankCodeService;
+import com.gqhmt.fss.logicService.pay.exception.FundsException;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.util.CommonUtil;
 import com.gqhmt.util.MD5Util;
@@ -73,14 +74,6 @@ public class CustomerInfoService {
 	 *
 	 */
 	public Page queryCustomerList(CustomerInfoBean customerInfo, String flg) {
-		return null;
-	}
-
-	/**
-	 * 查询客户管理列表
-	 *
-	 */
-	public Page getCustomer(CustomerInfoBean customerInfoBean, boolean bool) {
 		return null;
 	}
 
@@ -956,7 +949,6 @@ public class CustomerInfoService {
 				} catch (CommandParmException e) {
 					throw new Exception("0002" + e.getMessage());
 				}
-
 			}
 		}
 		// 是否签署第三方协议 默认导入的客户都是签署的
@@ -981,7 +973,7 @@ public class CustomerInfoService {
 		return "0000";
 	}
 
-	public void update(CustomerInfoEntity entity) throws Exception {
+	public void update(CustomerInfoEntity entity) {
 		this.customerInfoWriteMapper.updateByPrimaryKeySelective(entity);
 	}
 
@@ -1047,21 +1039,22 @@ public class CustomerInfoService {
 	 * 更改富友短信接收方式 调用富友接口
 	 *
 	 */
-	public String updateCustSengMsgMode(CustomerInfoSendMsgBean customerInfoSendMsgBean, String sysUserId) throws Exception {
+	public String updateCustSengMsgMode(CustomerInfoSendMsgBean customerInfoSendMsgBean, String sysUserId,
+			String thirdPartyType) throws FundsException {
 
 		// 客户信息bean
 		CustomerInfoEntity customerInfo = this.queryCustomerById(customerInfoSendMsgBean.getId());
 
 		// 如果未创建
 		if (customerInfo.getHasAcount().intValue() != 1) {
-			throw new Exception("0001" + customerInfo.getCustomerName());
+			throw new FundsException("0001" + customerInfo.getCustomerName());
 		}
 
 		try {
 			// 更改富友短信方式
-//			AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_SET_MMS, ThirdPartyType.FUIOU, customerInfo.getId(), customerInfoSendMsgBean.getSendMsgRechargeWithdrawFouyou().toString(), customerInfoSendMsgBean.getSendMsgTransferOutFouyou().toString(), customerInfoSendMsgBean.getSendMsgTransferInFouyou().toString(), customerInfoSendMsgBean.getSendMsgTransferAllFouyou().toString());
+//			AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_SET_MMS, thirdPartyType, customerInfo.getId(), customerInfoSendMsgBean.getSendMsgRechargeWithdrawFouyou().toString(), customerInfoSendMsgBean.getSendMsgTransferOutFouyou().toString(), customerInfoSendMsgBean.getSendMsgTransferInFouyou().toString(), customerInfoSendMsgBean.getSendMsgTransferAllFouyou().toString());
 		} catch (CommandParmException e) {
-			throw new Exception("0002" + e.getMessage());
+			throw new FundsException("0002" + e.getMessage());
 		}
 
 		customerInfo.setIsBatchSendmsgCalled(1);
