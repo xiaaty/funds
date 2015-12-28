@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.bid.bean.FuiouPreauth;
 import com.gqhmt.fss.architect.bid.mapper.read.FuiouPreauthReadMapper;
 import com.gqhmt.fss.architect.bid.mapper.write.FuiouPreauthWriteMapper;

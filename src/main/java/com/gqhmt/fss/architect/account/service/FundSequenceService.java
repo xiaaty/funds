@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
-import com.gqhmt.fss.architect.account.bean.FundSequenceEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
 import com.gqhmt.fss.architect.account.exception.AmountFailException;
 import com.gqhmt.fss.architect.account.exception.ChargeAmountNotenoughException;

@@ -1,4 +1,4 @@
-package com.gqhmt.fss.architect.account.bean;
+package com.gqhmt.fss.architect.account.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,9 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.gqhmt.util.ThirdPartyType;
 
 /**
  * Filename:    com.gq.p2p.account.entity

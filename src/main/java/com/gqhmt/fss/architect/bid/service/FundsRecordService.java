@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.bid.bean.FundsRecord;
 import com.gqhmt.fss.architect.bid.mapper.read.FundsRecordReadMapper;
 import com.gqhmt.fss.architect.bid.mapper.write.FundsRecordWriteMapper;

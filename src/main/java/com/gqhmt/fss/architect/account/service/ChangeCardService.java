@@ -15,7 +15,7 @@ import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.bean.ChangeCardBean;
 import com.gqhmt.fss.architect.account.bean.ChangeCardEntity;
 import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.ChangeCardReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.ChangeCardWriteMapper;
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;

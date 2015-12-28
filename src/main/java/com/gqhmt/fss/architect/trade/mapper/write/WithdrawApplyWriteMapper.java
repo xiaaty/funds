@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.trade.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.architect.trade.bean.WithdrawApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.WithdrawApplyEntity;
 
 /**
  * Filename:    com.gq.p2p.account.dao

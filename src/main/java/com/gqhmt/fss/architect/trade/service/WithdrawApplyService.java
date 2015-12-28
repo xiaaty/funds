@@ -16,7 +16,7 @@ import com.github.pagehelper.Page;
 import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.architect.trade.bean.WithdrawApplyBean;
-import com.gqhmt.fss.architect.trade.bean.WithdrawApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.WithdrawApplyEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.WithdrawApplyReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.WithdrawApplyWriteMapper;
 import com.gqhmt.fss.pay.exception.CommandParmException;

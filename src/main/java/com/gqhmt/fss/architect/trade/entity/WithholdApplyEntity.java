@@ -1,4 +1,4 @@
-package com.gqhmt.fss.architect.trade.bean;
+package com.gqhmt.fss.architect.trade.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

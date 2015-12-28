@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.job.service;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.job.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.job.mapper.read.FuiouFtpColomFieldReadMapper;
 import com.gqhmt.fss.architect.job.mapper.write.FuiouFtpColomFieldWriteMapper;

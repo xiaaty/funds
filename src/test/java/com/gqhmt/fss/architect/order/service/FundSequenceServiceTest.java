@@ -3,7 +3,6 @@ package com.gqhmt.fss.architect.order.service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -16,8 +15,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
-import com.gqhmt.fss.architect.account.bean.FundSequenceEntity;
+import com.gqhmt.fss.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.fss.architect.account.service.FundSequenceService;
 import com.gqhmt.util.ThirdPartyType;
 

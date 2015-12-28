@@ -1,4 +1,4 @@
-package com.gqhmt.fss.architect.account.bean;
+package com.gqhmt.fss.architect.account.entity;
 
 
 

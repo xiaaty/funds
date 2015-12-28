@@ -15,7 +15,7 @@ import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;

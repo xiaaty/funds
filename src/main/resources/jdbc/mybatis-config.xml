@@ -19,14 +19,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 	    <typeAlias type="com.gqhmt.fss.architect.account.bean.BankCardInfoEntity" alias="bankCardInfoEntity"/>
         <typeAlias type="com.gqhmt.fss.architect.account.bean.ChangeCardEntity" alias="changeCardEntity"/>
         <typeAlias type="com.gqhmt.fss.architect.account.bean.CustomerInfoEntity" alias="customerInfoEntity"/>
-		<typeAlias type="com.gqhmt.fss.architect.account.bean.FundAccountEntity" alias="fundAccountEntity"/>
-	    <typeAlias type="com.gqhmt.fss.architect.account.bean.FundSequenceEntity" alias="fundSequenceEntity"/>
+		<typeAlias type="com.gqhmt.fss.architect.account.entity.FundAccountEntity" alias="fundAccountEntity"/>
+	    <typeAlias type="com.gqhmt.fss.architect.account.entity.FundSequenceEntity" alias="fundSequenceEntity"/>
 	    <typeAlias type="com.gqhmt.fss.architect.account.bean.FundTradeEntity" alias="fundTradeEntity"/>
 	    <typeAlias type="com.gqhmt.fss.architect.account.bean.FundWithrawCharge" alias="fundWithrawCharge"/>
 	    <!-- 账户相关 end -->
 	    <!-- 交易相关 -->
-	    <typeAlias type="com.gqhmt.fss.architect.trade.bean.WithdrawApplyEntity" alias="withdrawApplyEntity"/>
-        <typeAlias type="com.gqhmt.fss.architect.trade.bean.WithholdApplyEntity" alias="withholdApplyEntity"/>
+	    <typeAlias type="com.gqhmt.fss.architect.trade.entity.WithdrawApplyEntity" alias="withdrawApplyEntity"/>
+        <typeAlias type="com.gqhmt.fss.architect.trade.entity.WithholdApplyEntity" alias="withholdApplyEntity"/>
 	    <!-- 交易相关 end-->
 	</typeAliases>
 

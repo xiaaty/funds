@@ -20,7 +20,7 @@ import com.gqhmt.fss.architect.account.bean.CustomerInfoBean;
 import com.gqhmt.fss.architect.account.bean.CustomerInfoDetialBean;
 import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
 import com.gqhmt.fss.architect.account.bean.CustomerInfoSendMsgBean;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.bean.UserEntity;
 import com.gqhmt.fss.architect.account.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper;

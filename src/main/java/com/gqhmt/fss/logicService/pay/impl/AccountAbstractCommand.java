@@ -15,7 +15,7 @@ import com.gqhmt.business.architect.loan.service.InvestmentService;
 import com.gqhmt.business.architect.loan.service.PointsAccountService;
 import com.gqhmt.business.architect.loan.service.TenderService;
 import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.service.BankCardInfoService;
 import com.gqhmt.fss.architect.account.service.ChangeCardService;
