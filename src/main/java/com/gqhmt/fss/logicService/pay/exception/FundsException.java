@@ -1,6 +1,4 @@
-package com.gqhmt.fss.logicService.pay.exception;/**
- * Created by yuyonf on 15/11/18.
- */
+package com.gqhmt.fss.logicService.pay.exception;
 
 /**
  * Filename:    com.gq.funds.exception.FundsException

@@ -1,6 +1,4 @@
-package com.gqhmt.fss.logicService.pay;/**
- * Created by yuyonf on 15/11/17.
- */
+package com.gqhmt.fss.logicService.pay;
 
 
 import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
