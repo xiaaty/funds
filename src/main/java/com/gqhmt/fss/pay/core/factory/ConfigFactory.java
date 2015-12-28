@@ -1,6 +1,6 @@
 package com.gqhmt.fss.pay.core.factory;
 
-import com.gqhmt.core.util.ResourceUtil;
+import com.gqhmt.fss.pay.core.Context.FssContext;
 import com.gqhmt.fss.pay.core.configer.Config;
 import com.gqhmt.fss.pay.exception.PayChannelNotSupports;
 
@@ -34,16 +34,19 @@ public class ConfigFactory {
      * 初始化配置工厂类
      */
     static{
-        Map<String,String> map = ResourceUtil.list(configFile);
+        Map<String,String> map = FssContext.getContextMap("config");
         Set<String> set = map.keySet();
         for(String tmp :set){
             String  className = map.get(tmp);
+            if(className == null || "".equals(className)){
+                continue;
+            }
             try {
                 Class aClass = Class.forName(className);
                 Config config = (Config) aClass.newInstance();
-                configs.put(Integer.parseInt(tmp.substring(0,tmp.lastIndexOf(".")+1)),config);
+                configs.put(Integer.parseInt(tmp),config);
             } catch (Exception e) {
-                configs.put(Integer.parseInt(tmp.substring(0,tmp.lastIndexOf(".")+1)),null);
+                configs.put(Integer.parseInt(tmp),null);
             }
         }
     }
