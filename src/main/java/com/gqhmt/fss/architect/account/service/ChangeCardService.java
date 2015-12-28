@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.business.architect.loan.service.InvestmentService;
 import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.bean.ChangeCardBean;
 import com.gqhmt.fss.architect.account.bean.ChangeCardEntity;
@@ -59,8 +58,8 @@ public class ChangeCardService {
     @Resource
     private FundOrderService fundOrderService;
 
-    @Resource
-    private InvestmentService investmentService;
+//    @Resource
+//    private InvestmentService investmentService;
 
 //    @Resource
 //    private NoticeService noticeService;
