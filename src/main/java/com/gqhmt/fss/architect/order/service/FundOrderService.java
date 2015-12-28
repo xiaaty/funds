@@ -38,6 +38,10 @@ public class FundOrderService  {
     @Resource
     private FundOrderWriteMapper fundOrderWriteMapper;
 
+    public void insert(FundOrderEntity entity) throws Exception{
+        fundOrderWriteMapper.insertSelective(entity);
+    }
+    
     public void update(FundOrderEntity entity) throws Exception{
         entity.setLastModifyTime(new Date());
         fundOrderWriteMapper.updateByPrimaryKeySelective(entity);
