@@ -1,6 +1,4 @@
-package com.gqhmt.fss.logicService.pay;/**
- * Created by yuyonf on 15/11/19.
- */
+package com.gqhmt.fss.logicService.pay;
 
 /**
  * Filename:    com.gq.funds.interaction.FundsRespone

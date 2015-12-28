@@ -1,6 +1,4 @@
-package com.gqhmt.fss.logicService.pay;/**
- * Created by yuyonf on 15/11/19.
- */
+package com.gqhmt.fss.logicService.pay;
 
 
 import com.gqhmt.business.architect.loan.entity.Bid;
@@ -113,7 +111,7 @@ public interface IFundsTender {
      * @return
      * @throws FundsException
      */
-    public FundsResponse abort(String String,Bid bid) throws FundsException;
+    public FundsResponse abort(String thirdPartyType,Bid bid) throws FundsException;
 
 
 //    public FundsResponse debtApply(String thirdPartyType,int custId);

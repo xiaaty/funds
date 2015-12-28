@@ -1,9 +1,5 @@
-package com.gq.funds.interaction;/**
- * Created by yuyonf on 15/11/21.
- */
+package com.gqhmt.fss.logicService.pay;
 
-
-import com.gqhmt.fss.logicService.pay.FundsResponse;
 import com.gqhmt.fss.logicService.pay.exception.FundsException;
 
 /**

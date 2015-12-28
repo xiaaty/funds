@@ -105,4 +105,15 @@ public class PayCommondConstants {
     public static final String COMMAND_CHARGE = "0802";                    //费用收取
 
     //指令配置  09开头 调试 账户查询指令
+
+
+
+
+    //支付渠道
+
+    public static final int PAY_CHANNEL_LOCAL   = 99990000;                     //本地操作
+
+    public static final int PAY_CHANNEL_DAQIAN  = 99990001;                     //大钱--历史遗留类型
+
+    public static final int PAY_CHANNEL_FUIOU   = 99990002;                     //富友
 }
