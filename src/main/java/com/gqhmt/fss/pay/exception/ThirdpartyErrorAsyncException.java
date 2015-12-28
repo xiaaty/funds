@@ -23,4 +23,8 @@ public class ThirdpartyErrorAsyncException extends RuntimeException{
 		super(message);
 	}
 
+	public ThirdpartyErrorAsyncException() {
+		super();
+	}
+
 }

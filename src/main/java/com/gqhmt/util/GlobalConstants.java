@@ -117,14 +117,15 @@ public class GlobalConstants {
 	public static final int ORDER_STATUS_PART = 998;       //异常
 	public static final int ORDER_STATUS_THIRDERROR = 999; //异常手动处理
 	public static final int ORDER_STATUS_CLOSE = 1000;     //交易关闭
+	
     //业务映射流水类型
-
     public static final int BUSINESS_MAPPINF_CUSTOMER=1;
     public static final int BUSINESS_MAPPINF_BID=2;
     public static final int BUSINESS_MAPPINF_TENDER=3;
     public static final int BUSINESS_MAPPINF_DEBT=4;
     public static final int BUSINESS_MAPPINF_WITHDRAWAPPLY=5;
     public static final int BUSINESS_MAPPINF_REPAYMENT=6;
+    public static final int BUSINESS_MAPPINF_CARD=9;
     
     /*================================冠钱积分====================================*/
 
@@ -147,6 +148,22 @@ public class GlobalConstants {
 
     public static final int POINT_SEQ_PAYMENT_RETUEN_FEE = 3001;  //返现
     public static final int POINT_SEQ_PAYMENT_SHOPMALL = 3002;  //商城消费
+    
+    //是否创建第三方账户
+    public static final int CREATR_THIRD_ACCOUNT = 2;
+    public static final int NO_CREATR_THIRD_ACCOUNT = 1;
+    
+    public static final int BUSINESS_WITHHOLDING = 2;
+    public static final int BUSINESS_AMOUNT_WITHHOLD = 1;
+    public static final int BUSINESS_BID = 4;
+    public static final int BUSINESS_REPAYMENT_WITHHOLDING = 3;
+    public static final int BUSINESS_REPAYMENT = 6;
+    public static final int BUSINESS_SETTLE = 8;
+    public static final int BUSINESS_WITHDRAW = 9;
+    public static final int BUSINESS_DEBT = 11;
+    public static final int BUSINESS_TRANSFER = 10;
+    public static final int BUSINESS_ABORT_BID = 12;
+    public static final int BUSINESS_UPDATE_CARE = 13;
     
 	
 	public static final String ROLE_URL_MAP="roleUrlMap";
@@ -184,9 +201,14 @@ public class GlobalConstants {
     public static Map<String,String> AccountMap=new LinkedHashMap<String,String>();
     public static Map<String,String> AccountLoanRepaymentMap=new LinkedHashMap<String,String>();
 
+    public static Map<Integer,String> accountType=new ConcurrentHashMap<Integer,String>();
+    public static Map<Integer,String> accountRole=new ConcurrentHashMap<Integer,String>();
+    public static Map<Integer,String> acctionType=new ConcurrentHashMap<Integer,String>();
+    public static Map<Integer,String> fundsType=new ConcurrentHashMap<Integer,String>();
     public static Map<Integer,String> thirdpartyType=new ConcurrentHashMap<Integer,String>();
     public static Map<Integer,String> thirdpartyTypeEN=new ConcurrentHashMap<Integer,String>();
-
+    public static Map<Integer,String> pointType=new ConcurrentHashMap<Integer,String>();
+    
     private static long getMenuId(Long fid) {
         if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
             return fid;
@@ -369,11 +391,122 @@ public class GlobalConstants {
         AccountLoanRepaymentMap.put("10002111","挂账");
         AccountLoanRepaymentMap.put("10002201","退款");
         
+        accountType.put(0,"主账户");
+        accountType.put(1,"借款账户");
+        accountType.put(2,"线下出借账户");
+        accountType.put(3,"线上出借账户");
+        accountType.put(96,"应付账户");
+        accountType.put(99,"冻结金账户");
+
+        accountRole.put(1,"DEBTOR");
+        accountRole.put(2,"INVESTOR");
+        accountRole.put(3,"INVESTOR");
+
+        acctionType.put(1,"充值");
+        acctionType.put(2,"提现");
+        acctionType.put(3,"转账");
+        acctionType.put(4,"冻结");
+        acctionType.put(5,"解冻");
+        acctionType.put(6,"投标成功");
+        acctionType.put(7,"还款");
+        acctionType.put(8,"债权转让");
+
+
+        /*
+         *  #1开头，资金交易类型
+         1001:充值
+         1002:代扣
+         1003:预提现（转到冻结金账户）
+         1004:提现失败（冻结金账户转回）
+         1005:一般转账转出
+         1006:一般转账转入
+         1007:资金冻结（转到冻结金账户）
+         1008:资金解冻（冻结金账户转回）
+         */
+        fundsType.put(1001,"充值");
+        fundsType.put(1002,"代扣");
+        fundsType.put(1003,"提现");
+        fundsType.put(1004,"提现退回");
+        fundsType.put(1005,"一般转账:转出");
+        fundsType.put(1006,"一般转账:转入");
+        fundsType.put(1007,"资金冻结");
+        fundsType.put(1008,"资金解冻");
+        fundsType.put(1009,"资金收入");
+        fundsType.put(1010, "债权转让手续费");
+        fundsType.put(1011, "账务修正");
+        fundsType.put(1012,"实时提现");
+
+        /*
+
+        #2开头，冻结资金类型
+        2001:提现冻结
+        2002:提现解冻
+        2003:投标冻结
+        2004:投标解冻
+        2005：一般冻结
+        2006：一般冻结解冻
+*/
+        fundsType.put(2001,"提现冻结");
+        fundsType.put(2002,"提现退回解冻");
+        fundsType.put(2003,"提现出账（提现转账到银行卡成功）");
+        fundsType.put(2004,"投标冻结");
+        fundsType.put(2005,"流标解冻");
+        fundsType.put(2006,"投标成功转账");
+        fundsType.put(2007,"一般冻结");
+        fundsType.put(2008,"一般冻结解冻");
+        fundsType.put(2009,"应付金转出");
+        fundsType.put(2010,"应付金转入");
+        /*
+        #3开头投标交易类型
+        3001:投标
+        3002:投标清算
+        3003:还款本金（借款出）
+        3004:还款利息（借款出）
+        3005:收款本金（出借入）
+        3006:收款利息（出借入）
+        3007:债权转让转出
+        3008:债权转让转入
+        3009:流标退款
+         */
+        fundsType.put(3001,"投标");
+        fundsType.put(3002,"投标清算成功转入");
+        fundsType.put(3003,"还款本金（借款出）");
+        fundsType.put(3004,"还款利息（借款出）");
+        fundsType.put(3005,"收款本金（出借入）");
+        fundsType.put(3006,"收款利息（出借入）");
+        fundsType.put(3007,"购买债权");
+        fundsType.put(3008,"转让债权");
+        fundsType.put(3009,"投标异常");
+        fundsType.put(3010,"债权退回");
+        fundsType.put(3011,"流标");
+
+        fundsType.put(4001,"收取账户管理费");
+        fundsType.put(4002,"账户管理费");
+        fundsType.put(4003,"收取保证金");
+        fundsType.put(4004,"收取保证金");
+        fundsType.put(4005,"资金补偿");
+        fundsType.put(4006,"服务费");
+        fundsType.put(4007,"归还保证金");
+        fundsType.put(4008,"抵押标借款人转账");
+        fundsType.put(4010,"提现手续费");
+        fundsType.put(4011,"抵押标借款人扣除账户管理费");
+        fundsType.put(4012,"风险备用金");
+        fundsType.put(4013,"归还风险备用金");
+
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");
-        
+
         thirdpartyTypeEN.put(1,"daqian_");
         thirdpartyTypeEN.put(2,"");
+
+
+        pointType.put(1001,"推荐奖励冠钱");
+        pointType.put(1001,"活动赠送冠钱");
+        pointType.put(1003,"投标赠送冠钱");
+        pointType.put(1010,"积分转冠钱");
+        pointType.put(2001,"投标返现冻结");
+        pointType.put(2002,"解冻结");
+        pointType.put(3001,"满标返现出账");
 
 	}
 }

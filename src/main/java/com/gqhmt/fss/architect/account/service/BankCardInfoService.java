@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
@@ -15,12 +14,9 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.bean.BankCardBean;
 import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.command.AccountCommand;
-import com.gqhmt.fss.architect.account.command.CommandEnum;
 import com.gqhmt.fss.architect.account.mapper.read.BankCardInfoReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.BankCardinfoWriteMapper;
 import com.gqhmt.fss.pay.exception.CommandParmException;
-import com.gqhmt.util.ThirdPartyType;
 
 /**
  * Filename:    com.gq.p2p.customer.service
@@ -86,7 +82,7 @@ public class BankCardInfoService {
     	try {
         
 			//解除绑定划扣银行卡
-			AccountCommand.payCommand.command(CommandEnum.CARD.CARD_UNBIND, ThirdPartyType.DAQIAN,bankCard.getCustId(),2,list);
+//			AccountCommand.payCommand.command(CommandEnum.CARD.CARD_UNBIND, ThirdPartyType.DAQIAN,bankCard.getCustId(),2,list);
 			
 		} catch(CommandParmException e){
 			throw  new Exception("0001" + e.getMessage()); 
@@ -129,7 +125,7 @@ public class BankCardInfoService {
 
     	try {
 	        //绑定银行卡
-    		AccountCommand.payCommand.command(CommandEnum.CARD.CARD_BIND,ThirdPartyType.DAQIAN, entity.getCustId(), 2, entity);
+//    		AccountCommand.payCommand.command(CommandEnum.CARD.CARD_BIND,ThirdPartyType.DAQIAN, entity.getCustId(), 2, entity);
 		} catch(CommandParmException e){
 			throw  new Exception("0001" + e.getMessage()); 
 		}
@@ -179,8 +175,7 @@ public class BankCardInfoService {
 		if (bankChangeFlg) {
 			//富友修改客户绑定银行卡信息
 			try{
-				AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD, ThirdPartyType.FUIOU,
-						customerInfo.getId(), bankCard.getBankNo(), bankCard.getParentBankId(), bankCard.getBankLongName(), bankCard.getCityId());
+//				AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD, ThirdPartyType.FUIOU,customerInfo.getId(), bankCard.getBankNo(), bankCard.getParentBankId(), bankCard.getBankLongName(), bankCard.getCityId());
 			} catch(CommandParmException e){
 				throw  new Exception("0001" + e.getMessage());
 			}
