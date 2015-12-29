@@ -2,8 +2,10 @@ package com.gqhmt.sys.controller;
 
 import com.gqhmt.core.util.LogUtil;
 import com.octo.captcha.service.image.ImageCaptchaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -38,8 +40,8 @@ public class JcaptchaImageCreater {
     @Resource
     private ImageCaptchaService imageCaptchaService;
 
-    @RequestMapping(name = "/captcha")
-    public void handleRequest(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/captcha")
+    public void showCaptchaImage(HttpServletRequest request, HttpServletResponse response) {
         try {
             ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
             String captchaId = request.getSession().getId();

@@ -74,7 +74,7 @@ public class PageInterceptor  implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        if (modelAndView.getModel().containsKey("page") && modelAndView.getModel().get("page") instanceof List){
+        if (modelAndView != null && modelAndView.getModel().containsKey("page") && modelAndView.getModel().get("page") instanceof List){
             try {
                 modelAndView.getModel().put("page",new GqPageInfo((List) modelAndView.getModel().get("page")));
             }catch (Exception e){
