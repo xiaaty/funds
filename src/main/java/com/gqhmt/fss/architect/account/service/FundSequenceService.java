@@ -103,7 +103,7 @@ public class FundSequenceService {
      * @param accountType
      * @param amount
      */
-    public void charge(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws ChargeAmountNotenoughException,FundAccountNullException{
+    public void charge(FundAccountEntity entity,int accountType,BigDecimal amount,String thirdPartyType,FundOrderEntity orderEntity) throws ChargeAmountNotenoughException,FundAccountNullException{
         //校验账户信息
         if(entity == null || entity.getId() == null){
             throw new FundAccountNullException();
@@ -128,7 +128,7 @@ public class FundSequenceService {
      * @param amount
      * @throws AmountFailException 
      */
-    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,Long oid) throws AmountFailException{
+    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,String thirdPartyType,FundOrderEntity orderEntity,Long oid) throws AmountFailException{
         //校验账户信息
         if(entity == null || entity.getId() == null){
             throw new FundAccountNullException();
@@ -156,7 +156,7 @@ public class FundSequenceService {
      * @param toEntiry      转入转换
      * @param amount        转账金额
      */
-    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity){
+    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,String thirdPartyType,FundOrderEntity orderEntity){
         if(amount.multiply(new BigDecimal("100")).longValue()<0){
             throw new AmountFailException("传入金额不能小于0");
         }
@@ -205,7 +205,7 @@ public class FundSequenceService {
             isolation= Isolation.READ_COMMITTED,
             noRollbackFor={CommandParmException.class},
             readOnly=false, timeout=3)
-    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity)throws FrozenAmountErrorException {
+    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,String thirdPartyType,FundOrderEntity orderEntity)throws FrozenAmountErrorException {
         if(orgEntity == null || orgEntity.getId() == null || frozenEntiry == null || frozenEntiry.getId() == null){
             throw new FundAccountNullException();
             //此处抛出异常
@@ -245,7 +245,7 @@ public class FundSequenceService {
             isolation= Isolation.READ_COMMITTED,
             noRollbackFor={CommandParmException.class},
             readOnly=false, timeout=3)
-    public void unfreeze(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity){
+    public void unfreeze(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,String thirdPartyType,FundOrderEntity orderEntity){
         if(orgEntity == null || orgEntity.getId() == null || frozenEntiry == null || frozenEntiry.getId() == null){
             throw new FundAccountNullException();
             //此处抛出异常
@@ -282,7 +282,7 @@ public class FundSequenceService {
     }
 
 
-    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,Long oAccountId){
+    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,String thirdPartyType,FundOrderEntity orderEntity,Long oAccountId){
         FundSequenceEntity entity = new FundSequenceEntity();
         entity.setCreateTime(new Timestamp(new Date().getTime()));
         entity.setAmount(amount);
@@ -290,7 +290,7 @@ public class FundSequenceService {
         entity.setCurrency("0001");
         entity.setFundType(accountType);
         entity.setActionType(actionType);
-        entity.setThirdPartyType(thirdPartyType.getKey());
+        entity.setThirdPartyType(Integer.valueOf(thirdPartyType));
         if(orderEntity != null){
             entity.setOrderNo(orderEntity.getOrderNo());
         }
