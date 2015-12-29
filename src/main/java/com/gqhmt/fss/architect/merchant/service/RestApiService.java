@@ -1,21 +1,19 @@
-package com.gqhmt.sys.service;
+package com.gqhmt.fss.architect.merchant.service;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
+import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
+import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.mapper.read.RestApiAddrReadMapper;
+import com.gqhmt.fss.architect.merchant.mapper.read.RestApiIpReadMapper;
+import com.gqhmt.fss.architect.merchant.mapper.read.RestApiReadMapper;
+import com.gqhmt.fss.architect.merchant.mapper.write.RestApiAddrWriteMapper;
+import com.gqhmt.fss.architect.merchant.mapper.write.RestApiIpWriteMapper;
+import com.gqhmt.fss.architect.merchant.mapper.write.RestApiWriteMapper;
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.sys.entity.ApiAddr;
-import com.gqhmt.sys.entity.ApiIpConfig;
-import com.gqhmt.sys.entity.Business;
-import com.gqhmt.sys.mapper.read.RestApiAddrReadMapper;
-import com.gqhmt.sys.mapper.read.RestApiIpReadMapper;
-import com.gqhmt.sys.mapper.read.RestApiReadMapper;
-import com.gqhmt.sys.mapper.write.RestApiAddrWriteMapper;
-import com.gqhmt.sys.mapper.write.RestApiIpWriteMapper;
-import com.gqhmt.sys.mapper.write.RestApiWriteMapper;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RestApiService {
@@ -64,7 +62,7 @@ public class RestApiService {
 
 	/**
 	 * 获取商户列表
-	 * @param pid
+	 * @param map
 	 * @return
 	 */
 	public List<Business> findBusinessList(Map<String, Object> map) {
@@ -111,7 +109,7 @@ public class RestApiService {
 	}
 	/**
 	 * 返回api地址列表
-	 * @param apiIpConfig
+	 * @param apiAddr
 	 * @return
 	 */
 	public List<ApiAddr> findApiAddrList(ApiAddr apiAddr) {
@@ -119,7 +117,7 @@ public class RestApiService {
 	}
 	/**
 	 * 新增api地址
-	 * @param apiIpConfig
+	 * @param apiAddr
 	 */
 	public void insertApiAddr(ApiAddr apiAddr) {
 		restApiAddrWriteMapper.insertSelective(apiAddr);
