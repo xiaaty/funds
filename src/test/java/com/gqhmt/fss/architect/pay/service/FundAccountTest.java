@@ -38,13 +38,14 @@ import com.gqhmt.util.ServiceLoader;
 @ContextConfiguration(locations = "classpath:spring/*.xml")
 public class FundAccountTest extends AbstractJUnit4SpringContextTests {
 
-    @Autowired(required=false)
-    private IFundsAccount iFundsAccount;
-
     private CustomerInfoEntity entity;
+    
+    private IFundsAccount iFundsAccount = new FundsAccountImpl();
+    
     @Before
     public void setUp() throws FssException {
     	entity = new CustomerInfoEntity();
+    	entity.setId(611258);
     	entity.setUserId(111);
     	//客户类型 1：借款用户 2:借款共借人 3：线下出借用户 4：线上出借注册用户 9：A0公司内用用户
     	entity.setCustomerType(2);
@@ -82,7 +83,13 @@ public class FundAccountTest extends AbstractJUnit4SpringContextTests {
     }
     
     @Test
-    public void testInsert() throws Exception {
+    public void testCreateAccount() throws Exception {
     	iFundsAccount.createAccount("2", entity, "123", "222");
+    }
+    
+    
+    @Test
+    public void testCheckDropAccount() throws Exception {
+    	iFundsAccount.checkDropAccount("2", entity.getId());
     }
 }

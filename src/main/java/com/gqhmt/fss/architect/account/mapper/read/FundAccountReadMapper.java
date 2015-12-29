@@ -34,26 +34,6 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	 */
 	public Page queryFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException;
 
-    /**
-     * 获取所有账户列表
-     * @param pageReq
-     * @return
-     * @throws AppException
-     */
-    public Page queryBusinessFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException;
-    
-    /**
-     * 获取所有借款客户账户列表
-     * @param pageReq
-     * @return
-     * @throws AppException
-     */
-    public Page queryLoanFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException;
-
-    public FundAccountEntity queryFundAccount(Integer cusID,int type);
-    
-    public FundAccountEntity queryFundAccount(String userName,int type);
-
     public List<FundAccountEntity> queryFundAccount(Integer cusID);
 
 }

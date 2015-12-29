@@ -71,9 +71,9 @@ public class FundAccountEntity {
     @Column(name = "bankNo",updatable = false)
     private String bankNo;
     @Column(name = "has_Third_Account",insertable = false)
-    private int hasThirdAccount = 1;
+    private Integer hasThirdAccount = 1;
     @Column(name="is_change_bank_card",insertable = false)
-    private int ishangeBankCard;
+    private Integer ishangeBankCard;
 
     //结算类型；0 T+0 ; 1 T+1
     @Column(name = "settle_type")
@@ -240,11 +240,11 @@ public class FundAccountEntity {
         return result.intValue();
     }
 
-    public int getHasThirdAccount() {
+    public Integer getHasThirdAccount() {
         return hasThirdAccount;
     }
 
-    public void setHasThirdAccount(int hasThirdAccount) {
+    public void setHasThirdAccount(Integer hasThirdAccount) {
         this.hasThirdAccount = hasThirdAccount;
     }
 
@@ -297,11 +297,11 @@ public class FundAccountEntity {
         this.settleType = settleType;
     }
 
-	public int getIshangeBankCard() {
+	public Integer getIshangeBankCard() {
 		return ishangeBankCard;
 	}
 
-	public void setIshangeBankCard(int ishangeBankCard) {
+	public void setIshangeBankCard(Integer ishangeBankCard) {
 		this.ishangeBankCard = ishangeBankCard;
 	}
 
