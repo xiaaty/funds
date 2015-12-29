@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.architect.customer.service.ChangeCardService;
 
 /**

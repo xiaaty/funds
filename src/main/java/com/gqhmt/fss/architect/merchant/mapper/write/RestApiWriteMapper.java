@@ -1,7 +1,7 @@
-package com.gqhmt.sys.mapper.write;
+package com.gqhmt.fss.architect.merchant.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.sys.entity.ApiAddr;
+import com.gqhmt.fss.architect.merchant.entity.Business;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.write.MenuWriteMapper
@@ -19,5 +19,5 @@ import com.gqhmt.sys.entity.ApiAddr;
  * -----------------------------------------------------------------
  * 2015/12/21  李俊龙      1.0     1.0 Version
  */
-public interface RestApiAddrWriteMapper extends WriteMapper<ApiAddr> {
+public interface RestApiWriteMapper extends WriteMapper<Business> {
 }

@@ -1,10 +1,10 @@
-package com.gqhmt.sys.mapper.read;
+package com.gqhmt.fss.architect.merchant.mapper.read;
 
 import java.util.List;
 import java.util.Map;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.sys.entity.Business;
+import com.gqhmt.fss.architect.merchant.entity.Business;
 
 
 public interface RestApiReadMapper extends ReadMapper<Business> {
