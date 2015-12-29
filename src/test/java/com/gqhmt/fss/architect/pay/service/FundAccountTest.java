@@ -3,8 +3,6 @@ package com.gqhmt.fss.architect.pay.service;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import javax.annotation.Resource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +12,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
+import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.logicService.pay.IFundsAccount;
 import com.gqhmt.fss.logicService.pay.impl.FundsAccountImpl;
 import com.gqhmt.util.CommonUtil;
@@ -40,7 +38,8 @@ import com.gqhmt.util.ServiceLoader;
 @ContextConfiguration(locations = "classpath:spring/*.xml")
 public class FundAccountTest extends AbstractJUnit4SpringContextTests {
 
-    //@Autowired(required=false)
+    @Autowired(required=false)
+    private IFundsAccount iFundsAccount;
 
     private CustomerInfoEntity entity;
     @Before
@@ -84,7 +83,6 @@ public class FundAccountTest extends AbstractJUnit4SpringContextTests {
     
     @Test
     public void testInsert() throws Exception {
-    	IFundsAccount iFundsAccount = ServiceLoader.get(FundsAccountImpl.class);
     	iFundsAccount.createAccount("2", entity, "123", "222");
     }
 }
