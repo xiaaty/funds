@@ -25,7 +25,6 @@ import com.gqhmt.util.ThirdPartyType;
  * @author lijunlong
  *
  */
-@Service
 public class FundsTradeImpl extends AccountAbstractCommand implements IFundsTrade {
 
 	/**

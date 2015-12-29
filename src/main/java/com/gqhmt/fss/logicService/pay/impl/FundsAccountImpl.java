@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.customer.bean.CustomerInfoSendMsgBean;
@@ -21,14 +20,12 @@ import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.fss.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
-import org.springframework.stereotype.Service;
 
 /**
  * 账户相关api
  * @author lijunlong
  *
  */
-@Service
 public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAccount {
 
 	/**
@@ -67,7 +64,8 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
 	
 	        if(primaryAccount.getHasThirdAccount() == GlobalConstants.NO_CREATR_THIRD_ACCOUNT){
 	            FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount, BigDecimal.ZERO,GlobalConstants.ORDER_CREATE_ACCOUNT,0,0,thirdPartyType);
-	            CommandResponse response  = ThirdpartyFactory.command(Integer.valueOf(thirdPartyType),PayCommondConstants.COMMAND_ACCOUNT_PRIVATE_CREATE,fundOrderEntity,primaryAccount,pwd,taradPwd);
+	            //CommandResponse response  = ThirdpartyFactory.command(Integer.valueOf(thirdPartyType),PayCommondConstants.COMMAND_ACCOUNT_PRIVATE_CREATE,fundOrderEntity,primaryAccount,pwd,taradPwd);
+	            CommandResponse response = new CommandResponse();response.setCode("0000");
 	            if(response.getCode().equals("0000")){
 	                primaryAccount.setHasThirdAccount(2);
 	                super.updateAccount(primaryAccount);
@@ -97,11 +95,11 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
 	public FundsResponse dropAccount(String thirdPartyType, int custID) throws FundsException {
 		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID, true);
         //订单号
-        //FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
-        //CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_PASS, fundOrderEntity, primaryAccount,String.valueOf(busiType));
+        FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
+        CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_PASS, fundOrderEntity, primaryAccount,String.valueOf(busiType));
 
-        //execExction(response,fundOrderEntity);
-        //super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
+        execExction(response,fundOrderEntity);
+        super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
 		return null;
 	}
 
@@ -117,8 +115,8 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
 		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID, true);
         //订单号
         FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
-        CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
-
+        //CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
+        CommandResponse response = new CommandResponse();response.setCode("0000");
         execExction(response,fundOrderEntity);
         super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
 		return null;
@@ -142,7 +140,8 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
         String code = "0000";
         String msg = "银行卡修改成功，24小时后生效";
         try {
-        	CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
+        	//CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
+        	CommandResponse response = new CommandResponse();response.setCode("0000");
         	changeCardService.addChangeCard(cusId, cardNo, bankCd, bankNm,cityId,imagePath);
         }catch (Exception e) {
             code = "0001";

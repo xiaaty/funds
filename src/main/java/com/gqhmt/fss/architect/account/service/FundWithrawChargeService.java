@@ -50,7 +50,9 @@ public class FundWithrawChargeService {
 
 
     public FundWithrawCharge getFundWithrawCharge(String orderNo){
-        return this.fundWithrawChargeReadMapper.getFundWithrawCharge(orderNo);
+    	FundWithrawCharge entity = new FundWithrawCharge();
+    	entity.setOrderNo(orderNo);
+        return fundWithrawChargeReadMapper.selectOne(entity);
     }
 
 
@@ -61,7 +63,7 @@ public class FundWithrawChargeService {
     }
 
     public List<FundWithrawCharge> list(){
-        return this.fundWithrawChargeReadMapper.list();
+        return this.fundWithrawChargeReadMapper.selectAll();
     }
 
 }

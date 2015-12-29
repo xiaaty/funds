@@ -9,22 +9,21 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import com.gqhmt.fss.architect.account.service.FundAccountService;
-import com.gqhmt.fss.architect.customer.entity.UserEntity;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.fss.architect.account.service.FundAccountService;
 import com.gqhmt.fss.architect.customer.bean.CustomerInfoBean;
 import com.gqhmt.fss.architect.customer.bean.CustomerInfoDetialBean;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.architect.customer.bean.CustomerInfoSendMsgBean;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.fss.architect.customer.entity.UserEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.CustomerInfoReadMapper;
-import com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.fss.architect.mapping.service.FuiouAreaService;
 import com.gqhmt.fss.architect.mapping.service.FuiouBankCodeService;
@@ -49,9 +48,6 @@ public class CustomerInfoService {
 	private CustomerInfoReadMapper customerInfoReadMapper;
 	@Autowired
 	private CustomerInfoWriteMapper customerInfoWriteMapper;
-
-	@Autowired
-	private FundAccountReadMapper fundAccountReadMapper;
 
 	@Autowired
 	private BankCardInfoService bankCardinfoService;
@@ -931,7 +927,7 @@ public class CustomerInfoService {
 		if (customerInfo.getHasAcount() != null && customerInfo.getHasAcount().intValue() == 1) {
 			throw new Exception("0001" + customerInfo.getCustomerName());
 		}
-		FundAccountEntity fundAccountEntity = fundAccountReadMapper.queryFundAccount(customerInfo.getId(), 0);
+		FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(customerInfo.getId(), 0);
 
 		if (fundAccountEntity == null || fundAccountEntity.getHasThirdAccount() == 1) {
 			// 富友开户接口

@@ -43,7 +43,7 @@ public class FundWithrawCharge {
     private BigDecimal  chargeAmount;                                                  //decimal(2,2) NULL手续费
 
     @Column(name="state")
-    private int state;                                                                  //int(2) NULL状态，1，新增，2，提现操作已完成，3，已扣手续费
+    private Integer state;                                                                  //int(2) NULL状态，1，新增，2，提现操作已完成，3，已扣手续费
 
     public Long getId() {
         return id;
@@ -93,11 +93,11 @@ public class FundWithrawCharge {
         this.chargeAmount = chargeAmount;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 }
