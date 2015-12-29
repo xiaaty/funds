@@ -1,7 +1,6 @@
 package com.gqhmt.sys.interceptor;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.core.util.LogUtil;
@@ -74,7 +73,7 @@ public class PageInterceptor  implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        if (modelAndView.getModel().containsKey("page") && modelAndView.getModel().get("page") instanceof List){
+        if (modelAndView != null &&  modelAndView.getModel().containsKey("page") && modelAndView.getModel().get("page") instanceof List){
             try {
                 modelAndView.getModel().put("page",new GqPageInfo((List) modelAndView.getModel().get("page")));
             }catch (Exception e){
@@ -85,6 +84,5 @@ public class PageInterceptor  implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
     }
 }
