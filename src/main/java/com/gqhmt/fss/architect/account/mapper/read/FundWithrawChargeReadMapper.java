@@ -23,7 +23,4 @@ import com.gqhmt.fss.architect.account.entity.FundWithrawCharge;
  */
 public interface FundWithrawChargeReadMapper extends ReadMapper<FundWithrawCharge> {
 
-    public FundWithrawCharge getFundWithrawCharge(String orderNo);
-
-    public List<FundWithrawCharge> list();
 }
