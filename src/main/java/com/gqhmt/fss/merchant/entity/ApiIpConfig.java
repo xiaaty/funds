@@ -1,4 +1,4 @@
-package com.gqhmt.sys.entity;
+package com.gqhmt.fss.merchant.entity;
 
 import java.util.Date;
 

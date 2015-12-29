@@ -1,13 +1,7 @@
-package com.gqhmt.sys.entity;
+package com.gqhmt.fss.merchant.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Filename:    com.gqhmt.sys.entity.Menu

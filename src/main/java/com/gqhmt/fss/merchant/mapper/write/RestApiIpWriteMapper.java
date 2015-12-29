@@ -1,7 +1,7 @@
-package com.gqhmt.sys.mapper.write;
+package com.gqhmt.fss.merchant.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.sys.entity.ApiIpConfig;
+import com.gqhmt.fss.merchant.entity.ApiIpConfig;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.write.MenuWriteMapper

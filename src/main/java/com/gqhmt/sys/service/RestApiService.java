@@ -7,15 +7,15 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.sys.entity.ApiAddr;
-import com.gqhmt.sys.entity.ApiIpConfig;
-import com.gqhmt.sys.entity.Business;
-import com.gqhmt.sys.mapper.read.RestApiAddrReadMapper;
-import com.gqhmt.sys.mapper.read.RestApiIpReadMapper;
-import com.gqhmt.sys.mapper.read.RestApiReadMapper;
-import com.gqhmt.sys.mapper.write.RestApiAddrWriteMapper;
-import com.gqhmt.sys.mapper.write.RestApiIpWriteMapper;
-import com.gqhmt.sys.mapper.write.RestApiWriteMapper;
+import com.gqhmt.fss.merchant.entity.ApiAddr;
+import com.gqhmt.fss.merchant.entity.ApiIpConfig;
+import com.gqhmt.fss.merchant.entity.Business;
+import com.gqhmt.fss.merchant.mapper.read.RestApiAddrReadMapper;
+import com.gqhmt.fss.merchant.mapper.read.RestApiIpReadMapper;
+import com.gqhmt.fss.merchant.mapper.read.RestApiReadMapper;
+import com.gqhmt.fss.merchant.mapper.write.RestApiAddrWriteMapper;
+import com.gqhmt.fss.merchant.mapper.write.RestApiIpWriteMapper;
+import com.gqhmt.fss.merchant.mapper.write.RestApiWriteMapper;
 
 @Service
 public class RestApiService {

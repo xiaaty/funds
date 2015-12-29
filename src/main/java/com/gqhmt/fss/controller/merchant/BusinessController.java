@@ -1,32 +1,21 @@
-package com.gqhmt.sys.controller;
+package com.gqhmt.fss.controller.merchant;
 
+import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.fss.merchant.entity.ApiAddr;
+import com.gqhmt.fss.merchant.entity.ApiIpConfig;
+import com.gqhmt.fss.merchant.entity.Business;
+import com.gqhmt.sys.service.RestApiService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import com.gqhmt.annotations.AutoPage;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.gqhmt.core.mybatis.GqPageInfo;
-import com.gqhmt.sys.entity.ApiAddr;
-import com.gqhmt.sys.entity.ApiIpConfig;
-import com.gqhmt.sys.entity.Business;
-import com.gqhmt.sys.service.RestApiService;
-import com.gqhmt.util.GlobalConstants;
-import com.gqhmt.util.RequestUtil;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController

@@ -1,7 +1,7 @@
-package com.gqhmt.sys.mapper.read;
+package com.gqhmt.fss.merchant.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.sys.entity.ApiIpConfig;
+import com.gqhmt.fss.merchant.entity.ApiIpConfig;
 
 /**
  * 商户ip地址
