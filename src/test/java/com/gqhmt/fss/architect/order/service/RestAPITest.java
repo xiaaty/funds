@@ -1,14 +1,10 @@
 package com.gqhmt.fss.architect.order.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gqhmt.fss.architect.merchant.service.RestApiService;
+import com.gqhmt.util.Encriptor;
+import com.gqhmt.util.LogUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +14,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gqhmt.sys.service.RestApiService;
-import com.gqhmt.util.Encriptor;
-import com.gqhmt.util.LogUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest
@@ -165,7 +163,7 @@ public class RestAPITest extends AbstractJUnit4SpringContextTests {
 	}
 	/**
 	 * 
-	 * @param restApiService
+	 * @param service
 	 * @param url
 	 * @param busiCode
 	 * @return

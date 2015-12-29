@@ -1,10 +1,10 @@
 package com.gqhmt.fss.controller.merchant;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.fss.merchant.entity.ApiAddr;
-import com.gqhmt.fss.merchant.entity.ApiIpConfig;
-import com.gqhmt.fss.merchant.entity.Business;
-import com.gqhmt.sys.service.RestApiService;
+import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
+import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
+import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

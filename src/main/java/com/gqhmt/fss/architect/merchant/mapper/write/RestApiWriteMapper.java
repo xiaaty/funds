@@ -1,7 +1,7 @@
-package com.gqhmt.fss.merchant.mapper.write;
+package com.gqhmt.fss.architect.merchant.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.entity.Business;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.write.MenuWriteMapper

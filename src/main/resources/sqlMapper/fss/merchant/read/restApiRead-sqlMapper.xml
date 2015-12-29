@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.merchant.mapper.read.RestApiReadMapper">
+<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.RestApiReadMapper">
 	<sql id="fieldSql">
 	</sql>
 	<sql id="whereSql">
@@ -33,7 +33,7 @@
 		FROM t_gq_fss_api_addr a WHERE a.busi_code = #{busiCode}
 	</select>
 	
-	<select id="findBusinessList" parameterType="java.lang.Long" resultType="com.gqhmt.fss.merchant.entity.Business">
+	<select id="findBusinessList" parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.merchant.entity.Business">
 		SELECT a.id,a.busi_name busiName,a.busi_code busiCode,
 			a.auth_ip_type authIpType,a.auth_api_type authApiType,
 			remark,create_time createTime,modify_time modifyTime
