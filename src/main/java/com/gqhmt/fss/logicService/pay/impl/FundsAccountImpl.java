@@ -23,6 +23,11 @@ import com.gqhmt.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 
+/**
+ * 账户相关api
+ * @author lijunlong
+ *
+ */
 @Service
 public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAccount {
 
