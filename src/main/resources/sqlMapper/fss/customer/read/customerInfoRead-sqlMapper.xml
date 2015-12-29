@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.CustomerInfoReadMapper">
+	<sql id="fieldSql">
+	</sql>
+	<sql id="whereSql">
+	</sql>
+	<sql id="otherSql">
+		<choose>
+		<when test="orderStr != null">
+			order by ${orderStr}
+		</when>
+		<otherwise>
+		</otherwise>
+		</choose>
+	</sql>
+	<select id="queryCustomerInfoEntityList" parameterType="customerInfoEntity" resultType="customerInfoEntity">
+		
+	</select>
+</mapper>

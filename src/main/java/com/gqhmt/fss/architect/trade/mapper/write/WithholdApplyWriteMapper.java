@@ -5,7 +5,7 @@ import java.util.List;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.WriteMapper;
 import com.gqhmt.fss.architect.trade.bean.WithholdApplyBean;
-import com.gqhmt.fss.architect.trade.bean.WithholdApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.WithholdApplyEntity;
 
 /**
  * Filename:    com.gq.funds.dao

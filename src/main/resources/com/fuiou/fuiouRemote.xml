@@ -25,7 +25,7 @@
     <public>
         <mchnt_cd must="true" source="properties">${public.mchnt_cd}</mchnt_cd>
         <!--         <mchnt_cd must="true" source="fixed">0002900F0004066</mchnt_cd> -->
-        <mchnt_txn_ssn source="class" class="com.gq.funds.entity.FundOrderEntity" key="orderNo"></mchnt_txn_ssn>
+        <mchnt_txn_ssn source="class" class="com.gqhmt.fss.architect.order.entity.FundOrderEntity" key="orderNo"></mchnt_txn_ssn>
     </public>
     <signature/>
     <!-- 1.	开户注册 -->

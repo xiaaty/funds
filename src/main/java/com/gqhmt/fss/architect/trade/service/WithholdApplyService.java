@@ -10,10 +10,10 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.fss.architect.account.bean.BankCardInfoEntity;
+import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.architect.trade.bean.WithholdApplyBean;
-import com.gqhmt.fss.architect.trade.bean.WithholdApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.fss.architect.trade.bean.WithholdApplyFormBean;
 import com.gqhmt.fss.architect.trade.mapper.read.WithholdApplyReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.WithholdApplyWriteMapper;

@@ -4,12 +4,11 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
 
-import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.bean.CustomerInfoSendMsgBean;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
+import com.gqhmt.fss.architect.customer.bean.CustomerInfoSendMsgBean;
+import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
 import com.gqhmt.fss.logicService.pay.FundsResponse;
 import com.gqhmt.fss.logicService.pay.IFundsAccount;
@@ -22,6 +21,7 @@ import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.fss.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
+import org.springframework.stereotype.Service;
 
 @Service
 public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAccount {
@@ -46,7 +46,7 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
      * @param taradPwd           支付渠道交易密码
      * @throws FundsException
      */
-	public FundsResponse createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity, 
+	public FundsResponse createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity,
 			String pwd, String taradPwd) throws FundsException {
 		try {
 			//富友
@@ -92,11 +92,11 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
 	public FundsResponse dropAccount(String thirdPartyType, int custID) throws FundsException {
 		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID, true);
         //订单号
-        FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
-        CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_PASS, fundOrderEntity, primaryAccount,String.valueOf(busiType));
+        //FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
+        //CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_PASS, fundOrderEntity, primaryAccount,String.valueOf(busiType));
 
-        execExction(response,fundOrderEntity);
-        super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
+        //execExction(response,fundOrderEntity);
+        //super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
 		return null;
 	}
 

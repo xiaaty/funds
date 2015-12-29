@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
-import com.gqhmt.fss.architect.account.bean.FundWithrawCharge;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundWithrawCharge;
 import com.gqhmt.fss.architect.account.mapper.read.FundWithrawChargeReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FundWithrawChargeWriteMapper;
 

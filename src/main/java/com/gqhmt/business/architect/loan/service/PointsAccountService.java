@@ -12,8 +12,8 @@ import com.gqhmt.business.architect.loan.entity.PointSequence;
 import com.gqhmt.business.architect.loan.mapper.read.PointAccountReadMapper;
 import com.gqhmt.business.architect.loan.mapper.write.PointAccountWriteMapper;
 import com.gqhmt.business.architect.loan.mapper.write.PointSequenceWriteMapper;
-import com.gqhmt.fss.architect.account.bean.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.service.CustomerInfoService;
+import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.fss.architect.customer.service.CustomerInfoService;
 import com.gqhmt.util.GlobalConstants;
 
 

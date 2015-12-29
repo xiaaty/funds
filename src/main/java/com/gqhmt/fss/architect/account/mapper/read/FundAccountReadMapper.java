@@ -5,7 +5,7 @@ import java.util.List;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.account.bean.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
 
 /**
