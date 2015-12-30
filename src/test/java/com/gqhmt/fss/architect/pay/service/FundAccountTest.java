@@ -6,7 +6,6 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,9 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.logicService.pay.IFundsAccount;
+import com.gqhmt.fss.logicService.pay.exception.FundsException;
 import com.gqhmt.fss.logicService.pay.impl.FundsAccountImpl;
 import com.gqhmt.util.CommonUtil;
-import com.gqhmt.util.ServiceLoader;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest
@@ -91,5 +90,10 @@ public class FundAccountTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void testCheckDropAccount() throws Exception {
     	iFundsAccount.checkDropAccount("2", entity.getId());
+    }
+    
+    @Test
+    public void testChangeCard() throws FundsException {
+    	iFundsAccount.changeCard("2", entity.getId(), "123", "345", "789", "10", "");
     }
 }

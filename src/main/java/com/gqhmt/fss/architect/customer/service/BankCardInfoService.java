@@ -9,9 +9,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.customer.bean.BankCardBean;
 import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.BankCardInfoReadMapper;
@@ -99,8 +97,8 @@ public class BankCardInfoService {
      * @return
      * @throws AppException
      */
-    public Page queryCardListByCustomer(BankCardBean bankDto) throws FssException{
-    	return bankCardinfoReadMapper.queryCardListByCustomer(bankDto);
+    public List<BankCardInfoEntity> queryBankCardList(BankCardInfoEntity bankDto) {
+    	return bankCardinfoReadMapper.select(bankDto);
     }
     
 	/**

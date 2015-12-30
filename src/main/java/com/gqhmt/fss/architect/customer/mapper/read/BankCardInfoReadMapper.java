@@ -25,14 +25,6 @@ import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
 public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
 	
 	/**
-	 * 根据条件查询返回银行卡列表
-	 * @param bankDto
-	 * @param pageReq
-	 * @return
-	 * @throws AppException
-	 */
-	public Page queryCardListByCustomer(BankCardBean bankDto) throws FssException;
-	/**
 	 * 查询该客户是否已配置银行卡信息
 	 * @param bankCardId
 	 * @param userId
