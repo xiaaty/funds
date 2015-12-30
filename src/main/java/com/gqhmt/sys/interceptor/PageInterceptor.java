@@ -1,7 +1,6 @@
 package com.gqhmt.sys.interceptor;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.core.util.LogUtil;
