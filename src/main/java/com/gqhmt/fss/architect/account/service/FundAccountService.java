@@ -4,6 +4,7 @@ package com.gqhmt.fss.architect.account.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -11,9 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
-import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
 import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
@@ -119,8 +118,8 @@ public class FundAccountService {
      * @return
      * @throws FssException
      */
-    public Page queryFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException{
-    	return fundAccountReadMapper.queryFundsAccountList(fundsAcctBean);
+    public List<FundAccountEntity> queryFundsAccountList(FundAccountEntity fundsAcctBean) {
+    	return fundAccountReadMapper.select(fundsAcctBean);
     }
 
     /**

@@ -4,9 +4,7 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
 
 import java.util.List;
 
-import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
 import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
 
 /**
@@ -27,7 +25,6 @@ import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
  */
 public interface ChangeCardReadMapper extends ReadMapper<ChangeCardEntity> {
 
-    public Page query(FundsAccountBean.ChangeCardBean changeCardEntity);
 
     public List<ChangeCardEntity> queryNotPass();
 
