@@ -2,26 +2,22 @@ package com.gqhmt.fss.architect.customer.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
 import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.service.FundAccountService;
 import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
 import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.architect.customer.mapper.read.ChangeCardReadMapper;
-import com.gqhmt.fss.architect.customer.mapper.write.ChangeCardWriteMapper;
-import org.springframework.stereotype.Service;
-
-
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
+import com.gqhmt.fss.architect.customer.mapper.write.FssChangeCardWriteMapper;
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
 import com.gqhmt.fss.architect.order.service.FundOrderService;
 import com.gqhmt.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
@@ -40,12 +36,12 @@ import com.gqhmt.util.LogUtil;
  * 15/11/30  于泳      1.0     1.0 Version
  */
 @Service
-public class ChangeCardService {
+public class FssChangeCardService {
 
     @Resource
-    private ChangeCardReadMapper changeCardReadMapper;
+    private FssChangeCardReadMapper changeCardReadMapper;
     @Resource
-    private ChangeCardWriteMapper changeCardWriteMapper;
+    private FssChangeCardWriteMapper changeCardWriteMapper;
 
     @Resource
     private CustomerInfoService customerInfoService;
@@ -66,15 +62,15 @@ public class ChangeCardService {
 //    private NoticeService noticeService;
 
 
-    public void insert(ChangeCardEntity changeCardEntity) throws Exception{
+    public void insert(FssChangeCardEntity changeCardEntity) throws Exception{
     	changeCardWriteMapper.insertSelective(changeCardEntity);
     }
     
-    public void update(ChangeCardEntity changeCardEntity) {
+    public void update(FssChangeCardEntity changeCardEntity) {
     	changeCardWriteMapper.updateByPrimaryKeySelective(changeCardEntity);
     }
 
-    public ChangeCardEntity get(Long id){
+    public FssChangeCardEntity get(Long id){
         return changeCardReadMapper.selectByPrimaryKey(id);
     }
 
@@ -150,7 +146,7 @@ public class ChangeCardService {
             throw new Exception("0020");
         }
 
-        ChangeCardEntity entity = getChangeCardInstance(custom,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo);
+        FssChangeCardEntity entity = getChangeCardInstance(custom,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo);
         insert(entity);
 
         bankCardinfoEntity.setChangeState(1);
@@ -164,8 +160,8 @@ public class ChangeCardService {
 //        this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT, entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
     }
 
-    public  ChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo){
-        ChangeCardEntity entity = new ChangeCardEntity();
+    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo){
+        FssChangeCardEntity entity = new FssChangeCardEntity();
         entity.setCustId(cus.getId().longValue());
         entity.setCardNo(bankNo);
         entity.setBankType(bankId);
@@ -193,9 +189,9 @@ public class ChangeCardService {
 
     //自动审核换卡需求
     public void autoPassChangeCard(){
-        List<ChangeCardEntity> list = query(1);
+        List<FssChangeCardEntity> list = query(1);
         if(list != null && list.size() > 0) {
-	        for(ChangeCardEntity changeCardEntity : list){
+	        for(FssChangeCardEntity changeCardEntity : list){
 	            changeCardEntity.setPassTime(new Date());
 	            changeCardEntity.setPassUserId(-1l);
 	            changeCardEntity.setTradeState(2);
@@ -204,19 +200,19 @@ public class ChangeCardService {
         }
     }
 
-    public  List<ChangeCardEntity> query(int changeState){
-    	ChangeCardEntity entity = new ChangeCardEntity();
+    public  List<FssChangeCardEntity> query(int changeState){
+    	FssChangeCardEntity entity = new FssChangeCardEntity();
     	entity.setTradeState(changeState);
         return changeCardReadMapper.select(entity);
     }
 
     //图片上传到富友ftp
-    public void uploadImageFtp(ChangeCardEntity changeCardEntity) throws Exception {
+    public void uploadImageFtp(FssChangeCardEntity changeCardEntity) throws Exception {
         update(changeCardEntity);
     }
 
     //图片上传到富友ftp
-    public void uploadData(ChangeCardEntity changeCardEntity) throws Exception {
+    public void uploadData(FssChangeCardEntity changeCardEntity) throws Exception {
         update(changeCardEntity);
         
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
@@ -226,9 +222,9 @@ public class ChangeCardService {
 
     //同步成功数据
     public void sycnChangeCardInfoBySucess(){
-        List<ChangeCardEntity> list = query(5);
+        List<FssChangeCardEntity> list = query(5);
         if(list != null && list.size() > 0) {
-	        for(ChangeCardEntity changeCardEntity : list){
+	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
 	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
 	            if(bankCardinfoEntity == null){
@@ -273,7 +269,7 @@ public class ChangeCardService {
             throw new Exception("未找到对应订单");
         }
         long id = fundOrderEntity.getOrderFrormId();
-        ChangeCardEntity changeCardEntity = this.get(id);
+        FssChangeCardEntity changeCardEntity = this.get(id);
 
         if(changeCardEntity == null){
             throw new Exception("未找到对应换卡记录");
@@ -291,9 +287,9 @@ public class ChangeCardService {
 
     //同步失败记录到换卡记录中
     public void sycnChangeCardInfoByFaile(){
-        List<ChangeCardEntity> list = query(6);
+        List<FssChangeCardEntity> list = query(6);
         if(list != null && list.size() > 0) {
-	        for(ChangeCardEntity changeCardEntity : list){
+	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
 	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
 	            if(bankCardinfoEntity !=null){
@@ -315,9 +311,9 @@ public class ChangeCardService {
 
 
     public void syncBusiness(){
-        List<ChangeCardEntity> list = query(99);
+        List<FssChangeCardEntity> list = query(99);
         if(list != null && list.size() > 0) {
-	        for(ChangeCardEntity changeCardEntity : list){
+	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步业务系统数据,暂时只考虑出借系统
 	            boolean isSuccess = false;
 	            int type = changeCardEntity.getType();

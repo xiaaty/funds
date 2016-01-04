@@ -67,7 +67,7 @@ public class CustomerInfoService {
 	FundAccountService fundAccountService;
 
 	@Resource
-	private ChangeCardService changeCardService;
+	private FssChangeCardService changeCardService;
 
 	/**
 	 * 查询客户管理列表

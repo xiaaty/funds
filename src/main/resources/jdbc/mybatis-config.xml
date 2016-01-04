@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 		<!-- 系统相关 end-->
 		<!-- 账户相关 -->
 	    <typeAlias type="com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity" alias="bankCardInfoEntity"/>
-        <typeAlias type="com.gqhmt.fss.architect.customer.entity.ChangeCardEntity" alias="changeCardEntity"/>
+        <typeAlias type="com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity" alias="changeCardEntity"/>
         <typeAlias type="com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity" alias="customerInfoEntity"/>
 		<typeAlias type="com.gqhmt.fss.architect.account.entity.FundAccountEntity" alias="fundAccountEntity"/>
 	    <typeAlias type="com.gqhmt.fss.architect.account.entity.FundSequenceEntity" alias="fundSequenceEntity"/>

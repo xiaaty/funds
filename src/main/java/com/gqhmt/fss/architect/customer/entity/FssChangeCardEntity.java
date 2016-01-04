@@ -20,7 +20,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="t_gq_fss_changeCard_record")
-public class ChangeCardEntity implements java.io.Serializable{
+public class FssChangeCardEntity implements java.io.Serializable{
 
 
     @Id

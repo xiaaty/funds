@@ -18,7 +18,7 @@ import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.customer.service.BankCardInfoService;
-import com.gqhmt.fss.architect.customer.service.ChangeCardService;
+import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.fss.architect.customer.service.CustomerInfoService;
 import com.gqhmt.fss.architect.account.service.FundAccountService;
 import com.gqhmt.fss.architect.account.service.FundSequenceService;
@@ -51,7 +51,7 @@ abstract class AccountAbstractCommand {
 	protected FundSequenceService sequenceService = ServiceLoader.get(FundSequenceService.class);
 	protected FundAccountService fundAccountService = ServiceLoader.get(FundAccountService.class);
 	protected FundOrderService fundOrderService = ServiceLoader.get(FundOrderService.class);
-	protected ChangeCardService changeCardService = ServiceLoader.get(ChangeCardService.class);
+	protected FssChangeCardService changeCardService = ServiceLoader.get(FssChangeCardService.class);
 	protected CustomerInfoService customerInfoService = ServiceLoader.get(CustomerInfoService.class);
 	protected FundTradeService fundTradeService = ServiceLoader.get(FundTradeService.class);
 	protected WithdrawApplyService withdrawApplyService = ServiceLoader.get(WithdrawApplyService.class);

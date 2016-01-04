@@ -2,12 +2,11 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import java.util.List;
-
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
-import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+
+import java.util.List;
 
 /**
  * Filename:    com.gq.funds.dao.ChangeCardDao
@@ -25,10 +24,10 @@ import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
  * -----------------------------------------------------------------
  * 15/11/30  于泳      1.0     1.0 Version
  */
-public interface ChangeCardReadMapper extends ReadMapper<ChangeCardEntity> {
+public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity> {
 
-    public Page query(FundsAccountBean.ChangeCardBean changeCardEntity);
+    public Page query(FssChangeCardEntity changeCardEntity);
 
-    public List<ChangeCardEntity> queryNotPass();
+    public List<FssChangeCardEntity> queryNotPass();
 
 }

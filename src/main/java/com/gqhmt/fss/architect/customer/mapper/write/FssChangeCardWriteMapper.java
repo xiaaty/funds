@@ -3,7 +3,7 @@ package com.gqhmt.fss.architect.customer.mapper.write;/**
  */
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 
 /**
  * Filename:    com.gq.funds.dao.ChangeCardDao
@@ -21,6 +21,6 @@ import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
  * -----------------------------------------------------------------
  * 15/11/30  于泳      1.0     1.0 Version
  */
-public interface ChangeCardWriteMapper extends WriteMapper<ChangeCardEntity> {
+public interface FssChangeCardWriteMapper extends WriteMapper<FssChangeCardEntity> {
 
 }
