@@ -1,11 +1,11 @@
-package com.gqhmt.fss.logicService.accounting.listener;
+package com.gqhmt.fss.logicService.pay.listener.trade;
 
 import com.gqhmt.fss.logicService.pay.event.trade.AgentWithdrawEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 /**
- * Filename:    com.gqhmt.fss.logicService.accounting.listener.AccountingAgentWithdrawListener
+ * Filename:    com.gqhmt.fss.logicService.pay.listener.trade.AccountingAgentWithdrawListener
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

@@ -1,4 +1,4 @@
-package com.gqhmt.fss.logicService.accounting.listener;
+package com.gqhmt.fss.logicService.pay.listener.trade;
 
 import com.gqhmt.fss.logicService.pay.event.trade.WithdrawEvent;
 import org.springframework.context.ApplicationListener;
