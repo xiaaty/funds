@@ -1,6 +1,7 @@
 package com.gqhmt.fss.logicService.pay.event.account;
 
 import org.springframework.context.ApplicationEvent;
+import org.springframework.stereotype.Component;
 
 /**
  * Filename:    com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent

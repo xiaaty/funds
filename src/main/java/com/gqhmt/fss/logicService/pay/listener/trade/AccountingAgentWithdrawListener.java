@@ -1,5 +1,6 @@
 package com.gqhmt.fss.logicService.pay.listener.trade;
 
+import com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent;
 import com.gqhmt.fss.logicService.pay.event.trade.AgentWithdrawEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -21,9 +22,9 @@ import org.springframework.stereotype.Component;
  * 15/12/31  于泳      1.0     1.0 Version
  */
 @Component
-public class AccountingAgentWithdrawListener implements ApplicationListener<AgentWithdrawEvent> {
+public class AccountingAgentWithdrawListener implements ApplicationListener<CreateAccountEvent> {
     @Override
-    public void onApplicationEvent(AgentWithdrawEvent agentWithdrawEvent) {
-
+    public void onApplicationEvent(CreateAccountEvent agentWithdrawEvent) {
+        System.err.println("测试");
     }
 }

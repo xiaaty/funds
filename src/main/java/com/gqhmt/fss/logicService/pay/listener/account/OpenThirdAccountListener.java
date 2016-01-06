@@ -1,7 +1,9 @@
 package com.gqhmt.fss.logicService.pay.listener.account;
 
+import com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
+import org.springframework.stereotype.Component;
 
 /**
  * Filename:    com.gqhmt.fss.logicService.pay.listener.account.OpenThirdAccount
@@ -19,19 +21,21 @@ import org.springframework.context.event.SmartApplicationListener;
  * -----------------------------------------------------------------
  * 16/1/6  于泳      1.0     1.0 Version
  */
+@Component
 public class OpenThirdAccountListener implements SmartApplicationListener {
     @Override
     public boolean supportsEventType(Class<? extends ApplicationEvent> aClass) {
-        return false;
+        return aClass == CreateAccountEvent.class;
     }
 
     @Override
     public boolean supportsSourceType(Class<?> aClass) {
-        return false;
+        return true;
     }
 
     @Override
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        System.err.println("第三方开户");
 
     }
 
