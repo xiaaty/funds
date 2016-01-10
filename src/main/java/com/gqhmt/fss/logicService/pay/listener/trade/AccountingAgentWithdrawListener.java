@@ -3,6 +3,7 @@ package com.gqhmt.fss.logicService.pay.listener.trade;
 import com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent;
 import com.gqhmt.fss.logicService.pay.event.trade.AgentWithdrawEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,8 +24,17 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AccountingAgentWithdrawListener implements ApplicationListener<CreateAccountEvent> {
+    @Async
     @Override
     public void onApplicationEvent(CreateAccountEvent agentWithdrawEvent) {
+
+//        try {
+////            Thread.sleep(1000*9);
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         System.err.println("测试");
     }
 }

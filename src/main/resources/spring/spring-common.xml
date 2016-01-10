@@ -20,6 +20,17 @@
 	<!-- spring config -->
 	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
 	<context:component-scan base-package="com.gqhmt.fss.logicService.pay.listener.*;com.gqhmt.fss.architect.merchant.service;com.gqhmt.sys.*;com.gqhmt.fss.logicService.pay.impl.*"/>
+
+
+
+
+	<!-- 任务执行器 -->
+	<task:executor id="executor" pool-size="10"/>
+	<!-- 任务调度器 -->
+	<task:scheduler id="scheduler" pool-size="10"/>
+	<!--开启注解调度支持 @Async @Scheduled-->
+	<task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="true"/>
+
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 				<value>classpath*:jdbc/jdbc.properties</value>

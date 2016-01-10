@@ -1,0 +1,213 @@
+/*表： t_gq_fss_water*/-----------------------
+
+/*列信息*/-----------账户资金交易流水表，记录每一笔交易流水
+
+Field          Type           Collation        Null    Key     Default  Extra   Privileges                       Comment                                                                                         
+-------------  -------------  ---------------  ------  ------  -------  ------  -------------------------------  ------------------------------------------------------------------------------------------------
+id             bigint(20)     (NULL)           NO      PRI     (NULL)           select,insert,update,references  主键                                                                                          
+cust_no        varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  客户编号                                                                                    
+account_no     varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号                                                                                    
+water_type     varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  流水大类，1充值，2提现，3投标，4还款，5债权转让，6费用收取，9其他  
+trade_type     varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账务类型                                                                                    
+debit_amount   decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  借方金额，账户收益，计入减值，及出账资金，如转出，提现，            
+credit_amount  decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  贷方资金，记录增值，入账资金，如转入，充值                                 
+banlance       bigint(20)     (NULL)           NO              0                select,insert,update,references  余额，计入增方，及，正值                                                            
+create_time    datetime       (NULL)           NO              (NULL)           select,insert,update,references  交易时间                                                                                    
+modify_time    datetime       (NULL)           NO              (NULL)           select,insert,update,references  最后修改时间                                                                              
+sumary         varchar(200)   utf8_general_ci  YES             (NULL)           select,insert,update,references  交易摘要                                                                                    
+currency       varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  交易币种                                                                                    
+order_no       varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  交易流水订单号                                                                           
+token          varchar(45)    utf8_general_ci  YES     UNI     (NULL)           select,insert,update,references  记账标识，防止重复数据流水记录                                                   
+                                                                                                                                                                                                                 
+o_account_id   varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  来源账户账号                                                                              
+seq_no         varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务订单号                                                                                 
+pay_channel    int(11)        (NULL)           YES             (NULL)           select,insert,update,references  交易渠道                                                                                    
+booking_state  int(11)        (NULL)           YES             (NULL)           select,insert,update,references  记账状态，0已记账，1未记账                                                          
+water_no       varchar(45)    utf8_general_ci  YES     UNI     (NULL)           select,insert,update,references  流水编号，唯一                                                                           
+mchn_parent    varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references                                                                                                  
+mchn_child     varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references        
+
+
+/*表： t_gq_fss_trade_apply*/-----------------------------
+
+/*列信息*/-----------代扣、代付申请表
+
+Field                Type           Collation        Null    Key     Default  Extra   Privileges                       Comment                                                                
+-------------------  -------------  ---------------  ------  ------  -------  ------  -------------------------------  -----------------------------------------------------------------------
+id                   int(11)        (NULL)           NO      PRI     (NULL)           select,insert,update,references                                                                         
+apply_no             varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  申请编号                                                           
+apply_type           int(11)        (NULL)           NO              (NULL)           select,insert,update,references  1，充值，2，提现                                                
+cust_no              varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  客户编号                                                           
+user_no              varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  用户编号                                                           
+business_no          varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务编号                                                           
+busi_type            varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，                            
+acc_no               varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号                                                           
+trade_amount         decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  交易金额                                                           
+real_trade_amount    decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  实际交易金额                                                     
+trade_charge_amount  decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  交易手续费                                                        
+trade_state          varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败              
+apply_state          varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  申请状态，新增，审核成功，，已交易，已回调通知  
+mchn_parent          varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references                                                                         
+mchn_child           varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references                                                                         
+create_time          datetime       (NULL)           NO              (NULL)           select,insert,update,references  录入时间                                                           
+modify_time          datetime       (NULL)           NO              (NULL)           select,insert,update,references                                                                         
+seq_no               varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  api业务交易流水号    
+
+
+
+/*表： t_gq_fss_trade_record*/------------------------------
+
+/*列信息*/-----------交易记录表，记录充值，提现所有记录
+
+Field              Type           Collation        Null    Key     Default  Extra           Privileges                       Comment                                                                
+-----------------  -------------  ---------------  ------  ------  -------  --------------  -------------------------------  -----------------------------------------------------------------------
+id                 int(11)        (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references                                                                         
+cust_no            varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                         
+user_no            varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                                                         
+acc_no             varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                         
+trade_type         int(11)        (NULL)           NO              (NULL)                   select,insert,update,references  交易类型，充值，提现                                         
+amount             decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  交易金额                                                           
+charge             decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  手续费                                                              
+thirdparyt_charge  decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  第三方收费                                                        
+trade_date         char(8)        utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                         
+trade_time         char(6)        utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                         
+apply_no           varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references  申请编号                                                           
+settle_type        int(11)        (NULL)           YES             (NULL)                   select,insert,update,references  提现时效。0：T+0，1：T+1                                       
+trade_state        int(11)        (NULL)           YES             (NULL)                   select,insert,update,references  交易状态，未交易，已交易，已退回                       
+trade_result       int(11)        (NULL)           YES             (NULL)                   select,insert,update,references  交易结果，未交易，交易成功，交易失败，交易退票  
+sumary             varchar(3000)  utf8_general_ci  YES             (NULL)                   select,insert,update,references  交易描述                                                           
+create_time        datetime       (NULL)           YES             (NULL)                   select,insert,update,references                                                                         
+modify_time        datetime       (NULL)           YES             (NULL)                   select,insert,update,references                                                                         
+mchn_parent        varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                         
+mchn_child         varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                         
+order_no           varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references    
+
+
+/*表： t_gq_fss_trans_apply*/-----------------------------
+
+/*列信息*/-----------转账申请表，自动审核 or 人工审核 待确认
+
+Field        Type           Collation        Null    Key     Default  Extra           Privileges                       Comment                                                                                                        
+-----------  -------------  ---------------  ------  ------  -------  --------------  -------------------------------  ---------------------------------------------------------------------------------------------------------------
+id           bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references                                                                                                                 
+apply_no     varchar(45)    utf8_general_ci  NO      UNI     (NULL)                   select,insert,update,references                                                                                                                 
+cust_no      varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references  转账申请方 客户编号                                                                                   
+user_no      varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                                                                                                 
+acc_no       varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references  转账申请方 账户账号                                                                                   
+amount       decimal(17,2)  (NULL)           NO              (NULL)                   select,insert,update,references  交易总金额                                                                                                
+trade_sum    int(11)        (NULL)           NO              (NULL)                   select,insert,update,references  交易总笔数                                                                                                
+apply_type   int(11)        (NULL)           NO              (NULL)                   select,insert,update,references  满标转账，还款转账，流标解冻，债权转让，费用收取，收取费收取,运营返现转账  
+trade_date   char(8)        utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                                                                 
+trade_time   char(6)        utf8_general_ci  YES             (NULL)                   select,insert,update,references                                                                                                                 
+busi_type    int(11)        (NULL)           YES             (NULL)                   select,insert,update,references  业务类型                                                                                                   
+busi_no      varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references  业务编号                                                                                                   
+create_time  datetime       (NULL)           NO              (NULL)                   select,insert,update,references                                                                                                                 
+modify_time  datetime       (NULL)           YES             (NULL)                   select,insert,update,references                                                                                                                 
+mchn_parent  varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                                                                 
+mchn_child   varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                 
+
+
+
+/*表： t_gq_fss_trans_record*/------------------------------
+
+/*列信息*/-----------
+
+Field        Type           Collation        Null    Key     Default  Extra   Privileges                       Comment                                                          
+-----------  -------------  ---------------  ------  ------  -------  ------  -------------------------------  -----------------------------------------------------------------
+id           bigint(20)     (NULL)           NO      PRI     (NULL)           select,insert,update,references                                                                   
+cust_no      varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references                                                                   
+user_no      varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references                                                                   
+apply_no     varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  申请编号                                                     
+acc_no       varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  转出账号                                                     
+to_acc_no    varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  转入账号                                                     
+amount       decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  转账金额                                                     
+trade_type   int(11)        (NULL)           NO              (NULL)           select,insert,update,references  交易类型，满标，还款，债权转让，收费，其他  
+funds_type   int(11)        (NULL)           NO              (NULL)           select,insert,update,references  账务类型                                                     
+trans_no     varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  转账编号                                                     
+trade_date   char(8)        utf8_general_ci  YES             (NULL)           select,insert,update,references                                                                   
+trade_time   char(6)        utf8_general_ci  YES             (NULL)           select,insert,update,references                                                                   
+create_time  datetime       (NULL)           YES             (NULL)           select,insert,update,references                                                                   
+modify_time  datetime       (NULL)           YES             (NULL)           select,insert,update,references                                                                   
+mchn_parent  varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references                                                                   
+mchn_child   varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references   
+
+
+/*表： t_gq_fss_asset*/-----------------------
+
+/*列信息*/-----------账户资产表
+
+Field                 Type           Collation        Null    Key     Default  Extra           Privileges                       Comment                         
+--------------------  -------------  ---------------  ------  ------  -------  --------------  -------------------------------  --------------------------------
+id                    bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同   
+cust_no               varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                  
+user_no               varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                  
+acc_no                varchar(45)    utf8_general_ci  NO      UNI     (NULL)                   select,insert,update,references                                  
+acc_asset             decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户总资产                 
+acc_banlance          decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户余额                    
+acc_avai              decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户可用余额              
+acc_freeze            decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户冻结金额              
+                                                                                                                                                                
+acc_invest            decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  投资本金总额              
+acc_invest_repay      decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已回本金总额              
+acc_prose_yield       decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  预期收益总额              
+acc_income            decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已获收益总额              
+acc_prose_yield_drop  decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  预期收益调整平账总额  
+acc_stay_principal    decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  待还本金                    
+acc_also_principal    decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已还本金                    
+                                                                                                                                                                
+acc_stay_interest     decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  待还利息                    
+                                                                                                                                                                
+acc_also_interest     decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已还利息                    
+create_time           datetime       (NULL)           YES             (NULL)                   select,insert,update,references                                  
+modify_time           datetime       (NULL)           YES             (NULL)                   select,insert,update,references                                  
+mchn_parent           varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                  
+mchn_child            varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references    
+
+
+/*表： t_gq_fss_asset_record*/------------------------------
+
+/*列信息*/-----------账户资产变动表
+
+Field          Type           Collation        Null    Key     Default  Extra   Privileges                       Comment                                                                                                 
+-------------  -------------  ---------------  ------  ------  -------  ------  -------------------------------  --------------------------------------------------------------------------------------------------------
+id             int(11)        (NULL)           NO      PRI     (NULL)           select,insert,update,references                                                                                                          
+cust_no        varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references                                                                                                          
+user_no        varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references                                                                                                          
+acc_no         varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references                                                                                                          
+debit_amount   decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  借方金额，资产类，记录增加值，如投标记录，购买债权记录，预期收益记录  
+credit_amount  decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  贷方金额，记录减少值，如还款本金，还款利息。收益减少变更。                 
+balance        decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  账户余额                                                                                            
+asset_no       varchar(45)    utf8_general_ci  NO      UNI     (NULL)           select,insert,update,references  资产流水号                                                                                         
+seq_no         varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务流水号                                                                                         
+order_no       varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  支付交易流水号                                                                                   
+asset_type     int(11)        (NULL)           YES             (NULL)           select,insert,update,references                                                                                                          
+create_time    datetime       (NULL)           YES             (NULL)           select,insert,update,references                                                                                                          
+modify_time    varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references                                                                                                          
+mchn_parent    varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references                                                                                                          
+mchn_child     varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references         
+
+/*表： t_gq_fss_company_charge*/--------------------------------
+
+/*列信息*/-----------公司账户费用记录，手续费，保证金，代偿等
+
+Field         Type           Collation        Null    Key     Default  Extra           Privileges                       Comment                                                                                                                                                             
+------------  -------------  ---------------  ------  ------  -------  --------------  -------------------------------  --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+id            bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references                                                                                                                                                                      
+cust_no       varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                                                                                                                      
+user_no       varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                                                                                                                                                      
+acc_no        varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                                                                                                                      
+amount        decimal(17,2)  (NULL)           NO              (NULL)                   select,insert,update,references                                                                                                                                                                      
+from_acc_no   varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references  来源账户编号                                                                                                                                                  
+from_cust_no  varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references  来源客户编号                                                                                                                                                  
+charge_type   int(11)        (NULL)           NO              (NULL)                   select,insert,update,references  收取类型，1收费，2退费                                                                                                                                    
+funds_type    int(11)        (NULL)           NO              (NULL)                   select,insert,update,references  账务类型，借款人手续费，收取准时还款保证金，归还准还是还款保证金，咨询费，出借补息差，债权转让手续费。。。。  
+trade_date    char(8)        utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                                                                                                                      
+trade_time    char(6)        utf8_general_ci  NO              (NULL)                   select,insert,update,references                                                                                                                                                                      
+trade_state   int(11)        (NULL)           NO              (NULL)                   select,insert,update,references  收费状态，1预计录，2收费提交，3收费成功，4收费失败                                                                                           
+sumary        varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                                                                                                                                                      
+create_time   datetime       (NULL)           NO              (NULL)                   select,insert,update,references                                                                                                                                                                      
+modify_time   datetime       (NULL)           NO              (NULL)                   select,insert,update,references                                                                                                                                                                      
+mchn_parent   varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references                                                                                                                                                                      
+mchn_child    varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references 
+
+                                      

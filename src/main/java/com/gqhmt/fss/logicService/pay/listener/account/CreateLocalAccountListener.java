@@ -35,6 +35,13 @@ public class CreateLocalAccountListener implements SmartApplicationListener {
 
     @Override
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
+
+      /*  try {
+            Thread.sleep(1000*10);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         System.err.println("创建本地账户");
     }
 
