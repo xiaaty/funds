@@ -1,7 +1,11 @@
 package com.gqhmt.fss.architect.trade.entity;
 
+import org.apache.poi.hssf.record.crypto.Biff8Cipher;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity
@@ -26,21 +30,55 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //int(11)        (NULL)           NO      PRI     (NULL)           select,insert,update,references
-    private String apply_no;                                    //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  申请编号
-    private String apply_type;                                  //int(11)        (NULL)           NO              (NULL)           select,insert,update,references  1，充值，2，提现
-    private String cust_no;                                     // varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  客户编号
-    private String user_no;                                     // varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  用户编号
-    private String business_no;                                 //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务编号
-    private String busi_type ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
-    private String acc_no ;                                     //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号
-    private String trade_amount ;                               // decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  交易金额
-    private String real_trade_amount;                           //decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  实际交易金额
-    private String trade_charge_amount ;                        //decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  交易手续费
-    private String trade_state ;                                //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败
-    private String apply_state  ;                               //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  申请状态，新增，审核成功，，已交易，已回调通知
-    private String mchn_parent ;                                //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references
-    private String  mchn_child ;                                //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references
-    private String create_time ;                                //datetime       (NULL)           NO              (NULL)           select,insert,update,references  录入时间
-    private String modify_time ;                                //datetime       (NULL)           NO              (NULL)           select,insert,update,references
-    private String seq_no     ;                                 //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  api业务交易流水号
+
+    @Column(name = "apply_no")
+    private String applyNo;                                    //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  申请编号
+
+    @Column(name = "apply_type")
+    private Integer applyType;                                  //int(11)        (NULL)           NO              (NULL)           select,insert,update,references  1，充值，2，提现
+
+    @Column(name = "cust_no")
+    private String custNo;                                     // varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  客户编号
+
+    @Column(name = "user_no")
+    private String userNo;                                     // varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  用户编号
+
+    @Column(name = "business_no")
+    private String businessNo;                                 //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务编号
+
+    @Column(name = "busi_type")
+    private Integer busiype ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
+
+    @Column(name = "acc_no")
+    private String accNo ;                                     //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号
+
+    @Column(name = "trade_amount")
+    private BigDecimal tradeAmount ;                               // decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  交易金额
+
+    @Column(name = "real_trade_amount")
+    private BigDecimal realTradeAmount;                           //decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  实际交易金额
+
+    @Column(name = "trade_charge_amount")
+    private BigDecimal tradeChargeAmount ;                        //decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  交易手续费
+
+    @Column(name = "trade_state")
+    private Integer tradetate ;                                //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败
+
+    @Column(name = "apply_state")
+    private String applyState  ;                               //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  申请状态，新增，审核成功，，已交易，已回调通知
+
+    @Column(name = "mchn_parent")
+    private String mchnParent ;                                //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references
+
+    @Column(name = "mchn_child")
+    private String  mchnChild ;                                //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references
+
+    @Column(name = "create_time")
+    private Date createTime ;                                //datetime       (NULL)           NO              (NULL)           select,insert,update,references  录入时间
+
+    @Column(name = "modify_time")
+    private Date modifyTime ;                                //datetime       (NULL)           NO              (NULL)           select,insert,update,references
+
+    @Column(name = "seq_no")
+    private String seqNo     ;                                 //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  api业务交易流水号
 }

@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.asset.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Filename:    com.gqhmt.fss.architect.asset.entity.FssAssetEntity
@@ -27,27 +29,62 @@ public class FssAssetEntity implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
-    private String cust_no;                                     // varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
-    private String user_no  ;                                   //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
-    private String acc_no   ;                                   //varchar(45)    utf8_general_ci  NO      UNI     (NULL)                   select,insert,update,references
-    private String acc_asset   ;                                //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户总资产
-    private String acc_banlance ;                               // decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户余额
-    private String acc_avai  ;                                  //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户可用余额
-    private String acc_freeze;                                  //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户冻结金额
 
-    private String     acc_invest ;                             //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  投资本金总额
-    private String acc_invest_repay;                            // decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已回本金总额
-    private String acc_prose_yield  ;                           //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  预期收益总额
-    private String acc_income      ;                            //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已获收益总额
-    private String acc_prose_yield_drop;                        //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  预期收益调整平账总额
-    private String acc_stay_principal ;                         //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  待还本金
-    private String acc_also_principal ;                         //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已还本金
+    @Column(name = "cust_no")
+    private String custNo;                                     // varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
 
-    private String     acc_stay_interest;                       //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  待还利息
+    @Column(name = "user_no")
+    private String userNo  ;                                   //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
 
-    private String acc_also_interest;                           // decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已还利息
-    private String create_time   ;                              //datetime       (NULL)           YES             (NULL)                   select,insert,update,references
-    private String modify_time  ;                               //datetime       (NULL)           YES             (NULL)                   select,insert,update,references
-    private String mchn_parent ;                                //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
-    private String mchn_child  ;                                //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
+    @Column(name = "acc_no")
+    private String accNo   ;                                   //varchar(45)    utf8_general_ci  NO      UNI     (NULL)                   select,insert,update,references
+
+    @Column(name = "acc_asset")
+    private BigDecimal accSsset   ;                                //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户总资产
+
+    @Column(name = "acc_banlance")
+    private BigDecimal accBanlance ;                               // decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户余额
+
+    @Column(name = "acc_avai")
+    private BigDecimal accAvai  ;                                  //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户可用余额
+
+    @Column(name = "acc_freeze")
+    private BigDecimal accFreeze;                                  //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  账户冻结金额
+
+    @Column(name = "acc_invest")
+    private BigDecimal  accInvest ;                             //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  投资本金总额
+
+    @Column(name = "acc_invest_repay")
+    private BigDecimal accInvestRepay;                            // decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已回本金总额
+
+    @Column(name = "acc_prose_yield")
+    private BigDecimal accProseYield  ;                           //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  预期收益总额
+
+    @Column(name = "acc_income")
+    private BigDecimal accIncome      ;                            //decimal(11,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已获收益总额
+
+    @Column(name = "acc_prose_yield_drop")
+    private BigDecimal accProseYieldDrop;                        //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  预期收益调整平账总额
+
+    @Column(name = "acc_stay_principal")
+    private BigDecimal accStayPrincipal ;                         //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  待还本金
+
+    @Column(name = "acc_also_principal")
+    private String accAlsoPrincipal ;                         //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已还本金
+    @Column(name = "acc_also_principal")
+    private BigDecimal  accStayInterest;                       //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  待还利息
+    @Column(name = "acc_also_principal")
+    private BigDecimal accAlsoInterest;                           // decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  已还利息
+
+    @Column(name = "create_time")
+    private Date createTime   ;                              //datetime       (NULL)           YES             (NULL)                   select,insert,update,references
+
+    @Column(name = "modify_time")
+    private Date modifyTime  ;                               //datetime       (NULL)           YES             (NULL)                   select,insert,update,references
+
+    @Column(name = "mchn_parent")
+    private String mchnParent ;                                //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
+
+    @Column(name = "mchn_child")
+    private String mchnChild  ;                                //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
 }
