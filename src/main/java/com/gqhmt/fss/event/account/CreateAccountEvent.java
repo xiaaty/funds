@@ -1,11 +1,9 @@
-package com.gqhmt.fss.logicService.pay.event.account;
+package com.gqhmt.fss.event.account;
 
 import org.springframework.context.ApplicationEvent;
-import org.springframework.stereotype.Component;
 
 /**
- * Filename:    com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent
- * Copyright:   Copyright (c)2015
+ * Filename:    com.gqhmt.fss.event.CreateAccountEventCopyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
  * @author 于泳

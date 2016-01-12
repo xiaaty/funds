@@ -13,10 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.logicService.pay.IFundsAccount;
-import com.gqhmt.fss.logicService.pay.impl.FundsAccountImpl;
+import com.gqhmt.fss.logicService.account.IFundsAccount;
 import com.gqhmt.util.CommonUtil;
-import com.gqhmt.util.ServiceLoader;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest

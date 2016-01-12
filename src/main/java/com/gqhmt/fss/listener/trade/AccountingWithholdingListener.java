@@ -1,12 +1,12 @@
-package com.gqhmt.fss.logicService.pay.listener.trade;
+package com.gqhmt.fss.listener.trade;
 
-import com.gqhmt.fss.logicService.pay.event.trade.WithholdingEvent;
+import com.gqhmt.fss.event.trade.WithholdingEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.stereotype.Component;
 
 /**
- * Filename:    com.gqhmt.fss.logicService.pay.listener.trade.AccountingWithholdingListener
+ * Filename:    com.gqhmt.fss.listener.trade.AccountingWithholdingListener
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

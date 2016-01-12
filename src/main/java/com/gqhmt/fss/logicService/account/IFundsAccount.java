@@ -1,7 +1,8 @@
-package com.gqhmt.fss.logicService.pay;
+package com.gqhmt.fss.logicService.account;
 
 
 import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.fss.logicService.pay.FundsResponse;
 import com.gqhmt.fss.logicService.pay.exception.FundsException;
 
 /**

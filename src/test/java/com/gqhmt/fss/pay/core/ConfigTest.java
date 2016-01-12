@@ -1,6 +1,6 @@
 package com.gqhmt.fss.pay.core;
 
-import com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent;
+import com.gqhmt.fss.event.account.CreateAccountEvent;
 import com.gqhmt.fss.pay.core.factory.ThirdpartyFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;

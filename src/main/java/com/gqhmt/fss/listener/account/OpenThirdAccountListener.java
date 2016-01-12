@@ -1,12 +1,12 @@
-package com.gqhmt.fss.logicService.pay.listener.account;
+package com.gqhmt.fss.listener.account;
 
-import com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent;
+import com.gqhmt.fss.event.account.CreateAccountEvent;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.stereotype.Component;
 
 /**
- * Filename:    com.gqhmt.fss.logicService.pay.listener.account.OpenThirdAccount
+ * Filename:    com.gqhmt.fss.listener.account.OpenThirdAccount
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

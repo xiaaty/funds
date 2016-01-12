@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 
 /**
  * Filename:    com.gqhmt.fss.architect.account.mapper.write.FssWaterWriteMapper
@@ -18,5 +19,6 @@ import com.gqhmt.core.mybatis.WriteMapper;
  * -----------------------------------------------------------------
  * 2016/1/10  于泳      1.0     1.0 Version
  */
-public interface FssWaterWriteMapper extends WriteMapper{
+public interface FssWaterWriteMapper extends WriteMapper<FssWaterEntity>{
+
 }

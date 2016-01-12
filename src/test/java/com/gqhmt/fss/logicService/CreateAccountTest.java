@@ -1,6 +1,6 @@
 package com.gqhmt.fss.logicService;
 
-import com.gqhmt.fss.logicService.pay.event.account.CreateAccountEvent;
+import com.gqhmt.fss.event.account.CreateAccountEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;

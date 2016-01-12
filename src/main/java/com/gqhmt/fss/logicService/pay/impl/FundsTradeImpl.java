@@ -5,7 +5,7 @@ import com.gqhmt.fss.architect.account.exception.ChargeAmountNotenoughException;
 import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
 import com.gqhmt.fss.logicService.pay.FundsResponse;
 import com.gqhmt.fss.logicService.pay.IFundsTrade;
-import com.gqhmt.fss.logicService.pay.event.trade.RechargeEvent;
+import com.gqhmt.fss.event.trade.RechargeEvent;
 import com.gqhmt.fss.logicService.pay.exception.FundsException;
 import com.gqhmt.fss.pay.core.PayCommondConstants;
 import com.gqhmt.fss.pay.core.command.CommandResponse;
