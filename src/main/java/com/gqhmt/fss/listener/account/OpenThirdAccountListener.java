@@ -1,6 +1,7 @@
 package com.gqhmt.fss.listener.account;
 
 import com.gqhmt.fss.event.account.CreateAccountEvent;
+import com.gqhmt.sys.session.SessionFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class OpenThirdAccountListener implements SmartApplicationListener {
 
     @Override
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
-        System.err.println("第三方开户");
+        System.err.println("第三方开户"+ SessionFactory.getCode());
 
     }
 

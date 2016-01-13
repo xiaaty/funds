@@ -1,5 +1,7 @@
 package com.gqhmt.sys.session;
 
+import com.gqhmt.fss.architect.merchant.entity.Business;
+
 /**
  * Filename:    com.gqhmt.sys.session.SessionFactory
  * Copyright:   Copyright (c)2015
@@ -17,6 +19,22 @@ package com.gqhmt.sys.session;
  * 2015/12/19  于泳      1.0     1.0 Version
  */
 public class SessionFactory {
-    public static final ThreadLocal<Application> sessionLocal = new ThreadLocal<Application>();
+    public static final ThreadLocal<Business> sessionLocal = new ThreadLocal<Business>();
+
+    static {
+        Business business = new Business();
+        business.setBusiName("冠e通");
+        business.setBusiCode("E0938ER034");
+        sessionLocal.set(business);
+    }
+
+    public static String getCode(){
+        Business business = sessionLocal.get();
+        if(business != null)
+            return business.getBusiCode();
+
+        return null;
+    }
+
 
 }

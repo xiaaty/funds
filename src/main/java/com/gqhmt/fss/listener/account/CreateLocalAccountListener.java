@@ -1,6 +1,7 @@
 package com.gqhmt.fss.listener.account;
 
 import com.gqhmt.fss.event.account.CreateAccountEvent;
+import com.gqhmt.sys.session.SessionFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,7 @@ public class CreateLocalAccountListener implements SmartApplicationListener {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-        System.err.println("创建本地账户");
+        System.err.println("创建本地账户:"+ SessionFactory.getCode());
     }
 
     @Override

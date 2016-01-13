@@ -1,6 +1,7 @@
 package com.gqhmt.fss.listener.trade;
 
 import com.gqhmt.fss.event.account.CreateAccountEvent;
+import com.gqhmt.sys.session.SessionFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,6 @@ public class AccountingAgentWithdrawListener implements ApplicationListener<Crea
 //            e.printStackTrace();
 //        }
 
-        System.err.println("测试");
+        System.err.println("测试"+ SessionFactory.getCode());
     }
 }
