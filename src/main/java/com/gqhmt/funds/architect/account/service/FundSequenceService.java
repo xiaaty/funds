@@ -1,16 +1,16 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.fss.architect.account.exception.AmountFailException;
 import com.gqhmt.fss.architect.account.exception.ChargeAmountNotenoughException;
 import com.gqhmt.fss.architect.account.exception.FrozenAmountErrorException;
 import com.gqhmt.fss.architect.account.exception.FundAccountNullException;
-import com.gqhmt.fss.architect.account.mapper.read.FundSequenceReadMapper;
-import com.gqhmt.fss.architect.account.mapper.write.FundSequenceWriteMapper;
 import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper;
+import com.gqhmt.funds.architect.account.mapper.write.FundSequenceWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.util.MD5Util;
 import org.springframework.stereotype.Service;
@@ -100,7 +100,7 @@ public class FundSequenceService {
      * @param accountType
      * @param amount
      */
-    public void charge(FundAccountEntity entity,int accountType,BigDecimal amount,String thirdPartyType,FundOrderEntity orderEntity) throws ChargeAmountNotenoughException,FundAccountNullException{
+    public void charge(FundAccountEntity entity, int accountType, BigDecimal amount, String thirdPartyType, FundOrderEntity orderEntity) throws ChargeAmountNotenoughException,FundAccountNullException{
         //校验账户信息
         if(entity == null || entity.getId() == null){
             throw new FundAccountNullException();

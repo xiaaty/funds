@@ -3,8 +3,8 @@ package com.gqhmt.funds.architect.account.mapper.read;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.account.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 
 /**
  * Filename:    com.gq.p2p.account.dao

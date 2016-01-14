@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.trade.service;
 
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
 import com.gqhmt.funds.architect.trade.mapper.read.FuiouPreauthReadMapper;
@@ -63,7 +63,7 @@ public class FuiouPreauthService {
     }
 
     //
-    public void addFuiouPreauth(FundAccountEntity fromEntity,FundAccountEntity toSFEntity,Tender tender,String contractNo,FundOrderEntity fundOrderEntity){
+    public void addFuiouPreauth(FundAccountEntity fromEntity, FundAccountEntity toSFEntity, Tender tender, String contractNo, FundOrderEntity fundOrderEntity){
         FuiouPreauth fuiouPreauth = new FuiouPreauth();
         fuiouPreauth.setAccountId(fromEntity.getId());
         fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));

@@ -2,10 +2,10 @@ package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.BankCardInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.BankCardinfoWriteMapper;
 import org.apache.commons.lang3.StringUtils;

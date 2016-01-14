@@ -1,18 +1,18 @@
 package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper;
-import com.gqhmt.fss.architect.account.service.FundAccountService;
-import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.architect.customer.entity.UserEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.fss.logicService.pay.exception.FundsException;
 import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.mapper.read.FundAccountReadMapper;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoBean;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoSendMsgBean;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.mapping.service.FuiouAreaService;

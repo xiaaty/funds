@@ -2,8 +2,8 @@ package com.gqhmt.funds.architect.account.mapper.read;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.account.bean.FundsAccountBean;
-import com.gqhmt.fss.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 
 import java.math.BigDecimal;
 

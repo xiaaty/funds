@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.customer.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 
 /**
  * Filename:    com.gq.p2p.customer.dao

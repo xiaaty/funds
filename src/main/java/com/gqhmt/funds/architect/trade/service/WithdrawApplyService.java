@@ -2,11 +2,11 @@ package com.gqhmt.funds.architect.trade.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
-import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.fss.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.fss.pay.exception.LazyDealException;
 import com.gqhmt.fss.pay.exception.ThirdpartyErrorAsyncException;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.WithdrawApplyReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.WithdrawApplyWriteMapper;

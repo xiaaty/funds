@@ -1,9 +1,9 @@
 package com.gqhmt.funds.architect.account.service;
 
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.account.entity.FundWithrawCharge;
-import com.gqhmt.fss.architect.account.mapper.read.FundWithrawChargeReadMapper;
-import com.gqhmt.fss.architect.account.mapper.write.FundWithrawChargeWriteMapper;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundWithrawCharge;
+import com.gqhmt.funds.architect.account.mapper.read.FundWithrawChargeReadMapper;
+import com.gqhmt.funds.architect.account.mapper.write.FundWithrawChargeWriteMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,7 +34,7 @@ public class FundWithrawChargeService {
     @Resource
     private FundWithrawChargeWriteMapper fundWithrawChargeWriteMapper;
 
-    public FundWithrawCharge add(String orderNo,FundAccountEntity fundAccountEntity,BigDecimal amount,BigDecimal chargeAmount){
+    public FundWithrawCharge add(String orderNo, FundAccountEntity fundAccountEntity, BigDecimal amount, BigDecimal chargeAmount){
         FundWithrawCharge fundWithrawCharge = new FundWithrawCharge();
         fundWithrawCharge.setState(1);
         fundWithrawCharge.setUserName(fundAccountEntity.getUserName());

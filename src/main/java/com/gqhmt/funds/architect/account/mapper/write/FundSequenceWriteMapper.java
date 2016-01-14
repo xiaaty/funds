@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.account.mapper.write;
 
 import com.gqhmt.core.mybatis.WriteMapper;
-import com.gqhmt.fss.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 
 /**
  * Filename:    com.gq.p2p.account.Bean

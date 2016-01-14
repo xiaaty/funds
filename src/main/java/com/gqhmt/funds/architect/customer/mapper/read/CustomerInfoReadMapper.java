@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.customer.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
 import java.util.List;
 
