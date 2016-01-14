@@ -3,7 +3,6 @@ package com.gqhmt.fss.pay.fuiou.command;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.ResourceUtil;
-import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
 import com.gqhmt.fss.pay.core.channel.PayChannel;
 import com.gqhmt.fss.pay.core.command.AbstractThirdpartyCommand;
 import com.gqhmt.fss.pay.core.command.CommandResponse;
@@ -13,6 +12,7 @@ import com.gqhmt.fss.pay.core.factory.ConfigFactory;
 import com.gqhmt.fss.pay.exception.PayChannelNotSupports;
 import com.gqhmt.fss.pay.fuiou.connection.ConnectionFuiou;
 import com.gqhmt.fss.pay.fuiou.util.SecurityUtils;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
 
 
 
-    public CommandResponse command(String apiKey,FundOrderEntity fundOrderEntity, Object... object) {
+    public CommandResponse command(String apiKey, FundOrderEntity fundOrderEntity, Object... object) {
         boolean isConnection = config.isConnection();
         CommandResponse response=null;
         if(!isConnection){

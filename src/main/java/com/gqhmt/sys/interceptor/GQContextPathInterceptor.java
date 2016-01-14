@@ -1,6 +1,5 @@
 package com.gqhmt.sys.interceptor;
 
-import com.gqhmt.sys.session.Application;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,9 +93,8 @@ public class GQContextPathInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if(modelAndView != null && modelAndView.getModelMap() != null){
             modelAndView.getModelMap().addAttribute("contextPath",request.getContextPath());
-            String context = request.getContextPath();
-            String url  =  request.getServletPath();
-            modelAndView.getModelMap().addAttribute("menu", Application.getInstance().getMenu(context,url));
+
+
         }
 
 //        Class class1 = handler.getClass();

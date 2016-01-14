@@ -1,37 +1,30 @@
 package com.gqhmt.fss.logicService.pay.impl;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Set;
-
+import com.gqhmt.business.architect.invest.service.InvestmentService;
+import com.gqhmt.business.architect.loan.service.*;
+import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
+import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
+import com.gqhmt.fss.architect.account.service.FundAccountService;
+import com.gqhmt.fss.architect.account.service.FundSequenceService;
+import com.gqhmt.fss.architect.account.service.FundWithrawChargeService;
+import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
+import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
+import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
+import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.util.ServiceLoader;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gqhmt.business.architect.loan.service.BidRepaymentService;
-import com.gqhmt.business.architect.loan.service.BidService;
-import com.gqhmt.business.architect.loan.service.BonusService;
-import com.gqhmt.business.architect.loan.service.InvestmentService;
-import com.gqhmt.business.architect.loan.service.PointsAccountService;
-import com.gqhmt.business.architect.loan.service.TenderService;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
-import com.gqhmt.fss.architect.customer.service.BankCardInfoService;
-import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
-import com.gqhmt.fss.architect.customer.service.CustomerInfoService;
-import com.gqhmt.fss.architect.account.service.FundAccountService;
-import com.gqhmt.fss.architect.account.service.FundSequenceService;
-import com.gqhmt.fss.architect.trade.service.FundTradeService;
-import com.gqhmt.fss.architect.account.service.FundWithrawChargeService;
-import com.gqhmt.fss.architect.trade.service.FundsRecordService;
-import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
-import com.gqhmt.fss.architect.order.service.FundOrderService;
-import com.gqhmt.fss.architect.trade.service.WithdrawApplyService;
-import com.gqhmt.fss.architect.trade.service.WithholdApplyService;
-import com.gqhmt.fss.pay.exception.CommandParmException;
-import com.gqhmt.util.GlobalConstants;
-import com.gqhmt.util.ServiceLoader;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * Filename: com.gq.p2p.interactions.account Copyright: Copyright (c)2014
@@ -53,7 +46,7 @@ abstract class AccountAbstractCommand {
 	protected FundOrderService fundOrderService = ServiceLoader.get(FundOrderService.class);
 	protected FssChangeCardService changeCardService = ServiceLoader.get(FssChangeCardService.class);
 	protected CustomerInfoService customerInfoService = ServiceLoader.get(CustomerInfoService.class);
-	protected FundTradeService fundTradeService = ServiceLoader.get(FundTradeService.class);
+//	protected FundTradeService fundTradeService = ServiceLoader.get(FundTradeService.class);
 	protected WithdrawApplyService withdrawApplyService = ServiceLoader.get(WithdrawApplyService.class);
 	protected BankCardInfoService bankCardInfoService = ServiceLoader.get(BankCardInfoService.class);
 	protected BidService bidService = ServiceLoader.get(BidService.class);
@@ -62,7 +55,7 @@ abstract class AccountAbstractCommand {
 	protected InvestmentService investmentService = ServiceLoader.get(InvestmentService.class);
 	protected BidRepaymentService bidRepayment = ServiceLoader.get(BidRepaymentService.class);
 	protected WithholdApplyService withholdApplyService = ServiceLoader.get(WithholdApplyService.class);
-	protected FundsRecordService fundsRecordService = ServiceLoader.get(FundsRecordService.class);
+//	protected FundsRecordService fundsRecordService = ServiceLoader.get(FundsRecordService.class);
 	protected BidRepaymentService bidRepaymentService = ServiceLoader.get(BidRepaymentService.class);
 //	protected DebtQuartzJobDayTask newQuartzJobDayTask = ServiceLoader.get(DebtQuartzJobDayTask.class);
 
@@ -238,19 +231,19 @@ abstract class AccountAbstractCommand {
 	/******************************************************** 交易记录信息 **********************************************************************************/
 	// "充值成功，充值金额 " + amount + "元"
 	protected final void createFundTrade(FundAccountEntity entity, BigDecimal income, BigDecimal payment, int tradeType, String memo) throws RuntimeException {
-		try {
-			this.fundTradeService.addFundTrade(entity.getUserId(), entity.getId(), income, payment, tradeType, memo, entity.getCustId());
-		} catch (Exception e) {
-			throw new CommandParmException(e.getMessage());
-		}
+//		try {
+//			this.fundTradeService.addFundTrade(entity.getUserId(), entity.getId(), income, payment, tradeType, memo, entity.getCustId());
+//		} catch (Exception e) {
+//			throw new CommandParmException(e.getMessage());
+//		}
 	}
 	// "充值成功，充值金额 " + amount + "元"
 	protected final void createFundTrade(FundAccountEntity entity, BigDecimal income, BigDecimal payment, int tradeType, String memo,long bonusAmont) throws RuntimeException {
-		try {
-			this.fundTradeService.addFundTrade(entity.getUserId(), entity.getId(), income, payment, tradeType, memo, entity.getCustId(),bonusAmont);
-		} catch (Exception e) {
-			throw new CommandParmException(e.getMessage());
-		}
+//		try {
+//			this.fundTradeService.addFundTrade(entity.getUserId(), entity.getId(), income, payment, tradeType, memo, entity.getCustId(),bonusAmont);
+//		} catch (Exception e) {
+//			throw new CommandParmException(e.getMessage());
+//		}
 	}
 
 	/******************************************************** 交易记录信息操作结束 **********************************************************************************/
