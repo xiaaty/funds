@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.order.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.FssSeqOrderService
  * Copyright:   Copyright (c)2015
@@ -16,6 +18,14 @@ package com.gqhmt.fss.architect.order.service;
  * -----------------------------------------------------------------
  * 16/1/6  于泳      1.0     1.0 Version
  */
+@Service
 public class FssSeqOrderService {
+
+    public void createSeqNoOpen(){
+
+    }
+
+
+
 
 }
