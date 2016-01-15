@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.trade.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
 
 /**
@@ -19,6 +19,6 @@ import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
  * -----------------------------------------------------------------
  * 2015/1/15  于泳      1.0     1.0 Version
  */
-public interface FuiouPreauthWriteMapper extends WriteMapper<FuiouPreauth> {
+public interface FuiouPreauthWriteMapper extends ReadAndWriteMapper<FuiouPreauth> {
 
 }

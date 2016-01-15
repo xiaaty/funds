@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.customer.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
  * -----------------------------------------------------------------
  * 16/1/4  于泳      1.0     1.0 Version
  */
-public interface FssCustomerWriteMapper extends WriteMapper<FssCustomerEntity> {
+public interface FssCustomerWriteMapper extends ReadAndWriteMapper<FssCustomerEntity> {
 }

@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.job.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
  * -----------------------------------------------------------------
  * 2015/5/10  于泳      1.0     1.0 Version
  */
-public interface FuiouFtpOrderWriteMapper extends WriteMapper<FuiouFtpOrder> {
+public interface FuiouFtpOrderWriteMapper extends ReadAndWriteMapper<FuiouFtpOrder> {
 }

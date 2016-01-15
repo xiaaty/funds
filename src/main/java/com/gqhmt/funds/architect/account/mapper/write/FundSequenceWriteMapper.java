@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.account.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
  * -----------------------------------------------------------------
  * 2015/1/16  于泳      1.0     1.0 Version
  */
-public interface FundSequenceWriteMapper extends WriteMapper<FundSequenceEntity> {
+public interface FundSequenceWriteMapper extends ReadAndWriteMapper<FundSequenceEntity> {
 }

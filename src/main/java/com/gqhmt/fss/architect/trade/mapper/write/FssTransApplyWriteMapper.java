@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.trade.mapper.write;
 
-import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTransApplyEntity;
 
 /**
@@ -20,5 +19,5 @@ import com.gqhmt.fss.architect.trade.entity.FssTransApplyEntity;
  * -----------------------------------------------------------------
  * 2016/1/10  于泳      1.0     1.0 Version
  */
-public interface FssTransApplyWriteMapper extends WriteMapper<FssTransApplyEntity> {
+public interface FssTransApplyWriteMapper extends ReadAndWriteMapper<FssTransApplyEntity> {
 }

@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.order.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 
@@ -21,6 +21,6 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
  * 2015/1/20  于泳      1.0     1.0 Version
  */
 
-public interface FundOrderWriteMapper extends WriteMapper<FundOrderEntity> {
+public interface FundOrderWriteMapper extends ReadAndWriteMapper<FundOrderEntity> {
 
 }

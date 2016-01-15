@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.customer.mapper.write;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 
 /**
@@ -21,6 +21,6 @@ import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
  * -----------------------------------------------------------------
  * 15/11/30  于泳      1.0     1.0 Version
  */
-public interface FssChangeCardWriteMapper extends WriteMapper<FssChangeCardEntity> {
+public interface FssChangeCardWriteMapper extends ReadAndWriteMapper<FssChangeCardEntity> {
 
 }

@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.order.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
  * -----------------------------------------------------------------
  * 16/1/6  于泳      1.0     1.0 Version
  */
-public interface FssSeqOrderWriteMapper extends WriteMapper<FssSeqOrderEntity>{
+public interface FssSeqOrderWriteMapper extends ReadAndWriteMapper<FssSeqOrderEntity> {
 }

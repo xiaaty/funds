@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.account.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
  * -----------------------------------------------------------------
  * 16/1/4  于泳      1.0     1.0 Version
  */
-public interface FssFuiouAccountWriteMapper extends WriteMapper<FssFuiouAccountEntity> {
+public interface FssFuiouAccountWriteMapper extends ReadAndWriteMapper<FssFuiouAccountEntity> {
 }

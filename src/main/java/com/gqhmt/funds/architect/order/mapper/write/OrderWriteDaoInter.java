@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.order.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.order.entity.Order;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.fss.architect.order.entity.Order;
  * -----------------------------------------------------------------
  * 2015/10/27  于泳      1.0     1.0 Version
  */
-public interface OrderWriteDaoInter extends WriteMapper<Order> {
+public interface OrderWriteDaoInter extends ReadAndWriteMapper<Order> {
 }

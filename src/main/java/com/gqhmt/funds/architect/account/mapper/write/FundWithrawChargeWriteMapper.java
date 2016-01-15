@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.account.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundWithrawCharge;
 
 /**
@@ -19,6 +19,6 @@ import com.gqhmt.funds.architect.account.entity.FundWithrawCharge;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-public interface FundWithrawChargeWriteMapper extends WriteMapper<FundWithrawCharge> {
+public interface FundWithrawChargeWriteMapper extends ReadAndWriteMapper<FundWithrawCharge> {
 
 }

@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.asset.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
  * -----------------------------------------------------------------
  * 2016/1/10  于泳      1.0     1.0 Version
  */
-public interface FssAssetWriteMapper extends WriteMapper<FssAssetEntity> {
+public interface FssAssetWriteMapper extends ReadAndWriteMapper<FssAssetEntity> {
 }

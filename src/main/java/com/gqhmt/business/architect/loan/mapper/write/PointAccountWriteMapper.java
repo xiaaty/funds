@@ -1,7 +1,7 @@
 package com.gqhmt.business.architect.loan.mapper.write;
 
 import com.gqhmt.business.architect.loan.entity.PointAccount;
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 
 /**
  *
@@ -14,6 +14,6 @@ import com.gqhmt.core.mybatis.WriteMapper;
  * Modification History:
 
  */
-public interface PointAccountWriteMapper extends WriteMapper<PointAccount> {
+public interface PointAccountWriteMapper extends ReadAndWriteMapper<PointAccount> {
 	
 }

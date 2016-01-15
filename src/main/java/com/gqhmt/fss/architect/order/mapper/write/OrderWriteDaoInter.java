@@ -1,8 +1,7 @@
 package com.gqhmt.fss.architect.order.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.order.entity.Order;
-import tk.mybatis.mapper.common.Mapper;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.mapper.write.OrderWriteDaoInter
@@ -20,5 +19,5 @@ import tk.mybatis.mapper.common.Mapper;
  * -----------------------------------------------------------------
  * 2015/10/27  于泳      1.0     1.0 Version
  */
-public interface OrderWriteDaoInter extends WriteMapper<Order> {
+public interface OrderWriteDaoInter extends ReadAndWriteMapper<Order> {
 }

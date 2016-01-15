@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.trade.mapper.write;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.trade.bean.WithholdApplyBean;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2015/04/08  guofu      1.0     1.0 Version
  */
-public interface WithholdApplyWriteMapper  extends WriteMapper<WithholdApplyEntity>{
+public interface WithholdApplyWriteMapper  extends ReadAndWriteMapper<WithholdApplyEntity> {
 	
 	/**
 	 * 根据条件对象查询并返回对应的提现信息列表

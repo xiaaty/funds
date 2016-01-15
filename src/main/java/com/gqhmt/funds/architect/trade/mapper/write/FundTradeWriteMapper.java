@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.trade.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
 /**
@@ -20,6 +20,6 @@ import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
  * 2015/1/16  于泳      1.0     1.0 Version
  */
 
-public interface FundTradeWriteMapper extends WriteMapper<FundTradeEntity> {
+public interface FundTradeWriteMapper extends ReadAndWriteMapper<FundTradeEntity> {
 
 }

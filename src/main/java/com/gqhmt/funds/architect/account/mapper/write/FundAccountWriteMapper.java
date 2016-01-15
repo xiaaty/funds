@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.account.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 
 /**
@@ -19,7 +19,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
  * -----------------------------------------------------------------
  * 2015/1/15  于泳      1.0     1.0 Version
  */
-public interface FundAccountWriteMapper extends WriteMapper<FundAccountEntity> {
+public interface FundAccountWriteMapper extends ReadAndWriteMapper<FundAccountEntity> {
 
 	void updateCustName(Integer cusID, String custName);
 

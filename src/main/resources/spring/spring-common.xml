@@ -133,7 +133,7 @@
 		<property name="basePackage" value="com.gqhmt.fss.architect.*.mapper;com.gqhmt.sys.mapper"/>
 		<property name="properties">
 			<value>
-				mappers=com.gqhmt.core.mybatis.WriteMapper,com.gqhmt.core.mybatis.ReadMapper
+				mappers=com.gqhmt.core.mybatis.ReadAndWriteMapper,com.gqhmt.core.mybatis.ReadMapper
 			</value>
 		</property>
 	</bean>
