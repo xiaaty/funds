@@ -24,6 +24,15 @@ public class CreateAccountByFuiou extends TransferDataSuperBean {
 
     private String cert_no;
 
+
+    private String name;
+
+    private String bank_id;
+
+    private String bank_card;
+
+    private String city_id;
+
     public String getMobile() {
         return mobile;
     }
@@ -71,12 +80,4 @@ public class CreateAccountByFuiou extends TransferDataSuperBean {
     public void setCity_id(String city_id) {
         this.city_id = city_id;
     }
-
-    private String name;
-
-    private String bank_id;
-
-    private String bank_card;
-
-    private String city_id;
 }

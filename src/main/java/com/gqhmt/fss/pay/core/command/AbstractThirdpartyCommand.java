@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractThirdpartyCommand implements ThirdpartyCommand {
 
-    private static Map<String,Method> classMap = new ConcurrentHashMap<>();
+    private static Map<String, Method> classMap = new ConcurrentHashMap<>();
 
-    public void parsePublic(String apiName,Map map,Object... obj) throws CommandParmException{
+    public final void parsePublic(final String apiName , final Map map , Object... obj ) throws CommandParmException{
 
         Set<String> publicSet  = (Set)getConfig().getValue("public");
         for(String s: publicSet){
@@ -41,7 +41,7 @@ public abstract class AbstractThirdpartyCommand implements ThirdpartyCommand {
         }
         for(String s: apiSet){
             Object value = getValue(apiName,"api."+apiName,s,obj);
-            String must = (String)getConfig().getValue("api."+apiName+"."+s+".must");
+            String must = (String)getConfig().getValue("api."+apiName+"."+ s +".must");
             boolean isMust = false;
             if(must != null && Boolean.valueOf(must)){
                 isMust = true;

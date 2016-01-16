@@ -1,5 +1,7 @@
 package com.gqhmt.fss.transferDataBean;
 
+import com.gqhmt.annotations.AutoMapping;
+
 /**
  * Filename:    com.gqhmt.fss.transferDataBean.TransferDataSuperBean
  * Copyright:   Copyright (c)2015
@@ -16,10 +18,14 @@ package com.gqhmt.fss.transferDataBean;
  * -----------------------------------------------------------------
  * 16/1/12  于泳      1.0     1.0 Version
  */
-public class TransferDataSuperBean {
+public abstract class TransferDataSuperBean {
 
+
+    @AutoMapping(value = "mchn_child",isParent = true)
     private String mchn;
 
+
+    @AutoMapping("seqNo")
     private String seq_no;
 
     public String getMchn() {
@@ -30,13 +36,8 @@ public class TransferDataSuperBean {
         this.mchn = mchn;
     }
 
-    public String getSeq_no() {
-        return seq_no;
-    }
 
-    public void setSeq_no(String seq_no) {
-        this.seq_no = seq_no;
-    }
+
 
     public String getSignature() {
         return signature;
@@ -47,4 +48,12 @@ public class TransferDataSuperBean {
     }
 
     private String signature;
+
+    public String getSeq_no() {
+        return seq_no;
+    }
+
+    public void setSeq_no(String seq_no) {
+        this.seq_no = seq_no;
+    }
 }
