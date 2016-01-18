@@ -21,7 +21,7 @@ import com.gqhmt.annotations.AutoMapping;
 public abstract class TransferDataSuperBean {
 
 
-    @AutoMapping(value = "mchn_child",isParent = true)
+    @AutoMapping(value = "mchnChild",isParent = true)
     private String mchn;
 
 

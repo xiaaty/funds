@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationEvent;
  * 16/1/6  于泳      1.0     1.0 Version
  */
 public class CreateAccountEvent extends ApplicationEvent {
+
     public CreateAccountEvent(Object source) {
         super(source);
     }

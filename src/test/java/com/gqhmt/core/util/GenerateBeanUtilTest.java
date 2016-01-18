@@ -27,6 +27,7 @@ public class GenerateBeanUtilTest {
         FssSeqOrderEntity fssSeqOrderEntity = null;
         CreateAccountByFuiou createAccountByFuiou = new CreateAccountByFuiou();
         createAccountByFuiou.setSeq_no("123456");
+        createAccountByFuiou.setMchn("ERRR");
         try {
             fssSeqOrderEntity =   GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
         } catch (Exception e) {

@@ -16,17 +16,17 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 		<typeAlias type="com.gqhmt.sys.beans.SysLog" alias="SysLog"/>
 		<!-- 系统相关 end-->
 		<!-- 账户相关 -->
-	    <typeAlias type="com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity" alias="bankCardInfoEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity" alias="bankCardInfoEntity"/>
         <typeAlias type="com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity" alias="changeCardEntity"/>
-        <typeAlias type="com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity" alias="customerInfoEntity"/>
-		<typeAlias type="com.gqhmt.fss.architect.account.entity.FundAccountEntity" alias="fundAccountEntity"/>
-	    <typeAlias type="com.gqhmt.fss.architect.account.entity.FundSequenceEntity" alias="fundSequenceEntity"/>
-	    <typeAlias type="com.gqhmt.fss.architect.trade.entity.FundTradeEntity" alias="fundTradeEntity"/>
-	    <typeAlias type="com.gqhmt.fss.architect.account.entity.FundWithrawCharge" alias="fundWithrawCharge"/>
+        <typeAlias type="com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity" alias="customerInfoEntity"/>
+		<typeAlias type="com.gqhmt.funds.architect.account.entity.FundAccountEntity" alias="fundAccountEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundSequenceEntity" alias="fundSequenceEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.FundTradeEntity" alias="fundTradeEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundWithrawCharge" alias="fundWithrawCharge"/>
 	    <!-- 账户相关 end -->
 	    <!-- 交易相关 -->
-	    <typeAlias type="com.gqhmt.fss.architect.trade.entity.WithdrawApplyEntity" alias="withdrawApplyEntity"/>
-        <typeAlias type="com.gqhmt.fss.architect.trade.entity.WithholdApplyEntity" alias="withholdApplyEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity" alias="withdrawApplyEntity"/>
+        <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity" alias="withholdApplyEntity"/>
 	    <!-- 交易相关 end-->
 	</typeAliases>
 

@@ -3,6 +3,7 @@ package com.gqhmt.core.util;
 
 import com.gqhmt.annotations.AutoDate;
 import com.gqhmt.annotations.AutoDateType;
+import com.gqhmt.annotations.AutoMapping;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -100,10 +101,26 @@ public class GenerateBeanUtil {
 
         if(value == null) return;
 
-        if (fieldMap.containsKey(tClass.getName()+"."+sourceField.getName()) == false) return;
+
+        Field targerField = sourceField;
+        AutoMapping autoMapping = sourceField.getAnnotation(AutoMapping.class);
+
+        if(autoMapping != null){
+            String mappingValue = autoMapping.value();
+            try {
+                Field field = tClass.getDeclaredField(mappingValue);
+                targerField = field;
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (fieldMap.containsKey(tClass.getName()+"."+targerField.getName()) == false) return;
+
+
 
         try {
-            Method method = getFieldSetMethod(tClass,sourceField);
+            Method method = getFieldSetMethod(tClass,targerField);
             method.invoke(targerObj,value);
         } catch (Exception e) {
             LogUtil.error(GenerateBeanUtil.class,e);
