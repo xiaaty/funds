@@ -5,7 +5,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../include/common_css_js.ftl">
+    <#include "../../../view/include/common_css_js.jsp">
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     <style>
         .table-nobg-btn {
@@ -30,7 +30,7 @@
 </head>
 
 <body>
-<#include "../../include/menu.ftl">
+<#include "../../../view/include/menu.jsp">
 
 <div id="main" role="main">
 
@@ -47,24 +47,24 @@
 
     <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
         <header>
-            <h2>商户IP修改</h2>
+            <h2>商户API修改</h2>
         </header>
         <!-- widget div-->
-	        <form class="smart-form" id="ipUpdateForm" action="${contextPath}/sys/busi/ipUpdateConfirm" method="post">
+	        <form class="smart-form" id="apiUpdateForm" action="${contextPath}/sys/busi/apiUpdateConfirm" method="post">
             	<input type="hidden" name="busiCode" value="${busiCode}">
 		        <div class="jarviswidget-editbox">
                     <!-- This area used as dropdown edit box -->
                 </div>
 		        <div class="widget-body no-padding">
 		        	<div class="mt10 mb10">
-                        <table class="table" id="ip_table">
+                        <table class="table" id="api_table">
                             <col width="100" /><col width="100" />
                         	<tbody>
-			            	<#list apiIpList as ip>
+			            	<#list apiList as api>
                         		<tr class="lh32">
-                                	<td class="tr">IP地址：</td>
+                                	<td class="tr">API地址：</td>
                                     <td>           	
-						      			<input type="text" name="ipAddr" value="${ip.ipAddr!}" placeholder="请输入ip">
+						      			<input type="text" name="apiAddr" value="${api.apiAddr!}" placeholder="请输入api">
 						      		</td>
 						      	</tr>
 	             			</#list>
@@ -80,7 +80,7 @@
 	        </form>
      </div>
             <!-- end widget content -->
-<#include "../../include/common_footer_css_js.ftl">
+<#include "../../../view/include/common_footer_css_js.jsp">
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
 </div>
@@ -89,7 +89,7 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
 	    $("#btn-success").click(function () {
-            $("#ipUpdateForm").ajaxSubmit({
+            $("#apiUpdateForm").ajaxSubmit({
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 dataType: "json",
                 success: function (data) {
@@ -103,17 +103,17 @@
             });
 	    });
 	    $("#btn-add").click(function () {
-	    	var table1 = $("#ip_table");
+	    	var table1 = $("#api_table");
             var firstTr = table1.find("tbody>tr:last");
-            var row = $("<tr class='lh32'><td class='tr'>IP地址：</td></tr>");
+            var row = $("<tr class='lh32'><td class='tr'>API地址：</td></tr>");
             var td_1 = $("<td></td>");
-            td_1.append($("<input type='text' name='ipAddr' placeholder='请输入ip'/>"));
+            td_1.append($("<input type='text' name='apiAddr' placeholder='请输入api'/>"));
             row.append(td_1);
             table1.append(row);
 	    });
 	    // 删除最后一行
 	    $("#btn-delete").click(function () {
-	    	var table1 = $("#ip_table");
+	    	var table1 = $("#api_table");
             var firstTr = table1.find("tbody>tr:last");
             firstTr.remove();
 	    });
@@ -124,7 +124,7 @@
 	}
 </script>
 
-<#include "../../include/foot.ftl">
+<#include "../../../view/include/foot.jsp">
 </body>
 
 </html>

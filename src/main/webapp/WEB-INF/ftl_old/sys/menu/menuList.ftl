@@ -5,7 +5,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../include/common_css_js.ftl">
+    <#include "../../../view/include/common_css_js.jsp">
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -29,9 +29,7 @@
 </head>
 
 <body>
-<#include "../../include/menu.ftl">
-
-
+<#include "../../../view/include/menu.jsp">
 <div id="main" role="main">
 
     <!-- RIBBON -->
@@ -39,8 +37,8 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>商户管理</li>
-            <li>商户列表</li>
+            <li>菜单管理</li>
+            <li>菜单列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -50,14 +48,19 @@
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
+
+                    <!--
+                         -->
+                    <!-- NEW WIDGET START -->
+                    <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>商户列表</h2>
+                            <h2>菜单列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="busiListForm">
+                            <form class="smart-form">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -70,45 +73,29 @@
                                         <col />
                                         <thead>
                                         <tr>
-                                            <td>商户名称</td>
-                                            <td>商户标识</td>
-                                            <td>IP校验方式</td>
-                                            <td>API校验方式</td>
+                                            <td>菜单名</td>
+                                            <td>菜单URL</td>
                                             <td>创建时间</td>
+                                            <td>修改时间</td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                             <#list page.list as t>
                                                 <tr>
-                                                    <td>${t.busiName}</td>
-                                                    <td>${t.busiCode}</td>
-                                                    <td>
-                                                    	<#if t.authIpType == '0'>
-                                                    		IP不校验
-                                                    	<#elseif t.authIpType == '1'>
-                                                    		IP校验
-                                                    	</#if>
-                                                    </td>
-                                                    <td>
-                                                    	<#if t.authApiType == '0'>
-                                                    		API不校验
-                                                    	<#elseif t.authApiType == '1'>
-                                                    		API校验
-                                                    	</#if>
-                                                    </td>
+                                                    <td>${t.menuName}</td>
+                                                    <td>${t.menuUrl}</td>
                                                     <td>${(t.createTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-                                                    <td style="text-align:left;">
-                                                        <a href="${contextPath}/sys/busi/update/${t.busiCode}">修改</a>
-                                                        <#if t.authIpType != '0'>
-                                                        	<a href="${contextPath}/sys/busi/ipupdate/${t.busiCode}">IP地址管理</a>
-                                                        </#if>
-                                                        <#if t.authApiType != '0'>
-                                                        	<a href="${contextPath}/sys/busi/apiupdate/${t.busiCode}">API地址管理</a>
+                                                    <td>${(t.modifyTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+                                                    <td>
+                                                        <#if t.isChild == true>
+                                                            <a href="/sys/menu/${t.id?c}">查看</a>
                                                         </#if>
                                                     </td>
                                                 </tr>
                                             </#list>
+
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -116,24 +103,30 @@
                             </form>
                         </div>
                     </div>
+                    <!--/article>
+                        </div>
+                        <div class="row"-->
+                    <!-- NEW WIDGET START -->
+                    <!--article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"-->
+
                 </article>
             </div>
 
         </section>
     </div>
-<#include "../../include/common_footer_css_js.ftl">
+<#include "../../../view/include/common_footer_css_js.jsp">
 </div>
 
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#busiListForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#logListForm"));
     });
 
 </script>
 
-<#include "../../include/foot.ftl">
+<#include "../../../view/include/foot.jsp">
 </body>
 
 </html>

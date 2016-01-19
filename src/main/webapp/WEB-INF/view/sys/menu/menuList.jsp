@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../include/common_css_js.ftl">
+    <%@include file="../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -29,7 +30,7 @@
 </head>
 
 <body>
-<#include "../../include/menu.ftl">
+<%@include file="../../../view/include/menu.jsp"%>
 <div id="main" role="main">
 
     <!-- RIBBON -->
@@ -81,19 +82,20 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <#list page.list as t>
+                                            <c:forEach items="${page.list}" var="t">
                                                 <tr>
                                                     <td>${t.menuName}</td>
                                                     <td>${t.menuUrl}</td>
-                                                    <td>${(t.createTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
-                                                    <td>${(t.modifyTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                        <#if t.isChild == true>
+                                                        <%--<#if t.isChild == true>
                                                             <a href="/sys/menu/${t.id?c}">查看</a>
-                                                        </#if>
+                                                        </#if>--%>
                                                     </td>
                                                 </tr>
-                                            </#list>
+                                            </c:forEach>
+
 
 
                                         </tbody>
@@ -114,7 +116,7 @@
 
         </section>
     </div>
-<#include "../../include/common_footer_css_js.ftl">
+<%@include file="../../../view/include/common_footer_css_js.jsp"%>
 </div>
 
 
@@ -126,7 +128,7 @@
 
 </script>
 
-<#include "../../include/foot.ftl">
+<%@include file="../../../view/include/foot.jsp"%>
 </body>
 
 </html>
