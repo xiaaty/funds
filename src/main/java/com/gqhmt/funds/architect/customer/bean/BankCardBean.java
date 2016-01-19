@@ -4,7 +4,7 @@ package com.gqhmt.funds.architect.customer.bean;
 /**
  * 银行卡信息查询数据传输对象
  * com.gq.p2p.account.Bean
- * @className FundsAccountBean<br/> 
+ * @className BankCardBean<br/> 
  * @author yangfei.eng@gmail.com
  * @createDate 2015-1-16 上午11:22:30<br/>
  * @version 1.0 <br/>

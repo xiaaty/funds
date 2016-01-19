@@ -27,7 +27,6 @@ import java.math.BigDecimal;
  * @author lijunlong
  *
  */
-@Service
 public class FundsTradeImpl extends AccountAbstractCommand implements IFundsTrade {
 
 

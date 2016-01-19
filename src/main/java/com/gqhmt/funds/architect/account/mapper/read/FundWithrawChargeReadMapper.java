@@ -23,7 +23,4 @@ import java.util.List;
  */
 public interface FundWithrawChargeReadMapper extends ReadMapper<FundWithrawCharge> {
 
-    public FundWithrawCharge getFundWithrawCharge(String orderNo);
-
-    public List<FundWithrawCharge> list();
 }

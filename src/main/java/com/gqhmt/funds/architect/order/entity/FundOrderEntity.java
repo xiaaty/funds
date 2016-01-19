@@ -33,6 +33,7 @@ public class FundOrderEntity implements java.io.Serializable {
 	private String retMessage;
 	private Date createTime;
 	private Date lastModifyTime;
+	@Column(name = "thirdparty_type",updatable = false,nullable = false)
     private String thirdPartyType;
     private BigDecimal chargeAmount;
 
@@ -145,7 +146,6 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.lastModifyTime = lastModifyTime;
 	}
 
-    @Column(name = "thirdparty_type",updatable = false,nullable = false)
     public String getThirdPartyType() {
         return thirdPartyType;
     }

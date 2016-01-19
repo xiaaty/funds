@@ -125,15 +125,19 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	
 	
 	//开户行地区代码(富友开户用)
+	@Transient
 	private String cityCode;
 	
 	//开户行行别(富友开户用)
+	@Transient
 	private String parentBankCode;
 	
 	//开户银行名称
+	@Transient
 	private String bankLongName;
 
 	//银行卡号
+	@Transient
 	private String bankNo;
 	
 	
@@ -697,7 +701,6 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	/**
 	 * @return the cityCode
 	 */
-	@Transient
 	public String getCityCode() {
 		return cityCode;
 	}
@@ -712,7 +715,6 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	/**
 	 * @return the parentBankCode
 	 */
-	@Transient
 	public String getParentBankCode() {
 		return parentBankCode;
 	}
@@ -727,7 +729,6 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	/**
 	 * @return the bankLongName
 	 */
-	@Transient
 	public String getBankLongName() {
 		return bankLongName;
 	}
@@ -742,7 +743,6 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	/**
 	 * @return the bankNo
 	 */
-	@Transient
 	public String getBankNo() {
 		return bankNo;
 	}
