@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!-- 新加入js-->
 
 <!--[if lt IE 9]>
@@ -13,5 +14,7 @@
 
 <link rel="shortcut icon" href="${contextPath}/img/favicon.ico" type="image/x-icon">
 <link rel="icon" href="${contextPath}/img/favicon.ico" type="image/x-icon">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 

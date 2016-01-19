@@ -5,7 +5,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../include/common_css_js.ftl">
+    <#include "../../../view/include/common_css_js.jsp">
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -29,7 +29,7 @@
 </head>
 
 <body>
-<#include "../../include/menu.ftl">
+<#include "../../../view/include/menu.jsp">
 
 
 <div id="main" role="main">
@@ -137,7 +137,7 @@
 
         </section>
     </div>
-<#include "../../include/common_footer_css_js.ftl">
+<#include "../../../view/include/common_footer_css_js.jsp">
 </div>
 
 
@@ -149,7 +149,7 @@
 
 </script>
 
-<#include "../../include/foot.ftl">
+<#include "../../../view/include/foot.jsp">
 </body>
 
 </html>

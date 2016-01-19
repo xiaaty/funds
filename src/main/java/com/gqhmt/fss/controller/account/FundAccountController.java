@@ -1,14 +1,12 @@
 package com.gqhmt.fss.controller.account;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -30,11 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class FundAccountController {
 
-    @Resource
     private FundAccountService fundAccountService;
 
-    private FundAccountEntity entity;
-    
     /**
      * 旧版商户列表
      * @param request
@@ -49,12 +44,4 @@ public class FundAccountController {
 		return "fss/account/accountList";
     }
 
-	public FundAccountEntity getEntity() {
-		return entity;
-	}
-
-	public void setBean(FundAccountEntity entity) {
-		this.entity = entity;
-	}
-    
 }

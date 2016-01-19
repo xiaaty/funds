@@ -3,13 +3,11 @@ package com.gqhmt.sys.controller;
 
 import com.gqhmt.sys.beans.MenuFunc;
 import com.octo.captcha.service.image.ImageCaptchaService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +45,7 @@ public class LoginController {
 	@RequestMapping(value="/main")
 	public String menu(HttpServletRequest request, HttpServletResponse response){
 
-		return "main/main";
+		return "/main/main";
 	}
 		
 }

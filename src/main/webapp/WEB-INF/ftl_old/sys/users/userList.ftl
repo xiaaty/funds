@@ -4,7 +4,7 @@
     <title>内审系统</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../include/common_css_js.ftl">
+    <#include "../../../view/include/common_css_js.jsp">
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -22,7 +22,7 @@
 
 <body>
 
-<#include "../../include/menu.ftl">
+<#include "../../../view/include/menu.jsp">
     <div id="main" role="main">
 
         <!-- RIBBON -->
@@ -219,7 +219,7 @@
     </div>
 
 
-    <#include "../../include/common_footer_css_js.ftl">
+    <#include "../../../view/include/common_footer_css_js.jsp">
 
     <script>
         $(document).ready(function () {
@@ -244,7 +244,7 @@
             });
         }
     </script>
-<#include "../../include/foot.ftl">
+<#include "../../../view/include/foot.jsp">
 </body>
 
 </html>
