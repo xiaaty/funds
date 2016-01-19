@@ -1,0 +1,30 @@
+保理余额查询接口：
+
+url：http://<ip>:<端口号>/interaction/factoringBalance
+参数：无
+返回结果集：
+{
+  "f_14": {
+    "amount": "0",
+    "freezeAmount": "0",
+    "name": "保理代偿账户"
+  },
+  "f_13": {
+    "amount": "0",
+    "freezeAmount": "0",
+    "name": "保理账户"
+  }
+}
+
+保理代偿接口：
+url：http://<ip>:<端口号>/interaction/compensatory
+
+参数：
+  amount：代偿金额
+  type:代偿类型，1代偿，2代偿回款--代偿金额返回代偿账户
+
+返回结果集：0000成功
+{
+  "msg": "代偿失败:主账户不存在",
+  "code": "0001"
+}  
