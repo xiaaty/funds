@@ -1,19 +1,15 @@
 package com.gqhmt.fss.controller.customer;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.fss.architect.customer.service.BankCardInfoService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Filename:    com.gqhmt.fss.controller.BankCardInfoController
@@ -48,8 +44,8 @@ public class BankCardInfoController {
     @RequestMapping(value = "/fss/customer/cardlist",method = RequestMethod.GET)
 	@AutoPage
     public Object accountOldList(HttpServletRequest request,ModelMap model){
-		List<BankCardInfoEntity> cardList = bankCardInfoService.queryBankCardList(entity);
-		model.addAttribute("page", cardList);
+//		List<BankCardInfoEntity> cardList = bankCardInfoService.queryBankCardList(entity);entity
+//		model.addAttribute("page", cardList);
 		return "fss/customer/bankCardList";
     }
 

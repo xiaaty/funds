@@ -1,9 +1,9 @@
 package com.gqhmt.fss.architect.order.service;
 
-import java.math.BigDecimal;
-
-import javax.annotation.Resource;
-
+import com.gqhmt.core.FssException;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundWithrawCharge;
+import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,10 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.account.entity.FundWithrawCharge;
-import com.gqhmt.fss.architect.account.service.FundWithrawChargeService;
+import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest

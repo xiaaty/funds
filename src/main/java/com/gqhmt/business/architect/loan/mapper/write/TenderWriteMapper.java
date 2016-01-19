@@ -1,7 +1,7 @@
 package com.gqhmt.business.architect.loan.mapper.write;
 
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 
 /**
  * @author fanfever
@@ -10,6 +10,6 @@ import com.gqhmt.core.mybatis.WriteMapper;
  * 
  * @description
  */
-public interface TenderWriteMapper extends WriteMapper<Tender> {
+public interface TenderWriteMapper extends ReadAndWriteMapper<Tender> {
 
 }

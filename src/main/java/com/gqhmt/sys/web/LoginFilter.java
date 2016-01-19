@@ -1,12 +1,12 @@
 package com.gqhmt.sys.web;
 
-import com.gqhmt.util.*;
-import com.gqhmt.sys.beans.SysUsers;
+import com.gqhmt.sys.session.Application;
+import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.util.Resources;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginFilter implements Filter {
@@ -22,8 +22,13 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		/*SysUsers sysUsers = null;
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+		String url  =  httpServletRequest.getServletPath();
+		String context = httpServletRequest.getContextPath();
+//		modelAndView.getModelMap().addAttribute("menu", Application.getInstance().getMenu(context,url));
+		request.setAttribute("menu", Application.getInstance().getMenu(context,url));
+		/*SysUsers sysUsers = null;
+
         String contextPath = httpServletRequest.getContextPath();
 		String url = httpServletRequest.getServletPath();
 		Matcher matcher = pattern.matcher(url);

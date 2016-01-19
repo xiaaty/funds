@@ -1,6 +1,6 @@
 package com.gqhmt.fss.pay.core.command;
 
-import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 /**
  * Created by yuyonf on 15/3/29.

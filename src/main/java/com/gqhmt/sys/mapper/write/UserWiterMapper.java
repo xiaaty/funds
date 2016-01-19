@@ -1,6 +1,6 @@
 package com.gqhmt.sys.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.sys.entity.User;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.sys.entity.User;
  * -----------------------------------------------------------------
  * 2015/12/27  于泳      1.0     1.0 Version
  */
-public interface UserWiterMapper extends WriteMapper<User> {
+public interface UserWiterMapper extends ReadAndWriteMapper<User> {
 }

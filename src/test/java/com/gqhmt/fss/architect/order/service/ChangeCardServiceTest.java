@@ -1,18 +1,9 @@
 package com.gqhmt.fss.architect.order.service;
 
-import javax.annotation.Resource;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.customer.entity.ChangeCardEntity;
-import com.gqhmt.fss.architect.customer.service.ChangeCardService;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest
@@ -34,29 +25,29 @@ import com.gqhmt.fss.architect.customer.service.ChangeCardService;
 @ContextConfiguration(locations = "classpath:spring/*.xml")
 public class ChangeCardServiceTest extends AbstractJUnit4SpringContextTests {
 
-    @Resource
-    private ChangeCardService changeCardService;
-
-    private ChangeCardEntity entity;
-    @Before
-    public void setUp() throws FssException {
-    	entity = new ChangeCardEntity();
-    	entity.setId(44l);
-    }
-    
-    @Test
-    public void testUpdate() throws Exception {
-    	
-    	ChangeCardEntity entity1 = changeCardService.get(entity.getId());
-    	Assert.assertEquals("430726198608274316", entity1.getCertNo());
-    	
-    	entity1.setCertNo("430726198608274310");
-    	changeCardService.update(entity1);
-    	Assert.assertEquals("430726198608274310", entity1.getCertNo());
-    	
-    	entity1.setCertNo("430726198608274316");
-    	changeCardService.update(entity1);
-    	Assert.assertEquals("430726198608274316", entity1.getCertNo());
-    }
+//    @Resource
+//    private ChangeCardService changeCardService;
+//
+//    private ChangeCardEntity entity;
+//    @Before
+//    public void setUp() throws FssException {
+//    	entity = new ChangeCardEntity();
+//    	entity.setId(44l);
+//    }
+//
+//    @Test
+//    public void testUpdate() throws Exception {
+//
+//    	ChangeCardEntity entity1 = changeCardService.get(entity.getId());
+//    	Assert.assertEquals("430726198608274316", entity1.getCertNo());
+//
+//    	entity1.setCertNo("430726198608274310");
+//    	changeCardService.update(entity1);
+//    	Assert.assertEquals("430726198608274310", entity1.getCertNo());
+//
+//    	entity1.setCertNo("430726198608274316");
+//    	changeCardService.update(entity1);
+//    	Assert.assertEquals("430726198608274316", entity1.getCertNo());
+//    }
     
 }

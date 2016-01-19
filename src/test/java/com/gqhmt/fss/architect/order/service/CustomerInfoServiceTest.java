@@ -1,7 +1,8 @@
 package com.gqhmt.fss.architect.order.service;
 
-import javax.annotation.Resource;
-
+import com.gqhmt.core.FssException;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.architect.customer.service.CustomerInfoService;
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest

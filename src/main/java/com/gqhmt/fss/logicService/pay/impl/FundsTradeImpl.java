@@ -1,12 +1,7 @@
 package com.gqhmt.fss.logicService.pay.impl;
 
-import java.math.BigDecimal;
-
-import org.springframework.stereotype.Service;
-
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.account.exception.ChargeAmountNotenoughException;
-import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
+import com.gqhmt.fss.event.trade.RechargeEvent;
 import com.gqhmt.fss.logicService.pay.FundsResponse;
 import com.gqhmt.fss.logicService.pay.IFundsTrade;
 import com.gqhmt.fss.logicService.pay.exception.FundsException;
@@ -16,9 +11,16 @@ import com.gqhmt.fss.pay.core.factory.ThirdpartyFactory;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.fss.pay.exception.LazyDealException;
 import com.gqhmt.fss.pay.exception.ThirdpartyErrorAsyncException;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.ThirdPartyType;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * 交易相关api
@@ -26,6 +28,10 @@ import com.gqhmt.util.ThirdPartyType;
  *
  */
 public class FundsTradeImpl extends AccountAbstractCommand implements IFundsTrade {
+
+
+    @Resource
+    private ApplicationContext context;
 
 	/**
      * 生成web充值提现订单
@@ -43,6 +49,7 @@ public class FundsTradeImpl extends AccountAbstractCommand implements IFundsTrad
 		FundAccountEntity entity = super.getFundAccount(custID,type,true);
 		// 订单号
 		FundOrderEntity fundOrderEntity = super.createOrder(entity,amount,GlobalConstants.ORDER_CHARGE,0,0,thirdPartyType);
+        context.publishEvent(new RechargeEvent(""));
         return null;
 	}
 

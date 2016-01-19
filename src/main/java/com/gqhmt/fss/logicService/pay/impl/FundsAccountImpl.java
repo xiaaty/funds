@@ -1,31 +1,29 @@
 package com.gqhmt.fss.logicService.pay.impl;
 
+import com.gqhmt.fss.logicService.account.IFundsAccount;
+import com.gqhmt.fss.logicService.pay.FundsResponse;
+import com.gqhmt.fss.logicService.pay.exception.FundsException;
+import com.gqhmt.fss.logicService.pay.util.CustomerConstants;
+import com.gqhmt.fss.pay.core.command.CommandResponse;
+import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.customer.bean.CustomerInfoSendMsgBean;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.util.LogUtil;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
-import com.gqhmt.fss.architect.customer.bean.CustomerInfoSendMsgBean;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.architect.order.entity.FundOrderEntity;
-import com.gqhmt.fss.logicService.pay.FundsResponse;
-import com.gqhmt.fss.logicService.pay.IFundsAccount;
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
-import com.gqhmt.fss.logicService.pay.util.CustomerConstants;
-import com.gqhmt.fss.pay.core.PayCommondConstants;
-import com.gqhmt.fss.pay.core.command.CommandResponse;
-import com.gqhmt.fss.pay.core.factory.ThirdpartyFactory;
-import com.gqhmt.fss.pay.exception.CommandParmException;
-import com.gqhmt.fss.pay.exception.ThirdpartyErrorAsyncException;
-import com.gqhmt.util.GlobalConstants;
-import com.gqhmt.util.LogUtil;
 
 /**
  * 账户相关api
  * @author lijunlong
  *
  */
+@Service
 public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAccount {
 
 	/**
@@ -50,38 +48,39 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
      */
 	public FundsResponse createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity,
 			String pwd, String taradPwd) throws FundsException {
-		try {
-			//富友
-	        Integer cusId = customerInfoEntity.getId();
-	        Integer userId = customerInfoEntity.getUserId();
-	        //创建主账户
-	        FundAccountEntity primaryAccount = super.getPrimaryAccount(cusId, false);
-	        if(primaryAccount == null){
-	            primaryAccount =  super.createPrimaryAccount(customerInfoEntity, userId);
-	        }
-	        super.createAccount(customerInfoEntity, userId, primaryAccount);
-	//        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-	
-	        if(primaryAccount.getHasThirdAccount() == GlobalConstants.NO_CREATR_THIRD_ACCOUNT){
-	            FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount, BigDecimal.ZERO,GlobalConstants.ORDER_CREATE_ACCOUNT,0,0,thirdPartyType);
-	            //CommandResponse response  = ThirdpartyFactory.command(Integer.valueOf(thirdPartyType),PayCommondConstants.COMMAND_ACCOUNT_PRIVATE_CREATE,fundOrderEntity,primaryAccount,pwd,taradPwd);
-	            CommandResponse response = new CommandResponse();response.setCode("0000");
-	            if(response.getCode().equals("0000")){
-	                primaryAccount.setHasThirdAccount(2);
-	                super.updateAccount(primaryAccount);
-	                super.updateOrder(fundOrderEntity,2,response.getThirdReturnCode(),response.getMsg());
-	                return null;
-	            }else if(response.getCode().equals("0009")){
-	                super.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
-	                throw new ThirdpartyErrorAsyncException();
-	            }else{
-	                super.updateOrder(fundOrderEntity,3,response.getThirdReturnCode(),response.getMsg());
-	                throw new CommandParmException(response.getMsg());
-	            }
-	        }
-		} catch (CreateAccountFailException e) {
-			e.printStackTrace();
-		}
+
+
+//		try {
+//			//富友
+//	        Integer cusId = customerInfoEntity.getId();
+//	        Integer userId = customerInfoEntity.getUserId();
+//	        //创建主账户
+//	        FundAccountEntity primaryAccount = super.getPrimaryAccount(cusId, false);
+//	        if(primaryAccount == null){
+//	            primaryAccount =  super.createPrimaryAccount(customerInfoEntity, userId);
+//	        }
+//	        super.createAccount(customerInfoEntity, userId, primaryAccount);
+//	//        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+//
+//	        if(primaryAccount.getHasThirdAccount() == GlobalConstants.NO_CREATR_THIRD_ACCOUNT){
+//	            FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount, BigDecimal.ZERO,GlobalConstants.ORDER_CREATE_ACCOUNT,0,0,thirdPartyType);
+//	            CommandResponse response  = ThirdpartyFactory.command(Integer.valueOf(thirdPartyType),PayCommondConstants.COMMAND_ACCOUNT_PRIVATE_CREATE,fundOrderEntity,primaryAccount,pwd,taradPwd);
+//	            if(response.getCode().equals("0000")){
+//	                primaryAccount.setHasThirdAccount(2);
+//	                super.updateAccount(primaryAccount);
+//	                super.updateOrder(fundOrderEntity,2,response.getThirdReturnCode(),response.getMsg());
+//	                return null;
+//	            }else if(response.getCode().equals("0009")){
+//	                super.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
+//	                throw new ThirdpartyErrorAsyncException();
+//	            }else{
+//	                super.updateOrder(fundOrderEntity,3,response.getThirdReturnCode(),response.getMsg());
+//	                throw new CommandParmException(response.getMsg());
+//	            }
+//	        }
+//		} catch (CreateAccountFailException e) {
+//			e.printStackTrace();
+//		}
 		return null;
 	}
 
@@ -95,11 +94,11 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
 	public FundsResponse dropAccount(String thirdPartyType, int custID) throws FundsException {
 		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID, true);
         //订单号
-        FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
-        CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_PASS, fundOrderEntity, primaryAccount,String.valueOf(busiType));
+        //FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
+        //CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_PASS, fundOrderEntity, primaryAccount,String.valueOf(busiType));
 
-        execExction(response,fundOrderEntity);
-        super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
+        //execExction(response,fundOrderEntity);
+        //super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
 		return null;
 	}
 
@@ -115,8 +114,8 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
 		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID, true);
         //订单号
         FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
-        //CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
-        CommandResponse response = new CommandResponse();response.setCode("0000");
+        CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
+
         execExction(response,fundOrderEntity);
         super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
 		return null;
@@ -140,8 +139,7 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
         String code = "0000";
         String msg = "银行卡修改成功，24小时后生效";
         try {
-        	//CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
-        	CommandResponse response = new CommandResponse();response.setCode("0000");
+        	CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
         	changeCardService.addChangeCard(cusId, cardNo, bankCd, bankNm,cityId,imagePath);
         }catch (Exception e) {
             code = "0001";

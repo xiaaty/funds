@@ -1,21 +1,19 @@
 package com.gqhmt.fss.architect.pay.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
+import com.gqhmt.core.FssException;
+import com.gqhmt.fss.logicService.account.IFundsAccount;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.util.CommonUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.fss.logicService.pay.IFundsAccount;
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
-import com.gqhmt.fss.logicService.pay.impl.FundsAccountImpl;
-import com.gqhmt.util.CommonUtil;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest
@@ -37,14 +35,13 @@ import com.gqhmt.util.CommonUtil;
 @ContextConfiguration(locations = "classpath:spring/*.xml")
 public class FundAccountTest extends AbstractJUnit4SpringContextTests {
 
+    @Autowired(required=false)
+    private IFundsAccount iFundsAccount;
+
     private CustomerInfoEntity entity;
-    
-    private IFundsAccount iFundsAccount = new FundsAccountImpl();
-    
     @Before
     public void setUp() throws FssException {
     	entity = new CustomerInfoEntity();
-    	entity.setId(611258);
     	entity.setUserId(111);
     	//客户类型 1：借款用户 2:借款共借人 3：线下出借用户 4：线上出借注册用户 9：A0公司内用用户
     	entity.setCustomerType(2);
@@ -82,18 +79,7 @@ public class FundAccountTest extends AbstractJUnit4SpringContextTests {
     }
     
     @Test
-    public void testCreateAccount() throws Exception {
+    public void testInsert() throws Exception {
     	iFundsAccount.createAccount("2", entity, "123", "222");
-    }
-    
-    
-    @Test
-    public void testCheckDropAccount() throws Exception {
-    	iFundsAccount.checkDropAccount("2", entity.getId());
-    }
-    
-    @Test
-    public void testChangeCard() throws FundsException {
-    	iFundsAccount.changeCard("2", entity.getId(), "123", "345", "789", "10", "");
     }
 }

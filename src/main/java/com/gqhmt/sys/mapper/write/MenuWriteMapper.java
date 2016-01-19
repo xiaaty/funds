@@ -1,6 +1,6 @@
 package com.gqhmt.sys.mapper.write;
 
-import com.gqhmt.core.mybatis.WriteMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.sys.entity.Menu;
 
 /**
@@ -19,5 +19,5 @@ import com.gqhmt.sys.entity.Menu;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-public interface MenuWriteMapper extends WriteMapper<Menu> {
+public interface MenuWriteMapper extends ReadAndWriteMapper<Menu> {
 }

@@ -1,18 +1,15 @@
 package com.gqhmt.fss.controller.account;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.fss.architect.account.entity.FundAccountEntity;
-import com.gqhmt.fss.architect.account.service.FundAccountService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
@@ -47,8 +44,8 @@ public class FundAccountController {
     @RequestMapping(value = "/fss/account/oldlist",method = RequestMethod.GET)
 	@AutoPage
     public Object accountOldList(HttpServletRequest request,ModelMap model){
-		List<FundAccountEntity> accountList = fundAccountService.queryFundsAccountList(entity);
-		model.addAttribute("page", accountList);
+//		List<FundAccountEntity> accountList = fundAccountService.queryFundsAccountList(entity);
+//		model.addAttribute("page", accountList);
 		return "fss/account/accountList";
     }
 
