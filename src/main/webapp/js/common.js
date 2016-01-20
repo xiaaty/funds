@@ -99,10 +99,11 @@ function DT_page(tag,bPaginate,json,form){
       $("#"+tag+"_wrapper .pagination .active a").text(obj.pageNum);
       //去掉原控件所有事件
       $("#"+tag+"_wrapper .pagination .first a").off();
-//      $("#"+tag+"_wrapper .pagination .previous a").off();
+///      $("#"+tag+"_wrapper .pagination .previous a").off();
       $("#"+tag+"_wrapper .pagination .prev a").off();
       $("#"+tag+"_wrapper .pagination .next a").off();
       $("#"+tag+"_wrapper .pagination .last a").off();
+      $("#"+tag+"_wrapper .pagination .active a").off();
       //去掉原始所有禁用css
       $("#"+tag+"_wrapper  .first").removeClass("disabled");
       //$("#"+tag+"_wrapper  .previous").removeClass("disabled");
@@ -124,12 +125,16 @@ function DT_page(tag,bPaginate,json,form){
           $("#"+tag+"_wrapper .pagination .last").addClass("disabled");
       }
 
+      $("#"+tag+"_wrapper .pagination .active a").click(function(){
+          pageSetup(form,obj.pageNum,tag);
+      });
+
       //添加分页事件
       $("#"+tag+"_wrapper .pagination .first a").click(function(){
           pageSetup(form,"1",tag);
       });
       $("#"+tag+"_wrapper .pagination .prev a").click(function(){
-          pageSetup(form,obj.prePage.tag);
+          pageSetup(form,obj.prePage,tag);
       });;
       $("#"+tag+"_wrapper .pagination .next a").click(function(){
           pageSetup(form,obj.nextPage,tag);
