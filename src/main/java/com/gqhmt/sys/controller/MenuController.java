@@ -1,13 +1,10 @@
 package com.gqhmt.sys.controller;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.sys.entity.Menu;
+import com.gqhmt.sys.entity.User;
 import com.gqhmt.sys.service.MenuService;
-import com.gqhmt.util.GlobalConstants;
-import com.gqhmt.util.RequestUtil;
+import com.gqhmt.sys.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,8 +37,11 @@ public class MenuController {
     @Resource
     private MenuService menuService;
 
-    @RequestMapping(value = "/sys/menu/{pid}",method = RequestMethod.GET)
+    @Resource
+    private UserService userService;
+
     @AutoPage
+    @RequestMapping(value = "/sys/menu/{pid}",method = RequestMethod.GET)
     public Object MenuList(HttpServletRequest request,ModelMap model,@PathVariable Long pid){
 //        int pageNum= RequestUtil.getInt(request, "pageNum", 0);
 //        pageNum=pageNum>0?pageNum: GlobalConstants.PAGE_SIZE;
@@ -49,8 +49,19 @@ public class MenuController {
 //       PageHelper.startPage(cpage, pageNum);
         List<Menu> menus  = menuService.findMenu(pid);
         System.out.println(menus.getClass().getName());
-        GqPageInfo pageInfo = new GqPageInfo(menus);
-        model.addAttribute("page",pageInfo);
+        model.addAttribute("page",menus);
         return "sys/menu/menuList";
+    }
+
+    @AutoPage
+    @RequestMapping(value = "/sys/menu/users")
+    public Object UsersList(HttpServletRequest request,ModelMap model){
+        User user=new User();
+        List<User> usersList =userService.selectUsers(user);
+        System.out.println(usersList.getClass().getName()+"===============");
+//        GqPageInfo pageInfo = new GqPageInfo(usersList);
+        model.addAttribute("page",usersList);
+        return "sys/users/userList";
+
     }
 }
