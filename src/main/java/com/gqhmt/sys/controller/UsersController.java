@@ -1,15 +1,9 @@
 package com.gqhmt.sys.controller;
 
-import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.sys.entity.User;
 import com.gqhmt.sys.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.controller.UsersController
@@ -33,11 +27,11 @@ public class UsersController {
     @Resource
     private UserService userService;
 
-    @RequestMapping(value="/sys/users")
+   /* @RequestMapping(value="/sys/users")
     @AutoPage
     public String employeeManage(ModelMap model, @ModelAttribute(value="sysUsers")User sysUsers){
         List<User> list = userService.selectUsers(sysUsers);
         model.addAttribute("page", list);
         return "/sys/users/userList";
-    }
+    }*/
 }

@@ -54,9 +54,8 @@ public class MenuController {
     }
 
     @AutoPage
-    @RequestMapping(value = "/sys/menu/users")
-    public Object UsersList(HttpServletRequest request,ModelMap model){
-        User user=new User();
+    @RequestMapping(value = "/sys/menu/users",method = RequestMethod.GET)
+    public Object UsersList(HttpServletRequest request,ModelMap model,User user){
         List<User> usersList =userService.selectUsers(user);
         System.out.println(usersList.getClass().getName()+"===============");
 //        GqPageInfo pageInfo = new GqPageInfo(usersList);

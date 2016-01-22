@@ -48,7 +48,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="empForm" action="${contextPath}/sys/menu/users" method="post" >
+                                <form class="smart-form" id="empForm" action="${contextPath}/sys/menu/users" method="get" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -68,34 +68,34 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr">员工编号：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">员工编号：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input">
                                                                 <input type="text" style="width:210px" name="employeeNo" value="${sysUsers.employeeNo}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr">姓名：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">姓名：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
                                                                 <input type="text" name="userName" value="${sysUsers.userName}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr">所属部门:</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">所属部门:</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
                                                                 <input type="text" name="department" value="${sysUsers.department}">
                                                             </label>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="tr">直接上司：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">直接上司：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input" style="width:210px">
                                                                 <input type="text" name="leader" value="${sysUsers.leader}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr">账户状态：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">账户状态：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="select" style="width:210px">
                                                                 <select name="isDel" >
                                                                    <option value="0">不限</option>
@@ -104,8 +104,8 @@
                                                                 </select>
                                                             </label>
                                                         </td>
-                                                        <td class="tr">所属机构:</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">所属机构:</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input" style="width:210px">
                                                                 <input type="text" value="${sysUsers.company}" name="company">
                                                             </label>
@@ -150,16 +150,16 @@
                                             <thead>
                                                 <tr class="fb">
                                                 
-                                                    <td>员工编号</td>
-                                                    <td>姓名</td>
-                                                    <td>登录名</td>
-                                                    <td>性别</td>
-                                                    <td>所属机构</td>
-                                                    <td>部门</td>
-                                                    <td>直接上司</td>
-                                                    <td>岗位</td>
-                                                    <td>电话</td>
-                                                    <td>账户状态</td>
+                                                    <td nowrap="nowrap">员工编号</td>
+                                                    <td nowrap="nowrap">姓名</td>
+                                                    <td nowrap="nowrap">登录名</td>
+                                                    <td nowrap="nowrap">性别</td>
+                                                    <td nowrap="nowrap">所属机构</td>
+                                                    <td nowrap="nowrap">部门</td>
+                                                    <td nowrap="nowrap">直接上司</td>
+                                                    <td nowrap="nowrap">岗位</td>
+                                                    <td nowrap="nowrap">电话</td>
+                                                    <td nowrap="nowrap">账户状态</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
