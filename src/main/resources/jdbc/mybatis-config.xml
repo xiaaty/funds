@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundSequenceEntity" alias="fundSequenceEntity"/>
 	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.FundTradeEntity" alias="fundTradeEntity"/>
 	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundWithrawCharge" alias="fundWithrawCharge"/>
+	    <typeAlias type="com.gqhmt.funds.architect.customer.entity.Customer" alias="customer"/>
 	    <!-- 账户相关 end -->
 	    <!-- 交易相关 -->
 	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity" alias="withdrawApplyEntity"/>

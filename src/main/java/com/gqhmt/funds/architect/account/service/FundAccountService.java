@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -117,8 +118,8 @@ public class FundAccountService {
      * @return
      * @throws FssException
      */
-    public Page queryFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException{
-    	return fundAccountReadMapper.queryFundsAccountList(fundsAcctBean);
+    public List<FundAccountEntity> queryFundsAccountList(FundAccountEntity fundAccountEntity) throws FssException{
+    	return fundAccountReadMapper.queryFundsAccountList(fundAccountEntity);
     }
     /**
      * 根据条件查询返回所有资金账户列表
@@ -301,5 +302,5 @@ public class FundAccountService {
     public void updateBycustId(Integer cusID,String custName){
     	this.fundAccountWriteMapper.updateCustName(cusID, custName);
     }
-
+    
 }

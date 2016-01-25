@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper">
-	<sql id="fieldSql">
+	<!-- <sql id="fieldSql">
 	</sql>
 	<sql id="whereSql">
 	</sql>
@@ -13,8 +13,8 @@
 		<otherwise>
 		</otherwise>
 		</choose>
-	</sql>
+	</sql> -->
 	<select id="queryFundsAccountList" parameterType="fundAccountEntity" resultType="fundAccountEntity">
-		
+		SELECT t.account_no FROM 't_gq_fund_account' t;
 	</select>
 </mapper>
