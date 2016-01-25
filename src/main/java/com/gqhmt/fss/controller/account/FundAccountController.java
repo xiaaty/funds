@@ -1,12 +1,14 @@
 package com.gqhmt.fss.controller.account;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -29,6 +31,9 @@ import javax.servlet.http.HttpServletRequest;
 public class FundAccountController {
 
     private FundAccountService fundAccountService;
+
+    @Resource
+    private FssAccountService fssAccountService;
 
     /**
      * 旧版商户列表
