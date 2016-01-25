@@ -93,8 +93,6 @@ public class GQContextPathInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if(modelAndView != null && modelAndView.getModelMap() != null){
             modelAndView.getModelMap().addAttribute("contextPath",request.getContextPath());
-
-
         }
 
 //        Class class1 = handler.getClass();
