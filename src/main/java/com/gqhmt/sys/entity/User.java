@@ -21,7 +21,7 @@ import java.util.Date;
  * 15/12/18  于泳      1.0     1.0 Version
  */
 @Entity
-@Table(name="t_gq_fss_sys_user")
+@Table(name="t_sys_users")
 public class User implements Serializable{
 
     @Id

@@ -38,6 +38,10 @@ public class PageInterceptor  implements HandlerInterceptor {
             if (null != method.getAnnotation(AutoPage.class)){
                 String pageNumStr = request.getParameter("cpage");
                 String pageSizeStr = request.getParameter("pageNum");
+                if("".equals(pageSizeStr) || "undefined".equals(pageSizeStr)){
+                    pageSizeStr = "10";
+
+                }
 
                 if (StringUtils.isBlank(pageNumStr)) {
                     String sessionPageNum = (String) request.getSession(true).getAttribute("pageNum");

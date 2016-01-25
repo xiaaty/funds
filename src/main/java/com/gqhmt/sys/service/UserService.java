@@ -1,8 +1,10 @@
 package com.gqhmt.sys.service;
 
 import com.gqhmt.sys.entity.User;
+import com.gqhmt.sys.mapper.read.UserReadMapper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,8 +26,10 @@ import java.util.List;
 @Service
 public class UserService {
 
+    @Resource
+    private UserReadMapper readMapper;
 
     public List<User> selectUsers(User user){
-        return null;
+        return readMapper.selectAll();
     }
 }

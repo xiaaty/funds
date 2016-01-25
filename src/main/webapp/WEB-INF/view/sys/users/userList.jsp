@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>内审系统</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../../view/include/common_css_js.jsp">
+    <%@include file="../../include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -22,7 +23,7 @@
 
 <body>
 
-<#include "../../../view/include/menu.jsp">
+ <%@include file="../../include/menu.jsp"%>
     <div id="main" role="main">
 
         <!-- RIBBON -->
@@ -47,7 +48,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="Form" action="${contextPath}/sys/users" method="post" >
+                                <form class="smart-form" id="empForm" action="${contextPath}/sys/menu/users" method="get" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -67,34 +68,34 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr">员工编号：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">员工编号：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input">
                                                                 <input type="text" style="width:210px" name="employeeNo" value="${sysUsers.employeeNo}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr">姓名：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">姓名：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
                                                                 <input type="text" name="userName" value="${sysUsers.userName}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr">所属部门:</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">所属部门:</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
                                                                 <input type="text" name="department" value="${sysUsers.department}">
                                                             </label>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="tr">直接上司：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">直接上司：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input" style="width:210px">
                                                                 <input type="text" name="leader" value="${sysUsers.leader}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr">账户状态：</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">账户状态：</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="select" style="width:210px">
                                                                 <select name="isDel" >
                                                                    <option value="0">不限</option>
@@ -103,8 +104,8 @@
                                                                 </select>
                                                             </label>
                                                         </td>
-                                                        <td class="tr">所属机构:</td>
-                                                        <td>
+                                                        <td class="tr" nowrap="nowrap">所属机构:</td>
+                                                        <td nowrap="nowrap">
                                                             <label class="input" style="width:210px">
                                                                 <input type="text" value="${sysUsers.company}" name="company">
                                                             </label>
@@ -143,57 +144,31 @@
                                     <!-- end widget edit box -->
                                     <!-- widget content -->
                                     <div class="widget-body">
-                                   
-                                        <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
-                                        
-                                           
-                                             <button class="btn btn-default fl table-nobg-btn" type="button" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增用户</button>
-                                    
-                                        </div>
-                          
                                         <table id="borrow-rep-table1" class="table table-bordered" style="text-align:center;">
                                             <col width="270" />
                                             <col />
                                             <thead>
                                                 <tr class="fb">
                                                 
-                                                    <td>操作</td>
-                                                    <td>员工编号</td>
-                                                    <td>姓名</td>
-                                                    <td>登录名</td>
-                                                    <td>性别</td>
-                                                    <td>所属机构</td>
-                                                    <td>部门</td>
-                                                    <td>直接上司</td>
-                                                    <td>岗位</td>
-                                                    <td>电话</td>
-                                                    <td>账户状态</td>
+                                                    <td nowrap="nowrap">员工编号</td>
+                                                    <td nowrap="nowrap">姓名</td>
+                                                    <td nowrap="nowrap">登录名</td>
+                                                    <td nowrap="nowrap">性别</td>
+                                                    <td nowrap="nowrap">所属机构</td>
+                                                    <td nowrap="nowrap">部门</td>
+                                                    <td nowrap="nowrap">直接上司</td>
+                                                    <td nowrap="nowrap">岗位</td>
+                                                    <td nowrap="nowrap">电话</td>
+                                                    <td nowrap="nowrap">账户状态</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                      <c:forEach var="user" items="${page.list}">
+                                        <c:forEach var="user" items="${page.list}">
                                             <tr>
-                                             <td class="tc">
-                                                    <c:if test="${!func:isInString(user.roleId,superRoleId)}">
-                                                        <div class="n_b">
-                                                            <% if(isUp){ %>
-                                                            <a href="${contextPath}/sys/upempstatus?id=${user.id}" class="icon ${user.isDel==1?"btn06":"btn07"} mr15" title="${user.isDel==1?"禁用账户":"启用账户" }"><span>${user.isDel==1?"禁用账户":"启用账户" }</span></a>
-                                                            <% } %>
-                                                            <% if(isAdd){ %>
-                                                            <a href="${contextPath}/sys/addemp?id=${user.id}" class="btn05 icon mr15" title="编辑"><span>编辑</span></a>
-                                                            <% } %>
-                                                            <% if(isReset){ %>
-                                                            <a  href="#" class="btn04 icon mr15  reset" title="重置密码"  onclick="resetPSw(${user.id},'${user.loginName}')"><span>重置密码</span></a>
-                                                            <% } %>
-                                                    
-                                                        </div>
-                                                    </c:if>
-                                                </td>
-                                            
                                                 <td class="tl">${user.employeeNo}</td>
                                                 <td>${user.userName}</td>
                                                 <td>${user.loginName}</td>                                          
-                                                <td>${user.sexName}</td>
+                                                <td>${user.sex}</td>
                                                 <td>${user.company}</td>
                                                 <td>${user.department}</td>
                                                 <td>${user.leader}</td>
@@ -207,7 +182,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <!-- end widget content -->
                                 </form>
                             </div>
                         </div>
@@ -219,7 +193,7 @@
     </div>
 
 
-    <#include "../../../view/include/common_footer_css_js.jsp">
+    <%@include file="../../include/common_footer_css_js.jsp"%>
 
     <script>
         $(document).ready(function () {
@@ -244,7 +218,7 @@
             });
         }
     </script>
-<#include "../../../view/include/foot.jsp">
+ <%@include file="../../include/foot.jsp"%>
 </body>
 
 </html>

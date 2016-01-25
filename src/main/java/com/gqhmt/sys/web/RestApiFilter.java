@@ -83,7 +83,7 @@ public class RestApiFilter implements Filter {
 //			}
 //			chain.doFilter(request, response);
 //		} else {
-//			chain.doFilter(request, response);
+			chain.doFilter(request, response);
 //		}
 	}
 
