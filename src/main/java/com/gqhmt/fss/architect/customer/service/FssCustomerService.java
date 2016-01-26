@@ -1,6 +1,14 @@
 package com.gqhmt.fss.architect.customer.service;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
+import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
+import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
+import com.gqhmt.sys.entity.Menu;
 
 /**
  * Filename:    com.gqhmt.fss.architect.customer.service.FssCustomerService
@@ -20,4 +28,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FssCustomerService {
+	
 }

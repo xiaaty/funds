@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -5,7 +7,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../../view/include/common_css_js.jsp">
+    <%@include file= "../../../view/include/common_css_js.jsp"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     <style>
         .table-nobg-btn {
@@ -30,7 +32,7 @@
 </head>
 
 <body>
-<#include "../../../view/include/menu.jsp">
+ <%@include file= "../../../view/include/menu.jsp"%>
 
 <div id="main" role="main">
 
@@ -60,14 +62,14 @@
                         <table class="table" id="api_table">
                             <col width="100" /><col width="100" />
                         	<tbody>
-			            	<#list apiList as api>
+			            	<c:forEach items="${apiList}" var="api">
                         		<tr class="lh32">
                                 	<td class="tr">API地址：</td>
                                     <td>           	
-						      			<input type="text" name="apiAddr" value="${api.apiAddr!}" placeholder="请输入api">
+						      			<input type="text" name="apiAddr" value="${api.apiAddr}" placeholder="请输入api">
 						      		</td>
 						      	</tr>
-	             			</#list>
+	             			</c:forEach>
 	             			</tbody>
 	             		</table>
 	             	</div>
@@ -80,7 +82,7 @@
 	        </form>
      </div>
             <!-- end widget content -->
-<#include "../../../view/include/common_footer_css_js.jsp">
+ <%@include file= "../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
 </div>
@@ -124,7 +126,7 @@
 	}
 </script>
 
-<#include "../../../view/include/foot.jsp">
+ <%@include file= "../../../view/include/foot.jsp"%>
 </body>
 
 </html>
