@@ -1,6 +1,10 @@
 package com.gqhmt.fss.architect.customer.mapper.read;
 
+import java.util.List;
+
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.customer.entity.CustomerAndUser;
+import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 
 /**
@@ -20,4 +24,6 @@ import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
  * 16/1/4  于泳      1.0     1.0 Version
  */
 public interface FssCustomerReadMapper extends ReadMapper<FssCustomerEntity> {
+
+	public List<CustomerAndUser> findbankCardAll();
 }
