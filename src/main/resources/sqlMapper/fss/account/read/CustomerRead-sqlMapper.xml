@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper">
+
+<select resultType="customer" parameterType="java.util.Map" id="findCustomerByParams">
+	SELECT  id,cust_no,name,mobile,cert_type,cert_no,create_time,modify_time FROM t_gq_fss_customer t
+	<where>
+		<choose>
+			<when test="mobile!=null and mobile!=''"> t.mobile Like CONCAT(CONCAT('%',#{mobile}),'%') </when>
+			<when test="cert_no!=null and cert_no!=''"> t.cert_no Like CONCAT(CONCAT('%',#{cert_no}),'%') </when>
+			<when test="name!=null and name!=''"> t.name Like CONCAT(CONCAT('%',#{name}),'%') </when>
+		 <!--    <when test="startime!=null and startime!='' and endtime==null or endtime=='' "> t.create_time between #{startime} and SYSDATE</when> -->
+		    <when test="startime!=null and startime!='' and endtime!=null and endtime!='' "> t.create_time between #{startime} and #{endtime}</when>
+		    <!-- <when test="startime==null and startime=='' and endtime!=null and endtime!='' "> t.create_time <=#{endtime}</when> -->
+			
+			<otherwise> </otherwise>
+		</choose>
+	</where>
+</select>
+</mapper>
+
+

@@ -33,7 +33,7 @@ public class FssAccountEntity implements Serializable {
     @Column(name="acc_no")
     private String accNo;                              // varchar(45) DEFAULT NULL COMMENT '账户编号,唯一，不可更改',
 
-    @Column(name = "accBalance")
+    @Column(name = "acc_balance")
     private BigDecimal accBalance;                     // decimal(17,2) DEFAULT NULL COMMENT '账户余额',
 
     @Column(name = "acc_freeze")
@@ -76,132 +76,132 @@ public class FssAccountEntity implements Serializable {
     @Column(name="mchn_child")
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
 
+	public Long getId() {
+		return id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getAccNo() {
+		return accNo;
+	}
 
-    public String getAccNo() {
-        return accNo;
-    }
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
 
-    public void setAccNo(String accNo) {
-        this.accNo = accNo;
-    }
+	public BigDecimal getAccBalance() {
+		return accBalance;
+	}
 
-    public BigDecimal getAccBalance() {
-        return accBalance;
-    }
+	public void setAccBalance(BigDecimal accBalance) {
+		this.accBalance = accBalance;
+	}
 
-    public void setAccBalance(BigDecimal accBalance) {
-        this.accBalance = accBalance;
-    }
+	public BigDecimal getAccFreeze() {
+		return accFreeze;
+	}
 
-    public BigDecimal getAccFreeze() {
-        return accFreeze;
-    }
+	public void setAccFreeze(BigDecimal accFreeze) {
+		this.accFreeze = accFreeze;
+	}
 
-    public void setAccFreeze(BigDecimal accFreeze) {
-        this.accFreeze = accFreeze;
-    }
+	public BigDecimal getAccAvai() {
+		return accAvai;
+	}
 
-    public BigDecimal getAccAvai() {
-        return accAvai;
-    }
+	public void setAccAvai(BigDecimal accAvai) {
+		this.accAvai = accAvai;
+	}
 
-    public void setAccAvai(BigDecimal accAvai) {
-        this.accAvai = accAvai;
-    }
+	public BigDecimal getAccNotran() {
+		return accNotran;
+	}
 
-    public BigDecimal getAccNotran() {
-        return accNotran;
-    }
+	public void setAccNotran(BigDecimal accNotran) {
+		this.accNotran = accNotran;
+	}
 
-    public void setAccNotran(BigDecimal accNotran) {
-        this.accNotran = accNotran;
-    }
+	public String getCustNo() {
+		return custNo;
+	}
 
-    public String getCustNo() {
-        return custNo;
-    }
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
 
-    public void setCustNo(String custNo) {
-        this.custNo = custNo;
-    }
+	public String getUserNo() {
+		return userNo;
+	}
 
-    public String getUserNo() {
-        return userNo;
-    }
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
 
-    public void setUserNo(String userNo) {
-        this.userNo = userNo;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public Date getModifyTime() {
+		return modifyTime;
+	}
 
-    public Date getModifyTime() {
-        return modifyTime;
-    }
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
+	public Integer getAccType() {
+		return accType;
+	}
 
-    public Integer getAccType() {
-        return accType;
-    }
+	public void setAccType(Integer accType) {
+		this.accType = accType;
+	}
 
-    public void setAccType(Integer accType) {
-        this.accType = accType;
-    }
+	public Integer getState() {
+		return state;
+	}
 
-    public Integer getState() {
-        return state;
-    }
+	public void setState(Integer state) {
+		this.state = state;
+	}
 
-    public void setState(Integer state) {
-        this.state = state;
-    }
+	public Integer getChannelNo() {
+		return channelNo;
+	}
 
-    public Integer getChannelNo() {
-        return channelNo;
-    }
+	public void setChannelNo(Integer channelNo) {
+		this.channelNo = channelNo;
+	}
 
-    public void setChannelNo(Integer channelNo) {
-        this.channelNo = channelNo;
-    }
+	public Integer getBusiNo() {
+		return busiNo;
+	}
 
-    public Integer getBusiNo() {
-        return busiNo;
-    }
+	public void setBusiNo(Integer busiNo) {
+		this.busiNo = busiNo;
+	}
 
-    public void setBusiNo(Integer busiNo) {
-        this.busiNo = busiNo;
-    }
+	public String getMchnParent() {
+		return mchnParent;
+	}
 
-    public String getMchnParent() {
-        return mchnParent;
-    }
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
 
-    public void setMchnParent(String mchnParent) {
-        this.mchnParent = mchnParent;
-    }
+	public String getMchnChild() {
+		return mchnChild;
+	}
 
-    public String getMchnChild() {
-        return mchnChild;
-    }
-
-    public void setMchnChild(String mchnChild) {
-        this.mchnChild = mchnChild;
-    }
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
+    
 }

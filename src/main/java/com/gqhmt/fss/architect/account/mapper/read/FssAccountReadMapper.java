@@ -1,5 +1,8 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 
@@ -20,4 +23,14 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
  * 16/1/4  于泳      1.0     1.0 Version
  */
 public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
+	
+	
+	/**
+	 * 获取客户账户信息
+	 * @param fundsAcctBean
+	 * @return
+	 */
+	public List<FssAccountEntity> findCustomerAccountByParams(Map map);
+
+	
 }

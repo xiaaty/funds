@@ -90,7 +90,7 @@
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                         <%--<#if t.isChild == true>
-                                                            <a href="/sys/menu/${t.id?c}">查看</a>
+                                                            <a href="/sys/menu/${t.id}">查看</a>
                                                         </#if>--%>
                                                     </td>
                                                 </tr>
