@@ -89,4 +89,173 @@ public class FssWaterEntity implements Serializable {
 
     @Column(name = "mchn_child")
     private String mchnChild ;             //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public Integer getWaterType() {
+		return waterType;
+	}
+
+	public void setWaterType(Integer waterType) {
+		this.waterType = waterType;
+	}
+
+	public Integer getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(Integer tradeType) {
+		this.tradeType = tradeType;
+	}
+
+	public BigDecimal getDebitAmount() {
+		return debitAmount;
+	}
+
+	public void setDebitAmount(BigDecimal debitAmount) {
+		this.debitAmount = debitAmount;
+	}
+
+	public BigDecimal getCreditAmount() {
+		return creditAmount;
+	}
+
+	public void setCreditAmount(BigDecimal creditAmount) {
+		this.creditAmount = creditAmount;
+	}
+
+	public BigDecimal getBanlance() {
+		return banlance;
+	}
+
+	public void setBanlance(BigDecimal banlance) {
+		this.banlance = banlance;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getSumary() {
+		return sumary;
+	}
+
+	public void setSumary(String sumary) {
+		this.sumary = sumary;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getoAccNo() {
+		return oAccNo;
+	}
+
+	public void setoAccNo(String oAccNo) {
+		this.oAccNo = oAccNo;
+	}
+
+	public String getSeqo() {
+		return seqo;
+	}
+
+	public void setSeqo(String seqo) {
+		this.seqo = seqo;
+	}
+
+	public String getPayChannel() {
+		return payChannel;
+	}
+
+	public void setPayChannel(String payChannel) {
+		this.payChannel = payChannel;
+	}
+
+	public String getBookingState() {
+		return bookingState;
+	}
+
+	public void setBookingState(String bookingState) {
+		this.bookingState = bookingState;
+	}
+
+	public String getWaterNo() {
+		return waterNo;
+	}
+
+	public void setWaterNo(String waterNo) {
+		this.waterNo = waterNo;
+	}
+
+	public String getMchnParent() {
+		return mchnParent;
+	}
+
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
+
+	public String getMchnChild() {
+		return mchnChild;
+	}
+
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
+    
 }

@@ -3,6 +3,7 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.pay.exception.CommandParmException;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -301,5 +303,6 @@ public class FundAccountService {
     public void updateBycustId(Integer cusID,String custName){
     	this.fundAccountWriteMapper.updateCustName(cusID, custName);
     }
+  
 
 }

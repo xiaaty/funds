@@ -1,12 +1,18 @@
 package com.gqhmt.fss.controller.account;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
+import com.gqhmt.fss.architect.account.service.FssWaterService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -27,8 +33,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class FundAccountController {
-
+	@Resource
     private FundAccountService fundAccountService;
+	@Resource
+	private FssWaterService fssWaterService;
 
     /**
      * 旧版商户列表
@@ -43,5 +51,20 @@ public class FundAccountController {
 //		model.addAttribute("page", accountList);
 		return "fss/account/accountList";
     }
-
+    /**
+     * 
+     * author:jhz
+     * time:2016年1月26日
+     * function：查看流水详情
+     */
+    @RequestMapping(value = "/fss/account/waterDetail/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+ 	@AutoPage
+     public Object waterDetail(HttpServletRequest request,ModelMap model,@PathVariable Long id,String startDate,String endDate){
+    	List<FssWaterEntity> waterDetails = fssWaterService.queryWaterDetail(id,startDate,endDate);
+ 		model.addAttribute("startDate", startDate);
+ 		model.addAttribute("endDate", endDate);
+ 		model.addAttribute("page", waterDetails);
+ 		model.addAttribute("id",id);
+ 		return "fss/account/WaterDetail";
+     }
 }

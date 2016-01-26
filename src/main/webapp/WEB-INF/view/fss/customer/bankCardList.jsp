@@ -47,7 +47,74 @@
         </ol>
         <!-- end breadcrumb -->
     </div>
+    <div id="content">
+            <section id="widget-grid" class="">
+                <div class="row">
+                    <!-- NEW WIDGET START -->
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="jarviswidget" id="wid-id-71"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                            <header>
+                                <h2>快速搜索</h2>
+                            </header>
+                            <!-- widget div-->
+                            <div>
+                           
+                                <form class="smart-form" id="cardListForm" action="${contextPath}/fss/customer/bankCards" method="post" >
+                              
+                                    <!-- widget edit box -->
+                                    <div class="jarviswidget-editbox">
+                                        <!-- This area used as dropdown edit box -->
+                                    </div>
+                                    <!-- end widget edit box -->
+                                    <!-- widget content -->
+                                    <div class="widget-body no-padding">
+                                        <div class="mt10 mb10">
+                                            <table class="table lh32">
+                                                <col width="100" />
+                                                <col width="220" />
+                                                <col width="100" />
+                                                <col width="220" />
+                                                <col width="100" />
+                                                <col />
+                                                <tbody>
+                                                    <tr></tr>
+                                                    <tr>
+                                                        <td class="tr" nowrap="nowrap">客户姓名:</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="input"  style="width:210px" >
+                                                                <input type="text" name="name" value="${customer.name}">
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr" nowrap="nowrap">客户手机号：</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="input">
+                                                                <input type="text" style="width:210px" name="mobile" value="${customer.mobile}">
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr" nowrap="nowrap">客户身份证号：</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="input" style="width:210px" >
+                                                                <input type="text" name="certNo" value="${customer.certNo}">
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                   
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <footer>
+                                            <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
+                                            <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                        </footer>
+                                    </div>
+                                    <!-- end widget content -->
+                                </form>
+                            </div>
 
+
+                        </div>
+
+                        </div>
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
@@ -60,7 +127,7 @@
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="cardListForm">
+                            <form class="smart-form" id="">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -92,13 +159,17 @@
                                                     <td>${t.mobile}</td>
                                                     <td>${t.certType}</td>
                                                     <td>${t.certNo}</td>
-                                                    <td>${t.bankId}</td>
+                                                    <td>
+                                                      <c:forEach items="${banks}" var="banks">
+                                                      <c:if test="${t.bankId==banks.custId}">${banks.bankLongName}</c:if>
+                                                    </c:forEach>
+                                                    </td>
                                                     <td>${t.cardNo}</td>
                                                     <td>${t.area}</td>
                                                     <td>${t.createTime}</td>
                                                     <td>${t.modifyTime}</td>
                                                    <td>
-                                                    <a href="${contextPath}/sys/busi/update/">申请变更</a>
+                                                    <a href="${contextPath}/fss/customer/toUpdate?id=${t.id}">申请变更</a>
                                                     </td>
                                                 </tr>
                                         </c:forEach>
