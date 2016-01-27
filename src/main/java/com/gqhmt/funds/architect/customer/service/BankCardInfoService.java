@@ -100,7 +100,16 @@ public class BankCardInfoService {
     public Page queryCardListByCustomer(BankCardBean bankDto) throws FssException{
     	return bankCardinfoReadMapper.queryCardListByCustomer(bankDto);
     }
-    
+    /**
+     * 银行列表
+     * @param bankDto
+     * @param pageReq
+     * @return
+     * @throws AppException
+     */
+    public List<BankCardBean> queryBankList() {
+    	return bankCardinfoReadMapper.queryBankList();
+    }
 	/**
 	 * 根据id查询银行信息
 	 * @param id

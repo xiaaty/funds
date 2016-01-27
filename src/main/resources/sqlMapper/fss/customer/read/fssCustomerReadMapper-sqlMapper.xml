@@ -14,7 +14,8 @@
 		</otherwise>
 		</choose>
 	</sql>
-	<select id="findbankCardAll"  resultType="com.gqhmt.fss.architect.customer.entity.CustomerAndUser">
+<!-- 	用户和银行卡信息列表 -->
+	<select id="findbankCardAll" parameterType="com.gqhmt.fss.architect.customer.bean.CustomerAndUser"  resultType="com.gqhmt.fss.architect.customer.bean.CustomerAndUser">
 	
 		SELECT
 		bankCard.id id,
@@ -29,8 +30,33 @@
 		customer.create_time createTime,
 		customer.modify_time modifyTime
 		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id
+		 <if test="name != null and name != ''">
+                and   customer.name like  concat('%',#{name},'%') 
+              </if>
+              <if test="mobile != null and mobile != ''">
+                and customer.mobile like concat('%',#{mobile},'%') 
+              </if>
+              <if test="certNo != null and certNo != ''">
+                and  customer.cert_no like concat('%',#{certNo},'%') 
+              </if>
 	</select>
-	
+<!-- 	查询要申请变更银行卡用户信息 -->
+	<select id="findCustomerAndUser" parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.customer.bean.CustomerAndUser">
+	SELECT
+		bankCard.id id,
+		bankCard.user_no userNo,
+		customer.name name,
+		customer.mobile mobile,
+		customer.cert_type certType,
+		customer.cert_no certNo,
+		bankCard.bank_id bankId,
+		bankCard.card_no cardNo,
+		bankCard.area area,
+		customer.create_time createTime,
+		customer.modify_time modifyTime
+		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id and customer.id=#{id}
+		
+	</select>
 	<select id="quaryBankCardInfoList" parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity">
 		
 	</select>

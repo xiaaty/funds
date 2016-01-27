@@ -3,7 +3,7 @@ package com.gqhmt.fss.architect.customer.mapper.read;
 import java.util.List;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.customer.entity.CustomerAndUser;
+import com.gqhmt.fss.architect.customer.bean.CustomerAndUser;
 import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 
@@ -24,6 +24,18 @@ import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
  * 16/1/4  于泳      1.0     1.0 Version
  */
 public interface FssCustomerReadMapper extends ReadMapper<FssCustomerEntity> {
-
-	public List<CustomerAndUser> findbankCardAll();
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年1月26日
+	 * function：得到银行卡和用户信息列表
+	 */
+	public List<CustomerAndUser> findbankCardAll(CustomerAndUser customerAndUser);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年1月26日
+	 * function：查询要申请变更银行卡用户信息
+	 */
+	public CustomerAndUser findCustomerAndUser(Long id);
 }
