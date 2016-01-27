@@ -74,20 +74,20 @@
                                                          <td class="tr">账号：</td>
                                                         <td>
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="accNo" value="${FssAccountEntity.accNo}" />
+                                                                <input type="text" name="accNo" value="${account.accNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">开户日期：</td>
 			                                            <td colspan="5">
 			                                                <section class="fl">
 			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" name="startime" class="selectdate" placeholder="请选择时间" value="${startime}">
+			                                                        <input type="text" maxlength="10" id="startime" name="startime" class="selectdate" placeholder="请选择时间" value="${startime}">
 			                                                    </label>
 			                                                </section>
 			                                                <span class="fl">&nbsp;至&nbsp;</span>
 			                                                <section class="fl">
 			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" name="endtime" class="selectdate" placeholder="请选择时间" value="${endtime}">
+			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" class="selectdate" placeholder="请选择时间" value="${endtime}">
 			                                                    </label>
 			                                                </section>
 			                                            </td>
@@ -96,7 +96,7 @@
                                             </table>
                                         </div>
                                         <footer>
-                                            <button type="submit" class="btn btn-primary">查&nbsp;&nbsp;&nbsp;询</button>
+                                            <button type="submit" class="btn btn-primary" onclick="searchByParam()">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -179,7 +179,7 @@
              minView: 2,
              forceParse: 0
          });
-         
+	     dateCheck();
          $('.selectdate_time').datetimepicker({
              language: 'zh-CN',
              weekStart: 1,
@@ -191,7 +191,118 @@
              forceParse: 0
          });
 	 }); 
- 
+	//日期的合法性check
+	    function dateCheck() {
+	    	var $selectdate = $(".selectdate");
+	    	$selectdate.each(function() {
+	    		//$(this).off();
+	        	$(this).focus(function() {
+	        		//
+	        		this.select();
+	        	})
+	        	.blur(function() {
+		        	if($(this).val() != "") {
+			        	var val = $(this).val();
+			        	if (val.indexOf("\-") > 0 ) {
+			        	} else {
+			        		if (val.length == 8) {
+			        			val = val.substr(0,4) + "-" + val.substr(4,2) + "-" + val.substr(6,2);
+			        			$(this).val(val);
+			        		}
+			        	}
+			        	var msg= isDate($(this).val());
+			        	if (msg != "") {
+				        	alert(msg);
+				        	this.focus();
+			        	}
+
+	        		}
+	        	});
+	    	});
+	    }
+	 
+	    function isDate(strDate){
+	    	var strSeparator = "-"; //日期分隔符 
+	    	var strDateArray; 
+	    	var intYear; 
+	    	var intMonth; 
+	    	var intDay; 
+	    	var boolLeapYear; 
+	    	var ErrorMsg = ""; //出错信息 
+	    	strDateArray = strDate.split(strSeparator); 
+	    	//没有判断长度,其实2008-8-8也是合理的//strDate.length != 10 || 
+	    	if(strDateArray.length != 3) { 
+	        	ErrorMsg += "日期格式必须为: 年-月-日"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	intYear = parseInt(strDateArray[0],10); 
+	    	intMonth = parseInt(strDateArray[1],10); 
+	    	intDay = parseInt(strDateArray[2],10); 
+	    	if(isNaN(intYear)||isNaN(intMonth)||isNaN(intDay)) { 
+	    		ErrorMsg += "请输入有效的日期！"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	if(intMonth>12 || intMonth<1) { 
+	    		ErrorMsg += "请输入有效的日期！"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	if((intMonth==1||intMonth==3||intMonth==5||intMonth==7 
+	    		||intMonth==8||intMonth==10||intMonth==12) &&(intDay>31||intDay<1)) { 
+	    		ErrorMsg += "请输入有效的日期！"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	if((intMonth==4||intMonth==6||intMonth==9||intMonth==11) 
+	    		&&(intDay>30||intDay<1)) { 
+	    		ErrorMsg += "请输入有效的日期！";  
+	        	return ErrorMsg; 
+	    	} 
+	    	if(intMonth==2){ 
+	        	if(intDay < 1) { 
+	        		ErrorMsg += "请输入有效的日期！";  
+		        	return ErrorMsg; 
+	    		} 
+	        	boolLeapYear = false; 
+	        	if((intYear%100) == 0){ 
+		        	if((intYear%400) == 0) 
+		        	boolLeapYear = true; 
+	    		} else { 
+		        	if((intYear % 4) == 0) 
+		        		boolLeapYear = true; 
+	        		} 
+	        		if(boolLeapYear){ 
+		        		if(intDay > 29) { 
+		        			ErrorMsg += "请输入有效的日期！"; 
+			        		return ErrorMsg; 
+	        			} 
+	    			} else { 
+			        	if(intDay > 28) { 
+				        	ErrorMsg += "请输入有效的日期！"; 
+				        	return ErrorMsg; 
+		        		} 
+	    			} 
+	    		} 
+	    	return ErrorMsg; 
+	    } 
+	 
+	    //验证输入的开户开始日期与结束日期 
+	    function searchByParam(){
+	    	debugger;
+	    	var startime=$("#startime").val();
+	    	var endtime=$("#endtime").val();
+	    	if(startime!="" && endtime!=""){
+	    		var d1 = new Date(startime.replace(/\-/g, "\/"));  
+	    		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
+	    		if(d1>d2){
+	    			alert('查询开始时间不能早于结束时间！');
+	    			return false;
+	    		}
+	    	}
+	    }
+	 
+	 
+	 
+	 
+	 
 </script>
 
 <%@include file="../../../view/include/foot.jsp"%>

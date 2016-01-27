@@ -3,17 +3,6 @@
 <mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper">
 
 	<select id="findCustomerAccountByParams" parameterType="java.util.Map" resultType="fssAccountEntity">
-		<!-- SELECT acc_no accNo,cust_no custNo,acc_balance accBalance,acc_freeze accFreeze,acc_avai accAvai,create_time createTime,modify_time modifyTime FROM t_gq_fss_account t
-		<where>
-		<choose>
-		    <when test="custNo!=null and custNo!=''"> t.cust_no = #{custNo} </when> 
-			<when test="accNo!=null and accNo!=''"> t.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%') </when>
-			<when test="startime!=null and startime!='' and endtime!=null and endtime!='' "> t.create_time between #{startime} and #{endtime}</when>
-			<otherwise> </otherwise>
-		</choose>
-	</where> -->
-		
-		<!-- 方法2 -->
 		SELECT 
 			acc_no accNo,
 			cust_no custNo,
@@ -30,7 +19,7 @@
         AND t.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
         </if>
        <if test="startDate != null and startDate != '' and endDate!=null and endDate!=''">
-        AND t.create_time BETWEEN #{startDate} AND #{endDate}
+        AND t.create_time BETWEEN DATE_FORMAT(#{startDate},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endDate},'%Y%m%d%H%i%s')
        </if>
 		
 	</select>

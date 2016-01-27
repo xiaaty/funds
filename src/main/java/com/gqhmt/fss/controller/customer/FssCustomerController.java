@@ -7,13 +7,11 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.util.StringUtils;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,15 +65,16 @@ public class FssCustomerController {
     		map.put("cert_no", customer.getCert_no());
     	}
     	if(StringUtils.isNotEmptyString(startime)){
-    		map.put("startime", startime+" 00:00:00");
+			map.put("startime", startime+" 00:00:00");
     	}
     	if(StringUtils.isNotEmptyString(endtime)){
-    		map.put("endtime", endtime+" 23:59:59");
+			map.put("endtime", endtime+" 23:59:59");
     	}
 		List<FssCustomerEntity> customers = customerService.findCustomerByParams(map);
-		
-    	GqPageInfo pageInfo = new GqPageInfo(customers);
-    	model.addAttribute("page",pageInfo);
+    	model.addAttribute("page",customers);
+    	model.addAttribute("customer",customer);
+    	model.addAttribute("startime",startime);
+    	model.addAttribute("endtime",endtime);
     	return "fss/account/customerList";
     }
 	
@@ -110,8 +109,11 @@ public class FssCustomerController {
     	}
 		
     	List<FssAccountEntity> fssAccounts = fssAccountService.findCustomerAccountByParams(map);
-    	GqPageInfo pageInfo = new GqPageInfo(fssAccounts);
-    	model.addAttribute("page",pageInfo);
+//    	GqPageInfo pageInfo = new GqPageInfo(fssAccounts);
+    	model.addAttribute("page",fssAccounts);
+    	model.addAttribute("account",fssAccount);
+    	model.addAttribute("startime",startime);
+    	model.addAttribute("endtime",endtime);
     	return "fss/account/customerAccountDetail";
     }
 	

@@ -4,13 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
-import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
-import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 
 /**
  * Filename:    com.gqhmt.fss.architect.account.service.FssAccountService
