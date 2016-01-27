@@ -309,7 +309,6 @@
 	 
 	    //验证输入的开户开始日期与结束日期 
 	    function tijiao(){
-	    	debugger;
 	    	var startime=$("#startime").val();
 	    	var endtime=$("#endtime").val();
 	    	if(startime!="" && endtime!=""){

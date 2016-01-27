@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper">
+	<sql id="fieldSql">
+	</sql>
+	<sql id="whereSql">
+	</sql>
+	<sql id="otherSql">
+		<choose>
+		<when test="orderStr != null">
+			order by ${orderStr}
+		</when>
+		<otherwise>
+		</otherwise>
+		</choose>
+	</sql>
+	<select id="findbankCardAll"  resultType="com.gqhmt.fss.architect.customer.entity.CustomerAndUser">
+	
+		SELECT
+		bankCard.id id,
+		bankCard.user_no userNo,
+		customer.name name,
+		customer.mobile mobile,
+		customer.cert_type certType,
+		customer.cert_no certNo,
+		bankCard.bank_id bankId,
+		bankCard.card_no cardNo,
+		bankCard.area area,
+		customer.create_time createTime,
+		customer.modify_time modifyTime
+		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id
+	</select>
+	
+	<select id="quaryBankCardInfoList" parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity">
+		
+	</select>
+</mapper>
