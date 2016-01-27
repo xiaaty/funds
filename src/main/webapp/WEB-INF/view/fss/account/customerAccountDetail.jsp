@@ -127,6 +127,7 @@
                                         <col /> --%>
                                         <thead>
                                         <tr>
+                                        	  <td>id</td>
                                               <td>账号</td>
                                               <td>余额</td>
                                               <td>可用余额</td>
@@ -138,14 +139,15 @@
                                         </thead>
                                         <tbody>
                                              <c:forEach items="${page.list}" var="account">
-                                                <tr class="success">
+                                                <tr>
+                                                	<td>${account.id}</td>
                                                     <td>${account.accNo}</td>
                                                     <td>${account.accBalance}</td>
                                                     <td>${account.accAvai}</td>
                                                     <td>${account.accFreeze}</td>
                                                  	<td><fmt:formatDate value="${account.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${account.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><a href="#" target="_self">查看流水</a></td>
+                                                    <td><a href="${contextPath}/fss/account/waterDetail/${account.id}">查看流水</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

@@ -4,6 +4,7 @@
 
 	<select id="findCustomerAccountByParams" parameterType="java.util.Map" resultType="fssAccountEntity">
 		SELECT 
+			id,
 			acc_no accNo,
 			cust_no custNo,
 			acc_balance accBalance,

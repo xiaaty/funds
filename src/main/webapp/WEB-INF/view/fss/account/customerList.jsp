@@ -140,7 +140,6 @@
                                         <col /> --%>
                                         <thead>
                                         <tr>
-                                        	  <td>id</td>
                                               <td>客户编号</td>
                                               <td>客户姓名</td>
                                               <td>客户手机号</td>
@@ -155,7 +154,6 @@
                                         <tbody>
                                              <c:forEach items="${page.list}" var="customer">
                                                 <tr>
-                                                    <td>${customer.id}</td>
                                                     <td>${customer.cust_no}</td>
                                                     <td>${customer.name}</td>
                                                     <td>${customer.mobile}</td>
