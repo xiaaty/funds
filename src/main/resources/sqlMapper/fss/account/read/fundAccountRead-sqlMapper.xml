@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FundAccountReadMapper">
-	<sql id="fieldSql">
-	</sql>
-	<sql id="whereSql">
-	</sql>
-	<sql id="otherSql">
-		<choose>
-		<when test="orderStr != null">
-			order by ${orderStr}
-		</when>
-		<otherwise>
-		</otherwise>
-		</choose>
-	</sql>
-	<select id="queryFundsAccountList" parameterType="fundAccountEntity" resultType="fundAccountEntity">
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper">
+
+	<select id="findCustomerAccountByParams" parameterType="java.util.Map" resultType="fssAccountEntity">
+		SELECT 
+			id,
+			acc_no accNo,
+			cust_no custNo,
+			acc_balance accBalance,
+			acc_freeze accFreeze,
+			acc_avai accAvai,
+			create_time createTime,
+			modify_time modifyTime 
+		FROM 
+			t_gq_fss_account t
+		WHERE t.cust_no = #{custNo}
+		
+		<if test="accNo != null and accNo != '' ">
+        AND t.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
+        </if>
+       <if test="startDate != null and startDate != '' and endDate!=null and endDate!=''">
+        AND t.create_time BETWEEN DATE_FORMAT(#{startDate},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endDate},'%Y%m%d%H%i%s')
+       </if>
 		
 	</select>
 </mapper>

@@ -39,7 +39,7 @@ public class FundAccountController {
 	private FssWaterService fssWaterService;
 
     /**
-     * 旧版商户列表
+     * 核心客户列表
      * @param request
      * @param model
      * @return

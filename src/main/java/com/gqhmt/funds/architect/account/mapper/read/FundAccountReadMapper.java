@@ -32,7 +32,7 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	 * @return
 	 * @throws FssException
 	 */
-	public Page queryFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException;
+	public List<FundAccountEntity> queryFundsAccountList(FundAccountEntity fundAccountEntity) throws FssException;
 
     /**
      * 获取所有账户列表
@@ -55,5 +55,15 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
     public FundAccountEntity queryFundAccount(String userName,int type);
 
     public List<FundAccountEntity> queryFundAccount(Integer cusID);
+    
+    
+    /**
+	 * 获取旧账户列表
+	 * @param fundsAcctBean
+	 * @return
+	 * @throws FssException
+	 */
+	public List<FundAccountEntity> findOldFundsAccountList(FundAccountEntity fundsAcctBean) throws FssException;
+
 
 }

@@ -1,6 +1,12 @@
 package com.gqhmt.fss.architect.account.service;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 
 /**
  * Filename:    com.gqhmt.fss.architect.account.service.FssAccountService
@@ -22,7 +28,12 @@ import org.springframework.stereotype.Service;
 public class FssAccountService {
 
 
-
+	@Resource
+    private FssAccountReadMapper accountReadMapper;
+   
+    public List<FssAccountEntity> findCustomerAccountByParams(Map map){
+        return this.accountReadMapper.findCustomerAccountByParams(map);
+    }
 
 
 }

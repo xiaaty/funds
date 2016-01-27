@@ -3,7 +3,6 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.pay.exception.CommandParmException;
@@ -119,8 +118,8 @@ public class FundAccountService {
      * @return
      * @throws FssException
      */
-    public Page queryFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException{
-    	return fundAccountReadMapper.queryFundsAccountList(fundsAcctBean);
+    public List<FundAccountEntity> queryFundsAccountList(FundAccountEntity fundAccountEntity) throws FssException{
+    	return fundAccountReadMapper.queryFundsAccountList(fundAccountEntity);
     }
     /**
      * 根据条件查询返回所有资金账户列表
@@ -303,6 +302,5 @@ public class FundAccountService {
     public void updateBycustId(Integer cusID,String custName){
     	this.fundAccountWriteMapper.updateCustName(cusID, custName);
     }
-  
 
 }
