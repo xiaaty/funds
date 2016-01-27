@@ -104,7 +104,7 @@
                                         </div>
                                         <footer>
                                             <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
-                                            <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                            <button class="btn btn-primary" type="button" onclick="verify();">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -127,7 +127,7 @@
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="">
+                            <form class="smart-form" id="water">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -206,7 +206,7 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#cardListForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#waterDetailForm"));
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',
@@ -218,6 +218,25 @@
         minView: 2,
         forceParse: 0
     });
+    function verify(){
+    	var a=document.getElementsByName("startDate");
+    	var b=document.getElementsByName("endDate");
+    	if(b[0].value!=null&&b[0].value!=''){
+    		if(a[0].value>b[0].value){
+    			alert("请检查您输入的日期");
+    		}else{
+    			$("#waterDetailForm").submit();
+    		}
+    	}else{
+    		var d = new Date();
+    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+    		if(a[0].value>str){
+    			alert("请检查您输入的日期");
+    		}else{
+    			$("#waterDetailForm").submit();
+    		}
+    	}
+    }
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

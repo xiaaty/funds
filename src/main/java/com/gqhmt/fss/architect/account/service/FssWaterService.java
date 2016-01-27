@@ -51,6 +51,7 @@ public class FssWaterService {
 		if(endDate!=null&&!endDate.equals("")){
 			endDate=endDate+" 23:59:59";
 		}
+		System.out.println(endDate+"-------------");
 		searchWater.put("id",id);
 		searchWater.put("startDate",startDate);
 		searchWater.put("endDate",endDate);

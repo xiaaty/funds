@@ -29,17 +29,21 @@
                seq_no seqo, 
                mchn_parent mchnParent, 
                mchn_child mchnChild
-                 from t_gq_fss_water water where cust_no=#{id}
-                <if test="startDate != null and startDate != '' and endDate==null or endDate=='' ">
+                from t_gq_fss_water water where cust_no=#{id}
+                <choose>
+                <when test="startDate == null or startDate == '' and endDate==null and endDate==''">
+               AND 1=1
+              </when>
+                <when test="startDate != null and startDate != '' and endDate==null or endDate=='' ">
                 AND water.create_time BETWEEN #{startDate} AND SYSDATE()
-              </if>
-              <if test="startDate != null and startDate != '' and endDate!=null and endDate!=''">
+              </when>
+              <when test="startDate != null and startDate != '' and endDate!=null and endDate!=''">
                AND water.create_time BETWEEN #{startDate} AND #{endDate}
-              </if>
-              <if test="startDate == null or startDate == '' and endDate!=null and endDate!=''">
+              </when>
+              <when test="startDate == null or startDate == '' and endDate!=null and endDate!=''">
                AND water.create_time &lt; #{endDate}
-              </if>
-                 
+              </when>
                 
+                </choose>
 </select>
 </mapper>
