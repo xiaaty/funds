@@ -1,5 +1,8 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 
@@ -20,4 +23,6 @@ import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
  * 2016/1/10  于泳      1.0     1.0 Version
  */
 public interface FssWaterReadMapper extends ReadMapper<FssWaterEntity>{
+
+	List<FssWaterEntity> queryWaterDetail(Map searchWater);
 }

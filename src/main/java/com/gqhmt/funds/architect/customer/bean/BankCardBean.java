@@ -11,7 +11,6 @@ package com.gqhmt.funds.architect.customer.bean;
  */
 @SuppressWarnings("serial")
 public class BankCardBean implements java.io.Serializable{
-		
 		//客户编号
 		private Integer custId;
 		//客户编号

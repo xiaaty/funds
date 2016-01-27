@@ -9,6 +9,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../view/include/common_css_js.jsp"%>
+     <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
+    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
+    <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -42,8 +45,9 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>客户信息管理</li>
-            <li>银行卡列表</li>
+            <li>客户列表</li>
+            <li>查看账户</li>
+            <li>查看流水</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -59,7 +63,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="cardListForm" action="${contextPath}/fss/customer/bankCards" method="post" >
+                                <form class="smart-form" id="waterDetailForm" action="${contextPath}/fss/account/waterDetail/${id}" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -79,24 +83,20 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">客户姓名:</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
-                                                                <input type="text" name="name" value="${customer.name}">
-                                                            </label>
-                                                        </td>
-                                                        <td class="tr" nowrap="nowrap">客户手机号：</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input">
-                                                                <input type="text" style="width:210px" name="mobile" value="${customer.mobile}">
-                                                            </label>
-                                                        </td>
-                                                        <td class="tr" nowrap="nowrap">客户身份证号：</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input" style="width:210px" >
-                                                                <input type="text" name="certNo" value="${customer.certNo}">
-                                                            </label>
-                                                        </td>
+                                                         <td class="tr">开户日期：</td>
+                                            <td colspan="3">
+                                                <section class="fl">
+                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" maxlength="10" readonly="readonly" name="startDate" class="selectdate" placeholder="请选择时间" value="${startDate}">
+                                                    </label>
+                                                </section>
+                                                <span class="fl">&nbsp;至&nbsp;</span>
+                                                <section class="fl">
+                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" maxlength="10" readonly="readonly"  name="endDate" class="selectdate" placeholder="请选择时间" value="${endDate}">
+                                                    </label>
+                                                </section>
+                                            </td>
                                                     </tr>
                                                    
                                                 </tbody>
@@ -104,7 +104,7 @@
                                         </div>
                                         <footer>
                                             <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
-                                            <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                            <button class="btn btn-primary" type="button" onclick="verify();">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -123,11 +123,11 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>银行卡列表</h2>
+                            <h2>流水详情</h2>
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="">
+                            <form class="smart-form" id="water">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -138,39 +138,53 @@
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <th>客户编号</th>
-                                            <th>客户姓名</th>
-                                            <th>客户手机号 </th>
-                                            <th>证件类型 </th>
-                                            <th>证件号码 </th>
-                                            <th>所属银行  </th>
-                                            <th>银行卡号 </th>
-                                            <th>所属地区 </th>
+                                            <th>账号</th>
+                                            <th>交易日期</th>
+                                            <th>交易时间 </th>
+                                            <th>支出 </th>
+                                            <th>收入 </th>
+                                            <th>余额  </th>
                                             <th>创建日期 </th>
                                             <th>修改日期 </th>
-                                            <th>操作</th>
+                                            <th>交易描述</th>
+                                            <th>交易渠道</th>
+                                            <th>三方交易订单号</th>
+                                            <th>API交易订单号</th>
+                                            <th>交所属商户号（大）</th>
+                                            <th>所属商户号（小）</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${t.userNo}</td>
-                                                    <td>${t.name}</td>
-                                                    <td>${t.mobile}</td>
-                                                    <td>${t.certType}</td>
-                                                    <td>${t.certNo}</td>
-                                                    <td>
-                                                      <c:forEach items="${banks}" var="banks">
-                                                      <c:if test="${t.bankId==banks.custId}">${banks.bankLongName}</c:if>
-                                                    </c:forEach>
-                                                    </td>
-                                                    <td>${t.cardNo}</td>
-                                                    <td>${t.area}</td>
-                                                    <td>${t.createTime}</td>
-                                                    <td>${t.modifyTime}</td>
-                                                   <td>
-                                                    <a href="${contextPath}/fss/customer/toUpdate?id=${t.id}">申请变更</a>
-                                                    </td>
+<!--                                                  账号  -->
+                                                    <td>${t.accNo}</td>                  
+<!--                                             	 交易日期  -->
+                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd"/></td>
+<!--                                             	 交易时间   -->
+                                                    <td><fmt:formatDate value="${t.createTime}" pattern="HH:mm:ss"/></td>
+<!--                                              	支出   -->
+                                                    <td>${t.debitAmount}</td>
+<!--                                             	 收入   -->
+                                                    <td>${t.creditAmount}</td>
+<!--                                              	余额    -->
+                                                    <td>${t.banlance}</td>
+<!--                                            	 创建日期 -->
+                                                    <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+<!--                                              	修改日期   -->
+                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+<!--                                             	 交易描述  -->
+                                                    <td>${t.sumary}</td>
+<!--                                              	交易渠道  -->
+                                                    <td>${t.payChannel}</td>
+<!--                                            	  三方交易订单号  -->
+                                                    <td>${t.orderNo}</td>
+<!--                                              	API交易订单号  -->
+                                                    <td>${t.seqo}</td>
+<!--                                              	交所属商户号（大）  -->
+                                                    <td>${t.mchnParent}</td>
+<!--                                             	 所属商户号（小）  -->
+                                                    <td>${t.mchnChild}</td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -192,9 +206,37 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#cardListForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#waterDetailForm"));
     });
-
+    $('.selectdate').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        autoclose: 1,
+        format:'yyyy-mm-dd',
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    function verify(){
+    	var a=document.getElementsByName("startDate");
+    	var b=document.getElementsByName("endDate");
+    	if(b[0].value!=null&&b[0].value!=''){
+    		if(a[0].value>b[0].value){
+    			alert("请检查您输入的日期");
+    		}else{
+    			$("#waterDetailForm").submit();
+    		}
+    	}else{
+    		var d = new Date();
+    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+    		if(a[0].value>str){
+    			alert("请检查您输入的日期");
+    		}else{
+    			$("#waterDetailForm").submit();
+    		}
+    	}
+    }
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

@@ -302,5 +302,5 @@ public class FundAccountService {
     public void updateBycustId(Integer cusID,String custName){
     	this.fundAccountWriteMapper.updateCustName(cusID, custName);
     }
-    
+
 }
