@@ -3,8 +3,10 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
+import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -43,6 +45,9 @@ import java.util.Map;
 @Service
 public class FundAccountService {
 
+	@Resource
+	private FssAccountReadMapper fssfundAccountReadMapper;
+	
     @Resource
     private FundAccountReadMapper fundAccountReadMapper;
     @Resource
@@ -302,5 +307,19 @@ public class FundAccountService {
     public void updateBycustId(Integer cusID,String custName){
     	this.fundAccountWriteMapper.updateCustName(cusID, custName);
     }
+    
+    
+   public List<BussAndAccountBean> queryAccountList(Map map){
+	   return this.fssfundAccountReadMapper.getBussinessAccountList(map);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }

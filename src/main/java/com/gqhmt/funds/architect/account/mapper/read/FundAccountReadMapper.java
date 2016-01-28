@@ -3,10 +3,12 @@ package com.gqhmt.funds.architect.account.mapper.read;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gq.p2p.account.dao
@@ -64,6 +66,7 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	 * @throws FssException
 	 */
 	public List<FundAccountEntity> findOldFundsAccountList(FundAccountEntity fundsAcctBean) throws FssException;
-
-
+	
+	
+	
 }
