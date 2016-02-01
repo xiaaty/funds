@@ -12,6 +12,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +51,7 @@ public class FssCustomerController {
 	 * @param customer
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/fss/account/hxyhlist",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object findCustomerList(HttpServletRequest request,ModelMap model,FssCustomerEntity customer){
@@ -64,11 +68,22 @@ public class FssCustomerController {
     	if(StringUtils.isNotEmptyString(customer.getCert_no())){
     		map.put("cert_no", customer.getCert_no());
     	}
-    	if(StringUtils.isNotEmptyString(startime)){
+    	if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
 			map.put("startime", startime+" 00:00:00");
-    	}
-    	if(StringUtils.isNotEmptyString(endtime)){
 			map.put("endtime", endtime+" 23:59:59");
+    	}
+    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
+    		map.put("startime", "1970-01-01 23:59:59");
+			map.put("endtime", endtime+" 23:59:59");
+    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
+    		Date sysday=new Date();
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    		String nowtime=sdf.format(sysday);
+			map.put("startime", startime+" 00:00:00");
+			map.put("endtime", nowtime);
+    	}else{
+    		map.put("startime", "");
+			map.put("endtime", "");
     	}
 		List<FssCustomerEntity> customers = customerService.findCustomerByParams(map);
     	model.addAttribute("page",customers);

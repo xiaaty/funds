@@ -156,7 +156,7 @@
                                                     <td>${bussaccount.accFreeze}</td>
                                                     <td><fmt:formatDate value="${bussaccount.accCreateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bussaccount.accModifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><a href="#">查看流水</a></td>
+                                                    <td><a href="${contextPath}/fss/account/waterDetail/${bussaccount.accNo}">查看流水</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

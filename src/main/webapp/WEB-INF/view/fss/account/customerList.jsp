@@ -311,9 +311,23 @@
 	    function tijiao(){
 	    	var startime=$("#startime").val();
 	    	var endtime=$("#endtime").val();
+	    	var d=new Date();
+	    	var nowday=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+	    	var d1 = new Date(startime.replace(/\-/g, "\/"));  
+    		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
+    		var d3 = new Date(nowday.replace(/\-/g, "\/"));  
+	    	
+	    	if(startime!="" && endtime.length==0){
+	    		if(d1>d3){
+	    			alert('查询开始时间不能早于当前时间！');
+	    			return false;
+	    		}
+	    	}else
 	    	if(startime!="" && endtime!=""){
-	    		var d1 = new Date(startime.replace(/\-/g, "\/"));  
-	    		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
+	    		if(d1>d3 && d1<=d2){
+	    			alert('您查询时间范围超前了！');
+	    			return false;
+	    		}else
 	    		if(d1>d2){
 	    			alert('查询开始时间不能早于结束时间！');
 	    			return false;
