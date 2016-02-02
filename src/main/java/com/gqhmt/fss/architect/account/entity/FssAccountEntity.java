@@ -68,7 +68,7 @@ public class FssAccountEntity implements Serializable {
     private Integer channelNo;                         // varchar(45) DEFAULT NULL COMMENT '渠道编号，绑定渠道',
 
     @Column(name = "busi_no")
-    private Integer busiNo;                            // varchar(45) DEFAULT NULL COMMENT '对应的业务编号，出借编号，借款编号，互联网用户编号。。。。',
+    private String busiNo;                            // varchar(45) DEFAULT NULL COMMENT '对应的业务编号，出借编号，借款编号，互联网用户编号。。。。',
 
     @Column(name="mchn_parent")
     private String mchnParent;             // varchar(45) NOT NULL COMMENT '大商户号',
@@ -180,11 +180,11 @@ public class FssAccountEntity implements Serializable {
 		this.channelNo = channelNo;
 	}
 
-	public Integer getBusiNo() {
+	public String getBusiNo() {
 		return busiNo;
 	}
 
-	public void setBusiNo(Integer busiNo) {
+	public void setBusiNo(String busiNo) {
 		this.busiNo = busiNo;
 	}
 
