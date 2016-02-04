@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>账户管理--旧版账户--冠群驰骋投资管理(北京)有限公司</title>
+    <title>账户管理--互联网账户--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
@@ -39,7 +39,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>账户管理</li>
-            <li>旧版账户信息</li>
+            <li>互联网账户信息</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -70,40 +70,32 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr">手机号码：</td>
+                                                        <td class="tr">账号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="mobile" value="${Customer.mobile}" />
+                                                                <input type="text" style="width:210px" name="accNo" value="${accNo}" />
                                                             </label>
                                                         </td>
-                                                         <td class="tr">身份证号：</td>
+                                                         <td class="tr">客户编号：</td>
                                                         <td>
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="cert_no" value="${Customer.cert_no}" />
+                                                                <input type="text" name="custNo" value="${custNo}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">姓名:</td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td class="tr">客户姓名:</td>
                                                         <td>
                                                             <label class="input"  style="width:210px" >
-                                                                <input type="text" name="name" value="${Customer.name}"/>
+                                                                <input type="text" name="bussinessname" value="${bussinessname}"/>
                                                             </label>
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="tr">开户日期：</td>
-			                                            <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" name="startDate" class="selectdate" placeholder="请选择时间" value="${Customer.create_time}">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" name="endDate" class="selectdate" placeholder="请选择时间" value="${Customer.modify_time}">
-			                                                    </label>
-			                                                </section>
-			                                            </td>
+                                                        <td class="tr">客户证件号:</td>
+                                                        <td>
+                                                            <label class="input"  style="width:210px" >
+                                                                <input type="text" name="bussinesscertno" value="${bussinesscertno}"/>
+                                                            </label>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -124,7 +116,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>账户信息列表</h2>
+                            <h2>互联网账户信息列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -140,29 +132,31 @@
                                         <col /> --%>
                                         <thead>
                                         <tr>
+                                              <td>账号</td>
                                               <td>客户编号</td>
                                               <td>客户姓名</td>
-                                              <td>客户手机号</td>
-                                              <td>证件类型</td>
-                                              <td>证件号码</td>
-                                              <td>是否第三方开户</td>
+                                              <td>客户证件号</td>
+                                              <td>余额</td>
+                                              <td>可用余额</td>
+                                              <td>冻结金额</td>
                                               <td>创建日期</td>
                                               <td>修改日期</td> 
                                               <td>操作</td> 
                                         </tr>
                                         </thead>
                                         <tbody>
-                                             <c:forEach items="${page.list}" var="t">
-                                                <tr class="success">
-                                                    <td>${t.cust_no}</td>
-                                                    <td>${t.name}</td>
-                                                    <td>${t.mobile}</td>
-                                                    <td>${t.cert_type==1?"身份证":"护照"}</td>
-                                                    <td>${t.cert_no}</td>
-                                                    <td>否</td>
-                                                    <td><fmt:formatDate value="${t.create_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${t.modify_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><a href="#">查看账户资产</a></td>
+                                             <c:forEach items="${page.list}" var="bussaccount">
+                                                <tr>
+                                                    <td>${bussaccount.accNo}</td>
+                                                    <td>${bussaccount.custNo}</td>
+                                                    <td>${bussaccount.bussinessname}</td>
+                                                    <td>${bussaccount.bussinesscertno}</td>
+                                                    <td>${bussaccount.accBalance}</td>
+                                                    <td>${bussaccount.accAvai}</td>
+                                                    <td>${bussaccount.accFreeze}</td>
+                                                    <td><fmt:formatDate value="${bussaccount.accCreateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${bussaccount.accModifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><a href="#">查看流水</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

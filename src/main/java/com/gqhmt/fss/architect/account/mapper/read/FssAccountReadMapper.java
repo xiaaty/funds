@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 
 /**
@@ -33,4 +34,7 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	public List<FssAccountEntity> findCustomerAccountByParams(Map map);
 
 	
+	
+	public List<BussAndAccountBean> getBussinessAccountList(Map map);
+
 }
