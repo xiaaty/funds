@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>系统管理--字典修改--冠群驰骋投资管理(北京)有限公司</title>
+    <title>系统管理--修改字典信息--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>

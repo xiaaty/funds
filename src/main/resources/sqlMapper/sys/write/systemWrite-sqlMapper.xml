@@ -8,7 +8,6 @@
             (#{dictId},#{dictName},#{careateUserId},#{createTime},#{modifyUserId},#{modifyTime},#{parentId},#{sort},#{isValid})  
     </insert>  
     
-    
 	<update id="updateDictMain" parameterType="DictMain">  
          update t_gq_fss_dict
          set dict_id=#{dictId},
@@ -25,6 +24,5 @@
    	<delete id="delteDictMain" parameterType="java.lang.String">  
     	delete from t_gq_fss_dict where dict_id=#{dictId}
    </delete>
-    
-    
+   <!--  -->
 </mapper>

@@ -44,9 +44,7 @@
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
-                <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
- 				<!-- NEW WIDGET START -->
                       <div class="jarviswidget" id="wid-id-11"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
@@ -80,17 +78,6 @@
                                                                 <input type="text" style="width:210px" name="dictName" value="${dictmain.dictName}" />
                                                             </label>
                                                         </td>
-                                                       <%--  <input type="hidden" id="i" value="${dictmain.isValid}"/> --%>
-                                                     <%--   <td class="lh32 tr">是否有效：</td>
-							                            <td>
-							                                <label class="select">
-							                                    <select name="isvalid">
-							                                    	<option value="">-全部-</option>
-							                                    	<option value="0" ${dictmain.isValid=="0"?"selected":""}>有效</option>
-							                                    	<option value="1" ${dictmain.isValid=="1"?"selected":""}>无效</option>
-							                                    </select>
-							                                </label>
-							                            </td> --%>
                                                     </tr>
                                                 </tbody>
                                             </table>

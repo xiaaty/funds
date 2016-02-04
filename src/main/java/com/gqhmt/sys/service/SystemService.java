@@ -46,7 +46,6 @@ public class SystemService {
 
     
     public void insertDictmain(DictMain dict) {
-//    	this.systemWriteMapper.insertSelective(dict);
     	this.systemWriteMapper.insertDictmain(dict);
 	}
     
@@ -56,7 +55,6 @@ public class SystemService {
     }
     
     public void updateDict(DictMain dict) {
-//    	systemWriteMapper.updateByPrimaryKeySelective(dict);
     	systemWriteMapper.updateDictMain(dict);
 	}
     

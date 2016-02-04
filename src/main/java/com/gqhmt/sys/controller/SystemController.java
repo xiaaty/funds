@@ -78,7 +78,7 @@ public class SystemController{
     	if(null!=dict.getParentId()){
     		dict.setParentId(dict.getParentId());
     	}
-    	dict.setCareateUserId(1l);//以后从session中获取
+    	dict.setCareateUserId(1l);
     	Date date=new Date();
     	dict.setCreateTime(date);
     	dict.setModifyUserId(1l);//以后从session中获取

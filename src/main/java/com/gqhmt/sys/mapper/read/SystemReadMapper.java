@@ -18,7 +18,7 @@ import java.util.List;
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2015/12/18  于泳      1.0     1.0 Version
+ * 2015/12/18  kyl      1.0     1.0 Version
  */
 public interface SystemReadMapper extends ReadMapper<DictMain> {
 
