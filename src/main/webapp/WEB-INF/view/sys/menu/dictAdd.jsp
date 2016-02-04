@@ -134,6 +134,7 @@
     	                success: function (data) {
     	                    if (data.code == '0000') {
     	                        jAlert("添加成功!", '信息提示');
+    	                        //自动跳转
     	                        var parent_id=data.parentid;
     	                        parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
     	                    } else {

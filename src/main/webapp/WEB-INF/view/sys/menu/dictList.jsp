@@ -303,6 +303,7 @@
   	                success: function (data) {
   	                    if (data.code == '0000') {
   	                      jAlert("删除成功!", '确认信息');
+  	                      //自动跳转
   	                      parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
   	                    } else {
   	                        return;

@@ -135,6 +135,7 @@
     	                    if (data.code == '0000') {
     	                        jAlert("修改成功!", '确认信息');
     	                        var parent_id=$("#parentId").val();
+    	                        //自动跳转
     	                     //   parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
     	                        parent.location.href="${contextPath}/sys/workassist/dictionary/0";
     	                    } else {
