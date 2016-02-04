@@ -1,4 +1,4 @@
-package com.gqhmt.fss.architect.merchant.entity;
+package com.gqhmt.fss.architect.merchant.bean;
 
 import java.util.Date;
 
@@ -25,55 +25,51 @@ import javax.persistence.Table;
  * -----------------------------------------------------------------
  * 15/12/18  李俊龙      1.0     1.0 Version
  */
-//ip限制记录表
-@Entity
-@Table(name="t_gq_fss_mchn_ipconfig")
-public class ApiIpConfig {
-	// 主键
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    // 商户号
-    @Column(name = "mchn_no")
+//资金商户api表
+public class BusinessAndApi {
+	private int id;
+	
+	//api名称
+	private String apiName;
+	//api地址
+	private String apiUrl;
+	// 商户号
     private String mchnNo;
     // ip地址
-    @Column(name = "ip_address")
-    private String ipAddress;
+    private String apiNo;
     // 0黑名单，1白名单
-    @Column(name = "type")
-    private String type;
+    private String returnUrl;
+    
+    // 0黑名单，1白名单
+    private String isReturn;
     
     // 创建日期
-    @Column(name = "create_time")
     private Date createTime;
     // 修改日期
-    @Column(name = "modify_time")
     private Date modifyTime;
-    
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getMchnNo() {
 		return mchnNo;
 	}
 	public void setMchnNo(String mchnNo) {
 		this.mchnNo = mchnNo;
 	}
-	public String getIpAddress() {
-		return ipAddress;
+	public String getApiNo() {
+		return apiNo;
 	}
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
+	public void setApiNo(String apiNo) {
+		this.apiNo = apiNo;
 	}
-	public String getType() {
-		return type;
+	public String getReturnUrl() {
+		return returnUrl;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setReturnUrl(String returnUrl) {
+		this.returnUrl = returnUrl;
+	}
+	public String getIsReturn() {
+		return isReturn;
+	}
+	public void setIsReturn(String isReturn) {
+		this.isReturn = isReturn;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -87,5 +83,25 @@ public class ApiIpConfig {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getApiUrl() {
+		return apiUrl;
+	}
+	public void setApiUrl(String apiUrl) {
+		this.apiUrl = apiUrl;
+	}
+	public String getApiName() {
+		return apiName;
+	}
+	public void setApiName(String apiName) {
+		this.apiName = apiName;
+	}
+    
+	
 	
 }
