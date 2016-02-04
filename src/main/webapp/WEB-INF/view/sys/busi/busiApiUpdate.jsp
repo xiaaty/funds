@@ -64,10 +64,15 @@
                         	<tbody>
 			            	<c:forEach items="${apiList}" var="api">
                         		<tr class="lh32">
-                                	<td class="tr">API地址：</td>
-                                    <td>           	
-						      			<input type="text" name="apiAddr" value="${api.apiAddr}" placeholder="请输入api">
-						      		</td>
+                                    <td style="padding-left: 30px">           	
+						      			API地址：<input type="text" name="apiUrl" value="${api.apiUrl}" placeholder="请输入api">
+						      			
+						      			api名称：<input type="text" name="apiName" value="${api.apiName}" >
+						      			<input type="hidden" name="mchnNo" value="${api.mchnNo}" >
+						      			api编号：<input type="text" name="apiNo" value="${api.apiNo}" >
+						      			修改日期：      	
+						      			<input type="text" value="<fmt:formatDate value='${api.modifyTime}' pattern='yyyy-MM--dd HH:mm:ss'/>" readonly="readonly" />
+						      			 </td>
 						      	</tr>
 	             			</c:forEach>
 	             			</tbody>
@@ -107,9 +112,9 @@
 	    $("#btn-add").click(function () {
 	    	var table1 = $("#api_table");
             var firstTr = table1.find("tbody>tr:last");
-            var row = $("<tr class='lh32'><td class='tr'>API地址：</td></tr>");
-            var td_1 = $("<td></td>");
-            td_1.append($("<input type='text' name='apiAddr' placeholder='请输入api'/>"));
+            var row = $("<tr class='lh32'></tr>");
+            var td_1 = $("<td style='padding-left: 30px'>API地址：</td>");
+            td_1.append($(" <input type='text' name='apiUrl' placeholder='请输入api'/> api名称 :  <input type='text' name='apiName'/> api编号：<input type='text' name='apiNo' /><input type='hidden' name='mchnNo' value='${mchnNo}'/>"));
             row.append(td_1);
             table1.append(row);
 	    });

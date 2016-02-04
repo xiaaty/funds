@@ -1,7 +1,13 @@
 package com.gqhmt.fss.architect.merchant.entity;
 
-import javax.persistence.*;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Filename:    com.gqhmt.sys.entity.Menu
@@ -19,45 +25,40 @@ import java.util.Date;
  * -----------------------------------------------------------------
  * 15/12/18  李俊龙      1.0     1.0 Version
  */
-//api表
+//资金商户api表
 @Entity
-@Table(name="t_gq_fss_api")
-public class ApiAddr {
+@Table(name="t_gq_fss_mchn_api")
+public class BusinessApi {
 	// 主键
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //api编号
+    //商户号
+    @Column(name = "mchn_no")
+    private String mchnNo;
+    // ip地址
     @Column(name = "api_no")
     private String apiNo;
-    // api名称
-    @Column(name = "api_name")
-    private String apiName;
-    //api地址
-    @Column(name = "api_url")
-    private String apiUrl;
-    //是否公共API(0：否，1：是)
-    @Column(name = "pulic")
-    private String pulic;
+    // 0黑名单，1白名单
+    @Column(name = "return_url")
+    private String returnUrl;
+    
+    // 0黑名单，1白名单
+    @Column(name = "is_return")
+    private String isReturn;
+    
     // 创建日期
     @Column(name = "create_time")
     private Date createTime;
     // 修改日期
     @Column(name = "modify_time")
     private Date modifyTime;
-    // 创建用户ID
-    @Column(name = "create_user_id")
-    private Date createUserId;
-    // 修改人ID
-    @Column(name = "modify_id")
-    private Date modifyId;
-	
-	public Long getId() {
-		return id;
+	public String getMchnNo() {
+		return mchnNo;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setMchnNo(String mchnNo) {
+		this.mchnNo = mchnNo;
 	}
 	public String getApiNo() {
 		return apiNo;
@@ -65,23 +66,17 @@ public class ApiAddr {
 	public void setApiNo(String apiNo) {
 		this.apiNo = apiNo;
 	}
-	public String getApiName() {
-		return apiName;
+	public String getReturnUrl() {
+		return returnUrl;
 	}
-	public void setApiName(String apiName) {
-		this.apiName = apiName;
+	public void setReturnUrl(String returnUrl) {
+		this.returnUrl = returnUrl;
 	}
-	public String getApiUrl() {
-		return apiUrl;
+	public String getIsReturn() {
+		return isReturn;
 	}
-	public void setApiUrl(String apiUrl) {
-		this.apiUrl = apiUrl;
-	}
-	public String getPulic() {
-		return pulic;
-	}
-	public void setPulic(String pulic) {
-		this.pulic = pulic;
+	public void setIsReturn(String isReturn) {
+		this.isReturn = isReturn;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -95,17 +90,11 @@ public class ApiAddr {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	public Date getCreateUserId() {
-		return createUserId;
+	public Long getId() {
+		return id;
 	}
-	public void setCreateUserId(Date createUserId) {
-		this.createUserId = createUserId;
-	}
-	public Date getModifyId() {
-		return modifyId;
-	}
-	public void setModifyId(Date modifyId) {
-		this.modifyId = modifyId;
+	public void setId(Long id) {
+		this.id = id;
 	}
     
 	

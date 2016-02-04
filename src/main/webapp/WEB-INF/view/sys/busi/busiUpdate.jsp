@@ -69,33 +69,70 @@
                                             <col width="100" />
                                             <col />
                                             <tbody>
-                                            <tr class="lh32">
+                                           <tr class="lh32">
                                                 <td class="tr">商户名称：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                            <input type="text" name="busiName" value="${busi.busiName}">
+                                                            <input type="text" id="mchnName" name="mchnName" value="${busi.mchnName}" onchange="createNos();">
                                                         </label>
                                                     </section>
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">商户标识：</td>
+                                                <td class="tr">商户号：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                            <input type="text" name="busiCode" value="${busi.busiCode}">
+                                                            <input type="text" readonly="readonly" id="mchnNo" name="mchnNo" value="${busi.mchnNo}">
                                                         </label>
                                                     </section>
                                                 </td>
                                             </tr>
+                                            
+                                            <tr class="lh32">
+                                                <td class="tr">父商户：</td>
+                                                <td>
+                                                    <section style="width:210px">
+                                                    <label class="select">
+												                <select id="parentId"  name ="parentId" onChange="choice(this)">
+												                    <option  value="">--请选择--</option>
+												                	<c:forEach items="${businessList}" var="busin">
+												                    <option value="${busin.id}" <c:if test="${busi.parentId ==busin.id}">selected='selected'</c:if> > ${busin.mchnName} 
+												                    </option>
+												                	</c:forEach>
+												                </select>
+												            </label>
+                                                        
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                            
+											<tr class="lh32">
+                                                <td class="tr">父商号：</td>
+                                                <td>
+                                                    <section style="width:210px">
+                                                    <label class="select">
+												                <select id="parentN"  disabled="disabled">
+												                <option value=""></option>
+												                	<c:forEach items="${businessList}" var="busin">
+												                    <option value="${busin.id}" <c:if test="${busi.parentId ==busin.id}">selected='selected'</c:if>> ${busin.mchnNo} </option>
+												                	</c:forEach>
+												                </select>
+												                     <input type="hidden" id="parentNo" name="parentNo" value="${busi.parentNo}"/>
+												            </label>
+                                                        
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                            
 											<tr class="lh32">
                                                 <td class="tr">IP校验方式：</td>
                                                 <td>
                                                     <section style="width:250px">
                                                         <label class="text">
-                                                            <input type="radio" name="authIpType" value="0" <c:if test="${busi.authIpType == '0'}"> checked </c:if> />IP不校验
-                                                            <input type="radio" name="authIpType" value="1" <c:if test="${busi.authIpType =='1'}"> checked </c:if> />IP校验
+                                                            <input type="radio" name="authIp" value="0" <c:if test="${busi.authIp ==0}">checked</c:if> />IP不校验
+                                                            <input type="radio" name="authIp" value="1" <c:if test="${busi.authIp ==1}">checked</c:if>  />IP校验
                                                         </label>
                                                     </section>
                                                 </td>
@@ -105,8 +142,19 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="text">
-                                                            <input type="radio" name="authApiType" value="0" <c:if test="${busi.authIpType=='0'}"> checked </c:if>/>API不校验
-                                                            <input type="radio" name="authApiType" value="1" <c:if test="${busi.authIpType=='1'} "> checked </c:if>/>API校验
+                                                            <input type="radio" name="authApi" value="0" <c:if test="${busi.authApi ==0}">checked</c:if>/>可以访问所有公共API
+                                                            <input type="radio" name="authApi" value="1" <c:if test="${busi.authApi ==1}">checked</c:if>/>除公共API外，可以访问授权API
+                                                        </label>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                            <tr class="lh32">
+                                                <td class="tr">状态：</td>
+                                                <td>
+                                                    <section style="width:210px">
+                                                        <label class="text">
+                                                            <input type="radio" name="state" value="0" <c:if test="${busi.state ==0}">checked</c:if>/>未启用
+                                                            <input type="radio" name="state" value="1" <c:if test="${busi.state ==1}">checked</c:if>/>已启用
                                                         </label>
                                                     </section>
                                                 </td>
@@ -115,7 +163,7 @@
                                         </table>
                                     </div>
                                     <footer>
-                                        <button id="btn-success" class="btn btn-primary" type="button">确认</button>
+                                        <button id="btn-success" class="btn btn-primary"  type="button">修改</button>
                                     </footer>
                                 </div>
                                 <!-- end widget content -->
@@ -133,6 +181,7 @@
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
+//     	$("#parentN").hide();
 	    $("#btn-success").click(function () {
 	        if (validateCheck()) {
 	            /*if (!confirm("确认 修改商户信息吗?")) {
@@ -153,13 +202,36 @@
 	        }
 	    });
     });
+    //选中商户号
+    function choice(obj){
+    	var id=obj.options[obj.selectedIndex].value;
+    	$("#parentN").val(id);
+		var oSelect=document.getElementById("parentN");
+   	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
+//    	  txtOption= txtOption.substring(0,(txtOption.length-2));
+   	 	 $("#parentNo").val(txtOption);
+   	     alert( $("#parentNo").val());
+    	
+    }
 	//校验函数
 	function validateCheck() {
-		return true;
+        return true;
+	}
+	//生成商户号
+	function createNos(){
+		var a=("0000000" + 100000000 * Math.random()).match(/(\d{8})(\.|$)/)[1];
+		var result = '';
+		for(var i=0;i<4;i++){
+		var ranNum = Math.ceil(Math.random() * 25); //生成一个0到25的数字
+		//大写字母'A'的ASCII是65,A~Z的ASCII码就是65 + 0~25;然后调用String.fromCharCode()传入ASCII值返回相应的字符并push进数组里
+		result+=String.fromCharCode(65+ranNum);
+		}
+		var mchnNo=	a.toString()+result;
+		$("#mchnNo").val(mchnNo);
 	}
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>
 </body>
 
-</html></html>
+</html>

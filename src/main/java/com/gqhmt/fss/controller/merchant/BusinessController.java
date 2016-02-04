@@ -1,9 +1,11 @@
 package com.gqhmt.fss.controller.merchant;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
 import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
 import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
 import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.entity.BusinessApi;
 import com.gqhmt.fss.architect.merchant.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -61,6 +63,8 @@ public class BusinessController {
      */
     @RequestMapping(value = "/sys/busi/add",method = RequestMethod.GET)
     public Object businessAdd(HttpServletRequest request,ModelMap model){
+    	List<Business> findBusinessList = restApiService.findBusinessList(null);
+    	model.addAttribute("businessList", findBusinessList);
 		return "sys/busi/busiAdd";
     }
     
@@ -73,7 +77,9 @@ public class BusinessController {
     @RequestMapping(value = "/sys/busi/addConfirm")
     @ResponseBody
     public Object businessAddConfirm(HttpServletRequest request,@ModelAttribute(value="busi")Business busi){
+    	busi.setCreateTime(new Date());
     	restApiService.insertBusiness(busi);
+    	
     	Map<String, String> map = new HashMap<String, String>();
         map.put("code", "0000");
         map.put("message", "success");
@@ -88,9 +94,9 @@ public class BusinessController {
      */
     @RequestMapping(value = "/sys/busi/checkCode")
     @ResponseBody
-    public Object busiCheckCode(HttpServletRequest request,@ModelAttribute(value="busiCode")String busiCode){
+    public Object busiCheckCode(HttpServletRequest request,@ModelAttribute(value="mchnNo")String mchnNo){
     	Map<String, Object> param =  new HashMap<String, Object>();
-    	param.put("busiCode", busiCode);
+    	param.put("mchnNo", mchnNo.trim());
     	List<Business> busiList = restApiService.findBusinessList(param);
     	Map<String, String> map = new HashMap<String, String>();
     	if(null != busiList && !busiList.isEmpty()) {
@@ -107,10 +113,12 @@ public class BusinessController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/sys/busi/update/{busiCode}",method = RequestMethod.GET)
-    public Object businessUpdate(HttpServletRequest request,ModelMap model, @PathVariable String busiCode){
+    @RequestMapping(value = "/sys/busi/update/{mchnNo}",method = RequestMethod.GET)
+    public Object businessUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo){
+    	List<Business> findBusinessList = restApiService.findBusinessList(null);
+    	model.addAttribute("businessList", findBusinessList);
 		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("busiCode", busiCode);
+		param.put("mchnNo", mchnNo);
     	List<Business> busiList = restApiService.findBusinessList(param);
 		model.addAttribute("busi", busiList.get(0));
 		return "sys/busi/busiUpdate";
@@ -132,22 +140,22 @@ public class BusinessController {
 		return map;
     }
     /**
-     * 跳转至商户ip修改
+     * 跳转至商户IP修改
      * @param request
      * @param model
      * @return
      */
-    @RequestMapping(value = "/sys/busi/ipupdate/{busiCode}",method = RequestMethod.GET)
-    public Object businessIpUpdate(HttpServletRequest request,ModelMap model, @PathVariable String busiCode){
+    @RequestMapping(value = "/sys/busi/ipupdate/{mchnNo}",method = RequestMethod.GET)
+    public Object businessIpUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo){
     	ApiIpConfig apiIpConfig =  new ApiIpConfig();
-    	apiIpConfig.setBusiCode(busiCode);
+    	apiIpConfig.setMchnNo(mchnNo);
     	List<ApiIpConfig> apiIpList = restApiService.findApiIpList(apiIpConfig);
 		model.addAttribute("apiIpList", apiIpList);
-		model.addAttribute("busiCode", busiCode);
+		model.addAttribute("mchnNo", mchnNo);
 		return "sys/busi/busiIpUpdate";
     }
     /**
-     * 商户修改确认
+     * 商户IP修改确认
      * @param request
      * @param model
      * @return
@@ -155,19 +163,21 @@ public class BusinessController {
     @RequestMapping(value = "/sys/busi/ipUpdateConfirm")
     @ResponseBody
     public Object ipUpdateConfirm(HttpServletRequest request,@ModelAttribute(value="ipAddr")ApiIpConfig ipConfig, ModelMap model){
+    	String[] ipAddrs = ipConfig.getIpAddress().split(",");
+    	String[] mchnNos = ipConfig.getMchnNo().split(",");
     	// 删掉原有ip
     	ApiIpConfig ip = new ApiIpConfig();
-		ip.setBusiCode(ipConfig.getBusiCode());
+		ip.setMchnNo(mchnNos[0]);
 		restApiService.deleteApiIpConfig(ip);
     	Map<String, String> map = new HashMap<String, String>();
     	// 保存新录入ip
-    	if(StringUtils.isNotBlank(ipConfig.getIpAddr())) {
-	    	String[] ipAddrs = ipConfig.getIpAddr().split(",");
-			for (String addr : ipAddrs) {
-				ip = new ApiIpConfig();
-				ip.setBusiCode(ipConfig.getBusiCode());
-				ip.setIpAddr(addr);
-				restApiService.insertApiIpConfig(ip);
+    	if(StringUtils.isNotBlank(ipConfig.getIpAddress())) {
+			for (int i=0;i<ipAddrs.length;i++) {
+					ip = new ApiIpConfig();
+					ip.setMchnNo(mchnNos[i]);
+					ip.setIpAddress(ipAddrs[i]);;
+					ip.setModifyTime(new Date());
+					restApiService.insertApiIpConfig(ip);
 			}
     	}
         map.put("code", "0000");
@@ -175,43 +185,57 @@ public class BusinessController {
 		return map;
     }
     /**
-     * 跳转至商户ip修改
+     * 跳转至商户API修改
      * @param request
      * @param model
      * @return
      */
-    @RequestMapping(value = "/sys/busi/apiupdate/{busiCode}",method = RequestMethod.GET)
-    public Object businessApiUpdate(HttpServletRequest request,ModelMap model, @PathVariable String busiCode){
-    	ApiAddr apiAddr =  new ApiAddr();
-    	apiAddr.setBusiCode(busiCode);
-    	List<ApiAddr> apiAddrList = restApiService.findApiAddrList(apiAddr);
-		model.addAttribute("apiList", apiAddrList);
-		model.addAttribute("busiCode", busiCode);
+    @RequestMapping(value = "/sys/busi/apiupdate/{mchnNo}",method = RequestMethod.GET)
+    public Object businessApiUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo){
+    	
+    	List<BusinessAndApi> buApiList = restApiService.findBusinessAndApiList(mchnNo);
+		model.addAttribute("apiList", buApiList);
+		model.addAttribute("mchnNo", mchnNo);
 		return "sys/busi/busiApiUpdate";
     }
     /**
-     * 商户修改确认
+     * 商户API修改确认
      * @param request
      * @param model
      * @return
      */
     @RequestMapping(value = "/sys/busi/apiUpdateConfirm")
     @ResponseBody
-    public Object apiUpdateConfirm(HttpServletRequest request,@ModelAttribute(value="ipAddr")ApiAddr apiAddr, ModelMap model){
-    	// 删掉原有api地址
-    	ApiAddr addr = new ApiAddr();
-    	addr.setBusiCode(apiAddr.getBusiCode());
-		restApiService.deleteApiAddr(addr);
+    public Object apiUpdateConfirm(HttpServletRequest request,@ModelAttribute(value="businessAndApi")BusinessAndApi businessAndApi, ModelMap model){
+    	String[] mchnNos = businessAndApi.getMchnNo().split(",");
+    	String[] apiNames = businessAndApi.getApiName().split(",");
+    	String[] apiNos = businessAndApi.getApiNo().split(",");
+    	String[] apiUrls = businessAndApi.getApiUrl().split(",");
+    	//删除原有的apiUrl
+    	restApiService.deleteApiUrl(mchnNos[0]);
+    	restApiService.deleteApi(mchnNos[0]);
     	Map<String, String> map = new HashMap<String, String>();
     	// 保存新录入api地址
-    	if(StringUtils.isNotBlank(apiAddr.getApiAddr())) {
-	    	String[] apiAddrs = apiAddr.getApiAddr().split(",");
-			for (String api : apiAddrs) {
-				addr = new ApiAddr();
-				addr.setBusiCode(apiAddr.getBusiCode());
-				addr.setApiAddr(api);
-				restApiService.insertApiAddr(addr);
-			}
+    	if(StringUtils.isNotBlank(businessAndApi.getApiName())) {
+    		ApiAddr addr = null;
+    		for (int i=0;i<apiNames.length;i++) {
+    			addr=new ApiAddr();
+    			addr.setApiName(apiNames[i]);
+    			addr.setApiNo(apiNos[i]);
+    			addr.setApiUrl(apiUrls[i]);
+    			addr.setCreateTime(new Date());
+    			addr.setModifyTime(new Date());
+    			restApiService.insertApiAddr(addr);
+    		}
+    		BusinessApi businessApi = null;
+    		for (int i=0;i<apiNames.length;i++) {
+    			businessApi=new BusinessApi();
+    			businessApi.setApiNo(apiNos[i]);
+    			businessApi.setMchnNo(mchnNos[i]);
+    			businessApi.setModifyTime(new Date());
+    			restApiService.insertBusinessApi(businessApi);
+    		}
+			
     	}
         map.put("code", "0000");
         map.put("message", "success");

@@ -69,44 +69,42 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                        <col width="200" />
-                                        <col />
                                         <thead>
                                         <tr>
                                             <td>商户名称</td>
-                                            <td>商户标识</td>
+                                            <td>商户号</td>
+                                            <td>父商户号</td>
+                                            <td>商户密钥</td>
                                             <td>IP校验方式</td>
                                             <td>API校验方式</td>
+                                            <td>状态</td>
                                             <td>创建时间</td>
+                                            <td>修改时间</td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach items="${page.list}" var="t">
-                                            
                                                 <tr>
-                                                    <td>${t.busiName}</td>
-                                                    <td>${t.busiCode}</td>
-                                                    <td>${t.authIpType=='0'?"IP不校验":"IP校验"}</td>
-                                                    <td>${t.authApiType=='0'?"API不校验":"AIP校验"}</td>
+                                                    <td>${t.mchnName}</td>
+                                                    <td>${t.mchnNo}</td>
+                                                    <td>${t.parentNo}</td>
+                                                    <td>${t.mchnKey}</td>
+                                                    <td>${t.authIp=='0'?"IP不校验":"IP校验"}</td>
+                                                    <td>${t.authApi=='0'?"API不校验":"AIP校验"}</td>
+                                                    <td>${t.state=='0'?"未启用":"已启用"}</td>
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td style="text-align:left;">
-                                                        <a href="${contextPath}/sys/busi/update/${t.busiCode}">修改</a>
-                                                        <c:if test="${t.authIpType!='0'}"><a href='${contextPath}/sys/busi/ipupdate/${t.busiCode}'>IP地址管理</a></c:if>
-                                                        <c:if test="${t.authApiType!='0'}"><a href='${contextPath}/sys/busi/ipupdate/${t.busiCode}'>IP地址管理</a></c:if>
- <!--<#if t.authIpType != '0'> -->
-<%--                                                         	<a href="${contextPath}/sys/busi/ipupdate/${t.busiCode}">IP地址管理</a> --%>
-<!--                                                         </#if> -->
-<!--                                                         <#if t.authApiType != '0'> -->
-<%--                                                         	<a href="${contextPath}/sys/busi/apiupdate/${t.busiCode}">API地址管理</a> --%>
-<!--                                                         </#if> -->
+                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}">修改</a>
+                                                        <c:if test="${t.authIp!='0'}"><a href='${contextPath}/sys/busi/ipupdate/${t.mchnNo}'>IP地址管理</a></c:if>
+                                                        <c:if test="${t.authApi!='0'}"><a href='${contextPath}/sys/busi/apiupdate/${t.mchnNo}'>AIP地址管理</a></c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
-                                <!-- end widget content -->
                             </form>
                         </div>
                     </div>

@@ -1,11 +1,14 @@
 package com.gqhmt.fss.architect.merchant.service;
 
+import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
 import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
 import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
 import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.entity.BusinessApi;
 import com.gqhmt.fss.architect.merchant.mapper.read.RestApiAddrReadMapper;
 import com.gqhmt.fss.architect.merchant.mapper.read.RestApiIpReadMapper;
 import com.gqhmt.fss.architect.merchant.mapper.read.RestApiReadMapper;
+import com.gqhmt.fss.architect.merchant.mapper.read.RestBusinessApiReadMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.RestApiAddrWriteMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.RestApiIpWriteMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.RestApiWriteMapper;
@@ -32,7 +35,8 @@ public class RestApiService {
 	private RestApiAddrReadMapper restApiAddrReadMapper;
 	@Resource
 	private RestApiAddrWriteMapper restApiAddrWriteMapper;
-	
+	@Resource
+	private RestBusinessApiReadMapper restBusinessApiReadMapper;
 	/**
 	 * 获取商户认证类型
 	 * @param busiCode
@@ -128,5 +132,50 @@ public class RestApiService {
 	 */
 	public void deleteApiAddr(ApiAddr apiAddr) {
 		restApiAddrWriteMapper.delete(apiAddr);
+	}
+
+	public List<BusinessApi> findBusinessApiList(BusinessApi businessApi) {
+		return restBusinessApiReadMapper.select(businessApi);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月3日
+	 * function：查询商户api列表
+	 */
+	public List<BusinessAndApi> findBusinessAndApiList(String mchnNo) {
+		// TODO Auto-generated method stub
+		return restApiReadMapper.findBusinessAndApiList(mchnNo);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月3日
+	 * function：删除原有的apiUrl
+	 */
+	public void deleteApiUrl(String mchnNo) {
+		// TODO Auto-generated method stub
+		restApiReadMapper.deleteApiUrl(mchnNo);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月3日
+	 * function：删除原有的apiUrl
+	 */
+	public void deleteApi(String mchnNo) {
+		// TODO Auto-generated method stub
+		restApiReadMapper.deleteApi(mchnNo);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月3日
+	 * function：添加商户API匹配
+	 */
+	public void insertBusinessApi(BusinessApi businessApi) {
+		
+		restBusinessApiReadMapper.insertSelective(businessApi);
+		
 	}
 }

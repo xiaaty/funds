@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -66,7 +67,10 @@
                         		<tr class="lh32">
                                 	<td class="tr">IP地址：</td>
                                     <td>           	
-						      			<input type="text" name="ipAddr" value="${ip.ipAddr}" placeholder="请输入ip">
+						      			<input type="text" name="ipAddress" value="${ip.ipAddress}" placeholder="请输入ip">
+						      			修改日期：      	
+						      			<input type="text" value="<fmt:formatDate value='${ip.modifyTime}' pattern='yyyy-MM--dd HH:mm:ss'/>" readonly="readonly" />
+						      			<input type="hidden" name="mchnNo" value="${mchnNo}" >
 						      		</td>
 						      	</tr>
 			            	</c:forEach>
@@ -109,7 +113,7 @@
             var firstTr = table1.find("tbody>tr:last");
             var row = $("<tr class='lh32'><td class='tr'>IP地址：</td></tr>");
             var td_1 = $("<td></td>");
-            td_1.append($("<input type='text' name='ipAddr' placeholder='请输入ip'/>"));
+            td_1.append($("<input type='text' name='ipAddress' placeholder='请输入ip'/><input type='hidden' name='mchnNo' value='${mchnNo}'/>"));
             row.append(td_1);
             table1.append(row);
 	    });

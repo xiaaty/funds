@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
 import com.gqhmt.fss.architect.merchant.entity.Business;
 
 
@@ -36,4 +37,26 @@ public interface RestApiReadMapper extends ReadMapper<Business> {
 	 * @return
 	 */
 	public List<Business> findBusinessList(Map<String, Object> map);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月3日
+	 * function：查询商户api列表
+	 */
+	public List<BusinessAndApi> findBusinessAndApiList(String mchnNo);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月3日
+	 * function：删除原有的apiUrl
+	 */
+	public void deleteApiUrl(String mchnNo);
+
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月3日
+	 * function：删除原有的apiUrl
+	 */
+	public void deleteApi(String mchnNo);
 }
