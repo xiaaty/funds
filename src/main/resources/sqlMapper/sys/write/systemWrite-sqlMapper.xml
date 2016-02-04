@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sys.mapper.write.SystemWriteMapper">
+	<insert id="insertDictmain" parameterType="DictMain">  
+        insert into t_gq_fss_dict  
+            (dict_id,dict_name,create_user_id,create_time,modify_user_id,modify_time,parent_id,sort,is_valid) 
+        values  
+            (#{dictId},#{dictName},#{careateUserId},#{createTime},#{modifyUserId},#{modifyTime},#{parentId},#{sort},#{isValid})  
+    </insert>  
+    
+	<update id="updateDictMain" parameterType="DictMain">  
+         update t_gq_fss_dict
+         set dict_id=#{dictId},
+         dict_name=#{dictName},
+         create_user_id=#{careateUserId},
+         create_time=#{createTime},
+         modify_user_id=#{modifyUserId},
+         modify_time=#{modifyTime},
+         parent_id=#{parentId},
+         sort=#{sort},
+         is_valid=#{isValid} where dict_id=#{dictId}
+    </update>
+    
+   	<delete id="delteDictMain" parameterType="java.lang.String">  
+    	delete from t_gq_fss_dict where dict_id=#{dictId}
+   </delete>
+   <!--  -->
+</mapper>

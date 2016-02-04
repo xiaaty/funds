@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>账户管理--旧版账户--冠群驰骋投资管理(北京)有限公司</title>
+    <title>系统管理--字典表--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
@@ -35,27 +35,23 @@
 
     <!-- RIBBON -->
     <div id="ribbon">
-
-        <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>客户信息管理</li>
-            <li>客户核心信息</li>
+            <li>系统配置</li>
+            <li>字典表信息</li>
         </ol>
-        <!-- end breadcrumb -->
     </div>
 
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
-                <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
- 				<!-- NEW WIDGET START -->
                       <div class="jarviswidget" id="wid-id-11"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="Form">
+                           <%--  ${contextPath}/sys/workassist/dictionary --%>
+                                <form class="smart-form" action=""  method="post" id="dictForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -70,46 +66,27 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr">手机号码：</td>
+                                                        <td class="tr">编号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="mobile" value="${customer.mobile}" />
+                                                                <input type="text" style="width:210px" name="dictId" value="${dictmain.dictId}" />
                                                             </label>
                                                         </td>
-                                                         <td class="tr">证件号码：</td>
-                                                        <td>
-                                                            <label class="input" style="width:210px" >
-                                                                <input type="text" name="cert_no" value="${customer.cert_no}" />
+                                                         <td class="tr">名称：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:210px" name="dictName" value="${dictmain.dictName}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">姓名:</td>
-                                                        <td>
-                                                            <label class="input"  style="width:210px" >
-                                                                <input type="text" name="name" value="${customer.name}"/>
-                                                            </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="tr">开户日期：</td>
-			                                            <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
-			                                                    </label>
-			                                                </section>
-			                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <footer>
-                                            <button type="submit" class="btn btn-primary" onclick="tijiao()">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button class="btn btn-primary"  id="btn_add" type="button">
+                                           <input type="hidden" id="parentId" value="${dictmain.parentId}" />
+                                       	      添&nbsp;&nbsp;&nbsp;加</button>
+                                          <button type="submit" class="btn btn-primary">查&nbsp;&nbsp;&nbsp;询</button> 
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -117,14 +94,11 @@
                     		</div>
                 		</div>
                 
-                
-                
                     <!-- NEW WIDGET START -->
-                    <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>客户核心信息列表</h2>
+                            <h2>字典信息列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -136,34 +110,38 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                       <%--  <col width="200" />
-                                        <col /> --%>
                                         <thead>
                                         <tr>
-                                              <td>客户编号</td>
-                                              <td>客户姓名</td>
-                                              <td>客户手机号</td>
-                                              <td>证件类型</td>
-                                              <td>证件号码</td>
-                                              <td>是否第三方开户</td>
+                                              <td>编号</td>
+                                              <td>名称</td>
+                                              <td>上级目录</td> 
+                                              <td>创建人</td>
                                               <td>创建日期</td>
-                                              <td>修改日期</td> 
+                                              <td>修改人</td>
+                                              <td>修改日期</td>
+                                              <td>是否有效</td>
+                                              <td>排序</td>
                                               <td>操作</td> 
                                         </tr>
                                         </thead>
                                         <tbody>
-                                             <c:forEach items="${page.list}" var="customer">
+                                             <c:forEach items="${page.list}" var="dict">
                                                 <tr>
-                                                    <td>${customer.cust_no}</td>
-                                                    <td>${customer.name}</td>
-                                                    <td>${customer.mobile}</td>
-                                                    <td>${customer.cert_type==1?"身份证":"护照"}</td>
-                                                    <td>${customer.cert_no}</td>
-                                                    <td>否</td>
-                                                    <td><fmt:formatDate value="${customer.create_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${customer.modify_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <%-- <td><a href="${contextPath}/fss/account/customerAccountDetail">查看账户资产</a></td>--%>
-                                                    <td><a href="${contextPath}/fss/account/customerAccountDetail/${customer.cust_no}">查看账户资产</a></td> 
+                                                    <td>${dict.dictId}</td>
+                                                    <td>${dict.dictName}</td>
+                                                    <td>${dict.parentId}</td>
+                                                    <td>${dict.careateUserId==1?"张三":"李四"}</td>
+                                                    <td><fmt:formatDate value="${dict.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>${dict.modifyUserId==1?"王五":"admin"}</td>
+                                                    <td><fmt:formatDate value="${dict.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>${dict.isValid==0?"有效":"无效"}</td>
+                                                    <td>${dict.sort}</td>
+                                                   <td><a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
+                                                   		&nbsp;&nbsp;&nbsp;
+                                                   		<a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
+                                                   		&nbsp;&nbsp;&nbsp;
+                                                   		<a href="javascript:void(0)" onclick="deleteDict(${dict.dictId},${dict.parentId})">删除</a>
+                                                   	</td> 
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -183,9 +161,9 @@
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
  <script type="text/javascript" charset="utf-8">
 	 $(document).ready(function () {
+		 
 	     pageSetUp();
-	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
-	     
+	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#dictForm"));
 	     
 	     $('.selectdate').datetimepicker({
              language: 'zh-CN',
@@ -306,35 +284,38 @@
 	    		} 
 	    	return ErrorMsg; 
 	    } 
-	 
-	    //验证输入的开户开始日期与结束日期 
-	    function tijiao(){
-	    	var startime=$("#startime").val();
-	    	var endtime=$("#endtime").val();
-	    	var d=new Date();
-	    	var nowday=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-	    	var d1 = new Date(startime.replace(/\-/g, "\/"));  
-    		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
-    		var d3 = new Date(nowday.replace(/\-/g, "\/"));  
-	    	
-	    	if(startime!="" && endtime.length==0){
-	    		if(d1>d3){
-	    			alert('查询开始时间不能早于当前时间！');
-	    			return false;
-	    		}
-	    	}else
-	    	if(startime!="" && endtime!=""){
-	    		if(d1>d3 && d1<=d2){
-	    			alert('您查询时间范围超前了！');
-	    			return false;
-	    		}else
-	    		if(d1>d2){
-	    			alert('查询开始时间不能早于结束时间！');
-	    			return false;
-	    		}
-	    	}
-	    }
-	 
+	    
+	  //添加按钮按下
+        $("#btn_add").button().click(function() {
+        	var parent_id=$("#parentId").val();
+        	window.open("${contextPath}/sys/workassist/dictAdd/${parent_id}","_self");
+        });
+	    
+	  
+	   /**
+	   	删除
+	   **/
+       function deleteDict(dictId,parent_id){
+  	            $.ajax({
+  	            	url : "${contextPath}/sys/workassist/deletedeict?dictId="+dictId,
+  	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+  	                dataType: "json",
+  	                success: function (data) {
+  	                    if (data.code == '0000') {
+  	                      jAlert("删除成功!", '确认信息');
+  	                      //自动跳转
+  	                      parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
+  	                    } else {
+  	                        return;
+  	                    }
+  	                }
+  	            });
+  	        
+        	
+        	
+        }
+	  
+	    
 </script>
 
 <%@include file="../../../view/include/foot.jsp"%>
