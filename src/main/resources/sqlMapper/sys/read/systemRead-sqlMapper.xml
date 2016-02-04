@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sys.mapper.read.SystemReadMapper">
+	<select id="selectDictmain" parameterType="DictMain"  resultType="DictMain">
+		SELECT
+		t.dict_id dictId,
+		t.dict_name dictName,
+		t.create_user_id careateUserId,
+		t.create_time createTime,
+		t.modify_user_id modifyUserId,
+		t.modify_time modifyTime,
+		t.sort sort,
+		t.is_valid isValid,
+		t.parent_id parentId
+		FROM `t_gq_fss_dict` t where t.parent_id =#{parentId}
+		<if test="dictId !=null and dictId != ''">
+			and t.dict_id like  concat('%',#{dictId},'%') 
+		</if>
+		<if test="dictName !=null and dictName !=''">
+			and t.dict_name like  concat('%',#{dictName},'%') 
+		</if>
+	</select>
+	
+	
+	<select id="getDictMainById" parameterType="java.lang.String" resultType="DictMain">
+		SELECT
+		t.dict_id dictId,
+		t.dict_name dictName,
+		t.create_user_id careateUserId,
+		t.create_time createTime,
+		t.modify_user_id modifyUserId,
+		t.modify_time modifyTime,
+		t.sort sort,
+		t.is_valid isValid,
+		t.parent_id parentId
+		FROM `t_gq_fss_dict` t where t.dict_id=#{dictId}
+	</select>
+	
+</mapper>
