@@ -140,7 +140,7 @@
                                                    		&nbsp;&nbsp;&nbsp;
                                                    		<a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
                                                    		&nbsp;&nbsp;&nbsp;
-                                                   		<a href="javascript:void(0)" onclick="deleteDict(${dict.dictId})">删除</a>
+                                                   		<a href="javascript:void(0)" onclick="deleteDict(${dict.dictId},${dict.parentId})">删除</a>
                                                    	</td> 
                                                 </tr>
                                             </c:forEach>
@@ -295,7 +295,7 @@
 	   /**
 	   	删除
 	   **/
-       function deleteDict(dictId){
+       function deleteDict(dictId,parent_id){
   	            $.ajax({
   	            	url : "${contextPath}/sys/workassist/deletedeict?dictId="+dictId,
   	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -303,7 +303,7 @@
   	                success: function (data) {
   	                    if (data.code == '0000') {
   	                      jAlert("删除成功!", '确认信息');
-  	                      parent.location.href="${contextPath}/sys/workassist/dictionary/0";
+  	                      parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
   	                    } else {
   	                        return;
   	                    }

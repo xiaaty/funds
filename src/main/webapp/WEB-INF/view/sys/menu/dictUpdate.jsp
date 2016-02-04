@@ -53,7 +53,7 @@
                        <input type="hidden" value="${dict.createTime}" name="createTime"  default="0"/> 
                        <input type="hidden" value="${dict.modifyUserId}" name="careateUserId"  default="0"/> 
                        <input type="hidden" value="${dict.modifyTime}" name="createTime"  default="0"/> 
-                       <input type="hidden" value="${dict.parentId}" name="parentId"  default="0"/> 
+                       <input type="hidden" value="${dict.parentId}" name="parentId"  id="parentId" default="0"/> 
                        <input type="hidden" value="${dict.sort}" name="sort"  default="0"/> 
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
@@ -134,6 +134,8 @@
     	                success: function (data) {
     	                    if (data.code == '0000') {
     	                        jAlert("修改成功!", '确认信息');
+    	                        var parent_id=$("#parentId").val();
+    	                     //   parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
     	                        parent.location.href="${contextPath}/sys/workassist/dictionary/0";
     	                    } else {
     	                        return;

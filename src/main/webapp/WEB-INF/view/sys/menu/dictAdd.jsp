@@ -134,8 +134,8 @@
     	                success: function (data) {
     	                    if (data.code == '0000') {
     	                        jAlert("添加成功!", '信息提示');
-    	                        var parentid=data.parentid;
-    	                        parent.location.href="${contextPath}/sys/workassist/dictionary/0";
+    	                        var parent_id=data.parentid;
+    	                        parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
     	                    } else {
     	                    	jAlert("添加失败,该编号已经存在,请勿重复添加!", '消息提示');
     	                        return;
