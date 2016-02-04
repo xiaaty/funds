@@ -31,7 +31,7 @@
                mchn_child mchnChild
                 from t_gq_fss_water water where cust_no=#{id}
                 <choose>
-                <when test="startDate == null or startDate == '' and endDate==null and endDate==''">
+                <when test="startDate == null or startDate == '' and endDate==null or endDate==''">
                AND 1=1
               </when>
                 <when test="startDate != null and startDate != '' and endDate==null or endDate=='' ">
