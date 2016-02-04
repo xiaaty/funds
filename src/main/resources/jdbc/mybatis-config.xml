@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 		<typeAlias type="com.gqhmt.sys.beans.FuncList" alias="FuncList"/>
 		<typeAlias type="com.gqhmt.sys.beans.SysAuthFunc" alias="SysAuthFunc"/>
 		<typeAlias type="com.gqhmt.sys.beans.SysLog" alias="SysLog"/>
+		<typeAlias type="com.gqhmt.sys.entity.DictMain" alias="DictMain"/>
 		<!-- 系统相关 end-->
 		<!-- 账户相关 -->
 	    <typeAlias type="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity" alias="bankCardInfoEntity"/>
