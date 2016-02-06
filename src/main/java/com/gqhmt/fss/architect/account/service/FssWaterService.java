@@ -1,5 +1,16 @@
 package com.gqhmt.fss.architect.account.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
+import com.gqhmt.fss.architect.account.mapper.read.FssWaterReadMapper;
+
 /**
  * Filename:    com.gqhmt.fss.architect.account.service.FssWaterService
  * Copyright:   Copyright (c)2015
@@ -16,5 +27,35 @@ package com.gqhmt.fss.architect.account.service;
  * -----------------------------------------------------------------
  * 2016/1/10  于泳      1.0     1.0 Version
  */
+@Service
 public class FssWaterService {
+	@Resource
+	private FssWaterReadMapper fssWaterReadMapper;
+	  /**
+     * 
+     * author:jhz
+     * time:2016年1月26日
+     * function：查询流水详情列表
+	 * @param endDate 
+	 * @param startDate 
+     */
+	public List<FssWaterEntity> queryWaterDetail(Long id, String startDate, String endDate) {
+		Map searchWater=new HashMap();
+//		StringBuffer start=new StringBuffer(startDate);
+//		StringBuffer end=new StringBuffer(endDate);
+//		start=start.append(" 00:00:00");
+//		end=end.append(" 23:59:59");
+		if(startDate!=null&&!startDate.equals("")){
+			 startDate=startDate+" 00:00:00";
+		}
+		if(endDate!=null&&!endDate.equals("")){
+			endDate=endDate+" 23:59:59";
+		}
+//		System.out.println(endDate+"-------------");
+		searchWater.put("id",id);
+		searchWater.put("startDate",startDate);
+		searchWater.put("endDate",endDate);
+		// TODO Auto-generated method stub
+		return fssWaterReadMapper.queryWaterDetail(searchWater);
+	}
 }

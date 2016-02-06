@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.sys.mapper.write.MenuWriteMapper">
+	<insert id="addMenu" parameterType="com.gqhmt.sys.entity.Menu">
+		insert into 
+		t_gq_fss_sys_menu(menu_name,menu_url,url_type,roles,parma,parmaDefaule,parent_id,sort) 
+		VALUES 
+		(#{menuName},#{menuUrl},0,0,null,null,#{parent_id},#{sort})
+	</insert>
 </mapper>

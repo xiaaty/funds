@@ -1,6 +1,14 @@
 package com.gqhmt.fss.architect.customer.service;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
+import com.gqhmt.fss.architect.customer.bean.CustomerAndUser;
+import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
+import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 
 /**
  * Filename:    com.gqhmt.fss.architect.customer.service.FssCustBankCardService
@@ -20,4 +28,27 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FssCustBankCardService {
+	@Resource
+	private FssCustomerReadMapper fssCustomerReadMapper;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年1月26日
+	 * function：得到银行卡和用户信息列表
+	 */
+	public List<CustomerAndUser> findbankCardAll(CustomerAndUser customerAndUser) {
+		
+		return fssCustomerReadMapper.findbankCardAll(customerAndUser);
+	}
+
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年1月26日
+	 * function：查询要申请变更银行卡用户信息
+	 */
+	public CustomerAndUser findCustomerAndUser(Long id) {
+		// TODO Auto-generated method stub
+		return fssCustomerReadMapper.findCustomerAndUser(id);
+	}
 }

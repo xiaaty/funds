@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -5,7 +8,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <#include "../../../view/include/common_css_js.jsp">
+   <%@include file="../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -29,7 +32,7 @@
 </head>
 
 <body>
-<#include "../../../view/include/menu.jsp">
+<%@include file="../../../view/include/menu.jsp"%>
 
 
 <div id="main" role="main">
@@ -66,53 +69,42 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                        <col width="200" />
-                                        <col />
                                         <thead>
                                         <tr>
                                             <td>商户名称</td>
-                                            <td>商户标识</td>
+                                            <td>商户号</td>
+                                            <td>父商户号</td>
+                                            <td>商户密钥</td>
                                             <td>IP校验方式</td>
                                             <td>API校验方式</td>
+                                            <td>状态</td>
                                             <td>创建时间</td>
+                                            <td>修改时间</td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <#list page.list as t>
+                                            <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${t.busiName}</td>
-                                                    <td>${t.busiCode}</td>
-                                                    <td>
-                                                    	<#if t.authIpType == '0'>
-                                                    		IP不校验
-                                                    	<#elseif t.authIpType == '1'>
-                                                    		IP校验
-                                                    	</#if>
-                                                    </td>
-                                                    <td>
-                                                    	<#if t.authApiType == '0'>
-                                                    		API不校验
-                                                    	<#elseif t.authApiType == '1'>
-                                                    		API校验
-                                                    	</#if>
-                                                    </td>
-                                                    <td>${(t.createTime?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+                                                    <td>${t.mchnName}</td>
+                                                    <td>${t.mchnNo}</td>
+                                                    <td>${t.parentNo}</td>
+                                                    <td>${t.mchnKey}</td>
+                                                    <td>${t.authIp=='0'?"IP不校验":"IP校验"}</td>
+                                                    <td>${t.authApi=='0'?"API不校验":"AIP校验"}</td>
+                                                    <td>${t.state=='0'?"未启用":"已启用"}</td>
+                                                    <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td style="text-align:left;">
-                                                        <a href="${contextPath}/sys/busi/update/${t.busiCode}">修改</a>
-                                                        <#if t.authIpType != '0'>
-                                                        	<a href="${contextPath}/sys/busi/ipupdate/${t.busiCode}">IP地址管理</a>
-                                                        </#if>
-                                                        <#if t.authApiType != '0'>
-                                                        	<a href="${contextPath}/sys/busi/apiupdate/${t.busiCode}">API地址管理</a>
-                                                        </#if>
+                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}">修改</a>
+                                                        <c:if test="${t.authIp!='0'}"><a href='${contextPath}/sys/busi/ipupdate/${t.mchnNo}'>IP地址管理</a></c:if>
+                                                        <c:if test="${t.authApi!='0'}"><a href='${contextPath}/sys/busi/apiupdate/${t.mchnNo}'>AIP地址管理</a></c:if>
                                                     </td>
                                                 </tr>
-                                            </#list>
+                                            </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
-                                <!-- end widget content -->
                             </form>
                         </div>
                     </div>
@@ -121,7 +113,7 @@
 
         </section>
     </div>
-<#include "../../../view/include/common_footer_css_js.jsp">
+<%@include file="../../../view/include/common_footer_css_js.jsp"%>
 </div>
 
 
@@ -133,7 +125,7 @@
 
 </script>
 
-<#include "../../../view/include/foot.jsp">
+<%@include file= "../../../view/include/foot.jsp"%>
 </body>
 
 </html>

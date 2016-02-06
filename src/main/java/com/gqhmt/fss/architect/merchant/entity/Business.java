@@ -14,19 +14,19 @@ import javax.persistence.Table;
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author 李俊龙
+ * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   15/12/21 18:37
+ * Create at:   16/02/02 11:44
  * Description:
  * <p/>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 15/12/18  李俊龙      1.0     1.0 Version
+ * 16/02/02 jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name="t_gq_fss_api_business")
+@Table(name="t_gq_fss_mchn")
 public class Business {
 	// 主键
     @Id
@@ -34,62 +34,91 @@ public class Business {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     // 商户名称
-    @Column(name = "busi_name")
-    private String busiName;
-    // 商户标识
-    @Column(name = "busi_code")
-    private String busiCode;
+    @Column(name = "mchn_name")
+    private String mchnName;
+    // 商户号，系统自动生产，8位数字+字母
+    @Column(name = "mchn_no")
+    private String mchnNo;
+    // 父商户id
+    @Column(name = "parent_id")
+    private String parentId;
+    // 父商户号
+    @Column(name = "parent_no")
+    private String parentNo;
+    // 商户密钥，系统自动生成
+    @Column(name = "mchn_key")
+    private String mchnKey;
+    // 商户密钥，系统自动生成
+    @Column(name = "mchn_key_end_date")
+    private String mchnKeyEndDate;
     // 校验方式(0:不校验 1:IP段匹配)
-    @Column(name = "auth_ip_type")
-    private String authIpType;
-    // 校验方式(0:不校验API 1:API段匹配)
-    @Column(name = "auth_api_type")
-    private String authApiType;
-    // 备注
-    @Column(name = "remark")
-    private String remark;
+    @Column(name = "auth_ip")
+    private String authIp;
+    // API校验方式，0，可以访问所有公共API，1，除公共API外，可以访问授权API',
+    @Column(name = "auth_api")
+    private String authApi;
     // 创建日期
     @Column(name = "create_time")
     private Date createTime;
     // 修改日期
     @Column(name = "modify_time")
     private Date modifyTime;
-    
+    // 状态
+    @Column(name = "state")
+    private String state;
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getBusiName() {
-		return busiName;
+	public String getMchnName() {
+		return mchnName;
 	}
-	public void setBusiName(String busiName) {
-		this.busiName = busiName;
+	public void setMchnName(String mchnName) {
+		this.mchnName = mchnName;
 	}
-	public String getBusiCode() {
-		return busiCode;
+	public String getMchnNo() {
+		return mchnNo;
 	}
-	public void setBusiCode(String busiCode) {
-		this.busiCode = busiCode;
+	public void setMchnNo(String mchnNo) {
+		this.mchnNo = mchnNo;
 	}
-	public String getAuthIpType() {
-		return authIpType;
+	public String getParentId() {
+		return parentId;
 	}
-	public void setAuthIpType(String authIpType) {
-		this.authIpType = authIpType;
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
-	public String getAuthApiType() {
-		return authApiType;
+	public String getParentNo() {
+		return parentNo;
 	}
-	public void setAuthApiType(String authApiType) {
-		this.authApiType = authApiType;
+	public void setParentNo(String parentNo) {
+		this.parentNo = parentNo;
 	}
-	public String getRemark() {
-		return remark;
+	public String getMchnKey() {
+		return mchnKey;
 	}
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setMchnKey(String mchnKey) {
+		this.mchnKey = mchnKey;
+	}
+	public String getMchnKeyEndDate() {
+		return mchnKeyEndDate;
+	}
+	public void setMchnKeyEndDate(String mchnKeyEndDate) {
+		this.mchnKeyEndDate = mchnKeyEndDate;
+	}
+	public String getAuthIp() {
+		return authIp;
+	}
+	public void setAuthIp(String authIp) {
+		this.authIp = authIp;
+	}
+	public String getAuthApi() {
+		return authApi;
+	}
+	public void setAuthApi(String authApi) {
+		this.authApi = authApi;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -103,5 +132,13 @@ public class Business {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+    
+	
     
 }

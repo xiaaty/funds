@@ -1,5 +1,7 @@
 package com.gqhmt.funds.architect.customer.mapper.read;
 
+import java.util.List;
+
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
@@ -54,5 +56,13 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
      * @return
      */
     public BankCardInfoEntity queryBankCardNo(String bankNo);
+    /**
+     * 银行列表
+     * @param bankDto
+     * @param pageReq
+     * @return
+     * @throws AppException
+     */
+	public List<BankCardBean> queryBankList();
 	
 }

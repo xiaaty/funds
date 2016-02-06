@@ -2,6 +2,8 @@ package com.gqhmt.sys.service;
 
 import com.gqhmt.sys.entity.Menu;
 import com.gqhmt.sys.mapper.read.MenuReadMapper;
+import com.gqhmt.sys.mapper.write.MenuWriteMapper;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,7 +30,8 @@ public class MenuService {
 
     @Resource
     private MenuReadMapper menuReadMapper;
-
+    @Resource
+    private MenuWriteMapper menuWriteMapper;
     public List<Menu> findMenuAll(){
         return  this.menuReadMapper.selectAll();
     }
@@ -36,5 +39,9 @@ public class MenuService {
     public List<Menu> findMenu(Long pId){
         return this.menuReadMapper.selectAllMenuByParentId(pId);
     }
+
+	public void addMenu(Menu menu) {
+		this.menuWriteMapper.addMenu(menu);
+	}
 
 }

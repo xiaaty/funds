@@ -4,40 +4,84 @@
 	<sql id="fieldSql">
 	</sql>
 	<sql id="whereSql">
-		<if test="busiCode != null and busiCode != ''" >
-        	and a.busi_code = #{busiCode}
-      	</if>
+		<if test="mchnNo != null and mchnNo != ''">
+			and a.mchn_no = #{mchnNo}
+		</if>
 	</sql>
+	
 	<sql id="otherSql">
 		<choose>
-		<when test="orderStr != null">
-			order by ${orderStr}
-		</when>
-		<otherwise>
-			order by auth_type asc
-		</otherwise>
+			<when test="orderStr != null">
+				order by ${orderStr}
+			</when>
+			<otherwise>
+				order by auth_type asc
+			</otherwise>
 		</choose>
 	</sql>
 	<!-- 获取商户授权类型 -->
 	<select id="getAuthTypeByCode" resultType="map">
-		SELECT a.auth_ip_type,a.auth_api_type,a.busi_name
-		FROM t_gq_fss_api_business a WHERE a.busi_code = #{busiCode}
+		SELECT
+			a.auth_ip,
+			a.auth_api,
+			a.busi_name
+		FROM t_gq_fss_api_business a
+		WHERE a.busi_code = #{busiCode}
 	</select>
 	<select id="getIpAddrListByCode" resultType="map">
-		SELECT a.ip_addr,a.busi_code
-		FROM t_gq_fss_api_ipconfig a WHERE a.busi_code = #{busiCode}
+		SELECT
+		a.ip_address,
+		a.type,
+		a.create_time,
+		a.modify_time,
+		a.mchn_no
+		FROM t_gq_fss_mchn_ipconfig a WHERE a.mchn_no =
+		#{mchnNo}
+	</select>
+<!-- 	查询商户api列表 -->
+	<select id="findBusinessAndApiList" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.merchant.bean.BusinessAndApi">
+		SELECT 
+			a.api_url apiUrl,
+			a.api_no apiNo,
+			b.mchn_no mchnNo,
+			a.api_name apiName,
+			b.modify_time modifyTime
+			FROM t_gq_fss_api a,t_gq_fss_mchn_api b 
+		where a.api_no=b.api_no AND b.mchn_no=#{mchnNo}
 	</select>
 	<!-- 获取商户api列表 -->
 	<select id="getApiListByCode" resultType="map">
-		SELECT a.busi_code,a.api_addr
-		FROM t_gq_fss_api_addr a WHERE a.busi_code = #{busiCode}
+		SELECT
+		a.busi_code,a.api_addr
+		FROM t_gq_fss_api_addr a WHERE a.mchn_no =
+		#{mchnNo}
 	</select>
-	
-	<select id="findBusinessList" parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.merchant.entity.Business">
-		SELECT a.id,a.busi_name busiName,a.busi_code busiCode,
-			a.auth_ip_type authIpType,a.auth_api_type authApiType,
-			remark,create_time createTime,modify_time modifyTime
-		FROM t_gq_fss_api_business a where 1=1
-		<include refid="whereSql"/>
+
+	<select id="findBusinessList" parameterType="java.lang.Long"
+		resultType="com.gqhmt.fss.architect.merchant.entity.Business">
+		SELECT
+		a.id,
+		a.mchn_name mchnName,
+		a.mchn_no mchnNo,
+		a.parent_id parentId,
+		a.parent_no parentNo,
+		a.mchn_key mchnKey,
+		a.mchn_key_end_date mchnKeyEndDate,
+		a.auth_ip authIp,
+		a.auth_api authApi,
+		a.create_time createTime,
+		a.modify_time modifyTime,
+		a.state
+		FROM t_gq_fss_mchn a where 1=1
+		<include refid="whereSql" />
 	</select>
+	<delete id="deleteApiUrl" parameterType="java.lang.String">
+		DELETE from 
+		t_gq_fss_api 
+		WHERE api_no in
+	 	(SELECT api_no from  t_gq_fss_mchn_api  WHERE mchn_no=#{mchnNo} )
+	</delete>
+	<delete id="deleteApi" parameterType="java.lang.String">
+		DELETE from t_gq_fss_mchn_api  WHERE mchn_no=#{mchnNo} 
+	</delete>
 </mapper>

@@ -25,21 +25,25 @@ import javax.persistence.Table;
  * -----------------------------------------------------------------
  * 15/12/18  李俊龙      1.0     1.0 Version
  */
-//资金商户ip表
+//ip限制记录表
 @Entity
-@Table(name="t_gq_fss_api_ipconfig")
+@Table(name="t_gq_fss_mchn_ipconfig")
 public class ApiIpConfig {
 	// 主键
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // 商户标识
-    @Column(name = "busi_code")
-    private String busiCode;
-    // 校验方式(0:不校验 1:IP段匹配)
-    @Column(name = "ip_addr")
-    private String ipAddr;
+    // 商户号
+    @Column(name = "mchn_no")
+    private String mchnNo;
+    // ip地址
+    @Column(name = "ip_address")
+    private String ipAddress;
+    // 0黑名单，1白名单
+    @Column(name = "type")
+    private String type;
+    
     // 创建日期
     @Column(name = "create_time")
     private Date createTime;
@@ -53,17 +57,23 @@ public class ApiIpConfig {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getBusiCode() {
-		return busiCode;
+	public String getMchnNo() {
+		return mchnNo;
 	}
-	public void setBusiCode(String busiCode) {
-		this.busiCode = busiCode;
+	public void setMchnNo(String mchnNo) {
+		this.mchnNo = mchnNo;
 	}
-	public String getIpAddr() {
-		return ipAddr;
+	public String getIpAddress() {
+		return ipAddress;
 	}
-	public void setIpAddr(String ipAddr) {
-		this.ipAddr = ipAddr;
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -77,4 +87,5 @@ public class ApiIpConfig {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	
 }

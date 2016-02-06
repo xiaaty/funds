@@ -19,45 +19,69 @@ import java.util.Date;
  * -----------------------------------------------------------------
  * 15/12/18  李俊龙      1.0     1.0 Version
  */
-//资金商户ip表
+//api表
 @Entity
-@Table(name="t_gq_fss_api_addr")
+@Table(name="t_gq_fss_api")
 public class ApiAddr {
 	// 主键
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // 商户标识
-    @Column(name = "busi_code")
-    private String busiCode;
-    // 校验方式(0:不校验 1:IP段匹配)
-    @Column(name = "api_addr")
-    private String apiAddr;
+    //api编号
+    @Column(name = "api_no")
+    private String apiNo;
+    // api名称
+    @Column(name = "api_name")
+    private String apiName;
+    //api地址
+    @Column(name = "api_url")
+    private String apiUrl;
+    //是否公共API(0：否，1：是)
+    @Column(name = "pulic")
+    private String pulic;
     // 创建日期
     @Column(name = "create_time")
     private Date createTime;
     // 修改日期
     @Column(name = "modify_time")
     private Date modifyTime;
-    
+    // 创建用户ID
+    @Column(name = "create_user_id")
+    private Date createUserId;
+    // 修改人ID
+    @Column(name = "modify_id")
+    private Date modifyId;
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getBusiCode() {
-		return busiCode;
+	public String getApiNo() {
+		return apiNo;
 	}
-	public void setBusiCode(String busiCode) {
-		this.busiCode = busiCode;
+	public void setApiNo(String apiNo) {
+		this.apiNo = apiNo;
 	}
-	public String getApiAddr() {
-		return apiAddr;
+	public String getApiName() {
+		return apiName;
 	}
-	public void setApiAddr(String apiAddr) {
-		this.apiAddr = apiAddr;
+	public void setApiName(String apiName) {
+		this.apiName = apiName;
+	}
+	public String getApiUrl() {
+		return apiUrl;
+	}
+	public void setApiUrl(String apiUrl) {
+		this.apiUrl = apiUrl;
+	}
+	public String getPulic() {
+		return pulic;
+	}
+	public void setPulic(String pulic) {
+		this.pulic = pulic;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -71,4 +95,19 @@ public class ApiAddr {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	public Date getCreateUserId() {
+		return createUserId;
+	}
+	public void setCreateUserId(Date createUserId) {
+		this.createUserId = createUserId;
+	}
+	public Date getModifyId() {
+		return modifyId;
+	}
+	public void setModifyId(Date modifyId) {
+		this.modifyId = modifyId;
+	}
+    
+	
+	
 }
