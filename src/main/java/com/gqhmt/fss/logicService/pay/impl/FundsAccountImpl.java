@@ -10,7 +10,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoSendMsgBean;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 

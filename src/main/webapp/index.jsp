@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@page import="com.gqhmt.util.GlobalConstants"%>
+    <%@page import="com.gqhmt.core.util.GlobalConstants"%>
     <%@page import="com.gqhmt.util.RequestUtil"%>
 <!DOCTYPE html>
 <html>

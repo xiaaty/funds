@@ -1,7 +1,8 @@
 package com.gqhmt.sys.service;
 
-import com.gqhmt.sys.entity.Menu;
-import com.gqhmt.sys.session.Application;
+import com.gqhmt.sys.entity.MenuEntity;
+import com.gqhmt.core.util.Application;
+import com.gqhmt.util.ServiceLoader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -35,14 +36,15 @@ public class MenuServiceTest {
 
     @Test
     public void selectAllMenu(){
-        List<Menu> list = menuService.findMenuAll();
+        List<MenuEntity> list = menuService.findMenuAll();
 
         assert list.size()>0;
     }
 
     @Test
     public void getMenuText(){
-        String menu = Application.getInstance().getMenu("","");
+        Application application = ServiceLoader.get(Application.class);
+        String menu = application.getMenu("","");
 
         assert menu != null && !"".equals(menu);
 

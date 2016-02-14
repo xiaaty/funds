@@ -16,7 +16,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
 import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.ServiceLoader;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;

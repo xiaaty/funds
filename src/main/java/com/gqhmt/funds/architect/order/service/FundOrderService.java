@@ -3,7 +3,7 @@ package com.gqhmt.funds.architect.order.service;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

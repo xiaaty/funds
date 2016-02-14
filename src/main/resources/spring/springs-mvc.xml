@@ -123,7 +123,9 @@
               p:simpleDateFormat="yyyy-MM-dd"
              />
 
+<!--
         <bean id="xmlMapper" parent="objectMapper" p:createXmlMapper="true"/>
+-->
 
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
 		<property name="mediaTypes">

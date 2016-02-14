@@ -1,6 +1,6 @@
 package com.gqhmt.sys.service;
 
-import com.gqhmt.sys.entity.Menu;
+import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.sys.mapper.read.MenuReadMapper;
 import com.gqhmt.sys.mapper.write.MenuWriteMapper;
 
@@ -32,15 +32,15 @@ public class MenuService {
     private MenuReadMapper menuReadMapper;
     @Resource
     private MenuWriteMapper menuWriteMapper;
-    public List<Menu> findMenuAll(){
-        return  this.menuReadMapper.selectAll();
+    public List<MenuEntity> findMenuAll(){
+        return  this.menuReadMapper.selectAllMenu();
     }
 
-    public List<Menu> findMenu(Long pId){
+    public List<MenuEntity> findMenu(Long pId){
         return this.menuReadMapper.selectAllMenuByParentId(pId);
     }
 
-	public void addMenu(Menu menu) {
+	public void addMenu(MenuEntity menu) {
 		this.menuWriteMapper.addMenu(menu);
 	}
 

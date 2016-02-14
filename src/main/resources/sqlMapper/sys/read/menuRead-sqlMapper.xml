@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.sys.mapper.read.MenuReadMapper">
-	<select id="selectAllMenu" resultType="com.gqhmt.sys.entity.Menu">
+	<select id="selectAllMenu" resultType="com.gqhmt.sys.entity.MenuEntity">
 		SELECT
 			id,
 			menu_name menuName,
 			menu_url menuUrl,
 			parent_id parentId,
 			parma,
+			parmaDefaule,
 			roles,
 			sort,
 			url_type urlType
 		FROM `t_gq_fss_sys_menu` menu  ORDER BY menu.`sort` DESC
 	</select>
 
-	<select id="selectAllMenuByParentId" parameterType="java.lang.Long" resultType="com.gqhmt.sys.entity.Menu">
+	<select id="selectAllMenuByParentId" parameterType="java.lang.Long" resultType="com.gqhmt.sys.entity.MenuEntity">
 		SELECT
 		id,
 		menu_name menuName,

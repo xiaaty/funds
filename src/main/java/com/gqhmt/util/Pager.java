@@ -1,5 +1,7 @@
 package com.gqhmt.util;
 
+import com.gqhmt.core.util.GlobalConstants;
+
 import java.util.HashMap;
 import java.util.Map;
 

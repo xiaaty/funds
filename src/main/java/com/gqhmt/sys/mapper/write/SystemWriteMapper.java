@@ -1,9 +1,8 @@
 package com.gqhmt.sys.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.sys.entity.DictMain;
+import com.gqhmt.sys.entity.DictEntity;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.read.MenuReadMapper
@@ -21,13 +20,13 @@ import java.util.Map;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-public interface SystemWriteMapper extends ReadAndWriteMapper<DictMain> {
+public interface SystemWriteMapper extends ReadAndWriteMapper<DictEntity> {
 
-    public List<DictMain> selectDictmain(DictMain dictmain);
+    public List<DictEntity> selectDictmain(DictEntity dictmain);
     
-    public void insertDictmain(DictMain dict);
+    public void insertDictmain(DictEntity dict);
     
-    public void updateDictMain(DictMain dict);
+    public void updateDictMain(DictEntity dict);
     
     public void delteDictMain(String dictId);
 }
