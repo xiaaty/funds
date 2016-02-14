@@ -21,9 +21,15 @@ public class FundOrderEntity implements java.io.Serializable {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(name = "account_id" ,updatable = false)
 	private Long accountId;
     private Long toAccountId;             //to_account_id
+
+	@Column(name = "order_no", length = 30)
 	private String orderNo;
+
+	@Column(name = "order_type",updatable = false)
 	private Integer orderType;
 	private Long orderFrormId;
 	private Integer orderSource;
@@ -45,7 +51,7 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "account_id" ,updatable = false)
+
 	public Long getAccountId() {
 		return this.accountId;
 	}
@@ -54,7 +60,7 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.accountId = accountId;
 	}
 
-	@Column(name = "order_no", length = 30)
+
 	public String getOrderNo() {
 		return this.orderNo;
 	}
@@ -63,7 +69,7 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.orderNo = orderNo;
 	}
 
-	@Column(name = "order_type",updatable = false)
+
 	public Integer getOrderType() {
 		return this.orderType;
 	}
