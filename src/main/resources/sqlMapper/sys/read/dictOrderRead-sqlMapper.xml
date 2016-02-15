@@ -5,11 +5,16 @@
 	<select id="selectDictOrder" parameterType="DictOrder" resultType="DictOrder">
 		SELECT
 		t.id,
-		t.name,
+		t.order_name orderName,
 		t.order_dict orderDict,
-		t.order,
+		t.order_list orderList,
 		t.memo
-		FROM `t_gq_fss_dict_order` t
+		FROM t_gq_fss_dict_order t
+		<where>
+			<if test="orderDict !=null and orderDict != ''">
+				and t.order_dict like  CONCAT('%',#{orderDict},'%') 
+			</if>
+		</where>
 	</select>
 	
 </mapper>
