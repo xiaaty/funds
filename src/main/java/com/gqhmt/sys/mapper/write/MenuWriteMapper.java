@@ -1,7 +1,7 @@
 package com.gqhmt.sys.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.sys.entity.Menu;
+import com.gqhmt.sys.entity.MenuEntity;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.write.MenuWriteMapper
@@ -19,12 +19,12 @@ import com.gqhmt.sys.entity.Menu;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-public interface MenuWriteMapper extends ReadAndWriteMapper<Menu> {
+public interface MenuWriteMapper extends ReadAndWriteMapper<MenuEntity> {
 	/**
 	 * 
 	 * author:jhz
 	 * time:2016年1月29日
 	 * function：添加菜单
 	 */
-	public void addMenu(Menu menu);
+	public void addMenu(MenuEntity menu);
 }

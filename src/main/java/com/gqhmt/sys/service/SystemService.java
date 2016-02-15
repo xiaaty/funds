@@ -1,18 +1,12 @@
 package com.gqhmt.sys.service;
 
-import com.gqhmt.fss.architect.merchant.entity.Business;
-import com.gqhmt.fss.architect.merchant.mapper.write.RestApiWriteMapper;
-import com.gqhmt.sys.entity.DictMain;
-import com.gqhmt.sys.entity.Menu;
-import com.gqhmt.sys.mapper.read.MenuReadMapper;
+import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.mapper.read.SystemReadMapper;
 import com.gqhmt.sys.mapper.write.SystemWriteMapper;
-
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.sys.service.MenuService
@@ -40,21 +34,29 @@ public class SystemService {
     
     
     
-    public List<DictMain> queryDictmain(DictMain dictmain){
+    public List<DictEntity> queryDictmain(DictEntity dictmain){
         return  this.systemReadMapper.selectDictmain(dictmain);
     }
 
+    public List<DictEntity> findALl(){
+        return this.systemReadMapper.selectAll();
+    }
+
+    public DictEntity findDictmain(String id){
+        return  this.systemReadMapper.getDictMainById(id);
+    }
+
     
-    public void insertDictmain(DictMain dict) {
+    public void insertDictmain(DictEntity dict) {
     	this.systemWriteMapper.insertDictmain(dict);
 	}
     
     
-    public List<DictMain> getDictmainById(String dictId){
+    public DictEntity getDictmainById(String dictId){
     	return this.systemReadMapper.getDictMainById(dictId);
     }
     
-    public void updateDict(DictMain dict) {
+    public void updateDict(DictEntity dict) {
     	systemWriteMapper.updateDictMain(dict);
 	}
     

@@ -396,6 +396,20 @@
           <artifactId>taglibs-standard-jstlel</artifactId>
           <version>1.2.1</version>
       </dependency>
+
+
+    <!-- cas客户端 -->
+    <dependency>
+      <groupId>org.jasig.cas.client</groupId>
+      <artifactId>cas-client-core</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+    <!-- httpclient -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.4</version>
+    </dependency>
   </dependencies>
 
 

@@ -8,7 +8,7 @@ import com.gqhmt.business.architect.loan.mapper.write.PointAccountWriteMapper;
 import com.gqhmt.business.architect.loan.mapper.write.PointSequenceWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

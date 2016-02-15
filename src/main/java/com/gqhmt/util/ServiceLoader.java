@@ -28,7 +28,7 @@ public class ServiceLoader {
 
     private static ApplicationContext context;
     static {
-        //spring/spring-components.xml,spring/spring-mvc.xml,spring/spring-webservice.xml
+        //spring/spring-components.xml,spring/springs-mvc.xml,spring/spring-webservice.xml
         String[] files = {"spring/spring-common.xml" };
         context =  ContextLoader.getCurrentWebApplicationContext();
         if(context == null){

@@ -13,11 +13,10 @@ import com.gqhmt.fss.pay.exception.LazyDealException;
 import com.gqhmt.fss.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.ThirdPartyType;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;

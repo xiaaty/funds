@@ -1,7 +1,7 @@
 package com.gqhmt.sys.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.sys.entity.DictMain;
+import com.gqhmt.sys.entity.DictEntity;
 import java.util.List;
 
 /**
@@ -20,10 +20,10 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2015/12/18  kyl      1.0     1.0 Version
  */
-public interface SystemReadMapper extends ReadMapper<DictMain> {
+public interface SystemReadMapper extends ReadMapper<DictEntity> {
 
-    public List<DictMain> selectDictmain(DictMain dictmain);
+    public List<DictEntity> selectDictmain(DictEntity dictmain);
     
-    public List<DictMain> getDictMainById(String dictId);
+    public DictEntity getDictMainById(String dictId);
 
 }

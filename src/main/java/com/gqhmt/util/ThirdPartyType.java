@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.util.Assert;
 
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 
 /**
  * Filename:    com.gq.funds.util
