@@ -4,6 +4,7 @@ import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.mapper.read.DictOrderReadMapper;
 import com.gqhmt.sys.mapper.read.SystemReadMapper;
+import com.gqhmt.sys.mapper.write.DictOrderWriteMapper;
 import com.gqhmt.sys.mapper.write.SystemWriteMapper;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,9 @@ public class SystemService {
     
     @Resource
     private DictOrderReadMapper dictOrderReadMapper;
+    
+    @Resource
+    private DictOrderWriteMapper dictOrderWriteMapper;
     
     
     
@@ -73,6 +77,9 @@ public class SystemService {
         return  this.dictOrderReadMapper.selectDictOrder(dictorder);
     }
     
+    public void insertDictOrder(DictOrderEntity dictorder) {
+    	this.dictOrderWriteMapper.insertDictOrder(dictorder);
+	}
     
     
 }
