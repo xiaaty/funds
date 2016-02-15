@@ -59,11 +59,13 @@ public class DictOederIterationTag extends BodyTagSupport{
     }
 
     public void setDictOrder(String dictOrder) {
-
-        String dictOrderValue = "9901,9902,9903";
-        String[] order = dictOrderValue.split(",");
+        this.dictOrder  = dictOrder;
+        String dictOrderValue = Application.getInstance().getDictOrderValue(dictOrder);
         List<DictOrderTagEntity> list = new ArrayList<>();
 
+
+
+        String[] order = dictOrderValue.split(",");
         for(String tmp:order){
             String value = Application.getInstance().getDictName(tmp);
             if(value == null || "".equals(value)){

@@ -1,6 +1,7 @@
 package com.gqhmt.core.util;
 
 import com.gqhmt.sys.entity.DictEntity;
+import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.sys.service.MenuService;
 import com.gqhmt.sys.service.SystemService;
@@ -30,6 +31,7 @@ public class Application {
     private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<>());
 
     private final Map<String,String> dict = new ConcurrentHashMap<>();
+    private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
 
     private void init(){
         synchronized (this){
@@ -44,6 +46,7 @@ public class Application {
             menuMap.clear();
             menus.clear();
             dict.clear();
+            dictOrder.clear();
             update();
         }
     }
@@ -63,12 +66,24 @@ public class Application {
             this.dict.put(dictEntity.getDictId(),dictEntity.getDictName());
         }
 
+        List<DictOrderEntity> dictOrders = systemService.findALlDictOrder();
+        for(DictOrderEntity dictEntity:dictOrders){
+            this.dictOrder.put(dictEntity.getOrderDict(),dictEntity.getOrderList());
+        }
+
     }
 
     public String getDictName(String key){
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
-            value = "数据字典未配置此项,请与系统管理员联系";
+            value = "数据字典未配置此项";
+        }
+        return value;
+    }
+    public String getDictOrderValue(String key){
+        String value = this.dictOrder.get(key);
+        if(value == null || "".equals(value)){
+            value = "数据字典类型未配置";
         }
         return value;
     }
