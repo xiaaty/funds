@@ -32,7 +32,7 @@ public class DictOrderEntity implements Serializable{
 
     @Column(name = "order_name")
     private String orderName;           
-    
+
     @Column(name = "order_dict")
     private String orderDict;   
     
@@ -66,13 +66,7 @@ public class DictOrderEntity implements Serializable{
 		this.orderDict = orderDict;
 	}
 
-	public String getOrderList() {
-		return orderList;
-	}
 
-	public void setOrderList(String orderList) {
-		this.orderList = orderList;
-	}
 
 	public String getMemo() {
 		return memo;
@@ -81,5 +75,12 @@ public class DictOrderEntity implements Serializable{
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	
+
+	public String getOrderList() {
+		return orderList;
+	}
+
+	public void setOrderList(String orderList) {
+		this.orderList = orderList;
+	}
 }
