@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>系统管理--修改字典信息--冠群驰骋投资管理(北京)有限公司</title>
+    <title>系统管理--添加字典类型--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,7 +11,7 @@
     <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
-   <%@include file="../../../view/include/common_css_js.jsp"%>
+   <%@include file="../../include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -30,7 +30,7 @@
 </head>
 <body>
     
-<%@include file="../../../view/include/menu.jsp"%>
+<%@include file="../../include/menu.jsp"%>
 
     <div id="main" role="main">
 
@@ -39,7 +39,7 @@
             <!-- breadcrumb -->
             <ol class="breadcrumb">
                 <li>系统管理</li>
-                <li>字典表</li>
+                <li>字典类型</li>
             </ol>
             <!-- end breadcrumb -->
         </div>
@@ -48,18 +48,12 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="updateDictForm" action="${contextPath}/sys/workassist/updateAndSave" method="post">
-                       <input type="hidden" value="${dict.careateUserId}" name="careateUserId"  default="0"/> 
-                       <input type="hidden" value="${dict.createTime}" name="createTime"  default="0"/> 
-                       <input type="hidden" value="${dict.modifyUserId}" name="careateUserId"  default="0"/> 
-                       <input type="hidden" value="${dict.modifyTime}" name="createTime"  default="0"/> 
-                       <input type="hidden" value="${dict.parentId}" name="parentId"  id="parentId" default="0"/> 
-                       <input type="hidden" value="${dict.sort}" name="sort"  default="0"/> 
+                    <form id="dictorderForm" action="${contextPath}/sys/workassist/dictOrderSave" method="post">
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
-                                    <h2><i class="fa fa-edit pr10"></i>修改字典信息<font class="pl10 f12 color07"></font></h2>
+                                    <h2><i class="fa fa-edit pr10"></i>新增字典类型<font class="pl10 f12 color07"></font></h2>
                                 </header>
                                 <div>
                                     <div class="smart-form">
@@ -74,36 +68,52 @@
                                                     <col />
                                                     <tbody>
                                                         <tr>
-                                                            <td align="left">编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</td>
+                                                            <td align="left">类型名称：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="dictId" value="${dict.dictId}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" name="orderName" value="${dictorder.orderName}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</td>
+                                                            <td align="left">唯一标识：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="dictName" value="${dict.dictName}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" name="orderDict" value="${dictorder.orderDict}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">是否有效：</td>
+                                                            <td align="left">字典列表：</td>
                                                             <td>
-                                                                <label class="select">
-                                                                    <select style="width:256px;" name="isValid" value="${dict.isValid}">
-                                                                        <option value="0">是</option>
-                                                                        <option value="1">否</option>
-                                                                    </select>
+                                                            
+                                                            	<label class="input">
+                                                                    <input type="text" maxlength="50" name="orderList" value="${dictorder.orderList}" style="width:256px;" />
+                                                                </label>
+			                                                    <%-- <section style="width:210px">
+				                                                    <label class="select">
+														                <select id="parentId"  name ="parentId" onChange="choice(this)">
+														                    <option  value="">--请选择--</option>
+														                	<c:forEach items="${businessList}" var="busi">
+														                    <option value="${busi.id}"> ${busi.mchnName} </option>
+														                	</c:forEach>
+														                </select>
+																     </label>
+			                                                    </section> --%>
+			                                                </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left">备注：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" name="memo" value="${dictorder.memo}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                                 <div class="mb20" id="wid-id-713">
-                                                    <button class="btn btn-default table-nobg-btn" type="button" id="btn_success">保存</button>
+                                                    <button class="btn btn-default table-nobg-btn" type="button" id="dictorderadd">保存</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -118,27 +128,23 @@
         </div>
     </div>
 
-<%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<%@include file="../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-    	    $("#btn_success").click(function () {
+    	    $("#dictorderadd").click(function () {
     	        if (validateCheck()) {
-    	            /*if (!confirm("确认 修改商户信息吗?")) {
-    	               return false;
-    	            }*/
-    	            $("#updateDictForm").ajaxSubmit({
+    	            $("#dictorderForm").ajaxSubmit({
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
     	                dataType: "json",
     	                success: function (data) {
     	                    if (data.code == '0000') {
-    	                        jAlert("修改成功!", '确认信息');
-    	                        var parent_id=$("#parentId").val();
+    	                        jAlert("添加成功!", '信息提示');
     	                        //自动跳转
-    	                     //   parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
-    	                        parent.location.href="${contextPath}/sys/workassist/dictionary/0";
+    	                        parent.location.href="${contextPath}/sys/workassist/dictorder";
     	                    } else {
+    	                    	jAlert("添加失败!", '消息提示');
     	                        return;
     	                    }
     	                }
@@ -151,7 +157,25 @@
     		return true;
     	}
         
-     </script>
+    	 //选中商户号
+     /*    function choice(obj){
+        	var id=obj.options[obj.selectedIndex].value;
+        	$("#parentN").val(id);
+    		var oSelect=document.getElementById("parentN");
+       	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
+       	 	 $("#parentNo").val(txtOption);
+        	
+        } */
+        
+        
+        
+        
+        
+        </script>
+        
+        
+        
+        
         
 </body>
 

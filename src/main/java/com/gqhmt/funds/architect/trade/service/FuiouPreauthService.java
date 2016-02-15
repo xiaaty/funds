@@ -6,7 +6,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
 import com.gqhmt.funds.architect.trade.mapper.read.FuiouPreauthReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.FuiouPreauthWriteMapper;
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -22,7 +22,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="t_gq_fss_dict")
-public class DictMain implements Serializable{
+public class DictEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	

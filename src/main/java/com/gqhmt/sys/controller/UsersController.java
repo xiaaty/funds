@@ -1,9 +1,16 @@
 package com.gqhmt.sys.controller;
 
+import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.sys.entity.User;
 import com.gqhmt.sys.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.controller.UsersController
@@ -27,11 +34,19 @@ public class UsersController {
     @Resource
     private UserService userService;
 
-   /* @RequestMapping(value="/sys/users")
+    /**
+     *
+     * author:jhz
+     * time:2016年1月29日
+     * function：展示用户列表
+     */
     @AutoPage
-    public String employeeManage(ModelMap model, @ModelAttribute(value="sysUsers")User sysUsers){
-        List<User> list = userService.selectUsers(sysUsers);
-        model.addAttribute("page", list);
-        return "/sys/users/userList";
-    }*/
+    @RequestMapping(value = "/sys/user/users",method = RequestMethod.GET)
+    public Object UsersList(HttpServletRequest request, ModelMap model, User user){
+        List<User> usersList =userService.selectUsers(user);
+        System.out.println(usersList.getClass().getName()+"===============");
+//        GqPageInfo pageInfo = new GqPageInfo(usersList);
+        model.addAttribute("page",usersList);
+        return "sys/users/userList";
+    }
 }

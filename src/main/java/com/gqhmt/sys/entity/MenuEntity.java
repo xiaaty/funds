@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="t_gq_fss_sys_menu")
-public class Menu implements Serializable{
+public class MenuEntity implements Serializable{
 
     @Id
     @Column(name = "id")
@@ -50,7 +50,7 @@ public class Menu implements Serializable{
     private String parmaDefaule;
 
     @Column(name = "parent_id")
-    private Long parent_id;             // bigint(20) NOT NULL DEFAULT '0' COMMENT '上级菜单',
+    private Long parentId;             // bigint(20) NOT NULL DEFAULT '0' COMMENT '上级菜单',
 
     @Column(name = "sort")
     private Long sort;                  //int(11) NOT NULL COMMENT '排序',
@@ -63,7 +63,7 @@ public class Menu implements Serializable{
 
 
     @Transient
-    private List<Menu> list = new ArrayList<>();
+    private List<MenuEntity> list = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -106,12 +106,12 @@ public class Menu implements Serializable{
         this.parma = parma;
     }
 
-    public Long getParent_id() {
-        return parent_id;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setParent_id(Long parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(Long parent_id) {
+        this.parentId = parent_id;
     }
 
     public Long getSort() {
@@ -123,10 +123,10 @@ public class Menu implements Serializable{
     }
 
 
-    public List<Menu> getList() {
+    public List<MenuEntity> getList() {
         return list;
     }
-    public void addMenu(Menu menu){
+    public void addMenu(MenuEntity menu){
         this.list.add(menu);
     }
 
@@ -164,5 +164,10 @@ public class Menu implements Serializable{
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    @Override
+    public String toString() {
+        return "["+this.id+","+this.menuName+","+this.sort+"]";
     }
 }

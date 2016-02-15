@@ -1,7 +1,9 @@
-package com.gqhmt.util;
+package com.gqhmt.core.util;
 
 import com.gqhmt.sys.beans.SysAuthFunc;
 import com.gqhmt.sys.beans.SysUsers;
+import com.gqhmt.util.Pager;
+import com.gqhmt.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,11 +34,11 @@ public class GlobalConstants {
 	public static final String SYSTEM_CODE="";
 	
 	//账户类型
-    public static final int ACCOUNT_TYPE_PRIMARY=0;             //主账户
+    public static final int ACCOUNT_TYPE_PRIMARY=0;         //主账户
     public static final int ACCOUNT_TYPE_LOAN=1;            //借款账户
     public static final int ACCOUNT_TYPE_LEND_OFF=2;        //线下出借账户
     public static final int ACCOUNT_TYPE_LEND_ON=3;         //线上出借账户
-    public static final int ACCOUNT_TYPE_PAYMENT=96;       //应付账户
+    public static final int ACCOUNT_TYPE_PAYMENT=96;        //应付账户
     public static final int ACCOUNT_TYPE_FREEZE=99;         //冻结金账户
     
 	//所有账目状态
@@ -238,7 +240,7 @@ public class GlobalConstants {
 		request.getSession(true).setAttribute(name,value);
 	}
 	
-	public static void addSearchCondition(Pager page,Object object,String[] fields){
+	public static void addSearchCondition(Pager page, Object object, String[] fields){
 		Class<? extends Object> targetClass=object.getClass();
 		Method meth=null;
 		for(String f:fields){

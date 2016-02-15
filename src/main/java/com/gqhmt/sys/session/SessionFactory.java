@@ -23,16 +23,11 @@ public class SessionFactory {
 
     static {
         Business business = new Business();
-        business.setBusiName("冠e通");
-        business.setBusiCode("E0938ER034");
         sessionLocal.set(business);
     }
 
     public static String getCode(){
         Business business = sessionLocal.get();
-        if(business != null)
-            return business.getBusiCode();
-
         return null;
     }
 

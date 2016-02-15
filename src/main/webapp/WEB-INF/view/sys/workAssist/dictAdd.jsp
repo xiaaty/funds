@@ -11,7 +11,7 @@
     <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
-   <%@include file="../../../view/include/common_css_js.jsp"%>
+   <%@include file="../../include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -30,7 +30,7 @@
 </head>
 <body>
     
-<%@include file="../../../view/include/menu.jsp"%>
+<%@include file="../../include/menu.jsp"%>
 
     <div id="main" role="main">
 
@@ -96,9 +96,12 @@
                                                             <td align="left">是否有效：</td>
                                                             <td>
                                                                 <label class="select">
-                                                                    <select style="width:256px;" name="isValid" value="${dict.isValid}">
+                                                                    <select style="width:256px;" name="isValid" value="${dict.isValid}"><%--
                                                                         <option value="0">是</option>
-                                                                        <option value="1">否</option>
+                                                                        <option value="1">否</option>--%>
+                                                                        <fss:dictOrder var="order" dictOrder="isValid">
+                                                                            <option value="${order.key}">${order.value}</option>
+                                                                        </fss:dictOrder>
                                                                     </select>
                                                                 </label>
                                                             </td>
@@ -121,7 +124,7 @@
         </div>
     </div>
 
-<%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<%@include file="../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
     <script type="text/javascript" charset="utf-8">

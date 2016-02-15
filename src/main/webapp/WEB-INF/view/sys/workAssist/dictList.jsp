@@ -8,12 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
+
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
-   <%@include file="../../../view/include/common_css_js.jsp"%>
+   <%@include file="../../include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn{
             font:15/29px;
@@ -30,14 +28,14 @@
 </head>
 
 <body>
-<%@include file="../../../view/include/menu.jsp"%>
+<%@include file="../../include/menu.jsp"%>
 <div id="main" role="main">
 
     <!-- RIBBON -->
     <div id="ribbon">
         <ol class="breadcrumb">
-            <li>系统配置</li>
-            <li>字典表信息</li>
+            <li>系统管理</li>
+            <li>数据字典</li>
         </ol>
     </div>
 
@@ -45,7 +43,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="wid-id-11"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -83,10 +81,7 @@
                                             </table>
                                         </div>
                                         <footer>
-                                          <button class="btn btn-primary"  id="btn_add" type="button">
-                                           <input type="hidden" id="parentId" value="${dictmain.parentId}" />
-                                       	      添&nbsp;&nbsp;&nbsp;加</button>
-                                          <button type="submit" class="btn btn-primary">查&nbsp;&nbsp;&nbsp;询</button> 
+                                          <button type="submit" class="btn btn-primary">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -95,10 +90,10 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>字典信息列表</h2>
+                            <h2>数据字典信息</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -109,18 +104,23 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                    <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                                        <c:if test="${parent_id !=0}">
+                                            <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_return"><i class="fa fa-plus"></i>&nbsp;返回</button>
+                                        </c:if>
+                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                                        <input type="hidden" id="parentId" value="${dictmain.parentId}" />
+                                        <%-- <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_detail"><i class="fa fa-list-ul"></i>&nbsp;详情</button>--%>
+                                    </div>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
                                               <td>编号</td>
                                               <td>名称</td>
-                                              <td>上级目录</td> 
-                                              <td>创建人</td>
-                                              <td>创建日期</td>
-                                              <td>修改人</td>
-                                              <td>修改日期</td>
+                                              <td>上级目录</td>
                                               <td>是否有效</td>
-                                              <td>排序</td>
+                                              <td>创建日期</td>
+                                              <td>修改日期</td>
                                               <td>操作</td> 
                                         </tr>
                                         </thead>
@@ -129,18 +129,26 @@
                                                 <tr>
                                                     <td>${dict.dictId}</td>
                                                     <td>${dict.dictName}</td>
-                                                    <td>${dict.parentId}</td>
-                                                    <td>${dict.careateUserId==1?"张三":"李四"}</td>
-                                                    <td><fmt:formatDate value="${dict.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td>${dict.modifyUserId==1?"王五":"admin"}</td>
-                                                    <td><fmt:formatDate value="${dict.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td>${dict.isValid==0?"有效":"无效"}</td>
-                                                    <td>${dict.sort}</td>
-                                                   <td><a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
+                                                    <td><c:choose >
+                                                        <c:when test="${dict.parentId == 0}">
+                                                            无
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${dict.parentId}
+                                                        </c:otherwise>
+                                                        </c:choose></td>
+                                                    <td> <fss:dictView key="${dict.isValid}" /></td>
+                                                    <td><fss:fmtDate value="${dict.createTime}"/></td>
+                                                    <td><fss:fmtDate value="${dict.modifyTime}"/></td>
+                                                   <td>
+                                                        <a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
                                                    		&nbsp;&nbsp;&nbsp;
                                                    		<a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
-                                                   		&nbsp;&nbsp;&nbsp;
+
+
+                                                   		<%--&nbsp;&nbsp;&nbsp;
                                                    		<a href="javascript:void(0)" onclick="deleteDict(${dict.dictId},${dict.parentId})">删除</a>
+                                                   		--%>
                                                    	</td> 
                                                 </tr>
                                             </c:forEach>
@@ -156,7 +164,7 @@
         </section>
     </div>
     </div>
-<%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<%@include file="../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
  <script type="text/javascript" charset="utf-8">
@@ -287,9 +295,12 @@
 	    
 	  //添加按钮按下
         $("#btn_add").button().click(function() {
-        	var parent_id=$("#parentId").val();
         	window.open("${contextPath}/sys/workassist/dictAdd/${parent_id}","_self");
         });
+     //添加按钮按下
+     $("#btn_return").button().click(function() {
+         window.open("${contextPath}/sys/workassist/dictionary/${returnId}","_self");
+     });
 	    
 	  
 	   /**
@@ -318,7 +329,7 @@
 	    
 </script>
 
-<%@include file="../../../view/include/foot.jsp"%>
+<%@include file="../../include/foot.jsp"%>
 </body>
 
 </html>

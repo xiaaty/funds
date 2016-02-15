@@ -1,7 +1,7 @@
 package com.gqhmt.sys.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.sys.entity.Menu;
+import com.gqhmt.sys.entity.MenuEntity;
 
 import java.util.List;
 
@@ -21,9 +21,9 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-public interface MenuReadMapper extends ReadMapper<Menu> {
+public interface MenuReadMapper extends ReadMapper<MenuEntity> {
 
-    public List<Menu> selectAllMenu();
+    public List<MenuEntity> selectAllMenu();
 
-    public List<Menu> selectAllMenuByParentId(Long pId);
+    public List<MenuEntity> selectAllMenuByParentId(Long pId);
 }

@@ -2,7 +2,7 @@ package com.gqhmt.sys.beans;
 
 import java.util.Date;
 
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.StringUtils;
 
 public class SysUsers {

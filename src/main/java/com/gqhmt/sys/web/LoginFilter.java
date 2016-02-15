@@ -1,7 +1,7 @@
 package com.gqhmt.sys.web;
 
-import com.gqhmt.sys.session.Application;
-import com.gqhmt.util.GlobalConstants;
+import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.Resources;
 
 import javax.servlet.*;
@@ -22,65 +22,13 @@ public class LoginFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		Application application = Application.getInstance();
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		String url  =  httpServletRequest.getServletPath();
 		String context = httpServletRequest.getContextPath();
-//		modelAndView.getModelMap().addAttribute("menu", Application.getInstance().getMenu(context,url));
-		request.setAttribute("menu", Application.getInstance().getMenu(context,url));
-		/*SysUsers sysUsers = null;
+		request.setAttribute("menu", application.getMenu(context,url));
+		chain.doFilter(request, response);
 
-        String contextPath = httpServletRequest.getContextPath();
-		String url = httpServletRequest.getServletPath();
-		Matcher matcher = pattern.matcher(url);
-        LogUtil.debug(this.getClass(),"url:"+url);
-        //httpServletRequest.getRequestURI()
-        LogUtil.debug(this.getClass(),"httpServletRequest.getRequestURI():"+httpServletRequest.getRequestURI());
-
-//        BillLogUtil.debug(this.getClass(),"httpServletRequest.getRequestURL():"+httpServletRequest.getRequestURL());
-//        BillLogUtil.debug(this.getClass(),"httpServletRequest.getServletPath():"+httpServletRequest.getServletPath());
-
-        request.setAttribute("fid",GlobalConstants.getMenuParentId(url));
-		if (matcher.find() || "/lend/addLendAnnex".equals(url) 
-				|| "/loan/addLoanAnnex".equals(url)) {
-			chain.doFilter(request, response);
-		} else {
-			if (url.lastIndexOf(".") > 0) {
-				url = url.substring(0, url.lastIndexOf("."));
-			}
-                LogUtil.debug(this.getClass(),"exclude:"+exclude);
-			if(exclude.indexOf(url)<0){
-				sysUsers = (SysUsers) httpServletRequest.getSession().getAttribute(GlobalConstants.SESSION_EMP);
-                LogUtil.debug(this.getClass(),"user:"+sysUsers);
-				if (sysUsers == null) {
-					httpServletRequest.getRequestDispatcher(GlobalConstants.USER_HOME).forward(request, response);
-                    LogUtil.debug(this.getClass(),"login:false");
-					return;
-				} else {
-
-                    String urlType = request.getParameter("urlType");
-                    if(urlType != null && !"".equals(urlType)){
-                        url = url+"?urlType="+urlType;
-                    }
-                    LogUtil.debug(this.getClass(),"url:"+url);
-                    boolean checkauth = Auth.checkAuth(httpServletRequest,url,sysUsers);
-                    LogUtil.debug(this.getClass(),"auth:"+checkauth);
-					if (!checkauth) {
-						request.setAttribute("error_key","nopower");
-						request.getRequestDispatcher(GlobalConstants.ERROR_PAGE).forward(request, response);
-						return;
-					}
-					request.setAttribute("menu",GlobalConstants.getSession((HttpServletRequest)request,GlobalConstants.SESSION_MENU));
-					request.setAttribute("user",GlobalConstants.getSession((HttpServletRequest)request,GlobalConstants.SESSION_EMP));
-					request.setAttribute("funcs",GlobalConstants.funcMap);
-					request.setAttribute("iconMap",GlobalConstants.iconMap);
-
-                    LogUtil.debug(this.getClass(),GlobalConstants.getSession((HttpServletRequest)request,GlobalConstants.SESSION_MENU));
-
-				}
-			}*/
-			chain.doFilter(request, response);
-//		}
-		
 	}
 
 	@Override

@@ -86,7 +86,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/spring-mvc.xml</param-value>
+            <param-value>classpath:spring/springs-mvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -94,6 +94,7 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
 
     <!-- 项目编码过滤器 -->
     <filter>
@@ -110,24 +111,41 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
+    <!--<filter>
         <filter-name>loginFilter</filter-name>
         <filter-class>com.gqhmt.sys.web.LoginFilter</filter-class>
     </filter>
-
+-->
+<!--
     <filter-mapping>
         <filter-name>loginFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!-- 商户api拦截器begin -->
+-->
+
     <filter>
+        <filter-name>delegatingFilterProxy</filter-name>
+        <filter-class>com.gqhmt.sys.web.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>target</param-name>
+            <param-value>loginFilter</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>delegatingFilterProxy</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 商户api拦截器begin -->
+    <!--<filter>
         <filter-name>restApiFilter</filter-name>
         <filter-class>com.gqhmt.sys.web.RestApiFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>restApiFilter</filter-name>
         <url-pattern>/api/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <!-- 商户api拦截器 end-->
     <servlet>
         <servlet-name>InitCommon</servlet-name>

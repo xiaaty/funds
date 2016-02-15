@@ -1,8 +1,11 @@
-package com.gqhmt.sys.session;
+package com.gqhmt.core.util;
 
-import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.sys.entity.Menu;
+import com.gqhmt.sys.entity.DictEntity;
+import com.gqhmt.sys.entity.DictOrderEntity;
+import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.sys.service.MenuService;
+import com.gqhmt.sys.service.SystemService;
+import com.gqhmt.util.ServiceLoader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,10 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class Application {
-	
-	
+
+
 	private static Application application = new Application();
 
 
@@ -25,8 +27,11 @@ public class Application {
 		return application;
 	}
 
-	private final Map<Long,Menu> menuMap = new ConcurrentHashMap<>();
-    private final List<Menu> menus = Collections.synchronizedList(new ArrayList<Menu>());
+	private final Map<Long,MenuEntity> menuMap = new ConcurrentHashMap<>();
+    private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<MenuEntity>());
+
+    private final Map<String,String> dict = new ConcurrentHashMap<>();
+    private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
 
     private void init(){
         synchronized (this){
@@ -40,28 +45,68 @@ public class Application {
         synchronized (this){
             menuMap.clear();
             menus.clear();
-
+            dict.clear();
+            dictOrder.clear();
             update();
         }
     }
 
     private void update(){
+        initMenu();
+        initDict();
+    }
+
+    /*======================================数据字典初始化及应用========================================================*/
+    private void initDict(){
+        SystemService systemService = ServiceLoader.get(SystemService.class);
+        List<DictEntity> dicts = systemService.findALl();
+        if(dicts == null) return;
+
+        for(DictEntity dictEntity:dicts){
+            this.dict.put(dictEntity.getDictId(),dictEntity.getDictName());
+        }
+
+        List<DictOrderEntity> dictOrders = systemService.findALlDictOrder();
+        for(DictOrderEntity dictEntity:dictOrders){
+            this.dictOrder.put(dictEntity.getOrderDict(),dictEntity.getOrderList());
+        }
+
+    }
+
+    public String getDictName(String key){
+        String value = this.dict.get(key);
+        if(value == null || "".equals(value)){
+            value = "数据字典未配置此项";
+        }
+        return value;
+    }
+    public String getDictOrderValue(String key){
+        String value = this.dictOrder.get(key);
+        if(value == null || "".equals(value)){
+            value = "数据字典类型未配置";
+        }
+        return value;
+    }
+
+    /*======================================菜单初始化及应用========================================================*/
+
+    private void initMenu(){
         MenuService menuService = com.gqhmt.util.ServiceLoader.get(MenuService.class);
-        List<Menu> menus = menuService.findMenuAll();
+        List<MenuEntity> menus = menuService.findMenuAll();
+        LogUtil.debug(this.getClass(),menus.toString());
         //循环菜单项，初始化菜单
-        for(Menu menu:menus){
+        for(MenuEntity menu:menus){
             menuMap.put(menu.getId(),menu);
-            if(menu.getParent_id() == 0){
+            if(menu.getParentId() == 0){
                 this.menus.add(menu);
             }
         }
-
-        for(Menu menu:menus){
-            if(menu.getParent_id() == 0){
+        for(MenuEntity menu:menus){
+            if(menu.getParentId() == 0){
                 continue;
             }
-            Long parentId = menu.getParent_id();
-            Menu menu1 = menuMap.get(parentId);
+            Long parentId = menu.getParentId();
+            MenuEntity menu1 = menuMap.get(parentId);
             if(menu1 != null){
                 menu1.addMenu(menu);
             }
@@ -72,14 +117,14 @@ public class Application {
         return this.getHtml(menus,context,url).toString();
     }
 
-    public StringBuffer getHtml(List<Menu> func, String context, String url){
+    public StringBuffer getHtml(List<MenuEntity> func, String context, String url){
 
         StringBuffer sb = new StringBuffer();
         if(func.size()<=0){
             return sb;
         }
         sb.append("<ul>");
-        for(Menu menu : func){
+        for(MenuEntity menu : func){
             com.gqhmt.util.LogUtil.debug(this.getClass(),"tag:"+url+"___"+menu.getMenuUrl());
             if(checkMenu(url,menu)){
                 sb.append(" <li class='active'>");
@@ -120,7 +165,7 @@ public class Application {
         return sb;
     }
 
-    private boolean checkMenu(String url, Menu menu) {
+    private boolean checkMenu(String url, MenuEntity menu) {
         if(menu.getParma()==null){
             return url.equals(menu.getMenuUrl());
         }
@@ -156,7 +201,7 @@ public class Application {
         return false;
     }
 
-    private String parse(Menu menu,String url){
+    private String parse(MenuEntity menu, String url){
         if(menu.getParma() == null || "".equals(menu.getParma())){
             return menu.getMenuUrl();
         }
@@ -174,7 +219,7 @@ public class Application {
         return returnUrl;
     }
 
-    private String replaceUrlValue(Menu menu, String url) {
+    private String replaceUrlValue(MenuEntity menu, String url) {
        /* if(checkMenu(url,menu)){
             return url;
         }
@@ -183,7 +228,7 @@ public class Application {
     }
 
 
-    private String relpaceDefaultValue(Menu menu){
+    private String relpaceDefaultValue(MenuEntity menu){
         String[] param = menu.getParma().split(",");
         String[] paramValue = menu.getParmaDefaule().split(",");
         String url  = menu.getMenuUrl();
@@ -192,9 +237,9 @@ public class Application {
             String paramTmp = param[i];
             url = url.replace(paramTmp,paramValue[i]);
         }
-
-
         return url;
 
     }
+
+    /*======================================菜单初始化及应用结束========================================================*/
 }
