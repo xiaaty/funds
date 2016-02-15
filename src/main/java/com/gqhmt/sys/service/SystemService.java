@@ -1,6 +1,8 @@
 package com.gqhmt.sys.service;
 
 import com.gqhmt.sys.entity.DictEntity;
+import com.gqhmt.sys.entity.DictOrderEntity;
+import com.gqhmt.sys.mapper.read.DictOrderReadMapper;
 import com.gqhmt.sys.mapper.read.SystemReadMapper;
 import com.gqhmt.sys.mapper.write.SystemWriteMapper;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class SystemService {
     private SystemReadMapper systemReadMapper;
     @Resource
 	private SystemWriteMapper systemWriteMapper;
+    
+    @Resource
+    private DictOrderReadMapper dictOrderReadMapper;
     
     
     
@@ -63,5 +68,11 @@ public class SystemService {
     public void delteDict(String dictId) {
     	systemWriteMapper.delteDictMain(dictId);
     }
+    
+    public List<DictOrderEntity> queryDictOrder(DictOrderEntity dictorder){
+        return  this.dictOrderReadMapper.selectDictOrder(dictorder);
+    }
+    
+    
     
 }
