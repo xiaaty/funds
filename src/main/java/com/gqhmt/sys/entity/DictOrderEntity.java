@@ -31,7 +31,6 @@ public class DictOrderEntity implements Serializable{
     private Long id;                    //bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
 
     @Column(name = "order_name")
-
     private String orderName;           
 
     @Column(name = "order_dict")
