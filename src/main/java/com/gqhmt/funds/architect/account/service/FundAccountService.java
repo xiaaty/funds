@@ -3,6 +3,7 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
@@ -21,10 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gq.p2p.account.service
@@ -63,6 +61,10 @@ public class FundAccountService {
         return fundAccountWriteMapper.insertSelective(entity);
     }
 
+    public void insert(List<FundAccountEntity> entities) throws FssException{
+         fundAccountWriteMapper.insertAccountList(entities);
+    }
+
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
@@ -70,32 +72,59 @@ public class FundAccountService {
     public void delete(Long id) {
     	fundAccountWriteMapper.deleteByPrimaryKey(id);
     }
+
+
+    /**
+     * 创建账户
+     */
+    public void createAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
+        //创建主账户
+        this.createCustomerAccount(customerInfoEntity,userID);
+        //创建子账户
+
+
+    }
     /**
      * 创建客户主账户
      * @param customerInfoEntity
      * @param userID
-     * @param type  账户类型  1，借款 ，2线下出借，3线上出借，99冻结
      * @throws CreateAccountFailException
      */
-    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID, int type) throws CreateAccountFailException {
-        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
+    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
+
+        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         LogUtil.debug(this.getClass(),entity);
-        update(entity);
+        this.insert(entity);
         return entity;
     }
     /**
      * 创建客户子账户
      * @param customerInfoEntity
      * @param userID
-     * @param type  账户类型  1，借款 ，2线下出借，3线上出借，99冻结
      * @throws CreateAccountFailException
      */
-    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,int type,Long pID) throws CreateAccountFailException{
-        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
-        entity.setParentId(pID);
-        LogUtil.debug(this.getClass(), entity);
-        update(entity);
-        return entity;
+    public void createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Long pID) throws FssException {
+
+        List<FundAccountEntity> insertList = new ArrayList<>();
+
+        /*update(entity);*/
+
+        Set<Integer> typeSet = GlobalConstants.accountType.keySet();
+        for (int type : typeSet) {
+            if (type == 0 || (customerInfoEntity.getId() < GlobalConstants.RESERVED_CUSTOMERID_LIMIT)) {
+                continue;
+            }
+
+            FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
+            entity.setParentId(pID);
+
+            insertList.add(entity);
+
+        }
+
+        this.insert(insertList);
+        LogUtil.debug(this.getClass(), insertList);
+
     }
 
     protected FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){

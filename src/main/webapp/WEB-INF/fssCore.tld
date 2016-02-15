@@ -36,7 +36,8 @@
 		<attribute>
 			<name>dictOrder</name>
 			<required>true</required>
-			<rtexprvalue>false</rtexprvalue>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>
