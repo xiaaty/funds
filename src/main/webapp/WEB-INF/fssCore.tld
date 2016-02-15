@@ -39,4 +39,43 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<name>money</name>
+		<tag-class>com.gqhmt.core.tag.MoneyTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>money</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<name>currency</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>precision</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Integer</type>
+		</attribute>
+	</tag>
+	<tag>
+		<name>fmtDate</name>
+		<tag-class>com.gqhmt.core.tag.FormatDateTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.util.Date</type>
+		</attribute>
+		<attribute>
+			<name>type</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>

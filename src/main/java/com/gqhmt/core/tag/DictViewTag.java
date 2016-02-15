@@ -1,6 +1,7 @@
 package com.gqhmt.core.tag;
 
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.LogUtil;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -37,7 +38,7 @@ public class DictViewTag extends TagSupport {
             out.flush();
 
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LogUtil.error(this.getClass(),ex);
         }
         return super.SKIP_BODY;
     }
