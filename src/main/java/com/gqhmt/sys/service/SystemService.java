@@ -76,6 +76,10 @@ public class SystemService {
     public List<DictOrderEntity> queryDictOrder(DictOrderEntity dictorder){
         return  this.dictOrderReadMapper.selectDictOrder(dictorder);
     }
+
+    public List<DictOrderEntity> findALlDictOrder(){
+        return this.dictOrderReadMapper.selectAll();
+    }
     
     public void insertDictOrder(DictOrderEntity dictorder) {
     	this.dictOrderWriteMapper.insertDictOrder(dictorder);
