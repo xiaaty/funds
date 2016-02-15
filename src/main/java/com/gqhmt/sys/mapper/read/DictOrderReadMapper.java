@@ -23,4 +23,6 @@ import java.util.List;
 public interface DictOrderReadMapper extends ReadMapper<DictOrderEntity> {
 
     public List<DictOrderEntity> selectDictOrder(DictOrderEntity dictorder);
+    
+    public DictOrderEntity getDictOrderById(Long id);
 }

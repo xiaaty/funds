@@ -81,5 +81,17 @@ public class SystemService {
     	this.dictOrderWriteMapper.insertDictOrder(dictorder);
 	}
     
+    public DictOrderEntity getDictOrderById(Long id){
+    	return this.dictOrderReadMapper.selectByPrimaryKey(id);
+    }
+    
+    public void updateDictOrder(DictOrderEntity dictorder){
+    	this.dictOrderWriteMapper.updateDictOrderById(dictorder);
+    };
+    
+    
+    
+    
+    
     
 }

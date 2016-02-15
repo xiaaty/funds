@@ -71,7 +71,7 @@
                                                             <td align="left">类型名称：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="orderName" value="${dictorder.orderName}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="orderName" name="orderName" value="${dictorder.orderName}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -79,7 +79,7 @@
                                                             <td align="left">唯一标识：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="orderDict" value="${dictorder.orderDict}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="orderDict" name="orderDict" value="${dictorder.orderDict}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -88,7 +88,7 @@
                                                             <td>
                                                             
                                                             	<label class="input">
-                                                                    <input type="text" maxlength="50" name="orderList" value="${dictorder.orderList}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="orderList" name="orderList" value="${dictorder.orderList}" style="width:256px;" />
                                                                 </label>
 			                                                    <%-- <section style="width:210px">
 				                                                    <label class="select">
@@ -106,7 +106,7 @@
                                                             <td align="left">备注：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="memo" value="${dictorder.memo}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="memo" name="memo" value="${dictorder.memo}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -134,6 +134,38 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
     	    $("#dictorderadd").click(function () {
+    	    	
+    	    	var orderName=$("#orderName").val();
+        		var orderDict=$("#orderDict").val();
+        		var orderList=$("#orderList").val();
+        		if(orderName.length>0 && orderDict.length>0 && orderList.length>0){
+        			 $("#dictorderForm").ajaxSubmit({
+     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+     	                dataType: "json",
+     	                success: function (data) {
+     	                    if (data.code == '0000') {
+     	                        jAlert("保存成功!", '信息提示');
+     	                        //自动跳转
+     	                        parent.location.href="${contextPath}/sys/workassist/dictorder";
+     	                    } else {
+     	                    	jAlert("保存失败!", '消息提示');
+     	                        return;
+     	                    }
+     	                }
+     	            });
+        		}else if(orderName.length==0){
+        			jAlert("类型名称不能为空!", '消息提示');
+        			return;
+        		}else if(orderDict.lenght==0 || orderDict==""){
+        			jAlert("标识不能为空!", '消息提示');
+        			return;
+        		}else if(orderList.length==0 || orderList==""){
+        			jAlert("字典列表不能为空!", '消息提示');
+        			return;
+        		}else{
+        		}
+    	    	
+    	    	/**
     	        if (validateCheck()) {
     	            $("#dictorderForm").ajaxSubmit({
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -150,11 +182,12 @@
     	                }
     	            });
     	        }
+    	    	**/
     	    });
         });
     	//校验函数
     	function validateCheck() {
-    		return true;
+    			return true;
     	}
         
     	 //选中商户号

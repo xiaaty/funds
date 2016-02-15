@@ -27,7 +27,7 @@ public class Application {
 	}
 
 	private final Map<Long,MenuEntity> menuMap = new ConcurrentHashMap<>();
-    private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<>());
+    private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<MenuEntity>());
 
     private final Map<String,String> dict = new ConcurrentHashMap<>();
 

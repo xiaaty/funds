@@ -198,7 +198,6 @@ public class SystemController{
     public Object DictOrederSave(HttpServletRequest request,@ModelAttribute(value="dictorder")DictOrderEntity dictorder){
     	
     	Map<String, String> map = new HashMap<String, String>();
-    	
     	try {
 			sysService.insertDictOrder(dictorder);
 			 map.put("code", "0000");
@@ -212,7 +211,40 @@ public class SystemController{
 		return map;
     }
     
+    /**
+     * 修改字典类型
+     * @param request
+     * @param model
+     * @param id
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/sys/workassist/dictorderToUpdate/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object dictOrderUpdate(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws FssException {
+    	DictOrderEntity dictorder =sysService.getDictOrderById(id);
+    	model.addAttribute("dictorder", dictorder);
+		return "sys/workAssist/dictOrderUpdate";
+	}
     
+    /**
+     * 修改保存
+     * @param request
+     * @param dict
+     * @return
+     */
+    @RequestMapping(value = "/sys/workassist/dictOrderUpdate",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public Object dictUpdate(HttpServletRequest request,@ModelAttribute(value="dictorder")DictOrderEntity dictorder){
+    	dictorder.setOrderName(dictorder.getOrderName());
+    	dictorder.setOrderDict(dictorder.getOrderDict());
+    	dictorder.setOrderList(dictorder.getOrderList());
+    	dictorder.setMemo(dictorder.getMemo());
+    	sysService.updateDictOrder(dictorder);
+    	Map<String, String> map = new HashMap<String, String>();
+        map.put("code", "0000");
+        map.put("message", "success");
+		return map;
+    }
     
     
     
