@@ -31,8 +31,9 @@ public class DictOrderEntity implements Serializable{
     private Long id;                    //bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
 
     @Column(name = "order_name")
-    private String name;           
-    
+
+    private String orderName;           
+
     @Column(name = "order_dict")
     private String orderDict;   
     
@@ -50,12 +51,12 @@ public class DictOrderEntity implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getOrderName() {
+		return orderName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setOrderName(String orderName) {
+		this.orderName = orderName;
 	}
 
 	public String getOrderDict() {
@@ -65,6 +66,7 @@ public class DictOrderEntity implements Serializable{
 	public void setOrderDict(String orderDict) {
 		this.orderDict = orderDict;
 	}
+
 
 
 	public String getMemo() {

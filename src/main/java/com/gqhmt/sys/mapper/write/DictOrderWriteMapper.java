@@ -2,7 +2,6 @@ package com.gqhmt.sys.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.sys.entity.DictOrderEntity;
-import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.read.DictOrderReadMapper
@@ -22,5 +21,5 @@ import java.util.List;
  */
 public interface DictOrderWriteMapper extends ReadAndWriteMapper<DictOrderEntity> {
 
-    public List<DictOrderEntity> selectDictmain(DictOrderEntity dictorder);
+	  public void insertDictOrder(DictOrderEntity dictorder);
 }

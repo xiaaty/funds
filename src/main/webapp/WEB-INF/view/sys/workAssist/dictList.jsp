@@ -137,7 +137,7 @@
                                                             ${dict.parentId}
                                                         </c:otherwise>
                                                         </c:choose></td>
-                                                    <td> <fc:dictView key="${dict.isValid}" /></td>
+                                                    <td> <fss:dictView key="${dict.isValid}" /></td>
                                                     <td><fmt:formatDate value="${dict.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${dict.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                    <td>
