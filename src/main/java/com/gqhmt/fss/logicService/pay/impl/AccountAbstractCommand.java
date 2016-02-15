@@ -125,19 +125,19 @@ abstract class AccountAbstractCommand {
 	 * @param userID
 	 * @return
 	 * @throws CreateAccountFailException 
-	 */
+	 *//*
 	protected final FundAccountEntity createPrimaryAccount(CustomerInfoEntity customerInfoEntity, int userID) throws CreateAccountFailException {
 		return fundAccountService.createCustomerAccount(customerInfoEntity, userID, GlobalConstants.ACCOUNT_TYPE_PRIMARY, 0l);
 	}
 
-	/**
+	*//**
 	 * 创建所有子账户
 	 * 
 	 * @param customerInfoEntity
 	 * @param userID
 	 * @param primaryAccount
 	 * @throws CreateAccountFailException 
-	 */
+	 *//*
 	protected final void createAccount(CustomerInfoEntity customerInfoEntity, int userID, FundAccountEntity primaryAccount) throws CreateAccountFailException {
 		Set<Integer> typeSet = GlobalConstants.accountType.keySet();
 		for (int type : typeSet) {
@@ -149,7 +149,7 @@ abstract class AccountAbstractCommand {
 				fundAccountService.createCustomerAccount(customerInfoEntity, userID, type, primaryAccount.getId());
 			}
 		}
-	}
+	}*/
 
 	protected final void updateAccount(FundAccountEntity primaryAccount) {
 		this.fundAccountService.update(primaryAccount);
