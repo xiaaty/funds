@@ -138,12 +138,13 @@
                                                         </c:otherwise>
                                                         </c:choose></td>
                                                     <td> <fss:dictView key="${dict.isValid}" /></td>
-                                                    <td><fmt:formatDate value="${dict.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${dict.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fss:fmtDate value="${dict.createTime}"/></td>
+                                                    <td><fss:fmtDate value="${dict.modifyTime}"/></td>
                                                    <td>
                                                         <a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
                                                    		&nbsp;&nbsp;&nbsp;
                                                    		<a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
+
 
                                                    		<%--&nbsp;&nbsp;&nbsp;
                                                    		<a href="javascript:void(0)" onclick="deleteDict(${dict.dictId},${dict.parentId})">删除</a>
