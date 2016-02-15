@@ -34,6 +34,7 @@ public class SystemService {
     private SystemReadMapper systemReadMapper;
     @Resource
 	private SystemWriteMapper systemWriteMapper;
+   
     
     @Resource
     private DictOrderReadMapper dictOrderReadMapper;
@@ -72,6 +73,7 @@ public class SystemService {
     public void delteDict(String dictId) {
     	systemWriteMapper.delteDictMain(dictId);
     }
+    
     
     public List<DictOrderEntity> queryDictOrder(DictOrderEntity dictorder){
         return  this.dictOrderReadMapper.selectDictOrder(dictorder);
