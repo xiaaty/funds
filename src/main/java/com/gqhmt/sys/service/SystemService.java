@@ -115,4 +115,15 @@ public class SystemService {
 	   return  this.systemReadMapper.selectDictByOrderList(list);
    }
    
+   public List<DictEntity> findDictOrder(String dictId){
+	   List list=new ArrayList();
+	   if(StringUtils.isNotEmptyString(dictId)){
+		   String str[]=dictId.split(",");
+		   for (int i = 0; i < str.length; i++){
+			   list.add(str[i]);
+		   }
+	   }
+	   return  this.systemReadMapper.selectDictOrderList(list);
+   }
+   
 }

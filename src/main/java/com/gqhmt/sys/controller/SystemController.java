@@ -1,7 +1,6 @@
 package com.gqhmt.sys.controller;
 
 
-import java.util.ArrayList;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sys.entity.DictEntity;
@@ -10,8 +9,6 @@ import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -23,9 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.gqhmt.fss.architect.merchant.entity.Business;
 import com.gqhmt.fss.architect.merchant.service.RestApiService;
-import com.gqhmt.sys.entity.Settings;
 
 @Controller
 public class SystemController{
@@ -235,9 +230,12 @@ public class SystemController{
     	//得到字典列表
     	DictOrderEntity dictorder =sysService.getDictOrderById(id);
     	List<DictEntity> dlist = sysService.findDictListByOrderList(dictorder.getOrderList());
+    	List<DictEntity> ordlist=sysService.findDictOrder(dictorder.getOrderList());
+    	
     	
     	//根据id得到要修改的对象
     	model.addAttribute("dlist", dlist);
+    	model.addAttribute("ordlist", ordlist);
     	model.addAttribute("dictorder", dictorder);
 		return "sys/workAssist/dictOrderUpdate";
 	}
