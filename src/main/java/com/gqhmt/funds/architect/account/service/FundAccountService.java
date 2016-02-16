@@ -79,9 +79,9 @@ public class FundAccountService {
      */
     public void createAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         //创建主账户
-        this.createCustomerAccount(customerInfoEntity,userID);
+        FundAccountEntity entity = this.createCustomerAccount(customerInfoEntity,userID);
         //创建子账户
-
+        this.createCustomerAccount(customerInfoEntity,userID,entity.getParentId());
 
     }
     /**
