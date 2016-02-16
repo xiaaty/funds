@@ -184,6 +184,8 @@ public class SystemController{
      */
     @RequestMapping(value = "/sys/workassist/dictOrderAdd",method = {RequestMethod.GET,RequestMethod.POST})
 	public Object DictOrderAdd(HttpServletRequest request, ModelMap model,DictOrderEntity dictorder) throws FssException {
+    	List<DictEntity> dictlist = sysService.findDictList();
+    	model.addAttribute("dictlist", dictlist);
     	return "sys/workAssist/dictOrderAdd";
 	}
     
