@@ -1,13 +1,12 @@
 package com.gqhmt.business.architect.loan.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.mapper.read.TenderReadMapper;
 import com.gqhmt.business.architect.loan.mapper.write.TenderWriteMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author fanfever
@@ -34,4 +33,8 @@ public class TenderService {
 		tenderWriteMapper.updateByPrimaryKeySelective(tender);
 	}
 
+	public Tender findById(long id) {
+		Tender tender = tenderReadMapper.selectByPrimaryKey(id);
+		return tender;
+	}
 }

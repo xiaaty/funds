@@ -24,7 +24,7 @@ import java.util.List;
  */
 public interface FundAccountWriteMapper extends ReadAndWriteMapper<FundAccountEntity> {
 
-	public void updateCustName(Integer cusID, String custName);
+	public void updateCustName(Integer cusID, String custName) ;
 
 	public void insertAccountList(@Param("accounts") List<FundAccountEntity> entities);
 

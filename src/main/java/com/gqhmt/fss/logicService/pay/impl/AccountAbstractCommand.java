@@ -2,7 +2,8 @@ package com.gqhmt.fss.logicService.pay.impl;
 
 import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.business.architect.loan.service.*;
-import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -12,19 +13,15 @@ import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
 import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
-import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.ServiceLoader;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Set;
 
 /**
  * Filename: com.gq.p2p.interactions.account Copyright: Copyright (c)2014
@@ -74,9 +71,9 @@ abstract class AccountAbstractCommand {
 	 * @param cusID
 	 * @return
 	 */
-	protected final FundAccountEntity getPrimaryAccount(int cusID, boolean isNull) throws CommandParmException {
+	protected final FundAccountEntity getPrimaryAccount(int cusID) throws CommandParmException {
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusID, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		if (primaryAccount == null && isNull) {
+		if(primaryAccount == null){
 			throw new CommandParmException("主账户不存在");
 		}
 		return primaryAccount;
@@ -89,15 +86,16 @@ abstract class AccountAbstractCommand {
 	 * @param type
 	 * @return
 	 */
-	protected final FundAccountEntity getFundAccount(int cusID, int type, boolean isNull) throws CommandParmException {
+	protected final FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException {
 		FundAccountEntity entity = null;
 		if (cusID < 100) {
 			entity = fundAccountService.getFundAccount(cusID, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 		} else {
 			entity = fundAccountService.getFundAccount(cusID, type);
 		}
-		if (entity == null && isNull) {
-			throw new CommandParmException("" + GlobalConstants.accountType.get(type) + "不存在");
+
+		if(entity == null){
+			throw new CommandParmException("账户不存在");
 		}
 		return entity;
 	}
@@ -124,19 +122,18 @@ abstract class AccountAbstractCommand {
 	 * @param customerInfoEntity
 	 * @param userID
 	 * @return
-	 * @throws CreateAccountFailException 
-	 *//*
-	protected final FundAccountEntity createPrimaryAccount(CustomerInfoEntity customerInfoEntity, int userID) throws CreateAccountFailException {
-		return fundAccountService.createCustomerAccount(customerInfoEntity, userID, GlobalConstants.ACCOUNT_TYPE_PRIMARY, 0l);
+	 */
+	protected final FundAccountEntity createPrimaryAccount(CustomerInfoEntity customerInfoEntity, int userID) throws FssException {
+		return fundAccountService.createAccount(customerInfoEntity,userID);
 	}
 
-	*//**
+	/*
 	 * 创建所有子账户
-	 * 
+	 *
 	 * @param customerInfoEntity
 	 * @param userID
 	 * @param primaryAccount
-	 * @throws CreateAccountFailException 
+	 * @throws CreateAccountFailException
 	 *//*
 	protected final void createAccount(CustomerInfoEntity customerInfoEntity, int userID, FundAccountEntity primaryAccount) throws CreateAccountFailException {
 		Set<Integer> typeSet = GlobalConstants.accountType.keySet();
@@ -171,7 +168,7 @@ abstract class AccountAbstractCommand {
 	/******************************************************** 资金流水信息 **********************************************************************************/
 
 	protected final void hasEnoughBanlance(FundAccountEntity entity, BigDecimal amount) throws CommandParmException {
-		BigDecimal bigDecimal = sequenceService.getSumAmount(entity.getId());
+		BigDecimal bigDecimal = entity.getAmount();
 		if (bigDecimal.compareTo(amount) < 0) {
 			throw new CommandParmException("账户余额不足");
 		}
@@ -180,51 +177,12 @@ abstract class AccountAbstractCommand {
 	/******************************************************** 资金流水信息操作结束 **************************************************************************/
 
 	/******************************************************** 订单信息 **********************************************************************************/
-	protected final FundOrderEntity createOrder(FundAccountEntity primaryAccount, BigDecimal amount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws CommandParmException {
-		return this.createOrder(primaryAccount, null, amount, orderType, sourceID, sourceType, thirdPartyType);
-	}
-
-    protected final FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity,BigDecimal amount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws CommandParmException {
-        return this.createOrder(primaryAccount,toAccountEntity,amount,BigDecimal.ZERO,orderType,sourceID,sourceType,thirdPartyType);
-    }
 
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { CommandParmException.class }, readOnly = false)
-	protected final FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount,BigDecimal chargeAmount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws CommandParmException {
-		FundOrderEntity fundOrderEntity = new FundOrderEntity();
-		fundOrderEntity.setAccountId(primaryAccount.getId());
-		if (toAccountEntity != null) {
-			fundOrderEntity.setToAccountId(toAccountEntity.getId());
-		}
-		fundOrderEntity.setOrderNo(fundOrderService.getOrderNo());
-		fundOrderEntity.setCreateTime(new Date());
-		fundOrderEntity.setOrderAmount(amount);
-		fundOrderEntity.setOrderSource(sourceType);
-		fundOrderEntity.setOrderFrormId(sourceID);
-		// 订单类型(1-充值 2-提现 3-代偿 4-投标 5-转账 6-还款 7-流标)
-		fundOrderEntity.setOrderType(orderType);
-		fundOrderEntity.setThirdPartyType(thirdPartyType);
-        fundOrderEntity.setChargeAmount(chargeAmount);
-		fundOrderEntity.setOrderState(GlobalConstants.ORDER_STATUS_SUBMIT);
-		try {
-			fundOrderService.insert(fundOrderEntity);
-		} catch (Exception e) {
-			throw new CommandParmException("" + e.getMessage());
-		}
-		return fundOrderEntity;
-	}
+
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { CommandParmException.class }, readOnly = false)
-	public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws CommandParmException {
-		fundOrderEntity.setOrderState(status);
-		fundOrderEntity.setRetCode(code);
-		fundOrderEntity.setRetMessage(msg);
-		try {
-			fundOrderService.update(fundOrderEntity);
-		} catch (Exception e) {
-			throw new CommandParmException(e.getMessage());
-		}
-	}
+
 
 	/******************************************************** 订单信息操作结束 **************************************************************************/
 

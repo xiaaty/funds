@@ -1,22 +1,14 @@
 package com.gqhmt.fss.logicService.pay.impl;
 
-import com.gqhmt.fss.logicService.account.IFundsAccount;
-import com.gqhmt.fss.logicService.pay.FundsResponse;
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
-import com.gqhmt.fss.logicService.pay.util.CustomerConstants;
-import com.gqhmt.fss.pay.core.command.CommandResponse;
-import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.fss.logicService.pay.IFundsAccount;
+import com.gqhmt.fss.logicService.pay.PaySuperByFuiou;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.customer.bean.CustomerInfoSendMsgBean;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Resource;
 
 /**
  * 账户相关api
@@ -26,15 +18,19 @@ import java.util.Map;
 @Service
 public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAccount {
 
+	@Resource
+	private PaySuperByFuiou paySuperByFuiou;
+
 	/**
      * 创建账户
      *
      * @param thirdPartyType 支付渠道
      * @param custId         客户id
-     * @throws FundsException
+     * @throws FssException
      */
-	public FundsResponse createAccount(String thirdPartyType, int custId) throws FundsException {
-		return null;
+	public boolean createAccount(String thirdPartyType, int custId) throws FssException {
+		CustomerInfoEntity customerInfoEntity = super.getCustomerInfo(custId);
+		return this.createAccount(thirdPartyType,customerInfoEntity,"","");
 	}
 
 	/**
@@ -44,44 +40,26 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
      * @param customerInfoEntity 客户实体
      * @param pwd                支付渠道登陆密码
      * @param taradPwd           支付渠道交易密码
-     * @throws FundsException
+     * @throws FssException
      */
-	public FundsResponse createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity,
-			String pwd, String taradPwd) throws FundsException {
+	public boolean createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity,
+						String pwd, String taradPwd) throws FssException {
 
+		Integer cusId = customerInfoEntity.getId();
 
-//		try {
-//			//富友
-//	        Integer cusId = customerInfoEntity.getId();
-//	        Integer userId = customerInfoEntity.getUserId();
-//	        //创建主账户
-//	        FundAccountEntity primaryAccount = super.getPrimaryAccount(cusId, false);
-//	        if(primaryAccount == null){
-//	            primaryAccount =  super.createPrimaryAccount(customerInfoEntity, userId);
-//	        }
-//	        super.createAccount(customerInfoEntity, userId, primaryAccount);
-//	//        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-//
-//	        if(primaryAccount.getHasThirdAccount() == GlobalConstants.NO_CREATR_THIRD_ACCOUNT){
-//	            FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount, BigDecimal.ZERO,GlobalConstants.ORDER_CREATE_ACCOUNT,0,0,thirdPartyType);
-//	            CommandResponse response  = ThirdpartyFactory.command(Integer.valueOf(thirdPartyType),PayCommondConstants.COMMAND_ACCOUNT_PRIVATE_CREATE,fundOrderEntity,primaryAccount,pwd,taradPwd);
-//	            if(response.getCode().equals("0000")){
-//	                primaryAccount.setHasThirdAccount(2);
-//	                super.updateAccount(primaryAccount);
-//	                super.updateOrder(fundOrderEntity,2,response.getThirdReturnCode(),response.getMsg());
-//	                return null;
-//	            }else if(response.getCode().equals("0009")){
-//	                super.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
-//	                throw new ThirdpartyErrorAsyncException();
-//	            }else{
-//	                super.updateOrder(fundOrderEntity,3,response.getThirdReturnCode(),response.getMsg());
-//	                throw new CommandParmException(response.getMsg());
-//	            }
-//	        }
-//		} catch (CreateAccountFailException e) {
-//			e.printStackTrace();
-//		}
-		return null;
+		Integer userId = customerInfoEntity.getUserId();
+
+		FundAccountEntity primaryAccount = super.getPrimaryAccount(cusId);
+	        if(primaryAccount == null){
+				try {
+					primaryAccount =  super.createPrimaryAccount(customerInfoEntity, userId);
+				} catch (FssException e) {
+				}
+			}
+
+		//富友
+		paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+		return true;
 	}
 
 	/**
@@ -89,17 +67,12 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
      *
      * @param thirdPartyType 支付渠道
      * @param custID         客户id
-     * @throws FundsException
+     * @throws FssException
      */
-	public FundsResponse dropAccount(String thirdPartyType, int custID) throws FundsException {
-		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID, true);
-        //订单号
-        //FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
-        //CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_PASS, fundOrderEntity, primaryAccount,String.valueOf(busiType));
-
-        //execExction(response,fundOrderEntity);
-        //super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
-		return null;
+	public boolean dropAccount(String thirdPartyType, int custID) throws FssException {
+		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID);
+		paySuperByFuiou.dropAccount(primaryAccount,"1");
+		return true;
 	}
 
 	/**
@@ -107,53 +80,31 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
      *
      * @param thirdPartyType 支付渠道
      * @param custID         客户id
-     * @throws FundsException
+     * @throws FssException
      */
-	public FundsResponse checkDropAccount(String thirdPartyType, int custID)
-			throws FundsException {
-		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID, true);
-        //订单号
-        FundOrderEntity fundOrderEntity = super.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_DROP_USER,0,0,thirdPartyType);
-        CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
-
-        execExction(response,fundOrderEntity);
-        super.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
-		return null;
+	public boolean checkDropAccount(String thirdPartyType, int custID)
+			throws FssException {
+		FundAccountEntity primaryAccount =super.getPrimaryAccount(custID);
+		paySuperByFuiou.dropAccount(primaryAccount,"2");
+		return  true;
 	}
 
 	/**
      * 银行卡变更
      * @param thirdPartyType            支付渠道
-     * @param cusId                     客户id
-     * @param cardNo                    银行卡号
-     * @param bankCd                    开户行行别
-     * @param bankNm                    开户行支行名称
-     * @param cityId                    开户区县代码
-     * @param imagePath                 上传照片路径
-     * @throws FundsException
+     * @param changeCardEntity
+     * @throws FssException
      */
-	public FundsResponse changeCard(String thirdPartyType, Integer cusId,
-			String cardNo, String bankCd, String bankNm, String cityId,
-			String imagePath) throws FundsException {
-		LogUtil.info(this.getClass(),"updateCard");
-        String code = "0000";
-        String msg = "银行卡修改成功，24小时后生效";
-        try {
-        	CommandResponse response = null;//ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_DROP_ACCOUNT_APPLY, fundOrderEntity, primaryAccount,String.valueOf(busiType));
-        	changeCardService.addChangeCard(cusId, cardNo, bankCd, bankNm,cityId,imagePath);
-        }catch (Exception e) {
-            code = "0001";
-            String eMsg = e.getMessage();
-            if("0020".equals(eMsg) || "0021".equals(eMsg)){
-                msg = CustomerConstants.actionMap.get(eMsg);
-            }else {
-                msg = e.getMessage();
-            }
-        }
-        Map<String,String> map = new HashMap<>();
-        map.put("code",code);
-        map.put("msg",msg);
-        return null;
+	public boolean changeCard(String thirdPartyType,FssChangeCardEntity changeCardEntity) throws FssException {
+		Integer cusId = changeCardEntity.getCustId().intValue();
+		String cardNo = changeCardEntity.getCardNo();
+		String bankCd = changeCardEntity.getBankType();
+		String bankNm = changeCardEntity.getBankAdd();
+		String cityId = changeCardEntity.getBankCity();
+		String fileName = changeCardEntity.getFilePath().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
+		FundAccountEntity primaryAccount =super.getPrimaryAccount(cusId);
+		paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
+		return true;
 	}
 
 	/**
@@ -164,37 +115,22 @@ public class FundsAccountImpl extends AccountAbstractCommand implements IFundsAc
      * @param cz                        出账
      * @param rz                        入账
      * @param hz                        汇总
-     * @throws FundsException
+     * @throws FssException
      */
-	public FundsResponse setMms(String thirdPartyType, Integer cusId,
-			String cztx, String cz, String rz, String hz) throws FundsException {
-		CustomerInfoSendMsgBean bean = new CustomerInfoSendMsgBean();
+	public boolean setMms(String thirdPartyType, Integer cusId,
+			String cztx, String cz, String rz, String hz) throws FssException {
+		FundAccountEntity primaryAccount =super.getPrimaryAccount(cusId);
+		paySuperByFuiou.setMms(primaryAccount,cztx,cz,rz,hz);
+		/*CustomerInfoSendMsgBean bean = new CustomerInfoSendMsgBean();
 		bean.setId(cusId);
 		bean.setSendMsgRechargeWithdrawFouyou(Integer.valueOf(cztx));
 		bean.setSendMsgTransferOutFouyou(Integer.valueOf(cz));
 		bean.setSendMsgTransferInFouyou(Integer.valueOf(rz));
 		bean.setSendMsgTransferAllFouyou(Integer.valueOf(hz));
-		customerInfoService.updateCustSengMsgMode(bean, "0", thirdPartyType);
-		return null;
+		customerInfoService.updateCustSengMsgMode(bean, "0", thirdPartyType);*/
+		return true;
 	}
 	
-	/**
-	 * 解析返回码
-	 * @param response
-	 * @param fundOrderEntity
-	 * @throws CommandParmException
-	 * @throws FundsException
-	 */
-	private void execExction(CommandResponse response,FundOrderEntity fundOrderEntity) throws  CommandParmException, FundsException {
-        LogUtil.debug(FundsAccountImpl.class, "富有接口返回码：" + response.getCode());
-		if(response.getCode().equals("0001")){
-            throw new FundsException(fundOrderEntity.getOrderNo()+":验证码已发送");
-        }else if(response.getCode().equals("0002")){
-            throw new FundsException(fundOrderEntity.getOrderNo()+":等待回调通知");
-        }else if(!"0000".equals(response.getCode())){
-            super.updateOrder(fundOrderEntity,3,response.getCode(),response.getMsg());
-            throw new CommandParmException(response.getMsg());
-        }
-    }
+
 
 }

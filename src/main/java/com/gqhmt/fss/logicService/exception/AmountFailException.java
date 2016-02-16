@@ -1,22 +1,25 @@
-package com.gqhmt.funds.architect.account.exception;
+package com.gqhmt.fss.logicService.exception;
 
-import com.gqhmt.core.FssException;
 
 /**
- * Filename:    com.gq.p2p.account.exception
+ * Filename:    com.gq.p2p.account.command
  * Copyright:   Copyright (c)2014
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
  * @author 于泳
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2015/1/15 23:32
+ * Create at:   2015/1/27 22:11
  * Description:
  * <p/>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2015/1/15  于泳      1.0     1.0 Version
+ * 2015/1/27  于泳      1.0     1.0 Version
  */
-public class CreateAccountFailException extends FssException {
+public class AmountFailException extends RuntimeException {
+
+	public AmountFailException(String message) {
+        super(message);
+    }
 }

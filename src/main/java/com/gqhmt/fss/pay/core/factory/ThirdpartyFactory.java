@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ThirdpartyFactory {
 
-    private static Map<Integer,ThirdpartyAbstractFactory> factory=  new ConcurrentHashMap();
+    private static Map<String,ThirdpartyAbstractFactory> factory=  new ConcurrentHashMap();
 
     /**
      * 初始化配置工厂类
@@ -29,16 +29,11 @@ public class ThirdpartyFactory {
                 continue;
             }
             try {
-
                 Class aClass = Class.forName(className);
-
                 ThirdpartyAbstractFactory factory1 = (ThirdpartyAbstractFactory) aClass.newInstance();
-
-                factory.put(Integer.parseInt(tmp),factory1);
-
+                factory.put(tmp,factory1);
             } catch (Exception e) {
-
-                factory.put(Integer.parseInt(tmp),null);
+                factory.put(tmp,null);
 
             }
         }
@@ -46,7 +41,7 @@ public class ThirdpartyFactory {
 
 
 
-    public static CommandResponse command(Integer thirdPartyType, String commandEnum, FundOrderEntity order, Object... obj){
+    public static CommandResponse command(String thirdPartyType, String commandEnum, FundOrderEntity order, Object... obj){
         return factory.get(thirdPartyType).getCommand().command(commandEnum,order,obj);
     }
 }

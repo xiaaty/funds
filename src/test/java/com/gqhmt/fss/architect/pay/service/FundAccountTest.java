@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.pay.service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.logicService.account.IFundsAccount;
+import com.gqhmt.fss.logicService.pay.IFundsAccount;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.util.CommonUtil;
 import org.junit.Before;

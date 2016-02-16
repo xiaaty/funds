@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ConfigFactory {
     public static ConfigFactory factory = new ConfigFactory();
-    private static Map<Integer,Config> configs=  new ConcurrentHashMap();
+    private static Map<String,Config> configs=  new ConcurrentHashMap();
 
     private  static final String configFile = "config.payChannel";
 
@@ -44,9 +44,9 @@ public class ConfigFactory {
             try {
                 Class aClass = Class.forName(className);
                 Config config = (Config) aClass.newInstance();
-                configs.put(Integer.parseInt(tmp),config);
+                configs.put(tmp,config);
             } catch (Exception e) {
-                configs.put(Integer.parseInt(tmp),null);
+                configs.put(tmp,null);
             }
         }
     }
@@ -59,11 +59,11 @@ public class ConfigFactory {
         return factory;
     }
 
-    public Config getConfig(int type) throws PayChannelNotSupports {
+    public Config getConfig(String type) throws PayChannelNotSupports {
 
         Config config = configs.get(type);
         if(config == null){
-            throw new PayChannelNotSupports();
+            throw new PayChannelNotSupports("交易渠道不支持");
         }
         return config;
 

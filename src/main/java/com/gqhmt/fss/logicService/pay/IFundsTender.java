@@ -1,10 +1,7 @@
 package com.gqhmt.fss.logicService.pay;
 
 
-import com.gqhmt.business.architect.loan.entity.Bid;
-import com.gqhmt.business.architect.loan.entity.BidRepayment;
-import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
+import com.gqhmt.core.FssException;
 
 /**
  * Filename:    com.gq.funds.interaction.IFundsTender
@@ -39,39 +36,32 @@ public interface IFundsTender {
      * @param thirdPartyType                支付渠道
      * @param bid                           标的实体bean
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
 
 
-    public FundsResponse notice(String thirdPartyType,Bid bid) throws FundsException;
+    //public boolean notice(String thirdPartyType,Bid bid) throws FssException;
 
     /**
      *  标的通知
      * @param thirdPartyType                支付渠道
      * @param id                            标的表id
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse notice(String thirdPartyType,Long id) throws FundsException;
+    //public boolean notice(String thirdPartyType,Long id) throws FssException;
 
-    /**
-     * 投标，直接传递投标信息，标的信息
-     * @param thirdPartyType                支付渠道
-     * @param tender                        投标实体bean
-     * @param bid                           标的实体bean
-     * @return
-     * @throws FundsException
-     */
-    public FundsResponse bid(String thirdPartyType, Tender tender, Bid bid) throws FundsException;
+
+
 
     /**
      * 投标，根据tender获取标的信息
      * @param thirdPartyType                支付渠道
-     * @param tender
+     * @param tenderId
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse bid(String thirdPartyType,Tender tender) throws FundsException;
+    public boolean bid(String thirdPartyType,Long tenderId) throws FssException;
 
 
     /**
@@ -79,29 +69,29 @@ public interface IFundsTender {
      * @param thirdPartyType                支付渠道
      * @param bid
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse sellte(String thirdPartyType,Bid bid) throws FundsException;
+    public boolean sellte(String thirdPartyType,long bid) throws FssException;
 
     /**
      * 还款
      * @param thirdPartyType                支付渠道
      * @param bid                           标id
-     * @param bidRepayment                  还款实体
+     * @param bidRepaymentId                还款表id
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse repayment(String thirdPartyType,Bid bid,BidRepayment bidRepayment) throws FundsException;
+    public boolean repayment(String thirdPartyType,long bid,long bidRepaymentId) throws FssException;
 
 
     /**
      * 投标撤销
      * @param thirdPartyType
-     * @param tender
+     * @param tenderId
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse abort(String thirdPartyType,Tender tender) throws FundsException;
+    public boolean abortByTneder(String thirdPartyType,long tenderId) throws FssException;
 
 
     /**
@@ -109,11 +99,11 @@ public interface IFundsTender {
      * @param thirdPartyType
      * @param bid
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse abort(String thirdPartyType,Bid bid) throws FundsException;
+    public boolean abortByBid(String thirdPartyType,long bid) throws FssException;
 
 
-//    public FundsResponse debtApply(String thirdPartyType,int custId);
+//    public boolean debtApply(String thirdPartyType,int custId);
 
 }

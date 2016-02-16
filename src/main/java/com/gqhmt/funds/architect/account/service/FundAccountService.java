@@ -4,10 +4,8 @@ package com.gqhmt.funds.architect.account.service;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
-import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
-import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
-import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
+import com.gqhmt.fss.logicService.exception.CreateAccountFailException;
+import com.gqhmt.fss.logicService.exception.NeedSMSValidException;
 import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -43,9 +41,6 @@ import java.util.*;
 @Service
 public class FundAccountService {
 
-	@Resource
-	private FssAccountReadMapper fssfundAccountReadMapper;
-	
     @Resource
     private FundAccountReadMapper fundAccountReadMapper;
     @Resource
@@ -77,11 +72,13 @@ public class FundAccountService {
     /**
      * 创建账户
      */
-    public void createAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
+    public FundAccountEntity createAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         //创建主账户
         FundAccountEntity entity = this.createCustomerAccount(customerInfoEntity,userID);
         //创建子账户
         this.createCustomerAccount(customerInfoEntity,userID,entity.getParentId());
+
+        return entity;
 
     }
     /**
@@ -90,8 +87,7 @@ public class FundAccountService {
      * @param userID
      * @throws CreateAccountFailException
      */
-    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
-
+    private FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         LogUtil.debug(this.getClass(),entity);
         this.insert(entity);
@@ -103,7 +99,7 @@ public class FundAccountService {
      * @param userID
      * @throws CreateAccountFailException
      */
-    public void createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Long pID) throws FssException {
+    private void createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Long pID) throws FssException {
 
         List<FundAccountEntity> insertList = new ArrayList<>();
 
@@ -127,7 +123,7 @@ public class FundAccountService {
 
     }
 
-    protected FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
+    private FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
         FundAccountEntity entity = new FundAccountEntity();
         entity.setCustId(customerInfoEntity.getId());
         entity.setUserName(customerInfoEntity.getMobilePhone());
@@ -333,15 +329,13 @@ public class FundAccountService {
      * @param custName
      * @return
      */
-    public void updateBycustId(Integer cusID,String custName){
+    public void updateBycustId(Integer cusID,String custName) throws FssException {
     	this.fundAccountWriteMapper.updateCustName(cusID, custName);
     }
     
     
-   public List<BussAndAccountBean> queryAccountList(Map map){
-	   return this.fssfundAccountReadMapper.getBussinessAccountList(map);
-    }
-    
+
+
     
     
     
