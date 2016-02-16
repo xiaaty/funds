@@ -6,9 +6,13 @@ import com.gqhmt.sys.mapper.read.DictOrderReadMapper;
 import com.gqhmt.sys.mapper.read.SystemReadMapper;
 import com.gqhmt.sys.mapper.write.DictOrderWriteMapper;
 import com.gqhmt.sys.mapper.write.SystemWriteMapper;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -100,4 +104,15 @@ public class SystemService {
        return  this.systemReadMapper.selectAll();
    }
     
+   public List<DictEntity> findDictListByOrderList(String dictId){
+	   List list=new ArrayList();
+	   if(StringUtils.isNotEmptyString(dictId)){
+		   String str[]=dictId.split(",");
+		   for (int i = 0; i < str.length; i++){
+			   list.add(str[i]);
+			   }
+	   }
+	   return  this.systemReadMapper.selectDictByOrderList(list);
+   }
+   
 }

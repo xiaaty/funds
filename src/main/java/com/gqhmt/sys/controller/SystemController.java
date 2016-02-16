@@ -177,7 +177,6 @@ public class SystemController{
     @RequestMapping(value = "/sys/workassist/dictorder",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object DictList(HttpServletRequest request, ModelMap model, DictOrderEntity dictorder){
-    	request.getParameter("");
         List<DictOrderEntity> dictorderlist =sysService.queryDictOrder(dictorder);
         model.addAttribute("page",dictorderlist);
         model.addAttribute("dictorder",dictorder);
@@ -209,7 +208,6 @@ public class SystemController{
     @RequestMapping(value = "/sys/workassist/dictOrderSave",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object DictOrederSave(HttpServletRequest request,@ModelAttribute(value="dictorder")DictOrderEntity dictorder){
-    	
     	Map<String, String> map = new HashMap<String, String>();
     	try {
 			sysService.insertDictOrder(dictorder);
@@ -234,7 +232,12 @@ public class SystemController{
      */
     @RequestMapping(value = "/sys/workassist/dictorderToUpdate/{id}",method = {RequestMethod.GET,RequestMethod.POST})
 	public Object dictOrderUpdate(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws FssException {
+    	//得到字典列表
     	DictOrderEntity dictorder =sysService.getDictOrderById(id);
+    	List<DictEntity> dlist = sysService.findDictListByOrderList(dictorder.getOrderList());
+    	
+    	//根据id得到要修改的对象
+    	model.addAttribute("dlist", dlist);
     	model.addAttribute("dictorder", dictorder);
 		return "sys/workAssist/dictOrderUpdate";
 	}

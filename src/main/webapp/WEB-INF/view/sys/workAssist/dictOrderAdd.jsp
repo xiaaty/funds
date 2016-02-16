@@ -96,15 +96,16 @@
 													                </select>
 													                <input type="button"  value="<<<<" onclick="moveOptions('role_list_to','role_list')"/>
 																	<input type="button"  value=">>>>" onclick="moveOptions('role_list','role_list_to')"/>
-													                <SELECT id="role_list_to"  multiple="true" style="width:200px;height:300px;">
-																	     <option></option> 
+													                <SELECT id="role_list_to" name ="role_list_to" multiple="true" style="width:200px;height:300px;">
+																	     
 																	</SELECT>
 															                     
 															     </label>
 			                                                        
 			                                                    </section>
 			                                                </td>
-			                                         
+			                                         		<input type="hidden" id="orderList" name="orderList" />
+			                                         		
 			                                                
                                                         </tr>
                                                         <tr>
@@ -139,33 +140,30 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
     	    $("#dictorderadd").click(function () {
+    	    	var t = document.getElementById("role_list_to"); 
+    	    	var str="";
+    	    	for(var i = 0 ;i<t.length;i++){
+    	    		t[i].selected=true;
+    	    		str+=t[i].value+",";
+    	    	} 	
     	    	
-    	    	debugger;
-    	    //1.拿到select对象： 
-    	    
-    	    	var options=$("#role_list_to option:selected");  //获取选中的项
-
-    	    	alert(options.val());   //拿到选中项的值
-
-    	    	alert(options.text());   
-    	    	
-    	    
-    	    
-    	    
-    	    	
-    	    	
-    	    	
+    	    	if(str.length>0){
+    	    		str = str.substr(0, str.length - 1);
+    	    	}
     	    	var orderName=$("#orderName").val();
         		var orderDict=$("#orderDict").val();
-        	
-        		
+        		var orderList=$("#orderList").val(str);
         		if(orderName == ""){
         			jAlert("类型名称不能为空!", '消息提示');
         			return;
         		}else if( orderDict==""){
         			jAlert("标识不能为空!", '消息提示');
         			return;
-        		}else{
+        		}else if(orderList==""){
+        			jAlert("字典列表不能为空!", '消息提示');
+        			return;
+        		}
+        		else{
 		        		$("#dictorderForm").ajaxSubmit({
 		 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		 	                dataType: "json",
