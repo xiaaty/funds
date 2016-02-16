@@ -176,6 +176,27 @@ public class RestApiService {
 	public void insertBusinessApi(BusinessApi businessApi) {
 		
 		restBusinessApiReadMapper.insertSelective(businessApi);
-		
 	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月15日
+	 * function：父商户列表
+	 * @param business 
+	 */
+	public List<Business> getParentBusiness(Business business) {
+		
+		return restApiReadMapper.getParentBusiness(business);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月15日
+	 * function：子商户列表
+	 */
+	public List<Business> getChildBusiness(Business business) {
+		
+		return restApiReadMapper.getChildBusiness(business);
+	}
+	
 }

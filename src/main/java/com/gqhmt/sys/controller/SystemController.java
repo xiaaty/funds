@@ -1,6 +1,7 @@
 package com.gqhmt.sys.controller;
 
 
+import java.util.ArrayList;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sys.entity.DictEntity;
@@ -17,13 +18,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.service.RestApiService;
+import com.gqhmt.sys.entity.Settings;
 
 @Controller
 public class SystemController{
 
     @Resource
     private SystemService sysService;
-    
+    @Resource
+    private RestApiService restApiService;
     /**
      * 查询字典表
      * @param request
@@ -139,7 +149,7 @@ public class SystemController{
     
     
     /**
-     * shanchu 
+     * 删除
      * @param request
      * @param model
      * @return
@@ -155,6 +165,7 @@ public class SystemController{
         return map;
 //		return "redirect:/sys/workassist/dictionary/0";
     }
+   
     
     /**
      * 查询字典类型
@@ -166,7 +177,6 @@ public class SystemController{
     @RequestMapping(value = "/sys/workassist/dictorder",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object DictList(HttpServletRequest request, ModelMap model, DictOrderEntity dictorder){
-    	request.getParameter("");
         List<DictOrderEntity> dictorderlist =sysService.queryDictOrder(dictorder);
         model.addAttribute("page",dictorderlist);
         model.addAttribute("dictorder",dictorder);
@@ -184,6 +194,8 @@ public class SystemController{
      */
     @RequestMapping(value = "/sys/workassist/dictOrderAdd",method = {RequestMethod.GET,RequestMethod.POST})
 	public Object DictOrderAdd(HttpServletRequest request, ModelMap model,DictOrderEntity dictorder) throws FssException {
+    	List<DictEntity> dictlist = sysService.findDictList();
+    	model.addAttribute("dictlist", dictlist);
     	return "sys/workAssist/dictOrderAdd";
 	}
     
@@ -196,9 +208,7 @@ public class SystemController{
     @RequestMapping(value = "/sys/workassist/dictOrderSave",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object DictOrederSave(HttpServletRequest request,@ModelAttribute(value="dictorder")DictOrderEntity dictorder){
-    	
     	Map<String, String> map = new HashMap<String, String>();
-    	
     	try {
 			sysService.insertDictOrder(dictorder);
 			 map.put("code", "0000");
@@ -212,7 +222,45 @@ public class SystemController{
 		return map;
     }
     
+    /**
+     * 修改字典类型
+     * @param request
+     * @param model
+     * @param id
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/sys/workassist/dictorderToUpdate/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object dictOrderUpdate(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws FssException {
+    	//得到字典列表
+    	DictOrderEntity dictorder =sysService.getDictOrderById(id);
+    	List<DictEntity> dlist = sysService.findDictListByOrderList(dictorder.getOrderList());
+    	
+    	//根据id得到要修改的对象
+    	model.addAttribute("dlist", dlist);
+    	model.addAttribute("dictorder", dictorder);
+		return "sys/workAssist/dictOrderUpdate";
+	}
     
+    /**
+     * 修改保存
+     * @param request
+     * @param dict
+     * @return
+     */
+    @RequestMapping(value = "/sys/workassist/dictOrderUpdate",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public Object dictUpdate(HttpServletRequest request,@ModelAttribute(value="dictorder")DictOrderEntity dictorder){
+    	dictorder.setOrderName(dictorder.getOrderName());
+    	dictorder.setOrderDict(dictorder.getOrderDict());
+    	dictorder.setOrderList(dictorder.getOrderList());
+    	dictorder.setMemo(dictorder.getMemo());
+    	sysService.updateDictOrder(dictorder);
+    	Map<String, String> map = new HashMap<String, String>();
+        map.put("code", "0000");
+        map.put("message", "success");
+		return map;
+    }
     
     
     

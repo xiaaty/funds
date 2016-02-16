@@ -48,7 +48,8 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="dictorderForm" action="${contextPath}/sys/workassist/dictOrderSave" method="post">
+                    <form id="dictorderForm" action="${contextPath}/sys/workassist/dictOrderUpdate" method="post">
+                    	<input type="hidden" name="id" value="${dictorder.id}"/>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
@@ -84,29 +85,27 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                           <td align="left">字典列表：</td>
-                                                           <td>
+                                                            <td align="left">字典列表：</td>
+                                                            <td>
 			                                                    <section style="width:210px">
 			                                                    <label class="select">
 													                <select id="role_list"  name ="role_list" multiple="true" style="width:200px;height:300px;">
 													                    <option  value="">--请选择--</option>
-													                	<c:forEach items="${dictlist}" var="dict">
-													                    	<option value="${dict.dictId}"> ${dict.dictName} </option>
+													                	<c:forEach items="${dlist}" var="d">
+													                    	<option value="${d.dictId}"> ${d.dictName} </option>
 													                	</c:forEach>
 													                </select>
 													                <input type="button"  value="<<<<" onclick="moveOptions('role_list_to','role_list')"/>
 																	<input type="button"  value=">>>>" onclick="moveOptions('role_list','role_list_to')"/>
-													                <SELECT id="role_list_to" name ="role_list_to" multiple="true" style="width:200px;height:300px;">
-																	     
+													                <SELECT id="role_list_to" name ="role_list_to" value="" multiple="true" style="width:200px;height:300px;">
+																	     <fss:dictOrder var="order" dictOrder="${dictorder.orderDict}">
+				                                                              <option value="${order.key}">${order.value}</option>
+				                                                        </fss:dictOrder>
 																	</SELECT>
-															                     
 															     </label>
-			                                                        
 			                                                    </section>
 			                                                </td>
-			                                         		<input type="hidden" id="orderList" name="orderList" />
-			                                         		
-			                                                
+			                                                <input type="hidden" id="orderList" name="orderList" />
                                                         </tr>
                                                         <tr>
                                                             <td align="left">备注：</td>
@@ -206,10 +205,7 @@
         
         
         
-        
-        
-  </script>
-        
+        </script>
         
         
         

@@ -11,10 +11,38 @@
 		t.memo
 		FROM t_gq_fss_dict_order t
 		<where>
+			<if test="id !=null and id != ''">
+				and t.id =#{id}
+			</if>
 			<if test="orderDict !=null and orderDict != ''">
 				and t.order_dict like  CONCAT('%',#{orderDict},'%') 
+			</if>
+			<if test="orderName !=null and orderName != ''">
+				and t.order_name like  CONCAT('%',#{orderName},'%') 
 			</if>
 		</where>
 	</select>
 	
+<!-- 	
+	<select id="getDictOrderById" parameterType="java." resultType="DictOrder">
+		SELECT
+		t.id,
+		t.order_name orderName,
+		t.order_dict orderDict,
+		t.order_list orderList,
+		t.memo
+		FROM t_gq_fss_dict_order t
+		<where>
+			<if test="id !=null and id != ''">
+				and t.id =#{id}
+			</if>
+			<if test="orderDict !=null and orderDict != ''">
+				and t.order_dict like  CONCAT('%',#{orderDict},'%') 
+			</if>
+			<if test="orderName !=null and orderName != ''">
+				and t.order_name like  CONCAT('%',#{orderName},'%') 
+			</if>
+		</where>
+	</select>
+	 -->
 </mapper>

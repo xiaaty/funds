@@ -6,9 +6,13 @@ import com.gqhmt.sys.mapper.read.DictOrderReadMapper;
 import com.gqhmt.sys.mapper.read.SystemReadMapper;
 import com.gqhmt.sys.mapper.write.DictOrderWriteMapper;
 import com.gqhmt.sys.mapper.write.SystemWriteMapper;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +38,7 @@ public class SystemService {
     private SystemReadMapper systemReadMapper;
     @Resource
 	private SystemWriteMapper systemWriteMapper;
+   
     
     @Resource
     private DictOrderReadMapper dictOrderReadMapper;
@@ -73,6 +78,7 @@ public class SystemService {
     	systemWriteMapper.delteDictMain(dictId);
     }
     
+    
     public List<DictOrderEntity> queryDictOrder(DictOrderEntity dictorder){
         return  this.dictOrderReadMapper.selectDictOrder(dictorder);
     }
@@ -85,5 +91,28 @@ public class SystemService {
     	this.dictOrderWriteMapper.insertDictOrder(dictorder);
 	}
     
+    public DictOrderEntity getDictOrderById(Long id){
+    	return this.dictOrderReadMapper.selectByPrimaryKey(id);
+    }
     
+    public void updateDictOrder(DictOrderEntity dictorder){
+    	this.dictOrderWriteMapper.updateDictOrderById(dictorder);
+    };
+    
+    
+   public List<DictEntity> findDictList(){
+       return  this.systemReadMapper.selectAll();
+   }
+    
+   public List<DictEntity> findDictListByOrderList(String dictId){
+	   List list=new ArrayList();
+	   if(StringUtils.isNotEmptyString(dictId)){
+		   String str[]=dictId.split(",");
+		   for (int i = 0; i < str.length; i++){
+			   list.add(str[i]);
+			   }
+	   }
+	   return  this.systemReadMapper.selectDictByOrderList(list);
+   }
+   
 }

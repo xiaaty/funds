@@ -38,29 +38,29 @@ public class FuiouPreauth implements Serializable {
     @Column(name="source_id",updatable =  false)
     private Integer sourceId;                        //big int(20) NULL对应标的
 
-    @Column(updatable = false)
+    @Column(name="amount",updatable = false)
     private BigDecimal amount;                  // decimal(11,2) NULL预授权金额
-    @Column
+    @Column(name="state")
     private int state;                         // int(11) NULL是否有效
     @Column(name="use_amount")
     private BigDecimal useAmount;             // decimal(11,2) NULL已使用金额
 
-    @Column(updatable = false)
+    @Column(name="toUserName",updatable = false)
     private String toUserName;        //入账账户；需要添加，标记
 
-    @Column(updatable = false)
+    @Column(name="userName",updatable = false)
     private String userName;
 
-    @Column(updatable = false)
+    @Column(name="type",updatable = false)
     private int type;
 
-    @Column(updatable = false)
+    @Column(name="bid",updatable = false)
     private Integer bid;
 
-    @Column(updatable = false)
+    @Column(name="tenderid",updatable = false)
     private Integer tenderid;
 
-    @Column(updatable = false)
+    @Column(name="orderNo",updatable = false)
     private String orderNo;
 
 
