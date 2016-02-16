@@ -96,9 +96,11 @@
                                                             <td align="left">是否有效：</td>
                                                             <td>
                                                                 <label class="select">
-                                                                    <select style="width:256px;" name="isValid" value="${dict.isValid}"><%--
+                                                                    <select style="width:256px;" name="isValid" value="${dict.isValid}">
+                                                                    <%--
                                                                         <option value="0">是</option>
-                                                                        <option value="1">否</option>--%>
+                                                                        <option value="1">否</option>
+                                                                     --%>
                                                                         <fss:dictOrder var="order" dictOrder="isValid">
                                                                             <option value="${order.key}">${order.value}</option>
                                                                         </fss:dictOrder>

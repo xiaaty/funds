@@ -7,4 +7,24 @@
         values  
             (#{orderName},#{orderDict},#{orderList},#{memo})  
     </insert>  
+    
+	<update id="updateDictOrderById" parameterType="DictOrder">  
+         UPDATE t_gq_fss_dict_order SET 
+         order_name=#{orderName},
+         order_dict=#{orderDict},
+         order_list=#{orderList},
+         memo=#{memo}
+         WHERE id=#{id}
+    </update>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </mapper>

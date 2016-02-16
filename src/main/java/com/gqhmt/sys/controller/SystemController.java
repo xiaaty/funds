@@ -177,7 +177,6 @@ public class SystemController{
     @RequestMapping(value = "/sys/workassist/dictorder",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object DictList(HttpServletRequest request, ModelMap model, DictOrderEntity dictorder){
-    	request.getParameter("");
         List<DictOrderEntity> dictorderlist =sysService.queryDictOrder(dictorder);
         model.addAttribute("page",dictorderlist);
         model.addAttribute("dictorder",dictorder);
@@ -195,6 +194,8 @@ public class SystemController{
      */
     @RequestMapping(value = "/sys/workassist/dictOrderAdd",method = {RequestMethod.GET,RequestMethod.POST})
 	public Object DictOrderAdd(HttpServletRequest request, ModelMap model,DictOrderEntity dictorder) throws FssException {
+    	List<DictEntity> dictlist = sysService.findDictList();
+    	model.addAttribute("dictlist", dictlist);
     	return "sys/workAssist/dictOrderAdd";
 	}
     
@@ -207,9 +208,7 @@ public class SystemController{
     @RequestMapping(value = "/sys/workassist/dictOrderSave",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object DictOrederSave(HttpServletRequest request,@ModelAttribute(value="dictorder")DictOrderEntity dictorder){
-    	
     	Map<String, String> map = new HashMap<String, String>();
-    	
     	try {
 			sysService.insertDictOrder(dictorder);
 			 map.put("code", "0000");
@@ -223,7 +222,45 @@ public class SystemController{
 		return map;
     }
     
+    /**
+     * 修改字典类型
+     * @param request
+     * @param model
+     * @param id
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/sys/workassist/dictorderToUpdate/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object dictOrderUpdate(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws FssException {
+    	//得到字典列表
+    	DictOrderEntity dictorder =sysService.getDictOrderById(id);
+    	List<DictEntity> dlist = sysService.findDictListByOrderList(dictorder.getOrderList());
+    	
+    	//根据id得到要修改的对象
+    	model.addAttribute("dlist", dlist);
+    	model.addAttribute("dictorder", dictorder);
+		return "sys/workAssist/dictOrderUpdate";
+	}
     
+    /**
+     * 修改保存
+     * @param request
+     * @param dict
+     * @return
+     */
+    @RequestMapping(value = "/sys/workassist/dictOrderUpdate",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public Object dictUpdate(HttpServletRequest request,@ModelAttribute(value="dictorder")DictOrderEntity dictorder){
+    	dictorder.setOrderName(dictorder.getOrderName());
+    	dictorder.setOrderDict(dictorder.getOrderDict());
+    	dictorder.setOrderList(dictorder.getOrderList());
+    	dictorder.setMemo(dictorder.getMemo());
+    	sysService.updateDictOrder(dictorder);
+    	Map<String, String> map = new HashMap<String, String>();
+        map.put("code", "0000");
+        map.put("message", "success");
+		return map;
+    }
     
     
     
