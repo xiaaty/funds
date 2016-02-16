@@ -10,7 +10,6 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.WithdrawApplyReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.WithdrawApplyWriteMapper;
-import com.gqhmt.util.ThirdPartyType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -238,7 +237,7 @@ public class WithdrawApplyService {
 		String returnCode = "0000";
 
 		// 富友支付
-		if (withdrawApplyEntity.getThirdPartyType() ==ThirdPartyType.FUIOU) {
+		if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 
 			try {
 //				WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
@@ -293,7 +292,7 @@ public class WithdrawApplyService {
 		String returnCode = "0000";
 		withdrawApplyEntity.setDrawAmount(drawAmount);
 		// 富友支付
-		if (withdrawApplyEntity.getThirdPartyType() == ThirdPartyType.FUIOU) {
+		if (withdrawApplyEntity.getThirdPartyType().intValue() == 2) {
 //			WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
 			try {
 				if (callBackFlg) {
@@ -363,7 +362,7 @@ public class WithdrawApplyService {
 				
 				
 				// 富有支付
-				if (withdrawApplyEntity.getThirdPartyType() ==ThirdPartyType.FUIOU) {
+				if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 
 					try {
 //						WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
@@ -453,7 +452,7 @@ public class WithdrawApplyService {
 					if (j != (splitCount-1) ) {
 						withdrawApplyEntity.setDrawAmount(new BigDecimal(0));//TODO bankDealamountLimitEntity.getLimitAmount()
 						// 富有支付
-						if (withdrawApplyEntity.getThirdPartyType() ==ThirdPartyType.FUIOU) {
+						if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 							try {
 								// 代扣
 //								AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
@@ -478,7 +477,7 @@ public class WithdrawApplyService {
 					} else {
 						withdrawApplyEntity.setDrawAmount(lastwithDrawamount);
 						// 富有支付
-						if (withdrawApplyEntity.getThirdPartyType() ==ThirdPartyType.FUIOU) {
+						if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 
 							try {
 //								WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();

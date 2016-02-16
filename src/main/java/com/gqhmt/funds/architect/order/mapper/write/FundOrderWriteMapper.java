@@ -3,7 +3,6 @@ package com.gqhmt.funds.architect.order.mapper.write;
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
-
 /**
  * Filename:    com.gq.p2p.account.dao
  * Copyright:   Copyright (c)2014
@@ -22,5 +21,4 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
  */
 
 public interface FundOrderWriteMapper extends ReadAndWriteMapper<FundOrderEntity> {
-
 }

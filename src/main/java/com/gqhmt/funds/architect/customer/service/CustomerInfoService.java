@@ -1240,5 +1240,14 @@ public class CustomerInfoService {
 		entity.setCustomerType(8);
 		return customerInfoReadMapper.select(entity);
 	}
-
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月15日
+	 * function：根据id查询客户信息
+	 */
+	public CustomerInfoEntity queryCustomeById(Integer id) {
+		return customerInfoReadMapper.selectByPrimaryKey(id);
+	}
+	
 }

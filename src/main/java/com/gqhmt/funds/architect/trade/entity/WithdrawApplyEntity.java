@@ -24,29 +24,74 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	@Column(name = "account_id")
 	private Integer accountId;
+	
+	@Column(name = "cust_id")
 	private Integer custId;
+	
+	@Column(name = "cust_name", length = 30)
 	private String custName;
+	
+	@Column(name = "cell_phone", length = 11)
 	private String cellPhone;
+	
+	@Column(name = "draw_amount", precision = 18, scale = 2)
 	private BigDecimal drawAmount;
+	
+	@Column(name = "fact_draw_amount", precision = 18, scale = 2)
 	private BigDecimal factDrawAmount;   //已代扣金额
+	
+	@Column(name = "procedure_fee", precision = 18, scale = 2)
 	private BigDecimal procedureFee = BigDecimal.ZERO;
+	
+	@Column(name = "bank_id")
 	private Integer bankId;
+	
+	@Column(name = "cust_type")
 	private Integer custType;
+	
+	@Column(name = "ipaddr", length = 50)
 	private String ipaddr;
+	
+	@Column(name = "apply_status")
 	private Integer applyStatus;
+	
+	@Column(name = "apply_time", nullable = false, length = 19)
 	private Date applyTime;
+	
+	@Column(name = "review_user_id")
 	private Integer reviewUserId;
+	
+	@Column(name = "review_time", nullable = true, length = 19)
 	private Date reviewTime;
+	
+	@Column(name = "bid_id")
 	private Integer bidId;
+	
+	@Column(name = "remark", length = 200)
 	private String remark;
+	
+	@Column(name = "bussiness_id")
 	private Integer bussinessId;
+	
+	@Column(name = "bussiness_type")
 	private Integer bussinessType;
+	
+	@Column(name = "bussiness_contract_no", length = 30)
 	private String bussinessContractNo;
+	
+	@Column(name = "bussiness_company", length = 100)
 	private String bussinessCompany;
-    private ThirdPartyType thirdPartyType;
-    private Integer debtId;
+	
+	@Column(name = "thirdparty_type",updatable = false,nullable = false)
+    private Integer thirdPartyType;
+	
+	 @Column(name = "debt_id")
+	private Integer debtId;
+	
     // 结算类型，0 T+1; 1 T+0; 
+	 @Column(name = "settle_type")
  	private Integer settleType = 1;
 
 	// Constructors
@@ -62,7 +107,6 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "account_id")
 	public Integer getAccountId() {
 		return this.accountId;
 	}
@@ -71,7 +115,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.accountId = accountId;
 	}
 
-	@Column(name = "cust_id")
+	
 	public Integer getCustId() {
 		return this.custId;
 	}
@@ -80,7 +124,6 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.custId = custId;
 	}
 
-	@Column(name = "cust_name", length = 30)
 	public String getCustName() {
 		return this.custName;
 	}
@@ -89,7 +132,6 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.custName = custName;
 	}
 
-	@Column(name = "cell_phone", length = 11)
 	public String getCellPhone() {
 		return this.cellPhone;
 	}
@@ -98,7 +140,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.cellPhone = cellPhone;
 	}
 
-	@Column(name = "draw_amount", precision = 18, scale = 2)
+	
 	public BigDecimal getDrawAmount() {
 		return this.drawAmount;
 	}
@@ -107,7 +149,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.drawAmount = drawAmount;
 	}
 	
-	@Column(name = "fact_draw_amount", precision = 18, scale = 2)
+	
 	public BigDecimal getFactDrawAmount() {
 		return this.factDrawAmount;
 	}
@@ -116,7 +158,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.factDrawAmount = factDrawAmount;
 	}
 
-	@Column(name = "procedure_fee", precision = 18, scale = 2)
+	
 	public BigDecimal getProcedureFee() {
 		return this.procedureFee;
 	}
@@ -125,7 +167,6 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.procedureFee = procedureFee;
 	}
 
-	@Column(name = "bank_id")
 	public Integer getBankId() {
 		return this.bankId;
 	}
@@ -134,7 +175,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.bankId = bankId;
 	}
 
-	@Column(name = "cust_type")
+	
 	public Integer getCustType() {
 		return this.custType;
 	}
@@ -143,7 +184,6 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.custType = custType;
 	}
 
-	@Column(name = "ipaddr", length = 50)
 	public String getIpaddr() {
 		return this.ipaddr;
 	}
@@ -152,7 +192,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.ipaddr = ipaddr;
 	}
 
-	@Column(name = "apply_status")
+	
 	public Integer getApplyStatus() {
 		return this.applyStatus;
 	}
@@ -161,7 +201,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.applyStatus = applyStatus;
 	}
 
-	@Column(name = "apply_time", nullable = false, length = 19)
+	
 	public Date getApplyTime() {
 		return this.applyTime;
 	}
@@ -170,7 +210,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.applyTime = applyTime;
 	}
 
-	@Column(name = "review_user_id")
+	
 	public Integer getReviewUserId() {
 		return this.reviewUserId;
 	}
@@ -179,7 +219,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.reviewUserId = reviewUserId;
 	}
 
-	@Column(name = "review_time", nullable = true, length = 19)
+	
 	public Date getReviewTime() {
 		return this.reviewTime;
 	}
@@ -191,7 +231,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	/**
 	 * @return the bidId
 	 */
-	@Column(name = "bid_id")
+	
 	public Integer getBidId() {
 		return bidId;
 	}
@@ -204,7 +244,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.bidId = bidId;
 	}
 
-	@Column(name = "remark", length = 200)
+	
 	public String getRemark() {
 		return this.remark;
 	}
@@ -213,7 +253,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.remark = remark;
 	}
 
-	@Column(name = "bussiness_id")
+	
 	public Integer getBussinessId() {
 		return bussinessId;
 	}
@@ -222,7 +262,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.bussinessId = bussinessId;
 	}
 
-	@Column(name = "bussiness_type")
+
 	public Integer getBussinessType() {
 		return bussinessType;
 	}
@@ -236,7 +276,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
     /**
 	 * @return the bussinessContractNo
 	 */
-	@Column(name = "bussiness_contract_no", length = 30)
+	
 	public String getBussinessContractNo() {
 		return bussinessContractNo;
 	}
@@ -251,7 +291,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	/**
 	 * @return the bussinessCompany
 	 */
-	@Column(name = "bussiness_company", length = 100)
+	
 	public String getBussinessCompany() {
 		return bussinessCompany;
 	}
@@ -262,18 +302,16 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 	public void setBussinessCompany(String bussinessCompany) {
 		this.bussinessCompany = bussinessCompany;
 	}
+   
+    public Integer getThirdPartyType() {
+		return thirdPartyType;
+	}
 
-	@Column(name = "thirdparty_type",updatable = false,nullable = false)
-    public ThirdPartyType getThirdPartyType() {
-        return thirdPartyType;
-    }
+	public void setThirdPartyType(Integer thirdPartyType) {
+		this.thirdPartyType = thirdPartyType;
+	}
 
-    public void setThirdPartyType(ThirdPartyType thirdPartyType) {
-        this.thirdPartyType = thirdPartyType;
-    }
-    
-    @Column(name = "debt_id")
-    public Integer getDebtId() {
+	public Integer getDebtId() {
         return debtId;
     }
 
@@ -281,7 +319,7 @@ public class WithdrawApplyEntity implements java.io.Serializable {
         this.debtId = debtId;
     }
     
-    @Column(name = "settle_type")
+   
 	public Integer getSettleType() {
 		return settleType;
 	}
