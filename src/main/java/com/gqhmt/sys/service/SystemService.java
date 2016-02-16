@@ -94,8 +94,8 @@ public class SystemService {
     };
     
     
-    
-    
-    
+   public List<DictEntity> findDictList(){
+       return  this.systemReadMapper.selectAll();
+   }
     
 }
