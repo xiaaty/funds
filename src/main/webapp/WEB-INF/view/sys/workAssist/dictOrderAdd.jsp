@@ -84,23 +84,28 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">字典列表：</td>
-                                                            <td>
-                                                            
-                                                            	<label class="input">
-                                                                    <input type="text" maxlength="50" id="orderList" name="orderList" value="${dictorder.orderList}" style="width:256px;" />
-                                                                </label>
-			                                                    <%-- <section style="width:210px">
-				                                                    <label class="select">
-														                <select id="parentId"  name ="parentId" onChange="choice(this)">
-														                    <option  value="">--请选择--</option>
-														                	<c:forEach items="${businessList}" var="busi">
-														                    <option value="${busi.id}"> ${busi.mchnName} </option>
-														                	</c:forEach>
-														                </select>
-																     </label>
-			                                                    </section> --%>
+                                                           <td align="left">字典列表：</td>
+                                                           <td>
+			                                                    <section style="width:210px">
+			                                                    <label class="select">
+													                <select id="role_list"  name ="role_list" multiple="true" style="width:200px;height:300px;">
+													                    <option  value="">--请选择--</option>
+													                	<c:forEach items="${dictlist}" var="dict">
+													                    	<option value="${dict.dictId}"> ${dict.dictName} </option>
+													                	</c:forEach>
+													                </select>
+													                <input type="button"  value="<<<<" onclick="moveOptions('role_list_to','role_list')"/>
+																	<input type="button"  value=">>>>" onclick="moveOptions('role_list','role_list_to')"/>
+													                <SELECT id="role_list_to"  multiple="true" style="width:200px;height:300px;">
+																	     <option></option> 
+																	</SELECT>
+															                     
+															     </label>
+			                                                        
+			                                                    </section>
 			                                                </td>
+			                                         
+			                                                
                                                         </tr>
                                                         <tr>
                                                             <td align="left">备注：</td>
@@ -135,76 +140,78 @@
         $(document).ready(function() {
     	    $("#dictorderadd").click(function () {
     	    	
+    	    	debugger;
+    	    //1.拿到select对象： 
+    	    
+    	    	var options=$("#role_list_to option:selected");  //获取选中的项
+
+    	    	alert(options.val());   //拿到选中项的值
+
+    	    	alert(options.text());   
+    	    	
+    	    
+    	    
+    	    
+    	    	
+    	    	
+    	    	
     	    	var orderName=$("#orderName").val();
         		var orderDict=$("#orderDict").val();
-        		var orderList=$("#orderList").val();
-        		if(orderName.length>0 && orderDict.length>0 && orderList.length>0){
-        			 $("#dictorderForm").ajaxSubmit({
-     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-     	                dataType: "json",
-     	                success: function (data) {
-     	                    if (data.code == '0000') {
-     	                        jAlert("保存成功!", '信息提示');
-     	                        //自动跳转
-     	                        parent.location.href="${contextPath}/sys/workassist/dictorder";
-     	                    } else {
-     	                    	jAlert("保存失败!", '消息提示');
-     	                        return;
-     	                    }
-     	                }
-     	            });
-        		}else if(orderName.length==0){
+        	
+        		
+        		if(orderName == ""){
         			jAlert("类型名称不能为空!", '消息提示');
         			return;
-        		}else if(orderDict.lenght==0 || orderDict==""){
+        		}else if( orderDict==""){
         			jAlert("标识不能为空!", '消息提示');
         			return;
-        		}else if(orderList.length==0 || orderList==""){
-        			jAlert("字典列表不能为空!", '消息提示');
-        			return;
         		}else{
+		        		$("#dictorderForm").ajaxSubmit({
+		 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		 	                dataType: "json",
+		 	                success: function (data) {
+		 	                    if (data.code == '0000') {
+		 	                        jAlert("保存成功!", '信息提示');
+		 	                        //自动跳转
+		 	                        parent.location.href="${contextPath}/sys/workassist/dictorder";
+		 	                    } else {
+		 	                    	jAlert("保存失败!", '消息提示');
+		 	                        return;
+		 	                    }
+		 	                }
+		 	            });
         		}
-    	    	
-    	    	/**
-    	        if (validateCheck()) {
-    	            $("#dictorderForm").ajaxSubmit({
-    	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-    	                dataType: "json",
-    	                success: function (data) {
-    	                    if (data.code == '0000') {
-    	                        jAlert("添加成功!", '信息提示');
-    	                        //自动跳转
-    	                        parent.location.href="${contextPath}/sys/workassist/dictorder";
-    	                    } else {
-    	                    	jAlert("添加失败!", '消息提示');
-    	                        return;
-    	                    }
-    	                }
-    	            });
-    	        }
-    	    	**/
     	    });
         });
-    	//校验函数
-    	function validateCheck() {
-    			return true;
-    	}
         
-    	 //选中商户号
-     /*    function choice(obj){
-        	var id=obj.options[obj.selectedIndex].value;
-        	$("#parentN").val(id);
-    		var oSelect=document.getElementById("parentN");
-       	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
-       	 	 $("#parentNo").val(txtOption);
-        	
-        } */
+    
+      //把一个select 中的项移到另一个select中
+        function moveOptions(from,to){
+            var oldname=$("#"+from+"  option:selected");
+            if(oldname.length==0){
+                return;
+            }
+            var valueOb = {};
+            $("#" + to).find("option").each(function(){
+                valueOb[String($(this).val())] = $(this);
+            });
+            
+            for( var i =0;i< oldname.length; i++){
+               if(valueOb[String($(oldname[i]).val())] == undefined){
+                       $(oldname[i]).clone().appendTo($("#"+to))
+                       $(oldname[i]).remove();
+               }        
+            }
+            
+        }
         
         
         
         
         
-        </script>
+        
+  </script>
+        
         
         
         
