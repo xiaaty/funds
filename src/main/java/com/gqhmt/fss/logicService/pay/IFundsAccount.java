@@ -1,8 +1,8 @@
-package com.gqhmt.fss.logicService.account;
+package com.gqhmt.fss.logicService.pay;
 
 
-import com.gqhmt.fss.logicService.pay.FundsResponse;
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
+import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
 /**
@@ -41,9 +41,9 @@ public interface IFundsAccount {
      *
      * @param thirdPartyType 支付渠道
      * @param custId         客户id
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse createAccount(String thirdPartyType, int custId) throws FundsException;
+    public boolean createAccount(String thirdPartyType, int custId) throws FssException;
 
 
     /**
@@ -53,9 +53,9 @@ public interface IFundsAccount {
      * @param customerInfoEntity 客户实体
      * @param pwd                支付渠道登陆密码
      * @param taradPwd           支付渠道交易密码
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse createAccount(String thirdPartyType, CustomerInfoEntity customerInfoEntity, String pwd, String taradPwd) throws FundsException;
+    public boolean createAccount(String thirdPartyType, CustomerInfoEntity customerInfoEntity, String pwd, String taradPwd) throws FssException;
 
 
     /**
@@ -63,9 +63,9 @@ public interface IFundsAccount {
      *
      * @param thirdPartyType 支付渠道
      * @param custID         客户id
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse dropAccount(String thirdPartyType, int custID) throws FundsException;
+    public boolean dropAccount(String thirdPartyType, int custID) throws FssException;
 
 
     /**
@@ -73,9 +73,9 @@ public interface IFundsAccount {
      *
      * @param thirdPartyType 支付渠道
      * @param custID         客户id
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse checkDropAccount(String thirdPartyType, int custID) throws FundsException;
+    public boolean checkDropAccount(String thirdPartyType, int custID) throws FssException;
 
 
 
@@ -88,22 +88,23 @@ public interface IFundsAccount {
      * @param bankNm                    开户行支行名称
      * @param cityId                    开户区县代码
      * @param imagePath                 上传照片路径
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse changeCard(String thirdPartyType, Integer cusId, String cardNo, String bankCd, String bankNm, String cityId, String imagePath) throws FundsException;
+    public boolean changeCard(String thirdPartyType, FssChangeCardEntity changeCardEntity) throws FssException;
 
 
     /**
-     * 变更富友回调短信
+     * 变更富友短信发送类型
      * @param thirdPartyType            支付渠道
      * @param cusId                     客户id
      * @param cztx                      充值提现
      * @param cz                        出账
      * @param rz                        入账
      * @param hz                        汇总
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse setMms(String thirdPartyType,Integer cusId,String cztx,String cz ,String rz,String hz) throws FundsException;
+    public boolean setMms(String thirdPartyType,Integer cusId,String cztx,String cz ,String rz,String hz) throws FssException;
+
 
 
 

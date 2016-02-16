@@ -26,7 +26,7 @@ public class BidService {
 	 * @return
 	 */
 
-	public Bid findById(int id) {
+	public Bid findById(Long id) {
 		Bid bid = bidReadMapper.selectByPrimaryKey(id);
 		return bid;
 	}

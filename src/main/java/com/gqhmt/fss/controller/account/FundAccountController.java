@@ -4,24 +4,20 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssWaterService;
-import com.gqhmt.fss.architect.customer.bean.CustomerAndUser;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.util.StringUtils;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
@@ -42,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class FundAccountController {
 	@Resource
-    private FundAccountService fundAccountService;
+    private FssAccountService fundAccountService;
 	@Resource
 	private FssWaterService fssWaterService;
 
@@ -84,7 +80,7 @@ public class FundAccountController {
      */
     @RequestMapping(value = "/fss/account/interaccountlist/{busiNo}",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-    public Object intenetAccountList(HttpServletRequest request,ModelMap model,@PathVariable String busiNo,String accNo,String custNo,String bussinessname,String bussinesscertno){
+    public Object intenetAccountList(HttpServletRequest request,ModelMap model,@PathVariable String busiNo,String accNo,String custNo,String bussinessname,String bussinesscertno) throws FssException {
     	Map map=new HashMap();
     	if(StringUtils.isNotEmptyString(busiNo)){//业务编号
     		map.put("busiNo",busiNo);

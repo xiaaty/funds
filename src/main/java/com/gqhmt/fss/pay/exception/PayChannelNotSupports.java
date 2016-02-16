@@ -21,4 +21,7 @@ import com.gqhmt.core.FssException;
  * 15/11/28  于泳      1.0     1.0 Version
  */
 public class PayChannelNotSupports extends FssException{
+    public PayChannelNotSupports(String message) {
+        super(message);
+    }
 }

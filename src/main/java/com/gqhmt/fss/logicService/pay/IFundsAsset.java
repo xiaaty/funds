@@ -1,6 +1,7 @@
 package com.gqhmt.fss.logicService.pay;
 
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
+
+import com.gqhmt.core.FssException;
 
 /**
  * Filename:    com.gq.funds.interaction.IFundsAsset
@@ -26,9 +27,9 @@ public interface IFundsAsset {
      * 线上账户余额
      * @param custId                   客户id
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse balance(int custId) throws FundsException;
+    public FundsResponse balance(int custId) throws FssException;
 
     /**
      * 业务账户余额
@@ -37,42 +38,42 @@ public interface IFundsAsset {
      * @param contractNo            合同编号
      * @return
      */
-    public FundsResponse balance(int custId,int businesstype,String contractNo) throws FundsException;
+    public FundsResponse balance(int custId,int businesstype,String contractNo) throws FssException;
 
     /**
      * 特殊账户余额
      * @param custId                客户id
      * @param type                  特殊账户类型
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse balance(int custId,int type) throws FundsException;
+    public FundsResponse balance(int custId,int type) throws FssException;
 
 
     /**
      * 线上客户资产信息  当前持有资产=线上账户余额+投资本金（总）- 已还本金（总）
      * @param custId
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse asset(int custId) throws FundsException;
+    public FundsResponse asset(int custId) throws FssException;
 
 
     /**
      * 线上账户客户收益信息   预期收益（由业务系统提供 并记录应收账中)
      * @param custId
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse prospectiveEarning(int custId) throws FundsException;
+    public FundsResponse prospectiveEarning(int custId) throws FssException;
 
     /**
      * 线上客户已获收益
      * @param custID
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse income(int custID) throws FundsException;
+    public FundsResponse income(int custID) throws FssException;
 
 
     //**********************************************************************/
@@ -81,26 +82,26 @@ public interface IFundsAsset {
      * 线下客户合同资产信息  当前持有资产=线上账户余额+投资本金（总）- 已还本金（总）
      * @param custId
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse asset(int custId,String contract) throws FundsException;
+    public FundsResponse asset(int custId,String contract) throws FssException;
 
 
     /**
      * 线上账户客户收益信息   预期收益（由业务系统提供 并记录应收账中)
      * @param custId
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse prospectiveEarning(int custId,String contract) throws FundsException;
+    public FundsResponse prospectiveEarning(int custId,String contract) throws FssException;
 
     /**
      * 线上客户已获收益
      * @param custID
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse income(int custID,String contract) throws FundsException;
+    public FundsResponse income(int custID,String contract) throws FssException;
 
 
     /********************************************************************************/
@@ -110,19 +111,19 @@ public interface IFundsAsset {
      * @param custID
      * @param contract
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
 
-    public FundsResponse liabilities(int custID,String contract) throws FundsException;
+    public FundsResponse liabilities(int custID,String contract) throws FssException;
 
 
     /**
      * 资产负债，借款客户所有负债
      * @param custID
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse liabilities(int custID) throws FundsException;
+    public FundsResponse liabilities(int custID) throws FssException;
 
 
 }

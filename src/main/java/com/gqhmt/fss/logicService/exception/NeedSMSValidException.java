@@ -1,4 +1,4 @@
-package com.gqhmt.funds.architect.account.exception;
+package com.gqhmt.fss.logicService.exception;
 
 
 /**

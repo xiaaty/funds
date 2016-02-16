@@ -1,4 +1,4 @@
-package com.gqhmt.fss.architect.account.exception;
+package com.gqhmt.fss.logicService.exception;
 
 import com.gqhmt.core.FssException;
 
@@ -18,7 +18,5 @@ import com.gqhmt.core.FssException;
  * -----------------------------------------------------------------
  * 2015/1/16  于泳      1.0     1.0 Version
  */
-public class FrozenAmountErrorException extends FssException {
-
-    public FrozenAmountErrorException(String msg){}
+public class ChargeAmountNotenoughException extends FssException {
 }

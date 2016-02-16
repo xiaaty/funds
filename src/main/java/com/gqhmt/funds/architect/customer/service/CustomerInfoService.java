@@ -1,32 +1,17 @@
 package com.gqhmt.funds.architect.customer.service;
 
-import com.github.pagehelper.Page;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
-import com.gqhmt.fss.pay.exception.CommandParmException;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.bean.CustomerInfoBean;
-import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
-import com.gqhmt.funds.architect.customer.bean.CustomerInfoSendMsgBean;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.mapping.service.FuiouAreaService;
 import com.gqhmt.funds.architect.mapping.service.FuiouBankCodeService;
-import com.gqhmt.util.CommonUtil;
-import com.gqhmt.util.MD5Util;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.sql.Timestamp;
-import java.util.*;
 
 /**
  *
@@ -63,20 +48,20 @@ public class CustomerInfoService {
 
 	@Resource
 	private FssChangeCardService changeCardService;
-
-	/**
+/*
+	*//**
 	 * 查询客户管理列表
 	 *
-	 */
+	 *//*
 	public Page queryCustomerList(CustomerInfoBean customerInfo, String flg) {
 		return null;
 	}
 
-	/**
+	*//**
 	 * 批量插入客户信息 富友调用
 	 *
-	 */
-	public void savaCustomerInfofuyou(List<CustomerInfoEntity> customerInfoList, String sysUserId) throws Exception {
+	 *//*
+	public void savaCustomerInfofuyou(List<CustomerInfoEntity> customerInfoList, String sysUserId) throws FssException {
 
 		List<String> custNoList = new ArrayList<String>();
 		List<String> phoneNoList = new ArrayList<String>();
@@ -131,7 +116,7 @@ public class CustomerInfoService {
 			}
 			// 保存客户信息
 			this.customerInfoWriteMapper.insertSelective(customerInfoEntity);
-			/*************************************************************/
+			*//*************************************************************//*
 
 			// 划扣银行信息
 			bankCardinfoEntity = new BankCardInfoEntity();
@@ -167,7 +152,7 @@ public class CustomerInfoService {
 			customerInfoEntity.setBankId(bankCardinfoEntity.getId());
 			// 设置支付渠道为 富友
 			customerInfoEntity.setPayChannel(2);
-			/*************************************************************/
+			*//*************************************************************//*
 
 			userBean = new UserEntity();
 			// 客户关联用id
@@ -250,7 +235,7 @@ public class CustomerInfoService {
 				}
 
 			}
-			throw new Exception("0013" + no.toString());
+			throw new FssException("0013" + no.toString());
 		}
 
 		// 银行卡号重复的的客户信息已经存在，抛出异常
@@ -306,10 +291,10 @@ public class CustomerInfoService {
 		}
 	}
 
-	/**
+	*//**
 	 * 添加客户信息
 	 *
-	 */
+	 *//*
 	public String saveCustomerInfo(CustomerInfoDetialBean customerInfoDetialBean, String sysUserId) throws Exception {
 
 		// 客户信息bean
@@ -397,7 +382,7 @@ public class CustomerInfoService {
 		// 保存客户信息
 		this.customerInfoWriteMapper.insertSelective(customerInfo);
 
-		/*************************************************************/
+		*//*************************************************************//*
 
 		if (2 == customerInfoDetialBean.getPayChannel().intValue()) {
 			// 划扣银行信息
@@ -446,7 +431,7 @@ public class CustomerInfoService {
 			// 设置支付渠道为 大钱
 			customerInfo.setPayChannel(1);
 		}
-		/*************************************************************/
+		*//*************************************************************//*
 
 		userBean = new UserEntity();
 
@@ -518,12 +503,12 @@ public class CustomerInfoService {
 		return "0000";
 	}
 
-	/**
+	*//**
 	 * 根据id逻辑删除客户信息
 	 *
 	 * @param ids
 	 * @return
-	 */
+	 *//*
 	public void updateIsvalidById(String ids) throws Exception {
 		String idArray[] = ids.split(",");
 		CustomerInfoEntity customerInfoEntity = null;
@@ -550,7 +535,7 @@ public class CustomerInfoService {
 
 	}
 
-	/**
+	*//**
 	 * 根据id查询客户信息
 	 *
 	 * @param id
@@ -560,7 +545,7 @@ public class CustomerInfoService {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
 	}
 
-	/**
+	/**//**
 	 * 根据身份证号查询客户信息
 	 *
 	 * @param certNo
@@ -572,34 +557,34 @@ public class CustomerInfoService {
 		return customerInfoReadMapper.selectOne(entity);
 	}
 
-	/**
+	/**//**
 	 * 根据手机号查询客户信息
 	 *
 	 * @param mobile
 	 * @return
-	 */
+	 *//*
 	public CustomerInfoEntity queryCustomerInfoByMobile(String mobile) {
 		CustomerInfoEntity entity = new CustomerInfoEntity();
 		entity.setMobilePhone(mobile);
 		return customerInfoReadMapper.selectOne(entity);
 	}
 
-	/**
+	*//**
 	 * 根据id删除客户信息
 	 *
 	 * @param id
-	 */
+	 *//*
 	public void deleted(int id) {
 		customerInfoWriteMapper.deleteByPrimaryKey(id);
 	}
 
-	/**
+	*//**
 	 * 根据id查询客户信息 画面修改表示用
 	 *
 	 * @param id
 	 * @return
 	 * @throws Exception
-	 */
+	 *//*
 	public CustomerInfoDetialBean queryCustInfoyId(String id) throws Exception {
 		CustomerInfoDetialBean customerInfoDetialBean = new CustomerInfoDetialBean();
 		CustomerInfoEntity entity = this.queryCustomerById(Integer.valueOf(id));
@@ -638,10 +623,10 @@ public class CustomerInfoService {
 		return customerInfoDetialBean;
 	}
 
-	/**
+	*//**
 	 * 修改客户信息
 	 *
-	 */
+	 *//*
 	public String updateCustomerInfo(CustomerInfoDetialBean customerInfoDetialBean, String sysUserId) throws Exception {
 
 		// 客户信息bean
@@ -783,7 +768,7 @@ public class CustomerInfoService {
 			fundAccountService.updateBycustId(customerInfo.getId(), customerInfoDetialBean.getCustomerName().trim());
 		}
 
-		/*
+		*//*
 			修改银行卡程序流程变更,此处作废
 		if (bankChangeFlg && "2".equals(customerInfoDetialBean.getIsChangeBankCard())) {
 			// 富友修改客户绑定银行卡信息
@@ -792,7 +777,7 @@ public class CustomerInfoService {
 			} catch (CommandParmException e) {
 				throw new Exception("0021" + e.getMessage());
 			}
-		}*/
+		}*//*
 
 		// FundAccountEntity fundAccountEntity =
 		// fundAccountDao.queryFundAccount(customerInfo.getId(), 0);
@@ -910,10 +895,10 @@ public class CustomerInfoService {
 		}
 	}
 
-	/**
+	*//**
 	 * 创建第三方账户
 	 *
-	 */
+	 *//*
 	public String createAcount(String id, String sysUserId) throws Exception {
 
 		// 客户信息bean
@@ -968,9 +953,7 @@ public class CustomerInfoService {
 		return "0000";
 	}
 
-	public void update(CustomerInfoEntity entity) {
-		this.customerInfoWriteMapper.updateByPrimaryKeySelective(entity);
-	}
+
 
 	public void custDestroy(String ids) throws Exception {
 		String idArray[] = ids.split(",");
@@ -1006,13 +989,13 @@ public class CustomerInfoService {
 
 	}
 
-	/**
+	*//**
 	 * 根据id查询客户发送短信模式
 	 *
 	 * @param id
 	 * @return
 	 * @throws Exception
-	 */
+	 *//*
 	public CustomerInfoSendMsgBean queryCustsendMsgInfo(String id) throws Exception {
 		CustomerInfoSendMsgBean customerInfoSendMsgBean = new CustomerInfoSendMsgBean();
 
@@ -1030,10 +1013,10 @@ public class CustomerInfoService {
 		return customerInfoSendMsgBean;
 	}
 
-	/**
+	*//**
 	 * 更改富友短信接收方式 调用富友接口
 	 *
-	 */
+	 *//*
 	public String updateCustSengMsgMode(CustomerInfoSendMsgBean customerInfoSendMsgBean, String sysUserId,
 			String thirdPartyType) throws FundsException {
 
@@ -1065,10 +1048,10 @@ public class CustomerInfoService {
 		return "0000";
 	}
 
-	/**
+	*//**
 	 * 设定批处理富友短信接收方式
 	 *
-	 */
+	 *//*
 	public String updateCustSengMsgModeBatch(CustomerInfoSendMsgBean customerInfoSendMsgBean, String sysUserId) throws Exception {
 
 		Map<String, String> sendmsgMap = null;//(Map<String, String>) CacheUtils.get(CustomerConstants.CACHE_FUIOU_SEND_MSG_MAP);
@@ -1086,10 +1069,10 @@ public class CustomerInfoService {
 		return "0000";
 	}
 
-	/**
+	*//**
 	 * 更改富友短信接收方式 调用富友接口批处理接口
 	 *
-	 */
+	 *//*
 	public Map<String, Object> updateAutoCustSengMsgMode() throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -1160,21 +1143,21 @@ public class CustomerInfoService {
 		return map;
 	}
 
-	/**
+	*//**
 	 * 更改富友短信接收方式 调用富友接口批处理接口
 	 *
-	 */
+	 *//*
 	public void updateCustInfoList(List<CustomerInfoEntity> list) throws Exception {
 		for (CustomerInfoEntity customerInfoEntity : list) {
 			update(customerInfoEntity);
 		}
 	}
 
-	/**
+	*//**
 	 * 富友修改个人信息回调用方法
 	 *
 	 * @param custMap
-	 */
+	 *//*
 	public void updateCustomerInfoCallBack(Map<String, String> custMap) throws Exception {
 
 		// 身份证号码
@@ -1239,6 +1222,11 @@ public class CustomerInfoService {
 		CustomerInfoEntity entity = new CustomerInfoEntity();
 		entity.setCustomerType(8);
 		return customerInfoReadMapper.select(entity);
+	}*/
+
+
+	public void update(CustomerInfoEntity entity) {
+		this.customerInfoWriteMapper.updateByPrimaryKeySelective(entity);
 	}
 
 }

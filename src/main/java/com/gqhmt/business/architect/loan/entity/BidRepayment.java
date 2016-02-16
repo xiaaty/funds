@@ -64,7 +64,9 @@ public class BidRepayment {
     @Column(name = "contract_pre_date")
     private Date contractPreDate;
 
+
     @Column(name = "contract_pre_principal")
+
     private BigDecimal contractPrePrincipal;
 
     @Column(name = "contract_pre_interest")
@@ -72,7 +74,15 @@ public class BidRepayment {
 
     @Column(name = "contract_real_date")
     private BigDecimal contractPreAmount;
-    private Date contractRealDate;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    /*private Date contractRealDate;
     private BigDecimal contractRealPrincipal;
     private BigDecimal contractRealInterest;
     private BigDecimal contractRealAmount;
@@ -94,5 +104,7 @@ public class BidRepayment {
     private Date modifyTime;
     private Integer modifyUserId;
     private Integer status = 0;
-    private Integer payState = 0;
+    private Integer payState = 0;*/
+
+
 }

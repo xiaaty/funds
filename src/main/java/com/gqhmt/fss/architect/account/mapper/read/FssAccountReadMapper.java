@@ -1,11 +1,11 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
-import java.util.List;
-import java.util.Map;
-
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper
@@ -28,7 +28,7 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	
 	/**
 	 * 获取客户账户信息
-	 * @param fundsAcctBean
+	 * @param map
 	 * @return
 	 */
 	public List<FssAccountEntity> findCustomerAccountByParams(Map map);

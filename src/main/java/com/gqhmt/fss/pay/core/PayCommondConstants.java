@@ -39,6 +39,7 @@ public class PayCommondConstants {
     public static final String COMMAND_ACCOUNT_FUIOU_MMS = "0132";              //富友短信配置
     public static final String COMMAND_ACCOUNT_FUIOU_CASHWITHSET = "0133";      //提现时效
 
+    public static final String COMMAND_ACCOUNT_FUIOU_BALANCE = "0199";          //富友账户余额查询
     /**
      * 异步回调处理
      */
@@ -111,9 +112,9 @@ public class PayCommondConstants {
 
     //支付渠道
 
-    public static final int PAY_CHANNEL_LOCAL   = 99990000;                     //本地操作
+    public static final String PAY_CHANNEL_LOCAL   = "99990000";                     //本地操作
 
-    public static final int PAY_CHANNEL_DAQIAN  = 99990001;                     //大钱--历史遗留类型
+    public static final String PAY_CHANNEL_DAQIAN  = "99990001";                     //大钱--历史遗留类型
 
-    public static final int PAY_CHANNEL_FUIOU   = 99990002;                     //富友
+    public static final String PAY_CHANNEL_FUIOU   = "99990002";                     //富友
 }

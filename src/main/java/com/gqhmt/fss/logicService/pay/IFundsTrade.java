@@ -1,7 +1,7 @@
 package com.gqhmt.fss.logicService.pay;
 
 
-import com.gqhmt.fss.logicService.pay.exception.FundsException;
+import com.gqhmt.core.FssException;
 
 import java.math.BigDecimal;
 
@@ -17,8 +17,7 @@ import java.math.BigDecimal;
  * Description:
  * <p>
  *     <ol>
- *         <li>web充值订单生成</li>
- *         <li>web提现订单生成</li>
+ *         <li>web充值提现订单生成</li>
  *         <li>代扣充值--线上客户</li>
  *         <li>代扣提现--线上客户</li>
  *         <li>代扣申请</li>
@@ -46,9 +45,9 @@ public interface IFundsTrade {
      * @param chargeAmount              交易手续费
      * @param type                      交易类型 1.充值；2.提现
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse webOrderNo(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int type) throws FundsException;
+    public String webOrderNo(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int type) throws FssException;
 
 
     /**
@@ -59,7 +58,7 @@ public interface IFundsTrade {
      * @param sourceType                充值来源  1，web端，2wap端，3手机app
      * @return
      */
-    public FundsResponse withholding(String thirdPartyType,int custID,BigDecimal amount,int sourceType);
+    public boolean withholding(String thirdPartyType,int custID,BigDecimal amount,int sourceType)throws FssException;
 
     /**
      *线上提现，目前已直连富友代付接口，未来改为异步，存入数据库，定时跑批提现
@@ -69,9 +68,9 @@ public interface IFundsTrade {
      * @param chargeAmount              手续费
      * @param sourceType                来源1，web端，2wap端，3手机app
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse withdraw(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int sourceType) throws FundsException;
+    public boolean withdraw(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int sourceType) throws FssException;
 
     /**
      * 代扣申请
@@ -81,9 +80,9 @@ public interface IFundsTrade {
      * @param contractNo                业务合同，出借和借款合同号，出借客户必须提供出借合同号，借款还款，必须提供借款合同号，需保证每种类型合同号唯一
      * @param amount                    代扣金额
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse withholdingApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FundsException;
+    public boolean withholdingApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
     /**
      *
@@ -94,10 +93,26 @@ public interface IFundsTrade {
      * @param contractNo
      * @param amount
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse withdrawApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FundsException;
+    public boolean withdrawApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
+
+    /**
+     * 转账接口,老账户提现 预留接口,新版账户提现,不设此接口
+     * @param thirdPartyType
+     * @param fromCusID
+     * @param fromType
+     * @param toCusID
+     * @param toType
+     * @param amount
+     * @param orderType
+     * @param busiId
+     * @param busiType
+     * @return
+     * @throws FssException
+     */
+    public boolean transefer(String thirdPartyType,Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
 
     /**
      * 费用接口
@@ -110,9 +125,9 @@ public interface IFundsTrade {
      * @param amount
      * @param bid
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse cost (String thirdPartyType,int custID,int businessType,int costType,int costMode,String contractNo,BigDecimal amount,Long bid) throws FundsException;
+    //public boolean cost (String thirdPartyType,int custID,int businessType,int costType,int costMode,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
 
     /**
@@ -125,9 +140,9 @@ public interface IFundsTrade {
      * @param amount                    补偿金额
      * @param bid
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse compensateByLend(String thirdPartyType,int custID,int mode,String contractNo,BigDecimal amount,Long bid) throws FundsException;
+    //public boolean compensateByLend(String thirdPartyType,int custID,int mode,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
 
     /**
@@ -139,9 +154,9 @@ public interface IFundsTrade {
      * @param amount
      * @param bid
      * @return
-     * @throws FundsException
+     * @throws FssException
      */
-    public FundsResponse compensateByLoad(String thirdPartyType,int custID,int costMode,String contractNo,BigDecimal amount,Long bid) throws FundsException;
+    //public boolean compensateByLoad(String thirdPartyType,int custID,int costMode,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
 
 
