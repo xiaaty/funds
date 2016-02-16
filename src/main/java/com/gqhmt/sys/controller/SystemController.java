@@ -1,6 +1,7 @@
 package com.gqhmt.sys.controller;
 
 
+import java.util.ArrayList;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sys.entity.DictEntity;
@@ -17,13 +18,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.service.RestApiService;
+import com.gqhmt.sys.entity.Settings;
 
 @Controller
 public class SystemController{
 
     @Resource
     private SystemService sysService;
-    
+    @Resource
+    private RestApiService restApiService;
     /**
      * 查询字典表
      * @param request
@@ -139,7 +149,7 @@ public class SystemController{
     
     
     /**
-     * shanchu 
+     * 删除
      * @param request
      * @param model
      * @return
@@ -155,6 +165,7 @@ public class SystemController{
         return map;
 //		return "redirect:/sys/workassist/dictionary/0";
     }
+   
     
     /**
      * 查询字典类型

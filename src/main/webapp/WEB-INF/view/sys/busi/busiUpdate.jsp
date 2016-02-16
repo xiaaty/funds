@@ -184,9 +184,9 @@
 //     	$("#parentN").hide();
 	    $("#btn-success").click(function () {
 	        if (validateCheck()) {
-	            /*if (!confirm("确认 修改商户信息吗?")) {
+	            if (!confirm("确认 修改商户信息吗?")) {
 	               return false;
-	            }*/
+	            }
 	            $("#busiUpdateForm").ajaxSubmit({
 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	                dataType: "json",
@@ -210,7 +210,7 @@
    	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
 //    	  txtOption= txtOption.substring(0,(txtOption.length-2));
    	 	 $("#parentNo").val(txtOption);
-   	     alert( $("#parentNo").val());
+//    	     alert( $("#parentNo").val());
     	
     }
 	//校验函数

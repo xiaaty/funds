@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sys.mapper.read.SettingReadMapper">
+<select id="findSettings" parameterType="com.gqhmt.sys.entity.Settings"  resultType="com.gqhmt.sys.entity.Settings">
+		SELECT
+		id,
+		seting_type setingType,
+		type,
+		mchn_no mchnNo,
+		t.set_key setKey,
+		t.set_value setValue
+		FROM `t_gq_fss_sys_setting` t where mchn_no=#{mchnNo}
+		<if test="type!=null and type.trim()!=''">
+		and type like  concat('%',#{type},'%') 
+		</if>
+		<if test="setKey!=null and setKey.trim()!=''">
+		and set_key like  concat('%',#{setKey},'%') 
+		</if>
+		<if test="setValue!=null and setValue.trim()!=''">
+		and set_value like  concat('%',#{setValue},'%') 
+		</if>
+		</select>
+</mapper>
