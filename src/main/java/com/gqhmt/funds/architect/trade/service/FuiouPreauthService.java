@@ -83,4 +83,24 @@ public class FuiouPreauthService {
     public List<FuiouPreauth> bidFaild(){
         return fuiouPreauthReadMapper.bidFaild();
     }
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月16日
+     * function：查询FuiouPreauth集合信息
+     */
+    public List<FuiouPreauth> findFuiouPreauthList(){
+    	return fuiouPreauthReadMapper.selectAll();
+    }
+
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月16日
+     * function：通过ID查询FuiouPreauth
+     */
+    public FuiouPreauth findFuiouPreauthById(Long id){
+    	 return  fuiouPreauthReadMapper.selectByPrimaryKey(id);
+    }
+    
 }
