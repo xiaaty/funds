@@ -3,14 +3,12 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
-import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
-import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
-import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
-import com.gqhmt.fss.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
+import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.funds.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
@@ -22,10 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gq.p2p.account.service
@@ -46,9 +41,6 @@ import java.util.Map;
 @Service
 public class FundAccountService {
 
-	@Resource
-	private FssAccountReadMapper fssfundAccountReadMapper;
-	
     @Resource
     private FundAccountReadMapper fundAccountReadMapper;
     @Resource
@@ -64,6 +56,10 @@ public class FundAccountService {
         return fundAccountWriteMapper.insertSelective(entity);
     }
 
+    public void insert(List<FundAccountEntity> entities) throws FssException{
+         fundAccountWriteMapper.insertAccountList(entities);
+    }
+
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
@@ -71,35 +67,73 @@ public class FundAccountService {
     public void delete(Long id) {
     	fundAccountWriteMapper.deleteByPrimaryKey(id);
     }
+
+
+    /**
+     * 创建账户
+     */
+    public FundAccountEntity createAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
+        //创建主账户
+        try {
+            FundAccountEntity entity = this.createCustomerAccount(customerInfoEntity, userID);
+            //创建子账户
+            this.createCustomerAccount(customerInfoEntity, userID, entity.getId());
+
+            return entity;
+        }catch (Exception e){
+
+            String  msg = "数据库异常";
+            if(e.getMessage() != null && e.getMessage().contains("uk_cus_id_type")){
+                msg = "账户已存在";
+            }
+            throw new FssException(msg,e);
+        }
+
+    }
     /**
      * 创建客户主账户
      * @param customerInfoEntity
      * @param userID
-     * @param type  账户类型  1，借款 ，2线下出借，3线上出借，99冻结
-     * @throws CreateAccountFailException
+     * @throws FssException
      */
-    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID, int type) throws CreateAccountFailException {
-        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
-        LogUtil.debug(this.getClass(),entity);
-        update(entity);
+    private FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
+        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+
+        this.insert(entity);
+        LogUtil.debug(this.getClass(),entity+":"+entity.getId());
         return entity;
     }
     /**
      * 创建客户子账户
      * @param customerInfoEntity
      * @param userID
-     * @param type  账户类型  1，借款 ，2线下出借，3线上出借，99冻结
-     * @throws CreateAccountFailException
+     * @throws FssException
      */
-    public FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,int type,Long pID) throws CreateAccountFailException{
-        FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
-        entity.setParentId(pID);
-        LogUtil.debug(this.getClass(), entity);
-        update(entity);
-        return entity;
+    private void createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Long pID) throws FssException {
+
+        List<FundAccountEntity> insertList = new ArrayList<>();
+
+        /*update(entity);*/
+
+        Set<Integer> typeSet = GlobalConstants.accountType.keySet();
+        for (int type : typeSet) {
+            if (type == 0 || (customerInfoEntity.getId() < GlobalConstants.RESERVED_CUSTOMERID_LIMIT)) {
+                continue;
+            }
+
+            FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1,type);
+            entity.setParentId(pID);
+
+            insertList.add(entity);
+
+        }
+
+        this.insert(insertList);
+        LogUtil.debug(this.getClass(), insertList);
+
     }
 
-    protected FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
+    private FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
         FundAccountEntity entity = new FundAccountEntity();
         entity.setCustId(customerInfoEntity.getId());
         entity.setUserName(customerInfoEntity.getMobilePhone());
@@ -119,8 +153,7 @@ public class FundAccountService {
     
     /**
      * 根据条件查询返回所有资金账户列表
-     * @param fundsAcctBean
-     * @param pageReq
+     * @param fundAccountEntity
      * @return
      * @throws FssException
      */
@@ -146,7 +179,7 @@ public class FundAccountService {
      * @return
      */
     public FundAccountEntity getFundAccount(Integer cusID, int type){
-        return this.fundAccountReadMapper.queryFundAccount(cusID, type);
+        return this.fundAccountReadMapper.queryFundAccountByCutId(cusID, type);
     }
 
     /**
@@ -156,7 +189,7 @@ public class FundAccountService {
      * @return
      */
     public FundAccountEntity getFundAccount(String userName,int type){
-        return this.fundAccountReadMapper.queryFundAccount(userName, type);
+        return this.fundAccountReadMapper.queryFundAccountByUserName(userName, type);
     }
 
     public String getAccountNo(){
@@ -286,11 +319,6 @@ public class FundAccountService {
         }catch (CommandParmException e){
             code = "0001";
             msg = e.getMessage();
-        }catch (NeedSMSValidException e){
-            String mmsTmp =e.getMessage();
-            String[] tmp = mmsTmp.split(":");
-            msg = tmp[1];
-            orderNo = tmp[0];
         }
         map.put("code", code);
         map.put("msg",msg);
@@ -305,14 +333,12 @@ public class FundAccountService {
      * @param custName
      * @return
      */
-    public void updateBycustId(Integer cusID,String custName){
+    public void updateBycustId(Integer cusID,String custName) throws FssException {
     	this.fundAccountWriteMapper.updateCustName(cusID, custName);
     }
     
     
-   public List<BussAndAccountBean> queryAccountList(Map map){
-	   return this.fssfundAccountReadMapper.getBussinessAccountList(map);
-    }
+
    /**
     * 
     * author:jhz
@@ -323,8 +349,7 @@ public class FundAccountService {
 	   // TODO Auto-generated method stub
 	   return fundAccountReadMapper.findAcountList(accMap);
    	}
-    
-    
+
     
     
     

@@ -20,7 +20,11 @@
 	<!-- spring config -->
 
 	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
-	<context:component-scan base-package="com.gqhmt.fss.listener.*;com.gqhmt.funds.architect.*;com.gqhmt.fss.architect.*;com.gqhmt.sys.*;com.gqhmt.fss.logicService.pay.impl.*"/>
+	<context:component-scan base-package="com.gqhmt.fss.listener.*;com.gqhmt.funds.architect;com.gqhmt.fss.architect;com.gqhmt.sys.*;com.gqhmt.pay.service">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+
+	</context:component-scan>
+
 
 
 
@@ -57,7 +61,7 @@
 
 
 	</bean>
-	<bean id="read_dataSource"  class="org.apache.commons.dbcp2.BasicDataSource">
+	<!--<bean id="read_dataSource"  class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${read.jdbc.url}" />
 		<property name="username" value="${read.jdbc.username}" />
@@ -76,15 +80,16 @@
 		<property name="testWhileIdle" value="true" />
 		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
 
-	</bean>
+	</bean>-->
 	<bean id="readSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="read_dataSource" />
+		<property name="dataSource" ref="write_dataSource" />
 		<property name="configLocation" value="classpath:jdbc/mybatis-config.xml" />
 		<property name="mapperLocations">
 			<list>
 				<value>classpath:sqlMapper/fss/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/read/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 			</list>
 		</property>
 		<property name="plugins">
@@ -112,6 +117,7 @@
 				<value>classpath:sqlMapper/fss/*/write/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/funds/*/write/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/write/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/write/*-sqlMapper.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -144,6 +150,28 @@
 	<!--<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">-->
 		<!--<constructor-arg index="0" ref="writeSqlSessionFactory"/>-->
 	<!--</bean>-->
+
+	<!-- 配置事务 -->
+	<bean id="tx_manager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="write_dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="tx_manager"
+						  proxy-target-class="true" />
+	<!-- 应用事务 -->
+	<tx:advice id="tx_advice" transaction-manager="tx_manager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" rollback-for="FssException" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 通知器(把事务通知绑定到切入点) -->
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="tx_advice"
+					 pointcut="execution(* com.gqhmt.*.*.*.service..*(..) throws com.gqhmt.core.FssException ) " />
+	</aop:config>
+
+	<aop:aspectj-autoproxy />
 
 
 </beans>

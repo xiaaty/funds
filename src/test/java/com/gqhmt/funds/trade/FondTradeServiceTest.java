@@ -2,13 +2,10 @@ package com.gqhmt.funds.trade;
 
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -46,12 +43,7 @@ public class FondTradeServiceTest {
     }
     @Test
     public void updateFundTrade() throws Exception{
-    	FundTradeEntity fundTradeEntity = new FundTradeEntity();
-    	fundTradeEntity.setId(107744);
-    	fundTradeEntity.setAccountId(8888888888888888L);
-    	fundTradeEntity.setBidId(666666666);
-    	fundTradeEntity.setTradeTime(new Date());
-    	fundTradeService.updateFundTrade(fundTradeEntity);
+
     	
     }
 

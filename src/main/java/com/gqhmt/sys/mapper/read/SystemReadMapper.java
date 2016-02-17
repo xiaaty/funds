@@ -25,5 +25,9 @@ public interface SystemReadMapper extends ReadMapper<DictEntity> {
     public List<DictEntity> selectDictmain(DictEntity dictmain);
     
     public DictEntity getDictMainById(String dictId);
+    
+    public List<DictEntity> selectDictByOrderList(List list);
+    
+    
 
 }

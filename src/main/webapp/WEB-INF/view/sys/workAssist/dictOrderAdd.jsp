@@ -71,7 +71,7 @@
                                                             <td align="left">类型名称：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="orderName" value="${dictorder.orderName}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="orderName" name="orderName" value="${dictorder.orderName}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -79,34 +79,40 @@
                                                             <td align="left">唯一标识：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="orderDict" value="${dictorder.orderDict}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="orderDict" name="orderDict" value="${dictorder.orderDict}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">字典列表：</td>
-                                                            <td>
-                                                            
-                                                            	<label class="input">
-                                                                    <input type="text" maxlength="50" name="orderList" value="${dictorder.orderList}" style="width:256px;" />
-                                                                </label>
-			                                                    <%-- <section style="width:210px">
-				                                                    <label class="select">
-														                <select id="parentId"  name ="parentId" onChange="choice(this)">
-														                    <option  value="">--请选择--</option>
-														                	<c:forEach items="${businessList}" var="busi">
-														                    <option value="${busi.id}"> ${busi.mchnName} </option>
-														                	</c:forEach>
-														                </select>
-																     </label>
-			                                                    </section> --%>
+                                                           <td align="left">字典列表：</td>
+                                                           <td>
+			                                                    <section style="width:210px">
+			                                                    <label class="select">
+													                <select id="role_list"  name ="role_list" multiple="true" style="width:200px;height:300px;">
+													                    <option  value="">--请选择--</option>
+													                	<c:forEach items="${dictlist}" var="dict">
+													                    	<option value="${dict.dictId}"> ${dict.dictName} </option>
+													                	</c:forEach>
+													                </select>
+													                <input type="button"  value="<<<<" onclick="moveOptions('role_list_to','role_list')"/>
+																	<input type="button"  value=">>>>" onclick="moveOptions('role_list','role_list_to')"/>
+													                <SELECT id="role_list_to" name ="role_list_to" multiple="true" style="width:200px;height:300px;">
+																	     
+																	</SELECT>
+															                     
+															     </label>
+			                                                        
+			                                                    </section>
 			                                                </td>
+			                                         		<input type="hidden" id="orderList" name="orderList" />
+			                                         		
+			                                                
                                                         </tr>
                                                         <tr>
                                                             <td align="left">备注：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="memo" value="${dictorder.memo}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="memo" name="memo" value="${dictorder.memo}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -134,44 +140,76 @@
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
     	    $("#dictorderadd").click(function () {
-    	        if (validateCheck()) {
-    	            $("#dictorderForm").ajaxSubmit({
-    	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-    	                dataType: "json",
-    	                success: function (data) {
-    	                    if (data.code == '0000') {
-    	                        jAlert("添加成功!", '信息提示');
-    	                        //自动跳转
-    	                        parent.location.href="${contextPath}/sys/workassist/dictorder";
-    	                    } else {
-    	                    	jAlert("添加失败!", '消息提示');
-    	                        return;
-    	                    }
-    	                }
-    	            });
-    	        }
+    	    	var t = document.getElementById("role_list_to"); 
+    	    	var str="";
+    	    	for(var i = 0 ;i<t.length;i++){
+    	    		t[i].selected=true;
+    	    		str+=t[i].value+",";
+    	    	} 	
+    	    	
+    	    	if(str.length>0){
+    	    		str = str.substr(0, str.length - 1);
+    	    	}
+    	    	var orderName=$("#orderName").val();
+        		var orderDict=$("#orderDict").val();
+        		var orderList=$("#orderList").val(str);
+        		if(orderName == ""){
+        			jAlert("类型名称不能为空!", '消息提示');
+        			return;
+        		}else if( orderDict==""){
+        			jAlert("标识不能为空!", '消息提示');
+        			return;
+        		}else if(orderList==""){
+        			jAlert("字典列表不能为空!", '消息提示');
+        			return;
+        		}
+        		else{
+		        		$("#dictorderForm").ajaxSubmit({
+		 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		 	                dataType: "json",
+		 	                success: function (data) {
+		 	                    if (data.code == '0000') {
+		 	                        jAlert("保存成功!", '信息提示');
+		 	                        //自动跳转
+		 	                        parent.location.href="${contextPath}/sys/workassist/dictorder";
+		 	                    } else {
+		 	                    	jAlert("保存失败!", '消息提示');
+		 	                        return;
+		 	                    }
+		 	                }
+		 	            });
+        		}
     	    });
         });
-    	//校验函数
-    	function validateCheck() {
-    		return true;
-    	}
         
-    	 //选中商户号
-     /*    function choice(obj){
-        	var id=obj.options[obj.selectedIndex].value;
-        	$("#parentN").val(id);
-    		var oSelect=document.getElementById("parentN");
-       	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
-       	 	 $("#parentNo").val(txtOption);
-        	
-        } */
+    
+      //把一个select 中的项移到另一个select中
+        function moveOptions(from,to){
+            var oldname=$("#"+from+"  option:selected");
+            if(oldname.length==0){
+                return;
+            }
+            var valueOb = {};
+            $("#" + to).find("option").each(function(){
+                valueOb[String($(this).val())] = $(this);
+            });
+            
+            for( var i =0;i< oldname.length; i++){
+               if(valueOb[String($(oldname[i]).val())] == undefined){
+                       $(oldname[i]).clone().appendTo($("#"+to))
+                       $(oldname[i]).remove();
+               }        
+            }
+            
+        }
         
         
         
         
         
-        </script>
+        
+  </script>
+        
         
         
         

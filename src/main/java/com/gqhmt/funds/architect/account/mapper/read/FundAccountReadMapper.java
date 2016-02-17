@@ -7,6 +7,7 @@ import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
      * @return
      * @throws FssException
      */
-    public Page queryBusinessFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException;
+    public Page queryBusinessFundsAccountList(FundsAccountBean fundsAcctBean);
     
     /**
      * 获取所有借款客户账户列表
@@ -51,11 +52,11 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
      * @return
      * @throws FssException
      */
-    public Page queryLoanFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException;
+    public Page queryLoanFundsAccountList(FundsAccountBean fundsAcctBean);
 
-    public FundAccountEntity queryFundAccount(Integer cusID,int type);
+    public FundAccountEntity queryFundAccountByCutId(@Param("cusID") Integer cusID, @Param("type")int type);
     
-    public FundAccountEntity queryFundAccount(String userName,int type);
+    public FundAccountEntity queryFundAccountByUserName(String userName,int type);
 
     public List<FundAccountEntity> queryFundAccount(Integer cusID);
     

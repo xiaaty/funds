@@ -37,4 +37,28 @@
 		FROM `t_gq_fss_dict` t where t.dict_id=#{dictId}
 	</select>
 	
+	<select id="selectDictByOrderList" parameterType="java.util.List" resultType="DictMain">
+		SELECT
+		t.dict_id dictId,
+		t.dict_name dictName,
+		t.create_user_id careateUserId,
+		t.create_time createTime,
+		t.modify_user_id modifyUserId,
+		t.modify_time modifyTime,
+		t.sort sort,
+		t.is_valid isValid,
+		t.parent_id parentId
+		FROM `t_gq_fss_dict` t where t.dict_id  NOT IN
+	    <foreach collection="list" item="dictId" index="index"
+           open="(" close=")" separator=",">
+           #{dictId}
+       </foreach>
+		
+	</select>
+	
+	
+	
+	
+	
+	
 </mapper>

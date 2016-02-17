@@ -70,12 +70,12 @@
                                                                 <input type="text" style="width:210px" name="orderDict" value="${dictorder.orderDict}" />
                                                             </label>
                                                         </td>
-                                                       <%--   <td class="tr">类型名称：</td>
+                                                        <td class="tr">类型名称：</td>
                                                          <td>
                                                             <label class="input">
                                                                 <input type="text" style="width:210px" name="orderName" value="${dictorder.orderName}" />
                                                             </label>
-                                                        </td> --%>
+                                                        </td> 
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -105,23 +105,32 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
-                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_return"><i class="fa fa-plus"></i>&nbsp;返回</button>
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
                                     </div>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
-                                        <tr>
+                                        <tr>	
+                                        	  <td>序号</td>
+                                        	  <td>类型名称</td>
                                               <td>标识</td>
                                               <td>字典列表</td>
                                               <td>备注</td>
+                                              <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                              <c:forEach items="${page.list}" var="dictorder">
                                                 <tr>
+                                                   <td>	${dictorder.id}</td> 
+                                                   <td>	${dictorder.orderName}</td> 
                                                    <td>	${dictorder.orderDict}</td> 
-                                                   <td>	${dictorder.orderList}</td> 
+                                                   <td> 
+                                                   		<fss:dictOrder var="order" dictOrder="${dictorder.orderDict}">
+                                                              <option value="${order.key}">${order.value}</option>
+                                                        </fss:dictOrder>
+                                                   </td> 
                                                    <td>	${dictorder.memo}</td> 
+                                                   <td>	<a href="${contextPath}/sys/workassist/dictorderToUpdate/${dictorder.id}">修改</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

@@ -2,6 +2,9 @@ package com.gqhmt.funds.architect.account.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Filename:    com.gq.p2p.account.dao
@@ -21,6 +24,8 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
  */
 public interface FundAccountWriteMapper extends ReadAndWriteMapper<FundAccountEntity> {
 
-	void updateCustName(Integer cusID, String custName);
+	public void updateCustName(Integer cusID, String custName) ;
+
+	public void insertAccountList(@Param("accounts") List<FundAccountEntity> entities);
 
 }

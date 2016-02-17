@@ -22,4 +22,6 @@ import com.gqhmt.sys.entity.DictOrderEntity;
 public interface DictOrderWriteMapper extends ReadAndWriteMapper<DictOrderEntity> {
 
 	  public void insertDictOrder(DictOrderEntity dictorder);
+	  
+	  public void updateDictOrderById(DictOrderEntity dictorder);
 }
