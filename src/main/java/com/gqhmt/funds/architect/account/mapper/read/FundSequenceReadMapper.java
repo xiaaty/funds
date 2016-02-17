@@ -2,10 +2,13 @@ package com.gqhmt.funds.architect.account.mapper.read;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gq.p2p.account.Bean
@@ -38,5 +41,12 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 
     public BigDecimal getSumByOrderNo(String orderNo);
 
-    public int querySequence(long accountId);	
+    public int querySequence(long accountId);
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月17日
+     * function：查询流水列表
+     */
+	public List<FundAccountSequenceBean> selectAccountSequenceList(Map fasMap);	
 }

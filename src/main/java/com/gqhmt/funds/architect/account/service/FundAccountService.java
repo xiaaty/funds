@@ -8,6 +8,7 @@ import com.gqhmt.fss.architect.account.exception.CreateAccountFailException;
 import com.gqhmt.fss.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.mapper.read.FundAccountReadMapper;
@@ -312,6 +313,16 @@ public class FundAccountService {
    public List<BussAndAccountBean> queryAccountList(Map map){
 	   return this.fssfundAccountReadMapper.getBussinessAccountList(map);
     }
+   /**
+    * 
+    * author:jhz
+    * time:2016年2月16日
+    * function：funds账号管理
+    */
+   	public List<FundAccountCustomerBean> findAcountList(Map accMap) {
+	   // TODO Auto-generated method stub
+	   return fundAccountReadMapper.findAcountList(accMap);
+   	}
     
     
     

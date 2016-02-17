@@ -83,6 +83,7 @@
 		<property name="mapperLocations">
 			<list>
 				<value>classpath:sqlMapper/fss/*/read/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/read/*-sqlMapper.xml</value>
 			</list>
 		</property>
@@ -109,6 +110,7 @@
 			<list>
 				<!---->
 				<value>classpath:sqlMapper/fss/*/write/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/write/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/write/*-sqlMapper.xml</value>
 			</list>
 		</property>

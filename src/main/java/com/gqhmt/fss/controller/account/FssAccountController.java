@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
  * 2015/12/21  李俊龙      1.0     1.0 Version
  */
 @Controller
-public class FundAccountController {
+public class FssAccountController {
 	@Resource
     private FundAccountService fundAccountService;
 	@Resource

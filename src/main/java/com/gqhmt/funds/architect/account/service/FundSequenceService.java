@@ -6,6 +6,7 @@ import com.gqhmt.fss.architect.account.exception.ChargeAmountNotenoughException;
 import com.gqhmt.fss.architect.account.exception.FrozenAmountErrorException;
 import com.gqhmt.fss.architect.account.exception.FundAccountNullException;
 import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
@@ -23,6 +24,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.g
@@ -51,6 +53,7 @@ public class FundSequenceService {
 
     @Resource
     private FundAccountService fundAccountService;
+    
 
     /**
      * 查询流水
@@ -330,5 +333,14 @@ public class FundSequenceService {
 
     public int querySequence(long accountId){
         return fundSequenceReadMapper.querySequence(accountId);
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月17日
+     * function：查询流水列表
+     */
+    public List<FundAccountSequenceBean> selectAccountSequenceList(Map fasMap) {
+    	return fundSequenceReadMapper.selectAccountSequenceList(fasMap);
     }
 }
