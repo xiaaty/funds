@@ -1,19 +1,9 @@
 package com.gqhmt.fss.architect.pay.service;
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.fss.logicService.pay.IFundsAccount;
-import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.util.CommonUtil;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest
@@ -34,7 +24,7 @@ import java.util.Date;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/*.xml")
 public class FundAccountTest extends AbstractJUnit4SpringContextTests {
-
+/*
     @Autowired(required=false)
     private IFundsAccount iFundsAccount;
 
@@ -81,5 +71,5 @@ public class FundAccountTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void testInsert() throws Exception {
     	iFundsAccount.createAccount("2", entity, "123", "222");
-    }
+    }*/
 }

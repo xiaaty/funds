@@ -1,6 +1,7 @@
 package com.gqhmt.funds.architect.order.service;
 
-import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.core.FssException;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
@@ -37,16 +38,16 @@ public class FundOrderService  {
     @Resource
     private FundOrderWriteMapper fundOrderWriteMapper;
 
-    public void insert(FundOrderEntity entity) throws Exception{
+    public void insert(FundOrderEntity entity) throws FssException{
         fundOrderWriteMapper.insertSelective(entity);
     }
     
-    public void update(FundOrderEntity entity) throws Exception{
+    public void update(FundOrderEntity entity) throws FssException{
         entity.setLastModifyTime(new Date());
         fundOrderWriteMapper.updateByPrimaryKeySelective(entity);
     }
 
-    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws CommandParmException {
+    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
         FundOrderEntity fundOrderEntity = new FundOrderEntity();
         fundOrderEntity.setAccountId(primaryAccount.getId());
         if (toAccountEntity != null) {
@@ -59,7 +60,7 @@ public class FundOrderService  {
         fundOrderEntity.setOrderFrormId(sourceID);
         // 订单类型(1-充值 2-提现 3-代偿 4-投标 5-转账 6-还款 7-流标)
         fundOrderEntity.setOrderType(orderType);
-        fundOrderEntity.setThirdPartyType(thirdPartyType);
+        fundOrderEntity.setThirdPartyType("2");
         fundOrderEntity.setChargeAmount(chargeAmount);
         fundOrderEntity.setOrderState(GlobalConstants.ORDER_STATUS_SUBMIT);
         try {

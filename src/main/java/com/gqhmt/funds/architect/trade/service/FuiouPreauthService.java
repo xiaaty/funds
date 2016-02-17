@@ -66,10 +66,10 @@ public class FuiouPreauthService {
     public void addFuiouPreauth(FundAccountEntity fromEntity, FundAccountEntity toSFEntity, Tender tender, String contractNo, FundOrderEntity fundOrderEntity){
         FuiouPreauth fuiouPreauth = new FuiouPreauth();
         fuiouPreauth.setAccountId(fromEntity.getId());
-        fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));
-        fuiouPreauth.setSourceId(tender.getBidId());
-        fuiouPreauth.setBid(tender.getBidId());
-        fuiouPreauth.setTenderid(tender.getId());
+//        fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));
+//        fuiouPreauth.setSourceId(tender.getBidId());
+//        fuiouPreauth.setBid(tender.getBidId());
+//        fuiouPreauth.setTenderid(tender.getId());
         fuiouPreauth.setType(GlobalConstants.ORDER_BID);
         fuiouPreauth.setUserName(fromEntity.getUserName());
         fuiouPreauth.setState(1);
