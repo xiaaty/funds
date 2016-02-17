@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.funds.architect.customer.mapper.write.BankWriteMapper">
+	<insert id="saveBank" parameterType="bankEntity"  useGeneratedKeys="true" keyProperty="id">  
+         insert into t_gq_fss_bank_list  
+            (name,sort_name,bank_icon,limit_page,create_time,modify_time,create_user_id,modify_user_id,tmplate_page,is_set_limit_page,bank_code) 
+        values  
+            (#{bankName},#{sortName},#{bankIcon},#{limitPage},#{createTime},#{modifyTime},#{createUserId},#{modifyUserId},#{tmplatePage},#{isSetLimitPage},#{bankCode})
+    </insert>  
+	
+	<update id="updateBank" parameterType="bankEntity">  
+         UPDATE t_gq_fss_bank_list
+         SET
+         name=#{bankName},
+         sort_name=#{sortName},
+         bank_icon=#{bankIcon},
+         limit_page=#{limitPage},
+         modify_time=#{modifyTime},
+         modify_user_id=#{modifyUserId},
+         bank_code=#{bankCode}
+         WHERE id=#{id}
+    </update>
+	
+	
+	
+</mapper>

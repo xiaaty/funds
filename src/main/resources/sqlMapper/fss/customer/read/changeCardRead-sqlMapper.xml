@@ -1,20 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper">
-	<sql id="fieldSql">
-	</sql>
-	<sql id="whereSql">
-	</sql>
-	<sql id="otherSql">
-		<choose>
-		<when test="orderStr != null">
-			order by ${orderStr}
-		</when>
-		<otherwise>
-		</otherwise>
-		</choose>
-	</sql>
 	<select id="queryChangeCardList" parameterType="changeCardEntity" resultType="changeCardEntity">
+		SELECT 
+		t.cust_id custId,
+		t.cert_type certType,
+		t.cert_no certNo,
+		t.bank_type bankType,
+		t.bank_name bankName,
+		t.bank_city bankCity,
+		t.bank_add bankAdd,
+		t.card_no cardNo,
+		t.cust_name custName,
+		t.state state,
+		t.trade_state tradeState,
+		t.create_time createTime,
+		t.modify_time modifyTime,
+		t.create_user_id createUserId,
+		t.order_no orderNo,
+		t.file_path filePath,
+		t.resp_code respCode,
+		t.resp_msg respMsg,
+		t.type type,
+		t.mobile mobile,
+		t.pass_time passTime,
+		t.pass_user_id passUserId,
+		t.effect_time effectTime,
+		t.seq_no seqNo
+		FROM `t_gq_fss_changecard_record` t
+		<where>
+		<if test="custName!=null and custName!=''">
+		 	AND t.cust_name Like CONCAT(CONCAT('%',#{custName}),'%') 
+		</if>    
+		<if test="mobile != null and mobile != ''"> 
+			AND t.mobile Like CONCAT(CONCAT('%',#{mobile}),'%')
+		 </if>    
+		<if test="certNo!=null and certNo!=''"> 
+			AND  t.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
+		 </if>    
+		 <if test="state!=null and state!=''"> 
+			AND t.state=#{state}
+		</if>
+	</where>
+		
+		
+		
+		
 		
 	</select>
 </mapper>

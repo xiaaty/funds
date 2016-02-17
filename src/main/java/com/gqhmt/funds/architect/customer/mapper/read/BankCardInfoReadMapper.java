@@ -65,4 +65,12 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
      */
 	public List<BankCardBean> queryBankList();
 	
+	
+	/**
+	 * 查询银行信息
+	 * @param bankinfo
+	 * @return
+	 */
+	public List<BankCardInfoEntity> selectBankList(BankCardInfoEntity bankinfo);
+	
 }

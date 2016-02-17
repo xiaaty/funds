@@ -40,9 +40,7 @@ public class FssCustBankCardController {
 	private BankCardInfoService bankCardInfoService;
 
 	/**
-	 * author:jhz 
-	 * time:2016年1月25日 
-	 * function：银行卡信息列表
+	 *银行卡信息列表
 	 */
 	@RequestMapping(value = "/fss/customer/bankCards", method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
@@ -52,16 +50,15 @@ public class FssCustBankCardController {
 		List<CustomerAndUser> bankCards = bankCardService.findbankCardAll(customerAndUser);
 		//得到银行列表
 		List<BankCardBean> banks=bankCardInfoService.queryBankList();
-		
 		model.addAttribute("page", bankCards);
 		model.addAttribute("banks", banks);
 		// model.addAttribute("customer", customerAndUser);
 		return "fss/customer/bankCardList";
 	}
-
+	
 	/**
-	 * author:jhz 
-	 * time:2016年1月25日 
+	 * author:kyl 
+	 * time:2016年2月16日 
 	 * function：跳转到银行变更申请
 	 * @throws FssException 
 	 */

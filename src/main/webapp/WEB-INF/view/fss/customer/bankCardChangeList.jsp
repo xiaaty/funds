@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>资金清结算系统--银行卡变更--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../view/include/common_css_js.jsp"%>
@@ -43,7 +43,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>客户信息管理</li>
-            <li>银行卡列表</li>
+            <li>银行卡变更列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -59,7 +59,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="cardListForm" action="${contextPath}/fss/customer/bankCards" method="post" >
+                                <form class="smart-form" id="cardChangeListForm" action="" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -82,28 +82,49 @@
                                                         <td class="tr" nowrap="nowrap">客户姓名:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
-                                                                <input type="text" name="name" value="${customer.name}">
+                                                                <input type="text" name="custName" value="${fssBankcard.custName}">
                                                             </label>
                                                         </td>
                                                         <td class="tr" nowrap="nowrap">客户手机号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="mobile" value="${customer.mobile}">
+                                                                <input type="text" style="width:210px" name="mobile" value="${fssBankcard.mobile}">
                                                             </label>
                                                         </td>
                                                         <td class="tr" nowrap="nowrap">客户身份证号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="certNo" value="${customer.certNo}">
+                                                                <input type="text" name="certNo" value="${fssBankcard.certNo}">
                                                             </label>
                                                         </td>
+                                                        <td class="tr" nowrap="nowrap">变更状态：</td>
+                                                      	<td>
+							                                <label class="select" style="width:210px" >
+							                                    <select name="state">
+							                                    	<option value="0">全部</option>
+							                                        <option value="1">变更中</option>
+							                                        <option value="2">变更成功</option>
+							                                        <option value="3">变更失败</option>
+								                                    <c:if test="${state==0}">
+								                                    	<option value="0" selected="selected">全部</option>
+								                                    </c:if>
+								                                    <c:if test="${state==1}">
+								                                    	<option value="1" selected="selected">变更中</option>
+							                                        </c:if>
+								                                    <c:if test="${state==2}">
+								                                    	<option value="2" selected="selected">变更成功</option>
+							                                        </c:if>
+								                                    <c:if test="${state==3}">
+								                                    	<option value="3" selected="selected">变更失败</option>
+							                                        </c:if>
+							                                    </select>
+							                                </label>
+						                            	</td>
                                                     </tr>
-                                                   
                                                 </tbody>
                                             </table>
                                         </div>
                                         <footer>
-                                            <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
                                             <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
@@ -123,7 +144,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>银行卡列表</h2>
+                            <h2>银行卡变更列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -139,38 +160,91 @@
                                         <thead>
                                         <tr>
                                             <th>客户编号</th>
-                                            <th>客户姓名</th>
-                                            <th>客户手机号 </th>
                                             <th>证件类型 </th>
                                             <th>证件号码 </th>
-                                            <th>所属银行  </th>
-                                            <th>银行卡号 </th>
-                                            <th>所属地区 </th>
-                                            <th>创建日期 </th>
-                                            <th>修改日期 </th>
-                                            <th>操作</th>
+                                            <th>银行类别</th>
+                                            <th>银行名称</th>
+                                            <th>地区码</th>
+                                            <th>支行信息</th>
+                                            <th>银行卡号</th>
+                                            <th>客户姓名</th>
+                                            <th>变更状态</th>
+                                            <th>交易状态</th>
+                                            <th>录入时间</th>
+                                            <th>修改时间 </th>
+                                            <th>申请人</th>
+                                            <th>订单号</th>
+                                            <th>上传图片地址</th>
+                                            <th>富友返回码</th>
+                                            <th>富友返回结果</th>
+                                            <th>申请来源</th>
+                                            <th>客户手机号 </th>
+                                            <th>审批时间</th>
+                                            <th>生效时间</th>
+                                            <th>交易流水号</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${t.userNo}</td>
-                                                    <td>${t.name}</td>
-                                                    <td>${t.mobile}</td>
-                                                    <td>${t.certType}</td>
+                                                    <td>${t.custId}</td>
+                                                    <td>${t.certType==1?"身份证":"护照"}</td>
                                                     <td>${t.certNo}</td>
-                                                    <td>
-                                                      <c:forEach items="${banks}" var="banks">
-                                                      <c:if test="${t.bankId==banks.custId}">${banks.bankLongName}</c:if>
-                                                    </c:forEach>
-                                                    </td>
+                                                    <td>${t.bankType}</td>
+                                                    <td>${t.bankName}</td>
+                                                    <td>${t.bankCity}</td>
+                                                    <td>${t.bankAdd}</td>
                                                     <td>${t.cardNo}</td>
-                                                    <td>${t.area}</td>
+                                                    <td>${t.custName}</td>
+                                                    <td>
+                                                    	<c:if test="${t.state==1}">
+                                                    		变更中
+                                                    	</c:if>
+                                                    	<c:if test="${t.state==2}">
+                                                    		变更成功
+                                                    	</c:if>
+                                                    	<c:if test="${t.state==3}">
+                                                    		变更失败
+                                                    	</c:if>
+                                                    </td>
+                                                     <td>
+                                                    	<c:if test="${t.tradeState==1}">
+                                                    		申请
+                                                    	</c:if>
+                                                    	<c:if test="${t.tradeState==2}">
+                                                    		已审核
+                                                    	</c:if>
+                                                    	<c:if test="${t.tradeState==3}">
+                                                    		图片已上传
+                                                    	</c:if>
+                                                    	<c:if test="${t.tradeState==4}">
+                                                    		数据传到富友
+                                                    	</c:if>
+                                                    	<c:if test="${t.tradeState==5}">
+                                                    		富友返回成功
+                                                    	</c:if>
+                                                    	<c:if test="${t.tradeState==6}">
+                                                    		失败
+                                                    	</c:if>
+                                                    	<c:if test="${t.tradeState==99}">
+                                                    		同步换卡信息表
+                                                    	</c:if>
+                                                    	<c:if test="${t.tradeState==100}">
+                                                    		换卡流程完结
+                                                    	</c:if>
+                                                    </td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                   <td>
-                                                    <a href="${contextPath}/fss/customer/toUpdate?id=${t.id}">申请变更</a>
-                                                    </td>
+                                                    <td>${t.createUserId}</td>
+                                                    <td>${t.orderNo}</td>
+                                                    <td>${t.filePath}</td>
+                                                    <td>${t.respCode}</td>
+                                                    <td>${t.respMsg}</td>
+                                                    <td>${t.type}</td>
+                                                    <td>${t.mobile}</td>
+                                                    <td><fmt:formatDate value="${t.passTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${t.effectTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>${t.seqNo}</td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -192,7 +266,7 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#cardListForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#cardChangeListForm"));
     });
 
 </script>

@@ -28,11 +28,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 	    <typeAlias type="com.gqhmt.fss.architect.customer.entity.FssCustomerEntity" alias="customer"/>
 	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundAccountEntity" alias="fundAccountEntity"/>
 	    <typeAlias type="com.gqhmt.fss.architect.account.entity.FssAccountEntity" alias="fssAccountEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.customer.entity.BankEntity" alias="bankEntity"/>
 	    
 	    <!-- 账户相关 end -->
 	    <!-- 交易相关 -->
 	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity" alias="withdrawApplyEntity"/>
         <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity" alias="withholdApplyEntity"/>
+        <typeAlias type="com.gqhmt.fss.architect.customer.bean.CustomerAndUser" alias="CustomerAndUser"/>
+        
 	    <!-- 交易相关 end-->
 	</typeAliases>
 

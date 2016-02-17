@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>资金清结算系统--银行卡列表--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../view/include/common_css_js.jsp"%>
@@ -59,7 +59,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="cardListForm" action="${contextPath}/fss/customer/bankCards" method="post" >
+                                <form class="smart-form" id="Form" action="" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -75,30 +75,17 @@
                                                 <col width="100" />
                                                 <col width="220" />
                                                 <col width="100" />
-                                                <col />
+                                                <col/>
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">客户姓名:</td>
+                                                        <td class="tr" nowrap="nowrap">银行名称:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
-                                                                <input type="text" name="name" value="${customer.name}">
-                                                            </label>
-                                                        </td>
-                                                        <td class="tr" nowrap="nowrap">客户手机号：</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input">
-                                                                <input type="text" style="width:210px" name="mobile" value="${customer.mobile}">
-                                                            </label>
-                                                        </td>
-                                                        <td class="tr" nowrap="nowrap">客户身份证号：</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input" style="width:210px" >
-                                                                <input type="text" name="certNo" value="${customer.certNo}">
+                                                                <input type="text" name="bankName" value="${bankinfo.bankName}">
                                                             </label>
                                                         </td>
                                                     </tr>
-                                                   
                                                 </tbody>
                                             </table>
                                         </div>
@@ -134,43 +121,34 @@
                                 </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
+                                <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
+                                </div>
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <th>客户编号</th>
-                                            <th>客户姓名</th>
-                                            <th>客户手机号 </th>
-                                            <th>证件类型 </th>
-                                            <th>证件号码 </th>
-                                            <th>所属银行  </th>
-                                            <th>银行卡号 </th>
-                                            <th>所属地区 </th>
-                                            <th>创建日期 </th>
-                                            <th>修改日期 </th>
+                                            <th>编号</th>
+                                            <th>银行名称</th>
+                                            <th>银行短名称</th>
+                                            <th>银行代码</th>
+                                            <th>银行图标</th>
+                                            <th>创建时间</th>
+                                            <th>修改时间</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${t.userNo}</td>
-                                                    <td>${t.name}</td>
-                                                    <td>${t.mobile}</td>
-                                                    <td>${t.certType}</td>
-                                                    <td>${t.certNo}</td>
-                                                    <td>
-                                                      <c:forEach items="${banks}" var="banks">
-                                                      <c:if test="${t.bankId==banks.custId}">${banks.bankLongName}</c:if>
-                                                    </c:forEach>
-                                                    </td>
-                                                    <td>${t.cardNo}</td>
-                                                    <td>${t.area}</td>
+                                                  	<td>${t.id}</td>
+                                                    <td>${t.bankName}</td>
+                                                    <td>${t.sortName}</td>
+                                                    <td>123456789</td>
+                                                    <td><img src="${t.bankIcon}"/></td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                   <td>
-                                                    <a href="${contextPath}/fss/customer/toUpdate?id=${t.id}">申请变更</a>
-                                                    </td>
+                                                     <td><a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a>&nbsp;&nbsp;&nbsp;<a href="#">查看页面限额</a></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -192,9 +170,14 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#cardListForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
     });
 
+    //添加
+    $("#btn_add").button().click(function() {
+    	window.open("${contextPath}/fund/banktoadd","_self");
+    });
+    
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

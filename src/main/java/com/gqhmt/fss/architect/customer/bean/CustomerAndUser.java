@@ -44,7 +44,7 @@ public class CustomerAndUser {
 
 	private Date createTime; // 创建时间
 
-	private String modifyTime; // 最后修改时间
+	private Date modifyTime; // 最后修改时间
 
 	public Long getId() {
 		return id;
@@ -126,11 +126,11 @@ public class CustomerAndUser {
 		this.createTime = createTime;
 	}
 
-	public String getModifyTime() {
+	public Date getModifyTime() {
 		return modifyTime;
 	}
 
-	public void setModifyTime(String modifyTime) {
+	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
 
