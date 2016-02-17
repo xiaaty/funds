@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
- * Filename:    com.gqhmt.fss.logicService.accounting.listener.WithdrawListener
+ * Filename:    com.gqhmt.pay.service.accounting.listener.WithdrawListener
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

@@ -4,11 +4,10 @@ package com.gqhmt.funds.architect.account.service;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.logicService.exception.CreateAccountFailException;
-import com.gqhmt.fss.logicService.exception.NeedSMSValidException;
-import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.funds.architect.account.mapper.read.FundAccountReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
@@ -74,30 +73,40 @@ public class FundAccountService {
      */
     public FundAccountEntity createAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         //创建主账户
-        FundAccountEntity entity = this.createCustomerAccount(customerInfoEntity,userID);
-        //创建子账户
-        this.createCustomerAccount(customerInfoEntity,userID,entity.getParentId());
+        try {
+            FundAccountEntity entity = this.createCustomerAccount(customerInfoEntity, userID);
+            //创建子账户
+            this.createCustomerAccount(customerInfoEntity, userID, entity.getId());
 
-        return entity;
+            return entity;
+        }catch (Exception e){
+
+            String  msg = "数据库异常";
+            if(e.getMessage() != null && e.getMessage().contains("uk_cus_id_type")){
+                msg = "账户已存在";
+            }
+            throw new FssException(msg,e);
+        }
 
     }
     /**
      * 创建客户主账户
      * @param customerInfoEntity
      * @param userID
-     * @throws CreateAccountFailException
+     * @throws FssException
      */
     private FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-        LogUtil.debug(this.getClass(),entity);
+
         this.insert(entity);
+        LogUtil.debug(this.getClass(),entity+":"+entity.getId());
         return entity;
     }
     /**
      * 创建客户子账户
      * @param customerInfoEntity
      * @param userID
-     * @throws CreateAccountFailException
+     * @throws FssException
      */
     private void createCustomerAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Long pID) throws FssException {
 
@@ -143,8 +152,7 @@ public class FundAccountService {
     
     /**
      * 根据条件查询返回所有资金账户列表
-     * @param fundsAcctBean
-     * @param pageReq
+     * @param fundAccountEntity
      * @return
      * @throws FssException
      */
@@ -170,7 +178,7 @@ public class FundAccountService {
      * @return
      */
     public FundAccountEntity getFundAccount(Integer cusID, int type){
-        return this.fundAccountReadMapper.queryFundAccount(cusID, type);
+        return this.fundAccountReadMapper.queryFundAccountByCutId(cusID, type);
     }
 
     /**
@@ -180,7 +188,7 @@ public class FundAccountService {
      * @return
      */
     public FundAccountEntity getFundAccount(String userName,int type){
-        return this.fundAccountReadMapper.queryFundAccount(userName, type);
+        return this.fundAccountReadMapper.queryFundAccountByUserName(userName, type);
     }
 
     public String getAccountNo(){
@@ -310,11 +318,6 @@ public class FundAccountService {
         }catch (CommandParmException e){
             code = "0001";
             msg = e.getMessage();
-        }catch (NeedSMSValidException e){
-            String mmsTmp =e.getMessage();
-            String[] tmp = mmsTmp.split(":");
-            msg = tmp[1];
-            orderNo = tmp[0];
         }
         map.put("code", code);
         map.put("msg",msg);

@@ -89,7 +89,7 @@ public class FundTradeEntity {
 	private Integer repaymentId;
 
 	@Column(name = "bonus_amount")
-	private Long bonusAmount;
+	private BigDecimal bonusAmount;
 
 	public FundTradeEntity() {
 	}
@@ -204,11 +204,11 @@ public class FundTradeEntity {
 	}
 
 	
-	public Long getBonusAmount() {
+	public BigDecimal getBonusAmount() {
 		return bonusAmount;
 	}
 
-	public void setBonusAmount(Long bonusAmount) {
+	public void setBonusAmount(BigDecimal bonusAmount) {
 		this.bonusAmount = bonusAmount;
 	}
 }

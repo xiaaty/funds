@@ -4,9 +4,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.util.ThirdPartyType;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
@@ -56,20 +54,5 @@ public class FundSequenceServiceTest extends AbstractJUnit4SpringContextTests {
 	    entity.setoAccountId(2l);
     }
     
-    @Test
-    public void testInsert() throws Exception {
-    	fundSequenceService.save(entity);
-    	
-    	FundSequenceEntity entity1 = fundSequenceService.selectByPrimaryKey(entity.getId());
-    	Assert.assertEquals("1", entity1.getAccountId().toString());
-    	
-    	entity1.setAccountId(2l);
-    	fundSequenceService.update(entity1);
-    	Assert.assertEquals("2", entity1.getAccountId().toString());
-    	
-    	fundSequenceService.delete(entity1.getId());
-    	FundSequenceEntity entity2 = fundSequenceService.selectByPrimaryKey(entity.getId());
-    	Assert.assertEquals(null, entity2);
-    	
-    }
+
 }

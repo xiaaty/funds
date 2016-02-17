@@ -2,7 +2,6 @@ package com.gqhmt.sys.web;
 
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.util.Resources;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ public class LoginFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		pattern = Pattern.compile(GlobalConstants.EXCLUDE_DIRECTORY_REGEX);
-		exclude=Resources.getString(GlobalConstants.EXCLUDE_URL_INIT);
+//		exclude=Resources.getString(GlobalConstants.EXCLUDE_URL_INIT);
 	}
 
 	@Override

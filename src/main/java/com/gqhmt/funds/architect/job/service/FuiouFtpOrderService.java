@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.job.service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
 import com.gqhmt.funds.architect.job.bean.FuiouUploadFile;
 import com.gqhmt.funds.architect.job.bean.FundOrder;

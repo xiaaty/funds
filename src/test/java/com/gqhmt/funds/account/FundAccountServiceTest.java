@@ -45,7 +45,7 @@ public class FundAccountServiceTest {
         try {
             fundAccountService.createAccount(customerInfoEntity,customerInfoEntity.getUserId());
         } catch (FssException e) {
-            assert false;
+            assert e.getMessage().equals("账户已存在");
         }
 
         assert true;
