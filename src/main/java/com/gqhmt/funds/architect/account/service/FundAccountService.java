@@ -51,13 +51,6 @@ public class FundAccountService {
     @Resource
     private BankCardInfoService bankCardInfoService;
     
-    public int insert(FundAccountEntity entity) throws FssException {
-        return fundAccountWriteMapper.insertSelective(entity);
-    }
-
-    public void insert(List<FundAccountEntity> entities) throws FssException{
-         fundAccountWriteMapper.insertAccountList(entities);
-    }
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -98,7 +91,7 @@ public class FundAccountService {
     private FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
-        this.insert(entity);
+        this.fundAccountWriteMapper.insert(entity);
         LogUtil.debug(this.getClass(),entity+":"+entity.getId());
         return entity;
     }
@@ -127,7 +120,7 @@ public class FundAccountService {
 
         }
 
-        this.insert(insertList);
+        this.fundAccountWriteMapper.insertList(insertList);
         LogUtil.debug(this.getClass(), insertList);
 
     }
