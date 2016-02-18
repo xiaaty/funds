@@ -1,12 +1,14 @@
 package com.gqhmt.fss.architect.account.service;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import org.springframework.stereotype.Service;
+import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.fss.architect.account.service.FssAccountService
@@ -35,5 +37,9 @@ public class FssAccountService {
         return this.accountReadMapper.findCustomerAccountByParams(map);
     }
 
+
+    public List<BussAndAccountBean> queryAccountList(Map map)throws FssException {
+        return this.accountReadMapper.getBussinessAccountList(map);
+    }
 
 }

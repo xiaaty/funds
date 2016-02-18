@@ -5,7 +5,7 @@
 	<insert id="insertAccountList">
 		insert into t_gq_fund_account (cust_id, amount, freeze_amount, account_type, busi_type, parent_id,  CREATE_TIME, MODIFY_TIME, account_no, user_id, has_Third_Account, user_name, cust_name) values
 		<foreach collection="accounts"   separator=","  item="account" index="index">
-			(#{account.cust_id},0.00,0.00,#{account.account_type},#{account.busi_type},#{account.parent_id},now(),now(),#{account.account_no},#{account.user_id},0,#{account.user_name},#{account.cust_name})
+			(#{account.custId},0.00,0.00,#{account.accountType},#{account.busiType},#{account.parentId},now(),now(),#{account.accountNo},#{account.userId},0,#{account.userName},#{account.custName})
 		</foreach>
 	</insert>
 

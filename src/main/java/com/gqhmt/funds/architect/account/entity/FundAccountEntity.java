@@ -2,6 +2,8 @@ package com.gqhmt.funds.architect.account.entity;
 
 
 
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+
 import javax.persistence.*;
 
 import java.math.BigDecimal;
@@ -78,6 +80,8 @@ public class FundAccountEntity {
     //结算类型；0 T+0 ; 1 T+1
     @Column(name = "settle_type")
     private Integer settleType ;
+
+    private CustomerInfoEntity customerInfoEntity;
 
     public Long getId() {
         return id;
@@ -305,4 +309,11 @@ public class FundAccountEntity {
 		this.ishangeBankCard = ishangeBankCard;
 	}
 
+    public CustomerInfoEntity getCustomerInfoEntity() {
+        return customerInfoEntity;
+    }
+
+    public void setCustomerInfoEntity(CustomerInfoEntity customerInfoEntity) {
+        this.customerInfoEntity = customerInfoEntity;
+    }
 }

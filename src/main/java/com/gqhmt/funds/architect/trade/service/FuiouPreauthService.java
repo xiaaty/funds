@@ -66,10 +66,10 @@ public class FuiouPreauthService {
     public void addFuiouPreauth(FundAccountEntity fromEntity, FundAccountEntity toSFEntity, Tender tender, String contractNo, FundOrderEntity fundOrderEntity){
         FuiouPreauth fuiouPreauth = new FuiouPreauth();
         fuiouPreauth.setAccountId(fromEntity.getId());
-        fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));
-        fuiouPreauth.setSourceId(tender.getBidId());
-        fuiouPreauth.setBid(tender.getBidId());
-        fuiouPreauth.setTenderid(tender.getId());
+//        fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));
+//        fuiouPreauth.setSourceId(tender.getBidId());
+//        fuiouPreauth.setBid(tender.getBidId());
+//        fuiouPreauth.setTenderid(tender.getId());
         fuiouPreauth.setType(GlobalConstants.ORDER_BID);
         fuiouPreauth.setUserName(fromEntity.getUserName());
         fuiouPreauth.setState(1);
@@ -83,4 +83,24 @@ public class FuiouPreauthService {
     public List<FuiouPreauth> bidFaild(){
         return fuiouPreauthReadMapper.bidFaild();
     }
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月16日
+     * function：查询FuiouPreauth集合信息
+     */
+    public List<FuiouPreauth> findFuiouPreauthList(){
+    	return fuiouPreauthReadMapper.selectAll();
+    }
+
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月16日
+     * function：通过ID查询FuiouPreauth
+     */
+    public FuiouPreauth findFuiouPreauthById(Long id){
+    	 return  fuiouPreauthReadMapper.selectByPrimaryKey(id);
+    }
+    
 }

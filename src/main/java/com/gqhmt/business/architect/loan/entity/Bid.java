@@ -84,6 +84,12 @@ public class Bid {
 
     @Column(name = "modify_user_id")
     private Integer modifyUserId;
+
+    @Column(name = "is_save_hypothecarius")
+    private Integer isHypothecarius;
+
+    @Column(name = "hypothecarius")
+    private Integer hypothecarius;
     // 竞拍天数
 //    private Integer assigmentAuctionDays;
 //    private Integer assigmentStatus;
@@ -252,5 +258,21 @@ public class Bid {
 
     public void setModifyUserId(Integer modifyUserId) {
         this.modifyUserId = modifyUserId;
+    }
+
+    public Integer getIsHypothecarius() {
+        return isHypothecarius;
+    }
+
+    public void setIsHypothecarius(Integer isHypothecarius) {
+        this.isHypothecarius = isHypothecarius;
+    }
+
+    public Integer getHypothecarius() {
+        return hypothecarius;
+    }
+
+    public void setHypothecarius(Integer hypothecarius) {
+        this.hypothecarius = hypothecarius;
     }
 }

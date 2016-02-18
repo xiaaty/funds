@@ -1,5 +1,16 @@
 package com.gqhmt.funds.account;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.annotation.Resource;
+
 /**
  * Filename:    com.gqhmt.funds.account.FundAccountServiceTest
  * Copyright:   Copyright (c)2015
@@ -16,6 +27,29 @@ package com.gqhmt.funds.account;
  * -----------------------------------------------------------------
  * 16/2/15  于泳      1.0     1.0 Version
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/*.xml")
 public class FundAccountServiceTest {
+
+    @Resource
+    private FundAccountService fundAccountService;
+
+    @Resource
+    private CustomerInfoService customerInfoService;
+
+    @Test
+    public void createAccountTest()  {
+
+        CustomerInfoEntity customerInfoEntity = customerInfoService.queryCustomerById(611636);
+
+        try {
+            fundAccountService.createAccount(customerInfoEntity,customerInfoEntity.getUserId());
+        } catch (FssException e) {
+            assert e.getMessage().equals("账户已存在");
+        }
+
+        assert true;
+
+    }
 
 }

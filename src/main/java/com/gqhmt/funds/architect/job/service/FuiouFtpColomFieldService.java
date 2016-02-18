@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.job.service;
 
-import com.gqhmt.fss.pay.exception.CommandParmException;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
 import com.gqhmt.funds.architect.job.mapper.read.FuiouFtpColomFieldReadMapper;

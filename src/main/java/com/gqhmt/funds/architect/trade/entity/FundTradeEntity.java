@@ -28,62 +28,74 @@ public class FundTradeEntity {
 	/**
 	 * 主键ID
 	 */
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	/**
 	 * 交易号码
 	 */
+	@Column(name = "trade_no", length = 50)
 	private String tradeNo;
 	/**
 	 * 交易类型（根据实际情况再定）
 	 */
+	@Column(name = "trade_type")
 	private Integer tradeType;
 	/**
 	 * 交易用户ID
 	 */
+	@Column(name = "user_id")
 	private Integer userId;
 	/**
 	 * 交易账户ID
 	 */
+	@Column(name = "account_id")
 	private long accountId;
 	/**
 	 * 收入金额
 	 */
+	@Column(name = "income", precision = 18, scale = 2)
 	private BigDecimal income;
 	/**
 	 * 支出金额
 	 */
+	@Column(name = "spending", precision = 18, scale = 2)
 	private BigDecimal spending;
 	/**
 	 * 账户当前可用金额
 	 */
+	@Column(name = "usable_sum", precision = 18, scale = 2)
 	private BigDecimal usableSum;
 	/**
 	 * 备注
 	 */
+	@Column(name = "remarks", length = 500)
 	private String remarks;
 	/**
 	 * 交易时间
 	 */
+	@Column(name = "trade_time", length = 19)
 	private Date tradeTime;
 	/**
 	 * 标的ID
 	 */
+	@Column(name = "bid_id")
 	private Integer bidId;
 	/**
 	 * 还款ID
 	 */
+	@Column(name = "repayment_id")
 	private Integer repaymentId;
 
-
-	private Long bonusAmount;
+	@Column(name = "bonus_amount")
+	private BigDecimal bonusAmount;
 
 	public FundTradeEntity() {
 	}
 
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	public Integer getId() {
 		return this.id;
 	}
@@ -92,7 +104,7 @@ public class FundTradeEntity {
 		this.id = id;
 	}
 
-	@Column(name = "trade_no", length = 50)
+	
 	public String getTradeNo() {
 		return this.tradeNo;
 	}
@@ -101,7 +113,7 @@ public class FundTradeEntity {
 		this.tradeNo = tradeNo;
 	}
 
-	@Column(name = "trade_type")
+
 	public Integer getTradeType() {
 		return this.tradeType;
 	}
@@ -110,7 +122,7 @@ public class FundTradeEntity {
 		this.tradeType = tradeType;
 	}
 
-	@Column(name = "user_id")
+	
 	public Integer getUserId() {
 		return this.userId;
 	}
@@ -119,7 +131,7 @@ public class FundTradeEntity {
 		this.userId = userId;
 	}
 
-	@Column(name = "account_id")
+	
 	public long getAccountId() {
 		return this.accountId;
 	}
@@ -128,7 +140,7 @@ public class FundTradeEntity {
 		this.accountId = accountId;
 	}
 
-	@Column(name = "income", precision = 18, scale = 2)
+	
 	public BigDecimal getIncome() {
 		return this.income;
 	}
@@ -137,7 +149,7 @@ public class FundTradeEntity {
 		this.income = income;
 	}
 
-	@Column(name = "spending", precision = 18, scale = 2)
+	
 	public BigDecimal getSpending() {
 		return this.spending;
 	}
@@ -146,7 +158,7 @@ public class FundTradeEntity {
 		this.spending = spending;
 	}
 
-	@Column(name = "usable_sum", precision = 18, scale = 2)
+	
 	public BigDecimal getUsableSum() {
 		return this.usableSum;
 	}
@@ -155,7 +167,7 @@ public class FundTradeEntity {
 		this.usableSum = usableSum;
 	}
 
-	@Column(name = "remarks", length = 500)
+	
 	public String getRemarks() {
 		return this.remarks;
 	}
@@ -164,7 +176,7 @@ public class FundTradeEntity {
 		this.remarks = remarks;
 	}
 
-	@Column(name = "trade_time", length = 19)
+	
 	public Date getTradeTime() {
 		return this.tradeTime;
 	}
@@ -173,7 +185,7 @@ public class FundTradeEntity {
 		this.tradeTime = tradeTime;
 	}
 
-	@Column(name = "bid_id")
+	
 	public Integer getBidId() {
 		return this.bidId;
 	}
@@ -182,7 +194,7 @@ public class FundTradeEntity {
 		this.bidId = bidId;
 	}
 
-	@Column(name = "repayment_id")
+	
 	public Integer getRepaymentId() {
 		return this.repaymentId;
 	}
@@ -191,12 +203,12 @@ public class FundTradeEntity {
 		this.repaymentId = repaymentId;
 	}
 
-	@Column(name = "bonus_amount")
-	public Long getBonusAmount() {
+	
+	public BigDecimal getBonusAmount() {
 		return bonusAmount;
 	}
 
-	public void setBonusAmount(Long bonusAmount) {
+	public void setBonusAmount(BigDecimal bonusAmount) {
 		this.bonusAmount = bonusAmount;
 	}
 }

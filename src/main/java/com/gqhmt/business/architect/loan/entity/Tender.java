@@ -3,6 +3,7 @@ package com.gqhmt.business.architect.loan.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -26,10 +27,10 @@ import java.util.Date;
 public class Tender {
 
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name="bid_id")
-    private Integer bidId;
+    private Long bidId;
 
     @Column(name="customer_id")
     private Integer customerId;
@@ -44,62 +45,30 @@ public class Tender {
     private Integer investmentId;
 
     @Column(name="real_amount")
-    private Double realAmount;
+    private BigDecimal realAmount;
 
     @Column(name="bonus_ids")
     private String bonusIds;
 
     @Column(name = "bonus_amount")
-    private Double bonusAmount;
+    private BigDecimal bonusAmount;
 
     @Column(name="guanqian_amount")
-    private Double guanqianAmount;
+    private BigDecimal guanqianAmount;
 
-    @Column(name="invest_amount")
-    private Double investAmount;
-
-    @Column(name="invest_time")
-    private Date investTime;
-
-    @Column(name="invest_type")
-    private Integer investType;
-
-    @Column(name="state")
-    private Integer state;
-//    private Date createTime;
-//    private String createUserId;
-//    private Date modifyTime;
-//    private String modifyUserId;
-//    private Integer offlineTenderPeriod;
-//    private BigDecimal tenderScale;
-//    private String remark;
-
-//    private Integer debtStatus;
-//    private Integer orderId;
-//    private Integer debtId;
-//    private Integer userOnlineTenderFrequency;
-//    private Integer oldTenderId;
-//    private Integer newBidId;
-//    private Integer topBidId;
-//    private Integer node;
-//    private Integer productSalesPackId;
-    //是否已经选择
-//    private Integer isCreateNewBid;
-
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getBidId() {
+    public Long getBidId() {
         return bidId;
     }
 
-    public void setBidId(Integer bidId) {
+    public void setBidId(Long bidId) {
         this.bidId = bidId;
     }
 
@@ -135,11 +104,11 @@ public class Tender {
         this.investmentId = investmentId;
     }
 
-    public Double getRealAmount() {
+    public BigDecimal getRealAmount() {
         return realAmount;
     }
 
-    public void setRealAmount(Double realAmount) {
+    public void setRealAmount(BigDecimal realAmount) {
         this.realAmount = realAmount;
     }
 
@@ -151,27 +120,27 @@ public class Tender {
         this.bonusIds = bonusIds;
     }
 
-    public Double getBonusAmount() {
+    public BigDecimal getBonusAmount() {
         return bonusAmount;
     }
 
-    public void setBonusAmount(Double bonusAmount) {
+    public void setBonusAmount(BigDecimal bonusAmount) {
         this.bonusAmount = bonusAmount;
     }
 
-    public Double getGuanqianAmount() {
+    public BigDecimal getGuanqianAmount() {
         return guanqianAmount;
     }
 
-    public void setGuanqianAmount(Double guanqianAmount) {
+    public void setGuanqianAmount(BigDecimal guanqianAmount) {
         this.guanqianAmount = guanqianAmount;
     }
 
-    public Double getInvestAmount() {
+    public BigDecimal getInvestAmount() {
         return investAmount;
     }
 
-    public void setInvestAmount(Double investAmount) {
+    public void setInvestAmount(BigDecimal investAmount) {
         this.investAmount = investAmount;
     }
 
@@ -198,4 +167,40 @@ public class Tender {
     public void setState(Integer state) {
         this.state = state;
     }
+
+    @Column(name="invest_amount")
+
+    private BigDecimal investAmount;
+
+    @Column(name="invest_time")
+    private Date investTime;
+
+    @Column(name="invest_type")
+    private Integer investType;
+
+    @Column(name="state")
+    private Integer state;
+//    private Date createTime;
+//    private String createUserId;
+//    private Date modifyTime;
+//    private String modifyUserId;
+//    private Integer offlineTenderPeriod;
+//    private BigDecimal tenderScale;
+//    private String remark;
+
+//    private Integer debtStatus;
+//    private Integer orderId;
+//    private Integer debtId;
+//    private Integer userOnlineTenderFrequency;
+//    private Integer oldTenderId;
+//    private Integer newBidId;
+//    private Integer topBidId;
+//    private Integer node;
+//    private Integer productSalesPackId;
+    //是否已经选择
+//    private Integer isCreateNewBid;
+
+
+
+
 }
