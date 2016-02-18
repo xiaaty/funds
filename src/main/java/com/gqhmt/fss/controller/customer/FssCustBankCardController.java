@@ -45,14 +45,14 @@ public class FssCustBankCardController {
 	@RequestMapping(value = "/fss/customer/bankCards", method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public Object bankCardList(HttpServletRequest request, ModelMap model,
-			@ModelAttribute(value = "customer") CustomerAndUser customerAndUser) {
+			@ModelAttribute(value = "customer") CustomerAndUser customer) {
 		// 得到银行卡、客户信息列表
-		List<CustomerAndUser> bankCards = bankCardService.findbankCardAll(customerAndUser);
+		List<CustomerAndUser> bankCards = bankCardService.findbankCardAll(customer);
 		//得到银行列表
 		List<BankCardBean> banks=bankCardInfoService.queryBankList();
 		model.addAttribute("page", bankCards);
 		model.addAttribute("banks", banks);
-		// model.addAttribute("customer", customerAndUser);
+		model.addAttribute("customer", customer);
 		return "fss/customer/bankCardList";
 	}
 	
