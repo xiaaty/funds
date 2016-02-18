@@ -1,7 +1,8 @@
-package com.gqhmt.funds.architect.customer.mapper.write;
+package com.gqhmt.funds.architect.customer.mapper.read;
 
-import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import java.util.List;
+import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.funds.architect.customer.entity.BankEntity;
 
 /**
  * Filename:    com.gq.p2p.customer.dao
@@ -19,7 +20,13 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
  * -----------------------------------------------------------------
  * 2015/1/16  于泳      1.0     1.0 Version
  */
-public interface BankCardinfoWriteMapper extends ReadAndWriteMapper<BankCardInfoEntity> {
-	public void updateBankCardInfo(BankCardInfoEntity bankcard);
-	public void deleteBankCardInfo(Integer id);
+public interface BankReadMapper extends ReadMapper<BankEntity> {
+	
+	/**
+	 * 查询银行信息
+	 * @param bankinfo
+	 * @return
+	 */
+	public List<BankEntity> selectBankList(BankEntity bankinfo);
+	
 }

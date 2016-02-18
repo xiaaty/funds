@@ -2,12 +2,18 @@ package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.BankCardInfoReadMapper;
+import com.gqhmt.funds.architect.customer.mapper.read.BankReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.BankCardinfoWriteMapper;
+import com.gqhmt.funds.architect.customer.mapper.write.BankWriteMapper;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +45,16 @@ public class BankCardInfoService {
     private BankCardInfoReadMapper bankCardinfoReadMapper;
     @Resource
     private BankCardinfoWriteMapper bankCardinfoWriteMapper;
+    @Resource
+	private FssChangeCardReadMapper bankCardChangeReadMapper;
+    @Resource
+    private BankReadMapper bankReadMapper;
+    
+    @Resource
+    private BankWriteMapper bankWriteMapper;
+    
+    
+    
 //    @Autowired
 //    private BaseService baseService;
     
@@ -368,4 +384,61 @@ public class BankCardInfoService {
         
     }
     */
+    /**
+     * 银行卡变更信息列表
+     * @param fssBankcard
+     * @return
+     */
+	public List<FssChangeCardEntity> getBankCardChangeList(FssChangeCardEntity fssBankcard){
+		return bankCardChangeReadMapper.queryChangeCardList(fssBankcard);
+	}
+	
+	/**
+	 * 查询银行信息
+	 * @param bankinfo
+	 * @return
+	 */
+	public List<BankEntity> getBankList(BankEntity bankinfo){
+		return bankReadMapper.selectBankList(bankinfo);
+	}
+
+	/**
+	 * 根据id得到银行信息
+	 * @param bankinfo
+	 * @return
+	 */
+	public BankEntity getBankById(Long id){
+		return bankReadMapper.selectByPrimaryKey(id);
+	}
+    
+	public void saveBank(BankEntity bank){
+		this.bankWriteMapper.saveBank(bank);
+	}
+    
+	public void updateBank(BankEntity bank){
+		this.bankWriteMapper.updateBank(bank);
+	}
+	
+	/**
+	 * 银行卡管理
+	 * @param bankcard
+	 * @return
+	 */
+	public List<BankCardInfoEntity> findAllbankCards(BankCardInfoEntity bankcard){
+		return this.bankCardinfoReadMapper.selectBankCardList(bankcard);
+	}
+    
+	
+	public BankCardInfoEntity getBankCardById(Integer id){
+		return bankCardinfoReadMapper.selectByPrimaryKey(id);
+	}
+	
+	public void updateAndSaveBankCard(BankCardInfoEntity bankcard){
+		this.bankCardinfoWriteMapper.updateBankCardInfo(bankcard);
+	}
+	
+	public void delBankCard(Integer id){
+		this.bankCardinfoWriteMapper.deleteBankCardInfo(id);
+	}
+    
 }
