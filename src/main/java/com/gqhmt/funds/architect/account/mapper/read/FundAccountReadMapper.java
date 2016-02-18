@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
+import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import org.apache.ibatis.annotations.Param;
@@ -67,6 +68,13 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	 * @throws FssException
 	 */
 	public List<FundAccountEntity> findOldFundsAccountList(FundAccountEntity fundsAcctBean) throws FssException;
+	 /**
+	    * 
+	    * author:jhz
+	    * time:2016年2月16日
+	    * function：funds账号管理
+	    */
+	public List<FundAccountCustomerBean> findAcountList(Map accMap);
 	
 	
 	

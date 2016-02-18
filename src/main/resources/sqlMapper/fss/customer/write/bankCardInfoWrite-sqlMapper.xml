@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.funds.architect.customer.mapper.write.BankCardinfoWriteMapper">
+	<!-- <insert id="saveBank" parameterType="bankEntity"  useGeneratedKeys="true" keyProperty="id">  
+         insert into t_gq_fss_bank_list  
+            (name,sort_name,bank_icon,limit_page,create_time,modify_time,create_user_id,modify_user_id,tmplate_page,is_set_limit_page,bank_code) 
+        values  
+            (#{bankName},#{sortName},#{bankIcon},#{limitPage},#{createTime},#{modifyTime},#{createUserId},#{modifyUserId},#{tmplatePage},#{isSetLimitPage},#{bankCode})
+    </insert>  
+	 -->
+	<update id="updateBankCardInfo" parameterType="bankCardInfoEntity">  
+         UPDATE t_gq_bank_info
+         SET
+         cert_Name=#{certName},
+         mobile=#{mobile},
+         cert_No=#{certNo},
+         bank_no=#{bankNo},
+         bank_sort_name=#{bankSortName},
+         city_id=#{cityId},
+         MODIFY_TIME=#{modifyTime},
+         parent_bank_id=#{parentBankId},
+         is_personal_card=#{isPersonalCard}
+         WHERE id=#{id}
+    </update>
+	
+	<update id="deleteBankCardInfo" parameterType="java.lang.Integer">
+		UPDATE t_gq_bank_info
+         SET deleted=0 WHERE id=#{id}
+	</update>
+	
+	
+</mapper>

@@ -21,4 +21,54 @@
 			name bankLongName
 			 	from t_gq_fss_bank_list
 	</select>
+	
+	
+	<!--银行卡管理 -->
+	<select id="selectBankCardList"  parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity" >
+		SELECT 
+			t.id id,
+			t.cust_id  custId,
+			t.bank_long_name  bankLongName,
+			t.bank_sort_name bankSortName,
+			t.bank_no bankNo,
+			t.is_personal_card isPersonalCard,
+			t.cert_no  certNo,
+			t.mobile mobile,
+			t.cert_name certName,
+			t.card_index cardIndex,
+			t.city_id cityId,
+			t.parent_bank_id parentBankId,
+			t.create_user_id createUserId,
+			t.create_time createTime,
+			t.modify_user_id modifyUserId,
+			t.modify_time modifyTime,
+			t.deleted isDel,
+			t.change_state changeState,
+			t.memo memo,
+			t.source source
+		FROM t_gq_bank_info t
+		<where>
+	 	  	 <if test="certName != null and certName != ''">
+               and t.cert_name like  concat('%',#{certName},'%') 
+             </if>
+             <if test="bankNo != null and bankNo != ''">
+               and t.bank_no like concat('%',#{bankNo},'%') 
+             </if>
+             <if test="bankSortName != null and bankSortName != ''">
+               and t.bank_sort_name like concat('%',#{bankSortName},'%') 
+             </if>
+		</where>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

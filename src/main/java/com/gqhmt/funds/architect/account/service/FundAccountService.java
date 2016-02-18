@@ -3,6 +3,7 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -331,8 +332,17 @@ public class FundAccountService {
     
     
 
+   /**
+    * 
+    * author:jhz
+    * time:2016年2月16日
+    * function：funds账号管理
+    */
+   	public List<FundAccountCustomerBean> findAcountList(Map accMap) {
+	   // TODO Auto-generated method stub
+	   return fundAccountReadMapper.findAcountList(accMap);
+   	}
 
-    
     
     
     

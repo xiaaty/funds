@@ -42,8 +42,8 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>客户信息管理</li>
-            <li>银行卡列表</li>
+            <li>资金管理管理</li>
+            <li>银行卡管理</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -59,8 +59,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="cardListForm" action="${contextPath}/fss/customer/bankCards" method="post" >
-                              
+                                <form class="smart-form" id="cardListForm" action="" method="post" >
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
                                         <!-- This area used as dropdown edit box -->
@@ -82,28 +81,41 @@
                                                         <td class="tr" nowrap="nowrap">客户姓名:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
-                                                                <input type="text" name="name" value="${customer.name}">
+                                                                <input type="text" name="certName" value="${bankcard.certName}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">客户手机号：</td>
+                                                        <td class="tr" nowrap="nowrap">银行卡号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="mobile" value="${customer.mobile}">
+                                                                <input type="text" style="width:210px" name="bankNo" value="${bankcard.bankNo}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">客户身份证号：</td>
+                                                        <td class="tr" nowrap="nowrap">银行简称：</td>
                                                         <td nowrap="nowrap">
-                                                            <label class="input" style="width:210px" >
-                                                                <input type="text" name="certNo" value="${customer.certNo}">
+                                                            <label class="input">
+                                                                <input type="text" style="width:210px" name="bankSortName" value="${bankcard.bankSortName}">
                                                             </label>
                                                         </td>
+                                                      <%-- 
+ 														<td class="tr">创建时间：</td>
+			                                            <td colspan="5">
+			                                                <section class="fl">
+			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
+			                                                    </label>
+			                                                </section>
+			                                                <span class="fl">&nbsp;至&nbsp;</span>
+			                                                <section class="fl">
+			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
+			                                                    </label>
+			                                                </section>
+			                                            </td> --%>
                                                     </tr>
-                                                   
                                                 </tbody>
                                             </table>
                                         </div>
                                         <footer>
-                                            <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
                                             <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
@@ -138,14 +150,13 @@
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <th>客户编号</th>
-                                            <th>客户姓名</th>
-                                            <th>客户手机号 </th>
-                                            <th>证件类型 </th>
-                                            <th>证件号码 </th>
-                                            <th>所属银行  </th>
-                                            <th>银行卡号 </th>
-                                            <th>所属地区 </th>
+                                        	<th>编号</th>
+                                            <th>客户名称</th>
+                                            <th>银行名称  </th>
+                                            <th>银行简称  </th>
+                                            <th>银行账号 </th>
+                                            <th>银行卡类型 </th>
+                                            <th>是否绑定第三方银行账户</th>
                                             <th>创建日期 </th>
                                             <th>修改日期 </th>
                                             <th>操作</th>
@@ -153,25 +164,21 @@
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
-                                                <tr>
-                                                    <td>${t.userNo}</td>
-                                                    <td>${t.name}</td>
-                                                    <td>${t.mobile}</td>
-                                                    <td>${t.certType}</td>
-                                                    <td>${t.certNo}</td>
-                                                    <td>
-                                                      <c:forEach items="${banks}" var="banks">
-                                                      <c:if test="${t.bankId==banks.custId}">${banks.bankLongName}</c:if>
-                                                    </c:forEach>
-                                                    </td>
-                                                    <td>${t.cardNo}</td>
-                                                    <td>${t.area}</td>
-                                                    <td>${t.createTime}</td>
-                                                    <td>${t.modifyTime}</td>
-                                                   <td>
-                                                    <a href="${contextPath}/fss/customer/toUpdate?id=${t.id}">申请变更</a>
-                                                    </td>
-                                                </tr>
+                                           <tr>
+                                               <td>${t.id}</td>
+                                               <td>${t.certName}</td>
+                                               <td>${t.bankLongName}</td>
+                                               <td>${t.bankSortName}</td>
+                                               <td>${t.bankNo}</td>
+                                               <td>${t.isPersonalCard==1?"个人":"公司"}</td>
+                                               <td>${t.cardIndex==''?"否":"是"}</td>
+                                               <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                               <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                              <td>
+                                               	<a href="${contextPath}/fund/updateBankCard/${t.id}">修改</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                                              	<a href="javascript:void(0)" onclick="deleteBankCard(${t.id})">删除</a>
+                                              </td>
+                                           </tr>
                                         </c:forEach>
                                         </tbody>
                                     </table>
@@ -195,6 +202,28 @@
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#cardListForm"));
     });
 
+    
+    /**
+   	删除
+   **/
+   function deleteBankCard(id){
+	            $.ajax({
+	            	url : "${contextPath}/fund/deleteBankCard?id="+id,
+	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+	                dataType: "json",
+	                success: function (data) {
+	                    if (data.code == '0000') {
+	                      jAlert("删除成功!", '确认信息');
+	                      //自动跳转
+	                      parent.location.href="${contextPath}/fund/bankCardsManage";
+	                    } else {
+	                        return;
+	                    }
+	                }
+	            });
+    }
+    
+    
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>
