@@ -1,6 +1,7 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
+import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.g
@@ -48,6 +50,7 @@ public class FundSequenceService {
 
     @Resource
     private FundAccountService fundAccountService;
+    
 
     @Resource
     private FundTradeService fundTradeService;
@@ -306,5 +309,14 @@ public class FundSequenceService {
 
     public int querySequence(long accountId){
         return fundSequenceReadMapper.querySequence(accountId);
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月17日
+     * function：查询流水列表
+     */
+    public List<FundAccountSequenceBean> selectAccountSequenceList(Map fasMap) {
+    	return fundSequenceReadMapper.selectAccountSequenceList(fasMap);
     }
 }
