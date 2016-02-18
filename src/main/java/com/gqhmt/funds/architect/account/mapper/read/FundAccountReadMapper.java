@@ -75,7 +75,13 @@ public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	    * function：funds账号管理
 	    */
 	public List<FundAccountCustomerBean> findAcountList(Map accMap);
-	
+	 /**
+	  * 
+	  * author:jhz
+	  * time:2016年2月18日
+	  * function：找到指定的客户
+	  */
+	public FundAccountCustomerBean fundAccountCustomerById(Integer withHoldId);
 	
 	
 }

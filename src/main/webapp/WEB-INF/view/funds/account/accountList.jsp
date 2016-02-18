@@ -168,8 +168,9 @@
                                                     <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
+                                                    <a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>
+                                                    <a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a>
                                                     <a href="${contextPath}/funds/account/accountWater/${acc.id}">查看流水</a>
-                                                    <a href="#">查看流水</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
