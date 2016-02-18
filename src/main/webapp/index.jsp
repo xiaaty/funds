@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@page import="com.gqhmt.util.GlobalConstants"%>
+    <%@page import="com.gqhmt.core.util.GlobalConstants"%>
     <%@page import="com.gqhmt.util.RequestUtil"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <title>冠群驰骋资金清结算系统</title>
     <link type="image/x-icon" rel="shortcut icon" href="<%=request.getContextPath()%>/img/favicon.ico" >
     <link href="<%=request.getContextPath()%>/css/base.css" rel="stylesheet" type="text/css" />
@@ -54,7 +53,7 @@
 							<%= mess %>
 						</span></li>
 						<li><input type="text" class="input_login" value="" maxlength="6" name="verifyCode" placeholder="验证码" id="validCode" onkeydown="if(event.keyCode==13){return false;}"/><br><span class="login_error color04"><%= codeMess %></span>
-						    <span class="validcode_span"><a id="changeCode" class="ml5" href="javascript:void(0);"><img height="28" width="84" id="imgVerify" src="<%=request.getContextPath()%>/verify.jsp"/></a></span>
+						    <span class="validcode_span"><a id="changeCode" class="ml5" href="javascript:void(0);"><img height="28" width="84" id="imgVerify" src="<%=request.getContextPath()%>/captcha"/></a></span>
 						</li>
 						<!-- <li class="color04">
 						    <span class="fl f12"><input type="checkbox" class="mr5" name="remPwd" id="r_pwd"/><label>记住密码</label></span>
@@ -90,7 +89,7 @@
         }
     });
     $('#changeCode').click(function(){
-    	$('#imgVerify').attr('src','<%=request.getContextPath()%>/verify.jsp?t='+(new Date()).valueOf());
+    	$('#imgVerify').attr('src','<%=request.getContextPath()%>/captcha?t='+(new Date()).valueOf());
     });
 </script>
     </body>

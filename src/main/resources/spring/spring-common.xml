@@ -18,8 +18,25 @@
      http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
 
 	<!-- spring config -->
+
 	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
-	<context:component-scan base-package="com.gqhmt.fss.architect.*.service"/>
+	<context:component-scan base-package="com.gqhmt.fss.listener.*;com.gqhmt.funds.architect;com.gqhmt.fss.architect;com.gqhmt.sys.*;com.gqhmt.pay.service">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+
+	</context:component-scan>
+
+
+
+
+
+
+	<!-- 任务执行器 -->
+	<task:executor id="executor" pool-size="10"/>
+	<!-- 任务调度器 -->
+	<task:scheduler id="scheduler" pool-size="10"/>
+	<!--开启注解调度支持 @Async @Scheduled-->
+	<task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="true"/>
+
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 				<value>classpath*:jdbc/jdbc.properties</value>
@@ -44,7 +61,7 @@
 
 
 	</bean>
-	<bean id="read_dataSource"  class="org.apache.commons.dbcp2.BasicDataSource">
+	<!--<bean id="read_dataSource"  class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${read.jdbc.url}" />
 		<property name="username" value="${read.jdbc.username}" />
@@ -63,13 +80,16 @@
 		<property name="testWhileIdle" value="true" />
 		<property name="validationQuery" value="SELECT 1 FROM DUAL" />
 
-	</bean>
+	</bean>-->
 	<bean id="readSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="read_dataSource" />
+		<property name="dataSource" ref="write_dataSource" />
 		<property name="configLocation" value="classpath:jdbc/mybatis-config.xml" />
 		<property name="mapperLocations">
 			<list>
-				<value>classpath:sqlMapper/read/**/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/fss/*/read/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/sys/read/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 			</list>
 		</property>
 		<property name="plugins">
@@ -94,36 +114,64 @@
 		<property name="mapperLocations">
 			<list>
 				<!---->
-				<value>classpath:sqlMapper/write/**/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/fss/*/write/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/write/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/sys/write/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/funds/*/write/*-sqlMapper.xml</value>
 			</list>
-
-		</property>
-		<property name="plugins">
-			<array>
-
-			</array>
 		</property>
 	</bean>
 
-	<bean id="sysReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.fss.architect.*.mapper.read" />
+	<bean id="fssReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper.read" />
 		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
 	</bean>
-	<bean id="sysWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.fss.architect.*.mapper.write" />
+	<bean id="sysReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gqhmt.sys.mapper.read" />
+		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
+	</bean>
+	<bean id="fssWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper.write" />
 		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
 	</bean>
+	<bean id="sysWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gqhmt.sys.mapper.write" />
+		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
+	</bean>
+
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.fss.architect.*.mapper"/>
+		<property name="basePackage" value="com.gqhmt.fss.architect.*.mapper;com.gqhmt.sys.mapper"/>
 		<property name="properties">
 			<value>
-				mappers=com.gqhmt.core.mybatis.WriteMapper,com.gqhmt.core.mybatis.ReadMapper
+				mappers=com.gqhmt.core.mybatis.ReadAndWriteMapper,com.gqhmt.core.mybatis.ReadMapper
 			</value>
 		</property>
 	</bean>
 	<!--<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">-->
 		<!--<constructor-arg index="0" ref="writeSqlSessionFactory"/>-->
 	<!--</bean>-->
+
+	<!-- 配置事务 -->
+	<bean id="tx_manager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="write_dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="tx_manager"
+						  proxy-target-class="true" />
+	<!-- 应用事务 -->
+	<tx:advice id="tx_advice" transaction-manager="tx_manager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" rollback-for="FssException" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 通知器(把事务通知绑定到切入点) -->
+	<aop:config proxy-target-class="true">
+		<aop:advisor advice-ref="tx_advice"
+					 pointcut="execution(* com.gqhmt.*.*.*.service..*(..) throws com.gqhmt.core.FssException ) " />
+	</aop:config>
+
+	<aop:aspectj-autoproxy />
 
 
 </beans>

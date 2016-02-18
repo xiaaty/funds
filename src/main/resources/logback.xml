@@ -13,4 +13,6 @@
     </root>
 
     <logger name="com.gqhmt.core.aop" level="debug"></logger>
+    <logger name="org.apache.ibatis" level="debug"></logger>
+    <logger name="java.sql" level="debug"></logger>
 </configuration>

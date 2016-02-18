@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sys.mapper.write.DictOrderWriteMapper">
+	<insert id="insertDictOrder" parameterType="DictOrder" useGeneratedKeys="true" keyProperty="id">  
+        insert into t_gq_fss_dict_order  
+            (order_name,order_dict,order_list,memo) 
+        values  
+            (#{orderName},#{orderDict},#{orderList},#{memo})  
+    </insert>  
+    
+	<update id="updateDictOrderById" parameterType="DictOrder">  
+         UPDATE t_gq_fss_dict_order SET 
+         order_name=#{orderName},
+         order_dict=#{orderDict},
+         order_list=#{orderList},
+         memo=#{memo}
+         WHERE id=#{id}
+    </update>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</mapper>

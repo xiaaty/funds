@@ -1,35 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-config.dtd">
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
         <setting name="cacheEnabled" value="false"/>
-        <!--<setting name="logImpl" value="logback"/>-->
+        <setting name="logImpl" value="SLF4J"/>
     </settings>
-	<!--<typeAliases >
-		<typeAlias type="com.gq.sys.bean.SysUsers" alias="SysUsers"/>
-		<typeAlias type="com.gq.sys.bean.SysAuth" alias="SysAuth"/>
-		<typeAlias type="com.gq.sys.bean.Roles" alias="Roles"/>
-		<typeAlias type="com.gq.sys.bean.FuncList" alias="FuncList"/>
-		<typeAlias type="com.gq.sys.bean.SysAuthFunc" alias="SysAuthFunc"/>
-		<typeAlias type="com.gq.sys.bean.SysLog" alias="SysLog"/>
-	</typeAliases>-->
+	<typeAliases >
+	    <!-- 系统相关 -->
+		<typeAlias type="com.gqhmt.sys.beans.SysUsers" alias="SysUsers"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysAuth" alias="SysAuth"/>
+		<typeAlias type="com.gqhmt.sys.beans.Roles" alias="Roles"/>
+		<typeAlias type="com.gqhmt.sys.beans.FuncList" alias="FuncList"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysAuthFunc" alias="SysAuthFunc"/>
+		<typeAlias type="com.gqhmt.sys.beans.SysLog" alias="SysLog"/>
+		<typeAlias type="com.gqhmt.sys.entity.DictEntity" alias="DictMain"/>
+		<typeAlias type="com.gqhmt.sys.entity.DictOrderEntity" alias="DictOrder"/>
+		
+		<!-- 系统相关 end-->
+		<!-- 账户相关 -->
+	    <typeAlias type="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity" alias="bankCardInfoEntity"/>
+        <typeAlias type="com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity" alias="changeCardEntity"/>
+        <typeAlias type="com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity" alias="customerInfoEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundSequenceEntity" alias="fundSequenceEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.FundTradeEntity" alias="fundTradeEntity"/>
+	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundWithrawCharge" alias="fundWithrawCharge"/>
+	    <typeAlias type="com.gqhmt.fss.architect.customer.entity.FssCustomerEntity" alias="customer"/>
+	    <typeAlias type="com.gqhmt.funds.architect.account.entity.FundAccountEntity" alias="fundAccountEntity"/>
+	    <typeAlias type="com.gqhmt.fss.architect.account.entity.FssAccountEntity" alias="fssAccountEntity"/>
+	    
+	    <!-- 账户相关 end -->
+	    <!-- 交易相关 -->
+	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity" alias="withdrawApplyEntity"/>
+        <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity" alias="withholdApplyEntity"/>
+	    <!-- 交易相关 end-->
+	</typeAliases>
 
-   <!-- <plugins>
-        <plugin interceptor="com.gqhmt.interceptor.PageInterceptor">
+    <!--<plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
             <property name="dialect" value="mysql" />
-            <property name="pageSqlId" value=".*Page$" />
         </plugin>
     </plugins>-->
     <!--<plugins>
         &lt;!&ndash; com.github.pagehelper为PageHelper类所在包名 &ndash;&gt;
         <plugin interceptor="com.github.pagehelper.PageHelper">
+            &lt;!&ndash; 4.0.0以后版本可以不设置该参数 &ndash;&gt;
             <property name="dialect" value="mysql"/>
             &lt;!&ndash; 该参数默认为false &ndash;&gt;
             &lt;!&ndash; 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 &ndash;&gt;
             &lt;!&ndash; 和startPage中的pageNum效果一样&ndash;&gt;
-            <property name="offsetAsPageNum" value="true"/>
+            <property name="offsetAsPageNum" value="false"/>
             &lt;!&ndash; 该参数默认为false &ndash;&gt;
             &lt;!&ndash; 设置为true时，使用RowBounds分页会进行count查询 &ndash;&gt;
             <property name="rowBoundsWithCount" value="true"/>
@@ -40,6 +60,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             &lt;!&ndash; 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 &ndash;&gt;
             &lt;!&ndash; 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 &ndash;&gt;
             <property name="reasonable" value="true"/>
+            &lt;!&ndash; 支持通过Mapper接口参数来传递分页参数 &ndash;&gt;
+            <property name="supportMethodsArguments" value="true"/>
+            &lt;!&ndash; always总是返回PageInfo类型,check检查返回类型是否为PageInfo,none返回Page &ndash;&gt;
+            <property name="returnPageInfo" value="check"/>
         </plugin>
     </plugins>-->
 </configuration>

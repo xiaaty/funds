@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.funds.architect.account.mapper.write.FundAccountWriteMapper">
+
+	<insert id="insertAccountList">
+		insert into t_gq_fund_account (cust_id, amount, freeze_amount, account_type, busi_type, parent_id,  CREATE_TIME, MODIFY_TIME, account_no, user_id, has_Third_Account, user_name, cust_name) values
+		<foreach collection="accounts"   separator=","  item="account" index="index">
+			(#{account.custId},0.00,0.00,#{account.accountType},#{account.busiType},#{account.parentId},now(),now(),#{account.accountNo},#{account.userId},0,#{account.userName},#{account.custName})
+		</foreach>
+	</insert>
+
+</mapper>

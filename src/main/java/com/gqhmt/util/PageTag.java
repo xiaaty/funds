@@ -1,5 +1,7 @@
 package com.gqhmt.util;
 
+import com.gqhmt.core.util.GlobalConstants;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +20,7 @@ public class PageTag extends TagSupport{
 		try {
 			JspWriter out = pageContext.getOut();
 			out.print("<form  id='pageForm' action='" + pager.getLinkUrl() + "'method='post' >");
-			if(pager.getPageSize()!=GlobalConstants.PAGE_SIZE){
+			if(pager.getPageSize()!= GlobalConstants.PAGE_SIZE){
 				out.print("<input type=\"hidden\" name=\"pageNum\" value=\""+pager.getPageSize()+"\" />");
 			}
 			Map<String,String> conditions=pager.getSearchCondtions();

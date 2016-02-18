@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.RestApiReadMapper">
+	<sql id="fieldSql">
+	</sql>
+	<sql id="whereSql">
+		<if test="mchnNo != null and mchnNo != ''">
+			and a.mchn_no = #{mchnNo}
+		</if>
+	</sql>
+
+	<sql id="otherSql">
+		<choose>
+			<when test="orderStr != null">
+				order by ${orderStr}
+			</when>
+			<otherwise>
+				order by auth_type asc
+			</otherwise>
+		</choose>
+	</sql>
+	<!-- 获取商户授权类型 -->
+	<select id="getAuthTypeByCode" resultType="map">
+		SELECT
+		a.auth_ip,
+		a.auth_api,
+		a.busi_name
+		FROM t_gq_fss_api_business a
+		WHERE a.busi_code = #{busiCode}
+	</select>
+	<select id="getIpAddrListByCode" resultType="map">
+		SELECT
+		a.ip_address,
+		a.type,
+		a.create_time,
+		a.modify_time,
+		a.mchn_no
+		FROM
+		t_gq_fss_mchn_ipconfig a WHERE a.mchn_no =
+		#{mchnNo}
+	</select>
+	<!-- 查询商户api列表 -->
+	<select id="findBusinessAndApiList" parameterType="java.lang.String"
+		resultType="com.gqhmt.fss.architect.merchant.bean.BusinessAndApi">
+		SELECT
+		a.api_url apiUrl,
+		a.api_no apiNo,
+		b.mchn_no mchnNo,
+		a.api_name apiName,
+		b.modify_time modifyTime
+		FROM t_gq_fss_api a,t_gq_fss_mchn_api b
+		where a.api_no=b.api_no AND b.mchn_no=#{mchnNo}
+	</select>
+	<!-- 获取商户api列表 -->
+	<select id="getApiListByCode" resultType="map">
+		SELECT
+		a.busi_code,a.api_addr
+		FROM t_gq_fss_api_addr a WHERE a.mchn_no =
+		#{mchnNo}
+	</select>
+
+	<select id="findBusinessList" parameterType="java.lang.Long"
+		resultType="com.gqhmt.fss.architect.merchant.entity.Business">
+		SELECT
+		a.id,
+		a.mchn_name mchnName,
+		a.mchn_no mchnNo,
+		a.parent_id parentId,
+		a.parent_no parentNo,
+		a.mchn_key mchnKey,
+		a.mchn_key_end_date
+		mchnKeyEndDate,
+		a.auth_ip authIp,
+		a.auth_api authApi,
+		a.create_time
+		createTime,
+		a.modify_time modifyTime,
+		a.state
+		FROM t_gq_fss_mchn a where
+		1=1
+		<include refid="whereSql" />
+	</select>
+	<!-- 父商户列表 -->
+	<select id="getParentBusiness" parameterType="com.gqhmt.fss.architect.merchant.entity.Business" resultType="com.gqhmt.fss.architect.merchant.entity.Business">
+		SELECT
+		a.mchn_name mchnName,a.mchn_no mchnNo,a.create_time createTime,a.modify_time modifyTime
+		FROM t_gq_fss_mchn a,t_gq_fss_mchn b
+		WHERE a.id=b.parent_id
+		<if test="mchnName!=null and mchnName.trim() !=''">
+		and a.mchn_name like  concat('%',#{mchnName},'%') 
+		</if>
+		<if test="mchnNo!=null and mchnNo.trim() !=''">
+		and a.mchn_no like  concat('%',#{mchnNo},'%') 
+		</if>
+		group by a.mchn_name
+		
+	</select>
+	<!-- 子商户列表 -->
+	<select id="getChildBusiness" parameterType="com.gqhmt.fss.architect.merchant.entity.Business" resultType="com.gqhmt.fss.architect.merchant.entity.Business">
+		SELECT
+		b.mchn_name mchnName,b.mchn_no mchnNo,b.create_time createTime,b.modify_time modifyTime
+		FROM t_gq_fss_mchn a,t_gq_fss_mchn b
+		WHERE a.id=b.parent_id
+		<if test="mchnName!=null and mchnName.trim() !=''">
+		and b.mchn_name like  concat('%',#{mchnName},'%') 
+		</if>
+		<if test="mchnNo!=null and mchnNo.trim() !=''">
+		and b.mchn_no like  concat('%',#{mchnNo},'%') 
+		</if>
+	</select>
+	<delete id="deleteApiUrl" parameterType="java.lang.String">
+		DELETE from
+		t_gq_fss_api
+		WHERE api_no in
+		(SELECT api_no from t_gq_fss_mchn_api WHERE mchn_no=#{mchnNo} )
+	</delete>
+	<delete id="deleteApi" parameterType="java.lang.String">
+		DELETE from
+		t_gq_fss_mchn_api WHERE mchn_no=#{mchnNo}
+	</delete>
+</mapper>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <propertieses>
+        <properties>com.fuiou.fuiouRemote</properties>
+    </propertieses>
+    <url >
+        <connection source="properties">${url}</connection>
+        <isConnection source="properties">${fuiou.isConnection}</isConnection>
+    </url>
+    <job>
+        <ip source="properties">${job.ip}</ip>
+        <upload source="properties">${job.upload}</upload>
+        <download source="properties">${job.download}</download>
+        <abort source="properties">${job.abort}</abort>
+    </job>
+    <upload>
+        <fileSize source="properties">${upload.fileSize}</fileSize>
+    </upload>
+    <ftp>
+        <url source="properties">${ftp.url}</url>
+        <port source="properties">${ftp.port}</port>
+        <userName source="properties">${ftp.userName}</userName>
+        <pwd source="properties">${ftp.pwd}</pwd>
+    </ftp>
+    <public>
+        <mchnt_cd must="true" source="properties">${public.mchnt_cd}</mchnt_cd>
+        <!--         <mchnt_cd must="true" source="fixed">0002900F0004066</mchnt_cd> -->
+        <mchnt_txn_ssn source="class" class="com.gqhmt.funds.architect.order.entity.FundOrderEntity" key="orderNo"></mchnt_txn_ssn>
+    </public>
+    <signature/>
+    <!-- 1.	开户注册 -->
+    <api api_name="reg.action">
+        <cust_nm must="true" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="customerInfoEntity.customerName"/>
+        <certif_id  must="true" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="customerInfoEntity.certNo"/>
+        <mobile_no must="true" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="customerInfoEntity.mobilePhone"/>
+        <email source="null"/>
+        <city_id must="true" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="customerInfoEntity.cityCode"/>
+        <parent_bank_id must="true" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="customerInfoEntity.parentBankCode"/>
+        <bank_nm  class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="customerInfoEntity.bankLongName"/>
+        <capAcntNm source="null"/>
+        <capAcntNo  must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="customerInfoEntity.bankNo"/>
+        <password  source="string" paramIndex="2"/>
+        <lpassword source="string" paramIndex="1"/>
+        <rem source="null"/>
+
+    </api>
+    <!-- 2.	明细查询接口 -->
+    <api api_name="query.action">
+        <user_ids />
+        <start_day />
+        <end_day />
+    </api>
+    <!--3.	余额查询-->
+    <api api_name="BalanceAction.action">
+        <mchnt_txn_dt source="string" paramIndex="1"/>
+        <cust_no source="string" paramIndex="0"/>
+    </api>
+    <!--4.	预授权接口 -->
+    <api api_name="preAuth.action">
+        <!--  出账账户	out_cust_no	MAX(60)	M	预授权个人用户	13678424821
+          入账账户	in_cust_no	MAX(60)	M	企业账户或个人用户	13678424822
+          预授权金额	amt	MAX(12)	M	以分为单位 (无小数位)	10000
+          备注	rem	max(60)	O -->
+        <out_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
+        <in_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="4"/>
+        <amt source="doubleAmountToLong100" paramIndex="2"/>
+        <rem source="null"/>
+    </api>
+    <!-- 5.	预授权撤销接口 -->
+    <api api_name="preAuthCancel.action">
+        <out_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
+        <in_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="4"/>
+        <contract_no  source="string" paramIndex="3"/>
+        <rem source="null"/>
+    </api>
+    <!--6.	转账(商户与个人之间)-->
+    <api api_name="transferBmu.action">
+        <out_cust_no must="true" source="string" paramIndex="0"/>
+        <in_cust_no  must="true" source="string" paramIndex="1"/>
+        <amt  must="true" source="amountToLong100" paramIndex="2"/>
+        <contract_no source="null"/>
+        <rem  source="null"/>
+    </api>
+    <!--  7.	划拨 (个人与个人之间) -->
+    <api api_name="transferBu.action">
+        <out_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
+        <in_cust_no  must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="1"/>
+        <amt  source="amountToLong100" paramIndex="2"/>
+        <contract_no  source="null" paramIndex="3"/>
+        <rem source="null"/>
+    </api>
+    <!--21.	冻结到冻结接口 -->
+    <api api_name="transferBuAndFreeze2Freeze.action">
+        <out_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
+        <in_cust_no  must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="1"/>
+        <amt  source="amountToLong100" paramIndex="2"/>
+        <rem source="null"/>
+    </api>
+    <!--  12.	冻结 -->
+    <api api_name="freeze.action">
+        <cust_no  must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
+        <amt  source="amountToLong100" paramIndex="1"/>
+        <rem source="null"/>
+    </api>
+    <!-- 解冻-->
+    <api api_name="unFreeze.action">
+        <cust_no  must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
+        <amt  source="amountToLong100" paramIndex="1"/>
+        <rem source="string" paramIndex="2"/>
+    </api>
+    <!-- 委托充值-->
+    <api api_name="wtrecharge.action" >
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName"/>
+        <amt source="amountToLong100"/>
+        <back_notify_url source="properties">${rechageCallback.url}</back_notify_url>
+        <rem source="null"/>
+    </api>
+    <!--委托提现-->
+    <api api_name="wtwithdraw.action" >
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName"/>
+        <amt source="amountToLong100"/>
+        <back_notify_url source="properties">${withdrawCallback.url}</back_notify_url>
+        <rem source="null"/>
+    </api>
+    <!-- 修改银行卡号 -->
+    <api api_name="changeCard3.action" >
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName"/>
+        <!--新卡号-->
+        <card_no must="true" source="string" paramIndex="1"/>
+        <!--开户行行别-->
+        <bank_cd must="true" source="string" paramIndex="2"/>
+        <!--开户行支行名称-->
+        <bank_nm source="string" paramIndex="3"/>
+        <!--开户区县代码-->
+        <city_id must="true" source="string" paramIndex="4"/>
+
+
+
+
+    </api>
+    <!-- 1.	配置用户短信 -->
+    <api api_name="setSms.action" >
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName"/>
+        <!--充值提现-->
+        <cztx_tp must="true" source="string" paramIndex="1"/>
+        <!--出账-->
+        <cz_tp must="true" source="string" paramIndex="2"/>
+        <!--入账-->
+        <rz_tp  must="true" source="string" paramIndex="3"/>
+        <!--汇总-->
+        <hz_tp must="true" source="string" paramIndex="4"/>
+    </api>
+    <api api_name="cancelUserReq.action">
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" />
+        <busi_tp source="string" paramIndex="1"/>
+    </api>
+    <api api_name="cashWithSetReq.action">
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" />
+        <cash_way source="string" paramIndex="1"/>
+    </api>
+    <api api_name="queryChangeCard.action">
+        <login_id source="string" paramIndex="1"/>
+        <txn_ssn source="string" paramIndex="2"/>
+    </api>
+</root>

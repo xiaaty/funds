@@ -15,3 +15,8 @@ out/
 *.iml
 /bin
 *.bak
+
+*.db
+~*
+.*.tmp
+
