@@ -54,6 +54,7 @@
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
                                     <h2><i class="fa fa-edit pr10"></i>添加银行信息<font class="pl10 f12 color07"></font></h2>
+                                    <span class="tip02 color03">”*“为必填项</span>
                                 </header>
                                 <div>
                                     <div class="smart-form">
@@ -68,7 +69,7 @@
                                                     <col />
                                                     <tbody>
                                                         <tr>
-                                                            <td align="left">银行名称：</td>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>银行名称：</td>
                                                             <td>
                                                                 <label class="input">
                                                                     <input type="text" maxlength="50" name="bankName" value="${bank.bankName}" style="width:256px;" />
@@ -76,7 +77,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">银行简称：</td>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>银行简称：</td>
                                                             <td>
                                                                 <label class="input">
                                                                     <input type="text" maxlength="50" name="sortName" value="${bank.sortName}" style="width:256px;" />
@@ -84,7 +85,7 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">银行编码：</td>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>银行编码：</td>
                                                             <td>
                                                                <label class="input">
                                                                     <input type="text" maxlength="50" name="bankCode" value="${bank.bankCode}" style="width:256px;" />
@@ -92,22 +93,18 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">图标：</td>
-                                                            <td>
-                                                            	<a href="#">上传小图片</a>
-                                                            	<%-- <div style="background:#fff;width:300px;overflow:hidden;"><input type="file" id="file_upload_1" 
-                                                            	name="bankIcon"
-                                                            	value="${bank.bankIcon}"/></div> --%>
-                                                            </td>
+									                        <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>图标:</td>
+									                        <td colspan="5">
+									                            <input type="hidden" name="bankIcon" id="bankIcon" value="">
+									                            <div id="dict_div_uploadDivLogo" class="identitycard clearfix "></div>
+									                        </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">限额页面：</td>
-                                                            <td>
-                                                            <a href="#">上传小页面</a>
-                                                              <%--  <div style="background:#fff;width:300px;overflow:hidden;"><input type="file" id="file_upload_2" 
-                                                               name="limitPage"
-                                                               value="${bank.limitPage}"/></div> --%>
-                                                            </td>
+                                                            <td align="left">限额页面:</td>
+									                        <td colspan="5">
+									                            <input type="hidden" name="limitPage" id="limitPage" value="">
+									                            <div id="dict_div_uploadDivLimit" class="identitycard clearfix "></div>
+									                        </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -135,18 +132,13 @@
         $(document).ready(function() {
     	    $("#btn_success").click(function () {
     	        if (validateCheck()) {
-    	            /*if (!confirm("确认 修改商户信息吗?")) {
-    	               return false;
-    	            }*/
     	            $("#bankAddForm").ajaxSubmit({
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
     	                dataType: "json",
     	                success: function (data) {
     	                    if (data.code == '0000') {
-    	                        jAlert("修改成功!", '确认信息');
-    	                        var parent_id=$("#parentId").val();
+    	                        jAlert("添加成功!", '确认信息');
     	                        //自动跳转
-    	                     //   parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
     	                        parent.location.href="${contextPath}/fund/banklist";
     	                    } else {
     	                        return;
@@ -166,117 +158,80 @@
         });
     	
     	
-    		$("#file_upload_1").uploadify({
-                //开启调试
-                'debug' : false,
-                //是否自动上传
-                'auto':true,
-                //超时时间
-                'successTimeout':99999,
-                //flash
-                'swf': "<%=request.getContextPath()%>/js/uploadify/uploadify.swf",
-                //不执行默认的onSelect事件
-                'overrideEvents' : ['onDialogClose'],
-                //文件选择后的容器ID
-                //'queueID':'uploadfileQueue',
-                //服务器端脚本使用的文件对象的名称 $_FILES个['upload']
-                'fileObjName':'multipartFile',
-                //上传处理程序
-                'uploader':'<%=request.getContextPath()%>/lend/addLendAnnex',
-                'buttonText':'上传附件',
-                //浏览按钮的背景图片路径
-                'buttonImage':'upbutton.gif',
-                //浏览按钮的宽度
-                'width':'80',
-                //浏览按钮的高度
-                'height':'28',
-                //expressInstall.swf文件的路径。
-                //'expressInstall':'expressInstall.swf',
-                //在浏览窗口底部的文件类型下拉菜单中显示的文本
-                'fileTypeDesc':'支持的格式：',
-                //允许上传的文件后缀
-                'fileTypeExts':'*.jpg;*.jpge;*.gif;*.png',
-                //上传文件的大小限制
-                'fileSizeLimit':'3MB',
-                //上传数量
-               'queueSizeLimit' : 25,
-                //每次更新上载的文件的进展
-                'onUploadProgress' : function(file, bytesUploaded, bytesTotal, totalBytesUploaded, totalBytesTotal) {
-                     //有时候上传进度什么想自己个性化控制，可以利用这个方法
-                     //使用方法见官方说明
-                },
-                //选择上传文件后调用
-                'onSelect' : function(file) {
-                          
-                },
-                //返回一个错误，选择文件的时候触发
-                'onSelectError':function(file, errorCode, errorMsg){
-                    switch(errorCode) {
-                        case -100:
-                            alert("上传的文件数量已经超出系统限制的"+$('#file_upload_'+id).uploadify('settings','queueSizeLimit')+"个文件！");
-                            break;
-                        case -110:
-                            alert("文件 ["+file.name+"] 大小超出系统限制的"+$('#file_upload_'+id).uploadify('settings','fileSizeLimit')+"大小！");
-                            break;
-                        case -120:
-                            alert("文件 ["+file.name+"] 大小异常！");
-                            break;
-                        case -130:
-                            alert("文件 ["+file.name+"] 类型不正确！");
-                            break;
-                    }
-                },
-                //检测FLASH失败调用
-                'onFallback':function(){
-                    alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
-                },
-                //上传到服务器，服务器返回相应信息到data里
-                'onUploadSuccess':function(file, data, response){
-                	var str = data;
-                	str = str.replace('"','').replace('"','');
-                    $('#annexPath_'+id).val(str);
-                    $('#ck_'+id).attr("disabled",'false');
-                    $('#ck_'+id).attr("checked",'true');
-                    $(this).attr('disabled','false');
-                    //下载按钮表示判断
-                    var flg = $("#download_"+ id).val();
-                    if (flg == undefined) {
-                        var strHtml='<a  onClick="fileDownload('+id+');" id ="download_'+id+'">下载附件</a> '+
-            						'<a  onClick="fileDelete('+id+');" id ="fileDelete_'+id+'">删除</a> ';
-                        $("#file_upload_"+id).parent().after(strHtml);
-                    } 
-                },
-                'onUploadStart': function (file) {
-                	//在onUploadStart事件中，也就是上传之前，把参数写好传递到后台。  
-                    $("#file_upload_"+id).uploadify("settings", "formData", {'annexType':id});
-                	$(this).attr('disabled','true');
-                }
-            });
+    	 $(function(){
+    	        fileUpload("dict_div_uploadDivLogo","bankIcon","*.jpg;*.png;*.gif;*.icon","bankUploadIcon");
+    	        fileUpload("dict_div_uploadDivLimit","limitPage","*.html;*.htm","bankUploadHtml");
+    	        fileUpload("dict_div_uploadDivTemplate","tmplatePage","*.html;*.htm","bankUploadHtml");
+    	  }) 
     	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    	 function fileUpload(divID,inputId,fileTypeExts,uploadUrl){
+		        $("#"+divID).uploadify({
+		            'method'		: 'post',
+		            'debug'         :false,
+		            'preventCaching': true,
+		            'buttonText' 	: '上传',
+		            'fileSizeLimit' : '2048KB',
+		            'cancelImg'		: '${contextPath}/js/uploadify/uploadify-cancel.png',
+		            'fileTypeExts' 	: fileTypeExts,
+		            'swf'		 	: '${contextPath}/js/uploadify/uploadify.swf',
+		            'multi'         :false,
+		            'onSelectError': function (file, errorCode, errorMsg) {
+		                switch (errorCode) {
+		                    case -110:
+		                        alert("文件 [" + file.name + "] 大小超出系统限制的" + $('#'+inputID).uploadify('settings', 'fileSizeLimit') + "大小！");
+		                        break;
+		                }
+		            },
+		            'uploader': '${contextPath}/fund/'+uploadUrl,
+		            'overrideEvents' : [ 'onDialogClose', 'onUploadSuccess', 'onUploadError', 'onSelectError' ],
+		            'onUploadError':function(file, errorCode, errorMsg, errorString){
+		                alert(errorMsg);
+		                if (errorCode == SWFUpload.UPLOAD_ERROR.FILE_CANCELLED
+		                        || errorCode == SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED) {
+		                    return;
+		                }
+		                var msgText = "上传失败\n";
+		                switch (errorCode) {
+		                    case SWFUpload.UPLOAD_ERROR.HTTP_ERROR:
+		                        msgText += "HTTP 错误\n" + errorMsg;
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.MISSING_UPLOAD_URL:
+		                        msgText += "上传文件丢失，请重新上传";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.IO_ERROR:
+		                        msgText += "IO错误";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.SECURITY_ERROR:
+		                        msgText += "安全性错误\n" + errorMsg;
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.UPLOAD_LIMIT_EXCEEDED:
+		                        msgText += "每次最多上传 " + this.settings.uploadLimit + "个";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.UPLOAD_FAILED:
+		                        msgText += errorMsg;
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.SPECIFIED_FILE_ID_NOT_FOUND:
+		                        msgText += "找不到指定文件，请重新操作";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.FILE_VALIDATION_FAILED:
+		                        msgText += "参数错误";
+		                        break;
+		                    default:
+		                        msgText += "文件:" + file.name + "\n错误码:" + errorCode + "\n"
+		                                + errorMsg + "\n" + errorString;
+		                }
+		                alert(msgText);
+		            },
+		            'onUploadSuccess' : function(file, data, response) {
+		                var ext = data.substr(data.length-3,3);
+		                if(ext.toLowerCase() == "gif" || ext.toLowerCase() === "jpg" || ext.toLowerCase() === "png"){
+		                    $("#bankIcon").val(data);
+		                }else{
+		                    $("#limitPage").val(data);
+		                }
+		            }
+		        });
+    }
     	
      </script>
         

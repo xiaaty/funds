@@ -71,6 +71,6 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
 	 * @param bankinfo
 	 * @return
 	 */
-	public List<BankCardInfoEntity> selectBankList(BankCardInfoEntity bankinfo);
+	public List<BankCardInfoEntity> selectBankCardList(BankCardInfoEntity bankinfo);
 	
 }

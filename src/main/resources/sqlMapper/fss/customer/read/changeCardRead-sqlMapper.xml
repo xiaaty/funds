@@ -3,6 +3,7 @@
 <mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper">
 	<select id="queryChangeCardList" parameterType="changeCardEntity" resultType="changeCardEntity">
 		SELECT 
+		t.id id,
 		t.cust_id custId,
 		t.cert_type certType,
 		t.cert_no certNo,

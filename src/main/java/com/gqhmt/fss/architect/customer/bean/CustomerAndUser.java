@@ -42,6 +42,10 @@ public class CustomerAndUser {
 
 	private Integer area; // 所属地区
 
+	private String bankIdThire;//第三方银行编码
+	
+	private String bankSortName;//银行简称
+	
 	private Date createTime; // 创建时间
 
 	private Date modifyTime; // 最后修改时间
@@ -134,4 +138,19 @@ public class CustomerAndUser {
 		this.modifyTime = modifyTime;
 	}
 
+	public String getBankIdThire() {
+		return bankIdThire;
+	}
+
+	public void setBankIdThire(String bankIdThire) {
+		this.bankIdThire = bankIdThire;
+	}
+
+	public String getBankSortName() {
+		return bankSortName;
+	}
+
+	public void setBankSortName(String bankSortName) {
+		this.bankSortName = bankSortName;
+	}
 }

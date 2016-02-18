@@ -23,9 +23,10 @@
 	</select>
 	
 	
-	<!-- 资金管理     银行列表 -->
-	<select id="selectBankList"  parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity" >
+	<!--银行卡管理 -->
+	<select id="selectBankCardList"  parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity" >
 		SELECT 
+			t.id id,
 			t.cust_id  custId,
 			t.bank_long_name  bankLongName,
 			t.bank_sort_name bankSortName,
@@ -46,6 +47,17 @@
 			t.memo memo,
 			t.source source
 		FROM t_gq_bank_info t
+		<where>
+	 	  	 <if test="certName != null and certName != ''">
+               and t.cert_name like  concat('%',#{certName},'%') 
+             </if>
+             <if test="bankNo != null and bankNo != ''">
+               and t.bank_no like concat('%',#{bankNo},'%') 
+             </if>
+             <if test="bankSortName != null and bankSortName != ''">
+               and t.bank_sort_name like concat('%',#{bankSortName},'%') 
+             </if>
+		</where>
 	</select>
 	
 	

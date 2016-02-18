@@ -419,6 +419,26 @@ public class BankCardInfoService {
 		this.bankWriteMapper.updateBank(bank);
 	}
 	
+	/**
+	 * 银行卡管理
+	 * @param bankcard
+	 * @return
+	 */
+	public List<BankCardInfoEntity> findAllbankCards(BankCardInfoEntity bankcard){
+		return this.bankCardinfoReadMapper.selectBankCardList(bankcard);
+	}
     
+	
+	public BankCardInfoEntity getBankCardById(Integer id){
+		return bankCardinfoReadMapper.selectByPrimaryKey(id);
+	}
+	
+	public void updateAndSaveBankCard(BankCardInfoEntity bankcard){
+		this.bankCardinfoWriteMapper.updateBankCardInfo(bankcard);
+	}
+	
+	public void delBankCard(Integer id){
+		this.bankCardinfoWriteMapper.deleteBankCardInfo(id);
+	}
     
 }

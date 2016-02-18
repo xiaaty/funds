@@ -27,17 +27,18 @@
 		bankCard.bank_id bankId,
 		bankCard.card_no cardNo,
 		bankCard.area area,
+		bankCard.bank_id_third bankIdThire,
 		customer.create_time createTime,
 		customer.modify_time modifyTime
-		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id
+		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer,`t_gq_fss_bank_list` bank where bankCard.bank_id=bank.id
 		 <if test="name != null and name != ''">
                 and   customer.name like  concat('%',#{name},'%') 
               </if>
-              <if test="mobile != null and mobile != ''">
-                and customer.mobile like concat('%',#{mobile},'%') 
+              <if test="cardNo != null and cardNo != ''">
+                and bankCard.card_no like concat('%',#{cardNo},'%') 
               </if>
-              <if test="certNo != null and certNo != ''">
-                and  customer.cert_no like concat('%',#{certNo},'%') 
+              <if test="bankSortName != null and bankSortName != ''">
+                and  bank.sort_name like concat('%',#{bankSortName},'%') 
               </if>
 	</select>
 <!-- 	查询要申请变更银行卡用户信息 -->

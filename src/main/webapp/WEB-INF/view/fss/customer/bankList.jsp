@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>资金清结算系统--银行卡列表--冠群驰骋投资管理(北京)有限公司</title>
+    <title>资金清结算系统--银行列表--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../view/include/common_css_js.jsp"%>
@@ -43,16 +43,23 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>客户信息管理</li>
-            <li>银行卡列表</li>
+            <li>银行列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
     <div id="content">
+     			<div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                      	<button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
+                </div>
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="jarviswidget" id="wid-id-71"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                     
+                    
+                   
+                <%--         <div class="jarviswidget" id="wid-id-71"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -99,7 +106,7 @@
                             </div>
 
 
-                        </div>
+                        </div> --%>
 
                         </div>
     <div id="content">
@@ -110,7 +117,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>银行卡列表</h2>
+                            <h2>银行列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -121,9 +128,9 @@
                                 </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
-                                <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                               <!--  <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
-                                </div>
+                                </div> -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
@@ -144,11 +151,15 @@
                                                   	<td>${t.id}</td>
                                                     <td>${t.bankName}</td>
                                                     <td>${t.sortName}</td>
-                                                    <td>123456789</td>
-                                                    <td><img src="${t.bankIcon}"/></td>
+                                                    <td>${t.bankCode}</td>
+                                                    <td><img src="${contextPath}${t.bankIcon}"/></td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                     <td><a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a>&nbsp;&nbsp;&nbsp;<a href="#">查看页面限额</a></td>
+                                                     <td>
+                                                     	 <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a>&nbsp;&nbsp;&nbsp;
+                                                     	<!-- <a href="${contextPath}/fund/checkPageXe/${t.id}">查看页面限额</a>  -->
+                                                     	 <c:if test="${acct.isSetLimitPage == 1}"><a href="${contextPath}/${t.limitPage}">查看页面限额</a></c:if>
+                                                     </td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

@@ -159,43 +159,37 @@
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <th>客户编号</th>
-                                            <th>证件类型 </th>
-                                            <th>证件号码 </th>
-                                            <th>银行类别</th>
-                                            <th>银行名称</th>
-                                            <th>地区码</th>
-                                            <th>支行信息</th>
-                                            <th>银行卡号</th>
+                                            <th>序号</th>
+                                            <th>业务编号</th>
                                             <th>客户姓名</th>
-                                            <th>变更状态</th>
-                                            <th>交易状态</th>
-                                            <th>录入时间</th>
-                                            <th>修改时间 </th>
-                                            <th>申请人</th>
-                                            <th>订单号</th>
-                                            <th>上传图片地址</th>
-                                            <th>富友返回码</th>
-                                            <th>富友返回结果</th>
                                             <th>申请来源</th>
-                                            <th>客户手机号 </th>
+                                            <th>证件号码 </th>
+                                            <th>开户行</th>
+                                            <th>开户地区</th>
+                                            <th>银行卡号</th>
+                                            <th>申请时间</th>
                                             <th>审批时间</th>
                                             <th>生效时间</th>
-                                            <th>交易流水号</th>
+                                            <th>变更结果</th>
+                                            <th>流程状态</th>
+                                            <th>备注</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
+                                                    <td>${t.id}</td>
                                                     <td>${t.custId}</td>
-                                                    <td>${t.certType==1?"身份证":"护照"}</td>
+                                                    <td>${t.custName}</td>
+                                                    <td>${t.type}</td>
                                                     <td>${t.certNo}</td>
-                                                    <td>${t.bankType}</td>
                                                     <td>${t.bankName}</td>
                                                     <td>${t.bankCity}</td>
-                                                    <td>${t.bankAdd}</td>
                                                     <td>${t.cardNo}</td>
-                                                    <td>${t.custName}</td>
+                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${t.passTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${t.effectTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                     	<c:if test="${t.state==1}">
                                                     		变更中
@@ -207,7 +201,7 @@
                                                     		变更失败
                                                     	</c:if>
                                                     </td>
-                                                     <td>
+                                                    <td>
                                                     	<c:if test="${t.tradeState==1}">
                                                     		申请
                                                     	</c:if>
@@ -233,18 +227,8 @@
                                                     		换卡流程完结
                                                     	</c:if>
                                                     </td>
-                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td>${t.createUserId}</td>
-                                                    <td>${t.orderNo}</td>
-                                                    <td>${t.filePath}</td>
-                                                    <td>${t.respCode}</td>
                                                     <td>${t.respMsg}</td>
-                                                    <td>${t.type}</td>
-                                                    <td>${t.mobile}</td>
-                                                    <td><fmt:formatDate value="${t.passTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${t.effectTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td>${t.seqNo}</td>
+                                                    <td><a href="${contextPath}/img/wx.gif">查看图片</a></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
