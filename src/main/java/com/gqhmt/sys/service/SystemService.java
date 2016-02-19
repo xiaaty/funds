@@ -62,7 +62,7 @@ public class SystemService {
 
     
     public void insertDictmain(DictEntity dict) {
-    	this.systemWriteMapper.insertDictmain(dict);
+    	this.systemWriteMapper.insertSelective(dict);
 	}
     
     
@@ -71,7 +71,7 @@ public class SystemService {
     }
     
     public void updateDict(DictEntity dict) {
-    	systemWriteMapper.updateDictMain(dict);
+    	systemWriteMapper.updateByPrimaryKey(dict);
 	}
     
     public void delteDict(String dictId) {

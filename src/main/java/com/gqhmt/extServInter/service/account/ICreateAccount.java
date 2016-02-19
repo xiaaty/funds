@@ -1,7 +1,9 @@
-package com.gqhmt.ExtServInter.service.account;
+package com.gqhmt.extServInter.service.account;
+
+import com.gqhmt.extServInter.service.ExtService;
 
 /**
- * Filename:    com.gqhmt.ExtServInter.service.account.ICreateAccount
+ * Filename:    com.gqhmt.extServInter.service.account.ICreateAccount
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
@@ -16,5 +18,7 @@ package com.gqhmt.ExtServInter.service.account;
  * -----------------------------------------------------------------
  * 16/2/18  于泳      1.0     1.0 Version
  */
-public interface ICreateAccount {
+public interface ICreateAccount extends ExtService {
+
+
 }

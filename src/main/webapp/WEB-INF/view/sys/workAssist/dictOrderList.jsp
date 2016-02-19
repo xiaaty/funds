@@ -126,7 +126,7 @@
                                                    <td> ${dictorder.orderDict}</td>
                                                    <td>
 														<fss:dictOrder var="order" dictOrder="${dictorder.orderDict}">
-                                                              <option value="${order.key}">${order.value}</option>
+                                                              ${order.value}
                                                         </fss:dictOrder>
 													</td>
                                                    <td>	${dictorder.memo}</td> 

@@ -1,5 +1,5 @@
 /**
- * Filename:    com.gqhmt.ExtServInter.package-info
+ * Filename:    com.gqhmt.extServInter.package-info
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
@@ -48,4 +48,4 @@
  * -----------------------------------------------------------------
  * 16/2/18  于泳      1.0     1.0 Version
  */
-package com.gqhmt.ExtServInter;
+package com.gqhmt.extServInter;
