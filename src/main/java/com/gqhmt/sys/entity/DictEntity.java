@@ -27,6 +27,7 @@ public class DictEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
     @Column(name = "dict_id")
+	@Id
     private String dictId;          
 
     @Column(name = "dict_name")
@@ -47,13 +48,16 @@ public class DictEntity implements Serializable{
     private Date modifyTime;
     
     @Column(name = "parent_id")
-    private Long parentId;           
+    private String parentId;
     
     @Column(name = "sort")
     private String sort;//排序
 
     @Column(name = "is_valid")
     private String isValid;//是否有效
+
+	@Column(name="is_end")
+	private Integer isEnd;
     
 
 	public String getDictId() {
@@ -72,11 +76,11 @@ public class DictEntity implements Serializable{
 		this.dictName = dictName;
 	}
 
-	public Long getParentId() {
+	public String getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(Long parentId) {
+	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
 
@@ -128,5 +132,12 @@ public class DictEntity implements Serializable{
 		this.isValid = isValid;
 	}
 
-	
+
+	public Integer getIsEnd() {
+		return isEnd;
+	}
+
+	public void setIsEnd(Integer isEnd) {
+		this.isEnd = isEnd;
+	}
 }

@@ -1,9 +1,9 @@
-package com.gqhmt.ExtServInter.dto.account;
+package com.gqhmt.extServInter.dto.account;
 
-import com.gqhmt.ExtServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
- * Filename:    com.gqhmt.ExtServInter.dto.account.CreateAccountByFuiou
+ * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

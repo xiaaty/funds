@@ -1,39 +1,34 @@
 package com.gqhmt.extServInter.dto;
 
-import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.AutoMapping;
 
 /**
- * Filename:    com.gqhmt.extServInter.dto.TransferDataSuperBean
+ * Filename:    com.gqhmt.extServInter.dto.Response
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
  * @author 于泳
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   16/1/12 14:11
+ * Create at:   16/2/19 16:04
  * Description:
- * <p>
+ * <p/>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 16/1/12  于泳      1.0     1.0 Version
+ * 16/2/19  于泳      1.0     1.0 Version
  */
-public class SuperDto {
-
+public class Response {
 
     @AutoMapping(value = "mchnChild",isParent = true)
-    @APIValidNull(errorCode = "90008101")
     private String mchn;
 
     @AutoMapping("seqNo")
-    @APIValidNull(errorCode = "90008201")
     private String seq_no;
 
-    @APIValidNull(errorCode = "90008301")
     private String signature;
 
-
+    private String resp_code;
 
     public String getMchn() {
         return mchn;
@@ -43,6 +38,13 @@ public class SuperDto {
         this.mchn = mchn;
     }
 
+    public String getSeq_no() {
+        return seq_no;
+    }
+
+    public void setSeq_no(String seq_no) {
+        this.seq_no = seq_no;
+    }
 
     public String getSignature() {
         return signature;
@@ -52,13 +54,31 @@ public class SuperDto {
         this.signature = signature;
     }
 
-
-
-    public String getSeq_no() {
-        return seq_no;
+    public String getResp_code() {
+        return resp_code;
     }
 
-    public void setSeq_no(String seq_no) {
-        this.seq_no = seq_no;
+    public void setResp_code(String resp_code) {
+        this.resp_code = resp_code;
+    }
+
+    public String getResp_msg() {
+        return resp_msg;
+    }
+
+    public void setResp_msg(String resp_msg) {
+        this.resp_msg = resp_msg;
+    }
+
+    private String resp_msg;
+
+    private Object plain;
+
+    public Object getPlain() {
+        return plain;
+    }
+
+    public void setPlain(Object plain) {
+        this.plain = plain;
     }
 }

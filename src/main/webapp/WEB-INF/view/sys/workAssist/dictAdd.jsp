@@ -80,7 +80,7 @@
                                                             <td align="left">编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="dictId" value="${dict.dictId}" style="width:256px;" />
+                                                                    <input type="text" maxlength="8" name="dictId" value="${dict.dictId}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -105,6 +105,18 @@
                                                                             <option value="${order.key}">${order.value}</option>
                                                                         </fss:dictOrder>
                                                                     </select>
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left">是否最后一级：</td>
+                                                            <td>
+                                                                <label class="select">
+                                                                    <fss:dictOrder var="order" dictOrder="yesOrNo">
+                                                                        <%--<option value="${order.key}">${order.value}</option>--%>
+                                                                        <input type="radio" name="isEnd" value="${order.key}" id="t_${order.key}" <c:if test="${order.key == 98010002}">checked</c:if> ><label for="t_${order.key}">${order.value}</label>
+                                                                        &nbsp;&nbsp;&nbsp;
+                                                                    </fss:dictOrder>
                                                                 </label>
                                                             </td>
                                                         </tr>
