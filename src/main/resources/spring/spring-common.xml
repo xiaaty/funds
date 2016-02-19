@@ -89,7 +89,7 @@
 				<value>classpath:sqlMapper/fss/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/read/*-sqlMapper.xml</value>
-				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
+			 	<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 			</list>
 		</property>
 		<property name="plugins">
