@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.funds.architect.customer.mapper.read.BankReadMapper">
+	<!-- 资金管理     银行列表 -->
+	<select id="selectBankList"  parameterType="bankEntity" resultType="bankEntity" >
+		SELECT 
+			t.id,
+		    t.name bankName,
+		    t.sort_name sortName,
+		    t.bank_icon bankIcon,
+			t.create_user_id createUserId,
+			t.create_time createTime,
+			t.modify_user_id modifyUserId,
+			t.modify_time modifyTime,
+			t.is_set_limit_page isSetLimitPage,
+			t.bank_code bankCode
+		FROM t_gq_fss_bank_list t
+		<where>
+			<if test="bankName != null and bankName != ''">
+               t.name like  CONCAT('%',#{bankName},'%') 
+            </if>
+		</where>
+	</select>
+</mapper>

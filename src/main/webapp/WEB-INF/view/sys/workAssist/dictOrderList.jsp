@@ -123,12 +123,12 @@
                                                 <tr>
                                                    <td>	${dictorder.id}</td> 
                                                    <td>	${dictorder.orderName}</td> 
-                                                   <td>	${dictorder.orderDict}</td> 
-                                                   <td> 
-                                                   		<fss:dictOrder var="order" dictOrder="${dictorder.orderDict}">
+                                                   <td> ${dictorder.orderDict}</td>
+                                                   <td>
+														<fss:dictOrder var="order" dictOrder="${dictorder.orderDict}">
                                                               <option value="${order.key}">${order.value}</option>
                                                         </fss:dictOrder>
-                                                   </td> 
+													</td>
                                                    <td>	${dictorder.memo}</td> 
                                                    <td>	<a href="${contextPath}/sys/workassist/dictorderToUpdate/${dictorder.id}">修改</a></td>
                                                 </tr>

@@ -11,46 +11,71 @@ import java.util.Date;
 @Table(name = "t_gq_bank_info")
 public class BankCardInfoEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	// Fields
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	//客户id
+	@Column(name = "cust_id",updatable = false)
 	private Integer custId;
-	//银行简称
+	//银行名称
+	@Column(name = "bank_long_name",updatable = false)
 	private String bankLongName;
+	//银行简称
+	@Column(name = "bank_sort_name",updatable = false)
 	private String bankSortName;
 	//银行卡号
+	@Column(name = "bank_no",updatable = false)
 	private String bankNo;
 	//人银行卡 1 个人 2 公司
+	@Column(name = "is_personal_card",updatable = false)
 	private Integer isPersonalCard;
-	private Date createTime;
-	private Integer createUserId;
-	private Date modifyTime;
-	private Integer modifyUserId;
-	//绑定银行卡编号
-	private String cardIndex;
-
+	//身份证号码
+	@Column(name = "cert_No",updatable = false)
     private String certNo ;
+	//手机号码
+	@Column(name = "mobile",updatable = false)
     private String mobile ;
+	//银行卡对应的客户名字
+	@Column(name = "cert_Name",updatable = false)
 	private String certName;
-	
+	//绑定银行卡编号
+	@Column(name = "card_index",updatable = false)
+	private String cardIndex;
 	//开户行地区代码(富友开户用)
+	@Column(name = "city_id",updatable = false)
 	private String cityId;
 	
 	//开户行行别(富友开户用)
+	@Column(name = "parent_bank_id",updatable = false)
 	private String parentBankId;
-
+	
+	//创建时间
+	@Column(name = "CREATE_TIME",updatable = false)
+	private Date createTime;
+	//创建者
+	@Column(name = "CREATE_USER_ID",updatable = false)
+	private Integer createUserId;
+	//修改时间
+	@Column(name = "MODIFY_TIME",updatable = false)
+	private Date modifyTime;
+	//修改者
+	@Column(name = "MODIFY_USER_ID",updatable = false)
+	private Integer modifyUserId;
+	//是否删除(0:已删除  1：未删除)
+	@Column(name = "deleted",updatable = false)
+	private Integer isDel;
+	//变更状态，0，已绑定，1变更中，2变更失败
+	@Column(name = "change_state",updatable = false)
 	private Integer changeState;
-
+	//备注
+	@Column(name = "memo",updatable = false)
 	private String memo;
-
-
 	
+	//来源
+	@Column(name = "source",updatable = false)
+	private String source;
 	
-	
-
 	// Property accessors
 	public Integer getId() {
 		return this.id;
@@ -213,6 +238,22 @@ public class BankCardInfoEntity implements java.io.Serializable {
 
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 }

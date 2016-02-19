@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>系统管理--添加字典类型--冠群驰骋投资管理(北京)有限公司</title>
+    <title>系统管理--修改字典类型--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -54,7 +54,7 @@
 
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
-                                    <h2><i class="fa fa-edit pr10"></i>新增字典类型<font class="pl10 f12 color07"></font></h2>
+                                    <h2><i class="fa fa-edit pr10"></i>修改字典类型<font class="pl10 f12 color07"></font></h2>
                                 </header>
                                 <div>
                                     <div class="smart-form">
@@ -90,17 +90,21 @@
 			                                                    <section style="width:210px">
 			                                                    <label class="select">
 													                <select id="role_list"  name ="role_list" multiple="true" style="width:200px;height:300px;">
-													                    <option  value="">--请选择--</option>
+													                   <!--  <option  value="">--请选择--</option> -->
 													                	<c:forEach items="${dlist}" var="d">
 													                    	<option value="${d.dictId}"> ${d.dictName} </option>
 													                	</c:forEach>
 													                </select>
 													                <input type="button"  value="<<<<" onclick="moveOptions('role_list_to','role_list')"/>
 																	<input type="button"  value=">>>>" onclick="moveOptions('role_list','role_list_to')"/>
-													                <SELECT id="role_list_to" name ="role_list_to" value="" multiple="true" style="width:200px;height:300px;">
-																	     <fss:dictOrder var="order" dictOrder="${dictorder.orderDict}">
+													                <SELECT id="role_list_to" name ="role_list_to" multiple="true" style="width:200px;height:300px;">
+																	     <%-- <fss:dictOrder var="order" dictOrder="${dictorder.orderList}">
 				                                                              <option value="${order.key}">${order.value}</option>
-				                                                        </fss:dictOrder>
+				                                                        </fss:dictOrder> --%>
+				                                                        
+				                                                        <c:forEach items="${ordlist}" var="ord">
+													                    	<option value="${ord.dictId}"> ${ord.dictName} </option>
+													                	</c:forEach>
 																	</SELECT>
 															     </label>
 			                                                    </section>
