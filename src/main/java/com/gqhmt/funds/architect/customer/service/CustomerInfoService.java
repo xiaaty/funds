@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.customer.service;
 
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
-import com.gqhmt.funds.architect.account.mapper.read.FundAccountReadMapper;
+import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
@@ -31,7 +31,7 @@ public class CustomerInfoService {
 	private CustomerInfoWriteMapper customerInfoWriteMapper;
 
 	@Autowired
-	private FundAccountReadMapper fundAccountReadMapper;
+	private FundsAccountReadMapper fundAccountReadMapper;
 
 	@Autowired
 	private BankCardInfoService bankCardinfoService;

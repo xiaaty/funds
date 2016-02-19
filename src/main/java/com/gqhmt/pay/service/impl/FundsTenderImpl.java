@@ -11,7 +11,7 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTender;
-import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.PaySuperByFuiouTest;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
@@ -38,7 +38,7 @@ import java.util.List;
 public class FundsTenderImpl  implements IFundsTender {
 
     @Resource
-    private PaySuperByFuiou paySuperByFuiou;
+    private PaySuperByFuiouTest paySuperByFuiou;
 
     @Resource
     private TenderService tenderService;

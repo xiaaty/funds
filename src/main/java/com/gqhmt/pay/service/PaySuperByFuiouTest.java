@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Filename:    com.gqhmt.pay.service.PaySuperByFuiou
+ * Filename:    com.gqhmt.pay.service.PaySuperByFuiouTest
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
@@ -36,7 +36,7 @@ import java.util.Date;
  * 16/2/16  于泳      1.0     1.0 Version
  */
 @Service
-public class PaySuperByFuiou {
+public class PaySuperByFuiouTest {
 
 
     @Resource
