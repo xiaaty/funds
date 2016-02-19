@@ -22,7 +22,7 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2015/1/15  于泳      1.0     1.0 Version
  */
-public interface FundAccountWriteMapper extends ReadAndWriteMapper<FundAccountEntity> {
+public interface FundsAccountWriteMapper extends ReadAndWriteMapper<FundAccountEntity> {
 
 	public void updateCustName(Integer cusID, String custName) ;
 

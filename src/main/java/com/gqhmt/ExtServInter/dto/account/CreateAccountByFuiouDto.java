@@ -1,9 +1,9 @@
-package com.gqhmt.fss.transferDataBean.account;
+package com.gqhmt.ExtServInter.dto.account;
 
-import com.gqhmt.fss.transferDataBean.TransferDataSuperBean;
+import com.gqhmt.ExtServInter.dto.SuperDto;
 
 /**
- * Filename:    com.gqhmt.fss.transferDataBean.account.CreateAccountByFuiou
+ * Filename:    com.gqhmt.ExtServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
@@ -18,7 +18,7 @@ import com.gqhmt.fss.transferDataBean.TransferDataSuperBean;
  * -----------------------------------------------------------------
  * 16/1/12  于泳      1.0     1.0 Version
  */
-public class CreateAccountByFuiou extends TransferDataSuperBean {
+public class CreateAccountByFuiouDto extends SuperDto {
 
     private String mobile;
 
