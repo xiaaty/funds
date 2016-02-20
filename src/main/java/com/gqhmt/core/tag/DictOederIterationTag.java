@@ -26,6 +26,7 @@ public class DictOederIterationTag extends BodyTagSupport{
     private String var;
     private Iterator<?> iterator;
     private String dictOrder;
+    private String separator;
 
     public void setVar(String var) {
         this.var = var;
@@ -88,8 +89,9 @@ public class DictOederIterationTag extends BodyTagSupport{
     }
 
 
-
-
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
 }
 
 

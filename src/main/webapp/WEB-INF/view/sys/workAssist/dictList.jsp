@@ -141,9 +141,14 @@
                                                     <td><fss:fmtDate value="${dict.createTime}"/></td>
                                                     <td><fss:fmtDate value="${dict.modifyTime}"/></td>
                                                    <td>
-                                                        <a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
-                                                   		&nbsp;&nbsp;&nbsp;
-                                                   		<a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
+
+
+                                                       <a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
+
+                                                       &nbsp;&nbsp;&nbsp;
+                                                       <c:if test="${dict.isEnd == 98010002 }">
+                                                           <a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
+                                                       </c:if>
 
 
                                                    		<%--&nbsp;&nbsp;&nbsp;

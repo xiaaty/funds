@@ -101,6 +101,18 @@
                                                                 </label>
                                                             </td>
                                                         </tr>
+                                                        <tr>
+                                                            <td align="left">是否最后一级：</td>
+                                                            <td>
+                                                                <label class="select">
+                                                                    <fss:dictOrder var="order" dictOrder="yesOrNo">
+                                                                        <%--<option value="${order.key}">${order.value}</option>--%>
+                                                                        <input type="radio" name="isEnd" value="${order.key}" id="t_${order.key}" <c:if test="${order.key == dict.isEnd}">checked</c:if> ><label for="t_${order.key}">${order.value}</label>
+                                                                        &nbsp;&nbsp;&nbsp;
+                                                                    </fss:dictOrder>
+                                                                </label>
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                                 <div class="mb20" id="wid-id-713">
@@ -137,8 +149,8 @@
     	                        jAlert("修改成功!", '确认信息');
     	                        var parent_id=$("#parentId").val();
     	                        //自动跳转
-    	                     //   parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
-    	                        parent.location.href="${contextPath}/sys/workassist/dictionary/0";
+    	                      parent.location.href="${contextPath}/sys/workassist/dictionary/${dict.parentId}";
+    	                      //  parent.location.href="${contextPath}/sys/workassist/dictionary/0";
     	                    } else {
     	                        return;
     	                    }
