@@ -35,7 +35,7 @@ public class LogAop {
     public LogAop(){
     }
 
-    @Pointcut("execution(* com.gqhmt.fss.architect.*.service.*.*(..))")
+    @Pointcut("execution(* com.gqhmt.fss.architect.*.service.*(..))")
     public void point(){
 
     }
@@ -47,7 +47,7 @@ public class LogAop {
             startTime.set(new Date().getTime());
         }
         LogUtil.info(this.getClass(),"aop");
-        LogUtil.info(joinPoint.getTarget().getClass(),"method:"+joinPoint.getSignature());
+        LogUtil.info(joinPoint.getTarget().getClass(),"fss-method:"+joinPoint.getSignature());
     }
 
     @After("point()")

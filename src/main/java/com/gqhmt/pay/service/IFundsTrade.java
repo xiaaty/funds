@@ -55,7 +55,7 @@ public interface IFundsTrade {
      * @param thirdPartyType            支付渠道
      * @param custID                    客户id
      * @param amount                    充值金额
-     * @param sourceType                充值来源  1，web端，2wap端，3手机app
+     * @param sourceType                充值来源  1，web端，2wap端，3手机app,4后台委托充值
      * @return
      */
     public boolean withholding(String thirdPartyType,int custID,BigDecimal amount,int sourceType)throws FssException;
@@ -157,8 +157,6 @@ public interface IFundsTrade {
      * @throws FssException
      */
     //public boolean compensateByLoad(String thirdPartyType,int custID,int costMode,String contractNo,BigDecimal amount,Long bid) throws FssException;
-
-
 
 
 }

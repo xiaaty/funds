@@ -3,24 +3,21 @@ package com.gqhmt.sys.controller;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.merchant.service.RestApiService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.gqhmt.fss.architect.merchant.service.RestApiService;
 
 @Controller
 public class SystemController{
@@ -38,18 +35,19 @@ public class SystemController{
      */
     @RequestMapping(value = "/sys/workassist/dictionary/{parent_id}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public Object DictList(HttpServletRequest request, ModelMap model, DictEntity dictmain, @PathVariable Long parent_id){
+    public Object DictList(HttpServletRequest request, ModelMap model, DictEntity dictmain, @PathVariable String parent_id){
     	if(null!=parent_id){
     		dictmain.setParentId(parent_id);
 
     	}
 		String returnId = "0";
-		if(parent_id>0){
-			DictEntity dict = (DictEntity) sysService.findDictmain(String.valueOf(parent_id));
+		List<DictEntity> dictList =sysService.queryDictmain(dictmain);
+		if(Integer.parseInt(parent_id)>0){
+			DictEntity dict = (DictEntity) sysService.findDictmain(parent_id);
 			returnId = String.valueOf(dict.getParentId());
 		}
 
-        List<DictEntity> dictList =sysService.queryDictmain(dictmain);
+
         model.addAttribute("page",dictList);
         model.addAttribute("dictmain",dictmain);
 		model.addAttribute("returnId",returnId);
@@ -64,7 +62,7 @@ public class SystemController{
      * @throws FssException
      */
     @RequestMapping(value = "/sys/workassist/dictAdd/{parent_id}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object DictmainAdd(HttpServletRequest request, ModelMap model,@PathVariable Long parent_id,DictEntity dict) throws FssException {
+	public Object DictmainAdd(HttpServletRequest request, ModelMap model,@PathVariable String parent_id,DictEntity dict) throws FssException {
     	dict.setParentId(parent_id);
     	model.addAttribute("dict", dict);
 		return "sys/workAssist/dictAdd";
@@ -136,6 +134,7 @@ public class SystemController{
     	dict.setModifyUserId(2l);
     	dict.setModifyTime(new Date());
     	sysService.updateDict(dict);
+
     	Map<String, String> map = new HashMap<String, String>();
         map.put("code", "0000");
         map.put("message", "success");
@@ -243,7 +242,6 @@ public class SystemController{
     /**
      * 修改保存
      * @param request
-     * @param dict
      * @return
      */
     @RequestMapping(value = "/sys/workassist/dictOrderUpdate",method = {RequestMethod.GET,RequestMethod.POST})

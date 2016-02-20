@@ -10,7 +10,7 @@ import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTrade;
-import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.PaySuperByFuiouTest;
 import com.gqhmt.pay.service.TradeRecordService;
 
 import javax.annotation.Resource;
@@ -25,7 +25,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
 
     @Resource
-    private PaySuperByFuiou paySuperByFuiou;
+    private PaySuperByFuiouTest paySuperByFuiou;
 
     @Resource
     private FundAccountService fundAccountService;
