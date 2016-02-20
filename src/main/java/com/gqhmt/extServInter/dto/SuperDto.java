@@ -19,7 +19,7 @@ import com.gqhmt.annotations.AutoMapping;
  * -----------------------------------------------------------------
  * 16/1/12  于泳      1.0     1.0 Version
  */
-public class SuperDto {
+public abstract class SuperDto {
 
 
     @AutoMapping(value = "mchnChild",isParent = true)

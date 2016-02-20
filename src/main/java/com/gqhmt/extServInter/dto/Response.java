@@ -72,13 +72,6 @@ public class Response {
 
     private String resp_msg;
 
-    private Object plain;
 
-    public Object getPlain() {
-        return plain;
-    }
 
-    public void setPlain(Object plain) {
-        this.plain = plain;
-    }
 }
