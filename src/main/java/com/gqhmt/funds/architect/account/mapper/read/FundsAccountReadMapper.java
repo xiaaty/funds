@@ -28,7 +28,7 @@ import java.util.Map;
  * -----------------------------------------------------------------
  * 2015/1/15  于泳      1.0     1.0 Version
  */
-public interface FundAccountReadMapper extends ReadMapper<FundAccountEntity> {
+public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	
 	/**
 	 * 获取所有账户列表

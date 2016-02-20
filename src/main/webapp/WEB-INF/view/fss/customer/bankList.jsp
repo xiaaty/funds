@@ -48,26 +48,16 @@
         <!-- end breadcrumb -->
     </div>
     <div id="content">
-     			<div class="widget-body-nobg-toolbar" style="overflow:hidden;">
-                      	<button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
-                </div>
-                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                     
-                    
-                   
-                <%--         <div class="jarviswidget" id="wid-id-71"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                        <div class="jarviswidget" id="wid-id-71"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <!-- widget div-->
                             <div>
-                           
                                 <form class="smart-form" id="Form" action="" method="post" >
-                              
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
                                         <!-- This area used as dropdown edit box -->
@@ -84,12 +74,23 @@
                                                 <col width="100" />
                                                 <col/>
                                                 <tbody>
-                                                    <tr></tr>
                                                     <tr>
+                                                        <td class="tr" nowrap="nowrap">银行代码:</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="input"  style="width:210px" >
+                                                                <input type="text" name="bankCode" value="${bankinfo.bankCode}">
+                                                            </label>
+                                                        </td>
                                                         <td class="tr" nowrap="nowrap">银行名称:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
                                                                 <input type="text" name="bankName" value="${bankinfo.bankName}">
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr" nowrap="nowrap">银行短名称:</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="input"  style="width:210px" >
+                                                                <input type="text" name="sortName" value="${bankinfo.sortName}">
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -104,10 +105,7 @@
                                     <!-- end widget content -->
                                 </form>
                             </div>
-
-
-                        </div> --%>
-
+                        </div> 
                         </div>
     <div id="content">
         <section id="widget-grid" class="">
@@ -128,9 +126,9 @@
                                 </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
-                               <!--  <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                                 <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
-                                </div> -->
+                                </div> 
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
@@ -157,8 +155,8 @@
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                      <td>
                                                      	 <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a>&nbsp;&nbsp;&nbsp;
-                                                     	<!-- <a href="${contextPath}/fund/checkPageXe/${t.id}">查看页面限额</a>  -->
-                                                     	 <c:if test="${acct.isSetLimitPage == 1}"><a href="${contextPath}/${t.limitPage}">查看页面限额</a></c:if>
+                                                      	 <a href="${contextPath}/fund/checkPageXe/${t.id}">查看页面限额</a>  
+                                                     	 <%-- <a href="${contextPath}${t.limitPage}">查看页面限额</a> --%>
                                                      </td>
                                                 </tr>
                                         </c:forEach>

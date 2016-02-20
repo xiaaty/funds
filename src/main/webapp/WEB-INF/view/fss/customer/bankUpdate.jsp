@@ -102,16 +102,18 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">图标：</td>
-                                                            <td>
-                                                            	<a href="#">上传</a>
-                                                            </td>
+									                        <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>图标:</td>
+									                        <td colspan="5">
+									                            <input type="hidden" name="bankIcon" id="bankIcon" value="">
+									                            <div id="dict_div_uploadDivLogo" class="identitycard clearfix "></div>
+									                        </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">限额页面：</td>
-                                                            <td>
-                                                               <a href="#">上传</a>
-                                                            </td>
+                                                            <td align="left">限额页面:</td>
+									                        <td colspan="5">
+									                            <input type="hidden" name="limitPage" id="limitPage" value="">
+									                            <div id="dict_div_uploadDivLimit" class="identitycard clearfix "></div>
+									                        </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -135,6 +137,10 @@
 <%@include file="../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
+<script src="${contextPath}/js/uploadify/jquery.uploadify.min.js" ></script>
+<script src="${contextPath}/js/uploadify/uploadify.css" ></script>
+<script src="${contextPath}/js/uploadify/uploadify.swf" ></script>
+<script src="${contextPath}/js/uploadify/uploadify-cancel.png" ></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
     	    $("#btn_success").click(function () {
@@ -167,6 +173,85 @@
     	$("#btn_cancel").button().click(function() {
         	window.history.back();
         });
+    	
+    	
+
+   	 $(function(){
+   	        fileUpload("dict_div_uploadDivLogo","bankIcon","*.jpg;*.png;*.gif;*.icon","bankUploadIcon");
+   	        fileUpload("dict_div_uploadDivLimit","limitPage","*.html;*.htm","bankUploadHtml");
+   	        fileUpload("dict_div_uploadDivTemplate","tmplatePage","*.html;*.htm","bankUploadHtml");
+   	  }) 
+   	
+   	 function fileUpload(divID,inputId,fileTypeExts,uploadUrl){
+		        $("#"+divID).uploadify({
+		            'method'		: 'post',
+		            'debug'         :false,
+		            'preventCaching': true,
+		            'buttonText' 	: '上传',
+		            'fileSizeLimit' : '2048KB',
+		            'cancelImg'		: '${contextPath}/js/uploadify/uploadify-cancel.png',
+		            'fileTypeExts' 	: fileTypeExts,
+		            'swf'		 	: '${contextPath}/js/uploadify/uploadify.swf',
+		            'multi'         :false,
+		            'onSelectError': function (file, errorCode, errorMsg) {
+		                switch (errorCode) {
+		                    case -110:
+		                        alert("文件 [" + file.name + "] 大小超出系统限制的" + $('#'+inputID).uploadify('settings', 'fileSizeLimit') + "大小！");
+		                        break;
+		                }
+		            },
+		            'uploader': '${contextPath}/fund/'+uploadUrl,
+		            'overrideEvents' : [ 'onDialogClose', 'onUploadSuccess', 'onUploadError', 'onSelectError' ],
+		            'onUploadError':function(file, errorCode, errorMsg, errorString){
+		                alert(errorMsg);
+		                if (errorCode == SWFUpload.UPLOAD_ERROR.FILE_CANCELLED
+		                        || errorCode == SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED) {
+		                    return;
+		                }
+		                var msgText = "上传失败\n";
+		                switch (errorCode) {
+		                    case SWFUpload.UPLOAD_ERROR.HTTP_ERROR:
+		                        msgText += "HTTP 错误\n" + errorMsg;
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.MISSING_UPLOAD_URL:
+		                        msgText += "上传文件丢失，请重新上传";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.IO_ERROR:
+		                        msgText += "IO错误";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.SECURITY_ERROR:
+		                        msgText += "安全性错误\n" + errorMsg;
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.UPLOAD_LIMIT_EXCEEDED:
+		                        msgText += "每次最多上传 " + this.settings.uploadLimit + "个";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.UPLOAD_FAILED:
+		                        msgText += errorMsg;
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.SPECIFIED_FILE_ID_NOT_FOUND:
+		                        msgText += "找不到指定文件，请重新操作";
+		                        break;
+		                    case SWFUpload.UPLOAD_ERROR.FILE_VALIDATION_FAILED:
+		                        msgText += "参数错误";
+		                        break;
+		                    default:
+		                        msgText += "文件:" + file.name + "\n错误码:" + errorCode + "\n"
+		                                + errorMsg + "\n" + errorString;
+		                }
+		                alert(msgText);
+		            },
+		            'onUploadSuccess' : function(file, data, response) {
+		            	alert("返回信息："+data);
+		                var ext = data.substr(data.length-3,3);
+		                if(ext.toLowerCase() == "gif" || ext.toLowerCase() === "jpg" || ext.toLowerCase() === "png"){
+		                    $("#bankIcon").val(data);
+		                }else{
+		                    $("#limitPage").val(data);
+		                }
+		            }
+		        });
+   }
+   	
      </script>
         
 </body>

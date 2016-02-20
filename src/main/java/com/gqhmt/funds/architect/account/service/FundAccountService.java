@@ -9,8 +9,8 @@ import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.exception.NeedSMSValidException;
-import com.gqhmt.funds.architect.account.mapper.read.FundAccountReadMapper;
-import com.gqhmt.funds.architect.account.mapper.write.FundAccountWriteMapper;
+import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
+import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
@@ -42,9 +42,9 @@ import java.util.*;
 public class FundAccountService {
 
     @Resource
-    private FundAccountReadMapper fundAccountReadMapper;
+    private FundsAccountReadMapper fundsAccountReadMapper;
     @Resource
-    private FundAccountWriteMapper fundAccountWriteMapper;
+    private FundsAccountWriteMapper fundAccountWriteMapper;
 
     @Resource
     private FundSequenceService fundSequenceService;
@@ -52,13 +52,6 @@ public class FundAccountService {
     @Resource
     private BankCardInfoService bankCardInfoService;
     
-    public int insert(FundAccountEntity entity) throws FssException {
-        return fundAccountWriteMapper.insertSelective(entity);
-    }
-
-    public void insert(List<FundAccountEntity> entities) throws FssException{
-         fundAccountWriteMapper.insertAccountList(entities);
-    }
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -99,7 +92,7 @@ public class FundAccountService {
     private FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
-        this.insert(entity);
+        this.fundAccountWriteMapper.insert(entity);
         LogUtil.debug(this.getClass(),entity+":"+entity.getId());
         return entity;
     }
@@ -128,7 +121,7 @@ public class FundAccountService {
 
         }
 
-        this.insert(insertList);
+        this.fundAccountWriteMapper.insertList(insertList);
         LogUtil.debug(this.getClass(), insertList);
 
     }
@@ -158,17 +151,16 @@ public class FundAccountService {
      * @throws FssException
      */
     public List<FundAccountEntity> queryFundsAccountList(FundAccountEntity fundAccountEntity) throws FssException{
-    	return fundAccountReadMapper.queryFundsAccountList(fundAccountEntity);
+    	return fundsAccountReadMapper.queryFundsAccountList(fundAccountEntity);
     }
     /**
      * 根据条件查询返回所有资金账户列表
      * @param fundsAcctBean
-     * @param pageReq
      * @return
      * @throws FssException
      */
     public Page queryBusinessFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException{
-        return fundAccountReadMapper.queryBusinessFundsAccountList(fundsAcctBean);
+        return fundsAccountReadMapper.queryBusinessFundsAccountList(fundsAcctBean);
     }
 
 
@@ -179,7 +171,7 @@ public class FundAccountService {
      * @return
      */
     public FundAccountEntity getFundAccount(Integer cusID, int type){
-        return this.fundAccountReadMapper.queryFundAccountByCutId(cusID, type);
+        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
     }
 
     /**
@@ -189,7 +181,7 @@ public class FundAccountService {
      * @return
      */
     public FundAccountEntity getFundAccount(String userName,int type){
-        return this.fundAccountReadMapper.queryFundAccountByUserName(userName, type);
+        return this.fundsAccountReadMapper.queryFundAccountByUserName(userName, type);
     }
 
     public String getAccountNo(){
@@ -209,18 +201,17 @@ public class FundAccountService {
      * @return
      */
     public FundAccountEntity getFundAccountInfo(Long acctId){
-        return fundAccountReadMapper.selectByPrimaryKey(acctId);
+        return fundsAccountReadMapper.selectByPrimaryKey(acctId);
     }
 
     /**
      * 根据条件查询返回所有借款客户账户列表
      * @param fundsAcctBean
-     * @param pageReq
      * @return
      * @throws FssException
      */
     public Page queryLoanFundsAccountList(FundsAccountBean fundsAcctBean) throws FssException{
-        return fundAccountReadMapper.queryLoanFundsAccountList(fundsAcctBean);
+        return fundsAccountReadMapper.queryLoanFundsAccountList(fundsAcctBean);
     }
     
     
@@ -347,7 +338,7 @@ public class FundAccountService {
     */
    	public List<FundAccountCustomerBean> findAcountList(Map accMap) {
 	   // TODO Auto-generated method stub
-	   return fundAccountReadMapper.findAcountList(accMap);
+	   return fundsAccountReadMapper.findAcountList(accMap);
    	}
 
     
