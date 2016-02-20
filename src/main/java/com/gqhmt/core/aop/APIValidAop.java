@@ -1,6 +1,7 @@
 package com.gqhmt.core.aop;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.APIValidUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
@@ -9,8 +10,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Field;
 
 /**
  * Filename:    com.gqhmt.core.aop.APIValidAop
@@ -42,7 +41,7 @@ public class APIValidAop {
 
 
     @Around("point()")
-    public Response validAround(ProceedingJoinPoint joinPoint) throws FssException {
+    public Object validAround(ProceedingJoinPoint joinPoint) throws FssException {
 
         Response response = null;
         String code = "0000";
@@ -51,7 +50,7 @@ public class APIValidAop {
         Object[] objects = joinPoint.getArgs();
         for(Object obj:objects){
             if(obj instanceof SuperDto){
-                code =  valid((SuperDto) obj);
+                code = APIValidUtil.valid((SuperDto) obj);
                 throw new FssException(obj.getClass().getName());
             }
         }
@@ -72,16 +71,5 @@ public class APIValidAop {
         return response;
     }
 
-    private String valid(SuperDto dto){
-        if(dto == null){
-            return "90099999";
-        }
-        Class<SuperDto> dtoClass = (Class<SuperDto>) dto.getClass();
 
-        Class<SuperDto> superDtoClass = (Class<SuperDto>) dtoClass.getSuperclass();
-
-        Field[] fields  = dtoClass.getDeclaredFields();
-
-        return "90099999";
-    }
 }
