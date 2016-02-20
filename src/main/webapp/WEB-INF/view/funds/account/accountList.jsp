@@ -136,9 +136,7 @@
                                         <thead>
                                         <tr>
                                               <td>客户姓名</td>
-                                              <td>客户性别</td>
                                               <td>手机号码</td>
-                                              <td>证件号码</td>
                                               <td>账户编号</td>
                                               <td>账户类型</td>
                                               <td>业务类型</td>
@@ -151,11 +149,9 @@
                                         </thead>
                                         <tbody>
                                              <c:forEach items="${page.list}" var="acc">
-                                                <tr class="success">
+                                                <tr >
                                                     <td>${acc.customerName}</td>
-                                                    <td>${acc.sex==1?"男":"女"}</td>
                                                     <td>${acc.mobilePhone}</td>
-                                                    <td>${acc.certNo}</td>
                                                     <td>${acc.accountNo}</td>
                                                     <td>
                                                     <c:if test="${acc.accountType==1}">客户账户</c:if>

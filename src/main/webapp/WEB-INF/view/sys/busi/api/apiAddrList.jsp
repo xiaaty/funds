@@ -8,7 +8,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <%@include file="../../../view/include/common_css_js.jsp"%>
+   <%@include file="../../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -32,7 +32,7 @@
 </head>
 
 <body>
-<%@include file="../../../view/include/menu.jsp"%>
+<%@include file="../../../../view/include/menu.jsp"%>
 
 
 <div id="main" role="main">
@@ -43,7 +43,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>商户管理</li>
-            <li>商户列表</li>
+            <li>api列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -56,11 +56,11 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>商户列表</h2>
+                            <h2>api列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="busiListForm">
+                            <form class="smart-form" id="apiForm">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -68,32 +68,37 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                        <button   type="button"  onclick="location.href='${contextPath}/fss/api/toAddApi'">添加</button>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <td>商户名称</td>
-                                            <td>商户号</td>
-                                            <td>父商户号</td>
-                                            <td>商户密钥</td>
-                                            <td>状态</td>
-                                            <td>创建时间</td>
+                                            <td>api名称</td>
+                                            <td>api地址</td>
+                                            <td>是否公共API</td>
+                                            <td>api的类名</td>
+                                            <td>api的方法名</td>
+                                            <td>创建日期</td>
+                                            <td>创建人</td>
                                             <td>修改时间</td>
+                                            <td>修改人</td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${t.mchnName}</td>
-                                                    <td>${t.mchnNo}</td>
-                                                    <td>${t.parentNo}</td>
-                                                    <td>${t.mchnKey}</td>
-                                                    <td>${t.state=='0'?"未启用":"已启用"}</td>
+                                                    <td>${t.apiName}</td>
+                                                    <td>${t.apiUrl}</td>
+                                                    <td>${t.pulic=='0'?"否":"是"}</td>
+                                                    <td>${t.className}</td>
+                                                    <td>${t.methodName}</td>
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+                                                    <td>${t.createUserId}</td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+                                                    <td>${t.modifyId}</td>
                                                     <td style="text-align:left;">
-                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}">修改</a>
-                                                        <a href="${contextPath}/sys/busi/toBusinessApiAdd/${t.mchnNo}?mchnName=${t.mchnName}">API授权</a>
+                                                        <a href="${contextPath}/fss/api/selectApi/${t.id}">修改</a>
+                                                        <a href="${contextPath}/fss/api/deleteApi/${t.id}">删除</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -108,19 +113,19 @@
 
         </section>
     </div>
-<%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 </div>
 
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#busiListForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#apiForm"));
     });
 
 </script>
 
-<%@include file= "../../../view/include/foot.jsp"%>
+<%@include file= "../../../../view/include/foot.jsp"%>
 </body>
 
 </html>
