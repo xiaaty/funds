@@ -2,6 +2,9 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.account.AssetDto;
+import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -152,4 +155,23 @@ public class FundsAccountImpl implements IFundsAccount {
 		return primaryAccount;
 	}
 
+	/**
+	 * 查询账户余额
+	 */
+	 public FundAccountEntity getAccountAccByCustId(AccountAccessDto accessdto) throws FssException{
+		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_id(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		 return primaryAccount;
+	 }
+	
+	/**
+	 * 账户资产
+	 */
+	@Override
+	public FssAssetEntity getAccountAsset(AssetDto asset) throws FssException {
+		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getCust_no());
+		return assetEntity;
+	}
+	
+	
+	
 }
