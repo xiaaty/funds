@@ -1,13 +1,12 @@
 package com.gqhmt.funds.architect.trade.service;
 
-import com.github.pagehelper.Page;
 import com.gqhmt.pay.service.exception.NeedSMSValidException;
-import com.gqhmt.fss.architect.trade.bean.WithholdApplyBean;
-import com.gqhmt.fss.architect.trade.bean.WithholdApplyFormBean;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.trade.bean.WithholdApplyBean;
+import com.gqhmt.funds.architect.trade.bean.WithholdApplyFormBean;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.WithholdApplyReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.WithholdApplyWriteMapper;
@@ -63,13 +62,12 @@ public class WithholdApplyService {
 	}
 
 	/**
-	 * 根据条件对象查询并返回对应的代扣信息列表
 	 * 
-	 * @param pageReq
-	 * @return
-	 * @throws AppException
+	 * author:jhz
+	 * time:2016年2月18日
+	 * function：根据条件查询并返回所有代扣申请列表信息
 	 */
-	public Page queryWithholdList(WithholdApplyBean withholdBean) throws Exception {
+	public List<WithholdApplyEntity> queryWithHoldList(WithholdApplyBean withholdBean) {
 		return withholdApplyReadMapper.querywithholdByConditionList(withholdBean);
 	}
 

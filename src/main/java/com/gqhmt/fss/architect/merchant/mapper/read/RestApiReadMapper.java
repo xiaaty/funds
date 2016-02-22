@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
+import com.gqhmt.fss.architect.merchant.bean.BusinessApiBean;
 import com.gqhmt.fss.architect.merchant.entity.Business;
 
 
@@ -74,4 +75,5 @@ public interface RestApiReadMapper extends ReadMapper<Business> {
 	 * function：子商户列表
 	 */
 	public List<Business> getChildBusiness(Business business);
+	
 }

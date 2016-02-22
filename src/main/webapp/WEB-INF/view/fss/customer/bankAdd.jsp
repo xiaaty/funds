@@ -128,6 +128,14 @@
 <%@include file="../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
+<script src="${contextPath}/js/uploadify/jquery.uploadify.min.js" ></script>
+<script src="${contextPath}/js/uploadify/uploadify.css" ></script>
+<script src="${contextPath}/js/uploadify/uploadify.swf" ></script>
+<script src="${contextPath}/js/uploadify/uploadify-cancel.png" ></script>
+
+
+
+
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
     	    $("#btn_success").click(function () {

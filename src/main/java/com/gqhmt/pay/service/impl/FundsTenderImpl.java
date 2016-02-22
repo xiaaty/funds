@@ -7,6 +7,7 @@ import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.business.architect.loan.service.TenderService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.exception.CommandParmException;
@@ -54,8 +55,8 @@ public class FundsTenderImpl  implements IFundsTender {
 
 
     @Override
-    public boolean bid(String thirdPartyType, Long tenderId) throws FssException {
-        Tender tender = this.tenderService.findById(tenderId);
+    public boolean bid(BidDto bidDto) throws FssException {
+        Tender tender = this.tenderService.findById(Integer.parseInt(bidDto.getBusi_bid_no()));
         FundAccountEntity fromEntity = this.getFundAccount(tender.getCustomerId(), tender.getInvestType() == 1 ? 3 : 2);
         this.hasEnoughBanlance(fromEntity,tender.getRealAmount());
 
@@ -71,7 +72,7 @@ public class FundsTenderImpl  implements IFundsTender {
         FundAccountEntity toEntity = this.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         BigDecimal amount = tender.getRealAmount();
         BigDecimal boundsAmount = tender.getBonusAmount();
-        paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,tenderId,GlobalConstants.BUSINESS_BID);
+        paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
         //后续处理
         return true;
     }

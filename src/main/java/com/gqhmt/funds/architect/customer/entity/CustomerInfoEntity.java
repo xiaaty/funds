@@ -27,100 +27,142 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	//用户id
+	@Column(name = "user_id",updatable = false)
 	private Integer userId;
 	//客户姓名
+	@Column(name = "CUSTOMER_NAME",updatable = false)
 	private String customerName;
 	//客户类型 1：借款用户 2:借款共借人 3：线下出借用户 4：线上出借注册用户 9：A0公司内用用户
+	@Column(name = "CUSTOMER_TYPE",updatable = false)
 	private Integer customerType;
 	//移动电话
+	@Column(name = "MOBILE_PHONE",updatable = false)
 	private String mobilePhone;
 	//国籍
+	@Column(name = "NATIONALITY",updatable = false)
 	private String nationality;
 	//证件类型 1：身份证 2：护照 3：驾照 4：军人证
+	@Column(name = "CERT_TYPE",updatable = false)
 	private Integer certType;
 	//证件号码
+	@Column(name = "CERT_NO",updatable = false)
 	private String certNo;
 	//发证机关所在地
+	@Column(name = "CERT_ADDRESS",updatable = false)
 	private String certAddress;
 	//签发日期
+	@Column(name = "CERT_ISSUE_DATE",updatable = false)
 	private Date certIssueDate;
 	//失效日期
+	@Column(name = "CERT_FAIL_DATE",updatable = false)
 	private Date certFailDate;
 	//性别 1-男 2-女
+	@Column(name = "SEX",updatable = false)
 	private Integer sex;
 	//出生日期
+	@Column(name = "BIRTHDATE",updatable = false)
 	private Date birthdate;
 	//学历
+	@Column(name = "EDUCATION",updatable = false)
 	private String education;
 	//婚姻状况 1：未婚 2：已婚  3：离异 4：丧偶
+	@Column(name = "MARITAL_STATUS",updatable = false)
 	private Integer maritalStatus;
 	//电子邮箱
+	@Column(name = "EMAIL",updatable = false)
 	private String email;
 	//邮编编码
+	@Column(name = "ZIP_CODE",updatable = false)
 	private String zipCode;
 	//通讯地址
+	@Column(name = "ADDRESS",updatable = false)
 	private String address;
 	//通讯地址_国家
+	@Column(name = "ADDR_COUNTRY",updatable = false)
 	private String addrCountry;
 	//通讯地址_省（直辖市）
+	@Column(name = "ADDR_PROVINCE",updatable = false)
 	private String addrProvince;
 	//通讯地址_市（州）
+	@Column(name = "ADDR_CITY",updatable = false)
 	private String addrCity;
 	//通讯地址_县（区）
+	@Column(name = "ADDR_TOWN",updatable = false)
 	private String addrTown;
 	//通讯地址_其他
+	@Column(name = "ADDR_OTHER",updatable = false)
 	private String addrOther;
 	//所属行业
+	@Column(name = "industry",updatable = false)
 	private String industry;
 	//所属职务
+	@Column(name = "job_post",updatable = false)
 	private String jobPost;
-	
-	
 	//紧急联系人
+	@Column(name = "EMER_CONTACT",updatable = false)
 	private String emerContact;
 	//紧急联系人移动电话
+	@Column(name = "EMER_CONTACT_MOBILE",updatable = false)
 	private String emerContactMobile;
 	//性别 1-男 2-女
+	@Column(name = "EMER_CONTACT_SEX",updatable = false)
 	private Integer emerContactSex;
 	//紧急联系人关系
+	@Column(name = "EMER_CONTACT_RELA",updatable = false)
 	private String emerContactRela;
 	//紧急联系人固定电话
+	@Column(name = "EMER_CONTACT_PHONE",updatable = false)
 	private String emerContactPhone;
 	//紧急联系人学历
+	@Column(name = "EMER_CONTACT_EDUCA",updatable = false)
 	private String emerContactEduca;
 	//备注
+	@Column(name = "REMARK",updatable = false)
 	private String remark;
 	//操作人员编号
+	@Column(name = "EMPLOYEE_NO",updatable = false)
 	private String employeeNo;
 	//是否实名认证 0：未认证 1:已认证
+	@Column(name = "name_identification",updatable = false)
 	private Integer nameIdentification;
 	//是否电话认证 0：未认证 1:已认证
+	@Column(name = "phone_identification",updatable = false)
 	private Integer phoneIdentification;
 	//是否emai认证 0：未认证 1:已认证
+	@Column(name = "email_identification",updatable = false)
 	private Integer emailIdentification;
 	
 	//判断当前客户是否是有效客户 0 有效 1无效
+	@Column(name = "isvalid",updatable = false)
 	private Integer isvalid;
 	
 	//是否签署第三方协议 0 没有 1 有
+	@Column(name = "has_third_agreement",updatable = false)
 	private Integer hasThirdAgreement;
 	
 	//是否已经创建账户
+	@Column(name = "has_acount",updatable = false)
 	private Integer hasAcount;
 	
 	//创建时间
+	@Column(name = "CREATE_TIME",updatable = false)
 	private Date createTime;
 	//创建者
+	@Column(name = "CREATE_USER_ID",updatable = false)
 	private Integer createUserId;
 	//修改时间
+	@Column(name = "MODIFY_TIME",updatable = false)
 	private Date modifyTime;
 	//修改者
+	@Column(name = "MODIFY_USER_ID",updatable = false)
 	private Integer modifyUserId;
 	
 	//支付渠道1：大钱 2：富友
+	@Column(name = "pay_channel",updatable = false)
 	private Integer payChannel;
 	
 	//富有开户关联用银行卡id
+	@Column(name = "bank_id",updatable = false)
 	private Integer bankId;
 	
 	

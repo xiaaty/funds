@@ -29,6 +29,28 @@
     </style>
 </head>
 <body>
+    	<script type="text/javascript">  
+		/* 	 function queryUser(){
+				 if(window.ActiveXObject){ //IE  
+				    	var st = window.showModalDialog("${contextPath}/fund/bankcustomerManagerChildWin?randomVal=" + Math.random(), window, "dialogWidth:1230px;status:no;dialogHeight:880px");  
+				    	 
+				 		if(st != null ){  
+				 			  setValue(st.uid,st.realName,st.phone,st.certNo);
+				        }  
+				}else{  //非IE   
+				    window.open("${contextPath}/fund/bankcustomerManagerChildWin?num=1", 'newwindow','height=880,width=1230,top=150,left=300,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');  
+				}  
+			} 
+			 
+			function setValue(id,name,phone,identity){  
+				 $("#certName").val(name);
+				 $("#custId").val(id);
+				 $("#mobile").val(phone);
+				 $("#certNo").val(identity); 
+			}
+ */
+		</script>
+    
     
 <%@include file="../../include/menu.jsp"%>
 
@@ -48,8 +70,9 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="updateBankCardForm" action="${contextPath}/fund/bankcardsave" method="post">
+                    <form id="custForm" action="${contextPath}/fund/bankcardsave" method="post">
                         <input type="hidden"  name="id" value="${bankcard.id}"/>  
+                        <input type="hidden"  name="custId" id="custId" value="${bankcard.custId}" > 
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
@@ -74,6 +97,11 @@
                                                                     <input type="text" maxlength="50" name="certName" value="${bankcard.certName}" style="width:256px;" />
                                                                 </label>
                                                             </td>
+                                                            <td> 
+	                                                            <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+				                      								<button type="button" class="btn btn-default fl table-nobg-btn" id="btn_search"><i class="fa fa-plus"></i>&nbsp;查找用户</button>
+				                								</div>
+									                    	</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="left">手机号码：</td>
@@ -169,9 +197,6 @@
         $(document).ready(function() {
     	    $("#btn_success").click(function () {
     	        if (validateCheck()) {
-    	            /*if (!confirm("确认 修改商户信息吗?")) {
-    	               return false;
-    	            }*/
     	            $("#updateBankCardForm").ajaxSubmit({
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
     	                dataType: "json",
@@ -193,6 +218,13 @@
     		return true;
     	}
         
+    	 //用户列表
+        $("#btn_search").button().click(function() {
+        	window.open("${contextPath}/fund/bankcustomerManagerChildWin","_self");
+        });
+    	
+    	
+    	
     	$("#btn_cancel").button().click(function() {
         	window.history.back();
         });

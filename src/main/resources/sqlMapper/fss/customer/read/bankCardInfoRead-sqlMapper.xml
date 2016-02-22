@@ -24,7 +24,7 @@
 	
 	
 	<!--银行卡管理 -->
-	<select id="selectBankCardList"  parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity" >
+	<select id="selectBankCardList"  parameterType="java.util.Map" resultType="bankCardInfoEntity" >
 		SELECT 
 			t.id id,
 			t.cust_id  custId,
@@ -57,18 +57,9 @@
              <if test="bankSortName != null and bankSortName != ''">
                and t.bank_sort_name like concat('%',#{bankSortName},'%') 
              </if>
+             <if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
+				and t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			</if>
 		</where>
 	</select>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 </mapper>

@@ -2,7 +2,12 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.account.AssetDto;
+import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardResultDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
@@ -30,7 +35,7 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	@Resource
 	private PaySuperByFuiouTest paySuperByFuiou;
-
+	
 	/**
      * 创建账户
      *
@@ -38,22 +43,22 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param custId         客户id
      * @throws FssException
      */
-	public boolean createAccount(String thirdPartyType, int custId) throws FssException {
-		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(custId);
-		if(customerInfoEntity == null) throw new FssException("客户不存在");
-		return this.createAccount(thirdPartyType,customerInfoEntity,"","");
+	
+	public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException {
+		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(0);
+		if(customerInfoEntity == null) throw new FssException("2001");
+		return this.createAccount(customerInfoEntity,"","");
 	}
 
 	/**
      * 创建账户
      *
-     * @param thirdPartyType     支付渠道
      * @param customerInfoEntity 客户实体
      * @param pwd                支付渠道登陆密码
      * @param taradPwd           支付渠道交易密码
      * @throws FssException
      */
-	public boolean createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity,
+	public boolean createAccount(CustomerInfoEntity customerInfoEntity,
 						String pwd, String taradPwd) throws FssException {
 
 		Integer cusId = customerInfoEntity.getId();
@@ -107,16 +112,29 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param changeCardEntity
      * @throws FssException
      */
-	public boolean changeCard(String thirdPartyType,FssChangeCardEntity changeCardEntity) throws FssException {
-		Integer cusId = changeCardEntity.getCustId().intValue();
-		String cardNo = changeCardEntity.getCardNo();
-		String bankCd = changeCardEntity.getBankType();
-		String bankNm = changeCardEntity.getBankAdd();
-		String cityId = changeCardEntity.getBankCity();
-		String fileName = changeCardEntity.getFilePath().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
+	public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException {
+		Integer cusId = Integer.parseInt(changeBankCardDto.getCust_no());
+		String cardNo = changeBankCardDto.getBank_card();
+		String bankCd = changeBankCardDto.getBank_id();
+		String cityId = changeBankCardDto.getCity_id();
+		String fileName = changeBankCardDto.getImage();
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
-		paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
-		return true;
+		boolean changeCard = paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankCd,cityId,fileName);
+		if(!changeCard) throw new FssException("2001");
+		return changeCard;
+	}
+	 /**
+     * 银行卡变更结果查询
+     * @param primaryAccount
+     * @param orderNo
+     * @param busiId
+     * @return
+     * @throws FssException
+     */
+	@Override
+	public boolean changeCardResult(ChangeBankCardResultDto changeBankCardResultDto) throws FssException {
+//		paySuperByFuiou.changeCardResult(changeBankCardResultDto, changeBankCardResultDto.getSeq_no(),Long.parseLong(changeBankCardResultDto.getSeq_no()));
+		return false;
 	}
 
 	/**
@@ -151,5 +169,28 @@ public class FundsAccountImpl implements IFundsAccount {
 		}
 		return primaryAccount;
 	}
+	
 
+
+
+
+	/**
+	 * 查询账户余额
+	 */
+	 public FundAccountEntity getAccountAccByCustId(AccountAccessDto accessdto) throws FssException{
+		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_id(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		 return primaryAccount;
+	 }
+	
+	/**
+	 * 账户资产
+	 */
+	@Override
+	public FssAssetEntity getAccountAsset(AssetDto asset) throws FssException {
+		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getCust_no());
+		return assetEntity;
+	}
+	
+	
+	
 }

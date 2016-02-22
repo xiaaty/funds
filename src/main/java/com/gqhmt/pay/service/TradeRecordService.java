@@ -5,6 +5,8 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,5 +45,23 @@ public class TradeRecordService {
         // this.fundTradeService.createFundTrade(entity, amount, BigDecimal.ZERO, fundType, "充值成功，充值金额 " + amount + "元");
         //super.sendNotice(NoticeService.NoticeType.FUND_CHARGE, entity, amount,BigDecimal.ZERO);
     }
-
+    
+    /**
+     * 交易记录查询
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_no
+     * @param user_no
+     * @param busi_no
+     * @param signature
+     * @return
+     */
+    public String getTradeRecordByParams(String mchn,String seq_no,String trade_type,Integer cust_no,Integer user_no,Integer busi_no,String signature){
+    	
+    	
+    	
+    	
+    	return "";
+    }
 }
