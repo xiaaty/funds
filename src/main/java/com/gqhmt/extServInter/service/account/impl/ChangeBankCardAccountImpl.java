@@ -41,7 +41,7 @@ public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
     	Response response = new Response();
     	try {
 			iFundsAccount.changeCard((ChangeBankCardDto) dto);
-			response.setResp_code("0000");
+			response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

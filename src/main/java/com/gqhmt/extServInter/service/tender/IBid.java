@@ -12,7 +12,7 @@ import com.gqhmt.extServInter.service.ExtService;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年2月20日
- * Description:	提现
+ * Description:	 投标
  * <p>
  * Modification History:
  * Date    Author      Version     Description

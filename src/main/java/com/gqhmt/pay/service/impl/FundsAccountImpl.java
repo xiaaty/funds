@@ -43,10 +43,15 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param custId         客户id
      * @throws FssException
      */
-	
 	public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException {
-		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(0);
-		if(customerInfoEntity == null) throw new FssException("2001");
+		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(Integer.parseInt(createAccountByFuiouDto.getCust_no()));
+		customerInfoEntity.setParentBankCode(createAccountByFuiouDto.getBank_id());
+		customerInfoEntity.setBankNo(createAccountByFuiouDto.getBank_card());
+		customerInfoEntity.setCityCode(createAccountByFuiouDto.getCity_id());
+		customerInfoEntity.setCertNo(createAccountByFuiouDto.getCert_no());
+		customerInfoEntity.setMobilePhone(createAccountByFuiouDto.getMobile());
+		customerInfoEntity.setCustomerName(createAccountByFuiouDto.getName());
+		if(customerInfoEntity == null) throw new FssException("90002001");
 		return this.createAccount(customerInfoEntity,"","");
 	}
 
@@ -120,20 +125,19 @@ public class FundsAccountImpl implements IFundsAccount {
 		String fileName = changeBankCardDto.getImage();
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
 		boolean changeCard = paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankCd,cityId,fileName);
-		if(!changeCard) throw new FssException("2001");
+		if(!changeCard) throw new FssException("90002001");
 		return changeCard;
 	}
 	 /**
      * 银行卡变更结果查询
-     * @param primaryAccount
-     * @param orderNo
-     * @param busiId
-     * @return
-     * @throws FssException
      */
 	@Override
 	public boolean changeCardResult(ChangeBankCardResultDto changeBankCardResultDto) throws FssException {
-//		paySuperByFuiou.changeCardResult(changeBankCardResultDto, changeBankCardResultDto.getSeq_no(),Long.parseLong(changeBankCardResultDto.getSeq_no()));
+		FundAccountEntity fundAccountEntity=this.getPrimaryAccount(Integer.parseInt(changeBankCardResultDto.getCust_no()));
+		fundAccountEntity.setCityId(changeBankCardResultDto.getCity_id());
+		fundAccountEntity.setUserId(Integer.parseInt(changeBankCardResultDto.getUser_no()));
+		fundAccountEntity.setBankNo(changeBankCardResultDto.getBank_card());
+		paySuperByFuiou.changeCardResult(fundAccountEntity, changeBankCardResultDto.getSeq_no(),Long.parseLong(changeBankCardResultDto.getTrade_type()));
 		return false;
 	}
 
@@ -165,7 +169,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	private FundAccountEntity getPrimaryAccount(Integer cusId){
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 		if(primaryAccount == null){
-			throw new CommandParmException("主账户不存在");
+			throw new CommandParmException("90002003");
 		}
 		return primaryAccount;
 	}
