@@ -9,7 +9,6 @@ public class TradingRecordDto extends SuperDto {
 	
 	private Integer id;
 	private String trade_no;//交易号码
-	private Integer trade_type;//交易类型
 	private Integer cust_no;//客户编号
 	private Integer user_no;//用户编号
 	private Integer busi_no;//业务编号
@@ -24,12 +23,6 @@ public class TradingRecordDto extends SuperDto {
 	}
 	public void setTrade_no(String trade_no) {
 		this.trade_no = trade_no;
-	}
-	public Integer getTrade_type() {
-		return trade_type;
-	}
-	public void setTrade_type(Integer trade_type) {
-		this.trade_type = trade_type;
 	}
 	public Integer getCust_no() {
 		return cust_no;

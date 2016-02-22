@@ -57,7 +57,7 @@ public class TradeRecordService {
      * @param signature
      * @return
      */
-    public String getTradeRecordByParams(String mchn,String seq_no,Integer trade_type,Integer cust_no,Integer user_no,Integer busi_no,String signature){
+    public String getTradeRecordByParams(String mchn,String seq_no,String trade_type,Integer cust_no,Integer user_no,Integer busi_no,String signature){
     	
     	
     	
