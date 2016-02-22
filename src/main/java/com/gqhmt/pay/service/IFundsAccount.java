@@ -26,6 +26,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
  *          <li>销户申请</li>
  *          <li>销户复核</li>
  *          <li>银行卡变更</li>
+ *          <li>银行卡变更结果查询</li>
  *          <li>第三方短信设置--富友</li>
  *      </ol>
  *

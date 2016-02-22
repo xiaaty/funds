@@ -75,9 +75,9 @@ public class FundAccountService {
             return entity;
         }catch (Exception e){
 
-            String  msg = "数据库异常";
+            String  msg = "90002002";
             if(e.getMessage() != null && e.getMessage().contains("uk_cus_id_type")){
-                msg = "账户已存在";
+                msg = "90002001";
             }
             throw new FssException(msg,e);
         }
@@ -164,12 +164,12 @@ public class FundAccountService {
     }
 
 
-    /**
-     * 获取账户
-     * @param cusID 客户id
-     * @param type  账户类型
-     * @return
-     */
+   /**
+    * 
+    * author:jhz
+    * time:2016年2月22日
+    * function：通过custId得到账户
+    */
     public FundAccountEntity getFundAccount(Integer cusID, int type){
         return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
     }

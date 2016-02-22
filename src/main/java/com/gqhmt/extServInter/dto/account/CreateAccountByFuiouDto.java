@@ -41,7 +41,6 @@ public class CreateAccountByFuiouDto extends SuperDto {
     
     
     
-    
     public String getMobile() {
         return mobile;
     }
@@ -113,5 +112,7 @@ public class CreateAccountByFuiouDto extends SuperDto {
 	public void setBusi_no(String busi_no) {
 		this.busi_no = busi_no;
 	}
+
+	
     
 }

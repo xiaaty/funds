@@ -39,7 +39,7 @@ public class OrderWithdrawApplyImpl implements IOrderWithdrawApply{
     	Response response = new Response();
     	try {
     		iFundsTrade.webOrderNoWithdrawApply((OrderWithdrawApplyDto)dto);
-			 response.setResp_code("0000");
+			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
