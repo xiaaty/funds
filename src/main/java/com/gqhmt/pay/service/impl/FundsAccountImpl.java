@@ -169,10 +169,6 @@ public class FundsAccountImpl implements IFundsAccount {
 		}
 		return primaryAccount;
 	}
-	
-
-
-
 
 	/**
 	 * 查询账户余额
@@ -187,7 +183,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	 */
 	@Override
 	public FssAssetEntity getAccountAsset(AssetDto asset) throws FssException {
-		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getCust_no());
+		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getUser_no(),asset.getAcc_no(),asset.getCust_no());
 		return assetEntity;
 	}
 	

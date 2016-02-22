@@ -1,11 +1,6 @@
 package com.gqhmt.extServInter.dto.account;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-
 import com.gqhmt.extServInter.dto.SuperDto;
-
 /**
  *资产信息接口---账户资产信息
  */
@@ -14,8 +9,8 @@ public class AssetDto extends SuperDto {
 	    private String cust_no;                     
 	    private String user_no;             
 	    private String acc_no   ; 
-	    private Date create_time;                        
-	    private Date modify_time;
+	    private String busi_no   ; 
+	    
 		public Long getId() {
 			return id;
 		}
@@ -40,17 +35,11 @@ public class AssetDto extends SuperDto {
 		public void setAcc_no(String acc_no) {
 			this.acc_no = acc_no;
 		}
-		public Date getCreate_time() {
-			return create_time;
+		public String getBusi_no() {
+			return busi_no;
 		}
-		public void setCreate_time(Date create_time) {
-			this.create_time = create_time;
+		public void setBusi_no(String busi_no) {
+			this.busi_no = busi_no;
 		}
-		public Date getModify_time() {
-			return modify_time;
-		}
-		public void setModify_time(Date modify_time) {
-			this.modify_time = modify_time;
-		}    
 	    
 }
