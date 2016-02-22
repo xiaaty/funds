@@ -2,7 +2,9 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardResultDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
 /**
@@ -43,7 +45,7 @@ public interface IFundsAccount {
      * @param custId         客户id
      * @throws FssException
      */
-    public boolean createAccount(String thirdPartyType, int custId) throws FssException;
+    public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException;
 
 
     /**
@@ -55,7 +57,8 @@ public interface IFundsAccount {
      * @param taradPwd           支付渠道交易密码
      * @throws FssException
      */
-    public boolean createAccount(String thirdPartyType, CustomerInfoEntity customerInfoEntity, String pwd, String taradPwd) throws FssException;
+    public boolean createAccount(CustomerInfoEntity customerInfoEntity,
+			String pwd, String taradPwd) throws FssException;
 
 
     /**
@@ -85,7 +88,14 @@ public interface IFundsAccount {
 
      * @throws FssException
      */
-    public boolean changeCard(String thirdPartyType, FssChangeCardEntity changeCardEntity) throws FssException;
+    public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException;
+    
+    /**
+     * 银行卡变更结果查询
+
+     * @throws FssException
+     */
+    public boolean changeCardResult(ChangeBankCardResultDto changeBankCardResultDto) throws FssException;
 
 
     /**
