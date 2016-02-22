@@ -3,6 +3,7 @@ package com.gqhmt.extServInter.dto;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.AutoMapping;
 
+
 /**
  * Filename:    com.gqhmt.extServInter.dto.TransferDataSuperBean
  * Copyright:   Copyright (c)2015
@@ -32,7 +33,11 @@ public abstract class SuperDto {
 
     @APIValidNull(errorCode = "90008301")
     private String signature;
-
+    
+    @APIValidNull(errorCode = "90008301")
+    private String trade_type;
+    
+    
 
 
     public String getMchn() {
@@ -61,4 +66,12 @@ public abstract class SuperDto {
     public void setSeq_no(String seq_no) {
         this.seq_no = seq_no;
     }
+
+	public String getTrade_type() {
+		return trade_type;
+	}
+
+	public void setTrade_type(String trade_type) {
+		this.trade_type = trade_type;
+	}
 }

@@ -355,5 +355,17 @@ public class FundAccountService {
    		return assetReadMapper.getAccountAssets(custNo);
    	}
     
+
+    /**
+	  * 
+	  * author:jhz
+	  * time:2016年2月18日
+	  * function：找到指定的客户
+	  */
+	public FundAccountCustomerBean fundAccountCustomerById(Integer withHoldId) {
+		// TODO Auto-generated method stub
+		return fundsAccountReadMapper.fundAccountCustomerById(withHoldId);
+	}
+    
 }
 
