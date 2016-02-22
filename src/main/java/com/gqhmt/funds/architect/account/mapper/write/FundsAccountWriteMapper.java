@@ -5,6 +5,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gq.p2p.account.dao
@@ -28,4 +29,6 @@ public interface FundsAccountWriteMapper extends ReadAndWriteMapper<FundAccountE
 
 	public void insertAccountList(@Param("accounts") List<FundAccountEntity> entities);
 
+	public void updateAndSaveAccount(Map map);
+	
 }

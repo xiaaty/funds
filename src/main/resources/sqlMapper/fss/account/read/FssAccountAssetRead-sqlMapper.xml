@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper">
-	<select id="getAccountAssets" parameterType="java.lang.String" resultType="fssAssetEntity">
+	<select id="getAccountAssets" parameterType="java.util.Map" resultType="fssAssetEntity">
 		SELECT 
 			id,
 			acc_no accNo,
@@ -11,7 +11,9 @@
 			acc_avai accAvai,
 			acc_freeze accFreeze
 		FROM 
-			t_gq_fss_asset t
-		WHERE t.cust_no = #{custNo}
+			t_gq_fss_asset t 
+		WHERE t.cust_no=${cust_no} 
+		AND t.user_no=${user_no} 
+		AND t.acc_no=${acc_no}
 	</select>
 </mapper>

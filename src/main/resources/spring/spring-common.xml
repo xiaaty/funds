@@ -19,8 +19,11 @@
 
 	<!-- spring config -->
 
-	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
+
+	<context:component-scan base-package="com.gqhmt.fss.listener.*;com.gqhmt.funds.architect;com.gqhmt.fss.architect;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter.service.*.impl.*">
+
 	<context:component-scan base-package="com.gqhmt.fss.listener.*;com.gqhmt.funds.architect;com.gqhmt.fss.architect;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter.service;com.gqhmt.business.architect">
+
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
 
 	</context:component-scan>

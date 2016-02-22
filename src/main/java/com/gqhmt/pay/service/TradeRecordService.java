@@ -1,9 +1,12 @@
 package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.pay.service.TradeRecordService
@@ -48,20 +52,26 @@ public class TradeRecordService {
     
     /**
      * 交易记录查询
-     * @param mchn
-     * @param seq_no
-     * @param trade_type
      * @param cust_no
      * @param user_no
      * @param busi_no
-     * @param signature
      * @return
      */
-    public String getTradeRecordByParams(String mchn,String seq_no,String trade_type,Integer cust_no,Integer user_no,Integer busi_no,String signature){
-    	
-    	
-    	
-    	
-    	return "";
+    public List<FundTradeEntity> getTradeRecordByParams(Integer cust_no,Integer user_no,Integer busi_no,String trade_type) throws FssException{
+    	List<FundTradeEntity> tradelist = fundTradeService.searchTradeRecord(cust_no,user_no,busi_no,trade_type);
+    	return tradelist;
+    }
+    
+    /**
+     * 账户资金流水查询
+     * @param cust_no
+     * @param user_no
+     * @param busi_no
+     * @return
+     * @throws FssException
+     */
+    public List<FundAccountSequenceBean> getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+    	List<FundAccountSequenceBean> fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
+    	return fundsequencelist;
     }
 }

@@ -177,7 +177,7 @@ public class FundAccountService {
     * function：通过custId得到账户
     */
     public FundAccountEntity getFundAccount(Integer cusID, int type){
-        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
+        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, 3);
     }
 
     /**
@@ -351,8 +351,18 @@ public class FundAccountService {
      * 得到账户资产信息
      * @return
      */
-   	public FssAssetEntity getAccountAsset(String custNo){
-   		return assetReadMapper.getAccountAssets(custNo);
+   	public FssAssetEntity getAccountAsset(String cust_no,String user_no,String acc_no){
+   		Map map=new HashMap();
+   		if(StringUtils.isNotEmptyString(cust_no)){
+   			map.put("cust_no", cust_no);
+   		}
+   		if(StringUtils.isNotEmptyString(user_no)){
+   			map.put("user_no", user_no);
+   		}
+   		if(StringUtils.isNotEmptyString(acc_no)){
+   			map.put("acc_no", acc_no);
+   		}
+   		return assetReadMapper.getAccountAssets(map);
    	}
     
 
@@ -366,6 +376,30 @@ public class FundAccountService {
 		// TODO Auto-generated method stub
 		return fundsAccountReadMapper.fundAccountCustomerById(withHoldId);
 	}
-    
+	/**
+	 * 费用接口
+	 * @param id
+	 * @param totalAmaount
+	 * @return
+	 * @throws FssException
+	 */
+	public boolean savetoAccount(Long id,BigDecimal totalAmaount) throws FssException{
+		Map map=new HashMap();
+		map.put("id", id);
+		map.put("totalAmaount", totalAmaount);
+		fundAccountWriteMapper.updateAndSaveAccount(map);
+		return true;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
