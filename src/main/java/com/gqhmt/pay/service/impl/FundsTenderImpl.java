@@ -72,7 +72,7 @@ public class FundsTenderImpl  implements IFundsTender {
         FundAccountEntity toEntity = this.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         BigDecimal amount = tender.getRealAmount();
         BigDecimal boundsAmount = tender.getBonusAmount();
-        paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,bidDto.getBusi_bid_no(),GlobalConstants.BUSINESS_BID);
+        paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
         //后续处理
         return true;
     }
