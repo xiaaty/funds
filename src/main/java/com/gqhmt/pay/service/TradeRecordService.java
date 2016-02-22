@@ -5,6 +5,8 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -56,6 +58,9 @@ public class TradeRecordService {
      * @return
      */
     public String getTradeRecordByParams(String mchn,String seq_no,Integer trade_type,Integer cust_no,Integer user_no,Integer busi_no,String signature){
+    	
+    	
+    	
     	
     	return "";
     }
