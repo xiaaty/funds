@@ -24,6 +24,9 @@ public class WithholdApplyBean implements java.io.Serializable{
     private Integer thirdPartyType; //第三方支付类型
     private String  startTime;      //申请时间(开始)
     private String  endTime;        //申请时间(结束)
+    private String bussinessContractNo;//合同编号
+    private String bussinessArea; //大区
+    
 	/**
 	 * @return the id
 	 */
@@ -167,6 +170,18 @@ public class WithholdApplyBean implements java.io.Serializable{
 	 */
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+	public String getBussinessContractNo() {
+		return bussinessContractNo;
+	}
+	public void setBussinessContractNo(String bussinessContractNo) {
+		this.bussinessContractNo = bussinessContractNo;
+	}
+	public String getBussinessArea() {
+		return bussinessArea;
+	}
+	public void setBussinessArea(String bussinessArea) {
+		this.bussinessArea = bussinessArea;
 	}
 	
 }

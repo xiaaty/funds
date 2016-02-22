@@ -70,8 +70,6 @@
 		a.mchn_key mchnKey,
 		a.mchn_key_end_date
 		mchnKeyEndDate,
-		a.auth_ip authIp,
-		a.auth_api authApi,
 		a.create_time
 		createTime,
 		a.modify_time modifyTime,
@@ -118,4 +116,6 @@
 		DELETE from
 		t_gq_fss_mchn_api WHERE mchn_no=#{mchnNo}
 	</delete>
+	
+	
 </mapper>

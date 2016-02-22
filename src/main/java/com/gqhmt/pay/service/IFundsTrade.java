@@ -2,6 +2,10 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.trade.OrderWithdrawApplyDto;
+import com.gqhmt.extServInter.dto.trade.OrderWithholdApplyDto;
+import com.gqhmt.extServInter.dto.trade.WithdrawDto;
+import com.gqhmt.extServInter.dto.trade.WithholdDto;
 
 import java.math.BigDecimal;
 
@@ -38,7 +42,7 @@ import java.math.BigDecimal;
 public interface IFundsTrade {
 
     /**
-     * 生成web充值提现订单
+     * 生成web提现订单
      * @param thirdPartyType            支付渠道
      * @param custID                    客户id
      * @param amount                    交易金额
@@ -47,7 +51,18 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public String webOrderNo(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int type) throws FssException;
+    public String webOrderNoWithdrawApply(OrderWithdrawApplyDto orderWithdrawApplyDto) throws FssException;
+    /**
+     * 生成web充值订单
+     * @param thirdPartyType            支付渠道
+     * @param custID                    客户id
+     * @param amount                    交易金额
+     * @param chargeAmount              交易手续费
+     * @param type                      交易类型 1.充值；2.提现
+     * @return
+     * @throws FssException
+     */
+    public String webOrderNoWithholdApply(OrderWithholdApplyDto orderWithholdApplyDto) throws FssException;
 
 
     /**
@@ -58,7 +73,7 @@ public interface IFundsTrade {
      * @param sourceType                充值来源  1，web端，2wap端，3手机app,4后台委托充值
      * @return
      */
-    public boolean withholding(String thirdPartyType,int custID,BigDecimal amount,int sourceType)throws FssException;
+    public boolean withholding(WithholdDto withholdDto)throws FssException;
 
     /**
      *线上提现，目前已直连富友代付接口，未来改为异步，存入数据库，定时跑批提现
@@ -70,7 +85,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean withdraw(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int sourceType) throws FssException;
+    public boolean withdraw(WithdrawDto withdrawDto) throws FssException;
 
     /**
      * 代扣申请

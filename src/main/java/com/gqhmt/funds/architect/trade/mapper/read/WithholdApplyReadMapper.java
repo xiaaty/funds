@@ -1,8 +1,7 @@
 package com.gqhmt.funds.architect.trade.mapper.read;
 
-import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.trade.bean.WithholdApplyBean;
+import com.gqhmt.funds.architect.trade.bean.WithholdApplyBean;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 
 import java.util.List;
@@ -26,12 +25,12 @@ import java.util.List;
 public interface WithholdApplyReadMapper extends ReadMapper<WithholdApplyEntity>{
 	
 	/**
-	 * 根据条件对象查询并返回对应的提现信息列表
-	 * @param pageReq
-	 * @return
-	 * @throws AppException
+	 * 
+	 * author:jhz
+	 * time:2016年2月18日
+	 * function：根据条件查询并返回所有代扣申请列表信息
 	 */
-	public Page querywithholdByConditionList(WithholdApplyBean withholdBean);
+	public List<WithholdApplyEntity> querywithholdByConditionList(WithholdApplyBean withholdBean);
 	
 	/**
 	 * 根据条件对象查询并返回对应的提现信息列表

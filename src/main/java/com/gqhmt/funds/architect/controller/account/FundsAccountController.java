@@ -1,12 +1,10 @@
-package com.gqhmt.funds.architect.controller;
+package com.gqhmt.funds.architect.controller.account;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.util.StringUtils;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +18,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
@@ -107,7 +106,43 @@ public class FundsAccountController {
  		model.addAttribute("page", selectAccountSequenceList);
     	return "funds/account/accountWater";
     }
-
+	 /**
+	  * 
+	  * author:jhz
+	  * time:2016年2月18日
+	  * function：为指定的客户提现
+	  */
+    @RequestMapping("/funds/acount/businessAccountWithdraw/{withHoldId}")
+    public String businessAccountWithdraw(HttpServletRequest request,ModelMap model,@PathVariable Integer withHoldId){
+    	FundAccountCustomerBean  accountWithdraw =fundAccountService.fundAccountCustomerById(withHoldId);
+        model.addAttribute("acct",accountWithdraw);
+        return "funds/account/withHold/account_business_withdraw";
+    }
+  
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月18日
+     * function： 为指定的客户代扣
+     */
+    @RequestMapping("/funds/acount/custAccountWithhold/{withHoldId}")
+    public String accountRecharge(HttpServletRequest request,ModelMap model,@PathVariable Integer withHoldId){
+    	FundAccountCustomerBean  accountWithdraw =fundAccountService.fundAccountCustomerById(withHoldId);
+        model.addAttribute("acct",accountWithdraw);
+        return "funds/account/withHold/account_withhold";
+    }
     
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月18日
+     * function： 为指定的客户代付
+     */
+    @RequestMapping("/funds/acount/custAccountWithdraw/{withDrawId}")
+    public String accountWithdraw(HttpServletRequest request,ModelMap model,@PathVariable Integer withDrawId){
+    	FundAccountCustomerBean  accountWithdraw =fundAccountService.fundAccountCustomerById(withDrawId);
+        model.addAttribute("acct",accountWithdraw);
+        return "funds/account/withHold/account_withdraw";
+    }
     
 }

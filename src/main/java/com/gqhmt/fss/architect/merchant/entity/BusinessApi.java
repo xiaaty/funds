@@ -23,7 +23,7 @@ import javax.persistence.Table;
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 15/12/18  李俊龙      1.0     1.0 Version
+ * 16/02/19  jhz    1.0     1.0 Version
  */
 //资金商户api表
 @Entity
@@ -40,13 +40,13 @@ public class BusinessApi {
     // ip地址
     @Column(name = "api_no")
     private String apiNo;
-    // 0黑名单，1白名单
+    // 回调地址
     @Column(name = "return_url")
     private String returnUrl;
     
-    // 0黑名单，1白名单
+    // 是否回调
     @Column(name = "is_return")
-    private String isReturn;
+    private int isReturn;
     
     // 创建日期
     @Column(name = "create_time")
@@ -72,10 +72,10 @@ public class BusinessApi {
 	public void setReturnUrl(String returnUrl) {
 		this.returnUrl = returnUrl;
 	}
-	public String getIsReturn() {
+	public int getIsReturn() {
 		return isReturn;
 	}
-	public void setIsReturn(String isReturn) {
+	public void setIsReturn(int isReturn) {
 		this.isReturn = isReturn;
 	}
 	public Date getCreateTime() {
