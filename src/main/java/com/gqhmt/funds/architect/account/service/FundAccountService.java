@@ -5,6 +5,8 @@ import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
+import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -15,6 +17,8 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.util.LogUtil;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,6 +56,8 @@ public class FundAccountService {
     @Resource
     private BankCardInfoService bankCardInfoService;
     
+    @Resource
+    private  FssAssetReadMapper assetReadMapper;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -340,6 +346,15 @@ public class FundAccountService {
 	   // TODO Auto-generated method stub
 	   return fundsAccountReadMapper.findAcountList(accMap);
    	}
+   	
+    /**
+     * 得到账户资产信息
+     * @return
+     */
+   	public FssAssetEntity getAccountAsset(String custNo){
+   		return assetReadMapper.getAccountAssets(custNo);
+   	}
+    
 
     /**
 	  * 
@@ -352,10 +367,5 @@ public class FundAccountService {
 		return fundsAccountReadMapper.fundAccountCustomerById(withHoldId);
 	}
     
-    
-    
-    
-    
-    
-
 }
+

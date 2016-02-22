@@ -11,6 +11,7 @@ import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.BankCardInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.read.BankReadMapper;
+import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.BankCardinfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.BankWriteMapper;
 
@@ -21,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gq.p2p.customer.service
@@ -52,6 +54,9 @@ public class BankCardInfoService {
     
     @Resource
     private BankWriteMapper bankWriteMapper;
+    
+    @Resource
+    private CustomerInfoReadMapper customerReadMapper;
     
     
     
@@ -424,8 +429,8 @@ public class BankCardInfoService {
 	 * @param bankcard
 	 * @return
 	 */
-	public List<BankCardInfoEntity> findAllbankCards(BankCardInfoEntity bankcard){
-		return this.bankCardinfoReadMapper.selectBankCardList(bankcard);
+	public List<BankCardInfoEntity> findAllbankCards(Map map){
+		return this.bankCardinfoReadMapper.selectBankCardList(map);
 	}
     
 	
@@ -440,5 +445,24 @@ public class BankCardInfoService {
 	public void delBankCard(Integer id){
 		this.bankCardinfoWriteMapper.deleteBankCardInfo(id);
 	}
-    
+	
+	public List<CustomerInfoEntity> getAllCustomers(CustomerInfoEntity customer){
+		return this.customerReadMapper.queryCustomerInfoEntityList(customer);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

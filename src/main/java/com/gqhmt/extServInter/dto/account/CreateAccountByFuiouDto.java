@@ -1,5 +1,4 @@
 package com.gqhmt.extServInter.dto.account;
-
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**

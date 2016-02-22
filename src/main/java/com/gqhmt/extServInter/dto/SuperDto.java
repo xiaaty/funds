@@ -3,6 +3,7 @@ package com.gqhmt.extServInter.dto;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.AutoMapping;
 
+
 /**
  * Filename:    com.gqhmt.extServInter.dto.TransferDataSuperBean
  * Copyright:   Copyright (c)2015
@@ -73,5 +74,4 @@ public abstract class SuperDto {
 	public void setTrade_type(String trade_type) {
 		this.trade_type = trade_type;
 	}
-    
 }
