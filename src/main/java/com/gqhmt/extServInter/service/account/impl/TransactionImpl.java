@@ -1,4 +1,4 @@
-package com.gqhmt.extServInter.service.fund.impl;
+package com.gqhmt.extServInter.service.account.impl;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 账户资产接口---交易记录查询
- * @author 57627
+ * @author 柯禹来
  */
 @Service
 public class TransactionImpl implements ICreateAccount{
@@ -31,7 +31,7 @@ public class TransactionImpl implements ICreateAccount{
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-	    	response.setResp_code("90003");
+	    	response.setResp_code("-1001004");
 		}
     	return response;
     }

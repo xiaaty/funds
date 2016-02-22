@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年2月20日
- * Description:  提现
+ * Description:  投标
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -31,15 +31,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BidImpl implements IBid{
+	
 	@Resource
 	private IFundsTender iFundsTender;
 	
-    @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		iFundsTender.bid((BidDto)dto);
-			 response.setResp_code("0000");
+			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

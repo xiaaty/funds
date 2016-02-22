@@ -24,9 +24,6 @@ import java.util.Date;
 @Table(name = "t_gq_fund_sequence")
 public class FundSequenceEntity  implements java.io.Serializable{
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "id")

@@ -49,4 +49,11 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
      * function：查询流水列表
      */
 	public List<FundAccountSequenceBean> selectAccountSequenceList(Map fasMap);	
+	
+	/**
+	 * 账户资金流水
+	 * @param map
+	 * @return
+	 */
+	public List<FundAccountSequenceBean> queryFundTradeFlow(Map map);
 }

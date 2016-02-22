@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * 账户余额接口---账户余额
- * @author 57627
+ * @author 柯禹来
  */
 @Service
 public class AccountBanlanceImpl implements ICreateAccount{
@@ -31,7 +31,7 @@ public class AccountBanlanceImpl implements ICreateAccount{
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-	    	response.setResp_code("90003");
+	    	response.setResp_code("90002003");
 		}
     	return response;
     }

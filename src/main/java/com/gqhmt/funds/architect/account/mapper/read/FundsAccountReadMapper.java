@@ -9,6 +9,7 @@ import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +84,5 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 		  */
 	public FundAccountCustomerBean fundAccountCustomerById(Integer withHoldId);
 	
-	
-	
+
 }

@@ -20,6 +20,9 @@ import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.util.ThirdPartyType;
 
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 
 /**
@@ -27,6 +30,7 @@ import java.math.BigDecimal;
  * @author lijunlong
  *
  */
+@Service
 public class FundsTradeImpl  implements IFundsTrade {
 
 
@@ -54,15 +58,10 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Override
     public String webOrderNoWithdrawApply(OrderWithdrawApplyDto orderWithdrawApplyDto) throws FssException {
 
-        if(Integer.parseInt(orderWithdrawApplyDto.getTrade_type()) != 1 || Integer.parseInt(orderWithdrawApplyDto.getTrade_type()) != 2){
-            throw new CommandParmException("交易类型错误");
-        }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(orderWithdrawApplyDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        if(Integer.parseInt(orderWithdrawApplyDto.getTrade_type()) == 2){
-            this.hasEnoughBanlance(entity,orderWithdrawApplyDto.getAmount().add(orderWithdrawApplyDto.getProcedure_fee()));
-        }
+         this.hasEnoughBanlance(entity,orderWithdrawApplyDto.getAmount().add(orderWithdrawApplyDto.getProcedure_fee()));
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity,orderWithdrawApplyDto.getAmount(),Integer.parseInt(orderWithdrawApplyDto.getTrade_type())==1?GlobalConstants.ORDER_CHARGE:GlobalConstants.ORDER_WITHDRAW,0,0,"2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity,orderWithdrawApplyDto.getAmount(),2,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
     /**
@@ -70,7 +69,6 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @param thirdPartyType            支付渠道
      * @param custID                    客户id
      * @param amount                    交易金额
-     * @param chargeAmount              交易手续费
      * @param type                      交易类型 1.充值；2.提现
      * @return
      * @throws FssException
@@ -78,15 +76,11 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Override
     public String webOrderNoWithholdApply(OrderWithholdApplyDto orderWithholdApplyDto) throws FssException {
     	
-        if(Integer.parseInt(orderWithholdApplyDto.getTrade_type()) != 1 || Integer.parseInt(orderWithholdApplyDto.getTrade_type()) != 2){
-            throw new CommandParmException("交易类型错误");
-        }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(orderWithholdApplyDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        if(Integer.parseInt(orderWithholdApplyDto.getTrade_type()) == 2){
-            this.hasEnoughBanlance(entity,orderWithholdApplyDto.getAmount().add(orderWithholdApplyDto.getAmount()));
-        }
+        
+        this.hasEnoughBanlance(entity,orderWithholdApplyDto.getAmount());
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity,orderWithholdApplyDto.getAmount(),Integer.parseInt(orderWithholdApplyDto.getTrade_type())==1?GlobalConstants.ORDER_CHARGE:GlobalConstants.ORDER_WITHDRAW,0,0,"2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity,orderWithholdApplyDto.getAmount(),1,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
 
@@ -103,7 +97,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     public boolean withholding(WithholdDto withholdDto) throws FssException {
         FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(withholdDto.getCust_no()));
         if (primaryAccount.getIshangeBankCard()==1){
-            throw new CommandParmException("银行卡变更中,不允许代扣");
+            throw new CommandParmException("90004009");
         }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withholdDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,withholdDto.getAmount(),GlobalConstants.ORDER_CHARGE,0,0);
@@ -119,7 +113,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     public boolean withdraw(WithdrawDto withdrawDto) throws FssException {
         FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(withdrawDto.getCust_no()));
         if (primaryAccount.getIshangeBankCard()==1){
-            throw new CommandParmException("银行卡变更中,不允许提现");
+            throw new CommandParmException("90004004");
         }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         this.hasEnoughBanlance(entity,withdrawDto.getAmount().add(withdrawDto.getProcedure_fee()));
@@ -127,7 +121,9 @@ public class FundsTradeImpl  implements IFundsTrade {
         //资金处理
         return true;
     }
-
+    /**
+     * 代扣申请
+     */
     @Override
     public boolean withholdingApply(String thirdPartyType, int custID, int businessType, String contractNo, BigDecimal amount, Long bid) throws FssException {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
@@ -174,7 +170,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){
             boolean checkWithdraw = this.fundOrderService.checkWithdrawNumber(entity.getId());
             if(checkWithdraw){
-                throw new CommandParmException("今日提现超过3次，请于明日提现");
+                throw new CommandParmException("90004005");
             }
         }
     }
@@ -188,7 +184,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
 
         if (entity == null) {
-            throw new CommandParmException("账户不存在");
+            throw new CommandParmException("90004006");
         }
         return entity;
     }
@@ -196,14 +192,14 @@ public class FundsTradeImpl  implements IFundsTrade {
     private void hasEnoughBanlance(FundAccountEntity entity, BigDecimal amount) throws CommandParmException {
         BigDecimal bigDecimal = entity.getAmount();
         if (bigDecimal.compareTo(amount) < 0) {
-            throw new CommandParmException("账户余额不足");
+            throw new CommandParmException("90004007");
         }
     }
 
     private FundAccountEntity getPrimaryAccount(Integer cusId){
         FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         if(primaryAccount == null){
-            throw new CommandParmException("主账户不存在");
+            throw new CommandParmException("90004008");
         }
         return primaryAccount;
     }
