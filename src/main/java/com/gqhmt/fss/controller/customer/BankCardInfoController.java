@@ -9,6 +9,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -227,9 +229,40 @@ public class BankCardInfoController {
 	@AutoPage
 	public Object bankCardList(HttpServletRequest request, ModelMap model,
 			@ModelAttribute(value = "bankcard") BankCardInfoEntity  bankcard) {
-		List<BankCardInfoEntity> bankCards = bankCardInfoService.findAllbankCards(bankcard);
+		String startime=request.getParameter("startime");
+		String endtime=request.getParameter("endtime");
+		Map map=new HashMap();
+		if(StringUtils.isNotEmptyString(bankcard.getCertName())){
+    		map.put("certName",bankcard.getCertName());
+    	}
+    	if(StringUtils.isNotEmptyString(bankcard.getBankNo())){
+    		map.put("bankNo",bankcard.getBankNo());
+    	}
+    	if(StringUtils.isNotEmptyString(bankcard.getBankSortName())){
+    		map.put("bankSortName",bankcard.getBankSortName());
+    	}
+		if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
+			map.put("startime", startime+" 00:00:00");
+			map.put("endtime", endtime+" 23:59:59");
+    	}
+    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
+    		map.put("startime", "1970-01-01 23:59:59");
+			map.put("endtime", endtime+" 23:59:59");
+    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
+    		Date sysday=new Date();
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    		String nowtime=sdf.format(sysday);
+			map.put("startime", startime+" 00:00:00");
+			map.put("endtime", nowtime);
+    	}else{
+    		map.put("startime", "");
+			map.put("endtime", "");
+    	}
+		List<BankCardInfoEntity> bankCards = bankCardInfoService.findAllbankCards(map);
 		model.addAttribute("page", bankCards);
 		model.addAttribute("bankcard", bankcard);
+		model.addAttribute("startime",startime);
+    	model.addAttribute("endtime",endtime);
 		return "fss/customer/bankCardList";
 	}
 	
@@ -310,8 +343,10 @@ public class BankCardInfoController {
 
 	    private String  upload(HttpServletRequest request,int type)throws Exception{
 	        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+	        String readypath = request.getSession().getServletContext().getRealPath("");
+	        String newFilePath="";
 	        String fileName = "";
-	        File filePath = new File(IConstants.BankImageFilePath);
+	        File filePath = new File(readypath+IConstants.BankImageFilePath);
 	        if(!filePath.exists()){
 	            filePath.mkdirs();
 
@@ -331,7 +366,7 @@ public class BankCardInfoController {
 	                    name = name.toLowerCase();
 	                    //保存省略图
 	                    if(type==1) {
-	                        ImageUtil.saveToImgByBytesNotPath(bytes, name, IConstants.BankImageFilePath);
+	                        ImageUtil.saveToImgByBytesNotPath(bytes, name, readypath+IConstants.BankImageFilePath);
 	                    }else{
 
 	                        FileOutputStream fos = null;
@@ -357,7 +392,8 @@ public class BankCardInfoController {
 	        }catch(Exception e){
 	            LogUtil.error(this.getClass(),e);
 	        }
-	        return filePath+"/"+fileName;
+	        newFilePath=IConstants.BankImageFilePath+"/"+fileName;
+	        return newFilePath;
 	    }
 	    
 	    /**
@@ -366,12 +402,23 @@ public class BankCardInfoController {
 	     * @param id
 	     * @return
 	     */
-	    @RequestMapping("/fund/bankShowView/{id}")
+	    @RequestMapping("/fund/checkPageXe/{id}")
 	    public String bankShowView(HttpServletRequest request,@PathVariable Long id){
-	        String path = request.getSession().getServletContext().getRealPath("/bank");
+	       /* String path = request.getSession().getServletContext().getRealPath("/GQGETfiles/bank/");
 	        BankEntity bankList = bankCardInfoService.getBankById(id);
-	        request.setAttribute("bankList", bankList);
-	        return "/account/bank_show";
+	        request.setAttribute("bankList", bankList);*/
+	        return "/fss/customer/ckxe";
+	    }
+	    
+	    /**
+	     * 银行卡管理--查找 用户
+	     */
+	    @RequestMapping("/fund/bankcustomerManagerChildWin")
+	    public String bankShowView(HttpServletRequest request,ModelMap model,CustomerInfoEntity customer){
+	        List<CustomerInfoEntity> custlist=bankCardInfoService.getAllCustomers(customer);
+	        model.addAttribute("page", custlist);
+	        model.addAttribute("customer", customer);
+	        return "/fss/customer/bankCustomerChoose";
 	    }
 	    
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper">
-
+ 
 	<sql id="fieldSql">
 		  SELECT
 		  	 id,
@@ -69,11 +69,28 @@
 				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
 					AND b.create_time BETWEEN #{creatTime} AND #{modifyTime}
 				</when>
-				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
+				<!-- <when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
 					AND b.create_time &lt; #{modifyTime}
-				</when>
+				</when> -->
 			</choose>
 		</where>
 	</select>
-
+<!-- 	找到指定的客户 -->
+	<select id="fundAccountCustomerById" parameterType="java.lang.Integer" resultType="com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean">
+		 SELECT 
+		b.id id,
+		a.CUSTOMER_NAME	customerName,
+		a.SEX sex,
+		a.CERT_NO certNo,
+		a.MOBILE_PHONE mobilePhone,
+		b.account_type accountType,
+		b.busi_type busiType,
+		b.cust_id custId,
+		b.account_no accountNo,
+		b.amount amount,
+		b.CREATE_TIME creatTime,
+		b.freeze_amount freezeAmount,
+		b.has_Third_Account hasThirdAccount
+		FROM `t_gq_customer_info` a , `t_gq_fund_account` b where a.ID=b.user_id and b.id=#{withHoldId}
+	</select>
 </mapper>

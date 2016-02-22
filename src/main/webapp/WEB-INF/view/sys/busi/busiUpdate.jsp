@@ -126,28 +126,7 @@
                                                 </td>
                                             </tr>
                                             
-											<tr class="lh32">
-                                                <td class="tr">IP校验方式：</td>
-                                                <td>
-                                                    <section style="width:250px">
-                                                        <label class="text">
-                                                            <input type="radio" name="authIp" value="0" <c:if test="${busi.authIp ==0}">checked</c:if> />IP不校验
-                                                            <input type="radio" name="authIp" value="1" <c:if test="${busi.authIp ==1}">checked</c:if>  />IP校验
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td class="tr">API校验方式：</td>
-                                                <td>
-                                                    <section style="width:210px">
-                                                        <label class="text">
-                                                            <input type="radio" name="authApi" value="0" <c:if test="${busi.authApi ==0}">checked</c:if>/>可以访问所有公共API
-                                                            <input type="radio" name="authApi" value="1" <c:if test="${busi.authApi ==1}">checked</c:if>/>除公共API外，可以访问授权API
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                            </tr>
+											
                                             <tr class="lh32">
                                                 <td class="tr">状态：</td>
                                                 <td>

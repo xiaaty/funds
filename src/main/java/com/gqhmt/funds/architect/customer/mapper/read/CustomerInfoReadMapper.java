@@ -13,4 +13,5 @@ public interface CustomerInfoReadMapper extends ReadMapper<CustomerInfoEntity>{
 	//createSQLQuery(" SELECT * FROM t_gq_customer_info WHERE  has_acount = 1 AND (is_batch_sendmsg_called IS NULL OR is_batch_sendmsg_called = 0) LIMIT 1000 ").addEntity(CustomerInfoEntity.class).list();
 	public List<CustomerInfoEntity> selectNoChangeCustomer();
 	
+	public List<CustomerInfoEntity> queryCustomerInfoEntityList(CustomerInfoEntity customer);
 }

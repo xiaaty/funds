@@ -20,4 +20,6 @@ import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
  * 2016/1/10  于泳      1.0     1.0 Version
  */
 public interface FssAssetReadMapper extends ReadMapper<FssAssetEntity>{
+	
+	public FssAssetEntity getAccountAssets(String custNo);
 }

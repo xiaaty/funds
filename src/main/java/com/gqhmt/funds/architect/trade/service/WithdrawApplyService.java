@@ -2,12 +2,13 @@ package com.gqhmt.funds.architect.trade.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.pay.service.exception.NeedSMSValidException;
-import com.gqhmt.fss.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
+import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.WithdrawApplyReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.WithdrawApplyWriteMapper;
 import org.apache.commons.logging.Log;
@@ -72,13 +73,12 @@ public class WithdrawApplyService {
 	}
 
 	/**
-	 * 根据条件对象查询并返回对应的提现信息列表
 	 * 
-	 * @param pageReq
-	 * @return
-	 * @throws AppException
+	 * author:jhz
+	 * time:2016年2月18日
+	 * function：根据条件对象查询并返回对应的提现信息列表
 	 */
-	public Page queryWithdrawList(WithdrawApplyBean withDrawBean) throws Exception {
+	public List<WithholdApplyEntity> queryWithdrawList(WithdrawApplyBean withDrawBean) throws Exception {
 		return withdrawApplyReadMapper.queryWithdrawByConditionList(withDrawBean);
 	}
 

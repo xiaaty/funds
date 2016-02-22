@@ -68,15 +68,24 @@ public class WithholdApplyEntity implements java.io.Serializable {
 	private Integer bussinessType;       //业务类型(1-线下出借合同代扣；2-借款人还款代扣)
 	
 	@Column(name = "bussiness_contract_no", length = 30)
-	private String bussinessContractNo;
+	private String bussinessContractNo;  //业务_合同编号
 	
 	@Column(name = "bussiness_company", length = 100)
-	private String bussinessCompany;
+	private String bussinessCompany; //分公司名称
 	
 	
 	@Column(name = "thirdparty_type")
     private Integer thirdPartyType; //第三方支付类型
-
+	
+	@Column(name = "bussiness_area")
+	private String bussinessArea; //大区
+	
+	@Column(name = "counselor_name")
+	private String counselorName; //业务_顾问名称
+	
+	
+	
+	
 	// Constructors
 	/** default constructor */
 	public WithholdApplyEntity() {
@@ -263,4 +272,22 @@ public class WithholdApplyEntity implements java.io.Serializable {
         this.thirdPartyType = thirdPartyType;
     }
 
+	public String getBussinessArea() {
+		return bussinessArea;
+	}
+
+	public void setBussinessArea(String bussinessArea) {
+		this.bussinessArea = bussinessArea;
+	}
+
+	public String getCounselorName() {
+		return counselorName;
+	}
+
+	public void setCounselorName(String counselorName) {
+		this.counselorName = counselorName;
+	}
+
+	
+    
 }

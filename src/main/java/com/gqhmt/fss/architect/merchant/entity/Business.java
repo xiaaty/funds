@@ -51,12 +51,6 @@ public class Business {
     // 商户密钥，系统自动生成
     @Column(name = "mchn_key_end_date")
     private String mchnKeyEndDate;
-    // 校验方式(0:不校验 1:IP段匹配)
-    @Column(name = "auth_ip")
-    private String authIp;
-    // API校验方式，0，可以访问所有公共API，1，除公共API外，可以访问授权API',
-    @Column(name = "auth_api")
-    private String authApi;
     // 创建日期
     @Column(name = "create_time")
     private Date createTime;
@@ -107,18 +101,6 @@ public class Business {
 	}
 	public void setMchnKeyEndDate(String mchnKeyEndDate) {
 		this.mchnKeyEndDate = mchnKeyEndDate;
-	}
-	public String getAuthIp() {
-		return authIp;
-	}
-	public void setAuthIp(String authIp) {
-		this.authIp = authIp;
-	}
-	public String getAuthApi() {
-		return authApi;
-	}
-	public void setAuthApi(String authApi) {
-		this.authApi = authApi;
 	}
 	public Date getCreateTime() {
 		return createTime;

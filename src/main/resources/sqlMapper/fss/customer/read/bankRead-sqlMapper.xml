@@ -16,8 +16,14 @@
 			t.bank_code bankCode
 		FROM t_gq_fss_bank_list t
 		<where>
+			<if test="bankCode != null and bankCode != ''">
+               t.bank_code like  CONCAT('%',#{bankCode},'%') 
+            </if>
 			<if test="bankName != null and bankName != ''">
                t.name like  CONCAT('%',#{bankName},'%') 
+            </if>
+			<if test="sortName != null and sortName != ''">
+               t.sort_name like  CONCAT('%',#{sort_name},'%') 
             </if>
 		</where>
 	</select>
