@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.WithholdApplyReadMapper.FundTradeReadMapper">
+<mapper namespace="com.gqhmt.funds.architect.trade.mapper.read.FundTradeReadMapper">
 	<sql id="fieldSql">
 	</sql>
 	<sql id="whereSql">
@@ -14,7 +14,31 @@
 		</otherwise>
 		</choose>
 	</sql>
-	<select id="queryFundTradeList" parameterType="fundTradeEntity" resultType="fundTradeEntity">
-		
+	<select id="queryFundTradeList" parameterType="java.util.Map" resultType="fundTradeEntity">
+		 SELECT
+			 t.id,
+			 t.trade_no,
+			 t.trade_type,
+			 t.user_id,
+			 t.account_id,
+			 t.income,
+			 t.spending,
+			 t.usable_sum,
+			 t.remarks,
+			 t.trade_time,
+			 t.bid_id,
+			 t.repayment_id,
+			 t.bonus_amount
+		FROM
+		t_gq_fund_trade t,t_gq_fund_account a where t.user_id=a.user_id 
+	  		<if test="cust_no != null and cust_no != ''">
+	           and a.cust_id=${cust_no}
+	        </if>
+	        <if test="user_no != null and user_no != ''">
+	          and t.user_id=${user_no}
+	        </if> 
+	         <if test="trade_type != null and trade_type != ''">
+	          and t.trade_type=${trade_type}
+	        </if> 
 	</select>
 </mapper>

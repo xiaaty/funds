@@ -4,6 +4,8 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 /**
 * Filename:    com.gq.p2p.account.dao
@@ -27,4 +29,6 @@ public interface FundTradeReadMapper extends ReadMapper<FundTradeEntity> {
 public BigDecimal getSumBigDecimal(Integer userID);
 
 public BigDecimal getSumBigDecimalByCus(Integer cusID);
+
+public List<FundTradeEntity> queryFundTradeList(Map map);
 }

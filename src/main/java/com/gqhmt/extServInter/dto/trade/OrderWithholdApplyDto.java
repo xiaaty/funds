@@ -29,7 +29,7 @@ public class OrderWithholdApplyDto extends SuperDto{
 	private String user_no;		//用户编号
 	
     
-    private BigDecimal amount;	//提现金额
+    private BigDecimal amount;	//代扣金额
     
     private String bank_id;		//银行类型
 

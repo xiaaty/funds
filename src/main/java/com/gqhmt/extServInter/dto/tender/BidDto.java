@@ -2,6 +2,8 @@ package com.gqhmt.extServInter.dto.tender;
 
 
 
+import java.math.BigDecimal;
+
 import com.gqhmt.extServInter.dto.SuperDto;
 /**
  * 
@@ -32,11 +34,11 @@ public class BidDto extends SuperDto{
 	
 	private String busi_no;		//出借业务编
 	
-	private Double amount;		//出借金额
+	private BigDecimal amount;		//出借金额
 	
-	private Double fact_amount;		//实际出借金额
+	private BigDecimal fact_amount;		//实际出借金额
 	
-	private Double red_packet;		//抵扣红包金额
+	private BigDecimal red_packet;		//抵扣红包金额
 
 	public String getBusi_bid_no() {
 		return busi_bid_no;
@@ -78,29 +80,30 @@ public class BidDto extends SuperDto{
 		this.busi_no = busi_no;
 	}
 
-	public Double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 
-	public Double getFact_amount() {
+	public BigDecimal getFact_amount() {
 		return fact_amount;
 	}
 
-	public void setFact_amount(Double fact_amount) {
+	public void setFact_amount(BigDecimal fact_amount) {
 		this.fact_amount = fact_amount;
 	}
 
-	public Double getRed_packet() {
+	public BigDecimal getRed_packet() {
 		return red_packet;
 	}
 
-	public void setRed_packet(Double red_packet) {
+	public void setRed_packet(BigDecimal red_packet) {
 		this.red_packet = red_packet;
 	}
+
 	
 	
     

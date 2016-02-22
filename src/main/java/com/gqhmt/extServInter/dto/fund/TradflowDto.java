@@ -3,9 +3,9 @@ package com.gqhmt.extServInter.dto.fund;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
- *交易记录查询接口参数
+ *资产信息接口---资金流水查询接口参数
  */
-public class TradingRecordDto extends SuperDto {
+public class TradflowDto extends SuperDto {
 	
 	private Integer id;
 	private String trade_no;//交易号码
@@ -42,6 +42,5 @@ public class TradingRecordDto extends SuperDto {
 	public void setBusi_no(Integer busi_no) {
 		this.busi_no = busi_no;
 	}
-	
 	
 }

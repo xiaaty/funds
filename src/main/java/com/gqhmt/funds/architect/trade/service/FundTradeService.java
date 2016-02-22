@@ -5,12 +5,16 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.FundTradeReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.FundTradeWriteMapper;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.fuiou.service
@@ -110,5 +114,30 @@ public class FundTradeService {
     public FundTradeEntity findFundTradeById(Integer id){
     	 return fundTradeReadMapper.selectByPrimaryKey(id);
     }
+    
+    /**
+     * 查询交易记录
+     * @param cust_no
+     * @param user_no
+     * @param busi_no
+     * @return
+     */
+    public List<FundTradeEntity> searchTradeRecord(Integer cust_no,Integer user_no,Integer busi_no,String trade_type){
+    	Map map=new HashMap();
+    	if(null!=cust_no){
+    		map.put("cust_no", cust_no);
+    	}
+    	if(null!=user_no){
+    		map.put("user_no", user_no);
+    	}
+    	if(null!=trade_type){
+    		map.put("trade_type", Integer.parseInt(trade_type));
+    	}
+    	return this.fundTradeReadMapper.queryFundTradeList(map);
+    }
+    
+    
+    
+    
     
 }

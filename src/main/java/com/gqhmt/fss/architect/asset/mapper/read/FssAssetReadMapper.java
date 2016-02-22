@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.asset.mapper.read;
 
+import java.util.Map;
+
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 
@@ -21,5 +23,5 @@ import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
  */
 public interface FssAssetReadMapper extends ReadMapper<FssAssetEntity>{
 	
-	public FssAssetEntity getAccountAssets(String custNo);
+	public FssAssetEntity getAccountAssets(Map map);
 }
