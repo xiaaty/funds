@@ -33,12 +33,12 @@ import org.springframework.stereotype.Service;
 public class BidImpl implements IBid{
 	
 	@Resource
-	private IFundsTender iFundsTender;
+	private IFundsTender fundsTenderImpl;
 	
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		iFundsTender.bid((BidDto)dto);
+    		fundsTenderImpl.bid((BidDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
