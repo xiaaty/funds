@@ -2,9 +2,8 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.trade.OrderWithdrawApplyDto;
-import com.gqhmt.extServInter.dto.trade.OrderWithholdApplyDto;
+import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
+import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -15,9 +14,8 @@ import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTrade;
-import com.gqhmt.pay.service.PaySuperByFuiouTest;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
-import com.gqhmt.util.ThirdPartyType;
 
 import javax.annotation.Resource;
 
@@ -35,7 +33,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
 
     @Resource
-    private PaySuperByFuiouTest paySuperByFuiou;
+    private PaySuperByFuiou paySuperByFuiou;
 
     @Resource
     private FundAccountService fundAccountService;
@@ -47,50 +45,38 @@ public class FundsTradeImpl  implements IFundsTrade {
     private FundOrderService fundOrderService;
     /**
      * 生成web提现订单
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    交易金额
-     * @param chargeAmount              交易手续费
-     * @param type                      交易类型 1.充值；2.提现
+     * @param withdrawOrderDto            支付渠道
      * @return
      * @throws FssException
      */
     @Override
-    public String webOrderNoWithdrawApply(OrderWithdrawApplyDto orderWithdrawApplyDto) throws FssException {
-
-        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(orderWithdrawApplyDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-         this.hasEnoughBanlance(entity,orderWithdrawApplyDto.getAmount().add(orderWithdrawApplyDto.getProcedure_fee()));
-
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity,orderWithdrawApplyDto.getAmount(),2,0,0,"2");
+    public String webWithdrawOrder(WithdrawOrderDto withdrawOrderDto) throws FssException {
+        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+        this.hasEnoughBanlance(entity, withdrawOrderDto.getAmount().add(withdrawOrderDto.getProcedure_fee()));
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, withdrawOrderDto.getAmount(),2,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
     /**
      * 生成web代扣订单
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    交易金额
-     * @param type                      交易类型 1.充值；2.提现
+     * @param rechargeOrderDto            支付渠道
      * @return
      * @throws FssException
      */
     @Override
-    public String webOrderNoWithholdApply(OrderWithholdApplyDto orderWithholdApplyDto) throws FssException {
+    public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
     	
-        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(orderWithholdApplyDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         
-        this.hasEnoughBanlance(entity,orderWithholdApplyDto.getAmount());
+        this.hasEnoughBanlance(entity, rechargeOrderDto.getAmount());
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity,orderWithholdApplyDto.getAmount(),1,0,0,"2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmount(),1,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
 
 
     /**
      * 线上代扣充值
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    充值金额
-     * @param sourceType                充值来源  1，web端，2wap端，3手机app
+     * @param withholdDto
      * @return
      */
     @Override
@@ -117,8 +103,9 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         this.hasEnoughBanlance(entity,withdrawDto.getAmount().add(withdrawDto.getProcedure_fee()));
-        paySuperByFuiou.withdraw(entity,withdrawDto.getAmount(),withdrawDto.getProcedure_fee(),0,0l,0);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmount(),withdrawDto.getProcedure_fee(),0,0l,0);
         //资金处理
+        tradeRecordService.withdraw(entity,withdrawDto.getAmount(),fundOrderEntity,1003);
         return true;
     }
     /**
@@ -128,8 +115,9 @@ public class FundsTradeImpl  implements IFundsTrade {
     public boolean withholdingApply(String thirdPartyType, int custID, int businessType, String contractNo, BigDecimal amount, Long bid) throws FssException {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
         checkwithholdingOrWithDraw(entity,1,businessType);
-        paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_CHARGE,0,0);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_CHARGE,0,0);
         //资金处理
+        tradeRecordService.recharge(entity,amount,fundOrderEntity,1002);
         return true;
     }
 
@@ -138,8 +126,9 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
         this.hasEnoughBanlance(entity,amount);
         checkwithholdingOrWithDraw(entity,2,businessType);
-        paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
         //资金处理
+        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
         return true;
     }
 
@@ -148,7 +137,6 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity fromEntity = this.getFundAccount(fromCusID, fromType);
         this.hasEnoughBanlance(fromEntity,amount);
         FundAccountEntity toEntity = this.getFundAccount(toCusID, toType);
-
         paySuperByFuiou.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType);
         //资金处理
         return true;

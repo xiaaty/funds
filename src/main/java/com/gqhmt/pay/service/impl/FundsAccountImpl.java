@@ -3,7 +3,7 @@ package com.gqhmt.pay.service.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.account.AccountAccessDto;
-import com.gqhmt.extServInter.dto.account.AssetDto;
+import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
@@ -13,12 +13,8 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsAccount;
-import com.gqhmt.pay.service.PaySuperByFuiouTest;
-
-import org.hamcrest.core.IsNull;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
@@ -37,8 +33,8 @@ public class FundsAccountImpl implements IFundsAccount {
 	private FundAccountService fundAccountService;
 
 	@Resource
-	private PaySuperByFuiouTest paySuperByFuiou;
-	
+	private PaySuperByFuiou paySuperByFuiou;
+
 	/**
      * 创建账户
      *
@@ -169,19 +165,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	 * 查询账户余额
 	 */
 	 public FundAccountEntity getAccountAccByCustId(AccountAccessDto accessdto) throws FssException{
-		 FundAccountEntity primaryAccount=null;
-		 if(accessdto.getCust_id()<100){//得到主账户信息
-			 primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_id(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		 }else{
-			 primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_id(), accessdto.getBusi_type());
-		 }
-		 if(primaryAccount==null){
-			 throw new FssException("90002001");//账户信息不存在
-		 }else{
-			 if(null!=primaryAccount && primaryAccount.getAmount().equals(BigDecimal.ZERO)){
-				 throw new FssException("90004007");//账户余额不足
-			 }
-		 }
+		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_id(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 		 return primaryAccount;
 	 }
 	
@@ -190,16 +174,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	 */
 	@Override
 	public FssAssetEntity getAccountAsset(AssetDto asset) throws FssException {
-		FssAssetEntity assetEntity = null;
-		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(Integer.parseInt(asset.getCust_no()),GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-		if(primaryAccount==null){
-			throw new FssException("90002001");//账户信息不存在
-		}else{
-			assetEntity= fundAccountService.getAccountAsset(asset.getUser_no(),asset.getAcc_no(),asset.getCust_no());
-			if(assetEntity==null){
-				throw new FssException("90002004");
-			}
-		}
+		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getUser_no(),asset.getAcc_no(),asset.getCust_no());
 		return assetEntity;
 	}
 	

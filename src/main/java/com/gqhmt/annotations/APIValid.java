@@ -27,6 +27,4 @@ public @interface APIValid {
 
     String errorCode();
 
-    boolean isNull() default false;
-
 }

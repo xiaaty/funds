@@ -21,6 +21,8 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
+import org.springframework.stereotype.Service;
+
 /**
  * 交易记录查询
  * @author 柯禹来

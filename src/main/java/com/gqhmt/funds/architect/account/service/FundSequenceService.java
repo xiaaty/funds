@@ -1,6 +1,7 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
@@ -98,7 +99,6 @@ public class FundSequenceService {
         fundSequenceEntity.setSumary("充值");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
-
         this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "充值成功，充值金额 " + amount + "元");
     }
 
@@ -129,6 +129,27 @@ public class FundSequenceService {
         }
         amount = new BigDecimal("-"+amount.toPlainString());
         FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 2, accountType, amount, thirdPartyType, orderEntity, 0l);
+        fundSequenceEntity.setSumary("提现");
+        fundSequenceEntity.setToken(getToken(orderEntity,accountType));
+        this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
+        this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "提现成功，提现金额 " + amount + "元");
+    }
+
+    private void refundByFroze(FundAccountEntity entity,int accountType,BigDecimal amount,String thirdPartyType,FundOrderEntity orderEntity) throws FssException {
+        if(entity.getBusiType() == 99){
+            throw new FssException("出账账户错误");
+        }
+        FundAccountEntity frozeEntity = this.fundAccountService.getFundAccount(entity.getCustId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+//        操作类型1充值、2提现、3转账、4冻结、5解冻
+        //校验资金,提现金额不能大于账户余额 ？？此处传值，是正值还是负值呢，如果传入正值，后台需要处理为负值
+        if(amount.multiply(new BigDecimal(100)).longValue()>0){
+            throw new ChargeAmountNotenoughException();
+        }
+        if(amount.multiply(new BigDecimal("100")).longValue()<0){
+            throw new AmountFailException("传入金额不能小于0");
+        }
+        amount = new BigDecimal("-"+amount.toPlainString());
+        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(frozeEntity.getId(), 2, accountType, amount, thirdPartyType, orderEntity, entity.getId());
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);

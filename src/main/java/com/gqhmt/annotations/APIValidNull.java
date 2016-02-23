@@ -24,4 +24,6 @@ import java.lang.annotation.*;
 public @interface APIValidNull {
 
     String errorCode();
+
+
 }

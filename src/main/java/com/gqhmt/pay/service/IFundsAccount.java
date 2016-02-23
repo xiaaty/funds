@@ -3,7 +3,7 @@ package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.account.AccountAccessDto;
-import com.gqhmt.extServInter.dto.account.AssetDto;
+import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
@@ -45,8 +45,7 @@ public interface IFundsAccount {
     /**
      * 创建账户
      *
-     * @param thirdPartyType 支付渠道
-     * @param custId         客户id
+     * @param createAccountByFuiouDto 参数
      * @throws FssException
      */
     public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException;
@@ -55,7 +54,6 @@ public interface IFundsAccount {
     /**
      * 创建账户
      *
-     * @param thirdPartyType     支付渠道
      * @param customerInfoEntity 客户实体
      * @param pwd                支付渠道登陆密码
      * @param taradPwd           支付渠道交易密码

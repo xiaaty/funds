@@ -49,6 +49,14 @@ public class TradeRecordService {
         // this.fundTradeService.createFundTrade(entity, amount, BigDecimal.ZERO, fundType, "充值成功，充值金额 " + amount + "元");
         //super.sendNotice(NoticeService.NoticeType.FUND_CHARGE, entity, amount,BigDecimal.ZERO);
     }
+
+    public void withdraw(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
+        sequenceService.refund(entity,fundType,amount,thirdPartyType,fundOrderEntity);
+    }
+
+    public void withdrawByFroze(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
+        sequenceService.refund(entity,fundType,amount,thirdPartyType,fundOrderEntity);
+    }
     
     /**
      * 交易记录查询
