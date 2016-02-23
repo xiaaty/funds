@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountBanlanceImpl implements ICreateAccount{
 	@Resource
-	private IFundsAccount fundAccount;
+	private IFundsAccount fundsAccountImpl;
 	
 	/**
 	 * 账户余额查询
@@ -27,7 +27,7 @@ public class AccountBanlanceImpl implements ICreateAccount{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		fundAccount.getAccountAccByCustId((AccountAccessDto)dto);
+    		fundsAccountImpl.getAccountAccByCustId((AccountAccessDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

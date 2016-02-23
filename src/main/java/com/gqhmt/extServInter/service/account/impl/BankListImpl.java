@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BankListImpl implements ICreateAccount{
 	@Resource
-	private ITradingRecord traderecord;//交易记录接口
+	private ITradingRecord tradeRecordImpl;//交易记录接口
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {

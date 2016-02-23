@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionImpl implements ICreateAccount{
 	@Resource
-	private ITradingRecord traderecord;//交易记录接口
+	private ITradingRecord tradeRecordImpl;//交易记录接口
 	
 	/**
 	 * 交易记录查询
@@ -27,7 +27,7 @@ public class TransactionImpl implements ICreateAccount{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		traderecord.getTradingRecord((TradingRecordDto)dto);
+    		tradeRecordImpl.getTradingRecord((TradingRecordDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

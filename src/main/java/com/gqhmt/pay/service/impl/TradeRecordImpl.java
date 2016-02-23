@@ -11,6 +11,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
@@ -22,6 +25,7 @@ import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
  * @author 柯禹来
  *
  */
+@Service
 public class TradeRecordImpl  implements ITradingRecord {
 
     @Resource
