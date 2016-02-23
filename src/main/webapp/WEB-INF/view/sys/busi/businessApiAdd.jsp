@@ -49,30 +49,30 @@
         </ol>
         <!-- end breadcrumb -->
     </div>
+ <div id="content">
+            <section id="widget-grid" class="">
+                <div class="row">
+                    <!-- NEW WIDGET START -->
+                            <form  id="busiApiInsertForm" action="${contextPath}/fss/api/insertBusinessApi" method="post">
+                   <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
+                        <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
-    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
-                        <header>
-                            <h2>商户API授权</h2>
-                        </header>
-                        <!-- widget div-->
-                        <div>
-                            <form class="smart-form" id="busiApiInsertForm" action="${contextPath}/fss/api/insertBusinessApi" method="post">
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <!-- This area used as dropdown edit box -->
-                                </div>
-                                <!-- end widget edit box -->
-                                <!-- widget content -->
-                                <div class="widget-body no-padding">
-                                    <div class="mt10 mb10">
-                                        <table class="table">
-                                            <col width="100" />
-                                            <col width="220" />
-                                            <col width="100" />
-                                            <col />
+                            <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
+                               <header>
+                                    <h2><i class="fa fa-save pr10"></i>商户API授权<font class="pl10 f12 color07"></font></h2>
+                                </header>
+                                    <div class="smart-form">
+
+                                        <!-- widget content -->
+                                            <div class="mt10 mb10 ml30">
+                                                <table class="table">
+                                                    <col width="112" />
+                                                    <col width="367" />
+                                                    <col width="112" />
+                                                    <col />
                                             <tbody>
                                             <tr class="lh32">
-                                                <td class="tr">商户名称：</td>
+                                                <td align="left">商户名称：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -82,7 +82,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">商户号：</td>
+                                                <td align="left">商户号：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -92,11 +92,11 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">api名称：</td>
+                                                <td align="left">api名称：</td>
                                                 <td>
                                                     <label class="select"  style="width:150px" >
                                                                 <select class="select02"  name="apiNo" id="a">
-                                                                《												<c:forEach items="${apiList}" var="api">
+                                                               											<c:forEach items="${apiList}" var="api">
 								                                    <option value="${api.apiNo }">${api.apiName}</option>
                                                                 </c:forEach>
 								                                </select>
@@ -104,7 +104,7 @@
                                                 </td>
                                             </tr>
                                            <tr class="lh32">
-                                                <td class="tr">回调方式：</td>
+                                                <td align="left">回调方式：</td>
                                                 <td>
                                                     <section style="width:250px">
                                                         <label class="text">
@@ -116,7 +116,7 @@
                                             </tr>
                                            
                                             <tr class="lh32">
-                                                <td class="tr">回调地址：</td>
+                                                <td align="left">回调地址：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -127,22 +127,25 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <footer>
-                                        <button id="btn-success" class="btn btn-primary" type="button">确认</button>
-                                    </footer>
+                                        <div class="mb20" id="wid-id-713">
+                                        	<button id="btn-success" class="btn btn-default table-nobg-btn" type="button">保&nbsp;&nbsp;&nbsp;存</button>
+                                     		<button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/list/${parentId}'">返&nbsp;&nbsp;&nbsp;回</button>
+                                      </div>
                                 </div>
-                                <!-- end widget content -->
+                                </div>
+                                </div>
+                                </article>
                             </form>
-                        </div>
+                            
 
-
-                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
             <!-- end widget content -->
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-</div>
 
 
  <script type="text/javascript" charset="utf-8">

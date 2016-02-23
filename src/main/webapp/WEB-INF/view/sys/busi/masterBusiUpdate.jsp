@@ -89,6 +89,16 @@
                                                     </section>
                                                 </td>
                                             </tr>
+                                              <tr class="lh32">
+                                                <td align="left">商户密钥：</td>
+                                                <td>
+                                                    <section style="width:210px">
+                                                        <label class="input">
+                                                            <input type="text" readonly="readonly" id="mchnKey" name="mchnKey" value="${busi.mchnKey}">
+                                                        </label>
+                                                    </section>
+                                                </td>
+                                            </tr>
                                             <tr class="lh32">
                                                 <td align="left">状态：</td>
                                                 <td>
@@ -104,7 +114,8 @@
                                         </table>
                                 <!-- end widget content -->
                                       <div class="mb20" id="wid-id-713">
-                                            <button class="btn btn-default table-nobg-btn" type="button" id="updateMasterBusi">保存</button>
+                                            <button class="btn btn-default table-nobg-btn" type="button" id="updateMasterBusi">保&nbsp;&nbsp;&nbsp;存</button>
+                                     		<button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/list/${parentId}'">返&nbsp;&nbsp;&nbsp;回</button>
                                       </div>
                                 </div>
                                 </div>
@@ -123,7 +134,6 @@
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
     <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
-//     	$("#parentN").hide();
 	    $("#updateMasterBusi").click(function () {
 	        if (validateCheck()) {
 	            if (!confirm("确认 修改商户信息吗?")) {
