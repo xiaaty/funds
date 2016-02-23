@@ -56,17 +56,29 @@ public class BusinessController {
 		return "sys/busi/busiList";
     }
     
-    /**
-     * 跳转至商户新增
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/sys/busi/add",method = RequestMethod.GET)
-    public Object businessAdd(HttpServletRequest request,ModelMap model){
-    	List<Business> findBusinessList = restApiService.findBusinessList(null);
+   /**
+    * 
+    * author:jhz
+    * time:2016年2月23日
+    * function：添加子账户
+    */
+    @RequestMapping(value = "/sys/busi/add/{parentId}",method = RequestMethod.GET)
+    public Object businessAdd(HttpServletRequest request,ModelMap model, @PathVariable Integer parentId){
+    	Map<String, Object> param =  new HashMap<String, Object>();
+    	param.put("parentId", parentId);
+    	List<Business> findBusinessList = restApiService.findBusinessList(param);
     	model.addAttribute("businessList", findBusinessList);
-		return "sys/busi/busiAdd";
+		return "sys/busi/childBusiAdd";
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月23日
+     * function：跳转到添加主账户页面
+     */
+    @RequestMapping(value = "/sys/busi/addMasterBusi",method = RequestMethod.GET)
+    public Object addMasterBusi(HttpServletRequest request,ModelMap model){
+    	return "sys/busi/masterBusiAdd";
     }
     
     /**
@@ -108,21 +120,25 @@ public class BusinessController {
 		return map;
     }
     
-    /**
-     * 跳转至商户修改
-     * @param request
-     * @param model
-     * @return
-     */
+	 /**
+	  * 
+	  * author:jhz
+	  * time:2016年2月23日
+	  * function：跳转到商户修改
+	  */
     @RequestMapping(value = "/sys/busi/update/{mchnNo}",method = RequestMethod.GET)
-    public Object businessUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo){
+    public Object businessUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo,Integer parentId){
+    	Map<String, Object> param = new HashMap<String, Object>();
+    	param.put("mchnNo", mchnNo);
+    	List<Business> busiList = restApiService.findBusinessList(param);
+    	model.addAttribute("busi", busiList.get(0));
+    	if(parentId==0){
+    		return "sys/busi/masterBusiUpdate";
+    	}else{
     	List<Business> findBusinessList = restApiService.findBusinessList(null);
     	model.addAttribute("businessList", findBusinessList);
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("mchnNo", mchnNo);
-    	List<Business> busiList = restApiService.findBusinessList(param);
-		model.addAttribute("busi", busiList.get(0));
-		return "sys/busi/busiUpdate";
+		return "sys/busi/childBusiUpdate";
+    	}
     }
     /**
      * 商户修改确认
