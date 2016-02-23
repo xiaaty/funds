@@ -34,13 +34,13 @@ import org.springframework.stereotype.Service;
 public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
 	
 	@Resource
-	private IFundsAccount iFundsAccount;
+	private IFundsAccount fundsAccountImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-			iFundsAccount.changeCard((ChangeBankCardDto) dto);
+    		fundsAccountImpl.changeCard((ChangeBankCardDto) dto);
 			response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

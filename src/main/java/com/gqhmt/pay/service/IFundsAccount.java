@@ -5,10 +5,8 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.account.AccountAccessDto;
 import com.gqhmt.extServInter.dto.account.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardResultDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
@@ -96,12 +94,6 @@ public interface IFundsAccount {
      */
     public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException;
     
-    /**
-     * 银行卡变更结果查询
-
-     * @throws FssException
-     */
-    public boolean changeCardResult(ChangeBankCardResultDto changeBankCardResultDto) throws FssException;
 
 
     /**

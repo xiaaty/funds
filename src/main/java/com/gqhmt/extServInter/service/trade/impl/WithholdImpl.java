@@ -32,13 +32,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class WithholdImpl implements IWithhold{
 	@Resource
-	private IFundsTrade iFundsTrade;
+	private IFundsTrade fundsTradeImpl;
 	
     @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		iFundsTrade.withholding((WithholdDto)dto);
+    		fundsTradeImpl.withholding((WithholdDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

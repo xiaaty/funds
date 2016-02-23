@@ -31,13 +31,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CreateAccountImpl implements ICreateAccount{
 	@Resource
-	private IFundsAccount iFundsAccount;
+	private IFundsAccount fundsAccountImpl;
 	
     @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		iFundsAccount.createAccount((CreateAccountByFuiouDto)dto);
+    		fundsAccountImpl.createAccount((CreateAccountByFuiouDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

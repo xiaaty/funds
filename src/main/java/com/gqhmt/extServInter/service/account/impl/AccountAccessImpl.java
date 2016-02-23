@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountAccessImpl implements ICreateAccount{
 	@Resource
-	private IFundsAccount fundAccount;
+	private IFundsAccount fundsAccountImpl;
 	
 	/**
 	 * 账户资产查询
@@ -27,7 +27,7 @@ public class AccountAccessImpl implements ICreateAccount{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		fundAccount.getAccountAsset((AssetDto)dto);
+    		fundsAccountImpl.getAccountAsset((AssetDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
