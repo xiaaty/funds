@@ -25,7 +25,7 @@ public class MD5Utils {
     * @param plainText
     *            明文
     * @return 32位密文
-    */
+    *//*
    public static String encryption(String plainText) {
        String re_md5 = new String();
        try {
@@ -55,6 +55,6 @@ public class MD5Utils {
    
    public static void main(String[] args) {
        System.out.println("802616732D41051F6B53C90CE5333DA2:"+encryption("gq.2009")+"++++"+encryption("gq.2009").substring(6,26));
-   }
+   }*/
    
 }

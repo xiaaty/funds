@@ -94,7 +94,7 @@
                                                     <td>${t.mchnNo}</td>
                                                     <td>${t.parentNo}</td>
                                                     <td>${t.mchnKey}</td>
-                                                    <td>${t.state=='0'?"未启用":"已启用"}</td>
+                                                    <td>${t.state=='98040002'?"未启用":"已启用"}</td>
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td style="text-align:left;">

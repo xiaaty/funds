@@ -119,8 +119,8 @@
                                                 <td>
                                                     <section style="width:250px">
                                                         <label class="text">
-                                                            <input type="radio" name="isReturn" value="0" <c:if test="${busiApi.isReturn == '0'}"> checked </c:if> />回调
-                                                            <input type="radio" name="isReturn" value="1" <c:if test="${busiApi.isReturn =='1'}"> checked </c:if> />不回调
+                                                            <input type="radio" name="isReturn" value="98010001" <c:if test="${busiApi.isReturn == '98010001'}"> checked </c:if> />回调
+                                                            <input type="radio" name="isReturn" value="98010002" <c:if test="${busiApi.isReturn =='98010002'}"> checked </c:if> />不回调
                                                         </label>
                                                     </section>
                                                 </td>

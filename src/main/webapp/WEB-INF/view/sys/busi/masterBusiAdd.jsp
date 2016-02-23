@@ -103,8 +103,8 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="text">
-                                                            <input type="radio" name="state" value="0" checked/>未启用
-                                                            <input type="radio" name="state" value="1"/>已启用
+                                                            <input type="radio" name="state" value="98040002" checked/>未启用
+                                                            <input type="radio" name="state" value="98040001"/>已启用
                                                         </label>
                                                     </section>
                                                 </td>

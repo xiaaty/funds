@@ -45,17 +45,18 @@
 	
 	<select id="queryFundTradeFlow" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean">
 		SELECT 
-		b.id id,
-		b.account_no accountNo,
-		a.CUSTOMER_NAME	customerName,
-		b.account_type accountType,
-		b.busi_type busiType,
-		b.cust_id custId,
-		c.actionType actionType,
-		c.amount amount,
-		c.CREATE_TIME creatTime,
-		c.thirdparty_type thirdPartyType
-		FROM `t_gq_fund_account` b ,`t_gq_customer_info` a
-		WHERE a.ID=b.cust_id 
+		b.id,
+		b.account_no,
+		b.cust_name,
+		b.account_type,
+		b.busi_type,
+	 	a.actionType,
+		a.amount,
+		a.CREATE_TIME,
+		a.thirdparty_type
+		FROM `t_gq_fund_account` b ,`t_gq_fund_sequence` a
+		WHERE b.cust_id=a.account_id
+		AND b.cust_id=${cust_no} 
+		AND b.user_id=${user_no} 
 	</select>
 </mapper>
