@@ -25,11 +25,6 @@
 
 	</context:component-scan>
 
-
-
-
-
-
 	<!-- 任务执行器 -->
 	<task:executor id="executor" pool-size="10"/>
 	<!-- 任务调度器 -->

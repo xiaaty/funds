@@ -39,28 +39,23 @@ public class APIValidAop {
 
     }
 
-
     @Around("point()")
     public Object validAround(ProceedingJoinPoint joinPoint) throws FssException {
-
         Response response = null;
         String code = "0000";
-
         //校验
         Object[] objects = joinPoint.getArgs();
+        Class class1 = (Class) joinPoint.getTarget();
         for(Object obj:objects){
             if(obj instanceof SuperDto){
                 code = APIValidUtil.valid((SuperDto) obj);
-                throw new FssException(obj.getClass().getName());
             }
         }
-
         if(!"0000".equals(code)){
             response = new Response();
             response.setResp_code(code);
             return response;
         }
-
         try {
             response = (Response)joinPoint.proceed();
         } catch (Throwable throwable) {
