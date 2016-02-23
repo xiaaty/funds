@@ -3,7 +3,7 @@ package com.gqhmt.extServInter.service.account.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.AssetDto;
-import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.IAccountAccess;
 import com.gqhmt.pay.service.IFundsAccount;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author 57627
  */
 @Service
-public class AccountAccessImpl implements ICreateAccount{
+public class AccountAccessImpl implements IAccountAccess{
 	@Resource
 	private IFundsAccount fundsAccountImpl;
 	

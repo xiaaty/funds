@@ -3,7 +3,7 @@ package com.gqhmt.extServInter.service.account.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
-import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.IAccountTradFlow;
 import com.gqhmt.pay.service.ITradingRecord;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author 柯禹来
  */
 @Service
-public class AccountTradflowImpl implements ICreateAccount{
+public class AccountTradflowImpl implements IAccountTradFlow{
 	@Resource
 	private ITradingRecord tradeRecordImpl;//交易记录接口
 	
