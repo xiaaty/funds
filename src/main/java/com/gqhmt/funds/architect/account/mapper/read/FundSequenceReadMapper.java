@@ -55,5 +55,5 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	 * @param map
 	 * @return
 	 */
-	public List<FundAccountSequenceBean> queryFundTradeFlow(Map map);
+	public FundAccountSequenceBean queryFundTradeFlow(Map map);
 }

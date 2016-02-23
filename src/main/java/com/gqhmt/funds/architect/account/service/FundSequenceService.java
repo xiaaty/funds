@@ -330,7 +330,7 @@ public class FundSequenceService {
      * @param busi_no
      * @return
      */
-    public List<FundAccountSequenceBean> searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+    public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);

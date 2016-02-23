@@ -87,4 +87,172 @@ public class FssAssetEntity implements Serializable {
 
     @Column(name = "mchn_child")
     private String mchnChild  ;                                //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public BigDecimal getAccSsset() {
+		return accSsset;
+	}
+
+	public void setAccSsset(BigDecimal accSsset) {
+		this.accSsset = accSsset;
+	}
+
+	public BigDecimal getAccBanlance() {
+		return accBanlance;
+	}
+
+	public void setAccBanlance(BigDecimal accBanlance) {
+		this.accBanlance = accBanlance;
+	}
+
+	public BigDecimal getAccAvai() {
+		return accAvai;
+	}
+
+	public void setAccAvai(BigDecimal accAvai) {
+		this.accAvai = accAvai;
+	}
+
+	public BigDecimal getAccFreeze() {
+		return accFreeze;
+	}
+
+	public void setAccFreeze(BigDecimal accFreeze) {
+		this.accFreeze = accFreeze;
+	}
+
+	public BigDecimal getAccInvest() {
+		return accInvest;
+	}
+
+	public void setAccInvest(BigDecimal accInvest) {
+		this.accInvest = accInvest;
+	}
+
+	public BigDecimal getAccInvestRepay() {
+		return accInvestRepay;
+	}
+
+	public void setAccInvestRepay(BigDecimal accInvestRepay) {
+		this.accInvestRepay = accInvestRepay;
+	}
+
+	public BigDecimal getAccProseYield() {
+		return accProseYield;
+	}
+
+	public void setAccProseYield(BigDecimal accProseYield) {
+		this.accProseYield = accProseYield;
+	}
+
+	public BigDecimal getAccIncome() {
+		return accIncome;
+	}
+
+	public void setAccIncome(BigDecimal accIncome) {
+		this.accIncome = accIncome;
+	}
+
+	public BigDecimal getAccProseYieldDrop() {
+		return accProseYieldDrop;
+	}
+
+	public void setAccProseYieldDrop(BigDecimal accProseYieldDrop) {
+		this.accProseYieldDrop = accProseYieldDrop;
+	}
+
+	public BigDecimal getAccStayPrincipal() {
+		return accStayPrincipal;
+	}
+
+	public void setAccStayPrincipal(BigDecimal accStayPrincipal) {
+		this.accStayPrincipal = accStayPrincipal;
+	}
+
+	public String getAccAlsoPrincipal() {
+		return accAlsoPrincipal;
+	}
+
+	public void setAccAlsoPrincipal(String accAlsoPrincipal) {
+		this.accAlsoPrincipal = accAlsoPrincipal;
+	}
+
+	public BigDecimal getAccStayInterest() {
+		return accStayInterest;
+	}
+
+	public void setAccStayInterest(BigDecimal accStayInterest) {
+		this.accStayInterest = accStayInterest;
+	}
+
+	public BigDecimal getAccAlsoInterest() {
+		return accAlsoInterest;
+	}
+
+	public void setAccAlsoInterest(BigDecimal accAlsoInterest) {
+		this.accAlsoInterest = accAlsoInterest;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getMchnParent() {
+		return mchnParent;
+	}
+
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
+
+	public String getMchnChild() {
+		return mchnChild;
+	}
+
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
 }
