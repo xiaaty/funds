@@ -28,7 +28,7 @@ public class CostImpl implements ICost{
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-	    	response.setResp_code("-1001003");
+	    	response.setResp_code(e.getMessage());
 		}
     	return response;
     }

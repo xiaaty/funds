@@ -31,7 +31,7 @@ public class TransactionImpl implements ITransaction{
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-	    	response.setResp_code("-1001004");
+	    	response.setResp_code(e.getMessage());
 		}
     	return response;
     }

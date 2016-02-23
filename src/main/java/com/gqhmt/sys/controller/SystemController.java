@@ -78,7 +78,7 @@ public class SystemController{
     @ResponseBody
     public Object DictmainSave(HttpServletRequest request,@ModelAttribute(value="dict")DictEntity dict){
     	if(StringUtils.isNotEmptyString(dict.getDictId())){
-    		dict.setDictId(dict.getDictId());
+    		dict.setDictId(dict.getParentId()+dict.getDictId());
     	}
     	if(StringUtils.isNotEmptyString(dict.getDictName())){
     		dict.setDictName(dict.getDictName());

@@ -70,8 +70,8 @@ public class TradeRecordService {
      * @return
      * @throws FssException
      */
-    public List<FundAccountSequenceBean> getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
-    	List<FundAccountSequenceBean> fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
+    public FundAccountSequenceBean getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+    	FundAccountSequenceBean fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
     	return fundsequencelist;
     }
 }
