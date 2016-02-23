@@ -1,17 +1,16 @@
 package com.gqhmt.extServInter.service.account.impl;
 
+import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardResultDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccountResult;
 import com.gqhmt.pay.service.IFundsAccount;
-import com.gqhmt.core.APIExcuteErrorException;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -34,13 +33,13 @@ import org.springframework.stereotype.Service;
 public class ChangeBankCardAccountResultImpl implements IChangeBankCardAccountResult{
 	
 	@Resource
-	private IFundsAccount iFundsAccount;
+	private IFundsAccount fundsAccountImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-			iFundsAccount.changeCardResult((ChangeBankCardResultDto) dto);
+			fundsAccountImpl.changeCardResult((ChangeBankCardResultDto) dto);
 			response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

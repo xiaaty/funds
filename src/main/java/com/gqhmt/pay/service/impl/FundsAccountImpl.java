@@ -14,7 +14,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsAccount;
-import com.gqhmt.pay.service.PaySuperByFuiouTest;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,8 +34,8 @@ public class FundsAccountImpl implements IFundsAccount {
 	FundAccountService fundAccountService;
 
 	@Resource
-	private PaySuperByFuiouTest paySuperByFuiou;
-	
+	private PaySuperByFuiou paySuperByFuiou;
+
 	/**
      * 创建账户
      *

@@ -55,7 +55,7 @@ public class CreateAccountTest {
             CustomerInfoEntity customerInfoEntity = customerInfoService.queryCustomerById(611636);
             customerInfoEntity.setBankNo("232342");
 
-            fundsAccount.createAccount("",customerInfoEntity,"","");
+            fundsAccount.createAccount(customerInfoEntity,"","");
         } catch (FssException e) {
             e.printStackTrace();
             assert e.getMessage().equals("账户已存在");

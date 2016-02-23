@@ -17,11 +17,14 @@ import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
+import org.springframework.stereotype.Service;
+
 /**
  * 交易记录查询
  * @author 柯禹来
  *
  */
+@Service
 public class TradeRecordImpl  implements ITradingRecord {
 
     @Resource

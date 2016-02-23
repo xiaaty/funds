@@ -36,7 +36,7 @@ import java.util.Date;
  * 16/2/16  于泳      1.0     1.0 Version
  */
 @Service
-public class PaySuperByFuiouTest {
+public class PaySuperByFuiou {
 
 
     @Resource

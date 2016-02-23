@@ -2,7 +2,6 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.OrderWithdrawApplyDto;
 import com.gqhmt.extServInter.dto.trade.OrderWithholdApplyDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
@@ -15,9 +14,8 @@ import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTrade;
-import com.gqhmt.pay.service.PaySuperByFuiouTest;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
-import com.gqhmt.util.ThirdPartyType;
 
 import javax.annotation.Resource;
 
@@ -35,7 +33,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
 
     @Resource
-    private PaySuperByFuiouTest paySuperByFuiou;
+    private PaySuperByFuiou paySuperByFuiou;
 
     @Resource
     private FundAccountService fundAccountService;
