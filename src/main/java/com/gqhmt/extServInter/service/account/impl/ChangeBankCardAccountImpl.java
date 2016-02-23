@@ -39,7 +39,9 @@ public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
+
 			fundsAccountImpl.changeCard((ChangeBankCardDto) dto);
+
 			response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

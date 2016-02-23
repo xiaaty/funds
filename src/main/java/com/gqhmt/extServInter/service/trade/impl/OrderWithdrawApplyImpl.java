@@ -32,13 +32,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderWithdrawApplyImpl implements IOrderWithdrawApply{
 	@Resource
-	private IFundsTrade iFundsTrade;
+	private IFundsTrade fundsTradeImpl;
 	
     @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		iFundsTrade.webOrderNoWithdrawApply((OrderWithdrawApplyDto)dto);
+    		fundsTradeImpl.webOrderNoWithdrawApply((OrderWithdrawApplyDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

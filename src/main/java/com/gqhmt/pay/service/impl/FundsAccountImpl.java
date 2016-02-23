@@ -6,7 +6,6 @@ import com.gqhmt.extServInter.dto.account.AccountAccessDto;
 import com.gqhmt.extServInter.dto.account.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardResultDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -31,7 +30,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	private CustomerInfoService  customerInfoService  ;
 
 	@Resource
-	FundAccountService fundAccountService;
+	private FundAccountService fundAccountService;
 
 	@Resource
 	private PaySuperByFuiou paySuperByFuiou;
@@ -127,18 +126,6 @@ public class FundsAccountImpl implements IFundsAccount {
 		boolean changeCard = paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankCd,cityId,fileName);
 		if(!changeCard) throw new FssException("90002001");
 		return changeCard;
-	}
-	 /**
-     * 银行卡变更结果查询
-     */
-	@Override
-	public boolean changeCardResult(ChangeBankCardResultDto changeBankCardResultDto) throws FssException {
-		FundAccountEntity fundAccountEntity=this.getPrimaryAccount(Integer.parseInt(changeBankCardResultDto.getCust_no()));
-		fundAccountEntity.setCityId(changeBankCardResultDto.getCity_id());
-		fundAccountEntity.setUserId(Integer.parseInt(changeBankCardResultDto.getUser_no()));
-		fundAccountEntity.setBankNo(changeBankCardResultDto.getBank_card());
-		paySuperByFuiou.changeCardResult(fundAccountEntity, changeBankCardResultDto.getSeq_no(),Long.parseLong(changeBankCardResultDto.getTrade_type()));
-		return false;
 	}
 
 	/**

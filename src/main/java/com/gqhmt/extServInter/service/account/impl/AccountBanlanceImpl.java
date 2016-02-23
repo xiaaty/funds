@@ -3,7 +3,7 @@ package com.gqhmt.extServInter.service.account.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.AccountAccessDto;
-import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.IAccountBanlance;
 import com.gqhmt.pay.service.IFundsAccount;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
  * @author 柯禹来
  */
 @Service
-public class AccountBanlanceImpl implements ICreateAccount{
+public class AccountBanlanceImpl implements IAccountBanlance{
 	@Resource
-	private IFundsAccount fundAccount;
+	private IFundsAccount fundsAccountImpl;
 	
 	/**
 	 * 账户余额查询
@@ -27,7 +27,7 @@ public class AccountBanlanceImpl implements ICreateAccount{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		fundAccount.getAccountAccByCustId((AccountAccessDto)dto);
+    		fundsAccountImpl.getAccountAccByCustId((AccountAccessDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
