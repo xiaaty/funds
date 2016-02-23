@@ -88,6 +88,16 @@
                                                     </section>
                                                 </td>
                                             </tr>
+                                                        <tr class="lh32">
+                                                <td align="left">商户密钥：</td>
+                                                <td>
+                                                    <section style="width:210px">
+                                                        <label class="input">
+                                                            <input type="text" readonly="readonly" id="mchnKey" name="mchnKey">
+                                                        </label>
+                                                    </section>
+                                                </td>
+                                            </tr>
                                             <tr class="lh32">
                                                 <td align="left">状态：</td>
                                                 <td>
@@ -103,7 +113,8 @@
                                         </table>
                                 <!-- end widget content -->
                                       <div class="mb20" id="wid-id-713">
-                                            <button class="btn btn-default table-nobg-btn" type="button" id="addMasterBusi">保存</button>
+                                            <button class="btn btn-default table-nobg-btn" type="button" id="addMasterBusi">保&nbsp;&nbsp;&nbsp;存</button>
+                                      		<button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/list/${parentId}'">返&nbsp;&nbsp;&nbsp;回</button>
                                       </div>
                                 </div>
                                 </div>
@@ -143,15 +154,15 @@
 	        }
 	    });
     });
-    //选中商户号
-    function choice(obj){
-    	var id=obj.options[obj.selectedIndex].value;
-    	$("#parentN").val(id);
-		var oSelect=document.getElementById("parentN");
-   	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
-   	 	 $("#parentNo").val(txtOption);
+//     //选中商户号
+//     function choice(obj){
+//     	var id=obj.options[obj.selectedIndex].value;
+//     	$("#parentN").val(id);
+// 		var oSelect=document.getElementById("parentN");
+//    	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
+//    	 	 $("#parentNo").val(txtOption);
     	
-    }
+//     }
 	//校验函数
 	function validateCheck() {
 		var mchnNo = $("#mchnNo").val();
@@ -169,7 +180,7 @@
         });
         return flag;
 	}
-	//生成商户号
+	//生成商户号和商户密钥
 	function createNos(){
 		var a=("0000000" + 100000000 * Math.random()).match(/(\d{8})(\.|$)/)[1];
 		var result = '';
@@ -180,7 +191,15 @@
 		}
 		var mchnNo=	a.toString()+result;
 		$("#mchnNo").val(mchnNo);
-	}
+		
+		var data=["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]; 
+		var mchnKey="";
+		for(var i=0;i<20;i++){ //产生20位就使i<20
+		var r=Math.floor(Math.random()*36); //16为数组里面数据的数量，目的是以此当下标取数组data里的值！ 
+		mchnKey+=data[r]; //输出20次随机数的同时，让rrr加20次，就是20位的随机字符串了。 
+		} 
+		$("#mchnKey").val(mchnKey); 
+		}
 </script>
         
         
