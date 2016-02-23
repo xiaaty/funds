@@ -2,7 +2,7 @@ package com.gqhmt.extServInter.service.account.impl;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.IBankList;
 import com.gqhmt.pay.service.ITradingRecord;
 import com.gqhmt.core.APIExcuteErrorException;
 import javax.annotation.Resource;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author 柯禹来
  */
 @Service
-public class BankListImpl implements ICreateAccount{
+public class BankListImpl implements IBankList{
 	@Resource
 	private ITradingRecord tradeRecordImpl;//交易记录接口
 	

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.IOnlineBankRecarge;
 import com.gqhmt.pay.service.ITradingRecord;
 
 /**
@@ -15,7 +15,7 @@ import com.gqhmt.pay.service.ITradingRecord;
  * @author 柯禹来
  */
 @Service
-public class OnlineBankRecargeImpl  implements ICreateAccount{
+public class OnlineBankRecargeImpl  implements IOnlineBankRecarge{
 	@Resource
 	private ITradingRecord tradeRecordImpl;
 	
