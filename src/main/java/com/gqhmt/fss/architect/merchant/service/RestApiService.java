@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.merchant.service;
 
-import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
+import com.gqhmt.fss.architect.merchant.bean.BusinessApiBean;
 import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
 import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
 import com.gqhmt.fss.architect.merchant.entity.Business;
@@ -12,6 +12,8 @@ import com.gqhmt.fss.architect.merchant.mapper.read.RestBusinessApiReadMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.RestApiAddrWriteMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.RestApiIpWriteMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.RestApiWriteMapper;
+import com.gqhmt.fss.architect.merchant.mapper.write.RestBusinessApiWriteMapper;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +39,8 @@ public class RestApiService {
 	private RestApiAddrWriteMapper restApiAddrWriteMapper;
 	@Resource
 	private RestBusinessApiReadMapper restBusinessApiReadMapper;
+	@Resource
+	private RestBusinessApiWriteMapper restBusinessApiWriteMapper;
 	/**
 	 * 获取商户认证类型
 	 * @param busiCode
@@ -111,71 +115,64 @@ public class RestApiService {
 	public void deleteApiIpConfig(ApiIpConfig apiIpConfig) {
 		restApiIpWriteMapper.delete(apiIpConfig);
 	}
+	
 	/**
-	 * 返回api地址列表
-	 * @param apiAddr
-	 * @return
-	 */
-	public List<ApiAddr> findApiAddrList(ApiAddr apiAddr) {
-		return restApiAddrReadMapper.select(apiAddr);
-	}
-	/**
-	 * 新增api地址
-	 * @param apiAddr
+	 * 
+	 * author:jhz
+	 * time:2016年2月19日
+	 * function：新增api地址
 	 */
 	public void insertApiAddr(ApiAddr apiAddr) {
 		restApiAddrWriteMapper.insertSelective(apiAddr);
 	}
+	
 	/**
-	 * 删除api地址
-	 * @param apiAddr
+	 * 
+	 * author:jhz
+	 * time:2016年2月19日
+	 * function：删除api地址
 	 */
-	public void deleteApiAddr(ApiAddr apiAddr) {
-		restApiAddrWriteMapper.delete(apiAddr);
+	public void deleteApiAddr(Long id) {
+		restApiAddrWriteMapper.deleteByPrimaryKey(id);
 	}
-
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月19日
+	 * function：通过id查询api地址
+	 */
+	public ApiAddr findapiAddrById(Long id) {
+		
+		return	restApiAddrReadMapper.selectByPrimaryKey(id);
+		
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月19日
+	 * function：修改api地址
+	 */
+	public void updateApiAddr(ApiAddr apiAddr) {
+		
+		restApiAddrWriteMapper.updateByPrimaryKey(apiAddr);
+		
+	}
+	
 	public List<BusinessApi> findBusinessApiList(BusinessApi businessApi) {
 		return restBusinessApiReadMapper.select(businessApi);
 	}
+
+
+
 	/**
 	 * 
 	 * author:jhz
-	 * time:2016年2月3日
-	 * function：查询商户api列表
-	 */
-	public List<BusinessAndApi> findBusinessAndApiList(String mchnNo) {
-		// TODO Auto-generated method stub
-		return restApiReadMapper.findBusinessAndApiList(mchnNo);
-	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年2月3日
-	 * function：删除原有的apiUrl
-	 */
-	public void deleteApiUrl(String mchnNo) {
-		// TODO Auto-generated method stub
-		restApiReadMapper.deleteApiUrl(mchnNo);
-	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年2月3日
-	 * function：删除原有的apiUrl
-	 */
-	public void deleteApi(String mchnNo) {
-		// TODO Auto-generated method stub
-		restApiReadMapper.deleteApi(mchnNo);
-	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年2月3日
-	 * function：添加商户API匹配
+	 * time:2016年2月19日
+	 * function：添加商户API授权
 	 */
 	public void insertBusinessApi(BusinessApi businessApi) {
 		
-		restBusinessApiReadMapper.insertSelective(businessApi);
+		restBusinessApiWriteMapper.insert(businessApi);
 	}
 	/**
 	 * 
@@ -198,5 +195,63 @@ public class RestApiService {
 		
 		return restApiReadMapper.getChildBusiness(business);
 	}
+	   /**
+	    * 
+	    * author:jhz
+	    * time:2016年2月19日
+	    * function：API录入列表
+	    */
+	public List<BusinessApiBean> findBusinessApiList(BusinessApiBean businessApiBean) {
+		// TODO Auto-generated method stub
+		return restBusinessApiReadMapper.findBusinessApiList(businessApiBean);
+	}
+	 /**
+     * 
+     * author:jhz
+     * time:2016年2月19日
+     * function：根据ID删除商户API数据
+     */
+	public void deleteBusinessApi(Long id) {
+		restBusinessApiWriteMapper.deleteByPrimaryKey(id);
+		
+	}
+	  /**
+     * 
+     * author:jhz
+     * time:2016年2月19日
+     * function：根据ID查询商户API授权
+     */
+	public BusinessApiBean selectBusinessApi(Long id) {
+		
+		return restBusinessApiReadMapper.selectBusinessApi(id);
+		
+	}
+
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月19日
+	 * function：返回api地址列表
+	 */
+	public List<ApiAddr> findApiAddrList() {
+		return restApiAddrReadMapper.selectAll();
+	}
+
+	public int updateBusinessApi(BusinessApi businessApi) {
+		
+		return restBusinessApiWriteMapper.updateByPrimaryKey(businessApi);
+		
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月23日
+	 * function：通过id查询商户对象
+	 */
+	public Business findBusinessById(long id) {
+		return restApiReadMapper.selectByPrimaryKey(id);
+		
+	}
+
 	
 }

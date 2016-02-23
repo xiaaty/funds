@@ -7,6 +7,9 @@
 		<if test="mchnNo != null and mchnNo != ''">
 			and a.mchn_no = #{mchnNo}
 		</if>
+		<if test="parentId != null and parent != ''">
+			and a.parent_id = #{parentId}
+		</if>
 	</sql>
 
 	<sql id="otherSql">
@@ -59,7 +62,7 @@
 		#{mchnNo}
 	</select>
 
-	<select id="findBusinessList" parameterType="java.lang.Long"
+	<select id="findBusinessList" parameterType="java.util.Map"
 		resultType="com.gqhmt.fss.architect.merchant.entity.Business">
 		SELECT
 		a.id,
@@ -70,8 +73,6 @@
 		a.mchn_key mchnKey,
 		a.mchn_key_end_date
 		mchnKeyEndDate,
-		a.auth_ip authIp,
-		a.auth_api authApi,
 		a.create_time
 		createTime,
 		a.modify_time modifyTime,
@@ -118,4 +119,6 @@
 		DELETE from
 		t_gq_fss_mchn_api WHERE mchn_no=#{mchnNo}
 	</delete>
+	
+	
 </mapper>

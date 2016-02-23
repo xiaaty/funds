@@ -1,6 +1,5 @@
 package com.gqhmt.funds.architect.trade.entity;
 
-import com.gqhmt.util.ThirdPartyType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

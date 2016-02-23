@@ -2,6 +2,8 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 
 import java.util.Map;
 
@@ -126,6 +128,6 @@ public interface IFundsAsset {
      * @throws FssException
      */
     public Map liabilities(int custID) throws FssException;
-
+    
 
 }

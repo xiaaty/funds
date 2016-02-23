@@ -5,6 +5,8 @@ import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
+import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -15,6 +17,8 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.util.LogUtil;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,6 +56,8 @@ public class FundAccountService {
     @Resource
     private BankCardInfoService bankCardInfoService;
     
+    @Resource
+    private  FssAssetReadMapper assetReadMapper;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -75,9 +81,9 @@ public class FundAccountService {
             return entity;
         }catch (Exception e){
 
-            String  msg = "数据库异常";
+            String  msg = "90002002";
             if(e.getMessage() != null && e.getMessage().contains("uk_cus_id_type")){
-                msg = "账户已存在";
+                msg = "90002001";
             }
             throw new FssException(msg,e);
         }
@@ -164,14 +170,14 @@ public class FundAccountService {
     }
 
 
-    /**
-     * 获取账户
-     * @param cusID 客户id
-     * @param type  账户类型
-     * @return
-     */
+   /**
+    * 
+    * author:jhz
+    * time:2016年2月22日
+    * function：通过custId得到账户
+    */
     public FundAccountEntity getFundAccount(Integer cusID, int type){
-        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
+        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, 3);
     }
 
     /**
@@ -340,13 +346,60 @@ public class FundAccountService {
 	   // TODO Auto-generated method stub
 	   return fundsAccountReadMapper.findAcountList(accMap);
    	}
+   	
+    /**
+     * 得到账户资产信息
+     * @return
+     */
+   	public FssAssetEntity getAccountAsset(String cust_no,String user_no,String acc_no){
+   		Map map=new HashMap();
+   		if(StringUtils.isNotEmptyString(cust_no)){
+   			map.put("cust_no", cust_no);
+   		}
+   		if(StringUtils.isNotEmptyString(user_no)){
+   			map.put("user_no", user_no);
+   		}
+   		if(StringUtils.isNotEmptyString(acc_no)){
+   			map.put("acc_no", acc_no);
+   		}
+   		return assetReadMapper.getAccountAssets(map);
+   	}
+    
 
-    
-    
-    
-    
-    
-    
-    
-
+    /**
+	  * 
+	  * author:jhz
+	  * time:2016年2月18日
+	  * function：找到指定的客户
+	  */
+	public FundAccountCustomerBean fundAccountCustomerById(Integer withHoldId) {
+		// TODO Auto-generated method stub
+		return fundsAccountReadMapper.fundAccountCustomerById(withHoldId);
+	}
+	/**
+	 * 费用接口
+	 * @param id
+	 * @param totalAmaount
+	 * @return
+	 * @throws FssException
+	 */
+	public boolean savetoAccount(Long id,BigDecimal totalAmaount) throws FssException{
+		Map map=new HashMap();
+		map.put("id", id);
+		map.put("totalAmaount", totalAmaount);
+		fundAccountWriteMapper.updateAndSaveAccount(map);
+		return true;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
+

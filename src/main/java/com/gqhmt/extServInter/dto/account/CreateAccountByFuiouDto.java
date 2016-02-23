@@ -1,5 +1,4 @@
 package com.gqhmt.extServInter.dto.account;
-
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
@@ -19,20 +18,28 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 16/1/12  于泳      1.0     1.0 Version
  */
 public class CreateAccountByFuiouDto extends SuperDto {
+	
+	private String cust_no;			//客户编号
 
-    private String mobile;
+	private String user_no;			//用户编号
+	
+	private String busi_no;			//业务编号
+	
+    private String mobile;			//手机号	
 
-    private String cert_no;
+    private String cert_no;			//身份证号
+    
 
+    private String name;			//客户姓名
 
-    private String name;
+    private String bank_id;			//银行类型
 
-    private String bank_id;
+    private String bank_card;		//银行卡号
 
-    private String bank_card;
-
-    private String city_id;
-
+    private String city_id;			//开户地区
+    
+    
+    
     public String getMobile() {
         return mobile;
     }
@@ -80,4 +87,31 @@ public class CreateAccountByFuiouDto extends SuperDto {
     public void setCity_id(String city_id) {
         this.city_id = city_id;
     }
+
+	public String getCust_no() {
+		return cust_no;
+	}
+
+	public void setCust_no(String cust_no) {
+		this.cust_no = cust_no;
+	}
+
+	public String getUser_no() {
+		return user_no;
+	}
+
+	public void setUser_no(String user_no) {
+		this.user_no = user_no;
+	}
+
+	public String getBusi_no() {
+		return busi_no;
+	}
+
+	public void setBusi_no(String busi_no) {
+		this.busi_no = busi_no;
+	}
+
+	
+    
 }

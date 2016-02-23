@@ -1,6 +1,7 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
+import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -12,6 +13,7 @@ import com.gqhmt.funds.architect.account.exception.FundAccountNullException;
 import com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundSequenceWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.Encriptor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -318,5 +321,27 @@ public class FundSequenceService {
      */
     public List<FundAccountSequenceBean> selectAccountSequenceList(Map fasMap) {
     	return fundSequenceReadMapper.selectAccountSequenceList(fasMap);
+    }
+    
+    /**
+     * 账户资金流水查询
+     * @param cust_no
+     * @param user_no
+     * @param busi_no
+     * @return
+     */
+    public List<FundAccountSequenceBean> searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+    	Map map=new HashMap();
+    	if(null!=cust_no){
+    		map.put("cust_no", cust_no);
+    	}
+    	if(null!=user_no){
+    		map.put("user_no", user_no);
+    	}
+    	return this.fundSequenceReadMapper.queryFundTradeFlow(map);
+    }
+    
+   public void insertFundSequence(FundSequenceEntity fundsequence)  throws FssException{
+	  this.fundSequenceWriteMapper.insert(fundsequence);
     }
 }

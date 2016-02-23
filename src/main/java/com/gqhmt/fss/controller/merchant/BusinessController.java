@@ -1,12 +1,13 @@
 package com.gqhmt.fss.controller.merchant;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
 import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
 import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
 import com.gqhmt.fss.architect.merchant.entity.Business;
-import com.gqhmt.fss.architect.merchant.entity.BusinessApi;
 import com.gqhmt.fss.architect.merchant.service.*;
+import com.gqhmt.sys.entity.DictEntity;
+import com.gqhmt.util.MD5Utils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,25 +50,39 @@ public class BusinessController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/sys/busi/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/sys/busi/list/{parentId}",method = RequestMethod.GET)
 	@AutoPage
-    public Object businessList(HttpServletRequest request,ModelMap model){
-		List<Business> businessList = restApiService.findBusinessList(null);
+    public Object businessList(HttpServletRequest request,ModelMap model,@PathVariable String parentId){
+    	Map<String, Object> param =  new HashMap<String, Object>();
+    	param.put("parentId", parentId);
+    	List<Business> businessList = restApiService.findBusinessList(param);
+    	String returnId="0";
+    	if(Integer.parseInt(parentId)>0){
+    		Business findBusinessById = restApiService.findBusinessById(Long.parseLong(parentId));
+			returnId = findBusinessById.getParentId();
+		}
 		model.addAttribute("page", businessList);
+		model.addAttribute("returnId", returnId);
 		return "sys/busi/busiList";
     }
     
-    /**
-     * 跳转至商户新增
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/sys/busi/add",method = RequestMethod.GET)
-    public Object businessAdd(HttpServletRequest request,ModelMap model){
-    	List<Business> findBusinessList = restApiService.findBusinessList(null);
-    	model.addAttribute("businessList", findBusinessList);
-		return "sys/busi/busiAdd";
+   /**
+    * 
+    * author:jhz
+    * time:2016年2月23日
+    * function：添加子账户
+    */
+    @RequestMapping(value = "/sys/busi/add/{parentId}",method = RequestMethod.GET)
+    public Object businessAdd(HttpServletRequest request,ModelMap model, @PathVariable Integer parentId){
+    	Map<String, Object> param =  new HashMap<String, Object>();
+    	param.put("parentId", parentId);
+    	if(parentId==0){
+    		return "sys/busi/masterBusiAdd";
+    	}else{
+    	 Business findBusinessById = restApiService.findBusinessById(parentId);
+    	model.addAttribute("busi", findBusinessById);
+		return "sys/busi/childBusiAdd";
+    	}
     }
     
     /**
@@ -78,6 +95,8 @@ public class BusinessController {
     @ResponseBody
     public Object businessAddConfirm(HttpServletRequest request,@ModelAttribute(value="busi")Business busi){
     	busi.setCreateTime(new Date());
+    	String encryption = MD5Utils.encryption(busi.getMchnKey());
+    	busi.setMchnKey(encryption);
     	restApiService.insertBusiness(busi);
     	
     	Map<String, String> map = new HashMap<String, String>();
@@ -107,21 +126,26 @@ public class BusinessController {
 		return map;
     }
     
-    /**
-     * 跳转至商户修改
-     * @param request
-     * @param model
-     * @return
-     */
+	 /**
+	  * 
+	  * author:jhz
+	  * time:2016年2月23日
+	  * function：跳转到商户修改
+	  */
     @RequestMapping(value = "/sys/busi/update/{mchnNo}",method = RequestMethod.GET)
-    public Object businessUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo){
+    public Object businessUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo,Integer parentId){
+    	Map<String, Object> param = new HashMap<String, Object>();
+    	param.put("mchnNo", mchnNo);
+    	List<Business> busiList = restApiService.findBusinessList(param);
+    	model.addAttribute("busi", busiList.get(0));
+    	model.addAttribute("parentId", parentId);
+    	if(parentId==0){
+    		return "sys/busi/masterBusiUpdate";
+    	}else{
     	List<Business> findBusinessList = restApiService.findBusinessList(null);
     	model.addAttribute("businessList", findBusinessList);
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("mchnNo", mchnNo);
-    	List<Business> busiList = restApiService.findBusinessList(param);
-		model.addAttribute("busi", busiList.get(0));
-		return "sys/busi/busiUpdate";
+		return "sys/busi/childBusiUpdate";
+    	}
     }
     /**
      * 商户修改确认
@@ -185,60 +209,19 @@ public class BusinessController {
 		return map;
     }
     /**
-     * 跳转至商户API修改
-     * @param request
-     * @param model
-     * @return
+     * 
+     * author:jhz
+     * time:2016年2月19日
+     * function：跳转到商户API授权页面
+     * @throws ParseException 
      */
-    @RequestMapping(value = "/sys/busi/apiupdate/{mchnNo}",method = RequestMethod.GET)
-    public Object businessApiUpdate(HttpServletRequest request,ModelMap model, @PathVariable String mchnNo){
-    	
-    	List<BusinessAndApi> buApiList = restApiService.findBusinessAndApiList(mchnNo);
-		model.addAttribute("apiList", buApiList);
-		model.addAttribute("mchnNo", mchnNo);
-		return "sys/busi/busiApiUpdate";
+    @RequestMapping(value = "/sys/busi/toBusinessApiAdd/{mchnNo}",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object toBusinessApiAdd(HttpServletRequest request,ModelMap model,@PathVariable String mchnNo,String mchnName,String parentId ) throws ParseException{
+    	List<ApiAddr> apiList=restApiService.findApiAddrList();
+    	model.addAttribute("apiList", apiList);
+    	model.addAttribute("mchnName", mchnName);
+    	model.addAttribute("parentId", parentId);
+    	return "/sys/busi/businessApiAdd";
     }
-    /**
-     * 商户API修改确认
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/sys/busi/apiUpdateConfirm")
-    @ResponseBody
-    public Object apiUpdateConfirm(HttpServletRequest request,@ModelAttribute(value="businessAndApi")BusinessAndApi businessAndApi, ModelMap model){
-    	String[] mchnNos = businessAndApi.getMchnNo().split(",");
-    	String[] apiNames = businessAndApi.getApiName().split(",");
-    	String[] apiNos = businessAndApi.getApiNo().split(",");
-    	String[] apiUrls = businessAndApi.getApiUrl().split(",");
-    	//删除原有的apiUrl
-    	restApiService.deleteApiUrl(mchnNos[0]);
-    	restApiService.deleteApi(mchnNos[0]);
-    	Map<String, String> map = new HashMap<String, String>();
-    	// 保存新录入api地址
-    	if(StringUtils.isNotBlank(businessAndApi.getApiName())) {
-    		ApiAddr addr = null;
-    		for (int i=0;i<apiNames.length;i++) {
-    			addr=new ApiAddr();
-    			addr.setApiName(apiNames[i]);
-    			addr.setApiNo(apiNos[i]);
-    			addr.setApiUrl(apiUrls[i]);
-    			addr.setCreateTime(new Date());
-    			addr.setModifyTime(new Date());
-    			restApiService.insertApiAddr(addr);
-    		}
-    		BusinessApi businessApi = null;
-    		for (int i=0;i<apiNames.length;i++) {
-    			businessApi=new BusinessApi();
-    			businessApi.setApiNo(apiNos[i]);
-    			businessApi.setMchnNo(mchnNos[i]);
-    			businessApi.setModifyTime(new Date());
-    			restApiService.insertBusinessApi(businessApi);
-    		}
-			
-    	}
-        map.put("code", "0000");
-        map.put("message", "success");
-		return map;
-    }
+    
 }

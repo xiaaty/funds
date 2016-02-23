@@ -47,40 +47,41 @@
         <!-- end breadcrumb -->
     </div>
 
-    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
-                        <header>
-                            <h2>商户修改</h2>
-                        </header>
-                        <!-- widget div-->
-                        <div>
-                            <form class="smart-form" id="busiUpdateForm" action="${contextPath}/sys/busi/updateConfirm" method="post">
-                                <input type="hidden" value="${busi.id}" name="id"/>
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <!-- This area used as dropdown edit box -->
-                                </div>
-                                <!-- end widget edit box -->
-                                <!-- widget content -->
-                                <div class="widget-body no-padding">
-                                    <div class="mt10 mb10">
-                                        <table class="table">
-                                            <col width="100" />
-                                            <col width="220" />
-                                            <col width="100" />
-                                            <col />
+    <div id="content">
+            <section id="widget-grid" class="">
+                <div class="row">
+                    <!-- NEW WIDGET START -->
+                            <form  id="busiUpdateForm" action="${contextPath}/sys/busi/updateConfirm" method="post">
+                   <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
+                        <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
+
+                            <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
+                               <header>
+                                    <h2><i class="fa fa-edit pr10"></i>商户修改<font class="pl10 f12 color07"></font></h2>
+                                </header>
+                                    <div class="smart-form">
+
+                                        <!-- widget content -->
+                                            <div class="mt10 mb10 ml30">
+                                                <table class="table">
+                                                    <col width="112" />
+                                                    <col width="367" />
+                                                    <col width="112" />
+                                                    <col />
                                             <tbody>
                                            <tr class="lh32">
-                                                <td class="tr">商户名称：</td>
+                                                <td align="left">商户名称：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                            <input type="text" id="mchnName" name="mchnName" value="${busi.mchnName}" onchange="createNos();">
+                                                            <input type="hidden" id="id" name="id" value="${busi.id}">
+                                                            <input type="text" id="mchnName" name="mchnName" value="${busi.mchnName}">
                                                         </label>
                                                     </section>
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">商户号：</td>
+                                                <td align="left">商户号：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -89,9 +90,18 @@
                                                     </section>
                                                 </td>
                                             </tr>
-                                            
                                             <tr class="lh32">
-                                                <td class="tr">父商户：</td>
+                                                <td align="left">商户密钥：</td>
+                                                <td>
+                                                    <section style="width:210px">
+                                                        <label class="input">
+                                                            <input type="text" readonly="readonly" id="mchnKey" name="mchnKey" value="${busi.mchnKey}">
+                                                        </label>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                            <tr class="lh32">
+                                                <td align="left">父商户：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                     <label class="select">
@@ -109,7 +119,7 @@
                                             </tr>
                                             
 											<tr class="lh32">
-                                                <td class="tr">父商号：</td>
+                                                <td align="left">父商号：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                     <label class="select">
@@ -126,30 +136,9 @@
                                                 </td>
                                             </tr>
                                             
-											<tr class="lh32">
-                                                <td class="tr">IP校验方式：</td>
-                                                <td>
-                                                    <section style="width:250px">
-                                                        <label class="text">
-                                                            <input type="radio" name="authIp" value="0" <c:if test="${busi.authIp ==0}">checked</c:if> />IP不校验
-                                                            <input type="radio" name="authIp" value="1" <c:if test="${busi.authIp ==1}">checked</c:if>  />IP校验
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                            </tr>
+											
                                             <tr class="lh32">
-                                                <td class="tr">API校验方式：</td>
-                                                <td>
-                                                    <section style="width:210px">
-                                                        <label class="text">
-                                                            <input type="radio" name="authApi" value="0" <c:if test="${busi.authApi ==0}">checked</c:if>/>可以访问所有公共API
-                                                            <input type="radio" name="authApi" value="1" <c:if test="${busi.authApi ==1}">checked</c:if>/>除公共API外，可以访问授权API
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td class="tr">状态：</td>
+                                                <td align="left">状态：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="text">
@@ -160,11 +149,15 @@
                                                 </td>
                                             </tr>
                                             </tbody>
+                                            
                                         </table>
+                                  			 <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" id="updateChildBusi">保&nbsp;&nbsp;&nbsp;存</button>
+                                    		<button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/list/${parentId}'">返&nbsp;&nbsp;&nbsp;回</button>
+                                    	  </div>
+                                        </div>
+                                        
                                     </div>
-                                    <footer>
-                                        <button id="btn-success" class="btn btn-primary"  type="button">修改</button>
-                                    </footer>
                                 </div>
                                 <!-- end widget content -->
                             </form>
@@ -182,7 +175,7 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
 //     	$("#parentN").hide();
-	    $("#btn-success").click(function () {
+	    $("#updateChildBusi").click(function () {
 	        if (validateCheck()) {
 	            if (!confirm("确认 修改商户信息吗?")) {
 	               return false;
@@ -213,9 +206,16 @@
 //    	     alert( $("#parentNo").val());
     	
     }
+    
 	//校验函数
 	function validateCheck() {
-        return true;
+    	var a=$("#parentId").val();
+    	if(a==null||a==''){
+    		jAlert("您的父商户为空，请选择父商户!", '提示信息');
+    		return;
+    	}else{
+        	return true;
+    	}
 	}
 	//生成商户号
 	function createNos(){

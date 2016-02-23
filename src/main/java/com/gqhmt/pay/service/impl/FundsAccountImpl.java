@@ -2,14 +2,18 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.account.AssetDto;
+import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsAccount;
-import com.gqhmt.pay.service.PaySuperByFuiouTest;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,10 +30,10 @@ public class FundsAccountImpl implements IFundsAccount {
 	private CustomerInfoService  customerInfoService  ;
 
 	@Resource
-	FundAccountService fundAccountService;
+	private FundAccountService fundAccountService;
 
 	@Resource
-	private PaySuperByFuiouTest paySuperByFuiou;
+	private PaySuperByFuiou paySuperByFuiou;
 
 	/**
      * 创建账户
@@ -38,22 +42,27 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param custId         客户id
      * @throws FssException
      */
-	public boolean createAccount(String thirdPartyType, int custId) throws FssException {
-		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(custId);
-		if(customerInfoEntity == null) throw new FssException("客户不存在");
-		return this.createAccount(thirdPartyType,customerInfoEntity,"","");
+	public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException {
+		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(Integer.parseInt(createAccountByFuiouDto.getCust_no()));
+		customerInfoEntity.setParentBankCode(createAccountByFuiouDto.getBank_id());
+		customerInfoEntity.setBankNo(createAccountByFuiouDto.getBank_card());
+		customerInfoEntity.setCityCode(createAccountByFuiouDto.getCity_id());
+		customerInfoEntity.setCertNo(createAccountByFuiouDto.getCert_no());
+		customerInfoEntity.setMobilePhone(createAccountByFuiouDto.getMobile());
+		customerInfoEntity.setCustomerName(createAccountByFuiouDto.getName());
+		if(customerInfoEntity == null) throw new FssException("90002001");
+		return this.createAccount(customerInfoEntity,"","");
 	}
 
 	/**
      * 创建账户
      *
-     * @param thirdPartyType     支付渠道
      * @param customerInfoEntity 客户实体
      * @param pwd                支付渠道登陆密码
      * @param taradPwd           支付渠道交易密码
      * @throws FssException
      */
-	public boolean createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity,
+	public boolean createAccount(CustomerInfoEntity customerInfoEntity,
 						String pwd, String taradPwd) throws FssException {
 
 		Integer cusId = customerInfoEntity.getId();
@@ -107,16 +116,16 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param changeCardEntity
      * @throws FssException
      */
-	public boolean changeCard(String thirdPartyType,FssChangeCardEntity changeCardEntity) throws FssException {
-		Integer cusId = changeCardEntity.getCustId().intValue();
-		String cardNo = changeCardEntity.getCardNo();
-		String bankCd = changeCardEntity.getBankType();
-		String bankNm = changeCardEntity.getBankAdd();
-		String cityId = changeCardEntity.getBankCity();
-		String fileName = changeCardEntity.getFilePath().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
+	public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException {
+		Integer cusId = Integer.parseInt(changeBankCardDto.getCust_no());
+		String cardNo = changeBankCardDto.getBank_card();
+		String bankCd = changeBankCardDto.getBank_id();
+		String cityId = changeBankCardDto.getCity_id();
+		String fileName = changeBankCardDto.getImage();
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
-		paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
-		return true;
+		boolean changeCard = paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankCd,cityId,fileName);
+		if(!changeCard) throw new FssException("90002001");
+		return changeCard;
 	}
 
 	/**
@@ -147,9 +156,28 @@ public class FundsAccountImpl implements IFundsAccount {
 	private FundAccountEntity getPrimaryAccount(Integer cusId){
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 		if(primaryAccount == null){
-			throw new CommandParmException("主账户不存在");
+			throw new CommandParmException("90002003");
 		}
 		return primaryAccount;
 	}
 
+	/**
+	 * 查询账户余额
+	 */
+	 public FundAccountEntity getAccountAccByCustId(AccountAccessDto accessdto) throws FssException{
+		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_id(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		 return primaryAccount;
+	 }
+	
+	/**
+	 * 账户资产
+	 */
+	@Override
+	public FssAssetEntity getAccountAsset(AssetDto asset) throws FssException {
+		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getUser_no(),asset.getAcc_no(),asset.getCust_no());
+		return assetEntity;
+	}
+	
+	
+	
 }

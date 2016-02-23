@@ -39,7 +39,7 @@ public class ICreateAccountTest {
         CreateAccountByFuiouDto dto = new CreateAccountByFuiouDto();
         try {
             Response response = createAccount.excute(dto);
-            assert response.getResp_code().equals("0000");
+            assert response.getResp_code().equals("90008101");
         }catch (Throwable t){
             t.printStackTrace();
 

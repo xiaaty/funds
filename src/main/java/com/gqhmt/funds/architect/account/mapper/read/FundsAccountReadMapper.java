@@ -3,7 +3,6 @@ package com.gqhmt.funds.architect.account.mapper.read;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -75,7 +74,13 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	    * function：funds账号管理
 	    */
 	public List<FundAccountCustomerBean> findAcountList(Map accMap);
+	  /**
+		  * 
+		  * author:jhz
+		  * time:2016年2月18日
+		  * function：找到指定的客户
+		  */
+	public FundAccountCustomerBean fundAccountCustomerById(Integer withHoldId);
 	
-	
-	
+
 }

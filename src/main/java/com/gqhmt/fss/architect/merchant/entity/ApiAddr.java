@@ -48,11 +48,19 @@ public class ApiAddr {
     private Date modifyTime;
     // 创建用户ID
     @Column(name = "create_user_id")
-    private Date createUserId;
+    private Long createUserId;
     // 修改人ID
     @Column(name = "modify_id")
-    private Date modifyId;
+    private Long modifyId;
 	
+    // api的类名
+    @Column(name = "class_name")
+    private String className;
+    
+    // api的方法名
+    @Column(name = "method_name")
+    private String methodName;
+    
 	public Long getId() {
 		return id;
 	}
@@ -95,16 +103,28 @@ public class ApiAddr {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	public Date getCreateUserId() {
+	public String getClassName() {
+		return className;
+	}
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	public String getMethodName() {
+		return methodName;
+	}
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+	public Long getCreateUserId() {
 		return createUserId;
 	}
-	public void setCreateUserId(Date createUserId) {
+	public void setCreateUserId(Long createUserId) {
 		this.createUserId = createUserId;
 	}
-	public Date getModifyId() {
+	public Long getModifyId() {
 		return modifyId;
 	}
-	public void setModifyId(Date modifyId) {
+	public void setModifyId(Long modifyId) {
 		this.modifyId = modifyId;
 	}
     

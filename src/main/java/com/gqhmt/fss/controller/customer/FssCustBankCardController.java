@@ -36,13 +36,9 @@ public class FssCustBankCardController {
 	private FssCustBankCardService bankCardService;
 	@Resource
 	private BankCardInfoService bankCardInfoService;
-
-
 	/**
 	 * author:kyl 
 	 * time:2016年2月16日 
-	 * author:jhz 
-	 * time:2016年1月25日 
 	 * function：银行卡信息列表
 	 */
 	@RequestMapping(value = "/fss/customer/bankCards", method = {RequestMethod.GET,RequestMethod.POST})

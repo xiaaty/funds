@@ -1,10 +1,15 @@
 package com.gqhmt.extServInter.service.account.impl;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
-import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.pay.service.IFundsAccount;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.extServInter.service.account.impl.CreateAccountImpl
@@ -24,11 +29,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CreateAccountImpl implements ICreateAccount{
-
+	@Resource
+	private IFundsAccount fundsAccountImpl;
+	
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
-        Response response = new Response();
-        response.setResp_code("0000");
+    public Response excute(SuperDto dto) {
+    	Response response = new Response();
+    	try {
+
+    		fundsAccountImpl.createAccount((CreateAccountByFuiouDto)dto);
+
+			 response.setResp_code("00000000");
+		} catch (FssException e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
         return response;
     }
 }

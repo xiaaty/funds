@@ -7,15 +7,19 @@ import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.business.architect.loan.service.TenderService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTender;
-import com.gqhmt.pay.service.PaySuperByFuiouTest;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -35,10 +39,11 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 15/12/29  于泳      1.0     1.0 Version
  */
+@Service
 public class FundsTenderImpl  implements IFundsTender {
 
     @Resource
-    private PaySuperByFuiouTest paySuperByFuiou;
+    private PaySuperByFuiou paySuperByFuiou;
 
     @Resource
     private TenderService tenderService;
@@ -52,10 +57,18 @@ public class FundsTenderImpl  implements IFundsTender {
     @Resource
     private FundOrderService fundOrderService;
 
-
+	/**
+	 * 投标
+	 */
     @Override
-    public boolean bid(String thirdPartyType, Long tenderId) throws FssException {
-        Tender tender = this.tenderService.findById(tenderId);
+    public boolean bid(BidDto bidDto) throws FssException {
+        Tender tender = this.tenderService.findById(Integer.parseInt(bidDto.getTender_no()));
+        tender.setBonusAmount(bidDto.getRed_packet());
+        tender.setRealAmount(bidDto.getFact_amount());
+        tender.setInvestAmount(bidDto.getAmount());
+        tender.setUserId(Integer.parseInt(bidDto.getUser_no()));
+        tender.setCustomerId(Integer.parseInt(bidDto.getCust_no()));
+        tender.setBidId(Long.parseLong(bidDto.getBusi_bid_no()));
         FundAccountEntity fromEntity = this.getFundAccount(tender.getCustomerId(), tender.getInvestType() == 1 ? 3 : 2);
         this.hasEnoughBanlance(fromEntity,tender.getRealAmount());
 
@@ -71,7 +84,7 @@ public class FundsTenderImpl  implements IFundsTender {
         FundAccountEntity toEntity = this.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         BigDecimal amount = tender.getRealAmount();
         BigDecimal boundsAmount = tender.getBonusAmount();
-        paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,tenderId,GlobalConstants.BUSINESS_BID);
+        paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
         //后续处理
         return true;
     }
@@ -184,9 +197,9 @@ public class FundsTenderImpl  implements IFundsTender {
         if (listFundOrder != null && listFundOrder.size() > 0) {
             FundOrderEntity fundOrderEntity = listFundOrder.get(0);
             if (fundOrderEntity.getOrderState() == 2) {
-                throw new FssException("系统检测交易已成功，请核查");
+                throw new FssException("90004010");
             } else {
-                throw new FssException("请勿重复提交");
+                throw new FssException("90004011");
             }
         }
     }
@@ -200,7 +213,7 @@ public class FundsTenderImpl  implements IFundsTender {
         }
 
         if (entity == null) {
-            throw new CommandParmException("账户不存在");
+            throw new CommandParmException("90004006");
         }
         return entity;
     }
@@ -208,7 +221,7 @@ public class FundsTenderImpl  implements IFundsTender {
     private void hasEnoughBanlance(FundAccountEntity entity, BigDecimal amount) throws CommandParmException {
         BigDecimal bigDecimal = entity.getAmount();
         if (bigDecimal.compareTo(amount) < 0) {
-            throw new CommandParmException("账户余额不足");
+            throw new CommandParmException("9004007");
         }
     }
 }

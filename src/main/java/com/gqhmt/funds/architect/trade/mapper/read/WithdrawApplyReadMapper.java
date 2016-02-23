@@ -2,8 +2,9 @@ package com.gqhmt.funds.architect.trade.mapper.read;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.trade.bean.WithdrawApplyBean;
+import com.gqhmt.funds.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
+import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 
 import java.util.List;
 
@@ -26,12 +27,12 @@ import java.util.List;
 public interface WithdrawApplyReadMapper extends ReadMapper<WithdrawApplyEntity>{
 	
 	/**
-	 * 根据条件对象查询并返回对应的提现信息列表
-	 * @param pageReq
-	 * @return
-	 * @throws AppException
+	 * 
+	 * author:jhz
+	 * time:2016年2月18日
+	 * function：根据条件对象查询并返回对应的提现信息列表
 	 */
-	public Page queryWithdrawByConditionList(WithdrawApplyBean withDrawBean);
+	public List<WithholdApplyEntity> queryWithdrawByConditionList(WithdrawApplyBean withDrawBean);
 		
 	/**
      * 查询提现申请

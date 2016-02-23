@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper">
-	<sql id="fieldSql">
-	</sql>
-	<sql id="whereSql">
-	</sql>
-	<sql id="otherSql">
-		<choose>
-		<when test="orderStr != null">
-			order by ${orderStr}
-		</when>
-		<otherwise>
-		</otherwise>
-		</choose>
-	</sql>
 	<select id="selectAccountSequenceList" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean">
 		SELECT 
 		b.id id,
@@ -54,5 +41,21 @@
                AND c.create_time &lt; #{endDate}
               </when>
          </choose>
+	</select>
+	
+	<select id="queryFundTradeFlow" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean">
+		SELECT 
+		b.id id,
+		b.account_no accountNo,
+		a.CUSTOMER_NAME	customerName,
+		b.account_type accountType,
+		b.busi_type busiType,
+		b.cust_id custId,
+		c.actionType actionType,
+		c.amount amount,
+		c.CREATE_TIME creatTime,
+		c.thirdparty_type thirdPartyType
+		FROM `t_gq_fund_account` b ,`t_gq_customer_info` a
+		WHERE a.ID=b.cust_id 
 	</select>
 </mapper>

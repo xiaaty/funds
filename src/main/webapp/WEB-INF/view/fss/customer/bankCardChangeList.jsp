@@ -177,19 +177,19 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${page.list}" var="t">
+                                        <c:forEach items="${page.list}" var="t" varStatus="index">
                                                 <tr>
-                                                    <td>${t.id}</td>
+                                                    <td>${index.count}</td>
                                                     <td>${t.custId}</td>
                                                     <td>${t.custName}</td>
                                                     <td>${t.type}</td>
-                                                    <td>${t.certNo}</td>
+                                                    <td><fss:fmtData value="${t.certNo}"/></td>
                                                     <td>${t.bankName}</td>
                                                     <td>${t.bankCity}</td>
-                                                    <td>${t.cardNo}</td>
-                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${t.passTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${t.effectTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fss:fmtData value="${t.cardNo}"/> </td>
+                                                    <td><fss:fmtDate value="${t.createTime}"/></td>
+                                                    <td><fss:fmtDate value="${t.passTime}" /></td>
+                                                    <td><fss:fmtDate value="${t.effectTime}" /></td>
                                                     <td>
                                                     	<c:if test="${t.state==1}">
                                                     		变更中
@@ -215,7 +215,7 @@
                                                     		数据传到富友
                                                     	</c:if>
                                                     	<c:if test="${t.tradeState==5}">
-                                                    		富友返回成功
+                                                    		成功
                                                     	</c:if>
                                                     	<c:if test="${t.tradeState==6}">
                                                     		失败

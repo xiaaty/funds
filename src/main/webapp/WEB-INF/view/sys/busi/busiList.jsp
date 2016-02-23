@@ -68,6 +68,12 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                <div class="mb20" id="wid-id-713">
+                                <c:if test="${parentId !=0}">
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/list/${returnId}'" ><i class="fa fa-minus"></i>返回</button>
+                                </c:if>     
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/add/${parentId}'"><i class="fa fa-plus"></i>添加</button>
+                                      </div>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
@@ -75,8 +81,6 @@
                                             <td>商户号</td>
                                             <td>父商户号</td>
                                             <td>商户密钥</td>
-                                            <td>IP校验方式</td>
-                                            <td>API校验方式</td>
                                             <td>状态</td>
                                             <td>创建时间</td>
                                             <td>修改时间</td>
@@ -90,15 +94,13 @@
                                                     <td>${t.mchnNo}</td>
                                                     <td>${t.parentNo}</td>
                                                     <td>${t.mchnKey}</td>
-                                                    <td>${t.authIp=='0'?"IP不校验":"IP校验"}</td>
-                                                    <td>${t.authApi=='0'?"API不校验":"AIP校验"}</td>
                                                     <td>${t.state=='0'?"未启用":"已启用"}</td>
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td style="text-align:left;">
-                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}">修改</a>
-                                                        <c:if test="${t.authIp!='0'}"><a href='${contextPath}/sys/busi/ipupdate/${t.mchnNo}'>IP地址管理</a></c:if>
-                                                        <c:if test="${t.authApi!='0'}"><a href='${contextPath}/sys/busi/apiupdate/${t.mchnNo}'>AIP地址管理</a></c:if>
+                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}?parentId=${t.parentId}">修改</a>
+                                                        <a href="${contextPath}/sys/busi/list/${t.id}">查看</a>
+                                                        <a href="${contextPath}/sys/busi/toBusinessApiAdd/${t.mchnNo}?mchnName=${t.mchnName}&parentId=${t.parentId}">API授权</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

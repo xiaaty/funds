@@ -36,7 +36,7 @@ import java.util.Date;
  * 16/2/16  于泳      1.0     1.0 Version
  */
 @Service
-public class PaySuperByFuiouTest {
+public class PaySuperByFuiou {
 
 
     @Resource
@@ -99,6 +99,7 @@ public class PaySuperByFuiouTest {
      * @param bankNm
      * @param cityId
      * @param fileName
+     * @param bankNm 
      * @return
      * @throws FssException
      */
@@ -106,7 +107,7 @@ public class PaySuperByFuiouTest {
                                 String cityId, String fileName) throws FssException {
         LogUtil.info(this.getClass(),"第三方个人提现规则设置:"+primaryAccount.getAccountNo()+":"+cardNo+":"+bankCd+":"+bankNm+":"+cityId+":"+fileName);
         FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,0,0,thirdPartyType);
-        CommandResponse response =ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
+        CommandResponse response =ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankNm,bankCd,cityId,fileName);
         return execExction(response,fundOrderEntity);
 
     }
