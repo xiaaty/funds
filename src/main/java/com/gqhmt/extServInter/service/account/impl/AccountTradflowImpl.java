@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountTradflowImpl implements ICreateAccount{
 	@Resource
-	private ITradingRecord traderecord;//交易记录接口
+	private ITradingRecord tradeRecordImpl;//交易记录接口
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		traderecord.getTradFlow((TradflowDto)dto);
+    		tradeRecordImpl.getTradFlow((TradflowDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
