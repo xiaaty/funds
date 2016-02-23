@@ -3,7 +3,6 @@ package com.gqhmt.fss.controller.api.tender;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.gqhmt.annotations.API;
 import com.gqhmt.core.util.LogUtil;
@@ -37,7 +36,7 @@ public class FssTenderApi {
     private ApplicationContext applicationContext;
     
     @Resource
-    private IBid iBid;
+    private IBid bidImpl;
     
     /**
      * 
@@ -52,7 +51,7 @@ public class FssTenderApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = iBid.excute(bidDto);
+    		response = bidImpl.excute(bidDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());

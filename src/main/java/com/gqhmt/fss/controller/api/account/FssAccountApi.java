@@ -6,17 +6,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gqhmt.annotations.API;
-import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardResultDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
-import com.gqhmt.extServInter.service.account.IChangeBankCardAccountResult;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
-import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
-import com.gqhmt.fss.event.account.CreateAccountEvent;
 
 import javax.annotation.Resource;
 
@@ -47,13 +42,11 @@ public class FssAccountApi {
     private ApplicationContext applicationContext;
     
     @Resource
-    private ICreateAccount icreateAccount;
+    private ICreateAccount createAccountImpl;
     
     @Resource
-    private IChangeBankCardAccount ichangeBankCardAccount;
+    private IChangeBankCardAccount changeBankCardAccountImpl;
     
-    @Resource
-    private IChangeBankCardAccountResult ichangeBankCardAccountResult;
     
     /**
      * 富友开户,通用接口
@@ -89,7 +82,7 @@ public class FssAccountApi {
         try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-             response = icreateAccount.excute(createAccountByFuiou);
+             response = createAccountImpl.excute(createAccountByFuiou);
         } catch (Exception e) {
         	LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
@@ -109,27 +102,7 @@ public class FssAccountApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = ichangeBankCardAccount.excute(changeBankCardDto);
-    	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
-    	}
-    	return response;
-    }
-    /**
-     * 
-     * author:jhz
-     * time:2016年2月22日
-     * function：变更银行卡结果查询
-     */
-    @API
-    @RequestMapping(value = "/changeBankCardResult",method = RequestMethod.POST)
-    public Object changeBankCardResult(ChangeBankCardResultDto changeBankCardResultDto){
-    	Response response=new Response();
-    	try {
-//            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
-//            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = ichangeBankCardAccount.excute(changeBankCardResultDto);
+    		response = changeBankCardAccountImpl.excute(changeBankCardDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());

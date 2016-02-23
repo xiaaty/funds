@@ -3,17 +3,14 @@ package com.gqhmt.fss.controller.api.trade;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.gqhmt.annotations.API;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.extServInter.dto.trade.OrderWithdrawApplyDto;
 import com.gqhmt.extServInter.dto.trade.OrderWithholdApplyDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
-import com.gqhmt.extServInter.service.tender.IBid;
 import com.gqhmt.extServInter.service.trade.IOrderWithdrawApply;
 import com.gqhmt.extServInter.service.trade.IOrderWithholdApply;
 import com.gqhmt.extServInter.service.trade.IWithdraw;
@@ -52,16 +49,16 @@ public class FssTradeApi {
     private ApplicationContext applicationContext;
     
     @Resource
-    private IWithhold iWithhold;
+    private IWithhold withholdImpl;
     
     @Resource
-    private IWithdraw iWithdraw;
+    private IWithdraw withdrawImpl;
     
     @Resource
-    private IOrderWithdrawApply iOrderWithdrawApply;
+    private IOrderWithdrawApply orderWithdrawApplyImpl;
     
     @Resource
-    private IOrderWithholdApply iOrderWithholdApply;
+    private IOrderWithholdApply orderWithholdApplyImpl;
     
     
     /**
@@ -77,7 +74,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = iOrderWithdrawApply.excute(orderWithdrawApplyDto);
+    		response = orderWithdrawApplyImpl.excute(orderWithdrawApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -97,7 +94,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = iOrderWithholdApply.excute(orderWithholdApplyDto);
+    		response = orderWithholdApplyImpl.excute(orderWithholdApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -117,7 +114,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = iWithdraw.excute(withdrawDto);
+    		response = withdrawImpl.excute(withdrawDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -137,7 +134,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = iWithhold.excute(withholdDto);
+    		response = withholdImpl.excute(withholdDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
