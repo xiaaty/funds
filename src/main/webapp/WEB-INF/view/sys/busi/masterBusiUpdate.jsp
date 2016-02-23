@@ -104,8 +104,8 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="text">
-                                                            <input type="radio" name="state" value="0" <c:if test="${busi.state ==0}">checked</c:if> />未启用
-                                                            <input type="radio" name="state" value="1" <c:if test="${busi.state ==1}">checked</c:if> />已启用
+                                                            <input type="radio" name="state" value="98040002" <c:if test="${busi.state ==98040002}">checked</c:if> />未启用
+                                                            <input type="radio" name="state" value="98040001" <c:if test="${busi.state ==98040001}">checked</c:if> />已启用
                                                         </label>
                                                     </section>
                                                 </td>

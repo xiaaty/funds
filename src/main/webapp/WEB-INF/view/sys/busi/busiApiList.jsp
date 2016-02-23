@@ -101,8 +101,8 @@
                                                             <label class="select"  style="width:150px" >
                                                                 <select class="select02"  name="isReturn" id="isReturn">
 								                                    <option value=""> --请选择--</option>
-								                                    <option value="0" <c:if test="${businessApiBean.isReturn==0}">selected='selected' </c:if> >回调</option>
-								                                    <option value="1" <c:if test="${businessApiBean.isReturn==1}">selected='selected' </c:if>>不回调</option>
+								                                    <option value="98010001" <c:if test="${businessApiBean.isReturn==98010001}">selected='selected' </c:if> >回调</option>
+								                                    <option value="98010002" <c:if test="${businessApiBean.isReturn==98010001}">selected='selected' </c:if>>不回调</option>
 								                                </select>
                                                             </label>
                                                         </td>
@@ -161,7 +161,7 @@
                                                     <td>${t.mchnNo}</td>
                                                     <td>${t.apiName}</td>
                                                     <td>${t.apiUrl}</td>
-                                                    <td>${t.isReturn=='0'?"回调":"不回调"}</td>
+                                                    <td>${t.isReturn=='98010001'?"回调":"不回调"}</td>
                                                     <td>${t.returnUrl}</td>
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>

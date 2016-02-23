@@ -108,8 +108,8 @@
                                                  <td>
                                                     <section style="width:250px">
                                                         <label class="text">
-                                                            <input type="radio" name="pulic" value="0"  />是
-                                                            <input type="radio" name="pulic" value="1"  checked />否
+                                                            <input type="radio" name="pulic" value="98010001"  />是
+                                                            <input type="radio" name="pulic" value="98010002"  checked />否
                                                         </label>
                                                     </section>
                                                 </td>
