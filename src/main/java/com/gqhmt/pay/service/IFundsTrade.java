@@ -2,8 +2,8 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.trade.OrderWithdrawApplyDto;
-import com.gqhmt.extServInter.dto.trade.OrderWithholdApplyDto;
+import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
+import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 
@@ -51,7 +51,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public String webOrderNoWithdrawApply(OrderWithdrawApplyDto orderWithdrawApplyDto) throws FssException;
+    public String webWithdrawOrder(WithdrawOrderDto withdrawOrderDto) throws FssException;
     /**
      * 生成web充值订单
      * @param thirdPartyType            支付渠道
@@ -62,26 +62,19 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public String webOrderNoWithholdApply(OrderWithholdApplyDto orderWithholdApplyDto) throws FssException;
+    public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException;
 
 
     /**
      * 线上代扣充值
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    充值金额
-     * @param sourceType                充值来源  1，web端，2wap端，3手机app,4后台委托充值
+     * @param withholdDto
      * @return
      */
     public boolean withholding(WithholdDto withholdDto)throws FssException;
 
     /**
      *线上提现，目前已直连富友代付接口，未来改为异步，存入数据库，定时跑批提现
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    提现金额
-     * @param chargeAmount              手续费
-     * @param sourceType                来源1，web端，2wap端，3手机app
+     * @param withdrawDto
      * @return
      * @throws FssException
      */

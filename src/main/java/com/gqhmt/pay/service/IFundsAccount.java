@@ -3,7 +3,7 @@ package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.account.AccountAccessDto;
-import com.gqhmt.extServInter.dto.account.AssetDto;
+import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
