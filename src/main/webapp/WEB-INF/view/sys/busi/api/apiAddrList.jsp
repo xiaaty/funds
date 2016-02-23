@@ -91,7 +91,7 @@
                                                 <tr>
                                                     <td>${t.apiName}</td>
                                                     <td>${t.apiUrl}</td>
-                                                    <td>${t.pulic=='0'?"否":"是"}</td>
+                                                    <td>${t.pulic=='98010001'?"否":"是"}</td>
                                                     <td>${t.className}</td>
                                                     <td>${t.methodName}</td>
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>

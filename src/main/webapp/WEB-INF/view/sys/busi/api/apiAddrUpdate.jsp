@@ -109,8 +109,8 @@
                                                  <td>
                                                     <section style="width:250px">
                                                         <label class="text">
-                                                            <input type="radio" name="pulic" value="0" <c:if test="${addr.pulic=='0' }">checked </c:if> />是
-                                                            <input type="radio" name="pulic" value="1" <c:if test="${addr.pulic=='1'}">checked</c:if> />否
+                                                            <input type="radio" name="pulic" value="98010001" <c:if test="${addr.pulic=='98010001' }">checked </c:if> />是
+                                                            <input type="radio" name="pulic" value="98010002" <c:if test="${addr.pulic=='98010002'}">checked</c:if> />否
                                                         </label>
                                                     </section>
                                                 </td>

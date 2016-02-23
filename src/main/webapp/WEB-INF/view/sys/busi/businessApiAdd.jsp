@@ -108,8 +108,8 @@
                                                 <td>
                                                     <section style="width:250px">
                                                         <label class="text">
-                                                            <input type="radio" name="isReturn" value="0"  />回调
-                                                            <input type="radio" name="isReturn" value="1"  checked />不回调
+                                                            <input type="radio" name="isReturn" value="98010001"  />回调
+                                                            <input type="radio" name="isReturn" value="98010002"  checked />不回调
                                                         </label>
                                                     </section>
                                                 </td>
