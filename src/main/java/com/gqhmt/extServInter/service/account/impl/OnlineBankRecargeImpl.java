@@ -17,7 +17,7 @@ import com.gqhmt.pay.service.ITradingRecord;
 @Service
 public class OnlineBankRecargeImpl  implements ICreateAccount{
 	@Resource
-	private ITradingRecord traderecord;
+	private ITradingRecord tradeRecordImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
