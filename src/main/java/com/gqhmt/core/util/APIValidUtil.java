@@ -24,16 +24,5 @@ public class APIValidUtil {
 
 
 
-    public static  String valid(SuperDto dto){
-        if(dto == null){
-            return "90099999";
-        }
-        Class<SuperDto> dtoClass = (Class<SuperDto>) dto.getClass();
 
-        Class<SuperDto> superDtoClass = (Class<SuperDto>) dtoClass.getSuperclass();
-
-        Field[] fields  = dtoClass.getDeclaredFields();
-
-        return "90099999";
-    }
 }

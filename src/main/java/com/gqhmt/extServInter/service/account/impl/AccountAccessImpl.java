@@ -1,15 +1,17 @@
 package com.gqhmt.extServInter.service.account.impl;
 
+import com.gqhmt.annotations.API;
+import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.AssetDto;
 import com.gqhmt.extServInter.service.account.IAccountAccess;
 import com.gqhmt.pay.service.IFundsAccount;
-import com.gqhmt.core.APIExcuteErrorException;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 账户资产接口--账户资产
@@ -24,6 +26,7 @@ public class AccountAccessImpl implements IAccountAccess{
 	 * 账户资产查询
 	 */
     @Override
+	@API(value = "")
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {

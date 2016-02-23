@@ -1,14 +1,12 @@
 package com.gqhmt.fss.controller.api.tender;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.gqhmt.annotations.API;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.extServInter.service.tender.IBid;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 
@@ -44,7 +42,6 @@ public class FssTenderApi {
      * time:2016年2月22日
      * function：投标
      */
-    @API
     @RequestMapping(value = "/bid",method = RequestMethod.POST)
     public Object bid(BidDto bidDto){
     	Response response=new Response();

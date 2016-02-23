@@ -1,10 +1,5 @@
 package com.gqhmt.fss.controller.api.trade;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.gqhmt.annotations.API;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.trade.OrderWithdrawApplyDto;
@@ -15,6 +10,9 @@ import com.gqhmt.extServInter.service.trade.IOrderWithdrawApply;
 import com.gqhmt.extServInter.service.trade.IOrderWithholdApply;
 import com.gqhmt.extServInter.service.trade.IWithdraw;
 import com.gqhmt.extServInter.service.trade.IWithhold;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 
@@ -67,7 +65,6 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：web提现订单生成
      */
-    @API
     @RequestMapping(value = "/orderWithdrawApply",method = RequestMethod.POST)
     public Object orderWithdrawApply(OrderWithdrawApplyDto orderWithdrawApplyDto){
     	Response response=new Response();
@@ -87,7 +84,6 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：web代扣订单生成
      */
-    @API
     @RequestMapping(value = "/orderWithholdApply",method = RequestMethod.POST)
     public Object orderWithholdApply(OrderWithholdApplyDto orderWithholdApplyDto){
     	Response response=new Response();
@@ -107,7 +103,6 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：提现
      */
-    @API
     @RequestMapping(value = "/withdraw",method = RequestMethod.POST)
     public Object withdraw(WithdrawDto withdrawDto){
     	Response response=new Response();
@@ -127,7 +122,6 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：代扣
      */
-    @API
     @RequestMapping(value = "/withhold",method = RequestMethod.POST)
     public Object withhold(WithholdDto withholdDto){
     	Response response=new Response();

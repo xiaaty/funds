@@ -1,17 +1,15 @@
 package com.gqhmt.fss.controller.api.account;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.gqhmt.annotations.API;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -75,7 +73,6 @@ public class FssAccountApi {
     * time:2016年2月22日
     * function：创建账户
     */
-    @API
     @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
     public Object ceeateAccount(CreateAccountByFuiouDto createAccountByFuiou){
     	Response response=new Response();
@@ -95,7 +92,6 @@ public class FssAccountApi {
      * time:2016年2月22日
      * function：变更银行卡
      */
-    @API
     @RequestMapping(value = "/changeBankCard",method = RequestMethod.POST)
     public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
     	Response response=new Response();

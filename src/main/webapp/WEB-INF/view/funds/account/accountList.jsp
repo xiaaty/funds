@@ -159,8 +159,8 @@
                                                     <c:if test="${acc.accountType==3}">AX</c:if>
                                                    </td>
                                                     <td>${acc.busiType==0?"主账户":"其他账户"}</td>
-                                                    <td>${acc.amount}</td>
-                                                    <td>${acc.freezeAmount}</td>
+                                                    <td><fss:money money="${acc.amount}"/></td>
+                                                    <td><fss:money money="${acc.freezeAmount}" /></td>
                                                     <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
