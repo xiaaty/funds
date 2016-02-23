@@ -100,7 +100,7 @@
                                                     <td>${t.modifyId}</td>
                                                     <td style="text-align:left;">
                                                         <a href="${contextPath}/fss/api/selectApi/${t.id}">修改</a>
-                                                        <a href="${contextPath}/fss/api/deleteApi/${t.id}">删除</a>
+                                                        <a href="javaScript:void(0)" onclick="del(${t.id})">删除</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -124,7 +124,11 @@
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#apiForm"));
     });
-
+	function del(id){
+		if(confirm("您确认删除本条数据吗？")){
+			location.href="${contextPath}/fss/api/deleteApi/"+id;
+		}
+	}
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>

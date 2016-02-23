@@ -133,7 +133,7 @@ public class RestApiService {
 	 * function：删除api地址
 	 */
 	public void deleteApiAddr(Long id) {
-		restApiAddrWriteMapper.delete(id);
+		restApiAddrWriteMapper.deleteByPrimaryKey(id);
 	}
 	/**
 	 * 
@@ -240,6 +240,16 @@ public class RestApiService {
 	public int updateBusinessApi(BusinessApi businessApi) {
 		
 		return restBusinessApiWriteMapper.updateByPrimaryKey(businessApi);
+		
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月23日
+	 * function：通过id查询商户对象
+	 */
+	public Business findBusinessById(long id) {
+		return restApiReadMapper.selectByPrimaryKey(id);
 		
 	}
 

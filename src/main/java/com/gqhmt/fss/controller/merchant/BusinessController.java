@@ -5,6 +5,8 @@ import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
 import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
 import com.gqhmt.fss.architect.merchant.entity.Business;
 import com.gqhmt.fss.architect.merchant.service.*;
+import com.gqhmt.sys.entity.DictEntity;
+import com.gqhmt.util.MD5Utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -48,11 +50,19 @@ public class BusinessController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/sys/busi/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/sys/busi/list/{parentId}",method = RequestMethod.GET)
 	@AutoPage
-    public Object businessList(HttpServletRequest request,ModelMap model){
-		List<Business> businessList = restApiService.findBusinessList(null);
+    public Object businessList(HttpServletRequest request,ModelMap model,@PathVariable String parentId){
+    	Map<String, Object> param =  new HashMap<String, Object>();
+    	param.put("parentId", parentId);
+    	List<Business> businessList = restApiService.findBusinessList(param);
+    	String returnId="0";
+    	if(Integer.parseInt(parentId)>0){
+    		Business findBusinessById = restApiService.findBusinessById(Long.parseLong(parentId));
+			returnId = findBusinessById.getParentId();
+		}
 		model.addAttribute("page", businessList);
+		model.addAttribute("returnId", returnId);
 		return "sys/busi/busiList";
     }
     
@@ -66,19 +76,13 @@ public class BusinessController {
     public Object businessAdd(HttpServletRequest request,ModelMap model, @PathVariable Integer parentId){
     	Map<String, Object> param =  new HashMap<String, Object>();
     	param.put("parentId", parentId);
-    	List<Business> findBusinessList = restApiService.findBusinessList(param);
-    	model.addAttribute("businessList", findBusinessList);
+    	if(parentId==0){
+    		return "sys/busi/masterBusiAdd";
+    	}else{
+    	 Business findBusinessById = restApiService.findBusinessById(parentId);
+    	model.addAttribute("busi", findBusinessById);
 		return "sys/busi/childBusiAdd";
-    }
-    /**
-     * 
-     * author:jhz
-     * time:2016年2月23日
-     * function：跳转到添加主账户页面
-     */
-    @RequestMapping(value = "/sys/busi/addMasterBusi",method = RequestMethod.GET)
-    public Object addMasterBusi(HttpServletRequest request,ModelMap model){
-    	return "sys/busi/masterBusiAdd";
+    	}
     }
     
     /**
@@ -91,6 +95,8 @@ public class BusinessController {
     @ResponseBody
     public Object businessAddConfirm(HttpServletRequest request,@ModelAttribute(value="busi")Business busi){
     	busi.setCreateTime(new Date());
+    	String encryption = MD5Utils.encryption(busi.getMchnKey());
+    	busi.setMchnKey(encryption);
     	restApiService.insertBusiness(busi);
     	
     	Map<String, String> map = new HashMap<String, String>();
@@ -132,6 +138,7 @@ public class BusinessController {
     	param.put("mchnNo", mchnNo);
     	List<Business> busiList = restApiService.findBusinessList(param);
     	model.addAttribute("busi", busiList.get(0));
+    	model.addAttribute("parentId", parentId);
     	if(parentId==0){
     		return "sys/busi/masterBusiUpdate";
     	}else{
@@ -209,10 +216,11 @@ public class BusinessController {
      * @throws ParseException 
      */
     @RequestMapping(value = "/sys/busi/toBusinessApiAdd/{mchnNo}",method = {RequestMethod.GET,RequestMethod.POST})
-    public Object toBusinessApiAdd(HttpServletRequest request,ModelMap model,@PathVariable String mchnNo,String mchnName ) throws ParseException{
+    public Object toBusinessApiAdd(HttpServletRequest request,ModelMap model,@PathVariable String mchnNo,String mchnName,String parentId ) throws ParseException{
     	List<ApiAddr> apiList=restApiService.findApiAddrList();
     	model.addAttribute("apiList", apiList);
-    	model.addAttribute("mchnName", "mchnName");
+    	model.addAttribute("mchnName", mchnName);
+    	model.addAttribute("parentId", parentId);
     	return "/sys/busi/businessApiAdd";
     }
     

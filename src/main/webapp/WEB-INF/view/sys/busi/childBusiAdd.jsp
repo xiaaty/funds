@@ -76,15 +76,19 @@
                                                                 </section>
                                                             </td>
                                                         </tr>
+                                                          <tr class="lh32">
+                                                
                                                         <tr class="lh32">
                                                 <td align="left">商户号：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
                                                             <input type="text" readonly="readonly" id="mchnNo" name="mchnNo">
+                                                            <input type="hidden" readonly="readonly" id="mchnKey" name="mchnKey">
                                                         </label>
                                                     </section>
                                                 </td>
+                                            </tr>
                                             </tr>
                                             
                                             <tr class="lh32">
@@ -92,10 +96,8 @@
                                                 <td>
                                                     <section style="width:210px">
                                                     <label class="input">
-												                	<c:forEach items="${businessList}" var="busi">
 												                	<input type="hidden" name="parentId" value="${busi.id} ">
 												                	<input type="text"  value="${busi.mchnName} ">
-												                	</c:forEach>
 												            </label>
                                                         
                                                     </section>
@@ -106,9 +108,7 @@
                                                 <td>
                                                     <section style="width:210px">
                                                     <label class="input">
-												                	<c:forEach items="${businessList}" var="busi">
 												                	<input type="text" name="parentNo" value="${busi.mchnNo} ">
-												                	</c:forEach>
 												            </label>
                                                         
                                                     </section>
@@ -131,8 +131,8 @@
                                 <!-- end widget content -->
                                       <div class="mb20" id="wid-id-713">
                                             <button class="btn btn-default table-nobg-btn" type="button" id="addChildBusi">保&nbsp;&nbsp;&nbsp;存</button>
-                                            <button class="btn btn-primary table-nobg-btn" type="button" onclick="">返&nbsp;&nbsp;&nbsp;回</button>
-                                      </div>
+                                            <button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/list/${parentId}'">返&nbsp;&nbsp;&nbsp;回</button>
+                                            </div>
                                 </div>
                                 </div>
                                 </div>
@@ -209,6 +209,14 @@
 		}
 		var mchnNo=	a.toString()+result;
 		$("#mchnNo").val(mchnNo);
+		
+		var data=["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]; 
+		var mchnKey="";
+		for(var i=0;i<20;i++){ //产生20位就使i<20
+		var r=Math.floor(Math.random()*36); //16为数组里面数据的数量，目的是以此当下标取数组data里的值！ 
+		mchnKey+=data[r]; //输出20次随机数的同时，让rrr加20次，就是20位的随机字符串了。 
+		} 
+		$("#mchnKey").val(mchnKey);
 	}
 </script>
         
