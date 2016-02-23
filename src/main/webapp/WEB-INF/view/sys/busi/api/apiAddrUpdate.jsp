@@ -50,29 +50,31 @@
         <!-- end breadcrumb -->
     </div>
 
-    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
-                        <header>
-                            <h2>修改API</h2>
-                        </header>
-                        <!-- widget div-->
-                        <div>
-                            <form class="smart-form" id="apiUpdateForm" action="${contextPath}/fss/api/updateApi" method="post">
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <!-- This area used as dropdown edit box -->
-                                </div>
-                                <!-- end widget edit box -->
-                                <!-- widget content -->
-                                <div class="widget-body no-padding">
-                                    <div class="mt10 mb10">
-                                        <table class="table">
-                                            <col width="100" />
-                                            <col width="220" />
-                                            <col width="100" />
-                                            <col />
+    <div id="content">
+     <section id="widget-grid" class="">
+                <div class="row">
+                    <!-- NEW WIDGET START -->
+                            <form id="apiUpdateForm" action="${contextPath}/fss/api/updateApi" method="post">
+                   <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
+                        <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
+
+                            <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
+                               <header>
+                                    <h2><i class="fa fa-edit pr10"></i>修改API<font class="pl10 f12 color07"></font></h2>
+                                </header>
+                                    <div class="smart-form">
+
+                                        <!-- widget content -->
+                                        <div class="widget-body no-padding">
+                                            <div class="mt10 mb10 ml30">
+                                                <table class="table">
+                                                    <col width="112" />
+                                                    <col width="367" />
+                                                    <col width="112" />
+                                                    <col />
                                             <tbody>
                                             <tr class="lh32">
-                                                <td class="tr">api名称：</td>
+                                                <td align="left">api名称：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -83,7 +85,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">api编号：</td>
+                                                <td align="left">api编号：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -93,7 +95,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">api地址：</td>
+                                                <td align="left">api地址：</td>
                                                 <td>
                                                                <section style="width:210px">
                                                         <label class="input">
@@ -103,7 +105,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">是否公共API</td>
+                                                <td align="left">是否公共API</td>
                                                  <td>
                                                     <section style="width:250px">
                                                         <label class="text">
@@ -114,7 +116,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">创建人：</td>
+                                                <td align="left">创建人：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -124,7 +126,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">创建时间：</td>
+                                                <td align="left">创建时间：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -134,7 +136,7 @@
                                                 </td>
                                             </tr>
                                           <tr class="lh32">
-                                                <td class="tr">修改人：</td>
+                                                <td align="left">修改人：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
@@ -145,22 +147,24 @@
                                             </tr>
                                             </tbody>
                                         </table>
+                                    <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" id="btn-success" >保存</button>
+                                    	  </div>
                                     </div>
-                                    <footer>
-                                        <button id="btn-success" class="btn btn-primary" type="button">确认</button>
-                                    </footer>
-                                </div>
-                                <!-- end widget content -->
-                            </form>
-                        </div>
+                                    	   </div>
+                                        </div>
+                            </div>
+                            </div>
+                            </article>
+                    </form>
 
-
-                    </div>
-            <!-- end widget content -->
+                </div>
+            </section>
+        </div>
+    </div>
 <%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-</div>
 
 
  <script type="text/javascript" charset="utf-8">

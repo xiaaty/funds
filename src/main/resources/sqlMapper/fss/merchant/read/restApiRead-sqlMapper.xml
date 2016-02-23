@@ -7,6 +7,9 @@
 		<if test="mchnNo != null and mchnNo != ''">
 			and a.mchn_no = #{mchnNo}
 		</if>
+		<if test="parentId != null and parent != ''">
+			and a.parent_id = #{parentId}
+		</if>
 	</sql>
 
 	<sql id="otherSql">
@@ -59,7 +62,7 @@
 		#{mchnNo}
 	</select>
 
-	<select id="findBusinessList" parameterType="java.lang.Long"
+	<select id="findBusinessList" parameterType="java.util.Map"
 		resultType="com.gqhmt.fss.architect.merchant.entity.Business">
 		SELECT
 		a.id,
