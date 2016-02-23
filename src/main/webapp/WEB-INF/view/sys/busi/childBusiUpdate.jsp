@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c0" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <%@include file="../../../view/include/common_css_js.jsp"%>
+    <%@include file="../../../view/include/common_css_js.jsp"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     <style>
         .table-nobg-btn {
@@ -32,7 +32,7 @@
 </head>
 
 <body>
-<%@include file="../../../view/include/menu.jsp" %>
+<%@include file= "../../../view/include/menu.jsp"%>
 
 <div id="main" role="main">
 
@@ -42,105 +42,112 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>商户管理</li>
-            <li>商户新增</li>
+            <li>商户列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
 
-    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
-                        <header>
-                            <span class="widget-icon"> <i class="fa fa-add"></i> </span>
-                            <h2>商户新增</h2>
-                        </header>
-                        <!-- widget div-->
-                        <div>
-                            <form class="smart-form" id="busiAddForm" action="${contextPath}/sys/busi/addConfirm" method="post">
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <!-- This area used as dropdown edit box -->
-                                </div>
-                                <!-- end widget edit box -->
-                                <!-- widget content -->
-                                <div class="widget-body no-padding">
-                                    <div class="mt10 mb10">
-                                        <table class="table">
-                                            <col width="100" />
-                                            <col width="500" />
-                                            <col width="100" />
-                                            <col />
+    <div id="content">
+            <section id="widget-grid" class="">
+                <div class="row">
+                    <!-- NEW WIDGET START -->
+                            <form  id="busiUpdateForm" action="${contextPath}/sys/busi/updateConfirm" method="post">
+                   <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
+                        <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
+
+                            <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
+                               <header>
+                                    <h2><i class="fa fa-edit pr10"></i>商户修改<font class="pl10 f12 color07"></font></h2>
+                                </header>
+                                    <div class="smart-form">
+
+                                        <!-- widget content -->
+                                            <div class="mt10 mb10 ml30">
+                                                <table class="table">
+                                                    <col width="112" />
+                                                    <col width="367" />
+                                                    <col width="112" />
+                                                    <col />
                                             <tbody>
-                                            <tr class="lh32">
-                                                <td class="tr">商户名称：</td>
+                                           <tr class="lh32">
+                                                <td align="left">商户名称：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                            <input type="text" id="mchnName" name="mchnName" onchange="createNos();">
+                                                            <input type="hidden" id="id" name="id" value="${busi.id}">
+                                                            <input type="text" id="mchnName" name="mchnName" value="${busi.mchnName}">
                                                         </label>
                                                     </section>
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td class="tr">商户号：</td>
+                                                <td align="left">商户号：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                            <input type="text" readonly="readonly" id="mchnNo" name="mchnNo">
+                                                            <input type="text" readonly="readonly" id="mchnNo" name="mchnNo" value="${busi.mchnNo}">
                                                         </label>
                                                     </section>
                                                 </td>
                                             </tr>
                                             
                                             <tr class="lh32">
-                                                <td class="tr">父商户：</td>
+                                                <td align="left">父商户：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                     <label class="select">
 												                <select id="parentId"  name ="parentId" onChange="choice(this)">
 												                    <option  value="">--请选择--</option>
-												                	<c:forEach items="${businessList}" var="busi">
-												                    <option value="${busi.id}"> ${busi.mchnName} </option>
+												                	<c:forEach items="${businessList}" var="busin">
+												                    <option value="${busin.id}" <c:if test="${busi.parentId ==busin.id}">selected='selected'</c:if> > ${busin.mchnName} 
+												                    </option>
 												                	</c:forEach>
 												                </select>
-												            </label>
-                                                        
-                                                    </section>
-                                                </td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td class="tr">父商号：</td>
-                                                <td>
-                                                    <section style="width:210px">
-                                                    <label class="select">
-												                <select id="parentN"  disabled="disabled">
-												                <option value=""></option>
-												                	<c:forEach items="${businessList}" var="busi">
-												                    <option value="${busi.id}"> ${busi.mchnNo} </option>
-												                	</c:forEach>
-												                </select>
-												                     <input type="hidden" id="parentNo" name="parentNo"  />
 												            </label>
                                                         
                                                     </section>
                                                 </td>
                                             </tr>
                                             
+											<tr class="lh32">
+                                                <td align="left">父商号：</td>
+                                                <td>
+                                                    <section style="width:210px">
+                                                    <label class="select">
+												                <select id="parentN"  disabled="disabled">
+												                <option value=""></option>
+												                	<c:forEach items="${businessList}" var="busin">
+												                    <option value="${busin.id}" <c:if test="${busi.parentId ==busin.id}">selected='selected'</c:if>> ${busin.mchnNo} </option>
+												                	</c:forEach>
+												                </select>
+												                     <input type="hidden" id="parentNo" name="parentNo" value="${busi.parentNo}"/>
+												            </label>
+                                                        
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                            
+											
                                             <tr class="lh32">
-                                                <td class="tr">状态：</td>
+                                                <td align="left">状态：</td>
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="text">
-                                                            <input type="radio" name="state" value="0" checked/>未启用
-                                                            <input type="radio" name="state" value="1"/>已启用
+                                                            <input type="radio" name="state" value="0" <c:if test="${busi.state ==0}">checked</c:if>/>未启用
+                                                            <input type="radio" name="state" value="1" <c:if test="${busi.state ==1}">checked</c:if>/>已启用
                                                         </label>
                                                     </section>
                                                 </td>
                                             </tr>
                                             </tbody>
+                                            
                                         </table>
+                                  			 <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" id="updateChildBusi">保存</button>
+                                    	  </div>
+                                        </div>
+                                        
                                     </div>
-                                    <footer>
-                                        <button id="btn-success" class="btn btn-primary"  type="button">确认</button>
-                                    </footer>
                                 </div>
                                 <!-- end widget content -->
                             </form>
@@ -158,17 +165,17 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
 //     	$("#parentN").hide();
-	    $("#btn-success").click(function () {
+	    $("#updateChildBusi").click(function () {
 	        if (validateCheck()) {
-	            /*if (!confirm("确认 修改商户信息吗?")) {
+	            if (!confirm("确认 修改商户信息吗?")) {
 	               return false;
-	            }*/
-	            $("#busiAddForm").ajaxSubmit({
+	            }
+	            $("#busiUpdateForm").ajaxSubmit({
 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
-	                        jAlert("新增成功!", '确认信息');
+	                        jAlert("修改成功!", '确认信息');
 	                        return;
 	                    } else {
 	                        return;
@@ -184,31 +191,21 @@
     	$("#parentN").val(id);
 		var oSelect=document.getElementById("parentN");
    	     var txtOption=oSelect.options[oSelect.selectedIndex].innerHTML;//获取option中间的文本
+//    	  txtOption= txtOption.substring(0,(txtOption.length-2));
    	 	 $("#parentNo").val(txtOption);
+//    	     alert( $("#parentNo").val());
     	
     }
+    
 	//校验函数
 	function validateCheck() {
     	var a=$("#parentId").val();
     	if(a==null||a==''){
     		jAlert("您的父商户为空，请选择父商户!", '提示信息');
     		return;
+    	}else{
+        	return true;
     	}
-		var flag = false;
-		var mchnNo = $("#mchnNo").val();
-		$.ajax("${contextPath}/sys/busi/checkCode",{
-            async:false,
-            data:{mchnNo:mchnNo},
-            dataType:"json",
-            success:function(data){
-                if(data.code=="0000"){
-                	jAlert("商户名称已存在!", '提示信息');
-                } else {
-                	flag = true;
-                }
-            }
-        });
-        return flag;
 	}
 	//生成商户号
 	function createNos(){

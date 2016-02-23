@@ -68,7 +68,9 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                        <button   type="button"  onclick="location.href='${contextPath}/fss/api/toAddApi'">添加</button>
+                                <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/api/toAddApi'" >添加</button>
+                                      </div>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>

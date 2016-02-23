@@ -68,6 +68,9 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/addMasterBusi'" >添加</button>
+                                      </div>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
@@ -92,7 +95,8 @@
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td style="text-align:left;">
-                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}">修改</a>
+                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}?parentId=${t.parentId}">修改</a>
+                                                        <a href="${contextPath}//sys/busi/add/${t.id}">添加</a>
                                                         <a href="${contextPath}/sys/busi/toBusinessApiAdd/${t.mchnNo}?mchnName=${t.mchnName}">API授权</a>
                                                     </td>
                                                 </tr>
