@@ -1,6 +1,7 @@
 package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.dto.fund.CostDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
@@ -30,6 +31,11 @@ public interface ITradingRecord {
 	 */
 	public boolean saveCostTrade(CostDto cost) throws FssException;
 		
-		
-	
+	/**
+	 * 银行列表
+	 * @param cost
+	 * @return
+	 * @throws FssException
+	 */
+	public boolean getBankList(BankDto bank)  throws FssException;
 }

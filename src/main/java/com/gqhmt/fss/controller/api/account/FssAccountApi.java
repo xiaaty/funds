@@ -8,10 +8,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gqhmt.annotations.API;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.account.AssetDto;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
+import com.gqhmt.extServInter.dto.fund.TradflowDto;
+import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
+import com.gqhmt.extServInter.service.account.IAccountAccess;
+import com.gqhmt.extServInter.service.account.IAccountBanlance;
+import com.gqhmt.extServInter.service.account.IAccountTradFlow;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
+import com.gqhmt.extServInter.service.account.ICost;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.ITransaction;
 
 import javax.annotation.Resource;
 
@@ -46,6 +55,22 @@ public class FssAccountApi {
     
     @Resource
     private IChangeBankCardAccount changeBankCardAccountImpl;
+    
+    @Resource
+    private IAccountAccess accountAccessImpl;
+    
+    @Resource
+    private IAccountBanlance accountBanlanceImpl;
+    
+    @Resource
+    private ITransaction transactionImpl;
+    
+    @Resource
+    private ICost costImpl;
+    
+    @Resource
+    private IAccountTradFlow accountTradflowImpl;
+    
     
     
     /**
@@ -109,6 +134,100 @@ public class FssAccountApi {
     	}
     	return response;
     }
+    
+    /**
+     * author:柯禹来
+     * time:2016年2月22日
+     * function：账户余额查询
+     */
+    @API
+    @RequestMapping(value = "/accountBanlanceInfo",method = RequestMethod.POST)
+    public Object accountBanlance(AccountAccessDto accountbalance){
+    	Response response=new Response();
+    	try {
+    		response = accountBanlanceImpl.excute(accountbalance);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    
+    /**
+     * author:柯禹来
+     * time:2016年2月22日
+     * function：账户资产查询
+     */
+    @API
+    @RequestMapping(value = "/accountAssetInfo",method = RequestMethod.POST)
+    public Object accountAsset(AssetDto asset){
+    	Response response=new Response();
+    	try {
+    		response = accountAccessImpl.excute(asset);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    /**
+     * author:柯禹来
+     * time:2016年2月22日
+     * function：交易记录查询
+     */
+    @API
+    @RequestMapping(value = "/tradeInfo",method = RequestMethod.POST)
+    public Object accountTradeInfo(TradingRecordDto trade){
+    	Response response=new Response();
+    	try {
+    		response = transactionImpl.excute(trade);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    /**
+     * author:柯禹来
+     * time:2016年2月22日
+     * function：账户资金流水查询
+     */
+    @API
+    @RequestMapping(value = "/fundFlowInfo",method = RequestMethod.POST)
+    public Object fundFlow(TradflowDto funddto){
+    	Response response=new Response();
+    	try {
+    		response = accountTradflowImpl.excute(funddto);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    /**
+     * author:柯禹来
+     * time:2016年2月22日
+     * function：费用接口
+     */
+    @API
+    @RequestMapping(value = "/costInfo",method = RequestMethod.POST)
+    public Object costInfo(TradflowDto funddto){
+    	Response response=new Response();
+    	try {
+    		response = costImpl.excute(funddto);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    
+    
     
 
 }
