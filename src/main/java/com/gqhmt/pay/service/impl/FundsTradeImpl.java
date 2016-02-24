@@ -2,25 +2,30 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
+import com.gqhmt.extServInter.dto.trade.RechargeApplyDto;
 import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
+import com.gqhmt.extServInter.dto.trade.WithdrawApplyDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
+import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
+import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
+import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 /**
@@ -43,6 +48,13 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     @Resource
     private FundOrderService fundOrderService;
+    
+    @Resource
+    private WithholdApplyService withholdApplyService;
+    
+    @Resource
+	private WithdrawApplyService withdrawApplyService;
+    
     /**
      * 生成web提现订单
      * @param withdrawOrderDto            支付渠道
@@ -66,9 +78,6 @@ public class FundsTradeImpl  implements IFundsTrade {
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
     	
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        
-        this.hasEnoughBanlance(entity, rechargeOrderDto.getAmount());
-
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmount(),1,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
@@ -112,23 +121,48 @@ public class FundsTradeImpl  implements IFundsTrade {
      * 代扣申请
      */
     @Override
-    public boolean withholdingApply(String thirdPartyType, int custID, int businessType, String contractNo, BigDecimal amount, Long bid) throws FssException {
-        FundAccountEntity entity = this.getFundAccount(custID, businessType);
-        checkwithholdingOrWithDraw(entity,1,businessType);
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_CHARGE,0,0);
+    public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException {
+    	WithholdApplyEntity withholdApplyEntity=new WithholdApplyEntity();
+		withholdApplyEntity.setCustId(Integer.parseInt(rechargeApplyDto.getCust_no()));
+		withholdApplyEntity.setDrawAmount(rechargeApplyDto.getAmount());
+		withholdApplyEntity.setBussinessId(Integer.parseInt(rechargeApplyDto.getBusi_no()));
+		withholdApplyEntity.setBussinessArea(rechargeApplyDto.getRegion());
+		withholdApplyEntity.setBussinessCompany(rechargeApplyDto.getFiliale());
+		try {
+			withholdApplyService.insert(withholdApplyEntity);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+		}
+        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeApplyDto.getCust_no()), Integer.parseInt(rechargeApplyDto.getBusi_no()));
+        checkwithholdingOrWithDraw(entity,1,Integer.parseInt(rechargeApplyDto.getBusi_no()));
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,rechargeApplyDto.getAmount(),GlobalConstants.ORDER_CHARGE,0,0);
         //资金处理
-        tradeRecordService.recharge(entity,amount,fundOrderEntity,1002);
+        tradeRecordService.recharge(entity,rechargeApplyDto.getAmount(),fundOrderEntity,1002);
         return true;
     }
-
+    /**
+     * 提现申请
+     */
     @Override
-    public boolean withdrawApply(String thirdPartyType, int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException {
-        FundAccountEntity entity = this.getFundAccount(custID, businessType);
-        this.hasEnoughBanlance(entity,amount);
-        checkwithholdingOrWithDraw(entity,2,businessType);
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
+    public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException {
+    	WithdrawApplyEntity withdrawApplyEntity=new WithdrawApplyEntity();
+    	
+    	withdrawApplyEntity.setSettleType(Integer.parseInt(withdrawApplyDto.getSettle_type()));
+    	withdrawApplyEntity.setSeqNo(withdrawApplyDto.getSeq_no());
+    	withdrawApplyEntity.setCustId(Integer.parseInt(withdrawApplyDto.getCust_no()));
+    	withdrawApplyEntity.setBussinessId(Integer.parseInt(withdrawApplyDto.getBusi_no()));
+    	withdrawApplyEntity.setDrawAmount(withdrawApplyDto.getAmount());
+    	try {
+			withdrawApplyService.insert(withdrawApplyEntity);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+		}
+        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawApplyDto.getCust_no()), Integer.parseInt(withdrawApplyDto.getBusi_no()));
+        this.hasEnoughBanlance(entity,withdrawApplyDto.getAmount());
+        checkwithholdingOrWithDraw(entity,2,Integer.parseInt(withdrawApplyDto.getBusi_no()));
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawApplyDto.getAmount(),BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,Long.parseLong(withdrawApplyDto.getBusi_no()),GlobalConstants.BUSINESS_WITHHOLDING);
         //资金处理
-        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
+        tradeRecordService.withdrawByFroze(entity,withdrawApplyDto.getAmount(),fundOrderEntity,2003);
         return true;
     }
 

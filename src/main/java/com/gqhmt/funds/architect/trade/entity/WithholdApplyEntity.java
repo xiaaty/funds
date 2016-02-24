@@ -83,6 +83,9 @@ public class WithholdApplyEntity implements java.io.Serializable {
 	@Column(name = "counselor_name")
 	private String counselorName; //业务_顾问名称
 	
+	@Column(name = "seq_no")
+	private String seqNo; 		// 交易流水号
+	
 	
 	
 	
@@ -286,6 +289,14 @@ public class WithholdApplyEntity implements java.io.Serializable {
 
 	public void setCounselorName(String counselorName) {
 		this.counselorName = counselorName;
+	}
+
+	public String getSeqNo() {
+		return seqNo;
+	}
+
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
 	}
 
 	

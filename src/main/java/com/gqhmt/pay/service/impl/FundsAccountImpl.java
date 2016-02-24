@@ -44,13 +44,13 @@ public class FundsAccountImpl implements IFundsAccount {
      */
 	public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException {
 		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(Integer.parseInt(createAccountByFuiouDto.getCust_no()));
+		if(customerInfoEntity == null) throw new FssException("90002007");
 		customerInfoEntity.setParentBankCode(createAccountByFuiouDto.getBank_id());
 		customerInfoEntity.setBankNo(createAccountByFuiouDto.getBank_card());
 		customerInfoEntity.setCityCode(createAccountByFuiouDto.getCity_id());
 		customerInfoEntity.setCertNo(createAccountByFuiouDto.getCert_no());
 		customerInfoEntity.setMobilePhone(createAccountByFuiouDto.getMobile());
 		customerInfoEntity.setCustomerName(createAccountByFuiouDto.getName());
-		if(customerInfoEntity == null) throw new FssException("90002001");
 		return this.createAccount(customerInfoEntity,"","");
 	}
 

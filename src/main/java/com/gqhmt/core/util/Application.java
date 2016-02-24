@@ -74,6 +74,9 @@ public class Application {
     }
 
     public String getDictName(String key){
+        if(key == null){
+            return "数据字典未配置此项";
+        }
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
             value = "数据字典未配置此项";

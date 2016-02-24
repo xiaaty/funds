@@ -60,6 +60,16 @@ public class LogUtil {
         logger.debug(message);
     }
 
+    public final static void debug(Class class1,Throwable throwable){
+        Logger logger = loggerMap.get(class1.getName());
+        if(logger == null){
+            logger = LoggerFactory.getLogger(class1);
+            loggerMap.put(class1.getName(),logger);
+        }
+
+        logger.debug(throwable.getMessage(),throwable);
+    }
+
     public final static void debug(Class class1,String message,Throwable throwable){
         Logger logger = loggerMap.get(class1.getName());
         if(logger == null){

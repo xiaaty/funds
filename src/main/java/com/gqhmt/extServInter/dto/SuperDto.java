@@ -34,7 +34,7 @@ public abstract class SuperDto {
     @APIValidNull(errorCode = "90008301")
     private String signature;
     
-    @APIValidNull(errorCode = "90008301")
+    @APIValidNull(errorCode = "90008401")
     private String trade_type;
     
     

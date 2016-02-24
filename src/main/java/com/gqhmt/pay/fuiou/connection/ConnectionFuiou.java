@@ -1,7 +1,9 @@
 package com.gqhmt.pay.fuiou.connection;
 
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.XmlUtil;
 import com.gqhmt.pay.exception.ApplicationNotConnectionRemoteUrl;
+import com.gqhmt.pay.fuiou.util.SecurityUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -86,7 +88,7 @@ public class ConnectionFuiou {
      */
     private static Map getResult(String result){
 
-        return  null;//XmlUtil.getMap(result);
+        return  XmlUtil.getMap(result);
     }
 
     /**
@@ -94,13 +96,13 @@ public class ConnectionFuiou {
      * @param result
      */
     private static void check(String result,String sign){
-//         result = result.substring(result.indexOf("<plain>"),result.lastIndexOf("<signature>"));
-//
-//        boolean isCheck = SecurityUtils.verifySign(result,sign);
-//
-//        if (!isCheck) {
-//            throw new RuntimeException("验签失败");
-//        }
+         result = result.substring(result.indexOf("<plain>"),result.lastIndexOf("<signature>"));
+
+        boolean isCheck = SecurityUtils.verifySign(result,sign);
+
+        if (!isCheck) {
+            throw new RuntimeException("验签失败");
+        }
 
     }
 

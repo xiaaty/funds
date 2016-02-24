@@ -4,6 +4,7 @@ package com.gqhmt.core.util;
 import com.gqhmt.annotations.AutoDate;
 import com.gqhmt.annotations.AutoDateType;
 import com.gqhmt.annotations.AutoMapping;
+import com.gqhmt.core.FssException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -114,28 +115,17 @@ public class GenerateBeanUtil {
      * @param sourceObj
      * @param targerObj
      */
-    private static void sourceFidleMethod(Class tClass,Class sourceClass,Field sourceField,Object sourceObj,Object targerObj){
+    private static void sourceFidleMethod(Class tClass,Class sourceClass,Field sourceField,Object sourceObj,Object targerObj) throws FssException {
         Object value = getSourceFieldObjValue(sourceClass,sourceField,sourceObj);
 
         if(value == null) return;
 
-
-        Field targerField = sourceField;
-        AutoMapping autoMapping = sourceField.getAnnotation(AutoMapping.class);
-
-        if(autoMapping != null){
-            String mappingValue = autoMapping.value();
-            try {
-                Field field = tClass.getDeclaredField(mappingValue);
-                targerField = field;
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+        Field targerField = null;
+        try {
+            targerField = getField(tClass,sourceField.getName(),sourceField);
+        } catch (FssException e) {
+            return;
         }
-
-        if (fieldMap.containsKey(tClass.getName()+"."+targerField.getName()) == false) return;
-
-
 
         try {
             Method method = getFieldSetMethod(tClass,targerField);
@@ -143,6 +133,27 @@ public class GenerateBeanUtil {
         } catch (Exception e) {
             LogUtil.error(GenerateBeanUtil.class,e);
         }
+    }
+
+    private static Field getField(Class tClass, String name,Field sourceField) throws FssException {
+
+        try {
+            Field targetField = tClass.getDeclaredField(sourceField.getName());
+            return targetField;
+        } catch (NoSuchFieldException e) {
+        }
+
+        AutoMapping autoMapping = sourceField.getAnnotation(AutoMapping.class);
+        if(autoMapping != null){
+            String mappingValue = autoMapping.value();
+            try {
+                Field field = tClass.getDeclaredField(mappingValue);
+                return field;
+            } catch (NoSuchFieldException e) {
+            }
+        }
+
+        throw new FssException("don't find field");
     }
 
     /**

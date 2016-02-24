@@ -14,56 +14,102 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年2月20日
- * Description: 提现
+ * Create at:   2016年2月24日
+ * Description:委托充值交易申请（出借端出借代扣、借款端还款代扣）
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年2月20日  jhz      1.0     1.0 Version
+ * 2016年2月24日  jhz      1.0     1.0 Version
  */
-public class WithdrawOrderDto extends SuperDto{
+public class RechargeApplyDto extends SuperDto{
 	
 	private String cust_no;		//客户编号
 	
 	private String user_no;		//用户编号
 	
-    
-    private BigDecimal amount;	//提现金额
-    
-    private BigDecimal procedure_fee;		//交易手续费
 
+    private BigDecimal amount;			//充值金额
+    
+    private String busi_no;			//业务编号
+    
+    private String platform;			//所属平台
+    
+    private String region;			//所属大区
+    
+    private String filiale;			//所属分公司
+    
+    
 	public String getCust_no() {
 		return cust_no;
 	}
+
 
 	public void setCust_no(String cust_no) {
 		this.cust_no = cust_no;
 	}
 
+
 	public String getUser_no() {
 		return user_no;
 	}
+
 
 	public void setUser_no(String user_no) {
 		this.user_no = user_no;
 	}
 
+
 	public BigDecimal getAmount() {
 		return amount;
 	}
+
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 
-	public BigDecimal getProcedure_fee() {
-		return procedure_fee;
+
+
+	public String getPlatform() {
+		return platform;
 	}
 
-	public void setProcedure_fee(BigDecimal procedure_fee) {
-		this.procedure_fee = procedure_fee;
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
+
+
+	public String getBusi_no() {
+		return busi_no;
+	}
+
+
+	public void setBusi_no(String busi_no) {
+		this.busi_no = busi_no;
+	}
+
+
+	public String getRegion() {
+		return region;
+	}
+
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+
+	public String getFiliale() {
+		return filiale;
+	}
+
+
+	public void setFiliale(String filiale) {
+		this.filiale = filiale;
+	}
+	
 
     
     
