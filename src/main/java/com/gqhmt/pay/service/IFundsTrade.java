@@ -3,7 +3,9 @@ package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
+import com.gqhmt.extServInter.dto.trade.RechargeApplyDto;
 import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
+import com.gqhmt.extServInter.dto.trade.WithdrawApplyDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 
@@ -90,7 +92,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean withholdingApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FssException;
+    public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException;
 
     /**
      *
@@ -103,7 +105,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean withdrawApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FssException;
+    public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
 
 
     /**

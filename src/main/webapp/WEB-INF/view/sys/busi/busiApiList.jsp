@@ -102,7 +102,7 @@
                                                                 <select class="select02"  name="isReturn" id="isReturn">
 								                                    <option value=""> --请选择--</option>
 								                                    <option value="98010001" <c:if test="${businessApiBean.isReturn==98010001}">selected='selected' </c:if> >回调</option>
-								                                    <option value="98010002" <c:if test="${businessApiBean.isReturn==98010001}">selected='selected' </c:if>>不回调</option>
+								                                    <option value="98010002" <c:if test="${businessApiBean.isReturn==98010002}">selected='selected' </c:if>>不回调</option>
 								                                </select>
                                                             </label>
                                                         </td>
