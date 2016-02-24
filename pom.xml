@@ -6,14 +6,18 @@
     <version>0.1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>fss</artifactId>
+  <artifactId>funds</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>fss</name>
+  <name>funds</name>
   <url>http://maven.apache.org</url>
   <description>Fund settlement system</description>
-
+	<scm>
+		<connection>scm:git:http://git-jk:git-jk@git.gqihome.com/scm/gqi/funds.git</connection>
+		<developerConnection>scm:git:http://git-jk:git-jk@git.gqihome.com/scm/gqi/funds.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
   <distributionManagement>
     <site>
       <id>website</id>
