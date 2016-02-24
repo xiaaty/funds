@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 交易相关api
@@ -128,6 +129,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 		withholdApplyEntity.setBussinessId(Integer.parseInt(rechargeApplyDto.getBusi_no()));
 		withholdApplyEntity.setBussinessArea(rechargeApplyDto.getRegion());
 		withholdApplyEntity.setBussinessCompany(rechargeApplyDto.getFiliale());
+		withholdApplyEntity.setApplyTime(new Date());
 		try {
 			withholdApplyService.insert(withholdApplyEntity);
 		} catch (Exception e) {
@@ -152,6 +154,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     	withdrawApplyEntity.setCustId(Integer.parseInt(withdrawApplyDto.getCust_no()));
     	withdrawApplyEntity.setBussinessId(Integer.parseInt(withdrawApplyDto.getBusi_no()));
     	withdrawApplyEntity.setDrawAmount(withdrawApplyDto.getAmount());
+    	withdrawApplyEntity.setApplyTime(new Date());
     	try {
 			withdrawApplyService.insert(withdrawApplyEntity);
 		} catch (Exception e) {
