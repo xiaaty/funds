@@ -1,15 +1,15 @@
 package com.gqhmt.extServInter.service.tender.impl;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.extServInter.dto.tender.FullBidDto;
 import com.gqhmt.extServInter.service.tender.IFullBid;
 import com.gqhmt.pay.service.IFundFullTender;
-import com.gqhmt.pay.service.IFundsTender;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,18 +31,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class FullBidImpl implements IFullBid{
 	
-//	@Resource
-//	private IFundFullTender fundFullTenderImpl;
+	@Resource
+	private IFundFullTender fundFullTenderImpl;
 	
     public Response excute(SuperDto dto) {
     	Response response = new Response();
-    	/*try {
-    		fundFullTenderImpl.Fullbid((FullBidDto)dto);
+    	try {
+    		fundFullTenderImpl.settle((FullBidDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
-		}*/
+		}
         return response;
     }
 }
