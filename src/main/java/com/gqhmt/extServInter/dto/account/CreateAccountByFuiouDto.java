@@ -1,4 +1,5 @@
 package com.gqhmt.extServInter.dto.account;
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
@@ -18,24 +19,33 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 16/1/12  于泳      1.0     1.0 Version
  */
 public class CreateAccountByFuiouDto extends SuperDto {
-	
+
+
+    @APIValidNull(errorCode = "90002006")
 	private String cust_no;			//客户编号
 
+    @APIValidNull(errorCode = "90002008")
 	private String user_no;			//用户编号
 	
 	private String busi_no;			//业务编号
-	
+
+    @APIValidNull(errorCode = "90002009")
     private String mobile;			//手机号	
 
+    @APIValidNull(errorCode = "90002010")
     private String cert_no;			//身份证号
-    
 
+
+    @APIValidNull(errorCode = "90002011")
     private String name;			//客户姓名
 
+    @APIValidNull(errorCode = "90002012")
     private String bank_id;			//银行类型
 
+    @APIValidNull(errorCode = "90002013")
     private String bank_card;		//银行卡号
 
+    @APIValidNull(errorCode = "90002014")
     private String city_id;			//开户地区
     
     

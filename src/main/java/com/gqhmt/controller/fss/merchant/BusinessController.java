@@ -7,6 +7,7 @@ import com.gqhmt.fss.architect.merchant.entity.Business;
 import com.gqhmt.fss.architect.merchant.service.*;
 import com.gqhmt.util.MD5Utils;
 
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -94,7 +95,7 @@ public class BusinessController {
     @ResponseBody
     public Object businessAddConfirm(HttpServletRequest request,@ModelAttribute(value="busi")Business busi){
     	busi.setCreateTime(new Date());
-    	String encryption = MD5Utils.encryption(busi.getMchnKey());
+    	String encryption = Md5Crypt.apr1Crypt(busi.getMchnKey());
     	busi.setMchnKey(encryption);
     	restApiService.insertBusiness(busi);
     	

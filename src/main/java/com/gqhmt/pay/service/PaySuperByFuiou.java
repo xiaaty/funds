@@ -255,17 +255,32 @@ public class PaySuperByFuiou {
             case "0000":
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_SUCCESS,response.getThirdReturnCode(),response.getMsg());
                 return true;
-            case "0001":
-                throw new FssException(fundOrderEntity.getOrderNo()+":验证码已发送");
-            case "0002":
-                throw new FssException(fundOrderEntity.getOrderNo()+":等待回调通知");
-            case "0009":
+            case "90007001":
+                throw new FssException("90007001:"+fundOrderEntity.getOrderNo()+":验证码已发送");
+            case "90007002":
+                throw new FssException("90007002:"+fundOrderEntity.getOrderNo()+":等待回调通知");
+            case "90007009":
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
-                throw new ThirdpartyErrorAsyncException();
+                throw new ThirdpartyErrorAsyncException("90007009");
             default:
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_FAILED,response.getThirdReturnCode(),response.getMsg());
-                throw new CommandParmException(response.getMsg());
+                throw new CommandParmException(toLocalCode(response.getThirdReturnCode()));
         }
+    }
+
+
+    private String toLocalCode(String code){
+        if(code == null )  return "90099999";
+        if(code.length() == 4){
+            return "9100"+code;
+        }else if(code.length() == 5){
+            return "910"+code;
+        }else if(code.length() == 4){
+            return "91"+code;
+        }
+
+        return "90099999";
+
     }
 
     /**

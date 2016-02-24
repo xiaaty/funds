@@ -120,15 +120,15 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
             response.setThirdReturnCode(resultCode);
             response.setMsg("成功");
         }else if("0001".equals(resultCode)){
-            response.setCode("0001");
+            response.setCode("90007010");
             response.setThirdReturnCode(resultCode);
             response.setMsg("需要短信确认");
         }else if("3201".equals(resultCode) || (resultCode!= null && resultCode.length() == 4 && "98".equals(resultCode.substring(0, 2)))){
-            response.setCode("0009");
+            response.setCode("90007010");
             response.setThirdReturnCode(resultCode);
             response.setMsg("富友内部操作错误，需手动核对");
         }else{
-            response.setCode("0100");
+            response.setCode("90007010");
             response.setThirdReturnCode(resultCode);
 //            String msg = GlobalConstants.fuiouRezultCodeMap.get(resultCode);
 //            response.setMsg("富友返回："+msg==null?"未知错误"+resultCode:msg );

@@ -1,8 +1,15 @@
 package com.gqhmt.core.util;
 
 import com.gqhmt.extServInter.dto.SuperDto;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 
 import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * Filename:    com.gqhmt.core.util.APIValidUtil
@@ -33,4 +40,6 @@ public class APIValidUtil {
         Field[] fields  = dtoClass.getDeclaredFields();
         return "90099999";
     }
+
+
 }
