@@ -92,6 +92,10 @@ public class WithdrawApplyEntity implements java.io.Serializable {
     // 结算类型，0 T+1; 1 T+0; 
 	 @Column(name = "settle_type")
  	private Integer settleType = 1;
+	 
+	 // 交易流水号
+	 @Column(name = "seq_no")
+	 private String seqNo;
 
 	// Constructors
 	/** default constructor */
@@ -327,4 +331,12 @@ public class WithdrawApplyEntity implements java.io.Serializable {
 		this.settleType = settleType;
 	}
 	
+	public String getSeqNo() {
+		
+		return seqNo;
+	}
+
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
+	}
 }

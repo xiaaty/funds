@@ -149,7 +149,7 @@
                                     	<td>
                                         <button id="btn-success" class="btn btn-primary"   onclick="onSub();" type="button">确认</button>
                                         </td><td>
-                                        <button id="btn-success" onclick="location.href='${contextPath}/funds/accountBusinessList/${withHoldId}'" class="btn btn-primary"  id="rechargeAcct" type="button">取消</button>
+                                        <button  onclick="location.href='${contextPath}/funds/accountBusinessList/${withHoldId}'" class="btn btn-primary"  id="rechargeAcct" type="button">取消</button>
                                     	</td>
                                     	</tr>
                                     </footer>

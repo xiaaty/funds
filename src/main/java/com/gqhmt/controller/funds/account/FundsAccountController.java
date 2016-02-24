@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
  * 2016/02/16  jhz      1.0     1.0 Version
  */
 @Controller
+
 public class FundsAccountController {
 	@Resource
     private FundAccountService fundAccountService;
