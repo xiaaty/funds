@@ -5,6 +5,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.RechargeApplyDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.extServInter.service.trade.IRecharge;
+import com.gqhmt.extServInter.service.trade.IRechargeApply;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.core.FssException;
@@ -32,7 +33,7 @@ import org.springframework.stereotype.Service;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 @Service
-public class RechargeApplyImpl implements IRecharge {
+public class RechargeApplyImpl implements IRechargeApply {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	

@@ -5,6 +5,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawApplyDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.service.trade.IWithdraw;
+import com.gqhmt.extServInter.service.trade.IWithdrawApply;
 import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Service;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 @Service
-public class WithdrawApplyImpl implements IWithdraw{
+public class WithdrawApplyImpl implements IWithdrawApply{
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
