@@ -33,7 +33,7 @@ public class FundsWithdrawApplyController {
 	 * 
 	 * author:jhz
 	 * time:2016年2月18日
-	 * function：根据条件查询并返回所有代扣申请列表信息
+	 * function：根据条件查询并返回所有提现申请列表信息
 	 * @throws Exception 
 	 */
 	@RequestMapping("/withdrawApply/queryWithdrawList")
@@ -45,6 +45,5 @@ public class FundsWithdrawApplyController {
 			model.addAttribute("page", withDrawList);
 		return "funds/account/withDraw/withdraw_list";
 	}
-	 
     
 }
