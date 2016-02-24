@@ -18,6 +18,7 @@ import com.gqhmt.extServInter.service.trade.IRechargeApply;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -47,6 +48,7 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2016年2月22日  jhz      1.0     1.0 Version
  */
+@RestController
 @RequestMapping(value = "/api")
 public class FssTradeApi {
 
@@ -60,7 +62,7 @@ public class FssTradeApi {
     private IWithdraw withdrawImpl;
     
     @Resource
-    private IWithdrawOrder orderWithdrawApplyImpl;
+    private IWithdrawOrder withdrawOrderImpl;
     
     @Resource
     private IRechargeOrder orderWithholdApplyImpl;
@@ -70,6 +72,9 @@ public class FssTradeApi {
     
     @Resource
     private IWithdrawApply withdrawApplyImpl;
+    
+    @Resource
+    private IRechargeOrder rechargeOrderImpl;
     
     
     /**
@@ -84,7 +89,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = orderWithdrawApplyImpl.excute(withdrawOrderDto);
+    		response = withdrawOrderImpl.excute(withdrawOrderDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -103,7 +108,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = orderWithholdApplyImpl.excute(rechargeOrderDto);
+    		response = rechargeOrderImpl.excute(rechargeOrderDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -135,7 +140,7 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：代扣
      */
-    @RequestMapping(value = "/withhold",method = RequestMethod.POST)
+    @RequestMapping(value = "/recharge",method = RequestMethod.POST)
     public Object withhold(WithholdDto withholdDto){
     	Response response=new Response();
     	try {

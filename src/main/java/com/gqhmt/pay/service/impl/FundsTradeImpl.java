@@ -23,11 +23,9 @@ import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 /**
@@ -80,9 +78,6 @@ public class FundsTradeImpl  implements IFundsTrade {
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
     	
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        
-        this.hasEnoughBanlance(entity, rechargeOrderDto.getAmount());
-
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmount(),1,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }

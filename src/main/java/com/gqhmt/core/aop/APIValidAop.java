@@ -86,6 +86,9 @@ public class APIValidAop {
                 e.printStackTrace();
             }
         }
+
+        response.setResp_msg(Integer.parseInt(response.getResp_code())==0 ? "成功": Application.getInstance().getDictName(response.getResp_code()));
+        response.setResp_code(response.getResp_code().length()>4?response.getResp_code().substring(response.getResp_code().length()-4):response.getResp_code());
         return response;
     }
 
