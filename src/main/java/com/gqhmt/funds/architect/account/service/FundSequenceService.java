@@ -1,9 +1,9 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
+import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
@@ -16,7 +16,6 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.Encriptor;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -197,7 +196,7 @@ public class FundSequenceService {
         this.fundAccountService.update(fromEntity);
         this.fundAccountService.update(toEntiry);
     }
-
+    
     /**
      * 冻结金额
      * @param orgEntity

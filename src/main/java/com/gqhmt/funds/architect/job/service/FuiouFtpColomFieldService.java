@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -127,4 +128,22 @@ public class FuiouFtpColomFieldService {
     public List<FuiouFtpColomField> listAll(){
         return fuiouFtpColomFieldReadMapper.listAll();
     }
+    
+    /**
+     * 批量插入
+     * @param list
+     */
+   public void saveOrUpdateAll(List<FuiouFtpColomField> fuiyoulist){
+	   fuiouFtpColomFieldWriteMapper.saveOrUpdateAll(fuiyoulist);
+   }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
