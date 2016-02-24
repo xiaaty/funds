@@ -56,7 +56,7 @@ public class FssTradeApi {
     private ApplicationContext applicationContext;
     
     @Resource
-    private IRecharge withholdImpl;
+    private IRecharge rechargeImpl;
     
     @Resource
     private IWithdraw withdrawImpl;
@@ -64,8 +64,6 @@ public class FssTradeApi {
     @Resource
     private IWithdrawOrder withdrawOrderImpl;
     
-    @Resource
-    private IRechargeOrder orderWithholdApplyImpl;
     
     @Resource
     private IRechargeApply rechargeApplyImpl;
@@ -146,7 +144,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = withholdImpl.excute(withholdDto);
+    		response = rechargeOrderImpl.excute(withholdDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
