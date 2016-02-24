@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.Page;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.mapper.read.BidReadMapper;
+import com.gqhmt.business.architect.loan.mapper.read.TenderReadMapper;
 
 /**
  * 标的管理
@@ -17,6 +18,9 @@ public class BidService {
 
 	@Autowired
 	private BidReadMapper bidReadMapper;
+	
+	@Autowired
+	private TenderReadMapper tenderReadMapper;
 
 	/**
 	 * 标的列表
@@ -45,4 +49,12 @@ public class BidService {
     	return bidReadMapper.queryUserBidInfo(customerId, bidId, mortgageNumber, loanType);
     }
 
+    public String getProductName(Integer bidId){
+    	String title=tenderReadMapper.getProductName(bidId);
+    	return title;
+    }
+    
+    
+    
+    
 }

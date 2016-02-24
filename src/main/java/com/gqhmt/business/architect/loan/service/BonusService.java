@@ -1,5 +1,6 @@
 package com.gqhmt.business.architect.loan.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +44,29 @@ public class BonusService {
 			}
 		}
 	}
+	
+	
+	/**
+	 * 修改红包的状态和金额
+	 * @param bonudId 红包的Id
+	 * @param status  红包的状态 1，未使用。2，冻结。3，已使用。4，已过期
+	 * @param amount  对应红包的实际使用金额
+	 * @param userId  用户Id
+	 */
+	public void updateStatusAndAmount(Integer bonudId,int status,BigDecimal actualAmount,int userId){
+		Bonus bonus = bonusReadMapper.selectByPrimaryKey(bonudId);
+		if(bonus != null){
+			bonus.setStatus(status);
+			bonus.setAmount(actualAmount);
+			bonus.setUpdateBy(userId);
+			bonus.setUpdateTime(new Date());
+			bonusWriteMapper.updateByPrimaryKeySelective(bonus);
+		}
+	}
+
+	
+	
+	
+	
 	
 }

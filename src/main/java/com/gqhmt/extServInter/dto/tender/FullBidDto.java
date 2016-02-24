@@ -24,19 +24,20 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class FullBidDto extends SuperDto{
 	
-	private Integer busi_id;		
-	private Integer busi_no;		
+	private Long busi_id;		
+	private Long busi_no;		
 	private String state;
-	public Integer getBusi_id() {
+	
+	public Long getBusi_id() {
 		return busi_id;
 	}
-	public void setBusi_id(Integer busi_id) {
+	public void setBusi_id(Long busi_id) {
 		this.busi_id = busi_id;
 	}
-	public Integer getBusi_no() {
+	public Long getBusi_no() {
 		return busi_no;
 	}
-	public void setBusi_no(Integer busi_no) {
+	public void setBusi_no(Long busi_no) {
 		this.busi_no = busi_no;
 	}
 	public String getState() {

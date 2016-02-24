@@ -26,4 +26,7 @@ public interface BidReadMapper extends ReadMapper<Bid> {
      */
     public Long queryUserBidInfo(String customerId, String bidId, String mortgageNumber, String loanType);
 
+    
+    
+    
 }
