@@ -4,7 +4,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.pay.service.IFundsAccount;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class CreateAccountImpl implements ICreateAccount{
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		fundsAccountImpl.createAccount((CreateAccountByFuiouDto)dto);
+    		fundsAccountImpl.createAccount((CreateAccountDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.debug(this.getClass(), e);

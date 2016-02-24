@@ -18,7 +18,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * -----------------------------------------------------------------
  * 16/1/12  于泳      1.0     1.0 Version
  */
-public class CreateAccountByFuiouDto extends SuperDto {
+public class CreateAccountDto extends SuperDto {
 
 
     @APIValidNull(errorCode = "90002006")
