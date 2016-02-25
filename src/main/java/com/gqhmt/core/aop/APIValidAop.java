@@ -60,7 +60,9 @@ public class APIValidAop {
             Object targetClass = joinPoint.getTarget();
             String methodName = joinPoint.getSignature().getName();
             validMch(targetClass,methodName,dto);       //校验商户
-            validData(dto);
+            //签名校验
+            validData(dto);                             //数据校验
+
             //生成交易订单
             response = (Response)joinPoint.proceed();
         } catch (Throwable throwable) {
@@ -140,6 +142,8 @@ public class APIValidAop {
             validIsNull(superField,dto,"getMchn");
             //校验权限
             //校验ip白名单,黑名单
+
+            //签名校验
         } catch (NoSuchFieldException e) {
             throw  new FssException("90099998",e);
         }

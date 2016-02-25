@@ -128,11 +128,12 @@ public class FundFullTenderImpl  implements IFundFullTender {
 				bonusAmount = bonusAmount.add(tender.getBonusAmount());
 			}
 		}
-		fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
+
 		if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
 			FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-			fuiouFtpColomFieldService.addColomField(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, title, null);
+			fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, title, null));
 		}
+		fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
 
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
 		this.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
