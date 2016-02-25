@@ -1,5 +1,7 @@
 package com.gqhmt.core.util;
 
+import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
+import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
@@ -93,6 +95,18 @@ public class Application {
             value = "数据字典类型未配置";
         }
         return value;
+    }
+
+
+    /**
+     * 商户内存加载
+     */
+    private  void initMerchant(){
+        MerchantService merchantService = ServiceLoader.get(MerchantService.class);
+
+        List<MerchantEntity> merchantEntities = merchantService.findBusinessALl();
+
+
     }
 
     /*======================================菜单初始化及应用========================================================*/

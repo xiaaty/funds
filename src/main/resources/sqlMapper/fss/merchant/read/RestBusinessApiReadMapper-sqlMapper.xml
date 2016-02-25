@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.RestBusinessApiReadMapper">
+<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.MerchantApiReadMapper">
 	<sql id="fieldSql">
 		SELECT
 		b.id id,

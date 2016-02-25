@@ -1,6 +1,6 @@
 package com.gqhmt.sys.web;
 
-import com.gqhmt.fss.architect.merchant.service.RestApiService;
+import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.util.LogUtil;
 
 import javax.servlet.*;
@@ -94,7 +94,7 @@ public class RestApiFilter implements Filter {
 	 * @param busiCode
 	 * @return 是否在白名单
 	 */
-	private boolean checkIpAuth(RestApiService service, String authIpType, String ipAddress, String busiCode) {
+	private boolean checkIpAuth(MerchantService service, String authIpType, String ipAddress, String busiCode) {
 		LogUtil.debug(this.getClass(), "请求客户端的IP地址:" + ipAddress);
 		if("0".equals(authIpType)) {// 不校验IP
 			return true;
@@ -118,7 +118,7 @@ public class RestApiFilter implements Filter {
 	 * @param busiCode
 	 * @return
 	 */
-	private boolean checkApiAuth(RestApiService service, String authApiType, String url, String busiCode) {
+	private boolean checkApiAuth(MerchantService service, String authApiType, String url, String busiCode) {
 		// 获取service
 		if("0".equals(authApiType)) {// 不校验API
 			return true;

@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.gqhmt.fss.architect.merchant.entity.Business;
-import com.gqhmt.fss.architect.merchant.service.RestApiService;
+import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
+import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.sys.entity.Settings;
 
 @Controller
@@ -28,7 +28,7 @@ public class SettingController{
     @Resource
     private SettingService setService;
     @Resource
-    private RestApiService restApiService;
+    private MerchantService merchantService;
    
     /**
      * 
@@ -38,18 +38,18 @@ public class SettingController{
      */
     @RequestMapping(value = "/sys/workassist/getBusiness/{setingType}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public Object settingList(HttpServletRequest request,ModelMap model,@PathVariable String setingType,Business business){
-    	List<Business> businesses=new ArrayList<Business>();
+    public Object settingList(HttpServletRequest request,ModelMap model,@PathVariable String setingType,MerchantEntity merchantEntity){
+    	List<MerchantEntity> merchantEntities =new ArrayList<MerchantEntity>();
     	if(setingType.equals("9902")){
     		//主商户列表
-    	 businesses = restApiService.getParentBusiness(business);
+    	 merchantEntities = merchantService.getParentBusiness(merchantEntity);
     	}else if(setingType.equals("9903")){
     		//子商户列表
-    		businesses=restApiService.getChildBusiness(business);
+    		merchantEntities = merchantService.getChildBusiness(merchantEntity);
     	}
-    	model.addAttribute("page",businesses);
+    	model.addAttribute("page", merchantEntities);
     	model.addAttribute("setingType",setingType);
-    	model.addAttribute("business", business);
+    	model.addAttribute("business", merchantEntity);
     	return "sys/workAssist/setting/businessList";
     }
 

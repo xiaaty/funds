@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.merchant.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
+import com.gqhmt.fss.architect.merchant.entity.MerchantApiEntity;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.write.MenuWriteMapper
@@ -19,5 +19,5 @@ import com.gqhmt.fss.architect.merchant.entity.ApiIpConfig;
  * -----------------------------------------------------------------
  * 2015/12/21  李俊龙      1.0     1.0 Version
  */
-public interface RestApiIpWriteMapper extends ReadAndWriteMapper<ApiIpConfig> {
+public interface MerchantApiWriteMapper extends ReadAndWriteMapper<MerchantApiEntity> {
 }

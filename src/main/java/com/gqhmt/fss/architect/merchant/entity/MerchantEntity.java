@@ -1,13 +1,7 @@
 package com.gqhmt.fss.architect.merchant.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Filename:    com.gqhmt.sys.entity.Menu
@@ -27,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="t_gq_fss_mchn")
-public class Business {
+public class MerchantEntity {
 	// 主键
     @Id
     @Column(name = "id")
