@@ -37,7 +37,11 @@ public class TenderService {
 		Tender tender = tenderReadMapper.selectByPrimaryKey(id);
 		return tender;
 	}
-	
+	/**
+	 * 根据bidId查询投标信息
+	 * @param bidId
+	 * @return
+	 */
 	public List<Tender> queryTenderByBidId(Long bidId){
 		return tenderReadMapper.getTenderByBidId(bidId);
 	}
