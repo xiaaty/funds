@@ -1,5 +1,7 @@
 package com.gqhmt.core.util;
 
+import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
+import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
@@ -31,7 +33,10 @@ public class Application {
     private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<MenuEntity>());
 
     private final Map<String,String> dict = new ConcurrentHashMap<>();
+    private final Map<String,DictEntity> dictEntityMap = new ConcurrentHashMap<>();
     private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
+
+//    private final Map<String,Business>
 
     private void init(){
         synchronized (this){
@@ -64,6 +69,7 @@ public class Application {
 
         for(DictEntity dictEntity:dicts){
             this.dict.put(dictEntity.getDictId(),dictEntity.getDictName());
+            dictEntityMap.put(dictEntity.getDictId(),dictEntity);
         }
 
         List<DictOrderEntity> dictOrders = systemService.findALlDictOrder();
@@ -74,6 +80,9 @@ public class Application {
     }
 
     public String getDictName(String key){
+        if(key == null){
+            return "数据字典未配置此项";
+        }
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
             value = "数据字典未配置此项";
@@ -86,6 +95,18 @@ public class Application {
             value = "数据字典类型未配置";
         }
         return value;
+    }
+
+
+    /**
+     * 商户内存加载
+     */
+    private  void initMerchant(){
+        MerchantService merchantService = ServiceLoader.get(MerchantService.class);
+
+        List<MerchantEntity> merchantEntities = merchantService.findBusinessALl();
+
+
     }
 
     /*======================================菜单初始化及应用========================================================*/
@@ -229,6 +250,9 @@ public class Application {
 
 
     private String relpaceDefaultValue(MenuEntity menu){
+        if(menu == null || menu.getParma() == null){
+            return "";
+        }
         String[] param = menu.getParma().split(",");
         String[] paramValue = menu.getParmaDefaule().split(",");
         String url  = menu.getMenuUrl();

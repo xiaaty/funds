@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.order.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gqhmt.fss.architect.merchant.service.RestApiService;
+import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.util.Encriptor;
 import com.gqhmt.util.LogUtil;
 import org.junit.Before;
@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 @ContextConfiguration(locations = "classpath:spring/*.xml")
 public class RestAPITest extends AbstractJUnit4SpringContextTests {
 	@Resource
-	private RestApiService restApiService;
+	private MerchantService merchantService;
 
 	private MockHttpServletRequest request;  
 	private MockHttpServletResponse response;
@@ -109,18 +109,18 @@ public class RestAPITest extends AbstractJUnit4SpringContextTests {
 			// 根据商户认证规则，验证IP
         	String ipAddress = getUserIpAddr(request);
         	// 获取service
-    		Map<String, Object> busiInfo = restApiService.getAuthTypeByCode(busiCode);
+    		Map<String, Object> busiInfo = merchantService.getAuthTypeByCode(busiCode);
     		if(null == busiInfo || busiInfo.isEmpty()) {// 未设置返回错误标识
     			// 返回无权访问403
     		}
     		String authIpType = String.valueOf(busiInfo.get("auth_ip_type"));
-        	boolean isWhiteList = checkIpAuth(restApiService, authIpType, ipAddress, busiCode);
+        	boolean isWhiteList = checkIpAuth(merchantService, authIpType, ipAddress, busiCode);
 			if(!isWhiteList) {
 				// 返回无权访问403
 			}
 			// 根据商户API访问规则，校验是否有权限
 			String authApiType = String.valueOf(busiInfo.get("auth_api_type"));
-			boolean isLegalURI = checkApiAuth(restApiService, authApiType, url, busiCode);
+			boolean isLegalURI = checkApiAuth(merchantService, authApiType, url, busiCode);
 			if(!isLegalURI) {
 				// 返回无权访问403
 			}
@@ -134,7 +134,7 @@ public class RestAPITest extends AbstractJUnit4SpringContextTests {
 	 * @param busiCode
 	 * @return 是否在白名单
 	 */
-	private boolean checkIpAuth(RestApiService service, String authIpType, String ipAddress, String busiCode) {
+	private boolean checkIpAuth(MerchantService service, String authIpType, String ipAddress, String busiCode) {
 		LogUtil.debug(this.getClass(), "请求客户端的IP地址:" + ipAddress);
 		if("0".equals(authIpType)) {// 不校验IP
 			return true;
@@ -168,7 +168,7 @@ public class RestAPITest extends AbstractJUnit4SpringContextTests {
 	 * @param busiCode
 	 * @return
 	 */
-	private boolean checkApiAuth(RestApiService service, String authApiType, String url, String busiCode) {
+	private boolean checkApiAuth(MerchantService service, String authApiType, String url, String busiCode) {
 		// 获取service
 		if("0".equals(authApiType)) {// 不校验API
 			return true;

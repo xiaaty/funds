@@ -1,5 +1,9 @@
 package com.gqhmt.funds.architect.job.mapper.write;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
 
@@ -10,4 +14,5 @@ public interface FuiouFtpColomFieldWriteMapper extends ReadAndWriteMapper<FuiouF
 
 	void updateByFileSeqId(String fileSeq, String reqCode, String msg);
 
+	public void saveOrUpdateAll(@Param("fuiouCollection") List<FuiouFtpColomField> fuiyoulist);
 }

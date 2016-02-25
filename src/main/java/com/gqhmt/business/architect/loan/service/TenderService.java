@@ -37,4 +37,15 @@ public class TenderService {
 		Tender tender = tenderReadMapper.selectByPrimaryKey(id);
 		return tender;
 	}
+	
+	public List<Tender> queryTenderByBidId(Long bidId){
+		return tenderReadMapper.getTenderByBidId(bidId);
+	}
+	
+	
+	
+	
+	
+	
+	
 }

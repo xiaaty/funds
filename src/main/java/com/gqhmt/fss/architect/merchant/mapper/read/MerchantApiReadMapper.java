@@ -1,17 +1,17 @@
 package com.gqhmt.fss.architect.merchant.mapper.read;
 
-import java.util.List;
-
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.merchant.bean.BusinessApiBean;
-import com.gqhmt.fss.architect.merchant.entity.BusinessApi;
+import com.gqhmt.fss.architect.merchant.entity.MerchantApiEntity;
+
+import java.util.List;
 
 /**
  * 商户api地址
  * @author fanfever
  *
  */
-public interface RestBusinessApiReadMapper extends ReadAndWriteMapper<BusinessApi> {
+public interface MerchantApiReadMapper extends ReadAndWriteMapper<MerchantApiEntity> {
 	  /**
 	    * 
 	    * author:jhz

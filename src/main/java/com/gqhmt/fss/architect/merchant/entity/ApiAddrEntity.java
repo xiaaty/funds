@@ -22,7 +22,7 @@ import java.util.Date;
 //api表
 @Entity
 @Table(name="t_gq_fss_api")
-public class ApiAddr {
+public class ApiAddrEntity {
 	// 主键
     @Id
     @Column(name = "id")
@@ -31,7 +31,7 @@ public class ApiAddr {
     //api编号
     @Column(name = "api_no")
     private String apiNo;
-    // api名称
+    //api名称
     @Column(name = "api_name")
     private String apiName;
     //api地址

@@ -1,11 +1,13 @@
 package com.gqhmt.sys.web;
 
+import com.gqhmt.core.util.LocalIPUtil;
 import com.gqhmt.core.util.LogUtil;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.web.DelegatingFilterProxy
@@ -53,10 +55,7 @@ public class DelegatingFilterProxy implements Filter {
         }
 
 
-
-
-
-
+        List<String> localIps = LocalIPUtil.getLocalIpList();
 
 
     }

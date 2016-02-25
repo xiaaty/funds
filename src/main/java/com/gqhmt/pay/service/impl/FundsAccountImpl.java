@@ -6,7 +6,7 @@ import com.gqhmt.extServInter.dto.account.AccountAccessDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
@@ -42,15 +42,15 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param custId         客户id
      * @throws FssException
      */
-	public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException {
-		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(Integer.parseInt(createAccountByFuiouDto.getCust_no()));
-		customerInfoEntity.setParentBankCode(createAccountByFuiouDto.getBank_id());
-		customerInfoEntity.setBankNo(createAccountByFuiouDto.getBank_card());
-		customerInfoEntity.setCityCode(createAccountByFuiouDto.getCity_id());
-		customerInfoEntity.setCertNo(createAccountByFuiouDto.getCert_no());
-		customerInfoEntity.setMobilePhone(createAccountByFuiouDto.getMobile());
-		customerInfoEntity.setCustomerName(createAccountByFuiouDto.getName());
-		if(customerInfoEntity == null) throw new FssException("90002001");
+	public boolean createAccount(CreateAccountDto createAccountDto) throws FssException {
+		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(Integer.parseInt(createAccountDto.getCust_no()));
+		if(customerInfoEntity == null) throw new FssException("90002007");
+		customerInfoEntity.setParentBankCode(createAccountDto.getBank_id());
+		customerInfoEntity.setBankNo(createAccountDto.getBank_card());
+		customerInfoEntity.setCityCode(createAccountDto.getCity_id());
+		customerInfoEntity.setCertNo(createAccountDto.getCert_no());
+		customerInfoEntity.setMobilePhone(createAccountDto.getMobile());
+		customerInfoEntity.setCustomerName(createAccountDto.getName());
 		return this.createAccount(customerInfoEntity,"","");
 	}
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.RestApiReadMapper">
+<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.MerchantReadMapper">
 	<sql id="fieldSql">
 	</sql>
 	<sql id="whereSql">
@@ -63,7 +63,7 @@
 	</select>
 
 	<select id="findBusinessList" parameterType="java.util.Map"
-		resultType="com.gqhmt.fss.architect.merchant.entity.Business">
+		resultType="com.gqhmt.fss.architect.merchant.entity.MerchantEntity">
 		SELECT
 		a.id,
 		a.mchn_name mchnName,
@@ -82,7 +82,7 @@
 		<include refid="whereSql" />
 	</select>
 	<!-- 父商户列表 -->
-	<select id="getParentBusiness" parameterType="com.gqhmt.fss.architect.merchant.entity.Business" resultType="com.gqhmt.fss.architect.merchant.entity.Business">
+	<select id="getParentBusiness" parameterType="com.gqhmt.fss.architect.merchant.entity.MerchantEntity" resultType="com.gqhmt.fss.architect.merchant.entity.MerchantEntity">
 		SELECT
 		a.mchn_name mchnName,a.mchn_no mchnNo,a.create_time createTime,a.modify_time modifyTime
 		FROM t_gq_fss_mchn a,t_gq_fss_mchn b
@@ -97,7 +97,7 @@
 		
 	</select>
 	<!-- 子商户列表 -->
-	<select id="getChildBusiness" parameterType="com.gqhmt.fss.architect.merchant.entity.Business" resultType="com.gqhmt.fss.architect.merchant.entity.Business">
+	<select id="getChildBusiness" parameterType="com.gqhmt.fss.architect.merchant.entity.MerchantEntity" resultType="com.gqhmt.fss.architect.merchant.entity.MerchantEntity">
 		SELECT
 		b.mchn_name mchnName,b.mchn_no mchnNo,b.create_time createTime,b.modify_time modifyTime
 		FROM t_gq_fss_mchn a,t_gq_fss_mchn b

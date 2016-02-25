@@ -2,7 +2,7 @@ package com.gqhmt.extServInter.service;
 
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.service.account.impl.CreateAccountImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class ICreateAccountTest {
 
     @Test
     public void createAccountTest() throws APIExcuteErrorException {
-        CreateAccountByFuiouDto dto = new CreateAccountByFuiouDto();
+        CreateAccountDto dto = new CreateAccountDto();
         try {
             Response response = createAccount.excute(dto);
             assert response.getResp_code().equals("90008101");
