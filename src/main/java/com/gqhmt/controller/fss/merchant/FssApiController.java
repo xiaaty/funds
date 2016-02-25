@@ -1,7 +1,7 @@
 package com.gqhmt.controller.fss.merchant;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
+import com.gqhmt.fss.architect.merchant.entity.ApiAddrEntity;
 import com.gqhmt.fss.architect.merchant.service.*;
 import com.gqhmt.util.ToDateUtils;
 
@@ -38,7 +38,7 @@ import java.util.Map;
 public class FssApiController {
 
     @Resource
-    private RestApiService restApiService;
+    private MerchantService merchantService;
 
    /**
     * 
@@ -49,7 +49,7 @@ public class FssApiController {
     @RequestMapping(value = "/fss/api/apiList",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object apiList(HttpServletRequest request,ModelMap model){
-    	List<ApiAddr> apiList = restApiService.findApiAddrList();
+    	List<ApiAddrEntity> apiList = merchantService.findApiAddrList();
 		model.addAttribute("page", apiList);
 		return "sys/busi/api/apiAddrList";
     }
@@ -61,7 +61,7 @@ public class FssApiController {
      */
     @RequestMapping(value = "/fss/api/deleteApi/{id}",method = {RequestMethod.GET,RequestMethod.POST})
     public Object deleteApi(HttpServletRequest request,ModelMap model, @PathVariable Long id){
-    	restApiService.deleteApiAddr(id);
+    	merchantService.deleteApiAddr(id);
     	return "redirect:/fss/api/apiList";
     }
     /**
@@ -72,7 +72,7 @@ public class FssApiController {
      */
     @RequestMapping(value = "/fss/api/selectApi/{id}",method = {RequestMethod.GET,RequestMethod.POST})
     public Object selectBusinessApi(HttpServletRequest request,ModelMap model, @PathVariable Long id){
-    	ApiAddr addr = restApiService.findapiAddrById(id);
+    	ApiAddrEntity addr = merchantService.findapiAddrById(id);
     	model.addAttribute("addr", addr);
     	return "/sys/busi/api/apiAddrUpdate";
     }
@@ -84,11 +84,11 @@ public class FssApiController {
      */
     @RequestMapping(value = "/fss/api/updateApi",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Object updateBusinessApi(HttpServletRequest request,ModelMap model,ApiAddr apiAddr) throws ParseException{
+    public Object updateBusinessApi(HttpServletRequest request,ModelMap model,ApiAddrEntity apiAddrEntity) throws ParseException{
     	String creatTime = request.getParameter("creatTime");
-    	apiAddr.setCreateTime(ToDateUtils.toDate(creatTime));
-    	apiAddr.setModifyTime(new Date());
-    	restApiService.updateApiAddr(apiAddr);
+    	apiAddrEntity.setCreateTime(ToDateUtils.toDate(creatTime));
+    	apiAddrEntity.setModifyTime(new Date());
+    	merchantService.updateApiAddr(apiAddrEntity);
     	Map<String, String> map = new HashMap<String, String>();
     	 map.put("code", "0000");
          map.put("message", "success");
@@ -113,9 +113,9 @@ public class FssApiController {
      */
     @RequestMapping(value = "/fss/api/insertApi",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Object toBusinessApiAdd(HttpServletRequest request,ModelMap model,ApiAddr apiAddr) {
-    	apiAddr.setCreateTime(new Date());
-    	restApiService.insertApiAddr(apiAddr);
+    public Object toBusinessApiAdd(HttpServletRequest request,ModelMap model,ApiAddrEntity apiAddrEntity) {
+    	apiAddrEntity.setCreateTime(new Date());
+    	merchantService.insertApiAddr(apiAddrEntity);
     	Map<String, String> map = new HashMap<String, String>();
     	map.put("code", "0000");
     	map.put("message", "success");

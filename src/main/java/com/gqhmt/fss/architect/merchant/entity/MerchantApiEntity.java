@@ -1,13 +1,7 @@
 package com.gqhmt.fss.architect.merchant.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Filename:    com.gqhmt.sys.entity.Menu
@@ -23,26 +17,30 @@ import javax.persistence.Table;
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 15/12/18  李俊龙      1.0     1.0 Version
+ * 16/02/19  jhz    1.0     1.0 Version
  */
-//ip限制记录表
+//资金商户api表
 @Entity
-@Table(name="t_gq_fss_mchn_ipconfig")
-public class ApiIpConfig {
+@Table(name="t_gq_fss_mchn_api")
+public class MerchantApiEntity {
 	// 主键
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // 商户号
+    //商户号
     @Column(name = "mchn_no")
     private String mchnNo;
     // ip地址
-    @Column(name = "ip_address")
-    private String ipAddress;
-    // 0黑名单，1白名单
-    @Column(name = "type")
-    private String type;
+    @Column(name = "api_no")
+    private String apiNo;
+    // 回调地址
+    @Column(name = "return_url")
+    private String returnUrl;
+    
+    // 是否回调
+    @Column(name = "is_return")
+    private int isReturn;
     
     // 创建日期
     @Column(name = "create_time")
@@ -50,30 +48,29 @@ public class ApiIpConfig {
     // 修改日期
     @Column(name = "modify_time")
     private Date modifyTime;
-    
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getMchnNo() {
 		return mchnNo;
 	}
 	public void setMchnNo(String mchnNo) {
 		this.mchnNo = mchnNo;
 	}
-	public String getIpAddress() {
-		return ipAddress;
+	public String getApiNo() {
+		return apiNo;
 	}
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
+	public void setApiNo(String apiNo) {
+		this.apiNo = apiNo;
 	}
-	public String getType() {
-		return type;
+	public String getReturnUrl() {
+		return returnUrl;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setReturnUrl(String returnUrl) {
+		this.returnUrl = returnUrl;
+	}
+	public int getIsReturn() {
+		return isReturn;
+	}
+	public void setIsReturn(int isReturn) {
+		this.isReturn = isReturn;
 	}
 	public Date getCreateTime() {
 		return createTime;
@@ -87,5 +84,13 @@ public class ApiIpConfig {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+    
+	
 	
 }

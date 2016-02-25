@@ -2,8 +2,8 @@ package com.gqhmt.controller.fss.merchant;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.merchant.bean.BusinessApiBean;
-import com.gqhmt.fss.architect.merchant.entity.ApiAddr;
-import com.gqhmt.fss.architect.merchant.entity.BusinessApi;
+import com.gqhmt.fss.architect.merchant.entity.ApiAddrEntity;
+import com.gqhmt.fss.architect.merchant.entity.MerchantApiEntity;
 import com.gqhmt.fss.architect.merchant.service.*;
 import com.gqhmt.util.ToDateUtils;
 
@@ -40,7 +40,7 @@ import java.util.Map;
 public class FssBusinessApiController {
 
     @Resource
-    private RestApiService restApiService;
+    private MerchantService merchantService;
 
    /**
     * 
@@ -51,7 +51,7 @@ public class FssBusinessApiController {
     @RequestMapping(value = "/fss/api/businessApiList",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object businessApiList(HttpServletRequest request,ModelMap model, BusinessApiBean businessApiBean){
-    	List<BusinessApiBean> apiList = restApiService.findBusinessApiList(businessApiBean);
+    	List<BusinessApiBean> apiList = merchantService.findBusinessApiList(businessApiBean);
 		model.addAttribute("page", apiList);
 		model.addAttribute("businessApiBean", businessApiBean);
 		return "sys/busi/busiApiList";
@@ -64,7 +64,7 @@ public class FssBusinessApiController {
      */
     @RequestMapping(value = "/fss/api/deleteBusinessApi/{id}",method = {RequestMethod.GET,RequestMethod.POST})
     public Object deleteBusinessApi(HttpServletRequest request,ModelMap model, @PathVariable Long id){
-    	restApiService.deleteBusinessApi(id);
+    	merchantService.deleteBusinessApi(id);
     	return "redirect:/fss/api/businessApiList";
     }
     /**
@@ -75,8 +75,8 @@ public class FssBusinessApiController {
      */
     @RequestMapping(value = "/fss/api/selectBusinessApi/{id}",method = {RequestMethod.GET,RequestMethod.POST})
     public Object selectBusinessApi(HttpServletRequest request,ModelMap model, @PathVariable Long id){
-    	BusinessApiBean selectBusinessApi = restApiService.selectBusinessApi(id);
-    	List<ApiAddr> apiList=restApiService.findApiAddrList();
+    	BusinessApiBean selectBusinessApi = merchantService.selectBusinessApi(id);
+    	List<ApiAddrEntity> apiList= merchantService.findApiAddrList();
     	model.addAttribute("busiApi", selectBusinessApi);
     	model.addAttribute("apiList", apiList);
     	return "/sys/busi/businessApiUpdate";
@@ -90,11 +90,11 @@ public class FssBusinessApiController {
      */
     @RequestMapping(value = "/fss/api/updateBusinessApi",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Object updateBusinessApi(HttpServletRequest request,ModelMap model,BusinessApi businessApi) throws ParseException{
+    public Object updateBusinessApi(HttpServletRequest request,ModelMap model,MerchantApiEntity merchantApiEntity) throws ParseException{
     	String creatTime = request.getParameter("creatTime");
-    	businessApi.setCreateTime(ToDateUtils.toDate(creatTime));
-    	businessApi.setModifyTime(new Date());
-    	restApiService.updateBusinessApi(businessApi);
+    	merchantApiEntity.setCreateTime(ToDateUtils.toDate(creatTime));
+    	merchantApiEntity.setModifyTime(new Date());
+    	merchantService.updateBusinessApi(merchantApiEntity);
     	Map<String, String> map = new HashMap<String, String>();
     	 map.put("code", "0000");
          map.put("message", "success");
@@ -109,9 +109,9 @@ public class FssBusinessApiController {
      */
     @RequestMapping(value = "/fss/api/insertBusinessApi",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Object toBusinessApiAdd(HttpServletRequest request,ModelMap model,BusinessApi businessApi) {
-    	businessApi.setCreateTime(new Date());
-    	restApiService.insertBusinessApi(businessApi);
+    public Object toBusinessApiAdd(HttpServletRequest request,ModelMap model,MerchantApiEntity merchantApiEntity) {
+    	merchantApiEntity.setCreateTime(new Date());
+    	merchantService.insertBusinessApi(merchantApiEntity);
     	Map<String, String> map = new HashMap<String, String>();
     	map.put("code", "0000");
     	map.put("message", "success");

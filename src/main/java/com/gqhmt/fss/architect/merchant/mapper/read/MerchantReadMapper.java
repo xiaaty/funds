@@ -5,11 +5,10 @@ import java.util.Map;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
-import com.gqhmt.fss.architect.merchant.bean.BusinessApiBean;
-import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 
 
-public interface RestApiReadMapper extends ReadMapper<Business> {
+public interface MerchantReadMapper extends ReadMapper<MerchantEntity> {
 	
 	/**
 	 * 根据商户标识获取授权类型
@@ -37,7 +36,7 @@ public interface RestApiReadMapper extends ReadMapper<Business> {
 	 * @param pid
 	 * @return
 	 */
-	public List<Business> findBusinessList(Map<String, Object> map);
+	public List<MerchantEntity> findBusinessList(Map<String, Object> map);
 	/**
 	 * 
 	 * author:jhz
@@ -65,15 +64,15 @@ public interface RestApiReadMapper extends ReadMapper<Business> {
 	 * author:jhz
 	 * time:2016年2月15日
 	 * function：父商户列表
-	 * @param business 
+	 * @param merchantEntity
 	 */
-	public List<Business> getParentBusiness(Business business);
+	public List<MerchantEntity> getParentBusiness(MerchantEntity merchantEntity);
 	/**
 	 * 
 	 * author:jhz
 	 * time:2016年2月15日
 	 * function：子商户列表
 	 */
-	public List<Business> getChildBusiness(Business business);
+	public List<MerchantEntity> getChildBusiness(MerchantEntity merchantEntity);
 	
 }

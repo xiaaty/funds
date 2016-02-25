@@ -1,6 +1,6 @@
 package com.gqhmt.sys.session;
 
-import com.gqhmt.fss.architect.merchant.entity.Business;
+import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 
 /**
  * Filename:    com.gqhmt.sys.session.SessionFactory
@@ -19,15 +19,15 @@ import com.gqhmt.fss.architect.merchant.entity.Business;
  * 2015/12/19  于泳      1.0     1.0 Version
  */
 public class SessionFactory {
-    public static final ThreadLocal<Business> sessionLocal = new ThreadLocal<Business>();
+    public static final ThreadLocal<MerchantEntity> sessionLocal = new ThreadLocal<MerchantEntity>();
 
     static {
-        Business business = new Business();
-        sessionLocal.set(business);
+        MerchantEntity merchantEntity = new MerchantEntity();
+        sessionLocal.set(merchantEntity);
     }
 
     public static String getCode(){
-        Business business = sessionLocal.get();
+        MerchantEntity merchantEntity = sessionLocal.get();
         return null;
     }
 

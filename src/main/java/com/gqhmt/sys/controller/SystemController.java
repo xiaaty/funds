@@ -3,7 +3,7 @@ package com.gqhmt.sys.controller;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.merchant.service.RestApiService;
+import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.service.SystemService;
@@ -25,7 +25,7 @@ public class SystemController{
     @Resource
     private SystemService sysService;
     @Resource
-    private RestApiService restApiService;
+    private MerchantService merchantService;
     /**
      * 查询字典表
      * @param request

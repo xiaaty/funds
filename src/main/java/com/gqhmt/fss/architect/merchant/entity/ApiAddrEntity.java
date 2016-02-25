@@ -22,7 +22,7 @@ import java.util.Date;
 //api表
 @Entity
 @Table(name="t_gq_fss_api")
-public class ApiAddr {
+public class ApiAddrEntity {
 	// 主键
     @Id
     @Column(name = "id")
