@@ -31,7 +31,7 @@ public class ApiAddrEntity {
     //api编号
     @Column(name = "api_no")
     private String apiNo;
-    // api名称
+    //api名称
     @Column(name = "api_name")
     private String apiName;
     //api地址
