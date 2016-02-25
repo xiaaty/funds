@@ -31,7 +31,10 @@ public class Application {
     private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<MenuEntity>());
 
     private final Map<String,String> dict = new ConcurrentHashMap<>();
+    private final Map<String,DictEntity> dictEntityMap = new ConcurrentHashMap<>();
     private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
+
+//    private final Map<String,Business>
 
     private void init(){
         synchronized (this){
@@ -64,6 +67,7 @@ public class Application {
 
         for(DictEntity dictEntity:dicts){
             this.dict.put(dictEntity.getDictId(),dictEntity.getDictName());
+            dictEntityMap.put(dictEntity.getDictId(),dictEntity);
         }
 
         List<DictOrderEntity> dictOrders = systemService.findALlDictOrder();
@@ -232,6 +236,9 @@ public class Application {
 
 
     private String relpaceDefaultValue(MenuEntity menu){
+        if(menu == null || menu.getParma() == null){
+            return "";
+        }
         String[] param = menu.getParma().split(",");
         String[] paramValue = menu.getParmaDefaule().split(",");
         String url  = menu.getMenuUrl();

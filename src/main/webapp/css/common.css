@@ -38,9 +38,7 @@ ul.user_login li{padding-bottom: 14px;position:relative;}
 
 }
 
-.table > tbody > tr > td {
-    word-break: keep-all;
-}
+
 
 .table > tbody > tr.table_input > td {
     padding: 4px 4px;
