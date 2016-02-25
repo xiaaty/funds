@@ -8,6 +8,7 @@ import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
 import com.gqhmt.pay.service.ITradingRecord;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.util.ThirdPartyType;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,6 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
-import org.springframework.stereotype.Service;
 
 /**
  * 交易记录查询
@@ -116,7 +116,7 @@ public class TradeRecordImpl  implements ITradingRecord {
 			fundsequence.setModifyTime(new Date());
 			fundsequence.setSumary("");
 			fundsequence.setOrderNo("");
-			fundsequence.setThirdPartyType(1);
+			fundsequence.setThirdPartyType(ThirdPartyType.FUIOU);
 			fundsequence.setoAccountId(Long.valueOf(cost.getCust_no()));
 			fundsequence.setToken("");
 			try {

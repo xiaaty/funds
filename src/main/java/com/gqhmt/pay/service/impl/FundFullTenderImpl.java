@@ -3,6 +3,7 @@ package com.gqhmt.pay.service.impl;
 import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
 import com.gqhmt.funds.architect.job.service.FuiouFtpColomFieldService;
 import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
+import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
@@ -19,6 +20,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
+import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.service.IFundFullTender;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import javax.annotation.Resource;
@@ -84,7 +86,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
     @Resource
     private BonusService bonusService;
     
-  
+    private final String thirdPartyType = PayCommondConstants.PAY_CHANNEL_FUIOU;
     /**
 	 * 满标清算
 	 * @param objects
@@ -112,7 +114,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 		
 		FundOrderEntity fundOrderEntity=null;
 		try {
-			fundOrderEntity = this.createOrder(toEntity, bid.getBidAmount(), GlobalConstants.ORDER_SETTLE, bid.getId(), GlobalConstants.BUSINESS_SETTLE, "2");
+			fundOrderEntity = this.createOrder(toEntity, bid.getBidAmount(), GlobalConstants.ORDER_SETTLE, bid.getId(), GlobalConstants.BUSINESS_SETTLE, thirdPartyType);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -128,6 +130,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 				bonusAmount = bonusAmount.add(tender.getBonusAmount());
 			}
 		}
+		
 		fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
 		if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
 			FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
@@ -139,6 +142,14 @@ public class FundFullTenderImpl  implements IFundFullTender {
 		throw new FssException("异步处理，等待回调通知");
 	}
     
+    /**
+     * 修改订单信息
+     * @param fundOrderEntity
+     * @param status
+     * @param code
+     * @param msg
+     * @throws FssException
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { FssException.class }, readOnly = false)
 	public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws FssException {
 		fundOrderEntity.setOrderState(status);
@@ -150,12 +161,22 @@ public class FundFullTenderImpl  implements IFundFullTender {
 			throw new FssException(e.getMessage());
 		}
 	}
-    
+    /**
+     * 创建订单
+     * @param primaryAccount
+     * @param amount
+     * @param orderType
+     * @param sourceID
+     * @param sourceType
+     * @param thirdPartyType
+     * @return
+     * @throws Exception
+     */
     public FundOrderEntity createOrder(FundAccountEntity primaryAccount, BigDecimal amount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws Exception{
     	return this.createOrder(primaryAccount, null, amount, orderType, sourceID, sourceType, thirdPartyType);
 	}
 
-    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity,BigDecimal amount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
+    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity,BigDecimal amount, Integer orderType, Long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
         return fundOrderService.createOrder(primaryAccount,toAccountEntity,amount,BigDecimal.ZERO,orderType,sourceID,sourceType,thirdPartyType);
     }
 	
@@ -189,7 +210,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
  			mapping.put(GlobalConstants.BUSINESS_MAPPINF_TENDER, Long.valueOf(tender.getId()));
  			FundAccountEntity fromEntity = fundAccountService.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
  			try {
-				sequenceService.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006, "2", fundOrderEntity);
+				sequenceService.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,mapping,ThirdPartyType.FUIOU, fundOrderEntity);
 			} catch (FssException e) {
 				LogUtil.error(this.getClass(), e.getMessage());
 			}
@@ -226,7 +247,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
  		//红包账户出账，使用红包汇总 2015.07.31 于泳
  		if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
  			FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
- 			sequenceService.transfer(fromEntity, toEntity, bonusAmount, 6, 2006, "2", fundOrderEntity);
+ 			sequenceService.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,null,ThirdPartyType.FUIOU, fundOrderEntity);
  			this.createFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
  		}
  		//生成返现job 2015.07.31 于泳
@@ -262,7 +283,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 		FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
 		FundOrderEntity fundOrderEntity=null;
 		try {
-			fundOrderEntity = this.createOrder(fromEntity, bid.getBidAmount(), GlobalConstants.ORDER_POINT_GQ_RETURN_FEE, bid.getId(), GlobalConstants.BUSINESS_SETTLE,"2");
+			fundOrderEntity = this.createOrder(fromEntity, bid.getBidAmount(), GlobalConstants.ORDER_POINT_GQ_RETURN_FEE, bid.getId(), GlobalConstants.BUSINESS_SETTLE,thirdPartyType);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e.getMessage());
 		}

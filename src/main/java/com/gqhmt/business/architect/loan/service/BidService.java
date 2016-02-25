@@ -49,6 +49,11 @@ public class BidService {
     	return bidReadMapper.queryUserBidInfo(customerId, bidId, mortgageNumber, loanType);
     }
 
+    /**
+     * 根据标的Id查询产品名称
+     * @param bidId
+     * @return
+     */
     public String getProductName(Integer bidId){
     	String title=tenderReadMapper.getProductName(bidId);
     	return title;

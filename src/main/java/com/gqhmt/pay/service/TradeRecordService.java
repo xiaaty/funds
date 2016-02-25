@@ -8,6 +8,7 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
+import com.gqhmt.util.ThirdPartyType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -45,17 +46,17 @@ public class TradeRecordService {
     private FundTradeService fundTradeService;
 
     public void recharge(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
-        sequenceService.charge(entity, fundType, amount, thirdPartyType, fundOrderEntity);
+        sequenceService.charge(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity);
         // this.fundTradeService.createFundTrade(entity, amount, BigDecimal.ZERO, fundType, "充值成功，充值金额 " + amount + "元");
         //super.sendNotice(NoticeService.NoticeType.FUND_CHARGE, entity, amount,BigDecimal.ZERO);
     }
 
     public void withdraw(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
-        sequenceService.refund(entity,fundType,amount,thirdPartyType,fundOrderEntity);
+        sequenceService.refund(entity,fundType,amount,ThirdPartyType.FUIOU,fundOrderEntity);
     }
 
     public void withdrawByFroze(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
-        sequenceService.refund(entity,fundType,amount,thirdPartyType,fundOrderEntity);
+        sequenceService.refund(entity,fundType,amount,ThirdPartyType.FUIOU,fundOrderEntity);
     }
     
     /**

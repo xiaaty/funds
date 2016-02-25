@@ -2,12 +2,16 @@ package com.gqhmt.funds.architect.order.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
 import com.gqhmt.core.util.GlobalConstants;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -47,7 +51,7 @@ public class FundOrderService  {
         fundOrderWriteMapper.updateByPrimaryKeySelective(entity);
     }
 
-    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
+    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, Long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
         FundOrderEntity fundOrderEntity = new FundOrderEntity();
         fundOrderEntity.setAccountId(primaryAccount.getId());
         if (toAccountEntity != null) {
@@ -101,4 +105,27 @@ public class FundOrderService  {
             return true;
         return false;
     }
+    
+    /**
+     * 修改订单
+     * @param fundOrderEntity
+     * @param status
+     * @param code
+     * @param msg
+     * @throws CommandParmException
+     */
+	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { CommandParmException.class }, readOnly = false)
+	public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws FssException {
+		fundOrderEntity.setOrderState(status);
+		fundOrderEntity.setRetCode(code);
+		fundOrderEntity.setRetMessage(msg);
+		try {
+			fundOrderWriteMapper.updateByPrimaryKey(fundOrderEntity);
+		} catch (Exception e) {
+			throw new CommandParmException(e.getMessage());
+		}
+	}
+    
+    
+    
 }
