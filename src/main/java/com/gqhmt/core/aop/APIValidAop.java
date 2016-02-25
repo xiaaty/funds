@@ -60,11 +60,13 @@ public class APIValidAop {
             Object targetClass = joinPoint.getTarget();
             String methodName = joinPoint.getSignature().getName();
             validMch(targetClass,methodName,dto);       //校验商户
-            validData(dto);
+            //签名校验
+            validData(dto);                             //数据校验
+
             //生成交易订单
             response = (Response)joinPoint.proceed();
         } catch (Throwable throwable) {
-            LogUtil.error(this.getClass(),throwable);
+            LogUtil.debug(this.getClass(),throwable);
             String codeTmp = throwable.getMessage();
             String codeValue = Application.getInstance().getDictName(codeTmp == null?"":codeTmp);
             if(codeValue != null && !"".equals(codeValue)){
@@ -77,13 +79,13 @@ public class APIValidAop {
                 response = GenerateBeanUtil.GenerateClassInstance(Response.class,dto);
                 response.setResp_code(code);
             } catch (Exception e) {
-                e.printStackTrace();
+                LogUtil.error(this.getClass(),e);
             }
         }else{
             try {
                 GenerateBeanUtil.GenerateClassInstance(response,dto);
             } catch (Exception e) {
-                e.printStackTrace();
+                LogUtil.error(this.getClass(),e);
             }
         }
 
@@ -96,11 +98,25 @@ public class APIValidAop {
      * 数据校验
      * @param dto
      */
-    private void validData(SuperDto dto) {
+    private void validData(SuperDto dto) throws FssException {
         Class<SuperDto> dtoClass = (Class<SuperDto>) dto.getClass();
         Class<SuperDto> superDtoClass = (Class<SuperDto>) dtoClass.getSuperclass();
         Field[] fields  = dtoClass.getDeclaredFields();
         Field[] superFields= superDtoClass.getDeclaredFields();
+
+
+        for(Field field:superFields){
+            String name = field.getName();
+            //空值校验
+            validIsNull(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
+
+        }
+        for(Field field:fields){
+            String name = field.getName();
+            //空值校验
+            validIsNull(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
+        }
+
 
 
     }
@@ -123,9 +139,11 @@ public class APIValidAop {
             Class superDtoClass = getEntityClass(dto,SuperDto.class);
             Field superField= superDtoClass.getDeclaredField("mchn");
             //校验是否为空
-            validIsNull(superDtoClass,superField,dto,"getMchn");
+            validIsNull(superField,dto,"getMchn");
             //校验权限
-            //校验ip
+            //校验ip白名单,黑名单
+
+            //签名校验
         } catch (NoSuchFieldException e) {
             throw  new FssException("90099998",e);
         }
@@ -136,13 +154,12 @@ public class APIValidAop {
 
     /**
      * 空值校验
-     * @param superDtoClass
      * @param superField
      * @param obj
      * @param methodName
      * @throws FssException
      */
-    private void validIsNull(Class superDtoClass, Field superField,Object obj,String methodName) throws FssException {
+    private void validIsNull(Field superField,Object obj,String methodName) throws FssException {
         APIValidNull api = superField.getAnnotation(APIValidNull.class);
         if(api != null ){
             try {

@@ -3,7 +3,7 @@ package com.gqhmt.controller.api.account;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import org.springframework.context.ApplicationContext;
@@ -74,7 +74,7 @@ public class FssAccountApi {
     * function：创建账户
     */
     @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
-    public Object ceeateAccount(CreateAccountByFuiouDto createAccountByFuiou){
+    public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
     	Response response=new Response();
         try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);

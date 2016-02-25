@@ -7,7 +7,7 @@ import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountByFuiouDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
 /**
@@ -45,10 +45,10 @@ public interface IFundsAccount {
     /**
      * 创建账户
      *
-     * @param createAccountByFuiouDto 参数
+     * @param createAccountDto 参数
      * @throws FssException
      */
-    public boolean createAccount(CreateAccountByFuiouDto  createAccountByFuiouDto) throws FssException;
+    public boolean createAccount(CreateAccountDto createAccountDto) throws FssException;
 
 
     /**
