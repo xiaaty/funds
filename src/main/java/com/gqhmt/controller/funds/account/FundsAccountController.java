@@ -1,16 +1,21 @@
 package com.gqhmt.controller.funds.account;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.trade.WithdrawDto;
+import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
+import com.gqhmt.pay.service.IFundsTrade;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +47,10 @@ public class FundsAccountController {
     private FundAccountService fundAccountService;
 	@Resource
 	private FundSequenceService fundSequenceService;
+	@Resource
+	private IFundsTrade fundsTradeImpl;
+	
+	
     /**
      * 
      * author:jhz
@@ -110,20 +119,41 @@ public class FundsAccountController {
 	  * 
 	  * author:jhz
 	  * time:2016年2月18日
-	  * function：为指定的客户提现
+	  * function：跳转到为指定的客户提现页面
 	  */
     @RequestMapping("/funds/acount/businessAccountWithdraw/{withHoldId}")
     public String businessAccountWithdraw(HttpServletRequest request,ModelMap model,@PathVariable Integer withHoldId){
     	FundAccountCustomerBean  accountWithdraw =fundAccountService.fundAccountCustomerById(withHoldId);
         model.addAttribute("acct",accountWithdraw);
-        return "funds/account/withHold/account_business_withdraw";
+        return "funds/account/withDraw/account_business_withdraw";
     }
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月24日
+     * function：为指定的对公账户提现
+     */
+    @RequestMapping("/funds/acount/AccountWithdraw")
+    @ResponseBody
+    public Object withdraw(HttpServletRequest request,ModelMap model,WithdrawDto withdrawDto) throws FssException {
+//    	System.out.println(withdrawDto.getCust_no()+withdrawDto.getAmount()+"**********");
+//    	Map<String, Object> map = new HashMap<String, Object>();
+//	try {
+		boolean excute = fundsTradeImpl.withdraw(withdrawDto);
+//		map.put("tips", "0000");
+	
+//	} catch (FssException e) {
+//		LogUtil.error(this.getClass(),e.getMessage(),e);
+//		map.put("tips", "提现失败!!" + e.getMessage());
+//	}
+	return excute;
+	}
   
     /**
      * 
      * author:jhz
      * time:2016年2月18日
-     * function： 为指定的客户代扣
+     * function： 跳转到为指定的客户代扣提现页面
      */
     @RequestMapping("/funds/acount/custAccountWithhold/{withHoldId}")
     public String accountRecharge(HttpServletRequest request,ModelMap model,@PathVariable Integer withHoldId){
@@ -131,18 +161,58 @@ public class FundsAccountController {
         model.addAttribute("acct",accountWithdraw);
         return "funds/account/withHold/account_withhold";
     }
-    
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月25日
+     * function：为指定的客户代扣
+     */
+    @RequestMapping(value = "/funds/acount/withhold",method = RequestMethod.POST)
+//    @ResponseBody
+    public Object updateRechargeAccount(HttpServletRequest request,ModelMap model,WithholdDto withholdDto) throws FssException {
+//    	Map<String, Object> map = new HashMap<String, Object>();
+//                List<BankCardinfoEntity> bankCardinfoList = new ArrayList<BankCardinfoEntity>();
+//                bankCardinfoList = bankCardinfoService.queryInvestmentByCustId(custId);
+//                if(bankCardinfoList == null && bankCardinfoList.size() < 1){
+//                    throw new Exception("客户无对应的银行信息");
+//                }
+        	boolean excute = fundsTradeImpl.withholding(withholdDto);
+//            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_CHARGE, custId, businessType, bankCardinfoList, amount);
+
+        return excute;
+    }
     /**
      * 
      * author:jhz
      * time:2016年2月18日
-     * function： 为指定的客户代付
+     * function： 跳转到为指定的客户代付页面
      */
     @RequestMapping("/funds/acount/custAccountWithdraw/{withDrawId}")
-    public String accountWithdraw(HttpServletRequest request,ModelMap model,@PathVariable Integer withDrawId){
+    public String toAccountWithdraw(HttpServletRequest request,ModelMap model,@PathVariable Integer withDrawId){
     	FundAccountCustomerBean  accountWithdraw =fundAccountService.fundAccountCustomerById(withDrawId);
         model.addAttribute("acct",accountWithdraw);
-        return "funds/account/withHold/account_withdraw";
+        return "funds/account/withDraw/account_withdraw";
     }
+    /**
+     * 
+     * author:jhz
+     * time:2016年2月18日
+     * function： 为指定的客户代付提现
+     */
+    @RequestMapping("/funds/acount/withDraw")
+    @ResponseBody
+    public Object accountWithdraw(HttpServletRequest request,ModelMap model,WithdrawDto withdrawDto) throws FssException {
+//    	Map<String, Object> map = new HashMap<String, Object>();
+//    	try{
+		boolean excute = fundsTradeImpl.withdraw(withdrawDto);
+//		map.put("tips", "提现成功!!");
+	
+//		} catch (Exception e) {
+//		LogUtil.error(this.getClass(),e.getMessage(),e);
+//		map.put("tips", "提现失败!!" + e.getMessage());
+//		}
+	return excute;
+	}
+  
     
 }
