@@ -1,7 +1,9 @@
 package com.gqhmt.extServInter.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.AutoMapping;
+import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
 
 
 /**
@@ -35,7 +37,11 @@ public abstract class SuperDto {
     private String signature;
     
     @APIValidNull(errorCode = "90008401")
+    @AutoMapping("tradeTypeChild")
     private String trade_type;
+
+    @JsonIgnore
+    private FssSeqOrderEntity fssSeqOrderEntity;
     
     
 
@@ -74,4 +80,12 @@ public abstract class SuperDto {
 	public void setTrade_type(String trade_type) {
 		this.trade_type = trade_type;
 	}
+
+    public FssSeqOrderEntity getFssSeqOrderEntity() {
+        return fssSeqOrderEntity;
+    }
+
+    public void setFssSeqOrderEntity(FssSeqOrderEntity fssSeqOrderEntity) {
+        this.fssSeqOrderEntity = fssSeqOrderEntity;
+    }
 }

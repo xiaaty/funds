@@ -4,9 +4,12 @@ import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GenerateBeanUtil;
+import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
+import com.gqhmt.fss.architect.order.service.FssSeqOrderService;
 import com.gqhmt.util.StringUtils;
 import org.apache.commons.beanutils.MethodUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -15,6 +18,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
@@ -39,6 +43,9 @@ import java.lang.reflect.InvocationTargetException;
 public class APIValidAop {
 
 
+    @Resource
+    private FssSeqOrderService fssSeqOrderService;
+
     public APIValidAop() {
     }
 
@@ -59,21 +66,25 @@ public class APIValidAop {
             dto = getArgsDto(joinPoint);
             Object targetClass = joinPoint.getTarget();
             String methodName = joinPoint.getSignature().getName();
-            validMch(targetClass,methodName,dto);       //校验商户
-            //签名校验
-            validData(dto);                             //数据校验
+            //校验商户
+            this.validMch(targetClass,methodName,dto);
+            //交易类型校验
 
+            //数据校验
+            this.validData(dto);
             //生成交易订单
+            this.generate(dto);
             response = (Response)joinPoint.proceed();
         } catch (Throwable throwable) {
             LogUtil.debug(this.getClass(),throwable);
             String codeTmp = throwable.getMessage();
-            String codeValue = Application.getInstance().getDictName(codeTmp == null?"":codeTmp);
-            if(codeValue != null && !"".equals(codeValue)){
-                code = codeTmp;
+            if(codeTmp.matches("[0-9]*")){
+                String codeValue = Application.getInstance().getDictName(codeTmp == null?"":codeTmp);
+                if(codeValue != null && !"".equals(codeValue)){
+                    code = codeTmp;
+                }
             }
         }
-
         if(response == null){
             try {
                 response = GenerateBeanUtil.GenerateClassInstance(Response.class,dto);
@@ -88,9 +99,10 @@ public class APIValidAop {
                 LogUtil.error(this.getClass(),e);
             }
         }
-
+        //处理成功返回值
         response.setResp_msg(Integer.parseInt(response.getResp_code())==0 ? "成功": Application.getInstance().getDictName(response.getResp_code()));
-        response.setResp_code(response.getResp_code().length()>4?response.getResp_code().substring(response.getResp_code().length()-4):response.getResp_code());
+        //更改订单结果
+        this.callbackOrder(response,dto);
         return response;
     }
 
@@ -103,8 +115,6 @@ public class APIValidAop {
         Class<SuperDto> superDtoClass = (Class<SuperDto>) dtoClass.getSuperclass();
         Field[] fields  = dtoClass.getDeclaredFields();
         Field[] superFields= superDtoClass.getDeclaredFields();
-
-
         for(Field field:superFields){
             String name = field.getName();
             //空值校验
@@ -116,13 +126,7 @@ public class APIValidAop {
             //空值校验
             validIsNull(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
         }
-
-
-
     }
-
-
-
 
     /**
      * 商户校验
@@ -134,21 +138,20 @@ public class APIValidAop {
      */
     private String validMch(Object obj ,String method,SuperDto dto) throws FssException {
         String  result = "90099999";
-        String  mchn = "";
         try {
             Class superDtoClass = getEntityClass(dto,SuperDto.class);
             Field superField= superDtoClass.getDeclaredField("mchn");
             //校验是否为空
             validIsNull(superField,dto,"getMchn");
-            //校验权限
-            //校验ip白名单,黑名单
-
-            //签名校验
+            if (!Application.getInstance().existsMchn(dto.getMchn())){
+                throw new FssException("90008102");
+            }
+            //校验权限 使用dubbo,此功能暂时不做
+            //校验ip白名单,黑名单 使用dubbo,此功能暂时不做
+            //签名校验,使用dubbo ,此处暂时不做
         } catch (NoSuchFieldException e) {
             throw  new FssException("90099998",e);
         }
-
-
         return result;
     }
 
@@ -215,5 +218,30 @@ public class APIValidAop {
             }
         }
         throw new FssException("90099998");
+    }
+
+
+    private void generate(final SuperDto dto) throws Exception {
+        FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,dto);
+        fssSeqOrderEntity.setTradeType(Application.getInstance().getDictParentKey(dto.getTrade_type()));
+        fssSeqOrderEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+        fssSeqOrderEntity.setTradeParam(JsonUtil.getInstance().getJson(dto));
+        dto.setFssSeqOrderEntity(fssSeqOrderEntity);
+        fssSeqOrderService.save(fssSeqOrderEntity);
+    }
+
+    private void callbackOrder(Response response, SuperDto dto){
+        FssSeqOrderEntity fssSeqOrderEntity = dto.getFssSeqOrderEntity();
+        if (fssSeqOrderEntity == null){
+            return;
+        }
+        fssSeqOrderEntity.setRespCode(response.getResp_code());
+        fssSeqOrderEntity.setRespMsg(response.getResp_msg());
+        fssSeqOrderEntity.setState(Integer.parseInt(response.getResp_code())==0 ? 10030002:10030003);
+        try {
+            fssSeqOrderService.update(fssSeqOrderEntity);
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e);
+        }
     }
 }

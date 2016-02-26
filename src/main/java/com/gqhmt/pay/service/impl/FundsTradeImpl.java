@@ -112,8 +112,8 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new CommandParmException("90004004");
         }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        this.hasEnoughBanlance(entity,withdrawDto.getAmount().add(withdrawDto.getProcedure_fee()));
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmount(),withdrawDto.getProcedure_fee(),0,0l,0);
+        this.hasEnoughBanlance(entity,withdrawDto.getAmount().add(withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt()));
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmount(),withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt(),0,0l,0);
         //资金处理
         tradeRecordService.withdraw(entity,withdrawDto.getAmount(),fundOrderEntity,1003);
         return true;
