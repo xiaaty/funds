@@ -2,9 +2,9 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
-import java.math.BigDecimal;
-
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -32,7 +32,7 @@ public class WithdrawDto extends SuperDto{
     private BigDecimal amount;			//合同金额
     
     
-    private BigDecimal procedure_fee;		//交易手续费
+    private BigDecimal charge_amt;		//交易手续费
 
 
 	public String getCust_no() {
@@ -65,16 +65,11 @@ public class WithdrawDto extends SuperDto{
 	}
 
 
-	public BigDecimal getProcedure_fee() {
-		return procedure_fee;
+	public BigDecimal getCharge_amt() {
+		return charge_amt;
 	}
 
-
-	public void setProcedure_fee(BigDecimal procedure_fee) {
-		this.procedure_fee = procedure_fee;
+	public void setCharge_amt(BigDecimal charge_amt) {
+		this.charge_amt = charge_amt;
 	}
-
-
-    
-    
 }

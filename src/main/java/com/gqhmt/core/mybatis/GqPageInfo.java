@@ -4,7 +4,7 @@ package com.gqhmt.core.mybatis;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
-import com.gqhmt.util.JsonUtil;
+import com.gqhmt.core.util.JsonUtil;
 
 import java.util.HashMap;
 import java.util.List;

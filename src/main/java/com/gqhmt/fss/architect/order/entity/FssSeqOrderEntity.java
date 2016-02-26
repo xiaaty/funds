@@ -110,6 +110,12 @@ public class FssSeqOrderEntity implements Serializable {
     @Column(name = "trade_param")
     private String tradeParam;                         // blob COMMENT '交易参数存储字段',
 
+    @Column(name = "resp_code")
+    private String respCode;
+
+    @Column(name="resp_msg")
+    private String respMsg;
+
     public Long getId() {
         return id;
     }
@@ -268,5 +274,21 @@ public class FssSeqOrderEntity implements Serializable {
 
     public void setTradeParam(String tradeParam) {
         this.tradeParam = tradeParam;
+    }
+
+    public String getRespCode() {
+        return respCode;
+    }
+
+    public void setRespCode(String respCode) {
+        this.respCode = respCode;
+    }
+
+    public String getRespMsg() {
+        return respMsg;
+    }
+
+    public void setRespMsg(String respMsg) {
+        this.respMsg = respMsg;
     }
 }

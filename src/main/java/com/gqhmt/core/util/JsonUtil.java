@@ -1,4 +1,4 @@
-package com.gqhmt.util;
+package com.gqhmt.core.util;
 
 
 import com.fasterxml.jackson.core.JsonGenerator;
