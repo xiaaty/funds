@@ -1,9 +1,12 @@
 package com.gqhmt.funds.architect.trade.service;
 
+import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.pay.service.exception.NeedSMSValidException;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
+import com.gqhmt.extServInter.dto.trade.WithdrawDto;
+import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
@@ -40,7 +43,8 @@ public class WithdrawApplyService {
 	private WithdrawApplyReadMapper withdrawApplyReadMapper;
 	@Resource
 	private WithdrawApplyWriteMapper withdrawApplyWriteMapper;
-	
+	@Resource
+	private IFundsTrade fundsTradeImpl;
 
 //	@Autowired
 //	private TenderService tenderService;
@@ -239,6 +243,11 @@ public class WithdrawApplyService {
 		if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 
 			try {
+				WithdrawDto withdrawDto=new WithdrawDto();
+				withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+				withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+				withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+				fundsTradeImpl.withdraw(withdrawDto);
 
 //				WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
 				// 代扣
@@ -297,9 +306,19 @@ public class WithdrawApplyService {
 				if (callBackFlg) {
 
 					// 提现
+					WithdrawDto withdrawDto=new WithdrawDto();
+					withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+					withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+					withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+					fundsTradeImpl.withdraw(withdrawDto);
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity,withdrawApplyCallback.getClass());
 				} else {
 					// 提现
+					WithdrawDto withdrawDto=new WithdrawDto();
+					withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+					withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+					withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+					fundsTradeImpl.withdraw(withdrawDto);
 
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
 				}
@@ -366,6 +385,11 @@ public class WithdrawApplyService {
 				if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 					
 					try {
+						WithdrawDto withdrawDto=new WithdrawDto();
+						withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+						withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+						withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+						fundsTradeImpl.withdraw(withdrawDto);
 //						WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
 						// 代扣
 //						AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity, withdrawApplyCallback.getClass());
@@ -455,6 +479,11 @@ public class WithdrawApplyService {
 						if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 							try {
 								// 代扣
+								WithdrawDto withdrawDto=new WithdrawDto();
+								withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+								withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+								withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+								fundsTradeImpl.withdraw(withdrawDto);
 //								AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
 							}catch (ThirdpartyErrorAsyncException e){
 								//需要手动核对

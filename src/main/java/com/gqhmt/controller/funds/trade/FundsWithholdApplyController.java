@@ -101,7 +101,7 @@ public class FundsWithholdApplyController {
 		
 		for (int i=0; i<ids.length; i++) {
 		      try {
-		    	  returnCode =  withholdService.updateWithholdRech(ids[i], String.valueOf(user.getId()));
+		    	  returnCode =  withholdService.updateWithholdRech(Long.parseLong(ids[i]), String.valueOf(1));
 		    	  
 		    	  successCount ++;
 		        } catch (Exception e) {
@@ -132,7 +132,7 @@ public class FundsWithholdApplyController {
 				        	  LogUtil.error(this.getClass(), "代扣审核的代扣审批动作报错日志0008====" + e.getMessage(), e);
 				        	  //如果代扣失败,更新合同状态为代扣失败
 								try {
-									withholdService.updateWithholdRechStatus(ids[i], String.valueOf(user.getId()));
+									withholdService.updateWithholdRechStatus(ids[i], String.valueOf(1));
 								} catch (Exception e1) {
 									// TODO Auto-generated catch block
 						        	  code = "0007";
@@ -211,7 +211,7 @@ public class FundsWithholdApplyController {
 		String message="代扣成功。";
 		String returnCode ="";
 	      try {
-	    	  returnCode = withholdService.updateWithholdRechSave(withholdApplyFormBean, String.valueOf(user.getId()));
+	    	  returnCode = withholdService.updateWithholdRechSave(withholdApplyFormBean, String.valueOf(1));
 	    	  if ("0001".equals(returnCode)) {
 	    		  withholdService.updateCallBackBussness(withholdApplyFormBean.getId());
 	    	  }
@@ -239,7 +239,7 @@ public class FundsWithholdApplyController {
 			//如果代扣失败,更新合同状态为代扣失败
 			if ("0008".equals(code)) {
 				try {
-					withholdService.updateWithholdRechStatus(withholdApplyFormBean.getId(), String.valueOf(user.getId()));
+					withholdService.updateWithholdRechStatus(withholdApplyFormBean.getId(), String.valueOf(1));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -275,7 +275,7 @@ public class FundsWithholdApplyController {
 		  		// 审核不通过
 		  		if (withholdApplyFormBean.getApplyStatus().intValue() == 3) {
 		  			// 申请状态 3-取消
-		  			withholdService.updateWithholdStatus(withholdApplyFormBean.getId(), String.valueOf(user.getId()), 3);
+		  			withholdService.updateWithholdStatus(withholdApplyFormBean.getId(), String.valueOf(1), 3);
 
 		  		} else {
 		  		
@@ -307,7 +307,7 @@ public class FundsWithholdApplyController {
 	  						// 审核时间
 	  						withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 	  						// 审核user
-	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 		  					//更新合同状态
 		  					withholdService.update(withholdApplyEntity);
 		  					
@@ -321,7 +321,7 @@ public class FundsWithholdApplyController {
 	  						// 审核时间
 	  						withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 	  						// 审核user
-	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 		  					//更新合同状态
 		  					withholdService.update(withholdApplyEntity);
 		  					//回调
@@ -332,7 +332,7 @@ public class FundsWithholdApplyController {
 	  						// 审核时间
 	  						withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 	  						// 审核user
-	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 		  					//更新合同状态
 		  					withholdService.update(withholdApplyEntity);
 	  					}
@@ -365,7 +365,7 @@ public class FundsWithholdApplyController {
 			//如果代扣失败,更新合同状态为代扣失败
 			if ("0008".equals(code) && factDrawAmount.equals(BigDecimal.ZERO)) {
 				try {
-					withholdService.updateWithholdRechStatus(withholdApplyFormBean.getId(), String.valueOf(user.getId()));
+					withholdService.updateWithholdRechStatus(withholdApplyFormBean.getId(), String.valueOf(1));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -380,7 +380,7 @@ public class FundsWithholdApplyController {
 					// 审核时间
 					withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 					// 审核user
-					withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+					withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 					withholdService.update(withholdApplyEntity);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -442,7 +442,7 @@ public class FundsWithholdApplyController {
 				withholdApplyEntity.setApplyStatus(2);//设置为已代扣
 				withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 				// 审核user
-				withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+				withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 				//更新合同状态
 				withholdService.update(withholdApplyEntity);
 			}
@@ -484,7 +484,7 @@ public class FundsWithholdApplyController {
 		  		// 审核不通过
 		  		if (withholdApplyFormBean.getApplyStatus().intValue() == 3) {
 		  			// 申请状态 3-取消
-		  			withholdService.updateWithholdStatus(withholdApplyFormBean.getId(), String.valueOf(user.getId()), 3);
+		  			withholdService.updateWithholdStatus(withholdApplyFormBean.getId(), String.valueOf(1), 3);
 
 		  		} else {
 		  			BankCardInfoEntity bankCardinfoEntity = null;
@@ -515,7 +515,7 @@ public class FundsWithholdApplyController {
 	  						// 审核时间
 	  						withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 	  						// 审核user
-	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 		  					//更新合同状态
 		  					withholdService.update(withholdApplyEntity);
 		  					
@@ -529,7 +529,7 @@ public class FundsWithholdApplyController {
 	  						// 审核时间
 	  						withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 	  						// 审核user
-	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 		  					//更新合同状态
 		  					withholdService.update(withholdApplyEntity);
 		  					//回调
@@ -540,7 +540,7 @@ public class FundsWithholdApplyController {
 	  						// 审核时间
 	  						withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 	  						// 审核user
-	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+	  						withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 		  					//更新合同状态
 		  					withholdService.update(withholdApplyEntity);
 	  					}
@@ -573,7 +573,7 @@ public class FundsWithholdApplyController {
 			//如果代扣失败,更新合同状态为代扣失败
 			if ("0008".equals(code) && factDrawAmount.equals(BigDecimal.ZERO)) {
 				try {
-					withholdService.updateWithholdRechStatus(withholdApplyFormBean.getId(), String.valueOf(user.getId()));
+					withholdService.updateWithholdRechStatus(withholdApplyFormBean.getId(), String.valueOf(1));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -588,7 +588,7 @@ public class FundsWithholdApplyController {
 					// 审核时间
 					withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
 					// 审核user
-					withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+					withholdApplyEntity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 					withholdService.update(withholdApplyEntity);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

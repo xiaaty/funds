@@ -6,7 +6,6 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
-import com.gqhmt.extServInter.service.trade.IWithdraw;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
@@ -16,6 +15,7 @@ import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
+import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.sys.beans.SysUsers;
 
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -61,7 +60,7 @@ public class FundsWithdrawApplyController {
 	@Resource
 	private InvestmentService investmentService;
 	@Resource
-	private IWithdraw withdrawImpl;
+	private IFundsTrade fundsTradeImpl;
 	
 	
 //	@Resource
@@ -110,7 +109,7 @@ public class FundsWithdrawApplyController {
 		WithdrawDto withdrawDto= new WithdrawDto();
 		withdrawDto.setCust_no(withDrawBean.getCustId().toString());
 		withdrawDto.setAmount(withDrawBean.getDrawAmount());
-		withdrawDto.setProcedure_fee(withDrawBean.getProcedureFee());
+		withdrawDto.setCharge_amt(withDrawBean.getProcedureFee());
 		SysUsers user = (SysUsers) request.getSession().getAttribute(
 				GlobalConstants.SESSION_EMP);
 		Map<String, Object> map= new HashMap<>();
@@ -127,8 +126,8 @@ public class FundsWithdrawApplyController {
 							i));
 					withdrawDto.setCust_no(entity.getCustId().toString());
 					withdrawDto.setAmount(entity.getDrawAmount());
-					withdrawDto.setProcedure_fee(entity.getProcedureFee());
-					withdrawImpl.excute(withdrawDto);
+					withdrawDto.setCharge_amt(entity.getProcedureFee());
+					fundsTradeImpl.withdraw(withdrawDto);
 
 				}
 
@@ -152,7 +151,7 @@ public class FundsWithdrawApplyController {
 						// waiting do
 					}
 				}else {
-					withdrawImpl.excute(withdrawDto);
+					fundsTradeImpl.withdraw(withdrawDto);
 				}
 
 			map.put("tips", "S");
@@ -161,7 +160,7 @@ public class FundsWithdrawApplyController {
 			// 需要手动核对
 			try {
 				withDrawService.updateWithDrawEntity(withDrawBean.getId(),
-						String.valueOf(user.getId()), 99);
+						String.valueOf(1), 99);
 				map.put("tips", "S");
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -174,7 +173,7 @@ public class FundsWithdrawApplyController {
 
 			try {
 				withDrawService.updateWithDrawEntity(withDrawBean.getId(),
-						String.valueOf(user.getId()), 4);
+						String.valueOf(1), 4);
 				map.put("tips", "S");
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -253,8 +252,10 @@ public class FundsWithdrawApplyController {
 		String returnCode = "";
 		for (int i = 0; i < ids.length; i++) {
 			try {
+//				returnCode = withDrawService.updateWithdrawDepute(ids[i],
+//						String.valueOf(1));
 				returnCode = withDrawService.updateWithdrawDepute(ids[i],
-						String.valueOf(user.getId()));
+						String.valueOf(1));
 
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e.getMessage(), e);
@@ -326,7 +327,7 @@ public class FundsWithdrawApplyController {
 		WithdrawDto withdrawDto= new WithdrawDto();
 		withdrawDto.setCust_no(withDrawBean.getCustId().toString());
 		withdrawDto.setAmount(withDrawBean.getDrawAmount());
-		withdrawDto.setProcedure_fee(withDrawBean.getProcedureFee());
+		withdrawDto.setCharge_amt(withDrawBean.getProcedureFee());
 		String code = "0000";
 		String agreeNo = "";
 		String message = "提现成功。";
@@ -387,7 +388,7 @@ public class FundsWithdrawApplyController {
 					// 审核时间
 					entity.setReviewTime(new Date(System.currentTimeMillis()));
 					// 审核user
-					entity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+					entity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 					// 更新合同状态
 					withDrawService.update(entity);
 
@@ -404,7 +405,7 @@ public class FundsWithdrawApplyController {
 				}
 
 			} else {
-				withdrawImpl.excute(withdrawDto);
+				fundsTradeImpl.withdraw(withdrawDto);
 				message = "提现拒绝。";
 			}
 		} catch (Exception e) {
@@ -448,7 +449,7 @@ public class FundsWithdrawApplyController {
 				// 审核时间
 				entity.setReviewTime(new Date(System.currentTimeMillis()));
 				// 审核user
-				entity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+				entity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 				withDrawService.update(entity);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -508,7 +509,7 @@ public class FundsWithdrawApplyController {
 		WithdrawDto withdrawDto= new WithdrawDto();
 		withdrawDto.setCust_no(withDrawBean.getCustId().toString());
 		withdrawDto.setAmount(withDrawBean.getDrawAmount());
-		withdrawDto.setProcedure_fee(withDrawBean.getProcedureFee());
+		withdrawDto.setCharge_amt(withDrawBean.getProcedureFee());
 		String code = "0000";
 		String agreeNo = "";
 		String message = "提现成功。";
@@ -579,13 +580,13 @@ public class FundsWithdrawApplyController {
 					// 审核时间
 					entity.setReviewTime(new Date(System.currentTimeMillis()));
 					// 审核user
-					entity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+					entity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 					// 更新合同状态
 					withDrawService.update(entity);
 				}
 
 			} else {
-				withdrawImpl.excute(withdrawDto);
+				fundsTradeImpl.withdraw(withdrawDto);
 				message = "提现拒绝。";
 			}
 		} catch (Exception e) {
