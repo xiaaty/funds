@@ -51,6 +51,19 @@ public class FundOrderService  {
         fundOrderWriteMapper.updateByPrimaryKeySelective(entity);
     }
 
+    /**
+     * 创建交易订单
+     * @param primaryAccount
+     * @param toAccountEntity
+     * @param amount
+     * @param chargeAmount
+     * @param orderType
+     * @param sourceID
+     * @param sourceType
+     * @param thirdPartyType
+     * @return
+     * @throws FssException
+     */
     public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, Long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
         FundOrderEntity fundOrderEntity = new FundOrderEntity();
         fundOrderEntity.setAccountId(primaryAccount.getId());
@@ -64,13 +77,14 @@ public class FundOrderService  {
         fundOrderEntity.setOrderFrormId(sourceID);
         // 订单类型(1-充值 2-提现 3-代偿 4-投标 5-转账 6-还款 7-流标)
         fundOrderEntity.setOrderType(orderType);
-        fundOrderEntity.setThirdPartyType("2");
+        fundOrderEntity.setThirdPartyType(thirdPartyType);
         fundOrderEntity.setChargeAmount(chargeAmount);
         fundOrderEntity.setOrderState(GlobalConstants.ORDER_STATUS_SUBMIT);
         try {
-            this.insert(fundOrderEntity);
+        	this.insert(fundOrderEntity);
+        	this.update(fundOrderEntity);
         } catch (Exception e) {
-            throw new CommandParmException("" + e.getMessage());
+            throw new FssException(e.getMessage());
         }
         return fundOrderEntity;
     }
@@ -120,9 +134,10 @@ public class FundOrderService  {
 		fundOrderEntity.setRetCode(code);
 		fundOrderEntity.setRetMessage(msg);
 		try {
-			fundOrderWriteMapper.updateByPrimaryKey(fundOrderEntity);
+			this.insert(fundOrderEntity);
+			this.update(fundOrderEntity);
 		} catch (Exception e) {
-			throw new CommandParmException(e.getMessage());
+			throw new FssException(e.getMessage());
 		}
 	}
     

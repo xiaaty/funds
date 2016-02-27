@@ -19,6 +19,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.StringUtils;
 
+import org.hamcrest.core.IsNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -391,11 +392,24 @@ public class FundAccountService {
 		return true;
 	}
 	
-	
-	
-	
-	
-	
+	/**
+	 * 获取其他账户信息
+	 * @param cusID
+	 * @param type
+	 * @return
+	 */
+	public FundAccountEntity getFundsAccount(Integer cusID, int type) throws FssException {
+		FundAccountEntity fundaccount = null;
+		if (cusID < 100) {
+			fundaccount = fundsAccountReadMapper.queryFundAccountByCutId(cusID, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		} else {
+			fundaccount = fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
+		}
+		if (fundaccount == null) {
+			throw new FssException("" + GlobalConstants.accountType.get(type) + "不存在");
+		}
+		return fundaccount;
+	}
 	
 	
 	

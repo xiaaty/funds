@@ -62,20 +62,17 @@ public class TransferAccountImpl  implements ITransferAccount {
      */
 	@Override
 	public boolean transfer(TransferDto transferDto) throws FssException {
-      FundAccountEntity fromEntity = fundaccountService.getFundAccount(transferDto.getFromCusID(), transferDto.getFromTyp());
+      FundAccountEntity fromEntity = fundaccountService.getFundsAccount(transferDto.getFromCusID(), transferDto.getFromTyp().intValue());
       fundSequenceService.hasEnoughBanlance(fromEntity,transferDto.getAmount());
-      FundAccountEntity toEntity = fundaccountService.getFundAccount(transferDto.getFromCusID(),transferDto.getToType());
+      FundAccountEntity toEntity = fundaccountService.getFundsAccount(transferDto.getToCusID(),transferDto.getToType().intValue());
       //订单号
-      //BaseResponse response  = daQianService.transfer(primaryAccount,amount,transactionUsers,fundOrderEntity.getOrderNo(),"转账", EncryptUtil.daqianRsa(primaryAccount.getTradePassword()));
       //去掉账户余额查询和解冻操作20150829 于泳 直接将提现金额发给富友
       FundOrderEntity fundOrderEntity = fundOrderService.createOrder(fromEntity,toEntity,transferDto.getAmount(),BigDecimal.ZERO,transferDto.getSourceType().intValue()==0?GlobalConstants.ORDER_TRANSFER:transferDto.getSourceType(),Long.valueOf(transferDto.getSourceId()),Integer.valueOf(GlobalConstants.BUSINESS_TRANSFER),thirdPartyType);
-      CommandResponse response = ThirdpartyFactory.command("2", "1", fundOrderEntity, fromEntity,toEntity,transferDto.getAmount());
+      CommandResponse response = ThirdpartyFactory.command(thirdPartyType, "1", fundOrderEntity, fromEntity,toEntity,transferDto.getAmount());
       if(response.getCode().equals("0009")){
     	  fundOrderService.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
-          throw new FssException("修改订单失败");
       }else if(!"0000".equals(response.getCode())){
     	  fundOrderService.updateOrder(fundOrderEntity,3,response.getCode(),response.getMsg());
-    	  throw new FssException("修改订单失败");
       }
       try {
     	  fundSequenceService.transfer(fromEntity, toEntity, transferDto.getAmount(), 8, transferDto.getAccountType() == null ? 1005 : transferDto.getAccountType(),null,ThirdPartyType.FUIOU, fundOrderEntity);
@@ -88,6 +85,4 @@ public class TransferAccountImpl  implements ITransferAccount {
       }
       return true;
 	}
-	
-	
 }
