@@ -3,8 +3,6 @@ package com.gqhmt.extServInter.service.trade.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawApplyDto;
-import com.gqhmt.extServInter.dto.trade.WithdrawDto;
-import com.gqhmt.extServInter.service.trade.IWithdraw;
 import com.gqhmt.extServInter.service.trade.IWithdrawApply;
 import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.core.FssException;

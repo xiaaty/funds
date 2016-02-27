@@ -176,8 +176,8 @@ public class FundAccountService {
     * time:2016年2月22日
     * function：通过custId得到账户
     */
-    public FundAccountEntity getFundAccount(Integer cusID, int type){
-        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, 0);
+    public FundAccountEntity getFundAccount(Integer cusID, Integer type){
+        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
     }
 
     /**

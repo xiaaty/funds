@@ -71,7 +71,7 @@
                         <tr>
                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>账户编号:</td>
                            <td>${acct.accountNo}
-                           <input type="hidden" value="${acct.custId}" name="cust_no" />
+                           <input type="hidden" value="${acct.custId}" name="cust_no" id="custId" />
                            </td>
                         </tr>
                         <tr>
@@ -157,13 +157,13 @@
 //                 		    	html:'<img src="${contextPath}/images/info.gif">'
 //                 		    }
 //                 		});
-                        gqi.post("${contextPath}/funds/acount/AccountWithdraw",$("#withDrawForm").serialize(),null,function(data){
+                        gqi.post("${contextPath}/funds/acount/AccountWithdraw",{"custId":custId,"businessType":businessType,"ammount":ammount},null,function(data){
 //                           var msg = eval("(" + data + ")");
                           console.info(data.tips+"*********");
                             alert(data.tips);
-                                window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
+//                                 window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
                                 return;
-                        },"json");
+                        });
                     });
                 });
 		</script>
