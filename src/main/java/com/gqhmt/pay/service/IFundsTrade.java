@@ -123,6 +123,34 @@ public interface IFundsTrade {
      * @throws FssException
      */
     public boolean transefer(String thirdPartyType,Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：线下代扣充值
+     * @param custID                    客户id
+     * @param businessType              业务类型1，出借赎回代付，2借款放款代付；3借款其他资金代付；4抵押权人资金代付；5代偿人资金代付；99，其他代付
+     * @param contractNo
+     * @param amount
+     * @return
+     * @throws FssException
+	 */
+    boolean withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount,
+			Long busiId) throws FssException;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：线下提现代付
+     * @param custID                    客户id
+     * @param businessType              业务类型1，出借赎回代付，2借款放款代付；3借款其他资金代付；4抵押权人资金代付；5代偿人资金代付；99，其他代付
+     * @param contractNo
+     * @param amount
+     * @return
+     * @throws FssException
+	 */
+    boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
+			Long busiId) throws FssException;
 
     /**
      * 费用接口
