@@ -1,7 +1,9 @@
 package com.gqhmt.controller.funds.account;
 
+import com.alibaba.dubbo.common.json.JSONObject;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
@@ -9,6 +11,7 @@ import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.util.JsonUtil;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
@@ -41,7 +46,6 @@ import javax.servlet.http.HttpServletRequest;
  * 2016/02/16  jhz      1.0     1.0 Version
  */
 @Controller
-
 public class FundsAccountController {
 	@Resource
     private FundAccountService fundAccountService;
@@ -132,21 +136,24 @@ public class FundsAccountController {
      * author:jhz
      * time:2016年2月24日
      * function：为指定的对公账户提现
+     * @throws IOException 
      */
     @RequestMapping("/funds/acount/AccountWithdraw")
-    @ResponseBody
-    public Object withdraw(HttpServletRequest request,ModelMap model,WithdrawDto withdrawDto) throws FssException {
-//    	System.out.println(withdrawDto.getCust_no()+withdrawDto.getAmount()+"**********");
+//    @ResponseBody
+    public void withdraw(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithdrawDto withdrawDto) throws FssException, IOException {
+    	JSONObject json=new JSONObject();
+    	//    	System.out.println(withdrawDto.getCust_no()+withdrawDto.getAmount()+"**********");
 //    	Map<String, Object> map = new HashMap<String, Object>();
-//	try {
-		boolean excute = fundsTradeImpl.withdraw(withdrawDto);
-//		map.put("tips", "0000");
+	try {
+		fundsTradeImpl.withdraw(withdrawDto);
+    	json.put("tips", "提现成功!!");
 	
-//	} catch (FssException e) {
-//		LogUtil.error(this.getClass(),e.getMessage(),e);
-//		map.put("tips", "提现失败!!" + e.getMessage());
-//	}
-	return excute;
+	} catch (FssException e) {
+		LogUtil.error(this.getClass(),e.getMessage(),e);
+		json.put("tips", "提现失败!!" + e.getMessage());
+	}
+	JsonUtil.printStr(response, json.toString());
+//	return excute;
 	}
   
     /**
@@ -166,20 +173,27 @@ public class FundsAccountController {
      * author:jhz
      * time:2016年2月25日
      * function：为指定的客户代扣
+     * @throws IOException 
      */
-    @RequestMapping(value = "/funds/acount/withhold",method = RequestMethod.POST)
-//    @ResponseBody
-    public Object updateRechargeAccount(HttpServletRequest request,ModelMap model,WithholdDto withholdDto) throws FssException {
-//    	Map<String, Object> map = new HashMap<String, Object>();
+    @RequestMapping(value = "/funds/acount/withhold2111",method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateRechargeAccount(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithholdDto withholdDto) throws FssException, IOException {
+//    	JSONObject json=new JSONObject();
+    	Map<String, Object> map = new HashMap<String, Object>();
 //                List<BankCardinfoEntity> bankCardinfoList = new ArrayList<BankCardinfoEntity>();
 //                bankCardinfoList = bankCardinfoService.queryInvestmentByCustId(custId);
 //                if(bankCardinfoList == null && bankCardinfoList.size() < 1){
 //                    throw new Exception("客户无对应的银行信息");
 //                }
-        	boolean excute = fundsTradeImpl.withholding(withholdDto);
+    	try{
+        	 fundsTradeImpl.withholding(withholdDto);
+        	 map.put("tips", "提现成功!!");
 //            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_CHARGE, custId, businessType, bankCardinfoList, amount);
-
-        return excute;
+    } catch (FssException e) {
+		LogUtil.error(this.getClass(),e.getMessage(),e);
+		map.put("tips", "代扣失败!!" + e.getMessage());
+	}
+        return map;
     }
     /**
      * 
@@ -198,20 +212,26 @@ public class FundsAccountController {
      * author:jhz
      * time:2016年2月18日
      * function： 为指定的客户代付提现
+     * @throws IOException 
      */
     @RequestMapping("/funds/acount/withDraw")
     @ResponseBody
-    public Object accountWithdraw(HttpServletRequest request,ModelMap model,WithdrawDto withdrawDto) throws FssException {
-//    	Map<String, Object> map = new HashMap<String, Object>();
+    public Object accountWithdraw(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithdrawDto withdrawDto) throws FssException, IOException {
+    	Map<String, Object> map = new HashMap<String, Object>();
 //    	try{
-		boolean excute = fundsTradeImpl.withdraw(withdrawDto);
-//		map.put("tips", "提现成功!!");
+//    	System.out.println("为指定的客户代付提现+++++++");
+//    	JSONObject json=new JSONObject();
+    	try{
+		fundsTradeImpl.withdraw(withdrawDto);
+		map.put("tips", "提现成功!!");
 	
-//		} catch (Exception e) {
-//		LogUtil.error(this.getClass(),e.getMessage(),e);
-//		map.put("tips", "提现失败!!" + e.getMessage());
-//		}
-	return excute;
+		} catch (Exception e) {
+		LogUtil.error(this.getClass(),e.getMessage(),e);
+		map.put("tips", "提现失败!!" + e.getMessage());
+		}
+//    	JsonUtil.printStr(response, json.toString());
+    	
+    	return map;
 	}
   
     

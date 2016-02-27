@@ -318,7 +318,8 @@
            no.each(function () {
                param.push($(this).val());
            })
-           
+           alert(param);
+           console.info(param);
 // 	        var pageLoad =$.layer({
 // 			    type: 1,
 // 			    title: '',
@@ -338,7 +339,7 @@
                if (data.code == '0000') {
 	
                    jAlert(data.message + "!", '确认信息');
-                   $("#withdrawForm").submit();
+                   $("#withdrawApplyForm").submit();
                    $("#checkAll").removeAttr("checked");
                    return false;
                } else if (data.code == '0001') {

@@ -1,9 +1,11 @@
 package com.gqhmt.funds.architect.trade.service;
 
+import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.pay.service.exception.NeedSMSValidException;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
+import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.trade.bean.WithholdApplyBean;
 import com.gqhmt.funds.architect.trade.bean.WithholdApplyFormBean;
@@ -39,6 +41,9 @@ public class WithholdApplyService {
 	
 	@Resource
 	private WithholdApplyWriteMapper withholdApplyWriteMapper;
+	
+	@Resource
+	private IFundsTrade fundsTradeImpl;
 
 //	@Autowired
 //	BankCardinfoService bankCardinfoService;
@@ -139,7 +144,7 @@ public class WithholdApplyService {
 	 * 代扣
 	 * 
 	 */
-	public String updateWithholdRech(String id, String sysUserId) throws Exception {
+	public String updateWithholdRech(Long id, String sysUserId) throws Exception {
 
 		WithholdApplyEntity withholdApplyEntity = null;
 
@@ -172,6 +177,10 @@ public class WithholdApplyService {
 		if (withholdApplyEntity.getThirdPartyType().intValue() == 2) {
 
 			try {
+				WithholdDto withholdDto=new WithholdDto();
+				withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
+				withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+				fundsTradeImpl.withholding(withholdDto);
 				//WithholdApplyCallback withholdApplyCallback = new WithholdApplyCallback();
 				// 代扣
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, withholdApplyEntity.getDrawAmount(), withholdApplyEntity.getId().intValue());
@@ -367,7 +376,7 @@ public class WithholdApplyService {
 	public void updateWithholdRechStatus(String id, String sysUserId) throws Exception {
 
 		// 代扣申请明细
-		WithholdApplyEntity withholdApplyEntity = withholdApplyReadMapper.selectByPrimaryKey(id);
+		WithholdApplyEntity withholdApplyEntity = withholdApplyReadMapper.selectByPrimaryKey(Long.parseLong(id));
 
 		// 审核时间
 		withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));
@@ -424,6 +433,10 @@ public class WithholdApplyService {
 					//WithholdApplyCallback withholdApplyCallback = new WithholdApplyCallback();
 					try {
 						// 代扣
+						WithholdDto withholdDto=new WithholdDto();
+						withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
+						withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+						fundsTradeImpl.withholding(withholdDto);
 						//AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, withholdApplyFormBean.getDrawAmountSplit().get(i), withholdApplyEntity.getId().intValue(), withholdApplyCallback.getClass());
 					}catch (ThirdpartyErrorAsyncException e){
 						//需要手动核对
@@ -565,10 +578,18 @@ public class WithholdApplyService {
 			try {
 
 				if (callBackFlg) {
+					WithholdDto withholdDto=new WithholdDto();
+					withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
+					withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+					fundsTradeImpl.withholding(withholdDto);
 					// 代扣
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, drawMoney, withholdApplyEntity.getId().intValue(), withholdApplyCallback.getClass());
 				} else {
 					// 代扣
+					WithholdDto withholdDto=new WithholdDto();
+					withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
+					withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+					fundsTradeImpl.withholding(withholdDto);
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, drawMoney, withholdApplyEntity.getId().intValue());
 				}
 	

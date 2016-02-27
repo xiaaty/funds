@@ -178,7 +178,7 @@ public class FundAccountService {
     * function：通过custId得到账户
     */
     public FundAccountEntity getFundAccount(Integer cusID, int type){
-        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, 3);
+        return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, 0);
     }
 
     /**
