@@ -119,7 +119,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         return true;
     }
     /**
-     * 代扣申请
+     * 线上代扣申请
      */
     @Override
     public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException {
@@ -138,7 +138,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 		 return true;
     }
     /**
-     * 提现申请
+     * 线上提现申请
      */
     @Override
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException {
@@ -157,7 +157,38 @@ public class FundsTradeImpl  implements IFundsTrade {
 		}
         return true;
     }
-
+    /**
+	 * 
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：线下代扣充值
+	 */
+    @Override
+    public boolean withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException {
+        FundAccountEntity entity = this.getFundAccount(custID, businessType);
+        checkwithholdingOrWithDraw(entity,1,businessType);
+        paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_CHARGE,0,0);
+        //资金处理
+        return true;
+    }
+    /**
+	 * 
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：线下提现代付
+	 */
+    @Override
+    public boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException {
+        FundAccountEntity entity = this.getFundAccount(custID, businessType);
+        this.hasEnoughBanlance(entity,amount);
+        checkwithholdingOrWithDraw(entity,2,businessType);
+        paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
+      //资金处理
+        return true;
+    }
+    /**
+     * 
+     */
     @Override
     public boolean transefer(String thirdPartyType, Integer fromCusID, Integer fromType, Integer toCusID, Integer toType, BigDecimal amount, Integer orderType, Long busiId, int busiType) throws FssException {
         FundAccountEntity fromEntity = this.getFundAccount(fromCusID, fromType);

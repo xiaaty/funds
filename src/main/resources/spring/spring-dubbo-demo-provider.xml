@@ -20,9 +20,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <dubbo:application name="demo-provider" owner="programmer" organization="dubbox"/>
+<!--     <dubbo:application name="demo-provider" owner="programmer" organization="dubbox"/> -->
 
-    <dubbo:registry address="zookeeper://10.100.200.40:2181"/>
+<!--     <dubbo:registry address="zookeeper://10.100.200.40:2181"/> -->
 
     <!--uncomment this if you want to test dubbo's monitor-->
     <!--<dubbo:monitor protocol="registry"/>-->
@@ -36,7 +36,7 @@
     <!--<dubbo:protocol name="dubbo" serialization="nativejava"/>-->
     <!--<dubbo:protocol name="dubbo" serialization="hessian2"/>-->
     <!--<dubbo:protocol name="dubbo" serialization="fastjson"/>-->
-    <dubbo:protocol name="dubbo" serialization="dubbo"/>
+<!--     <dubbo:protocol name="dubbo" serialization="dubbo"/> -->
 
 
     <!--TODO according to the spring convention, we should use something like keep-alive-->
@@ -81,5 +81,5 @@
     <!--<bean id="anotherUserRestService" class="com.alibaba.dubbo.demo.user.facade.AnotherUserRestServiceImpl">-->
         <!--<property name="userService" ref="userService"/>-->
     <!--</bean>-->
-    <dubbo:service interface="com.gqhmt.extServInter.service.account.ICreateAccount" ref="createAccountImpl" protocol="dubbo" group="xmlConfig"/>
+<!--     <dubbo:service interface="com.gqhmt.extServInter.service.account.ICreateAccount" ref="createAccountImpl" protocol="dubbo" group="xmlConfig"/> -->
 </beans>
