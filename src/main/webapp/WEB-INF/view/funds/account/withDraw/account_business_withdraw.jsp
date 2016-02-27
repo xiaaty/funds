@@ -158,9 +158,8 @@
 //                 		    }
 //                 		});
                         gqi.post("${contextPath}/funds/acount/AccountWithdraw",$("#withDrawForm").serialize(),null,function(data){
-//                                 var msg = eval("(" + data + ")");
-                                console.info(data.tips);
-                                alert(data.tips);
+                          var msg = eval("(" + data + ")");
+                            alert(msg.tips);
                                 window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
                                 return;
                         },"json");

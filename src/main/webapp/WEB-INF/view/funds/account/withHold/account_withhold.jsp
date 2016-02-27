@@ -165,8 +165,8 @@
 //                 		});
                         gqi.post("${contextPath}/funds/acount/withhold",$("#withHoldForm").serialize(),null,function(data){
 //                                 layer.close(pageLoad); //执行关闭
-//                                 var msg = eval("(" + data + ")");
-//                                 alert(date);
+                                var msg = eval("(" + data + ")");
+                                alert(msg.tips);
                                 window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
                                 return;
                         },"json");

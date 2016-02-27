@@ -37,7 +37,7 @@ public class CreateAccountImpl implements ICreateAccount{
     	Response response = new Response();
     	try {
     		fundsAccountImpl.createAccount((CreateAccountDto)dto);
-			 response.setResp_code("00000000");
+			response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.debug(this.getClass(), e);
 			response.setResp_code(e.getMessage());

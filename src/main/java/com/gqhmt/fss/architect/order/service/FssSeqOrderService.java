@@ -1,6 +1,12 @@
 package com.gqhmt.fss.architect.order.service;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
+import com.gqhmt.fss.architect.order.mapper.write.FssSeqOrderWriteMapper;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.FssSeqOrderService
@@ -21,7 +27,36 @@ import org.springframework.stereotype.Service;
 @Service
 public class FssSeqOrderService {
 
-    public void createSeqNoOpen(){
+    @Resource
+    private FssSeqOrderWriteMapper fssSeqOrderWriteMapper;
+
+    public void save(FssSeqOrderEntity fssSeqOrderEntity) throws FssException {
+        try{
+            fssSeqOrderWriteMapper.insertSelective(fssSeqOrderEntity);
+        }catch (Exception e){
+
+            if(e.getMessage() != null && e.getMessage().contains("uk_seq_no_mchn")){
+                throw  new FssException("90008202");
+            }else{
+                LogUtil.error(this.getClass(),e);
+                throw  new FssException("90099005");
+            }
+        }
+
+    }
+
+    public void update(FssSeqOrderEntity fssSeqOrderEntity)throws FssException{
+        try {
+            fssSeqOrderWriteMapper.updateByPrimaryKeySelective(fssSeqOrderEntity);
+        }catch (Exception e){
+
+            if(e.getMessage() != null && e.getMessage().contains("uk_seq_no_mchn")){
+                throw  new FssException("90008202");
+            }else{
+                LogUtil.error(this.getClass(),e);
+                throw  new FssException("90099005");
+            }
+        }
 
     }
 

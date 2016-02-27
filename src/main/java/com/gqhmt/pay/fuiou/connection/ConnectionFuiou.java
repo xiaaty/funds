@@ -53,7 +53,7 @@ public class ConnectionFuiou {
             Map resultMap = (Map)apMap.get("plain");
             return resultMap;
         } catch (IOException e) {
-            throw new ApplicationNotConnectionRemoteUrl("网络中断,无法连接第三方支付通道",e);
+            throw new ApplicationNotConnectionRemoteUrl("90099004",e);
         }
 
     }

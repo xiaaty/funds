@@ -108,7 +108,7 @@
 	<!--		</props>
 		</property>
 	</bean>-->
-	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+	<!--<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>-->
 
 	<bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
@@ -132,7 +132,6 @@
 			<value>
 				html=text/html
 				json=application/json
-				xml=application/xml
 			</value>
 		</property>
 	</bean>

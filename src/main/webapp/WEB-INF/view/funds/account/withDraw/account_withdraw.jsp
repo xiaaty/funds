@@ -162,8 +162,8 @@
                         gqi.post("${contextPath}/funds/acount/withDraw",$("#withDrawForm").serialize(),null,
                         		function(data){
 //                                 layer.close(pageLoad); //执行关闭
-//                                 var msg = eval("(" + data + ")");
-                                alert(data.tips);
+                                var msg = eval("(" + data + ")");
+                                alert(msg.tips);
                                 window.location.href="${contextPath}/funds/accountBusinessList/${withDrawId}";
                                 return;
                         });
