@@ -167,7 +167,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     public boolean withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
         checkwithholdingOrWithDraw(entity,1,businessType);
-        paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_CHARGE,0,0);
+        paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
         //资金处理
         return true;
     }

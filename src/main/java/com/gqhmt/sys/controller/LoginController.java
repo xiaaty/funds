@@ -2,6 +2,8 @@ package com.gqhmt.sys.controller;
 
 
 import com.gqhmt.sys.beans.MenuFunc;
+import com.gqhmt.sys.entity.User;
+import com.gqhmt.sys.service.UserService;
 import com.octo.captcha.service.image.ImageCaptchaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
 
 	@Resource
 	private ImageCaptchaService imageCaptchaService;
+	
+	@Resource
+	private UserService  userService;
 
 		@RequestMapping(value="/login",method=RequestMethod.POST)
 		public String login(@RequestParam(value="loginName",required=false,defaultValue="")String loginName,
@@ -31,8 +37,17 @@ public class LoginController {
 //			if(!isResponseCorrect){
 //				return "redirect:/";
 //			}
-
+			User user=userService.getUserById(loginName,loginPwd);
+			/*HttpSession session = request.getSession(); 
+			if(user==null){
+				session.setAttribute("user", user);
+				return "redirect:/index";
+			}else{
+				session.setAttribute("user", user);
+				return "redirect:/main";
+			}*/
 			return "redirect:/main";
+			
 		}
 
         public String getUrl(MenuFunc func){
@@ -47,5 +62,11 @@ public class LoginController {
 
 		return "/main/main";
 	}
+/*	
+	@RequestMapping(value="/index")
+	public String indexpag(HttpServletRequest request, HttpServletResponse response){
 		
+		return "/index";
+	}
+		*/
 }
