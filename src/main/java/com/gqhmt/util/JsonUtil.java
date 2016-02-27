@@ -4,9 +4,13 @@ package com.gqhmt.util;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Filename:    com.gqhmt.util
@@ -59,4 +63,19 @@ public class JsonUtil {
 
         return null;
     }
+    /** 
+	* @Description: 将字符串以json格式输出
+	* @param jsonStr
+	* @throws java.io.IOException
+	* @return void    
+	*/ 
+	public static void printStr(HttpServletResponse httpServletResponse,String jsonStr) throws IOException{
+		httpServletResponse.setCharacterEncoding("UTF-8");
+		httpServletResponse.setContentType("text/x-json;charset=UTF-8");
+		PrintWriter pw = httpServletResponse.getWriter();
+		pw.print(jsonStr);
+		pw.flush();
+		pw.close();
+	}
+    
 }
