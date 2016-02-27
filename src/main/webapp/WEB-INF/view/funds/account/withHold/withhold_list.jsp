@@ -68,7 +68,7 @@
                                     <!-- widget content -->
                                     <div class="widget-body no-padding">
                                         <div class="mt10 mb10">
- 				 <div class="clearfix ml20 mb5" id="addErrorMsg" style="color:red;"></div>
+ 				
                                             <table class="table lh32">
                                                 <col />
                                                 <tbody>
@@ -197,7 +197,8 @@
                                 <div class="widget-body">
                                 <DIV>
                                             <button class="btn btn-default table-nobg-btn" id="btn_rech" type="button" >批量代扣</button>
-                                      </div>
+                                     </div>
+                                      <div class="clearfix ml20 mb5" id="addErrorMsg" style="color:red;"></div> 
                                     <table id ="rechtable" class="table table-bordered mt15" style="text-align:center;">
                                        <%--  <col width="200" />
                                         <col /> --%>

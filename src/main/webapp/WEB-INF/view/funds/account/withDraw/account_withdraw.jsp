@@ -74,7 +74,9 @@
                         </tr>
                         <tr>
                             <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户编号:</td>
-                            <td>${acct.custId}</td>
+                            <td>${acct.custId}
+                            <input name="cust_no" value="${acct.custId}" type="hidden">
+                            </td>
                         </tr>
                         <tr>
 

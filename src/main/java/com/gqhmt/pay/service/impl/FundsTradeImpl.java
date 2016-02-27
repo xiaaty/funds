@@ -135,12 +135,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 		}
-        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeApplyDto.getCust_no()), Integer.parseInt(rechargeApplyDto.getBusi_no()));
-        checkwithholdingOrWithDraw(entity,1,Integer.parseInt(rechargeApplyDto.getBusi_no()));
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,rechargeApplyDto.getAmount(),GlobalConstants.ORDER_CHARGE,0,0);
-        //资金处理
-        tradeRecordService.recharge(entity,rechargeApplyDto.getAmount(),fundOrderEntity,1002);
-        return true;
+		 return true;
     }
     /**
      * 提现申请
@@ -160,12 +155,6 @@ public class FundsTradeImpl  implements IFundsTrade {
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 		}
-        FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawApplyDto.getCust_no()), Integer.parseInt(withdrawApplyDto.getBusi_no()));
-        this.hasEnoughBanlance(entity,withdrawApplyDto.getAmount());
-        checkwithholdingOrWithDraw(entity,2,Integer.parseInt(withdrawApplyDto.getBusi_no()));
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawApplyDto.getAmount(),BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,Long.parseLong(withdrawApplyDto.getBusi_no()),GlobalConstants.BUSINESS_WITHHOLDING);
-        //资金处理
-        tradeRecordService.withdrawByFroze(entity,withdrawApplyDto.getAmount(),fundOrderEntity,2003);
         return true;
     }
 
@@ -186,7 +175,7 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @param type
      * @throws FssException
      */
-    private void checkwithholdingOrWithDraw(FundAccountEntity entity,int type,int busiType) throws FssException{
+	private void checkwithholdingOrWithDraw(FundAccountEntity entity,int type,int busiType) throws FssException{
         FundAccountEntity primaryAccount = entity == null || entity.getBusiType() !=0? this.getPrimaryAccount(entity.getCustId()):entity;
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("银行卡变更中,不允许"+(type == 1?"代扣":"提现"));
