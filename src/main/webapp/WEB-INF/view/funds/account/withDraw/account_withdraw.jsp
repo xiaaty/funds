@@ -75,7 +75,7 @@
                         <tr>
                             <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户编号:</td>
                             <td>${acct.custId}
-                            <input name="cust_no" value="${acct.custId}" type="hidden">
+                           <input type="hidden" value="${acct.custId}" name="cust_no" id="custId" />
                             </td>
                         </tr>
                         <tr>
@@ -137,7 +137,7 @@
 <script type="text/javascript">
                 $(function(){
                     $("#rechargeAcct").click(function(){
-                        var custId = "${acct.custId}";
+                    	var custId = $("#custId").val();
                         var businessType = $("#businessType").val();
                         var ammount = $("#amount").val();
                         if(!gqi.checkNotNull(ammount)){
@@ -161,7 +161,7 @@
 //                 		    	html:'<img src="${contextPath}/images/loading.gif">'
 //                 		    }
 //                 		});
-                        gqi.post("${contextPath}/funds/acount/withDraw",$("#withDrawForm").serialize(),null,
+                        gqi.post("${contextPath}/funds/acount/withDraw",{"custId":custId,"businessType":businessType,"ammount":ammount},null,
                         		function(data){
 //                                 layer.close(pageLoad); //执行关闭
 //                                 var msg = eval("(" + data + ")");

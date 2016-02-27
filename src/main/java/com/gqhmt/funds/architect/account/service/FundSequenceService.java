@@ -386,13 +386,11 @@ public class FundSequenceService {
     * @throws FssException
     */
    public void hasEnoughBanlance(FundAccountEntity entity, BigDecimal amount) throws FssException {
-		BigDecimal bigDecimal = fundSequenceReadMapper.getSumAmount(entity.getId());
-		if (bigDecimal.compareTo(amount) < 0) {
+		BigDecimal seqamount = fundSequenceReadMapper.getSumAmount(entity.getId());
+		if (seqamount.compareTo(amount) < 0) {
 			throw new FssException("账户余额不足");
 		}
 	}
-   
-   
    
    /**
     * 存储流水记录
@@ -401,27 +399,6 @@ public class FundSequenceService {
    public void save(FundSequenceEntity entity,Map<Integer,Long> map){
        entity.setModifyTime(new Date());
        fundSequenceWriteMapper.insert(entity);
-//       if(map !=null){
-//           Set<Integer> set = map.keySet();
-//           for(Integer t:set){
-//               Long sId = map.get(t);
-//               FundSequenceMappingBusiness fundSequenceMappingBusiness = new FundSequenceMappingBusiness();
-//               fundSequenceMappingBusiness.setSequenceId(entity.getId());
-//               fundSequenceMappingBusiness.setSourceId(sId);
-//               fundSequenceMappingBusiness.setType(t);
-//
-//               try {
-//                   this.fundSequenceMappingBusinessService.insert(fundSequenceMappingBusiness);
-//
-//               } catch (Exception e) {
-//                   LogUtil.error(this.getClass(),e.getMessage(),e);
-//               }
-//           }
-//       }
-//       fundSequenceDao.flush();
    }
-   
-   
-   
    
 }

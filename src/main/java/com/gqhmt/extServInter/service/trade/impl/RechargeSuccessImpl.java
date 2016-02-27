@@ -1,18 +1,16 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
-import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.trade.WebOrderResponse;
-import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
-import com.gqhmt.extServInter.service.trade.IWithdrawOrder;
-import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-
-import javax.annotation.Resource;
+import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
+import com.gqhmt.extServInter.service.trade.IRechargeSuccess;
+import com.gqhmt.pay.service.ISuccessAccount;
 
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
@@ -24,7 +22,7 @@ import org.springframework.stereotype.Service;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年2月20日
- * Description: PC端提现订单生成
+ * Description: PC端网银充值成功入账
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -32,20 +30,15 @@ import org.springframework.stereotype.Service;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 @Service
-public class WithdrawOrderImpl implements IWithdrawOrder {
+public class RechargeSuccessImpl implements IRechargeSuccess {
 	@Resource
-	private IFundsTrade fundsTradeImpl;
+	private ISuccessAccount SuccessAccountImpl;
 	
     @Override
     public Response excute(SuperDto dto) {
-		WebOrderResponse response = null;
-		try {
-			response = GenerateBeanUtil.GenerateClassInstance(WebOrderResponse.class,dto);
-		} catch (Exception e) {
-			response = new WebOrderResponse();
-		}
+    	Response response = new Response();
     	try {
-			 fundsTradeImpl.webWithdrawOrder((WithdrawOrderDto)dto);
+    		SuccessAccountImpl.recharge((RechargeSuccessDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

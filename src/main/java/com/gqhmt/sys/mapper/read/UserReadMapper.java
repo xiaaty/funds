@@ -4,6 +4,7 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sys.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.sys.mapper.read.UserReadMapper
@@ -23,4 +24,6 @@ import java.util.List;
  */
 public interface UserReadMapper extends ReadMapper<User>{
     public List<User> findUser(User user);
+    
+    public User getUser(Map map);
 }

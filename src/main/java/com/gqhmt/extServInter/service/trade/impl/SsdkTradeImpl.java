@@ -1,11 +1,11 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
-import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.trade.WebOrderResponse;
-import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
-import com.gqhmt.extServInter.service.trade.IWithdrawOrder;
+import com.gqhmt.extServInter.dto.trade.SsdkDto;
+import com.gqhmt.extServInter.dto.trade.WithholdDto;
+import com.gqhmt.extServInter.service.trade.ISsdkTrade;
+import com.gqhmt.pay.service.IFundSsdk;
 import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -20,32 +20,27 @@ import org.springframework.stereotype.Service;
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author jhz
+ * @author 柯禹来
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年2月20日
- * Description: PC端提现订单生成
+ * Description:  实时代扣
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年2月20日  jhz      1.0     1.0 Version
+ * 2016年2月20日  柯禹来      1.0     1.0 Version
  */
 @Service
-public class WithdrawOrderImpl implements IWithdrawOrder {
+public class SsdkTradeImpl implements ISsdkTrade {
 	@Resource
-	private IFundsTrade fundsTradeImpl;
+	private IFundSsdk fundSsdkImpl;
 	
     @Override
     public Response excute(SuperDto dto) {
-		WebOrderResponse response = null;
-		try {
-			response = GenerateBeanUtil.GenerateClassInstance(WebOrderResponse.class,dto);
-		} catch (Exception e) {
-			response = new WebOrderResponse();
-		}
+    	Response response = new Response();
     	try {
-			 fundsTradeImpl.webWithdrawOrder((WithdrawOrderDto)dto);
+    		fundSsdkImpl.ssdkBusiness((SsdkDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
