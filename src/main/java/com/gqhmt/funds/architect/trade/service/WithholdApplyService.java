@@ -110,13 +110,13 @@ public class WithholdApplyService {
 	 * @param id
 	 * @return
 	 */
-	public WithholdApplyFormBean getWithholdApplyFormBean(String id) throws Exception {
+	public WithholdApplyFormBean getWithholdApplyFormBean(Long id) throws Exception {
 		WithholdApplyFormBean withholdApplyFormBean = new WithholdApplyFormBean();
 
 		WithholdApplyEntity withholdApplyEntity = withholdApplyReadMapper.selectByPrimaryKey(id);
 
 		// bean的copy
-		BeanUtils.copyProperties(withholdApplyEntity, withholdApplyFormBean);
+		BeanUtils.copyProperties(withholdApplyFormBean,withholdApplyEntity );
 		//ClassReflection.reflectionAttr(withholdApplyEntity, withholdApplyFormBean);
 		//withholdApplyFormBean.setId(String.valueOf(withholdApplyEntity.getId()));
 
