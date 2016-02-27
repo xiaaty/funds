@@ -1,6 +1,5 @@
 package com.gqhmt.controller.funds.account;
 
-import com.alibaba.dubbo.common.json.JSONObject;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -11,8 +10,6 @@ import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.service.IFundsTrade;
-import com.gqhmt.util.JsonUtil;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,14 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
@@ -140,8 +136,9 @@ public class FundsAccountController {
      */
     @RequestMapping("/funds/acount/AccountWithdraw")
 //    @ResponseBody
-    public void withdraw(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithdrawDto withdrawDto) throws FssException, IOException {
+    public void withdraw(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithdrawDto withdrawDto) throws FssException, IOException {/*
     	JSONObject json=new JSONObject();
+
     	//    	System.out.println(withdrawDto.getCust_no()+withdrawDto.getAmount()+"**********");
 //    	Map<String, Object> map = new HashMap<String, Object>();
 	try {
@@ -152,7 +149,7 @@ public class FundsAccountController {
 		LogUtil.error(this.getClass(),e.getMessage(),e);
 		json.put("tips", "提现失败!!" + e.getMessage());
 	}
-	JsonUtil.printStr(response, json.toString());
+	JsonUtil.printStr(response, json.toString());*/
 //	return excute;
 	}
   

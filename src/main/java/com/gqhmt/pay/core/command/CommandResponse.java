@@ -1,5 +1,7 @@
 package com.gqhmt.pay.core.command;
 
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+
 import java.util.Map;
 
 /**
@@ -11,6 +13,8 @@ public class CommandResponse{
     private String msg;
 
     private Map<String,Object> map;
+
+    private FundOrderEntity fundOrderEntity;
 
     public String getCode() {
         return code;
@@ -42,5 +46,13 @@ public class CommandResponse{
 
     public void setThirdReturnCode(String thirdReturnCode) {
         this.thirdReturnCode = thirdReturnCode;
+    }
+
+    public FundOrderEntity getFundOrderEntity() {
+        return fundOrderEntity;
+    }
+
+    public void setFundOrderEntity(FundOrderEntity fundOrderEntity) {
+        this.fundOrderEntity = fundOrderEntity;
     }
 }

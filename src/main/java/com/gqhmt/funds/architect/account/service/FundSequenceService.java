@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.g
@@ -212,7 +209,7 @@ public class FundSequenceService {
      * @param frozenEntiry
      * @param amount
      */
-    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws  FundAccountNullException, AmountFailException {
+    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,BigDecimal bounsAmount) throws FssException {
         if(orgEntity == null || orgEntity.getId() == null || frozenEntiry == null || frozenEntiry.getId() == null){
             throw new FundAccountNullException();
             //此处抛出异常
@@ -225,7 +222,6 @@ public class FundSequenceService {
 
         FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(), 4, accountType, new BigDecimal(-money).divide(new BigDecimal("10000")), thirdPartyType, orderEntity, frozenEntiry.getId());
         orgFundSequenceEntity.setSumary("冻结");
-        this.fundSequenceWriteMapper.insertSelective(orgFundSequenceEntity);
         int frozenType = 2007;
         if(accountType==1007){
             frozenType = 2007;
@@ -235,10 +231,14 @@ public class FundSequenceService {
             frozenType = 2001;
         }
         FundSequenceEntity frozenFundSequenceEntity = this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount, thirdPartyType, orderEntity, orgEntity.getId());
-        this.fundSequenceWriteMapper.insertSelective(frozenFundSequenceEntity);
         frozenFundSequenceEntity.setSumary("冻结");
-        this.fundAccountService.update(orgEntity);
-        this.fundAccountService.update(frozenEntiry);
+        List<FundSequenceEntity> list = new ArrayList<>();
+        list.add(orgFundSequenceEntity);
+        list.add(frozenFundSequenceEntity);
+        this.fundTradeService.addFundTrade(orgEntity, amount, BigDecimal.ZERO, accountType, memo,bounsAmount);
+
+//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+
 
     }
 

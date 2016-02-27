@@ -173,7 +173,8 @@ public class PaySuperByFuiou {
         LogUtil.info(this.getClass(),"第三方预授权:"+fromEntity.getAccountNo()+":"+toSFEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = this.createOrder(fromEntity, amount, orderType, busiId,busiType, thirdPartyType);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_INVEST_BID, fundOrderEntity, fromEntity, String.valueOf(busiId), amount, "投标预授权", toSFEntity);
-         execExction(response,fundOrderEntity);
+        execExction(response,fundOrderEntity);
+        response.setFundOrderEntity(fundOrderEntity);
         return response;
     }
 

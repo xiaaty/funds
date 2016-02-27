@@ -3,14 +3,11 @@ package com.gqhmt.pay.service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.ThirdPartyType;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -58,7 +55,13 @@ public class TradeRecordService {
     public void withdrawByFroze(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
         sequenceService.refund(entity,fundType,amount,ThirdPartyType.FUIOU,fundOrderEntity);
     }
-    
+
+
+    public void frozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,int fundType,BigDecimal amount,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout) throws FssException {
+        sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity,boundsAmout);
+//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+
+    }
     /**
      * 交易记录查询
      * @param cust_no

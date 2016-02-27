@@ -5,7 +5,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.asset.AccountAccessDto;
 import com.gqhmt.extServInter.service.asset.IAccountBanlance;
 import com.gqhmt.pay.service.IFundsAccount;
 import org.springframework.stereotype.Service;

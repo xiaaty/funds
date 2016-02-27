@@ -1,12 +1,11 @@
 package com.gqhmt.funds.architect.trade.service;
 
-import com.gqhmt.business.architect.loan.entity.Tender;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
 import com.gqhmt.funds.architect.trade.mapper.read.FuiouPreauthReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.FuiouPreauthWriteMapper;
-import com.gqhmt.core.util.GlobalConstants;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -63,13 +62,15 @@ public class FuiouPreauthService {
     }
 
     //
-    public void addFuiouPreauth(FundAccountEntity fromEntity, FundAccountEntity toSFEntity, Tender tender, String contractNo, FundOrderEntity fundOrderEntity){
+    public void addFuiouPreauth(FundAccountEntity fromEntity, FundAccountEntity toSFEntity,
+                                BigDecimal amount, Integer bid,Integer tenderId,
+                                String contractNo, FundOrderEntity fundOrderEntity){
         FuiouPreauth fuiouPreauth = new FuiouPreauth();
         fuiouPreauth.setAccountId(fromEntity.getId());
-//        fuiouPreauth.setAmount((new BigDecimal(tender.getInvestAmount())));
-//        fuiouPreauth.setSourceId(tender.getBidId());
-//        fuiouPreauth.setBid(tender.getBidId());
-//        fuiouPreauth.setTenderid(tender.getId());
+        fuiouPreauth.setAmount(amount);
+        fuiouPreauth.setSourceId(tenderId);
+        fuiouPreauth.setBid(bid);
+        fuiouPreauth.setTenderid(tenderId);
         fuiouPreauth.setType(GlobalConstants.ORDER_BID);
         fuiouPreauth.setUserName(fromEntity.getUserName());
         fuiouPreauth.setState(1);
