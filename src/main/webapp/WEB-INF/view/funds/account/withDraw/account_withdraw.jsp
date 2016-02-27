@@ -74,7 +74,9 @@
                         </tr>
                         <tr>
                             <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户编号:</td>
-                            <td>${acct.custId}</td>
+                            <td>${acct.custId}
+                            <input name="cust_no" value="${acct.custId}" type="hidden">
+                            </td>
                         </tr>
                         <tr>
 
@@ -162,8 +164,8 @@
                         gqi.post("${contextPath}/funds/acount/withDraw",$("#withDrawForm").serialize(),null,
                         		function(data){
 //                                 layer.close(pageLoad); //执行关闭
-                                var msg = eval("(" + data + ")");
-                                alert(msg.tips);
+//                                 var msg = eval("(" + data + ")");
+                                alert(data.tips);
                                 window.location.href="${contextPath}/funds/accountBusinessList/${withDrawId}";
                                 return;
                         });

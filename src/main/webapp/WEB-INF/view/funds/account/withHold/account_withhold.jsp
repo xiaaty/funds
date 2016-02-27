@@ -163,13 +163,13 @@
 //                 		    	html:'<img src="${contextPath}/images/loading.gif">'
 //                 		    }
 //                 		});
-                        gqi.post("${contextPath}/funds/acount/withhold",$("#withHoldForm").serialize(),null,function(data){
+                        gqi.post("${contextPath}/funds/acount/withhold2111",$("#withHoldForm").serialize(),null,function(data){
 //                                 layer.close(pageLoad); //执行关闭
-                                var msg = eval("(" + data + ")");
-                                alert(msg.tips);
-                                window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
+//                                 var msg = eval("(" + data + ")");
+                                alert(data);
+                                //window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
                                 return;
-                        },"json");
+                        });
                     });
                 });
 		</script>

@@ -144,7 +144,7 @@ public class WithholdApplyService {
 	 * 代扣
 	 * 
 	 */
-	public String updateWithholdRech(String id, String sysUserId) throws Exception {
+	public String updateWithholdRech(Long id, String sysUserId) throws Exception {
 
 		WithholdApplyEntity withholdApplyEntity = null;
 
@@ -376,7 +376,7 @@ public class WithholdApplyService {
 	public void updateWithholdRechStatus(String id, String sysUserId) throws Exception {
 
 		// 代扣申请明细
-		WithholdApplyEntity withholdApplyEntity = withholdApplyReadMapper.selectByPrimaryKey(id);
+		WithholdApplyEntity withholdApplyEntity = withholdApplyReadMapper.selectByPrimaryKey(Long.parseLong(id));
 
 		// 审核时间
 		withholdApplyEntity.setReviewTime(new Date(System.currentTimeMillis()));

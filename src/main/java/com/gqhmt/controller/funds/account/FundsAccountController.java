@@ -3,6 +3,7 @@ package com.gqhmt.controller.funds.account;
 import com.alibaba.dubbo.common.json.JSONObject;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
  * 2016/02/16  jhz      1.0     1.0 Version
  */
 @Controller
-
 public class FundsAccountController {
 	@Resource
     private FundAccountService fundAccountService;
@@ -145,20 +144,15 @@ public class FundsAccountController {
     	JSONObject json=new JSONObject();
     	//    	System.out.println(withdrawDto.getCust_no()+withdrawDto.getAmount()+"**********");
 //    	Map<String, Object> map = new HashMap<String, Object>();
-//	try {
-		boolean excute = fundsTradeImpl.withdraw(withdrawDto);
-		if(excute){
-    		json.put("tips", "提现成功!!");
-    	}else{
-    		json.put("tips", "提现失败!!");
-    	}
-    	JsonUtil.printStr(response, json.toString());
-//		map.put("tips", "0000");
+	try {
+		fundsTradeImpl.withdraw(withdrawDto);
+    	json.put("tips", "提现成功!!");
 	
-//	} catch (FssException e) {
-//		LogUtil.error(this.getClass(),e.getMessage(),e);
-//		map.put("tips", "提现失败!!" + e.getMessage());
-//	}
+	} catch (FssException e) {
+		LogUtil.error(this.getClass(),e.getMessage(),e);
+		json.put("tips", "提现失败!!" + e.getMessage());
+	}
+	JsonUtil.printStr(response, json.toString());
 //	return excute;
 	}
   
@@ -181,24 +175,25 @@ public class FundsAccountController {
      * function：为指定的客户代扣
      * @throws IOException 
      */
-    @RequestMapping(value = "/funds/acount/withhold",method = RequestMethod.POST)
-//    @ResponseBody
-    public void updateRechargeAccount(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithholdDto withholdDto) throws FssException, IOException {
-    	JSONObject json=new JSONObject();
-//    	Map<String, Object> map = new HashMap<String, Object>();
+    @RequestMapping(value = "/funds/acount/withhold2111",method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateRechargeAccount(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithholdDto withholdDto) throws FssException, IOException {
+//    	JSONObject json=new JSONObject();
+    	Map<String, Object> map = new HashMap<String, Object>();
 //                List<BankCardinfoEntity> bankCardinfoList = new ArrayList<BankCardinfoEntity>();
 //                bankCardinfoList = bankCardinfoService.queryInvestmentByCustId(custId);
 //                if(bankCardinfoList == null && bankCardinfoList.size() < 1){
 //                    throw new Exception("客户无对应的银行信息");
 //                }
-        	boolean excute = fundsTradeImpl.withholding(withholdDto);
+    	try{
+        	 fundsTradeImpl.withholding(withholdDto);
+        	 map.put("tips", "提现成功!!");
 //            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_CHARGE, custId, businessType, bankCardinfoList, amount);
-        	if(excute){
-        		json.put("tips", "提现成功!!");
-        	}else{
-        		json.put("tips", "提现失败!!");
-        	}
-        	JsonUtil.printStr(response, json.toString());
+    } catch (FssException e) {
+		LogUtil.error(this.getClass(),e.getMessage(),e);
+		map.put("tips", "代扣失败!!" + e.getMessage());
+	}
+        return map;
     }
     /**
      * 
@@ -222,23 +217,21 @@ public class FundsAccountController {
     @RequestMapping("/funds/acount/withDraw")
     @ResponseBody
     public Object accountWithdraw(HttpServletRequest request,HttpServletResponse response,ModelMap model,WithdrawDto withdrawDto) throws FssException, IOException {
-//    	Map<String, Object> map = new HashMap<String, Object>();
+    	Map<String, Object> map = new HashMap<String, Object>();
 //    	try{
-    	JSONObject json=new JSONObject();
-		boolean excute = fundsTradeImpl.withdraw(withdrawDto);
-		if(excute){
-    		json.put("tips", "提现成功!!");
-    	}else{
-    		json.put("tips", "提现失败!!");
-    	}
-    	JsonUtil.printStr(response, json.toString());
-//		map.put("tips", "提现成功!!");
+//    	System.out.println("为指定的客户代付提现+++++++");
+//    	JSONObject json=new JSONObject();
+    	try{
+		fundsTradeImpl.withdraw(withdrawDto);
+		map.put("tips", "提现成功!!");
 	
-//		} catch (Exception e) {
-//		LogUtil.error(this.getClass(),e.getMessage(),e);
-//		map.put("tips", "提现失败!!" + e.getMessage());
-//		}
-	return excute;
+		} catch (Exception e) {
+		LogUtil.error(this.getClass(),e.getMessage(),e);
+		map.put("tips", "提现失败!!" + e.getMessage());
+		}
+//    	JsonUtil.printStr(response, json.toString());
+    	
+    	return map;
 	}
   
     

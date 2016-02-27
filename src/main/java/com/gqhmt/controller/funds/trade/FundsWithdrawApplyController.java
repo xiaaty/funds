@@ -160,7 +160,7 @@ public class FundsWithdrawApplyController {
 			// 需要手动核对
 			try {
 				withDrawService.updateWithDrawEntity(withDrawBean.getId(),
-						String.valueOf(user.getId()), 99);
+						String.valueOf(1), 99);
 				map.put("tips", "S");
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -173,7 +173,7 @@ public class FundsWithdrawApplyController {
 
 			try {
 				withDrawService.updateWithDrawEntity(withDrawBean.getId(),
-						String.valueOf(user.getId()), 4);
+						String.valueOf(1), 4);
 				map.put("tips", "S");
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
@@ -253,9 +253,9 @@ public class FundsWithdrawApplyController {
 		for (int i = 0; i < ids.length; i++) {
 			try {
 //				returnCode = withDrawService.updateWithdrawDepute(ids[i],
-//						String.valueOf(user.getId()));
+//						String.valueOf(1));
 				returnCode = withDrawService.updateWithdrawDepute(ids[i],
-						String.valueOf(user.getId()));
+						String.valueOf(1));
 
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e.getMessage(), e);
@@ -388,7 +388,7 @@ public class FundsWithdrawApplyController {
 					// 审核时间
 					entity.setReviewTime(new Date(System.currentTimeMillis()));
 					// 审核user
-					entity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+					entity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 					// 更新合同状态
 					withDrawService.update(entity);
 
@@ -449,7 +449,7 @@ public class FundsWithdrawApplyController {
 				// 审核时间
 				entity.setReviewTime(new Date(System.currentTimeMillis()));
 				// 审核user
-				entity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+				entity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 				withDrawService.update(entity);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -580,7 +580,7 @@ public class FundsWithdrawApplyController {
 					// 审核时间
 					entity.setReviewTime(new Date(System.currentTimeMillis()));
 					// 审核user
-					entity.setReviewUserId(Integer.parseInt(String.valueOf(user.getId())));
+					entity.setReviewUserId(Integer.parseInt(String.valueOf(1)));
 					// 更新合同状态
 					withDrawService.update(entity);
 				}

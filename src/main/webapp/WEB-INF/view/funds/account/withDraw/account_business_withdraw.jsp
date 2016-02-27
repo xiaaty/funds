@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<html >
 <head>
     <title>系统管理--账户提现--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -158,8 +158,9 @@
 //                 		    }
 //                 		});
                         gqi.post("${contextPath}/funds/acount/AccountWithdraw",$("#withDrawForm").serialize(),null,function(data){
-                          var msg = eval("(" + data + ")");
-                            alert(msg.tips);
+//                           var msg = eval("(" + data + ")");
+                          console.info(data.tips+"*********");
+                            alert(data.tips);
                                 window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
                                 return;
                         },"json");
@@ -167,16 +168,6 @@
                 });
 		</script>
     <!-- main -->
-<!--     <script type="text/javascript"> -->
-//         $(function() {
-//             $('ul li a').each(function(){
-//                 var st = $(this).attr("href");
-//                 if(st.indexOf("queryAccountList") >= 0){
-//                     $(this).parent().parent().parent().trigger("click").addClass("t1 nav_line on");
-//                     $(this).parent().addClass("chd_on");
-//                 }
-//             });
-//         });
-<!--     </script> -->
+
     </body>
 </html>
