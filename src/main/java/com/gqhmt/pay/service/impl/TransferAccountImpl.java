@@ -62,24 +62,23 @@ public class TransferAccountImpl  implements ITransferAccount {
      */
 	@Override
 	public boolean transfer(TransferDto transferDto) throws FssException {
-      FundAccountEntity fromEntity = fundaccountService.getFundsAccount(transferDto.getFromCusID(), transferDto.getFromTyp().intValue());
-      fundSequenceService.hasEnoughBanlance(fromEntity,transferDto.getAmount());
-      FundAccountEntity toEntity = fundaccountService.getFundsAccount(transferDto.getToCusID(),transferDto.getToType().intValue());
+      FundAccountEntity fromEntity = fundaccountService.getFundsAccount(transferDto.getFrom_cust_no(), transferDto.getZh_busi_type().intValue());
+      fundSequenceService.hasEnoughBanlance(fromEntity,transferDto.getAmt());
+      FundAccountEntity toEntity = fundaccountService.getFundsAccount(transferDto.getTo_cust_no(),transferDto.getZh_busi_type().intValue());
       //订单号
       //去掉账户余额查询和解冻操作20150829 于泳 直接将提现金额发给富友
-      FundOrderEntity fundOrderEntity = fundOrderService.createOrder(fromEntity,toEntity,transferDto.getAmount(),BigDecimal.ZERO,transferDto.getSourceType().intValue()==0?GlobalConstants.ORDER_TRANSFER:transferDto.getSourceType(),Long.valueOf(transferDto.getSourceId()),Integer.valueOf(GlobalConstants.BUSINESS_TRANSFER),thirdPartyType);
-      CommandResponse response = ThirdpartyFactory.command(thirdPartyType, "1", fundOrderEntity, fromEntity,toEntity,transferDto.getAmount());
+      FundOrderEntity fundOrderEntity = fundOrderService.createOrder(fromEntity,toEntity,transferDto.getAmt(),BigDecimal.ZERO,transferDto.getOrder_ype().intValue()==0?GlobalConstants.ORDER_TRANSFER:transferDto.getOrder_ype(),Long.valueOf(transferDto.getFrom_user_no()),Integer.valueOf(GlobalConstants.BUSINESS_TRANSFER),thirdPartyType);
+      CommandResponse response = ThirdpartyFactory.command(thirdPartyType, "1", fundOrderEntity, fromEntity,toEntity,transferDto.getAmt());
       if(response.getCode().equals("0009")){
     	  fundOrderService.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
       }else if(!"0000".equals(response.getCode())){
     	  fundOrderService.updateOrder(fundOrderEntity,3,response.getCode(),response.getMsg());
       }
       try {
-    	  fundSequenceService.transfer(fromEntity, toEntity, transferDto.getAmount(), 8, transferDto.getAccountType() == null ? 1005 : transferDto.getAccountType(),null,ThirdPartyType.FUIOU, fundOrderEntity);
-    	  fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, transferDto.getAmount(), transferDto.getAccountType() == null ? 1005 : transferDto.getAccountType(), "资金转出");
-    	  fundTradeService.addFundTrade(toEntity, transferDto.getAmount(), BigDecimal.ZERO, transferDto.getAccountType() == null ? 1005 : transferDto.getAccountType(), "资金转入");
+    	  fundSequenceService.transfer(fromEntity, toEntity, transferDto.getAmt(), 8, transferDto.getZh_busi_type() == null ? 1005 : transferDto.getZh_busi_type(),null,ThirdPartyType.FUIOU, fundOrderEntity);
+    	  fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, transferDto.getAmt(), transferDto.getZh_busi_type() == null ? 1005 : transferDto.getZh_busi_type(), "资金转出");
+    	  fundTradeService.addFundTrade(toEntity, transferDto.getAmt(), BigDecimal.ZERO, transferDto.getZh_busi_type() == null ? 1005 : transferDto.getZh_busi_type(), "资金转入");
     	  fundOrderService.updateOrder(fundOrderEntity, 2, response.getCode(), response.getMsg());
-//        super.callback(fundOrderEntity,1,"成功");
       }catch (RuntimeException e){
           throw new FssException("第三方成功，本地处理失败");
       }
