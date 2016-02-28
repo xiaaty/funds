@@ -2,10 +2,10 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
-import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
 import com.gqhmt.pay.service.ITradeRecord;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.util.ThirdPartyType;
@@ -48,17 +48,16 @@ public class TradeRecordImpl  implements ITradeRecord {
 	 * @param tradrecord
 	 * @return
 	 */
-	public boolean getTradingRecord(TradingRecordDto tradrecord) throws FssException{
-		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	public List<FundTradeEntity> getTradeRecord(TradeRecordDto tradrecord) throws FssException{
+		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		 if(primaryAccount==null){
 			 throw new FssException("90002001");//账户信息不存在
-		 }else{
-			 List<FundTradeEntity> tradelist= tradeRecordService.getTradeRecordByParams(tradrecord.getCust_no(),tradrecord.getUser_no(),tradrecord.getBusi_no(),tradrecord.getTrade_type());
-			 if(tradelist.size()==0){
-				throw new FssException("90003");
-			 }
 		 }
-		 return true;
+		 List<FundTradeEntity> tradelist= tradeRecordService.getTradeRecordByParams(tradrecord.getCust_no(),tradrecord.getUser_no(),tradrecord.getBusi_no(),tradrecord.getTrade_type());
+		 if(tradelist.size()==0){
+			throw new FssException("90003");
+		 }
+		 return tradelist;
 	}
 	
 	/**
@@ -66,21 +65,21 @@ public class TradeRecordImpl  implements ITradeRecord {
 	 * @param tradrecord
 	 * @return
 	 */
-	public boolean getTradFlow(TradflowDto tradflow) throws FssException{
-		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradflow.getCust_no(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	public List<FundSequenceEntity> getTradFlow(TradeRecordDto tradrecord) throws FssException{
+		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		 if(primaryAccount==null){
 			 throw new FssException("90002001");//账户信息不存在
-		 }else{
-			FundAccountSequenceBean accountsequence= tradeRecordService.getTradFlowByParams(tradflow.getCust_no(),tradflow.getUser_no(),tradflow.getBusi_no());
-			if(accountsequence==null){
-				throw new FssException("90002005");
-			}else{
-				if(accountsequence.getAmount().equals(BigDecimal.ZERO)){
-					throw new FssException("90004007");
-				}
-			}
 		 }
-		return true;
+		/*FundAccountSequenceBean accountsequence= tradeRecordService.getTradFlowByParams(tradrecord.getCust_no(),tradrecord.getUser_no(),tradrecord.getBusi_no());
+		if(accountsequence==null){
+			throw new FssException("90002005");
+		}else{
+			if(accountsequence.getAmount().equals(BigDecimal.ZERO)){
+				throw new FssException("90004007");
+			}
+		}*/
+
+		return null;
 	}
 	
 	/**

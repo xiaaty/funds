@@ -2,6 +2,7 @@ package com.gqhmt.extServInter.service.asset.impl;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.service.asset.IAccountTradFlow;
 import com.gqhmt.pay.service.ITradeRecord;
@@ -24,7 +25,7 @@ public class AccountTradflowImpl implements IAccountTradFlow{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		tradeRecordImpl.getTradFlow((TradflowDto)dto);
+    		tradeRecordImpl.getTradFlow((TradeRecordDto) dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

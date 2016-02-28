@@ -5,12 +5,15 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
+import com.gqhmt.extServInter.dto.asset.AssetResponse;
+import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
 import com.gqhmt.extServInter.service.asset.ITransaction;
+import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.pay.service.ITradeRecord;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 账户资产接口---交易记录查询
@@ -26,9 +29,10 @@ public class TransactionImpl implements ITransaction{
 	 */
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	Response response = new Response();
+		AssetResponse response = new AssetResponse();
     	try {
-    		tradeRecordImpl.getTradingRecord((TradingRecordDto)dto);
+    		List list = tradeRecordImpl.getTradeRecord((TradeRecordDto)dto);
+			response.setPlain(list);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

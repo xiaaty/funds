@@ -5,6 +5,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.service.asset.IAccountBanlance;
+import com.gqhmt.extServInter.service.asset.ITransaction;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +34,8 @@ public class FssAssetApi {
     @Resource
     private IAccountBanlance accountBanlance;
 
+    private ITransaction transaction;
+
     @RequestMapping(value = "/banlance")
     public Object balance(AssetDto dto){
         Response response = null;
@@ -47,9 +50,27 @@ public class FssAssetApi {
 
     @RequestMapping(value = "/queryTradeRecord")
     public Object tradeRecord(AssetDto dto){
-
-        return  null;
+        Response response = null;
+        try {
+            response =  transaction.excute(dto);
+        } catch (APIExcuteErrorException e) {
+            excute(e);
+        }
+        return response;
     }
+
+    @RequestMapping(value = "/querySecRecord")
+    public Object SecRecord(AssetDto dto){
+       /* Response response = null;
+        try {
+            response =  transaction.excute(dto);
+        } catch (APIExcuteErrorException e) {
+            excute(e);
+        }*/
+        return null;
+    }
+
+//    public  Object
 
     private Response excute(Exception e){
         LogUtil.error(this.getClass(), e);

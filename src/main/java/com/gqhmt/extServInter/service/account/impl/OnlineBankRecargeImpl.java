@@ -22,7 +22,7 @@ public class OnlineBankRecargeImpl  implements IOnlineBankRecarge{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	/*try {
-    		traderecord.getTradingRecord((TradingRecordDto)dto);
+    		traderecord.getTradingRecord((TradeRecordDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
