@@ -19,7 +19,6 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.StringUtils;
 
-import org.hamcrest.core.IsNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

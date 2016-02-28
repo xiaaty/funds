@@ -7,7 +7,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
 import com.gqhmt.extServInter.service.asset.ITransaction;
-import com.gqhmt.pay.service.ITradingRecord;
+import com.gqhmt.pay.service.ITradeRecord;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 @Service
 public class TransactionImpl implements ITransaction{
 	@Resource
-	private ITradingRecord tradeRecordImpl;//交易记录接口
+	private ITradeRecord tradeRecordImpl;//交易记录接口
 	
 	/**
 	 * 交易记录查询

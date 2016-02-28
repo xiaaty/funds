@@ -37,7 +37,7 @@ public class LoginController {
 //			if(!isResponseCorrect){
 //				return "redirect:/";
 //			}
-			User user=userService.getUserById(loginName,loginPwd);
+//			User user=userService.getUserById(loginName,loginPwd);
 			/*HttpSession session = request.getSession(); 
 			if(user==null){
 				session.setAttribute("user", user);

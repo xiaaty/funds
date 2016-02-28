@@ -4,9 +4,9 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.tender.FullBidDto;
-import com.gqhmt.extServInter.service.tender.IFullBid;
-import com.gqhmt.pay.service.IFundFullTender;
+import com.gqhmt.extServInter.dto.tender.RepayDto;
+import com.gqhmt.extServInter.service.tender.IBidRepay;
+import com.gqhmt.pay.service.IRepayBid;
 
 import javax.annotation.Resource;
 
@@ -29,15 +29,15 @@ import org.springframework.stereotype.Service;
  * 2016年2月20日  柯禹来      1.0     1.0 Version
  */
 @Service
-public class FullBidImpl implements IFullBid{
+public class BidRepayImpl implements IBidRepay {
 	
 	@Resource
-	private IFundFullTender fundFullTenderImpl;
+	private IRepayBid repayBidImpl;
 	
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		fundFullTenderImpl.settle((FullBidDto)dto);
+    		repayBidImpl.repay((RepayDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

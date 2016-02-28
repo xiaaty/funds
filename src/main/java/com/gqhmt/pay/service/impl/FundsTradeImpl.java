@@ -3,12 +3,7 @@ package com.gqhmt.pay.service.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
-import com.gqhmt.extServInter.dto.trade.RechargeApplyDto;
-import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
-import com.gqhmt.extServInter.dto.trade.WithdrawApplyDto;
-import com.gqhmt.extServInter.dto.trade.WithdrawDto;
-import com.gqhmt.extServInter.dto.trade.WithholdDto;
+import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -167,8 +162,9 @@ public class FundsTradeImpl  implements IFundsTrade {
     public boolean withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
         checkwithholdingOrWithDraw(entity,1,businessType);
-        paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
         //资金处理
+        tradeRecordService.recharge(entity,amount,fundOrderEntity,1002);
         return true;
     }
     /**
@@ -182,10 +178,45 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
         this.hasEnoughBanlance(entity,amount);
         checkwithholdingOrWithDraw(entity,2,businessType);
-        paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
       //资金处理
+        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
         return true;
     }
+
+    /**
+     * 转账
+     */
+    @Override
+    public boolean transfer(TransferDto transferDto) throws FssException {
+        FundAccountEntity fromEntity = this.getFundAccount(transferDto.getFrom_cust_no(), transferDto.getZh_busi_type().intValue());
+        this.hasEnoughBanlance(fromEntity,transferDto.getAmt());
+        FundAccountEntity toEntity = this.getFundAccount(transferDto.getTo_cust_no(),transferDto.getZh_busi_type().intValue());
+        //第三方交易
+        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,transferDto.getAmt(),transferDto.getOrder_ype(),transferDto.getBusi_id(),transferDto.getZh_busi_type());
+        //资金处理
+        tradeRecordService.transfer(fromEntity,toEntity,transferDto.getAmt(),transferDto.getZh_busi_type(),transferDto.getZh_busi_type(),fundOrderEntity);
+        return true;
+    }
+
+    @Override
+    public boolean froze(FreezeDto dto) throws FssException {
+        FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(dto.getCust_no()), dto.getBusi_type());
+        this.hasEnoughBanlance(fromEntity,dto.getAmt());
+        FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(dto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        tradeRecordService.frozen(fromEntity,toEntity,dto.getAmt(),1007,null,"",BigDecimal.ZERO);
+        return true;
+    }
+
+    @Override
+    public boolean unFroze(UnFreezeDto dto) throws FssException {
+        FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(dto.getCust_no()),GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        this.hasEnoughBanlance(fromEntity,dto.getAmt());
+        FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(dto.getCust_no()), dto.getBusi_type());
+        tradeRecordService.frozen(fromEntity,toEntity,dto.getAmt(),1007,null,"",BigDecimal.ZERO);
+        return true;
+    }
+
     /**
      * 
      */
@@ -194,8 +225,9 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity fromEntity = this.getFundAccount(fromCusID, fromType);
         this.hasEnoughBanlance(fromEntity,amount);
         FundAccountEntity toEntity = this.getFundAccount(toCusID, toType);
-        paySuperByFuiou.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType);
         //资金处理
+        tradeRecordService.transfer(fromEntity,toEntity,amount,busiType,busiType,fundOrderEntity);
         return true;
     }
 

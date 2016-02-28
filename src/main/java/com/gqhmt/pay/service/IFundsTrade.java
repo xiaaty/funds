@@ -2,12 +2,7 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
-import com.gqhmt.extServInter.dto.trade.RechargeApplyDto;
-import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
-import com.gqhmt.extServInter.dto.trade.WithdrawApplyDto;
-import com.gqhmt.extServInter.dto.trade.WithdrawDto;
-import com.gqhmt.extServInter.dto.trade.WithholdDto;
+import com.gqhmt.extServInter.dto.trade.*;
 
 import java.math.BigDecimal;
 
@@ -151,6 +146,31 @@ public interface IFundsTrade {
 	 */
     boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
 			Long busiId) throws FssException;
+
+    /**
+     * 转账接口
+     * @param transferDto
+     * @return
+     * @throws FssException
+     */
+    public boolean transfer(TransferDto transferDto) throws FssException;
+
+
+    /**
+     * 冻结
+     * @param dto
+     * @return
+     * @throws FssException
+     */
+    public boolean froze(FreezeDto dto) throws FssException;
+
+    /**
+     * 解冻
+     * @param dto
+     * @return
+     * @throws FssException
+     */
+    public boolean unFroze( UnFreezeDto dto) throws FssException;
 
     /**
      * 费用接口

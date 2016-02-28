@@ -93,7 +93,7 @@ public class FundsTenderImpl  implements IFundsTender {
         CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
         //后续处理
         fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, bidDto.getReal_Amount(),Integer.parseInt(bidDto.getBusi_bid_no()),Integer.parseInt(bidDto.getTender_no()), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
-        tradeRecordService.frozen(fromEntity,toEntity,3001,amount,response.getFundOrderEntity(),"出借" + bidDto.getProduct_title() + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + bidDto.getProduct_title() + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
         return true;
     }
 
@@ -110,7 +110,6 @@ public class FundsTenderImpl  implements IFundsTender {
         }
         //产品名称，如果产品名称为空，则去标的title
 //        String title = getProductName(bid);
-
         FundAccountEntity toEntity = this.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);// .getFundAccount(cusId,
         List<Tender> list = null;//tenderService.queryTenderByBidId(bid.getId());
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, bid.getBidAmount(), GlobalConstants.ORDER_SETTLE, bid.getId(), GlobalConstants.BUSINESS_SETTLE, thirdPartyType);

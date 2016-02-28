@@ -4,7 +4,7 @@ import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.service.account.IOnlineBankRecarge;
-import com.gqhmt.pay.service.ITradingRecord;
+import com.gqhmt.pay.service.ITradeRecord;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 @Service
 public class OnlineBankRecargeImpl  implements IOnlineBankRecarge{
 	@Resource
-	private ITradingRecord tradeRecordImpl;
+	private ITradeRecord tradeRecordImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {

@@ -57,10 +57,18 @@ public class TradeRecordService {
     }
 
 
-    public void frozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,int fundType,BigDecimal amount,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout) throws FssException {
+    public void frozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int fundType,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout) throws FssException {
         sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity,boundsAmout);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+    }
 
+    public void unFrozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int fundType,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout) throws FssException {
+        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity);
+//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+    }
+
+    public void transfer(FundAccountEntity fromAcc,FundAccountEntity toAcc,BigDecimal amount,int fundType,int  accountType,FundOrderEntity fundOrderEntity) throws FssException {
+        sequenceService.transfer(fromAcc,toAcc,amount,fundType,accountType,null,ThirdPartyType.FUIOU,fundOrderEntity);
     }
     /**
      * 交易记录查询

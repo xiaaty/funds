@@ -3,10 +3,10 @@ package com.gqhmt.pay.service.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.dto.fund.CostDto;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
-import com.gqhmt.pay.service.ITradingRecord;
+import com.gqhmt.pay.service.ITradeRecord;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.util.ThirdPartyType;
 import java.math.BigDecimal;
@@ -29,7 +29,7 @@ import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
  *
  */
 @Service
-public class TradeRecordImpl  implements ITradingRecord {
+public class TradeRecordImpl  implements ITradeRecord {
 
     @Resource
     private TradeRecordService tradeRecordService;
@@ -43,8 +43,6 @@ public class TradeRecordImpl  implements ITradingRecord {
     @Resource
     private BankCardInfoService bankService;
 
-    
-    
 	/**
 	 * 查询交易记录
 	 * @param tradrecord

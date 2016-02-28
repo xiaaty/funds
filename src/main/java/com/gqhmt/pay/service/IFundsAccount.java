@@ -86,8 +86,6 @@ public interface IFundsAccount {
 
     /**
      * 银行卡变更
-     * @param thirdPartyType            支付渠道
-
      * @throws FssException
      */
     public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException;
@@ -112,11 +110,11 @@ public interface IFundsAccount {
      * @return
      * @throws FssException
      */
-    public FundAccountEntity getAccountAccByCustId(AccountAccessDto accessdto) throws FssException;
+    public FundAccountEntity getAccountAccByCustId(AssetDto accessdto) throws FssException;
     
     /**
      * 查询账户资产
-     * @param accessdto
+     * @param asset
      * @return
      * @throws FssException
      */

@@ -1,4 +1,4 @@
-package com.gqhmt.extServInter.dto.fund;
+package com.gqhmt.extServInter.dto.cost;
 
 import java.math.BigDecimal;
 import com.gqhmt.extServInter.dto.SuperDto;

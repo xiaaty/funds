@@ -200,8 +200,7 @@ public class PaySuperByFuiou {
         execExction(response,fundOrderEntityCharge);
     }
 
-
-    /**
+     /**
      * 设置提现 时效方法
      * @param primaryAccount
      * @param cashWithSet

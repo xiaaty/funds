@@ -2,11 +2,11 @@ package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.dto.fund.CostDto;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
 
-public interface ITradingRecord {
+public interface ITradeRecord {
 
    
 	/**

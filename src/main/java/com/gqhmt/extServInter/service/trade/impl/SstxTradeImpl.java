@@ -3,10 +3,8 @@ package com.gqhmt.extServInter.service.trade.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.SstxDto;
-import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.extServInter.service.trade.IRecharge;
 import com.gqhmt.pay.service.IFundSstx;
-import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 

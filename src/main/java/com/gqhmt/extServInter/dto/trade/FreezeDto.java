@@ -30,7 +30,7 @@ public class FreezeDto extends SuperDto{
 	
 	private BigDecimal amt;			//冻结金额
 	
-	private String busi_type;		//账户类型
+	private int busi_type;		//账户类型
 	
 	
 
@@ -58,16 +58,12 @@ public class FreezeDto extends SuperDto{
 		this.amt = amt;
 	}
 
-	public String getBusi_type() {
+
+	public int getBusi_type() {
 		return busi_type;
 	}
 
-	public void setBusi_type(String busi_type) {
+	public void setBusi_type(int busi_type) {
 		this.busi_type = busi_type;
 	}
-
-
-    
-
-
 }

@@ -6,6 +6,7 @@ import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,14 +76,13 @@ public class FssAccountApi {
     */
     @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
     public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
-    	Response response=new Response();
+    	Response response= null;
         try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
              response = createAccountImpl.excute(createAccountByFuiou);
         } catch (Exception e) {
-        	LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
+            response = this.excute(e);
         }
         return response;
     }
@@ -94,17 +94,21 @@ public class FssAccountApi {
      */
     @RequestMapping(value = "/changeBankCard",method = RequestMethod.POST)
     public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
-    	Response response=new Response();
+    	Response response= null;
     	try {
-//            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
-//            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
     		response = changeBankCardAccountImpl.excute(changeBankCardDto);
     	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
+            response = this.excute(e);
     	}
     	return response;
     }
-    
+
+
+    private Response excute(Exception e){
+        LogUtil.error(this.getClass(), e);
+        Response response = new Response();
+        response.setResp_code(e.getMessage());
+        return response;
+    }
 
 }

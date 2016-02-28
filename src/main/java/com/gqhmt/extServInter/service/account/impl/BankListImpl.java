@@ -4,7 +4,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.service.account.IBankList;
-import com.gqhmt.pay.service.ITradingRecord;
+import com.gqhmt.pay.service.ITradeRecord;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BankListImpl implements IBankList{
 	@Resource
-	private ITradingRecord tradeRecordImpl;
+	private ITradeRecord tradeRecordImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
