@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper">
+ <sql id="field">
+  select  id,
+  account_id    accountId,
+  to_account_id  toAccountId,
+  order_type      orderType,
+  order_no orderNo,
+  order_frorm_id  orderFrormId,
+  order_source orderSource,
+  order_amount orderAmount,
+  order_state orderState,
+  ret_message retMessage,
+  create_time createTime,
+  last_modify_time lastModifyTime,
+  thirdparty_type thirdpartyType,
+  charge_amount chargeAmount
+
+  from t_gq_fund_order
+ </sql>
+
+ <select id="getFundOrder" resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
+  <include refid="field" />
+  where order_no=#{orderNo}
+ </select>
+
+</mapper>

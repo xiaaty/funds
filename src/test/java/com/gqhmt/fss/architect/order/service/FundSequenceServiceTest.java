@@ -48,7 +48,7 @@ public class FundSequenceServiceTest extends AbstractJUnit4SpringContextTests {
 		entity.setCurrency("0001");
 		entity.setFundType(1);
 		entity.setActionType(1);
-		entity.setThirdPartyType(ThirdPartyType.FUIOU);
+		entity.setThirdPartyType(ThirdPartyType.FUIOU.getKey());
 	    entity.setOrderNo("12");
 	    entity.setModifyTime(new Date());
 	    entity.setoAccountId(2l);

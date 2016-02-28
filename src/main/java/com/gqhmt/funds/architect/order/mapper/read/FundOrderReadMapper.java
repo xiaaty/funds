@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.order.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ import java.util.List;
 
 public interface FundOrderReadMapper extends ReadMapper<FundOrderEntity> {
 
-    public FundOrderEntity getFundOrder(String orderNo);
+    public FundOrderEntity getFundOrder(@Param("orderNo") String orderNo);
 
-    public List<FundOrderEntity> queryFundOrder(int orderType,int orderSource,int orderFromId);
+    public List<FundOrderEntity> queryFundOrder(@Param("orderType") int orderType,@Param("orderSource")int orderSource,@Param("orderFromId")int orderFromId);
 
     public int getWithdrawNum(long accountID);
     

@@ -163,8 +163,8 @@ public class FundsAccountImpl implements IFundsAccount {
 	 * 查询账户余额
 	 */
 	 public FundAccountEntity getAccountAccByCustId(AssetDto accessdto) throws FssException{
-		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_no(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		 FundAccountEntity account = fundAccountService.getFundAccount(accessdto.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		 FundAccountEntity account = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		 account.setFreezeAmount(primaryAccount.getFreezeAmount());
 		 return account;
 	 }

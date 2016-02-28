@@ -303,7 +303,7 @@ public class FundSequenceService {
         entity.setCurrency("0001");
         entity.setFundType(accountType);
         entity.setActionType(actionType);
-        entity.setThirdPartyType(thirdPartyType);
+        entity.setThirdPartyType(thirdPartyType.getKey());
         if(orderEntity != null){
             entity.setOrderNo(orderEntity.getOrderNo());
         }

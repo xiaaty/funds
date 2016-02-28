@@ -60,8 +60,8 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Override
     public String webWithdrawOrder(WithdrawOrderDto withdrawOrderDto) throws FssException {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        this.hasEnoughBanlance(entity, withdrawOrderDto.getAmount().add(withdrawOrderDto.getProcedure_fee()));
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, withdrawOrderDto.getAmount(),2,0,0,"2");
+        this.hasEnoughBanlance(entity, withdrawOrderDto.getAmt().add(withdrawOrderDto.getCharge_amt()));
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, withdrawOrderDto.getAmt(),2,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
     /**
@@ -72,7 +72,6 @@ public class FundsTradeImpl  implements IFundsTrade {
      */
     @Override
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
-    	
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmount(),1,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
@@ -107,10 +106,10 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new CommandParmException("90004004");
         }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        this.hasEnoughBanlance(entity,withdrawDto.getAmount().add(withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt()));
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmount(),withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt(),0,0l,0);
+        this.hasEnoughBanlance(entity,withdrawDto.getAmt().add(withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt()));
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmt(),withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt(),0,0l,0);
         //资金处理
-        tradeRecordService.withdraw(entity,withdrawDto.getAmount(),fundOrderEntity,1003);
+        tradeRecordService.withdraw(entity,withdrawDto.getAmt(),fundOrderEntity,1003);
         return true;
     }
     /**

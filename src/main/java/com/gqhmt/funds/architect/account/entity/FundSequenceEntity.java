@@ -53,8 +53,9 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     @Column(name = "MODIFY_TIME")
     private Date modifyTime;
-   
-    private ThirdPartyType thirdPartyType;
+
+    @Column(name="thirdparty_type")
+    private int thirdPartyType;
 
     @Column(name = "order_no")
     private String orderNo;
@@ -173,14 +174,8 @@ public class FundSequenceEntity  implements java.io.Serializable{
         return result.intValue();
     }
 
-    @Column(name = "thirdparty_type",updatable = false,nullable = false)
-    public ThirdPartyType getThirdPartyType() {
-        return thirdPartyType;
-    }
 
-    public void setThirdPartyType(ThirdPartyType thirdPartyType) {
-        this.thirdPartyType = thirdPartyType;
-    }
+
 
 
     public String getOrderNo() {
@@ -215,5 +210,13 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getThirdPartyType() {
+        return thirdPartyType;
+    }
+
+    public void setThirdPartyType(int thirdPartyType) {
+        this.thirdPartyType = thirdPartyType;
     }
 }

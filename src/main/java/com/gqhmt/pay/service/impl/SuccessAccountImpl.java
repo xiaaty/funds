@@ -61,7 +61,10 @@ public class SuccessAccountImpl implements ISuccessAccount{
     public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException {
     	FundAccountEntity entity=fundAccountService.getFundAccount(Integer.parseInt(withdrawSuccessDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(withdrawSuccessDto.getOrder_no());
-		tradeRecordService.recharge(entity, withdrawSuccessDto.getAmt(), fundOrderEntity, 1003);
+		tradeRecordService.withdraw(entity, withdrawSuccessDto.getAmt(), fundOrderEntity, 1003);
+
+		//收取账户管理费
+
 	}
 
 }

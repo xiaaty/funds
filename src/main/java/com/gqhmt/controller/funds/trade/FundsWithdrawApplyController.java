@@ -108,7 +108,7 @@ public class FundsWithdrawApplyController {
 		WithdrawApplyEntity entity;
 		WithdrawDto withdrawDto= new WithdrawDto();
 		withdrawDto.setCust_no(withDrawBean.getCustId().toString());
-		withdrawDto.setAmount(withDrawBean.getDrawAmount());
+		withdrawDto.setAmt(withDrawBean.getDrawAmount());
 		withdrawDto.setCharge_amt(withDrawBean.getProcedureFee());
 		SysUsers user = (SysUsers) request.getSession().getAttribute(
 				GlobalConstants.SESSION_EMP);
@@ -125,7 +125,7 @@ public class FundsWithdrawApplyController {
 					entity.setDrawAmount(withDrawBean.getDrawAmountSplit().get(
 							i));
 					withdrawDto.setCust_no(entity.getCustId().toString());
-					withdrawDto.setAmount(entity.getDrawAmount());
+					withdrawDto.setAmt(entity.getDrawAmount());
 					withdrawDto.setCharge_amt(entity.getProcedureFee());
 					fundsTradeImpl.withdraw(withdrawDto);
 
@@ -326,7 +326,7 @@ public class FundsWithdrawApplyController {
 			throws IOException {
 		WithdrawDto withdrawDto= new WithdrawDto();
 		withdrawDto.setCust_no(withDrawBean.getCustId().toString());
-		withdrawDto.setAmount(withDrawBean.getDrawAmount());
+		withdrawDto.setAmt(withDrawBean.getDrawAmount());
 		withdrawDto.setCharge_amt(withDrawBean.getProcedureFee());
 		String code = "0000";
 		String agreeNo = "";
@@ -508,7 +508,7 @@ public class FundsWithdrawApplyController {
 			throws IOException {
 		WithdrawDto withdrawDto= new WithdrawDto();
 		withdrawDto.setCust_no(withDrawBean.getCustId().toString());
-		withdrawDto.setAmount(withDrawBean.getDrawAmount());
+		withdrawDto.setAmt(withDrawBean.getDrawAmount());
 		withdrawDto.setCharge_amt(withDrawBean.getProcedureFee());
 		String code = "0000";
 		String agreeNo = "";

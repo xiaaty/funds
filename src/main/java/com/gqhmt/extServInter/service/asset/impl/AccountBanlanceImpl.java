@@ -33,7 +33,6 @@ public class AccountBanlanceImpl implements IAccountBanlance{
     		FundAccountEntity fundAccountEntity = fundsAccountImpl.getAccountAccByCustId((AssetDto) dto);
 			response.setAmount(fundAccountEntity.getAmount());
 			response.setFrozeAmount(fundAccountEntity.getFreezeAmount());
-
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
