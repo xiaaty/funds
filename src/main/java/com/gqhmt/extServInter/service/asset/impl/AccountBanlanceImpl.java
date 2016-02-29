@@ -5,8 +5,10 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.asset.AssetDto;
+import com.gqhmt.extServInter.dto.asset.BalanceResponse;
 import com.gqhmt.extServInter.service.asset.IAccountBanlance;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.pay.service.IFundsAccount;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,11 @@ public class AccountBanlanceImpl implements IAccountBanlance{
 	 */
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	Response response = new Response();
+		BalanceResponse response = new BalanceResponse();
     	try {
-    		fundsAccountImpl.getAccountAccByCustId((AccountAccessDto)dto);
+    		FundAccountEntity fundAccountEntity = fundsAccountImpl.getAccountAccByCustId((AssetDto) dto);
+			response.setAmount(fundAccountEntity.getAmount());
+			response.setFrozeAmount(fundAccountEntity.getFreezeAmount());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

@@ -3,7 +3,7 @@ package com.gqhmt.extServInter.service.tender.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.BidDto;
-import com.gqhmt.extServInter.service.tender.IBid;
+import com.gqhmt.extServInter.service.tender.IBidTender;
 import com.gqhmt.pay.service.IFundsTender;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 @Service
-public class BidImpl implements IBid{
+public class BidTenderImpl implements IBidTender {
 	
 	@Resource
 	private IFundsTender fundsTenderImpl;

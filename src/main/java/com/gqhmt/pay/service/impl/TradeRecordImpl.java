@@ -2,11 +2,11 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.dto.fund.CostDto;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
-import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
-import com.gqhmt.pay.service.ITradingRecord;
+import com.gqhmt.pay.service.ITradeRecord;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.util.ThirdPartyType;
 import java.math.BigDecimal;
@@ -29,7 +29,7 @@ import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
  *
  */
 @Service
-public class TradeRecordImpl  implements ITradingRecord {
+public class TradeRecordImpl  implements ITradeRecord {
 
     @Resource
     private TradeRecordService tradeRecordService;
@@ -43,24 +43,21 @@ public class TradeRecordImpl  implements ITradingRecord {
     @Resource
     private BankCardInfoService bankService;
 
-    
-    
 	/**
 	 * 查询交易记录
 	 * @param tradrecord
 	 * @return
 	 */
-	public boolean getTradingRecord(TradingRecordDto tradrecord) throws FssException{
-		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	public List<FundTradeEntity> getTradeRecord(TradeRecordDto tradrecord) throws FssException{
+		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		 if(primaryAccount==null){
 			 throw new FssException("90002001");//账户信息不存在
-		 }else{
-			 List<FundTradeEntity> tradelist= tradeRecordService.getTradeRecordByParams(tradrecord.getCust_no(),tradrecord.getUser_no(),tradrecord.getBusi_no(),tradrecord.getTrade_type());
-			 if(tradelist.size()==0){
-				throw new FssException("90003");
-			 }
 		 }
-		 return true;
+		 List<FundTradeEntity> tradelist= tradeRecordService.getTradeRecordByParams(tradrecord.getCust_no(),tradrecord.getUser_no(),tradrecord.getBusi_no(),tradrecord.getTrade_type());
+		 if(tradelist.size()==0){
+			throw new FssException("90003");
+		 }
+		 return tradelist;
 	}
 	
 	/**
@@ -68,21 +65,21 @@ public class TradeRecordImpl  implements ITradingRecord {
 	 * @param tradrecord
 	 * @return
 	 */
-	public boolean getTradFlow(TradflowDto tradflow) throws FssException{
-		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradflow.getCust_no(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	public List<FundSequenceEntity> getTradFlow(TradeRecordDto tradrecord) throws FssException{
+		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		 if(primaryAccount==null){
 			 throw new FssException("90002001");//账户信息不存在
-		 }else{
-			FundAccountSequenceBean accountsequence= tradeRecordService.getTradFlowByParams(tradflow.getCust_no(),tradflow.getUser_no(),tradflow.getBusi_no());
-			if(accountsequence==null){
-				throw new FssException("90002005");
-			}else{
-				if(accountsequence.getAmount().equals(BigDecimal.ZERO)){
-					throw new FssException("90004007");
-				}
-			}
 		 }
-		return true;
+		/*FundAccountSequenceBean accountsequence= tradeRecordService.getTradFlowByParams(tradrecord.getCust_no(),tradrecord.getUser_no(),tradrecord.getBusi_no());
+		if(accountsequence==null){
+			throw new FssException("90002005");
+		}else{
+			if(accountsequence.getAmount().equals(BigDecimal.ZERO)){
+				throw new FssException("90004007");
+			}
+		}*/
+
+		return null;
 	}
 	
 	/**
@@ -95,39 +92,39 @@ public class TradeRecordImpl  implements ITradingRecord {
 		  cost.getFiliale();//所属分公司
 	 	*/	
 		//根据账户账号查询该账户信息
-		FundAccountEntity fundaccount=fundaccountService.getFundAccount(cost.getCust_no(), 3);
-		if(null!=fundaccount){
-			fundaccount.getAmount();//得到账户余额
-			BigDecimal totalAmaount=new BigDecimal(0);
-			totalAmaount=fundaccount.getAmount().add(cost.getAmt());
-			try {
-				fundaccountService.savetoAccount(fundaccount.getId(),totalAmaount);//修改该账户的金额
-			} catch (FssException e) {
-				throw new FssException("90004012");
-			}
-			//保存到交易流水
-			FundSequenceEntity fundsequence=new FundSequenceEntity();
-			fundsequence.setActionType(3);
-			fundsequence.setAccountId(Long.valueOf(fundaccount.getCustId()));
-			fundsequence.setFundType(1006);
-			fundsequence.setAmount(cost.getAmt());
-			fundsequence.setCurrency("人民币");
-			fundsequence.setCreateTime(new Date());
-			fundsequence.setModifyTime(new Date());
-			fundsequence.setSumary("");
-			fundsequence.setOrderNo("");
-			fundsequence.setThirdPartyType(ThirdPartyType.FUIOU);
-			fundsequence.setoAccountId(Long.valueOf(cost.getCust_no()));
-			fundsequence.setToken("");
-			try {
-				fundSequenceService.insertFundSequence(fundsequence);
-			} catch (Exception e) {
-				throw new FssException("90004012");
-			}
-			
-		}else{
-			throw new FssException("90004006");
-		}
+//		FundAccountEntity fundaccount=fundaccountService.getFundAccount(cost.getCust_no(), 3);
+//		if(null!=fundaccount){
+//			fundaccount.getAmount();//得到账户余额
+//			BigDecimal totalAmaount=new BigDecimal(0);
+//			totalAmaount=fundaccount.getAmount().add(cost.getAmt());
+//			try {
+//				fundaccountService.savetoAccount(fundaccount.getId(),totalAmaount);//修改该账户的金额
+//			} catch (FssException e) {
+//				throw new FssException("90004012");
+//			}
+//			//保存到交易流水
+//			FundSequenceEntity fundsequence=new FundSequenceEntity();
+//			fundsequence.setActionType(3);
+//			fundsequence.setAccountId(Long.valueOf(fundaccount.getCustId()));
+//			fundsequence.setFundType(1006);
+//			fundsequence.setAmount(cost.getAmt());
+//			fundsequence.setCurrency("人民币");
+//			fundsequence.setCreateTime(new Date());
+//			fundsequence.setModifyTime(new Date());
+//			fundsequence.setSumary("");
+//			fundsequence.setOrderNo("");
+//			fundsequence.setThirdPartyType(ThirdPartyType.FUIOU);
+//			fundsequence.setoAccountId(Long.valueOf(cost.getCust_no()));
+//			fundsequence.setToken("");
+//			try {
+//				fundSequenceService.insertFundSequence(fundsequence);
+//			} catch (Exception e) {
+//				throw new FssException("90004012");
+//			}
+//
+//		}else{
+//			throw new FssException("90004006");
+//		}
 		return true;
 	}
 	/**

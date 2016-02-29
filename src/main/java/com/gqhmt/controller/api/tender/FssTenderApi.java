@@ -3,10 +3,11 @@ package com.gqhmt.controller.api.tender;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.tender.BidDto;
-import com.gqhmt.extServInter.service.tender.IBid;
+import com.gqhmt.extServInter.service.tender.IBidTender;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -27,14 +28,15 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2016年2月22日  jhz      1.0     1.0 Version
  */
+@RestController
 @RequestMapping(value = "/api")
 public class FssTenderApi {
 
-    @Resource
-    private ApplicationContext applicationContext;
+/*    @Resource
+    private ApplicationContext applicationContext;*/
     
     @Resource
-    private IBid bidImpl;
+    private IBidTender bidImpl;
     
     /**
      * 
@@ -56,6 +58,15 @@ public class FssTenderApi {
     	return response;
     }
     
-    
 
+//    public Object
+
+
+
+	private Response excute(Exception e){
+		LogUtil.error(this.getClass(), e);
+		Response response = new Response();
+		response.setResp_code(e.getMessage());
+		return response;
+	}
 }

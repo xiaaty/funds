@@ -45,7 +45,12 @@ public class WithdrawOrderImpl implements IWithdrawOrder {
 			response = new WebOrderResponse();
 		}
     	try {
-			 fundsTradeImpl.webWithdrawOrder((WithdrawOrderDto)dto);
+
+			String result = fundsTradeImpl.webWithdrawOrder((WithdrawOrderDto)dto);
+			response.setResp_code("0000");
+			String[] tmp = result.split(":");
+			response.setOrder_no(tmp[0]);
+			response.setMchnt(tmp[1]);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

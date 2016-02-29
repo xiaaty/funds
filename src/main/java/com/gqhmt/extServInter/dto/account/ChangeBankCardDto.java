@@ -1,6 +1,7 @@
 package com.gqhmt.extServInter.dto.account;
 
 
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
 /**
  * 
@@ -20,7 +21,8 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 public class ChangeBankCardDto extends SuperDto{
-	
+
+	@APIValidNull(errorCode = "90002006")
     private String cust_no;                               // '客户id',
     
     private String user_no;                               // 用户编号	

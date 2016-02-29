@@ -2,11 +2,15 @@ package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.dto.fund.CostDto;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
-import com.gqhmt.extServInter.dto.fund.TradingRecordDto;
+import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
-public interface ITradingRecord {
+import java.util.List;
+
+public interface ITradeRecord {
 
    
 	/**
@@ -14,14 +18,14 @@ public interface ITradingRecord {
 	 * @param tradrecord
 	 * @return
 	 */
-	public boolean getTradingRecord(TradingRecordDto tradrecord) throws FssException;
+	public List<FundTradeEntity> getTradeRecord(TradeRecordDto tradrecord) throws FssException;
 	
 	/**
 	 * 查询资金流水
 	 * @param tradrecord
 	 * @return
 	 */
-	public boolean getTradFlow(TradflowDto tradflow) throws FssException;
+	public List<FundSequenceEntity> getTradFlow(TradeRecordDto tradrecord) throws FssException;
 	
 	/**
 	 * 费用收取、费用退回
@@ -33,7 +37,7 @@ public interface ITradingRecord {
 		
 	/**
 	 * 银行列表
-	 * @param cost
+	 * @param bank
 	 * @return
 	 * @throws FssException
 	 */

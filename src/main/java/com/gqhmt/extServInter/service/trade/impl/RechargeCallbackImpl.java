@@ -1,45 +1,44 @@
-package com.gqhmt.extServInter.service.tender.impl;
+package com.gqhmt.extServInter.service.trade.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.tender.RepayDto;
-import com.gqhmt.extServInter.dto.tender.TransferDto;
-import com.gqhmt.extServInter.service.tender.ITransefer;
-import com.gqhmt.pay.service.IRepayBid;
-import com.gqhmt.pay.service.ITransferAccount;
-
-import javax.annotation.Resource;
+import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
+import com.gqhmt.extServInter.service.trade.IRechargeCallback;
+import com.gqhmt.pay.service.ISuccessAccount;
 
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
- * @author 柯禹来
+ *
+ * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年2月20日
- * Description:  转账
+ * Description: PC端网银充值成功入账
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年2月20日  柯禹来      1.0     1.0 Version
+ * 2016年2月20日  jhz      1.0     1.0 Version
  */
 @Service
-public class TranseferImpl implements ITransefer{
-	
+public class RechargeCallbackImpl implements IRechargeCallback {
 	@Resource
-	private ITransferAccount transferAccountImpl;
+	private ISuccessAccount SuccessAccountImpl;
 	
+    @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		transferAccountImpl.transfer((TransferDto)dto);
+    		SuccessAccountImpl.recharge((RechargeSuccessDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

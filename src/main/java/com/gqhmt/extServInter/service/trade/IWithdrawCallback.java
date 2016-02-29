@@ -11,15 +11,15 @@ import com.gqhmt.extServInter.service.ExtService;
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年2月20日
- * Description:	PC端网银充值成功入账
+ * Create at:   2016年2月27日
+ * Description:	PC端提现成功入账
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年2月20日  jhz      1.0     1.0 Version
+ * 2016年2月27日  jhz      1.0     1.0 Version
  */
-public interface IRechargeSuccess extends ExtService {
+public interface IWithdrawCallback extends ExtService {
 
 
 }

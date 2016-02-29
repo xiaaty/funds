@@ -2,18 +2,8 @@ package com.gqhmt.controller.api.trade;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
-import com.gqhmt.extServInter.dto.trade.RechargeApplyDto;
-import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
-import com.gqhmt.extServInter.dto.trade.WithdrawApplyDto;
-import com.gqhmt.extServInter.dto.trade.WithdrawDto;
-import com.gqhmt.extServInter.dto.trade.WithholdDto;
-import com.gqhmt.extServInter.service.trade.IWithdrawOrder;
-import com.gqhmt.extServInter.service.trade.IRechargeOrder;
-import com.gqhmt.extServInter.service.trade.IWithdraw;
-import com.gqhmt.extServInter.service.trade.IWithdrawApply;
-import com.gqhmt.extServInter.service.trade.IRecharge;
-import com.gqhmt.extServInter.service.trade.IRechargeApply;
+import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.extServInter.service.trade.*;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +63,21 @@ public class FssTradeApi {
     
     @Resource
     private IRechargeOrder rechargeOrderImpl;
+
+	@Resource
+	private IRechargeCallback rechargeCallback;
+
+	@Resource
+	private IWithdrawCallback withdrawCallback;
+
+	@Resource
+	private IFreeze freezeImpl;
+
+	@Resource
+	private IUnFreeze unFreezeImpl;
+
+	@Resource
+	private ITransefer transefer;
     
     
     /**
@@ -113,6 +118,42 @@ public class FssTradeApi {
     	}
     	return response;
     }
+
+
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：PC端网银充值成功入账
+	 */
+	@RequestMapping(value = "/rechargeCallback",method = RequestMethod.POST)
+	public Object rechargeSuccess(RechargeSuccessDto rechargeSuccessDto){
+		Response response=new Response();
+		try {
+			response = rechargeCallback.excute(rechargeSuccessDto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：PC端提现成功入账
+	 */
+	@RequestMapping(value = "/withdrawCallback",method = RequestMethod.POST)
+	public Object freeze(WithdrawSuccessDto withdrawSuccessDto){
+		Response response=new Response();
+		try {
+			response = withdrawCallback.excute(withdrawSuccessDto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
     /**
      * 
      * author:jhz
@@ -189,8 +230,60 @@ public class FssTradeApi {
     	}
     	return response;
     }
-    
-    
-    
+
+
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：资金冻结
+	 */
+	@RequestMapping(value = "/freeze",method = RequestMethod.POST)
+	public Object freeze(FreezeDto freezeDto){
+		Response response=new Response();
+		try {
+			response = freezeImpl.excute(freezeDto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年2月22日
+	 * function：资金解冻
+	 */
+	@RequestMapping(value = "/unFreeze",method = RequestMethod.POST)
+	public Object unFreeze(UnFreezeDto unFreezeDto){
+		Response response= null;
+		try {
+			response = unFreezeImpl.excute(unFreezeDto);
+		} catch (Exception e) {
+			response = excute(e);
+		}
+		return response;
+	}
+
+	@RequestMapping(value = "/transfer",method = RequestMethod.POST)
+	public Object transfer(TransferDto dto){
+		Response response= null;
+		try {
+			response = transefer.excute(dto);
+		} catch (Exception e) {
+			response = excute(e);
+		}
+		return response;
+	}
+
+
+	private Response excute(Exception e){
+		LogUtil.error(this.getClass(), e);
+		Response response = new Response();
+		response.setResp_code(e.getMessage());
+		return response;
+	}
 
 }

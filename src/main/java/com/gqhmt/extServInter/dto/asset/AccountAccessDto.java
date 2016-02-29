@@ -1,8 +1,8 @@
-package com.gqhmt.extServInter.dto.account;
-
-import java.math.BigDecimal;
+package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
 
 /**
  *资产信息接口---账户余额接口参数

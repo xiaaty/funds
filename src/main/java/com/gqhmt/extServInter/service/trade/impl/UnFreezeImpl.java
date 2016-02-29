@@ -1,11 +1,13 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.service.trade.IRecharge;
+import com.gqhmt.extServInter.dto.trade.FreezeDto;
+import com.gqhmt.extServInter.dto.trade.UnFreezeDto;
+import com.gqhmt.extServInter.service.trade.IUnFreeze;
 import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
 
 import javax.annotation.Resource;
 
@@ -29,18 +31,21 @@ import org.springframework.stereotype.Service;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 @Service
-public class UnFreezeImpl implements IRecharge {
-	
+public class UnFreezeImpl implements IUnFreeze {
+	@Resource
+    private IFundsTrade fundsTrade;
     @Override
-    public Response excute(SuperDto dto) {
-    	Response response = new Response();
-//    	try {
-//    		fundsTradeImpl.withholding((WithholdDto)dto);
-//			 response.setResp_code("00000000");
-//		} catch (FssException e) {
-//			LogUtil.error(this.getClass(), e);
-//			response.setResp_code(e.getMessage());
-//		}
+    public Response excute(SuperDto dto)  {
+
+        Response response = new Response();
+        try {
+            fundsTrade.unFroze((UnFreezeDto) dto);
+            response.setResp_code("0000000");
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e);
+            response.setResp_code(e.getMessage());
+
+        }
         return response;
     }
 }

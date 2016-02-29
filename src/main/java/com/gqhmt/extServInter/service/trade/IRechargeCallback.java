@@ -1,4 +1,4 @@
-package com.gqhmt.extServInter.service.tender;
+package com.gqhmt.extServInter.service.trade;
 
 import com.gqhmt.extServInter.service.ExtService;
 
@@ -8,18 +8,18 @@ import com.gqhmt.extServInter.service.ExtService;
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author 柯禹来
+ * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年2月20日
- * Description:	转账
+ * Description:	PC端网银充值成功入账
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年2月20日  柯禹来      1.0     1.0 Version
+ * 2016年2月20日  jhz      1.0     1.0 Version
  */
-public interface ITransefer extends ExtService {
+public interface IRechargeCallback extends ExtService {
 
 
 }

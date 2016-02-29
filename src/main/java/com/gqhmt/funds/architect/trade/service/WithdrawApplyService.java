@@ -245,7 +245,7 @@ public class WithdrawApplyService {
 			try {
 				WithdrawDto withdrawDto=new WithdrawDto();
 				withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
-				withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+				withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
 				withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
 				fundsTradeImpl.withdraw(withdrawDto);
 
@@ -308,7 +308,7 @@ public class WithdrawApplyService {
 					// 提现
 					WithdrawDto withdrawDto=new WithdrawDto();
 					withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
-					withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+					withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
 					withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
 					fundsTradeImpl.withdraw(withdrawDto);
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity,withdrawApplyCallback.getClass());
@@ -316,7 +316,7 @@ public class WithdrawApplyService {
 					// 提现
 					WithdrawDto withdrawDto=new WithdrawDto();
 					withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
-					withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+					withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
 					withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
 					fundsTradeImpl.withdraw(withdrawDto);
 
@@ -387,7 +387,7 @@ public class WithdrawApplyService {
 					try {
 						WithdrawDto withdrawDto=new WithdrawDto();
 						withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
-						withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+						withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
 						withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
 						fundsTradeImpl.withdraw(withdrawDto);
 //						WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
@@ -481,7 +481,7 @@ public class WithdrawApplyService {
 								// 代扣
 								WithdrawDto withdrawDto=new WithdrawDto();
 								withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
-								withdrawDto.setAmount(withdrawApplyEntity.getDrawAmount());
+								withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
 								withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
 								fundsTradeImpl.withdraw(withdrawDto);
 //								AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);

@@ -21,22 +21,16 @@ import com.gqhmt.extServInter.dto.SuperDto;
 public class CreateAccountDto extends SuperDto {
 
 
-    @APIValidNull(errorCode = "90002006")
 	private String cust_no;			//客户编号
 
-    @APIValidNull(errorCode = "90002008")
 	private String user_no;			//用户编号
 	
 	private String busi_no;			//业务编号
 
-    @APIValidNull(errorCode = "90002009")
-    private String mobile;			//手机号	
+    private String mobile;			//手机号
 
-    @APIValidNull(errorCode = "90002010")
     private String cert_no;			//身份证号
 
-
-    @APIValidNull(errorCode = "90002011")
     private String name;			//客户姓名
 
     @APIValidNull(errorCode = "90002012")

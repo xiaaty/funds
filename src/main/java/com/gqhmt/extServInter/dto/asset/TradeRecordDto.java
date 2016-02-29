@@ -1,11 +1,11 @@
-package com.gqhmt.extServInter.dto.fund;
+package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
  *交易记录查询接口参数
  */
-public class TradingRecordDto extends SuperDto {
+public class TradeRecordDto extends SuperDto {
 	
 	private Integer id;
 	private String trade_no;//交易号码

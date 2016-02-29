@@ -4,22 +4,22 @@ import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.BidRepayment;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
-import com.gqhmt.business.architect.loan.service.TenderService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.tender.BidDto;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
+import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsTender;
 import com.gqhmt.pay.service.PaySuperByFuiou;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-
-import javax.annotation.Resource;
-
+import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -46,9 +46,6 @@ public class FundsTenderImpl  implements IFundsTender {
     private PaySuperByFuiou paySuperByFuiou;
 
     @Resource
-    private TenderService tenderService;
-
-    @Resource
     private FundAccountService fundAccountService;
 
     @Resource
@@ -57,22 +54,31 @@ public class FundsTenderImpl  implements IFundsTender {
     @Resource
     private FundOrderService fundOrderService;
 
+    @Resource
+    private FuiouPreauthService fuiouPreauthService;
+
+
+    @Resource
+    private TradeRecordService tradeRecordService;
+
 	/**
 	 * 投标
 	 */
     @Override
     public boolean bid(BidDto bidDto) throws FssException {
-        Tender tender = this.tenderService.findById(Integer.parseInt(bidDto.getTender_no()));
-        tender.setBonusAmount(bidDto.getRed_packet());
-        tender.setRealAmount(bidDto.getFact_amount());
-        tender.setInvestAmount(bidDto.getAmount());
+       /* Tender tender = this.tenderService.findById(Integer.parseInt(bidDto.getTender_no()));
+        tender.setBonusAmount(bidDto.getBonus_Amount());
+        tender.setRealAmount(bidDto.getReal_Amount());
+        tender.setInvestAmount(bidDto.getInvest_Amount());
         tender.setUserId(Integer.parseInt(bidDto.getUser_no()));
         tender.setCustomerId(Integer.parseInt(bidDto.getCust_no()));
-        tender.setBidId(Long.parseLong(bidDto.getBusi_bid_no()));
-        FundAccountEntity fromEntity = this.getFundAccount(tender.getCustomerId(), tender.getInvestType() == 1 ? 3 : 2);
-        this.hasEnoughBanlance(fromEntity,tender.getRealAmount());
+        tender.setBidId(Long.parseLong(bidDto.getBusi_bid_no()));*/
 
-        Bid bid = this.bidService.findById(tender.getBidId());
+
+        FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(bidDto.getCust_no()), bidDto.getBusi_type() == 1 ? 3 : 2);
+        this.hasEnoughBanlance(fromEntity,bidDto.getReal_Amount());
+
+        Bid bid = this.bidService.findById(Long.parseLong(bidDto.getBusi_bid_no()));
         int cusId = bid.getCustomerId();
         if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
             cusId = bid.getHypothecarius();
@@ -81,11 +87,13 @@ public class FundsTenderImpl  implements IFundsTender {
         // 入账账户
         FundAccountEntity toSFEntity = this.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);
         // 冻结账户
-        FundAccountEntity toEntity = this.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-        BigDecimal amount = tender.getRealAmount();
-        BigDecimal boundsAmount = tender.getBonusAmount();
-        paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
+        FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(bidDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        BigDecimal amount = bidDto.getReal_Amount();//  bid.getRealAmount();
+        BigDecimal boundsAmount = bidDto.getBonus_Amount();// tender.getBonusAmount();
+        CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
         //后续处理
+        fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, bidDto.getReal_Amount(),Integer.parseInt(bidDto.getBusi_bid_no()),Integer.parseInt(bidDto.getTender_no()), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
+        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + bidDto.getProduct_title() + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
         return true;
     }
 
@@ -102,7 +110,6 @@ public class FundsTenderImpl  implements IFundsTender {
         }
         //产品名称，如果产品名称为空，则去标的title
 //        String title = getProductName(bid);
-
         FundAccountEntity toEntity = this.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);// .getFundAccount(cusId,
         List<Tender> list = null;//tenderService.queryTenderByBidId(bid.getId());
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, bid.getBidAmount(), GlobalConstants.ORDER_SETTLE, bid.getId(), GlobalConstants.BUSINESS_SETTLE, thirdPartyType);

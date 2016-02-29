@@ -29,9 +29,9 @@ public class WithdrawOrderDto extends SuperDto{
 	private String user_no;		//用户编号
 	
     
-    private BigDecimal amount;	//提现金额
+    private BigDecimal amt;	//提现金额
     
-    private BigDecimal procedure_fee;		//交易手续费
+    private BigDecimal charge_amt;		//交易手续费
 
 	public String getCust_no() {
 		return cust_no;
@@ -49,22 +49,20 @@ public class WithdrawOrderDto extends SuperDto{
 		this.user_no = user_no;
 	}
 
-	public BigDecimal getAmount() {
-		return amount;
+
+	public BigDecimal getAmt() {
+		return amt;
 	}
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
+	public void setAmt(BigDecimal amt) {
+		this.amt = amt;
 	}
 
-	public BigDecimal getProcedure_fee() {
-		return procedure_fee;
+	public BigDecimal getCharge_amt() {
+		return charge_amt;
 	}
 
-	public void setProcedure_fee(BigDecimal procedure_fee) {
-		this.procedure_fee = procedure_fee;
+	public void setCharge_amt(BigDecimal charge_amt) {
+		this.charge_amt = charge_amt;
 	}
-
-    
-    
 }

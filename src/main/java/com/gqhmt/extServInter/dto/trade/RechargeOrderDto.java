@@ -4,6 +4,7 @@ package com.gqhmt.extServInter.dto.trade;
 
 import java.math.BigDecimal;
 
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
 /**
  * 
@@ -28,7 +29,7 @@ public class RechargeOrderDto extends SuperDto{
 	
 	private String user_no;		//用户编号
 	
-    
+    @APIValidNull(errorCode = "90004014")
     private BigDecimal amount;	//代扣金额
     
     private String bank_id;		//银行类型

@@ -1,4 +1,4 @@
-package com.gqhmt.extServInter.dto.tender;
+package com.gqhmt.extServInter.dto.trade;
 
 
 import java.math.BigDecimal;

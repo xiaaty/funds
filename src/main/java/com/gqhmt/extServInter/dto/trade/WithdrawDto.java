@@ -29,7 +29,7 @@ public class WithdrawDto extends SuperDto{
 	private String user_no;		//用户编号
 	
 
-    private BigDecimal amount;			//合同金额
+    private BigDecimal amt;			//合同金额
     
     
     private BigDecimal charge_amt;		//交易手续费
@@ -55,14 +55,6 @@ public class WithdrawDto extends SuperDto{
 	}
 
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
 
 
 	public BigDecimal getCharge_amt() {
@@ -71,5 +63,13 @@ public class WithdrawDto extends SuperDto{
 
 	public void setCharge_amt(BigDecimal charge_amt) {
 		this.charge_amt = charge_amt;
+	}
+
+	public BigDecimal getAmt() {
+		return amt;
+	}
+
+	public void setAmt(BigDecimal amt) {
+		this.amt = amt;
 	}
 }

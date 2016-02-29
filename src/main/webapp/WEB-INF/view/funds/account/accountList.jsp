@@ -161,7 +161,7 @@
                                                     <td>${acc.busiType==0?"主账户":"其他账户"}</td>
                                                     <td><fss:money money="${acc.amount}"/></td>
                                                     <td><fss:money money="${acc.freezeAmount}" /></td>
-                                                    <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>
+                                                    <td>${acc.hasThirdAccount==2?"已创建":"未创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                     <a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>

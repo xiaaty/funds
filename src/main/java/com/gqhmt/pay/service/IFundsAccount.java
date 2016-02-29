@@ -2,7 +2,7 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.asset.AccountAccessDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -86,8 +86,6 @@ public interface IFundsAccount {
 
     /**
      * 银行卡变更
-     * @param thirdPartyType            支付渠道
-
      * @throws FssException
      */
     public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException;
@@ -112,11 +110,11 @@ public interface IFundsAccount {
      * @return
      * @throws FssException
      */
-    public FundAccountEntity getAccountAccByCustId(AccountAccessDto accessdto) throws FssException;
+    public FundAccountEntity getAccountAccByCustId(AssetDto accessdto) throws FssException;
     
     /**
      * 查询账户资产
-     * @param accessdto
+     * @param asset
      * @return
      * @throws FssException
      */

@@ -148,7 +148,7 @@ public class PaySuperByFuiou {
         LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+chargeAmount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = fundOrderService.createOrder(entity,null,amount,chargeAmount,orderType,busiId,busiType,thirdPartyType);
         //提现手续费记录
-        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_WITHHOLDING, fundOrderEntity, entity,amount,"提现 "+amount.toPlainString()+"元");
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_AGENT_WITHDRAW, fundOrderEntity, entity,amount,"提现 "+amount.toPlainString()+"元");
         execExction(response,fundOrderEntity);
         return fundOrderEntity;
     }
@@ -173,7 +173,8 @@ public class PaySuperByFuiou {
         LogUtil.info(this.getClass(),"第三方预授权:"+fromEntity.getAccountNo()+":"+toSFEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = this.createOrder(fromEntity, amount, orderType, busiId,busiType, thirdPartyType);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_INVEST_BID, fundOrderEntity, fromEntity, String.valueOf(busiId), amount, "投标预授权", toSFEntity);
-         execExction(response,fundOrderEntity);
+        execExction(response,fundOrderEntity);
+        response.setFundOrderEntity(fundOrderEntity);
         return response;
     }
 
@@ -199,8 +200,7 @@ public class PaySuperByFuiou {
         execExction(response,fundOrderEntityCharge);
     }
 
-
-    /**
+     /**
      * 设置提现 时效方法
      * @param primaryAccount
      * @param cashWithSet

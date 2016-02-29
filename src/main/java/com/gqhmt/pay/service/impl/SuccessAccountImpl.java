@@ -3,6 +3,7 @@ package com.gqhmt.pay.service.impl;
 import javax.annotation.Resource;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawSuccessDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -11,6 +12,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.ISuccessAccount;
 import com.gqhmt.pay.service.TradeRecordService;
+import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -29,6 +31,7 @@ import com.gqhmt.pay.service.TradeRecordService;
  * -----------------------------------------------------------------
  * 2016年2月27日  jhz      1.0     1.0 Version
  */
+@Service
 public class SuccessAccountImpl implements ISuccessAccount{
 	@Resource
 	private TradeRecordService tradeRecordService;
@@ -45,10 +48,9 @@ public class SuccessAccountImpl implements ISuccessAccount{
      * function：充值成功入账
      */
     public void recharge(RechargeSuccessDto rechargeSuccessDto) throws FssException {
-    	FundAccountEntity entity=fundAccountService.getFundAccount(Integer.parseInt(rechargeSuccessDto.getCust_no()), null);
+    	FundAccountEntity entity=fundAccountService.getFundAccount(Integer.parseInt(rechargeSuccessDto.getCust_no()),  GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(rechargeSuccessDto.getOrder_no());
 		tradeRecordService.recharge(entity, rechargeSuccessDto.getAmount(), fundOrderEntity, 1001);
-    	
 	}
     /**
      * 
@@ -57,10 +59,12 @@ public class SuccessAccountImpl implements ISuccessAccount{
      * function：提现成功入账
      */
     public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException {
-    	FundAccountEntity entity=fundAccountService.getFundAccount(Integer.parseInt(withdrawSuccessDto.getCust_no()), null);
+    	FundAccountEntity entity=fundAccountService.getFundAccount(Integer.parseInt(withdrawSuccessDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(withdrawSuccessDto.getOrder_no());
-		tradeRecordService.recharge(entity, withdrawSuccessDto.getAmt(), fundOrderEntity, 1003);
-    	
+		tradeRecordService.withdraw(entity, withdrawSuccessDto.getAmt(), fundOrderEntity, 1003);
+
+		//收取账户管理费
+
 	}
 
 }

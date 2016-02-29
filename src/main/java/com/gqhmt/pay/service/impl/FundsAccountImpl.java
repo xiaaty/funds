@@ -2,7 +2,7 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.account.AccountAccessDto;
+import com.gqhmt.extServInter.dto.asset.AccountAccessDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
@@ -38,8 +38,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
      * 创建账户
      *
-     * @param thirdPartyType 支付渠道
-     * @param custId         客户id
+     * @param createAccountDto         客户id
      * @throws FssException
      */
 	public boolean createAccount(CreateAccountDto createAccountDto) throws FssException {
@@ -112,8 +111,7 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	/**
      * 银行卡变更
-     * @param thirdPartyType            支付渠道
-     * @param changeCardEntity
+     * @param changeBankCardDto            支付渠道
      * @throws FssException
      */
 	public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException {
@@ -164,9 +162,11 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
 	 * 查询账户余额
 	 */
-	 public FundAccountEntity getAccountAccByCustId(AccountAccessDto accessdto) throws FssException{
-		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(accessdto.getCust_id(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		 return primaryAccount;
+	 public FundAccountEntity getAccountAccByCustId(AssetDto accessdto) throws FssException{
+		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		 FundAccountEntity account = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+		 account.setFreezeAmount(primaryAccount.getFreezeAmount());
+		 return account;
 	 }
 	
 	/**
