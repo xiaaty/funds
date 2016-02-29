@@ -10,7 +10,6 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
 import com.gqhmt.fss.architect.order.service.FssSeqOrderService;
-import com.gqhmt.util.StringUtils;
 import org.apache.commons.beanutils.MethodUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -166,8 +165,8 @@ public class APIValidAop {
         APIValidNull api = superField.getAnnotation(APIValidNull.class);
         if(api != null ){
             try {
-                String value = (String) MethodUtils.invokeMethod(obj,methodName,null);
-                if( StringUtils.isEmpty(value)){
+                Object value = MethodUtils.invokeMethod(obj,methodName,null);
+                if( value == null){
                     throw  new FssException(api.errorCode());
                 }
             } catch (NoSuchMethodException e) {
