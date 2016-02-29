@@ -1,9 +1,10 @@
 package com.gqhmt.extServInter.dto.trade;
 
 
-import java.math.BigDecimal;
-
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
 
 /**
  * 
@@ -23,13 +24,15 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 public class WithholdDto extends SuperDto {
-	
+
+	@APIValidNull(errorCode = "90002006")
 	private String cust_no;		//客户编号
 	
 	private String user_no;	//用户编号
-	
 
-    private BigDecimal amount;	//代扣金额
+
+	@APIValidNull(errorCode = "90004014")
+	private BigDecimal amt;	//代扣金额
 
 
 	public String getCust_no() {
@@ -52,17 +55,11 @@ public class WithholdDto extends SuperDto {
 	}
 
 
-	public BigDecimal getAmount() {
-		return amount;
+	public BigDecimal getAmt() {
+		return amt;
 	}
 
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
+	public void setAmt(BigDecimal amt) {
+		this.amt = amt;
 	}
-
-
-    
-
-    
 }
