@@ -179,7 +179,7 @@ public class WithholdApplyService {
 			try {
 				WithholdDto withholdDto=new WithholdDto();
 				withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
-				withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+				withholdDto.setAmt(withholdApplyEntity.getDrawAmount());
 				fundsTradeImpl.withholding(withholdDto);
 				//WithholdApplyCallback withholdApplyCallback = new WithholdApplyCallback();
 				// 代扣
@@ -435,7 +435,7 @@ public class WithholdApplyService {
 						// 代扣
 						WithholdDto withholdDto=new WithholdDto();
 						withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
-						withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+						withholdDto.setAmt(withholdApplyEntity.getDrawAmount());
 						fundsTradeImpl.withholding(withholdDto);
 						//AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, withholdApplyFormBean.getDrawAmountSplit().get(i), withholdApplyEntity.getId().intValue(), withholdApplyCallback.getClass());
 					}catch (ThirdpartyErrorAsyncException e){
@@ -479,8 +479,8 @@ public class WithholdApplyService {
 	/**
 	 * 代扣审核接口回调用
 	 * 
-	 * @param entity
-	 * @param 0 成功 1 失败
+	 * @param id
+	 * @param status 成功 1 失败
 	 * @return
 	 */
 	public void updateWithholdCallback(Long id, String status) throws Exception {
@@ -580,7 +580,7 @@ public class WithholdApplyService {
 				if (callBackFlg) {
 					WithholdDto withholdDto=new WithholdDto();
 					withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
-					withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+					withholdDto.setAmt(withholdApplyEntity.getDrawAmount());
 					fundsTradeImpl.withholding(withholdDto);
 					// 代扣
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, drawMoney, withholdApplyEntity.getId().intValue(), withholdApplyCallback.getClass());
@@ -588,7 +588,7 @@ public class WithholdApplyService {
 					// 代扣
 					WithholdDto withholdDto=new WithholdDto();
 					withholdDto.setCust_no(withholdApplyEntity.getCustId().toString());
-					withholdDto.setAmount(withholdApplyEntity.getDrawAmount());
+					withholdDto.setAmt(withholdApplyEntity.getDrawAmount());
 					fundsTradeImpl.withholding(withholdDto);
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHHOLDING, ThirdPartyType.FUIOU, withholdApplyEntity.getCustId(), withholdApplyEntity.getAccountType(), bankCardinfoEntity, drawMoney, withholdApplyEntity.getId().intValue());
 				}
@@ -609,7 +609,7 @@ public class WithholdApplyService {
 	
 	/**
 	 * 结束代扣
-	 * @param id
+	 * @param bigDecimal
 	 */
 	public void updateReviewOver(int bussinessId,BigDecimal bigDecimal){
 		//investmentService.updateInvestInfoStatus(bussinessId,bigDecimal);
