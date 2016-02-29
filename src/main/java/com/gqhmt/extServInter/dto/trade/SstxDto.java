@@ -2,9 +2,10 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
-import java.math.BigDecimal;
-
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -23,8 +24,11 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 2016年2月24日  柯禹来      1.0     1.0 Version
  */
 public class SstxDto extends SuperDto{
+
+	@APIValidNull(errorCode = "90002006")
 	private Integer cust_no;		//客户编号
 	private Integer user_no;		//用户编号
+	@APIValidNull(errorCode = "90004014")
 	private BigDecimal amt;		//代扣金额
 	private Integer busi_type;			//账户类型
 	private Long busi_id;			//业务id

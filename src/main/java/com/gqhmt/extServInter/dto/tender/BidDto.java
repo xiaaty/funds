@@ -2,6 +2,7 @@ package com.gqhmt.extServInter.dto.tender;
 
 
 
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -33,11 +34,14 @@ public class BidDto extends SuperDto{
 	private String user_no;		//用户编号
 	
 	private String busi_no;		//出借业务编
-	
+
+	@APIValidNull(errorCode = "90004014")
 	private BigDecimal invest_Amount;		//出借金额
-	
+
+	@APIValidNull(errorCode = "90004014")
 	private BigDecimal real_Amount;		//实际出借金额
-	
+
+	@APIValidNull(errorCode = "90004014")
 	private BigDecimal bonus_Amount;		//抵扣红包金额
 
 	private int busi_type;

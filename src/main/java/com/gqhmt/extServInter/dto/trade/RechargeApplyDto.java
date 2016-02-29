@@ -2,9 +2,10 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
-import java.math.BigDecimal;
-
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -23,12 +24,14 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 2016年2月24日  jhz      1.0     1.0 Version
  */
 public class RechargeApplyDto extends SuperDto{
-	
+
+	@APIValidNull(errorCode = "90002006")
 	private String cust_no;		//客户编号
 	
 	private String user_no;		//用户编号
-	
 
+
+	@APIValidNull(errorCode = "90004014")
     private BigDecimal amount;			//充值金额
     
     private String busi_no;			//业务编号

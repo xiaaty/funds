@@ -1,7 +1,5 @@
 package com.gqhmt.pay.service.impl;
 
-import javax.annotation.Resource;
-
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
@@ -13,6 +11,8 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.ISuccessAccount;
 import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class SuccessAccountImpl implements ISuccessAccount{
     public void recharge(RechargeSuccessDto rechargeSuccessDto) throws FssException {
     	FundAccountEntity entity=fundAccountService.getFundAccount(Integer.parseInt(rechargeSuccessDto.getCust_no()),  GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(rechargeSuccessDto.getOrder_no());
-		tradeRecordService.recharge(entity, rechargeSuccessDto.getAmount(), fundOrderEntity, 1001);
+		tradeRecordService.recharge(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001);
 	}
     /**
      * 
@@ -61,7 +61,7 @@ public class SuccessAccountImpl implements ISuccessAccount{
     public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException {
     	FundAccountEntity entity=fundAccountService.getFundAccount(Integer.parseInt(withdrawSuccessDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(withdrawSuccessDto.getOrder_no());
-		tradeRecordService.withdraw(entity, withdrawSuccessDto.getAmt(), fundOrderEntity, 1003);
+		tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1003);
 
 		//收取账户管理费
 
