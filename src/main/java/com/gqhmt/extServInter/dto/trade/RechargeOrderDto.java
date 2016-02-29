@@ -2,10 +2,10 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
-import java.math.BigDecimal;
-
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -30,7 +30,7 @@ public class RechargeOrderDto extends SuperDto{
 	private String user_no;		//用户编号
 	
     @APIValidNull(errorCode = "90004014")
-    private BigDecimal amount;	//代扣金额
+    private BigDecimal amt;	//代扣金额
     
     private String bank_id;		//银行类型
 
@@ -51,13 +51,6 @@ public class RechargeOrderDto extends SuperDto{
 	}
 
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
 
 	public String getBank_id() {
 		return bank_id;
@@ -66,7 +59,13 @@ public class RechargeOrderDto extends SuperDto{
 	public void setBank_id(String bank_id) {
 		this.bank_id = bank_id;
 	}
-    
 
 
+	public BigDecimal getAmt() {
+		return amt;
+	}
+
+	public void setAmt(BigDecimal amt) {
+		this.amt = amt;
+	}
 }

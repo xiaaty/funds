@@ -73,7 +73,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Override
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmount(),1,0,0,"2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmt(),1,0,0,"2");
         return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
 

@@ -36,7 +36,7 @@ public class FssAssetApi {
 
     private ITransaction transaction;
 
-    @RequestMapping(value = "/banlance")
+    @RequestMapping(value = "/balance")
     public Object balance(AssetDto dto){
         Response response = null;
         try {
