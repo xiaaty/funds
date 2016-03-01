@@ -188,13 +188,13 @@ public class FundsTradeImpl  implements IFundsTrade {
      */
     @Override
     public boolean transfer(TransferDto transferDto) throws FssException {
-        FundAccountEntity fromEntity = this.getFundAccount(transferDto.getFrom_cust_no(), transferDto.getZh_busi_type().intValue());
+        FundAccountEntity fromEntity = this.getFundAccount(transferDto.getFrom_cust_no(), transferDto.getFrom_cust_type().intValue());
         this.hasEnoughBanlance(fromEntity,transferDto.getAmt());
-        FundAccountEntity toEntity = this.getFundAccount(transferDto.getTo_cust_no(),transferDto.getZh_busi_type().intValue());
+        FundAccountEntity toEntity = this.getFundAccount(transferDto.getTo_cust_no(),transferDto.getTo_cust_type().intValue());
         //第三方交易
-        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,transferDto.getAmt(),transferDto.getOrder_ype(),transferDto.getBusi_id(),transferDto.getZh_busi_type());
+        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,transferDto.getAmt(),transferDto.getBusi_type(),transferDto.getBusi_id(),transferDto.getBusi_type());
         //资金处理
-        tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),transferDto.getZh_busi_type(),transferDto.getZh_busi_type(),fundOrderEntity);
+        tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),transferDto.getFunds_type(),fundOrderEntity);
         return true;
     }
 
@@ -226,7 +226,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity toEntity = this.getFundAccount(toCusID, toType);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType);
         //资金处理
-        tradeRecordService.transfer(fromEntity,toEntity,amount,busiType,busiType,fundOrderEntity);
+        tradeRecordService.transfer(fromEntity,toEntity,amount,busiType,fundOrderEntity);
         return true;
     }
 

@@ -96,7 +96,12 @@ public class FundSequenceService {
         FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 1, accountType, amount, thirdPartyType, orderEntity, 0L) ;
         fundSequenceEntity.setSumary("充值");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
-        this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
+        try{
+            this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
+        }catch (Exception e){
+
+        }
+
         this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "充值成功，充值金额 " + amount + "元");
     }
 

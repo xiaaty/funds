@@ -10,6 +10,8 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.pay.service.IFundsTrade;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FreezeImpl implements IFreeze {
 
+    @Resource
     private IFundsTrade fundsTrade;
     @Override
     public Response excute(SuperDto dto) {

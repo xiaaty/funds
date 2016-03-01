@@ -85,19 +85,16 @@ public class APIValidAop {
             }
         }
         if(response == null){
-            try {
-                response = GenerateBeanUtil.GenerateClassInstance(Response.class,dto);
-                response.setResp_code(code);
-            } catch (Exception e) {
-                LogUtil.error(this.getClass(),e);
-            }
-        }else{
-            try {
-                GenerateBeanUtil.GenerateClassInstance(response,dto);
-            } catch (Exception e) {
-                LogUtil.error(this.getClass(),e);
-            }
+            response = new Response();
+            response.setResp_code(code);
         }
+
+        try {
+            GenerateBeanUtil.GenerateClassInstance(response,dto);
+        } catch (Exception e) {
+            LogUtil.error(this.getClass(),e);
+        }
+
         //处理成功返回值
         response.setResp_msg(Integer.parseInt(response.getResp_code())==0 ? "成功": Application.getInstance().getDictName(response.getResp_code()));
         //更改订单结果
