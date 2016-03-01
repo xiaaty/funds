@@ -6,13 +6,11 @@ import com.gqhmt.extServInter.dto.asset.TradeFlowResponse;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.service.asset.IAccountTradFlow;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
-import com.gqhmt.pay.service.ITradeRecord;
+import com.gqhmt.pay.service.ITradeFlowRecord;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-
 import java.util.List;
-
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountTradflowImpl implements IAccountTradFlow{
 	@Resource
-	private ITradeRecord tradeRecordImpl;//交易记录接口
+	private ITradeFlowRecord tradeFlowRecordImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	TradeFlowResponse response = new TradeFlowResponse();
     	try {
-    		List<FundFlowBean> fundFlowlist=tradeRecordImpl.getTradFlow((TradflowDto) dto);
+    		List<FundFlowBean> fundFlowlist=tradeFlowRecordImpl.getTradFlow((TradflowDto) dto);
     		response.setList(fundFlowlist);
 			response.setResp_code("0000");
 		} catch (FssException e) {
