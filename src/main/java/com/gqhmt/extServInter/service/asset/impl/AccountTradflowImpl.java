@@ -3,9 +3,9 @@ package com.gqhmt.extServInter.service.asset.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.asset.TradeFlowResponse;
-import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
+import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.service.asset.IAccountTradFlow;
-import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.pay.service.ITradeRecord;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
@@ -29,8 +29,8 @@ public class AccountTradflowImpl implements IAccountTradFlow{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	TradeFlowResponse response = new TradeFlowResponse();
     	try {
-    		List<FundSequenceEntity> list=tradeRecordImpl.getTradFlow((TradeRecordDto) dto);
-    		response.setList(list);
+    		List<FundFlowBean> fundFlowlist=tradeRecordImpl.getTradFlow((TradflowDto) dto);
+    		response.setList(fundFlowlist);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
