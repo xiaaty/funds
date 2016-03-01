@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -17,6 +18,7 @@ import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.Encriptor;
 import com.gqhmt.util.ThirdPartyType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -410,4 +412,18 @@ public class FundSequenceService {
    public List<FundSequenceEntity> getSumByDay(){
        return fundSequenceReadMapper.getSumByDay();
    }
+   
+   /**
+    * 账户资金
+    * @return
+    */
+  public List<FundFlowBean> getFundFlow(Integer user_no,Integer fundType) throws FssException{
+	  List<FundFlowBean> list=fundSequenceReadMapper.queryFundTradeFlow(user_no,fundType);
+	  return list;
+  }
+   
+   
+   
+   
+   
 }

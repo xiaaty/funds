@@ -3,7 +3,8 @@ package com.gqhmt.pay.service.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
-import com.gqhmt.extServInter.dto.fund.BankDto;
+import com.gqhmt.extServInter.dto.fund.TradflowDto;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.pay.service.ITradeRecord;
 import com.gqhmt.pay.service.TradeRecordService;
@@ -11,11 +12,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.funds.architect.customer.entity.BankEntity;
-import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
 /**
@@ -59,21 +57,12 @@ public class TradeRecordImpl  implements ITradeRecord {
 	 * @param tradrecord
 	 * @return
 	 */
-	public List<FundSequenceEntity> getTradFlow(TradeRecordDto tradrecord) throws FssException{
-		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-		 if(primaryAccount==null){
+	public List<FundFlowBean> getTradFlow(TradflowDto tradflowDto) throws FssException{
+		List<FundFlowBean> fundFlowBeanlist = fundSequenceService.getFundFlow(tradflowDto.getUser_no(),tradflowDto.getFundType());
+		 if(fundFlowBeanlist==null){
 			 throw new FssException("90002001");//账户信息不存在
 		 }
-		/*FundAccountSequenceBean accountsequence= tradeRecordService.getTradFlowByParams(tradrecord.getCust_no(),tradrecord.getUser_no(),tradrecord.getBusi_no());
-		if(accountsequence==null){
-			throw new FssException("90002005");
-		}else{
-			if(accountsequence.getAmount().equals(BigDecimal.ZERO)){
-				throw new FssException("90004007");
-			}
-		}*/
-
-		return null;
+		return fundFlowBeanlist;
 	}
 	
 	/**
