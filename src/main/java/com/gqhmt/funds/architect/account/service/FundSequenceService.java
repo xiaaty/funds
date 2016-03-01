@@ -414,7 +414,7 @@ public class FundSequenceService {
    }
    
    /**
-    * 账户资金
+    * 账户资金流水
     * @return
     */
   public List<FundFlowBean> getFundFlow(Integer user_no,Integer fundType) throws FssException{
