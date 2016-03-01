@@ -418,7 +418,14 @@ public class FundSequenceService {
     * @return
     */
   public List<FundFlowBean> getFundFlow(Integer user_no,Integer fundType) throws FssException{
-	  List<FundFlowBean> list=fundSequenceReadMapper.queryFundTradeFlow(user_no,fundType);
+	  Map map=new HashMap();
+	  if(StringUtils.isNoneBlank(user_no.toString())){
+		  map.put("user_no", user_no.intValue());
+	  }
+	  if(StringUtils.isNoneBlank(fundType.toString())){
+		  map.put("fundType", fundType.intValue());
+	  }
+	  List<FundFlowBean> list=fundSequenceReadMapper.queryFundTradeFlow(map);
 	  return list;
   }
    
