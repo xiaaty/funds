@@ -7,16 +7,17 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class TradflowDto extends SuperDto {
 	
-	private Integer id;
+	private Integer fundType;
 	private String trade_no;//交易号码
 	private Integer cust_no;//客户编号
 	private Integer user_no;//用户编号
 	private Integer busi_no;//业务编号
-	public Integer getId() {
-		return id;
+
+	public Integer getFundType() {
+		return fundType;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setFundType(Integer fundType) {
+		this.fundType = fundType;
 	}
 	public String getTrade_no() {
 		return trade_no;
