@@ -371,7 +371,7 @@ public class FundSequenceService {
      * @param busi_no
      * @return
      */
-    public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+ /*   public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);
@@ -380,7 +380,7 @@ public class FundSequenceService {
     		map.put("user_no", user_no);
     	}
     	return this.fundSequenceReadMapper.queryFundTradeFlow(map);
-    }
+    }*/
     
    public void insertFundSequence(FundSequenceEntity fundsequence)  throws FssException{
 	  this.fundSequenceWriteMapper.insert(fundsequence);
