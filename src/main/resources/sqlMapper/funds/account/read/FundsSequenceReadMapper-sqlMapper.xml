@@ -43,7 +43,7 @@
          </choose>
 	</select>
 	
-	<select id="queryFundTradeFlow" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
+	<select id="queryFundTradeFlow" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
 		SELECT 
 			s.fund_type fundType,
 			s.amount amount,
