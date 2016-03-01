@@ -1,9 +1,10 @@
 package com.gqhmt.extServInter.dto.trade;
 
 
-import java.math.BigDecimal;
-
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
 
 /**
  * 
@@ -23,11 +24,15 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 2016年2月20日  柯禹来      1.0     1.0 Version
  */
 public class TransferDto extends SuperDto {
-	private Long busi_id;	 //业务Id	
+	private Long busi_id;	 //业务Id
+	@APIValidNull(errorCode = "90002006")
 	private Integer from_cust_no;//出账客户编号	
-	private Integer from_user_no;//出账用户编号	
+	private Integer from_user_no;//出账用户编号
+
+	@APIValidNull(errorCode = "90002006")
 	private Integer to_cust_no;//入账客户编号	
-	private Integer to_user_no;//入账用户编号		
+	private Integer to_user_no;//入账用户编号
+	@APIValidNull(errorCode = "90004014")
 	private BigDecimal amt; //转账金额
 	private Integer  order_ype;//交易子类型
 	private Integer  yw_busi_type;//业务类型

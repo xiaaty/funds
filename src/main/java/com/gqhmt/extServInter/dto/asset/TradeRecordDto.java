@@ -1,22 +1,30 @@
 package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.extServInter.dto.SuperDto;
-
 /**
  *交易记录查询接口参数
  */
 public class TradeRecordDto extends SuperDto {
 	
-	private Integer id;
+	private String str_trade_time;//交易开始时间
+	private String end_trade_time;//交易结束时间
 	private String trade_no;//交易号码
 	private Integer cust_no;//客户编号
 	private Integer user_no;//用户编号
 	private Integer busi_no;//业务编号
-	public Integer getId() {
-		return id;
+	private String tradeFilters;//业务标识
+	
+	public String getStr_trade_time() {
+		return str_trade_time;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setStr_trade_time(String str_trade_time) {
+		this.str_trade_time = str_trade_time;
+	}
+	public String getEnd_trade_time() {
+		return end_trade_time;
+	}
+	public void setEnd_trade_time(String end_trade_time) {
+		this.end_trade_time = end_trade_time;
 	}
 	public String getTrade_no() {
 		return trade_no;
@@ -42,6 +50,11 @@ public class TradeRecordDto extends SuperDto {
 	public void setBusi_no(Integer busi_no) {
 		this.busi_no = busi_no;
 	}
-	
+	public String getTradeFilters() {
+		return tradeFilters;
+	}
+	public void setTradeFilters(String tradeFilters) {
+		this.tradeFilters = tradeFilters;
+	}
 	
 }

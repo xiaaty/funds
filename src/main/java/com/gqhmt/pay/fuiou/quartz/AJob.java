@@ -1,13 +1,13 @@
 package com.gqhmt.pay.fuiou.quartz;
-/*
-import com.gq.core.utils.LocalIPUtil;
-import com.gq.core.utils.LogUtil;
-import com.gq.funds.type.ThirdPartyType;
-import com.thirdparty.configer.Config;
-import com.thirdparty.factory.ConfigFactory;
-import java.util.List;
-*/
 
+import com.gqhmt.util.LocalIPUtil;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.pay.fuiou.util.Config;
+import com.gqhmt.pay.core.PayCommondConstants;
+import com.gqhmt.pay.core.factory.ConfigFactory;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
+
+import java.util.List;
 
 /**
  * Filename:    com.fuiou.quartz.AJob
@@ -26,9 +26,8 @@ import java.util.List;
  * 15/12/4  于泳      1.0     1.0 Version
  */
 public abstract class AJob {
-/*
-    protected final boolean isIp(String type){
-        Config config = ConfigFactory.getConfigFactory().getConfig(ThirdPartyType.FUIOU);
+    protected final boolean isIp(String type) throws PayChannelNotSupports{
+        Config config = (Config) ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         config.getValue("job."+type+".value");
         String apachIp = (String)config.getValue("job.ip.value");
         List<String> localIpList = LocalIPUtil.getLocalIpList();
@@ -48,6 +47,6 @@ public abstract class AJob {
         String  value = (String) config.getValue("job."+type+".value");
         isSame = new Boolean(value);
         return isSame;
-    }*/
+    }
 
 }

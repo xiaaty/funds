@@ -2,6 +2,7 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -23,15 +24,17 @@ import java.math.BigDecimal;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 public class WithdrawDto extends SuperDto{
-	
+
+	@APIValidNull(errorCode = "90002006")
 	private String cust_no;		//客户编号
 	
 	private String user_no;		//用户编号
-	
 
+
+	@APIValidNull(errorCode = "90004014")
     private BigDecimal amt;			//合同金额
-    
-    
+
+	@APIValidNull(errorCode = "90004014")
     private BigDecimal charge_amt;		//交易手续费
 
 

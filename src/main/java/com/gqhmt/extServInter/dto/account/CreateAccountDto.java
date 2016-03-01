@@ -21,6 +21,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
 public class CreateAccountDto extends SuperDto {
 
 
+    @APIValidNull(errorCode = "90002006")
 	private String cust_no;			//客户编号
 
 	private String user_no;			//用户编号

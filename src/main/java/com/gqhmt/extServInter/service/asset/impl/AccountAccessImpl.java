@@ -6,9 +6,14 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
+import com.gqhmt.extServInter.dto.asset.AssetResponse;
 import com.gqhmt.extServInter.service.asset.IAccountAccess;
+import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.pay.service.IFundsAccount;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -26,9 +31,12 @@ public class AccountAccessImpl implements IAccountAccess{
 	 */
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	Response response = new Response();
+    	AssetResponse response = new AssetResponse();
+    	List list=new ArrayList();
     	try {
-    		fundsAccountImpl.getAccountAsset((AssetDto)dto);
+    		FssAssetEntity fssAssetEntity = fundsAccountImpl.getAccountAsset((AssetDto)dto);
+    		list.add(fssAssetEntity);
+    		response.setPlain(list);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

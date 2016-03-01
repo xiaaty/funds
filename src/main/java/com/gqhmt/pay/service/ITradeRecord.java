@@ -3,7 +3,6 @@ package com.gqhmt.pay.service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.dto.cost.CostDto;
-import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
