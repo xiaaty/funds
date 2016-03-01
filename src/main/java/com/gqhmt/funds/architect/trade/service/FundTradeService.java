@@ -5,12 +5,12 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.FundTradeReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.FundTradeWriteMapper;
+import com.gqhmt.util.StringUtils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -122,7 +122,7 @@ public class FundTradeService {
      * @param busi_no
      * @return
      */
-    public List<FundTradeEntity> searchTradeRecord(Integer cust_no,Integer user_no,Integer busi_no,String trade_type){
+    public List<FundTradeEntity> searchTradeRecord(Integer cust_no,Integer user_no,Integer busi_no,String str_trade_time,String end_trade_time,String tradeFilters){
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);
@@ -130,9 +130,48 @@ public class FundTradeService {
     	if(null!=user_no){
     		map.put("user_no", user_no);
     	}
-    	if(null!=trade_type){
-    		map.put("trade_type", Integer.parseInt(trade_type));
+    	if(str_trade_time!=null && !"".equals(str_trade_time)){
+    		map.put("str_trade_time",str_trade_time);
     	}
+    	if(end_trade_time!=null && !"".equals(end_trade_time)){
+    		map.put("end_trade_time",end_trade_time);
+    	}
+    	String trade_type=null; 
+    	if(tradeFilters!=null && !"".equals(tradeFilters)){
+    		if(!tradeFilters.equals("c-w-b-r-o")){
+    			StringBuffer types = new StringBuffer();
+    			types.append("-1,");//空的，不存在
+    			if(tradeFilters.indexOf("c")>=0){//充值
+    				types.append("1001,");		
+    			}
+    			if(tradeFilters.indexOf("w")>=0){//提现	
+    				types.append("1003,1004,1012,2001,2002,2003,");
+    			}
+    			if(tradeFilters.indexOf("b")>=0){//出借
+    				types.append("2004,2006,3001,3002,3009,");
+    			}
+    			if(tradeFilters.indexOf("r")>=0){//回款
+    				types.append("3005,3006,");
+    				}
+    			if(tradeFilters.indexOf("o")>=0){//其他
+    				types.append("1002,1005,1006,1007,1008,1009,1010,1011,2005,2007,2008,2009,2010,3003,3004,3007,3008,3010,3011,4001,4002,4003,4004,4005,4006,4007,4010,");
+				}
+    			types.deleteCharAt(types.length()-1);
+    			trade_type=types.append(types).toString();
+    			}
+    		}
+
+	    	List list=new ArrayList();
+	 	   	if(StringUtils.isNotEmptyString(trade_type)){
+	 		   String str[]=trade_type.split(",");
+	 		   for (int i = 0; i < str.length; i++){
+	 			   list.add(str[i]);
+	 		   }
+	 	   }
+	 	   	
+		    if(list!=null && list.size()>0){
+	    		map.put("list", list);
+	    	}
     	return this.fundTradeReadMapper.queryFundTradeList(map);
     }
     

@@ -56,4 +56,10 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	 * @return
 	 */
 	public FundAccountSequenceBean queryFundTradeFlow(Map map);
+	
+	
+	
+	public List<FundSequenceEntity> getSumByDay();
+	
+	
 }

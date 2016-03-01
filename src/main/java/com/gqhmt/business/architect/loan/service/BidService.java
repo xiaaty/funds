@@ -7,6 +7,7 @@ import com.github.pagehelper.Page;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.mapper.read.BidReadMapper;
 import com.gqhmt.business.architect.loan.mapper.read.TenderReadMapper;
+import com.gqhmt.business.architect.loan.mapper.write.BidWriteMapper;
 
 /**
  * 标的管理
@@ -18,6 +19,9 @@ public class BidService {
 
 	@Autowired
 	private BidReadMapper bidReadMapper;
+	
+	@Autowired
+	private BidWriteMapper bidWriteMapper;
 	
 	@Autowired
 	private TenderReadMapper tenderReadMapper;
@@ -59,7 +63,13 @@ public class BidService {
     	return title;
     }
     
-    
+    /**
+     * 修改标的状态
+     * @param bid
+     */
+    public void updateBid(Bid bid){
+    	bidWriteMapper.updateByPrimaryKeySelective(bid);
+    }
     
     
 }

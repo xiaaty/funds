@@ -2,14 +2,12 @@ package com.gqhmt.pay.fuiou.quartz;
 
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.pay.core.PayCommondConstants;
-import com.gqhmt.pay.fuiou.util.Config;
+import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
-import org.apache.commons.net.ftp.FTPClient;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
@@ -36,16 +34,17 @@ import java.util.List;
  */
 @Component
 public class ChangeCardJob extends AJob{
-/*
+
     @Resource
     public FssChangeCardService changeCardService;
     
-    Config config=ConfigFactory.getConfigFactory().getConfig();
+    
    
+    
     private static boolean isRunning = false;
 
     @Scheduled(cron="0 0/10 8-21  * * * ")
-    public void changeCard(){
+    public void changeCard() throws PayChannelNotSupports{
         System.out.println("Change bank card job");
         if(!isIp("upload")){
             return;
@@ -103,7 +102,7 @@ public class ChangeCardJob extends AJob{
             return;
         }
         System.out.println("轮询结果");
-        try {
+     /*   try {
             Response response =  Response.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD_QUERY, ThirdPartyType.FUIOU,changeCardEntity);
 
             if( response != null ){
@@ -117,7 +116,7 @@ public class ChangeCardJob extends AJob{
 
         }catch (Exception e){
 
-        }
+        }*/
     }
 
 
@@ -134,7 +133,8 @@ public class ChangeCardJob extends AJob{
 
     }
 
-    public void uploadImageFtp(FssChangeCardEntity changeCardEntity){
+    public void uploadImageFtp(FssChangeCardEntity changeCardEntity) throws PayChannelNotSupports{
+    	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         System.out.println("上传图片:"+changeCardEntity.getId());
         if(!config.isConnection()){
             changeCardEntity.setTradeState(3);
@@ -146,15 +146,13 @@ public class ChangeCardJob extends AJob{
         String userName = (String)config.getValue("ftp.userName.value");
         String pwd = (String)config.getValue("ftp.pwd.value");
         String msd = (String)config.getValue("public.mchnt_cd.value");
-        FTPClient ftp = new FtpClient(Integer.parseInt(port),userName,pwd,url);
+        FtpClient ftp = new FtpClient(Integer.parseInt(port),userName,pwd,url);
         Date dateTime  = new Date();
         String date = String.format("%tY",dateTime)+ String.format("%tm",dateTime)+ String.format("%td",dateTime);
         try {
             ftp.mkfir("/ImageUpload/"+date);
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e);
-
-
         }
         File toFile = new File(changeCardEntity.getFilePath());
         String imagePath = changeCardEntity.getFilePath();
@@ -169,8 +167,8 @@ public class ChangeCardJob extends AJob{
 
 
     private void uploadData(){
-        List<ChangeCardEntity> list = changeCardService.query(3);
-        for(ChangeCardEntity changeCardEntity:list){
+        List<FssChangeCardEntity> list = changeCardService.query(3);
+        for(FssChangeCardEntity changeCardEntity:list){
             try {
                 this.uploadData(changeCardEntity);
                 changeCardService.uploadData(changeCardEntity);
@@ -180,14 +178,15 @@ public class ChangeCardJob extends AJob{
         }
     }
 
-    public void uploadData(ChangeCardEntity changeCardEntity){
+    public void uploadData(FssChangeCardEntity changeCardEntity) throws PayChannelNotSupports{
+    	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         System.out.println("提交数据到富友:"+changeCardEntity.getId());
         if(!config.isConnection()){
             changeCardEntity.setTradeState(4);
             return;
         }
         try{
-            AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD, ThirdPartyType.FUIOU,changeCardEntity);
+//            AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD, ThirdPartyType.FUIOU,changeCardEntity);
             changeCardEntity.setTradeState(4);
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
@@ -198,5 +197,4 @@ public class ChangeCardJob extends AJob{
         }
     }
 
-*/
 }
