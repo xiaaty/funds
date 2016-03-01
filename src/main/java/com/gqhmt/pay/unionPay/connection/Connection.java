@@ -1,17 +1,10 @@
 package com.gqhmt.pay.unionPay.connection;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipInputStream;
-
+import com.gnete.security.crypt.Crypt;
+import com.gnete.security.crypt.CryptException;
+import com.google.common.collect.Maps;
+import com.gqhmt.pay.unionPay.utils.Constants;
+import com.gqhmt.pay.unionPay.utils.PayConsts;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -22,11 +15,13 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import com.gnete.security.crypt.Crypt;
-import com.gnete.security.crypt.CryptException;
-import com.google.common.collect.Maps;
-import com.gqhmt.pay.unionPay.utils.Constants;
-import com.gqhmt.pay.unionPay.utils.PayConsts;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.zip.ZipInputStream;
 
 public class Connection {
 
@@ -445,7 +440,6 @@ public class Connection {
 	 * 解压数据 comment here
 	 * 
 	 * @param strData
-	 * @param bCompress
 	 * @return
 	 * @since gnete-pds 0.0.0.1
 	 */
@@ -543,7 +537,6 @@ public class Connection {
 	 * 
 	 * @param strData
 	 *            需要加密的请求数据
-	 * @param bCompress
 	 *            是否压缩
 	 * @return 压缩加密后的文件内容
 	 */
@@ -558,7 +551,7 @@ public class Connection {
 	 * 压缩数据，压缩字符串为 byte[] 储存可以使用new sun.misc.BASE64Encoder().encodeBuffer(byte[]
 	 * b)方法
 	 * 
-	 * @param strData
+	 * @param str
 	 *            需要压缩的请求数据
 	 * @return 压缩的文件内容 ，为字符串
 	 */
