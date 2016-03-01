@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.job.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
 import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
 import com.gqhmt.funds.architect.job.bean.FuiouUploadFile;
 import com.gqhmt.funds.architect.job.bean.FundOrder;
@@ -190,5 +191,13 @@ public class FuiouFtpOrderService {
             throw new CommandParmException("数据库录入错误",e);
         }
     }
+    
+    /**
+     * 批量插入
+     * @param list
+     */
+   public void saveOrUpdateAll(List<FuiouFtpOrder> fuiouftplist){
+	   fuiouFtpOrderWriteMapper.saveOrUpdateAll(fuiouftplist);
+   }
 
 }

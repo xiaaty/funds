@@ -2,9 +2,9 @@ package com.gqhmt.pay.fuiou.quartz;
 
 import com.gqhmt.util.LocalIPUtil;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.pay.fuiou.util.Config;
-import com.gqhmt.pay.core.PayCommondConstants;
+import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
+import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 public abstract class AJob {
     protected final boolean isIp(String type) throws PayChannelNotSupports{
-        Config config = (Config) ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+        Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         config.getValue("job."+type+".value");
         String apachIp = (String)config.getValue("job.ip.value");
         List<String> localIpList = LocalIPUtil.getLocalIpList();

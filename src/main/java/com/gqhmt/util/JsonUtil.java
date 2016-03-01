@@ -3,8 +3,6 @@ package com.gqhmt.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -78,4 +76,10 @@ public class JsonUtil {
 		pw.close();
 	}
     
+	
+	/*public static String toJson(Object obj) {
+		return JSON.toJSONString(obj, SerializerFeature.WriteDateUseDateFormat, SerializerFeature.DisableCircularReferenceDetect);
+	}
+	*/
+	
 }

@@ -2,11 +2,11 @@ package com.gqhmt.extServInter.service.account.impl;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.dto.fund.BankResponse;
-import com.gqhmt.extServInter.service.account.IBankList;
-import com.gqhmt.funds.architect.customer.entity.BankEntity;
-import com.gqhmt.pay.service.IFundBank;
+import com.gqhmt.extServInter.dto.account.BankCardDto;
+import com.gqhmt.extServInter.dto.account.BankCardResponse;
+import com.gqhmt.extServInter.service.account.IBankCardList;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.pay.service.IFundBankCard;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -15,20 +15,20 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
- * 银行列表接口
+ * 银行卡信息
  * @author 柯禹来
  */
 @Service
-public class BankListImpl implements IBankList{
+public class BankCardListImpl implements IBankCardList{
 	@Resource
-	private IFundBank fundBankImpl;
+	private IFundBankCard fundBankCardImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	BankResponse response = new BankResponse();
+    	BankCardResponse response = new BankCardResponse();
     	try {
-    		List<BankEntity> banklist=fundBankImpl.getBankInfo((BankDto)dto);
-    		response.setBanklist(banklist);
+    		List<BankCardInfoEntity> bankcardlist=fundBankCardImpl.getBankCardInfo((BankCardDto)dto);
+    		response.setBankcardlist(bankcardlist);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

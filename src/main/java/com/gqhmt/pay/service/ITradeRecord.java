@@ -5,6 +5,7 @@ import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
 import java.util.List;
@@ -34,11 +35,4 @@ public interface ITradeRecord {
 	 */
 	public boolean saveCostTrade(CostDto cost) throws FssException;
 		
-	/**
-	 * 银行列表
-	 * @param bank
-	 * @return
-	 * @throws FssException
-	 */
-	public boolean getBankList(BankDto bank)  throws FssException;
 }

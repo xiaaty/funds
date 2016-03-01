@@ -3,13 +3,11 @@ package com.gqhmt.extServInter.service.trade.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.SstxDto;
-import com.gqhmt.extServInter.service.trade.IRecharge;
+import com.gqhmt.extServInter.service.trade.ISstxTrade;
 import com.gqhmt.pay.service.IFundSstx;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,7 +28,7 @@ import org.springframework.stereotype.Service;
  * 2016年2月20日  柯禹来      1.0     1.0 Version
  */
 @Service
-public class SstxTradeImpl implements IRecharge {
+public class SstxTradeImpl implements ISstxTrade {
 	@Resource
 	private IFundSstx fundSstxImpl;
 	

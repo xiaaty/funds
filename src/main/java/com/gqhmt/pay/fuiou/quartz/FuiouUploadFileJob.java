@@ -1,6 +1,5 @@
 package com.gqhmt.pay.fuiou.quartz;
 
-import org.quartz.JobExecutionException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import com.gqhmt.core.util.LogUtil;
@@ -11,15 +10,13 @@ import com.gqhmt.pay.fuiou.service.FtpDownloadFileService;
 import com.gqhmt.pay.fuiou.service.FtpResultService;
 import com.gqhmt.pay.fuiou.service.FtpUploadService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
-import com.gqhmt.pay.fuiou.util.HttpClientUtil;
-import com.gqhmt.util.JsonUtil;
 import com.gqhmt.util.ServiceLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-        /**
+/**
  * Filename:    com.fuiou.quartz
  * Copyright:   Copyright (c)2014
  * Company:     冠群驰骋投资管理(北京)有限公司

@@ -5,16 +5,11 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.dto.cost.CostDto;
-import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.pay.service.ITradeRecord;
 import com.gqhmt.pay.service.TradeRecordService;
-import com.gqhmt.util.ThirdPartyType;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -40,8 +35,6 @@ public class TradeRecordImpl  implements ITradeRecord {
     @Resource
     private FundSequenceService fundSequenceService;
     
-    @Resource
-    private BankCardInfoService bankService;
 
 	/**
 	 * 查询交易记录
@@ -49,6 +42,7 @@ public class TradeRecordImpl  implements ITradeRecord {
 	 * @return
 	 */
 	public List<FundTradeEntity> getTradeRecord(TradeRecordDto tradrecord) throws FssException{
+		
 		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		 if(primaryAccount==null){
 			 throw new FssException("90002001");//账户信息不存在
@@ -125,16 +119,6 @@ public class TradeRecordImpl  implements ITradeRecord {
 //		}else{
 //			throw new FssException("90004006");
 //		}
-		return true;
-	}
-	/**
-	 * 银行列表
-	 */
-	public boolean getBankList(BankDto bank)  throws FssException{
-		BankEntity bankentity=bankService.getBankById(bank.getId());
-		if(bankentity==null){
-			throw new FssException("没有查到该银行信息");
-		}
 		return true;
 	}
 	
