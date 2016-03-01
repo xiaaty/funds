@@ -1,7 +1,6 @@
 package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -91,8 +90,8 @@ public class TradeRecordService {
      * @return
      * @throws FssException
      */
-    public FundAccountSequenceBean getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+  /*  public FundAccountSequenceBean getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
     	FundAccountSequenceBean fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
     	return fundsequencelist;
-    }
+    }*/
 }
