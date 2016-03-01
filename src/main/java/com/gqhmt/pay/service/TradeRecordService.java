@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,8 +78,8 @@ public class TradeRecordService {
      * @param busi_no
      * @return
      */
-    public List<FundTradeEntity> getTradeRecordByParams(Integer cust_no,Integer user_no,Integer busi_no,String trade_type) throws FssException{
-    	List<FundTradeEntity> tradelist = fundTradeService.searchTradeRecord(cust_no,user_no,busi_no,trade_type);
+    public List<FundTradeEntity> getTradeRecordByParams(Integer cust_no,Integer user_no,Integer busi_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
+    	List<FundTradeEntity> tradelist = fundTradeService.searchTradeRecord(cust_no,user_no,busi_no,str_trade_time,end_trade_time,tradeFilters);
     	return tradelist;
     }
     

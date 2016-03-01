@@ -3,12 +3,14 @@ package com.gqhmt.extServInter.service.account.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
+import com.gqhmt.extServInter.dto.fund.BankResponse;
 import com.gqhmt.extServInter.service.account.IBankList;
-import com.gqhmt.pay.service.ITradeRecord;
+import com.gqhmt.funds.architect.customer.entity.BankEntity;
+import com.gqhmt.pay.service.IFundBank;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-
+import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class BankListImpl implements IBankList{
 	@Resource
-	private ITradeRecord tradeRecordImpl;
+	private IFundBank fundBankImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	Response response = new Response();
+    	BankResponse response = new BankResponse();
     	try {
-    		tradeRecordImpl.getBankList((BankDto)dto);
+    		List<BankEntity> banklist=fundBankImpl.getBankInfo((BankDto)dto);
+    		response.setBanklist(banklist);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

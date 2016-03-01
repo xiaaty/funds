@@ -1,14 +1,22 @@
 package com.gqhmt.pay.fuiou.quartz;
 
-import org.quartz.JobExecutionException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
+import com.gqhmt.pay.fuiou.service.AbortBidService;
+import com.gqhmt.pay.fuiou.service.FtpDownloadFileService;
+import com.gqhmt.pay.fuiou.service.FtpResultService;
+import com.gqhmt.pay.fuiou.service.FtpUploadService;
+import com.gqhmt.pay.fuiou.util.CoreConstants;
+import com.gqhmt.util.ServiceLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-        /**
+/**
  * Filename:    com.fuiou.quartz
  * Copyright:   Copyright (c)2014
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -26,12 +34,12 @@ import java.util.Map;
  */
 @Component
 public class FuiouUploadFileJob extends AJob{
- /*   private static boolean isRunning = false;
+    private static boolean isRunning = false;
     private static boolean isUploadRunning = false;
     private static boolean isAbortRunning = false;
     private static boolean isSumDayRunning = false;
     @Scheduled(cron="0/27 * 7-23  * * * ")
-    protected void execute() throws JobExecutionException {
+    protected void execute() throws PayChannelNotSupports {
         if(!isIp("download")){
             return;
         }
@@ -58,7 +66,7 @@ public class FuiouUploadFileJob extends AJob{
     }
 
     @Scheduled(cron="0/11 * 7-23  * * * ")
-    protected void upload(){
+    protected void upload() throws PayChannelNotSupports{
         if(!isIp("upload")){
             return;
         }
@@ -78,7 +86,7 @@ public class FuiouUploadFileJob extends AJob{
     }
 
     @Scheduled(cron="0  0/5 7-23  * * * ")
-    public void abort(){
+    public void abort() throws PayChannelNotSupports{
         if(!isIp("abort")){
             return;
         }
@@ -97,7 +105,7 @@ public class FuiouUploadFileJob extends AJob{
     }
 
 //    @Scheduled(cron="0  5 18 * * * ")
-    public void sumByDay(){
+    public void sumByDay()  throws PayChannelNotSupports{
         if(!isIp("abort")){
             return;
         }
@@ -137,18 +145,14 @@ public class FuiouUploadFileJob extends AJob{
             list.add(map);
         }
         try {
-            String result = HttpClientUtil.postBody(
-                    CoreConstants.BACKEND_SMS_URL,
-                    JsonUtil.toJson(list));
-            System.out.println(result);
+//            String result = HttpClientUtil.postBody(CoreConstants.BACKEND_SMS_URL,JsonUtil.toJson(list));
+//            System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return true;
     }
-    private   String postBody(String urlPath, String json) throws Exception {
+  /*  private   String postBody(String urlPath, String json) throws Exception {
         try {
             // Configure and open a connection to the site you will send the
             // request
@@ -177,8 +181,5 @@ public class FuiouUploadFileJob extends AJob{
             e.printStackTrace();
             throw e;
         }
-    }
-
-
-*/
-        }
+    }*/
+}

@@ -8,6 +8,8 @@ import org.apache.commons.net.ftp.FTPHTTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.util.TrustManagerUtils;
 
+import com.gqhmt.util.CommonUtil;
+
 import java.io.*;
 import java.net.SocketException;
 
@@ -298,12 +300,12 @@ public class FtpClient {
         return null;
     }
 
- /*   public boolean uploadFile(String localFile,String remoteFileName){
+    public boolean uploadFile(String localFile,String remoteFileName){
         File file = new File(localFile);
         return this.uploadFile(file,remoteFileName);
     }
-*/
-/*    public boolean uploadFile(File file ,String fileName){
+
+    public boolean uploadFile(File file ,String fileName){
         try {
             if(!ftp.isConnected()) {
                 this.ftpConnection();
@@ -320,14 +322,14 @@ public class FtpClient {
         }
 
         return false;
-    }*/
+    }
 
     /**
      * 上传文件
      * @param in
      * @param fileNme
      */
- /*   public boolean uploadFile(InputStream in,String fileNme) {
+    public boolean uploadFile(InputStream in,String fileNme) {
         try {
             this.ftpConnection();
 
@@ -342,8 +344,7 @@ public class FtpClient {
 
                String  fileName  = fileNme.substring(fileNme.lastIndexOf("/")+1);
                 String tmpFileName = fileName+".tmp";
-                String remoteFileName = CommonUtil.getString(tmpFileName, CoreConstants.ENCODING_GBK,
-                        CoreConstants.ENCODING_ISO8859_1);
+                String remoteFileName = CommonUtil.getString(tmpFileName, "GBK","ISO8859-1");
                 this.ftp.setFileType(FTP.BINARY_FILE_TYPE);
                 this.ftp.enterLocalPassiveMode();
 //                this.ftp.enterRemotePassiveMode();
@@ -384,7 +385,7 @@ public class FtpClient {
 
         return false;
     }
-*/
+
 //    public boolean isExist(String filePath){
 //        this.ftp.
 //    }

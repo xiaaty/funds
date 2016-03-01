@@ -1,5 +1,6 @@
 package com.gqhmt.pay.core.factory;
 
+import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.pay.core.Context.FssContext;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
@@ -68,4 +69,5 @@ public class ConfigFactory {
         return config;
 
     }
+    
 }

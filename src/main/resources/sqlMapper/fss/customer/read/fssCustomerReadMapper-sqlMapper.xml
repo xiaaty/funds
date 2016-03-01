@@ -32,13 +32,13 @@
 		customer.modify_time modifyTime
 		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer,`t_gq_fss_bank_list` bank where bankCard.bank_id=bank.id
 		 <if test="name != null and name != ''">
-                and   customer.name like  concat('%',#{name},'%') 
+                and   customer.name like  concat('%',${name},'%') 
               </if>
               <if test="cardNo != null and cardNo != ''">
-                and bankCard.card_no like concat('%',#{cardNo},'%') 
+                and bankCard.card_no like concat('%',${cardNo},'%') 
               </if>
               <if test="bankSortName != null and bankSortName != ''">
-                and  bank.sort_name like concat('%',#{bankSortName},'%') 
+                and  bank.sort_name like concat('%',${bankSortName},'%') 
               </if>
 	</select>
 <!-- 	查询要申请变更银行卡用户信息 -->
@@ -55,7 +55,7 @@
 		bankCard.area area,
 		customer.create_time createTime,
 		customer.modify_time modifyTime
-		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id and customer.id=#{id}
+		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id and customer.id=${id}
 		
 	</select>
 	<select id="quaryBankCardInfoList" parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity">

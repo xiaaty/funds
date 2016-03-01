@@ -59,4 +59,25 @@
 		AND b.cust_id=${cust_no} 
 		AND b.user_id=${user_no} 
 	</select>
+	
+<!-- 	
+	<select id="getSumByDay" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
+		SELECT a.ACCOUNT_ID,cus.MOBILE_PHONE,
+		IFNULL((SELECT SUM(seq.amount) FROM t_gq_fund_sequence seq 
+		WHERE seq.ACCOUNT_ID = t.id  AND seq.amount > 0	 
+		<![CDATA[AND DATE_FORMAT(seq.CREATE_TIME, '%Y%m%d%H') >=DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY),'%Y%m%d18')]]>
+		<![CDATA[AND DATE_FORMAT(seq.CREATE_TIME, '%Y%m%d%H') < DATE_FORMAT(NOW(), '%Y%m%d18')),0)]]> income,
+		ABS(IFNULL((SELECT SUM(seq.amount) FROM t_gq_fund_sequence seq 
+		WHERE seq.ACCOUNT_ID = t.id  AND  seq.amount < 0 
+		<![CDATA[AND DATE_FORMAT(seq.CREATE_TIME, '%Y%m%d%H') >=DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY),'%Y%m%d18')]]> 
+		<![CDATA[AND DATE_FORMAT(seq.CREATE_TIME, '%Y%m%d%H') < DATE_FORMAT(NOW(), '%Y%m%d18')),0 )) repay ]]>
+		FROM t_gq_fund_account t, t_gq_fund_sequence a ,t_gq_customer_info cus
+		WHERE t.id = a.ACCOUNT_ID 
+        AND t.cust_id = cus.id 
+		AND t.busi_type = 3 
+		<![CDATA[AND DATE_FORMAT(a.CREATE_TIME, '%Y%m%d%H') >= DATE_FORMAT( DATE_SUB(NOW(), INTERVAL 1 DAY),'%Y%m%d18')]]> 
+		<![CDATA[AND DATE_FORMAT(a.CREATE_TIME, '%Y%m%d%H') <  DATE_FORMAT(NOW(), '%Y%m%d18')]]>
+		GROUP BY a.ACCOUNT_ID 
+	</select>
+	 -->
 </mapper>

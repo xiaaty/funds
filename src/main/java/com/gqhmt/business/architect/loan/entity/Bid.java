@@ -115,7 +115,12 @@ public class Bid {
 //    private Integer tenderCustomNum;
 //    private BigDecimal alreadyTenderScale = new BigDecimal(0.00);
 
-
+    @Column(name = "pay_state")
+    private Integer payState;
+    
+    @Column(name = "bid_state")
+    private Integer bidState;
+    
     public Integer getId() {
         return id;
     }
@@ -275,4 +280,21 @@ public class Bid {
     public void setHypothecarius(Integer hypothecarius) {
         this.hypothecarius = hypothecarius;
     }
+
+	public Integer getPayState() {
+		return payState;
+	}
+
+	public void setPayState(Integer payState) {
+		this.payState = payState;
+	}
+
+	public Integer getBidState() {
+		return bidState;
+	}
+
+	public void setBidState(Integer bidState) {
+		this.bidState = bidState;
+	}
+    
 }

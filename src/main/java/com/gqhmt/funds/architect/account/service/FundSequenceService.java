@@ -406,4 +406,8 @@ public class FundSequenceService {
        fundSequenceWriteMapper.insert(entity);
    }
    
+
+   public List<FundSequenceEntity> getSumByDay(){
+       return fundSequenceReadMapper.getSumByDay();
+   }
 }

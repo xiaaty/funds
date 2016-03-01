@@ -79,6 +79,12 @@ public class FssTradeApi {
 	@Resource
 	private ITransefer transefer;
     
+	@Resource
+	private ISstxTrade sstxTradeImpl;
+	
+	@Resource
+	private ISsdkTrade ssdkTradeImpl;
+	
     
     /**
      * 
@@ -277,7 +283,40 @@ public class FssTradeApi {
 		}
 		return response;
 	}
-
+	
+	/**
+     * author:柯禹来
+     * time:2016年3月1日
+     * function：实时提现
+     */
+    @RequestMapping(value = "/sstxBusiness",method = RequestMethod.POST)
+    public Object sstxBusiness(SstxDto sstxDto){
+    	Response response=new Response();
+    	try {
+    		response = sstxTradeImpl.excute(sstxDto);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+	
+    /**
+     * author:柯禹来
+     * time:2016年3月1日
+     * function：实时代扣
+     */
+    @RequestMapping(value = "/ssdkBusiness",method = RequestMethod.POST)
+    public Object ssdkBusiness(SsdkDto ssdkDto){
+    	Response response=new Response();
+    	try {
+    		response = ssdkTradeImpl.excute(ssdkDto);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
 
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);

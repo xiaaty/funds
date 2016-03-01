@@ -49,16 +49,16 @@
 		FROM t_gq_bank_info t
 		<where>
 	 	  	 <if test="certName != null and certName != ''">
-               and t.cert_name like  concat('%',#{certName},'%') 
+               and t.cert_name like  CONCAT('%',${certName},'%') 
              </if>
              <if test="bankNo != null and bankNo != ''">
-               and t.bank_no like concat('%',#{bankNo},'%') 
+               and t.bank_no like CONCAT('%',${bankNo},'%') 
              </if>
              <if test="bankSortName != null and bankSortName != ''">
-               and t.bank_sort_name like concat('%',#{bankSortName},'%') 
+               and t.bank_sort_name like CONCAT('%',${bankSortName},'%') 
              </if>
              <if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
-				and t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+				and t.create_time BETWEEN DATE_FORMAT(${startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(${endtime},'%Y%m%d%H%i%s')
 			</if>
 		</where>
 	</select>
