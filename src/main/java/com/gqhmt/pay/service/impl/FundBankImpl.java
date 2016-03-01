@@ -20,11 +20,11 @@ import javax.annotation.Resource;
 public class FundBankImpl implements IFundBank {
 
 	@Resource
-	private BankCardInfoService fundAccountService;
+	private BankCardInfoService bankCardInfoService;
 	
 	@Override
 	public List<BankEntity> getBankInfo(BankDto bank) throws FssException {
-		List<BankEntity> list=fundAccountService.getBankList(null);
+		List<BankEntity> list=bankCardInfoService.getBankList(null);
 		if(list==null && list.size()==0){
 			throw new FssException("没有得到银行信息");
 		}

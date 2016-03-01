@@ -24,13 +24,13 @@ import javax.annotation.Resource;
 public class FundBankCardImpl implements IFundBankCard {
 
 	@Resource
-	private BankCardInfoService fundAccountService;
+	private BankCardInfoService bankCardInfoService;
 	/**
 	 * 查询银行卡信息
 	 */
 	@Override
 	public List<BankCardInfoEntity> getBankCardInfo(BankCardDto bankcard) throws FssException {
-		List<BankCardInfoEntity> list=fundAccountService.findAllbankCards(null);
+		List<BankCardInfoEntity> list=bankCardInfoService.findAllbankCards(null);
 		if(list==null && list.size()==0){
 			throw new FssException("没有查到到银卡行信息");
 		}
