@@ -3,25 +3,25 @@
 <mapper namespace="com.gqhmt.funds.architect.trade.mapper.read.FundTradeReadMapper">
 	<select id="queryFundTradeList" parameterType="java.util.Map" resultType="fundTradeEntity">
 		 SELECT  
-			t.id,
-			t.trade_no,
-			t.trade_type,
-			t.user_id,
-			t.account_id,
-			t.income,
-			t.spending,
-			t.usable_sum,
-			t.remarks,
-			t.trade_time,
-			t.bid_id,
-			t.repayment_id,
-			t.bonus_amount
+			t.id id,
+			t.trade_no tradeNo,
+			t.trade_type tradeType,
+			t.user_id userId,
+			t.account_id accountId,
+			t.income income,
+			t.spending spending,
+			t.usable_sum usableSum,
+			t.remarks remarks,
+			t.trade_time tradeTime,
+			t.bid_id bidId,
+			t.repayment_id repaymentId,
+			t.bonus_amount bonusAmount
 		FROM t_gq_fund_trade t,t_gq_fund_account f
-		WHERE  t.account_id = f.id AND f.cust_id = 44861 AND (f.busi_type = 3 OR f.busi_type = 99)
+		WHERE  t.account_id = f.id AND f.cust_id = ${cust_no} AND (f.busi_type = 3 OR f.busi_type = 99)
 		<if test="str_trade_time != null and str_trade_time !='' "> <![CDATA[and STR_TO_DATE(t.trade_time,'%Y-%m-%d') >= STR_TO_DATE(#{str_trade_time},'%Y-%m-%d')]]> </if>
 		<if test="end_trade_time != null and end_trade_time !='' "><![CDATA[ and STR_TO_DATE(t.trade_time,'%Y-%m-%d') <= STR_TO_DATE(#{end_trade_time},'%Y-%m-%d')]]> </if>
 		AND t.trade_type IN
-		<foreach collection="list" item="trade_type" index="index"
+		<foreach collection="list" item="tradeType" index="index"
            open="(" close=")" separator=",">
            #{trade_type}
        </foreach>

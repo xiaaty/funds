@@ -77,8 +77,8 @@ public class TradeRecordService {
      * @param busi_no
      * @return
      */
-    public List<FundTradeEntity> getTradeRecordByParams(Integer cust_no,Integer user_no,Integer busi_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
-    	List<FundTradeEntity> tradelist = fundTradeService.searchTradeRecord(cust_no,user_no,busi_no,str_trade_time,end_trade_time,tradeFilters);
+    public List<FundTradeEntity> getTradeRecordByParams(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
+    	List<FundTradeEntity> tradelist = fundTradeService.searchTradeRecord(cust_no,str_trade_time,end_trade_time,tradeFilters);
     	return tradelist;
     }
     

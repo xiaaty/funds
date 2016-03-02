@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.trade.bean;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 资金数据传输对象
@@ -16,8 +15,8 @@ public class FundFlowBean implements java.io.Serializable{
 
     private Integer fundType;
     private BigDecimal amount;
-    private Date create_time;
-	private String ym;
+    private String create_time;
+    private String create_ym;
 	public Integer getFundType() {
 		return fundType;
 	}
@@ -30,17 +29,18 @@ public class FundFlowBean implements java.io.Serializable{
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	public Date getCreate_time() {
+	public String getCreate_time() {
 		return create_time;
 	}
-	public void setCreate_time(Date create_time) {
+	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
 	}
-	public String getYm() {
-		return ym;
+	public String getCreate_ym() {
+		return create_ym;
 	}
-	public void setYm(String ym) {
-		this.ym = ym;
+	public void setCreate_ym(String create_ym) {
+		this.create_ym = create_ym;
 	}
+	
 	
 }

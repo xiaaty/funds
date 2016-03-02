@@ -33,10 +33,13 @@ public class FssAssetApi {
 
     @Resource
     private IAccountBanlance accountBanlance;
+    
+    @Resource
+    private IAccountBanlance accountBanlanceImpl;
 
     private ITransaction transaction;
 
-    @RequestMapping(value = "/balance")
+  /*  @RequestMapping(value = "/balance")
     public Object balance(AssetDto dto){
         Response response = null;
         try {
@@ -45,8 +48,20 @@ public class FssAssetApi {
             excute(e);
         }
         return response;
-    }
+    }*/
 
+    @RequestMapping(value = "/getAccountAccByCustId")
+    public Object getAccountAccByCustId(AssetDto dto){
+        Response response = new Response();
+        try {
+           response =  accountBanlance.excute(dto);
+        } catch (APIExcuteErrorException e) {
+            excute(e);
+        }
+        return response;
+    }
+    
+    
 
     @RequestMapping(value = "/queryTradeRecord")
     public Object tradeRecord(AssetDto dto){

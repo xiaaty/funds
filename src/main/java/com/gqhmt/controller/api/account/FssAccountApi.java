@@ -5,30 +5,19 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.BankCardDto;
-import com.gqhmt.extServInter.dto.account.BankCardResponse;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
-import com.gqhmt.extServInter.dto.asset.TradeFlowResponse;
 import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.dto.fund.BankResponse;
 import com.gqhmt.extServInter.dto.fund.TradflowDto;
 import com.gqhmt.extServInter.service.account.IBankCardList;
 import com.gqhmt.extServInter.service.account.IBankList;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.extServInter.service.asset.IAccountTradFlow;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
-import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.funds.architect.customer.entity.BankEntity;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
 import javax.annotation.Resource;
 
 /**
@@ -135,14 +124,9 @@ public class FssAccountApi {
      */
     @RequestMapping(value = "/getBankInfo",method = RequestMethod.POST)
     public Object getBankInfo(BankDto bank) throws APIExcuteErrorException{
-    	BankResponse response= new BankResponse();
+    	Response response= new Response();
     	try {
-    		response= (BankResponse)bankListImpl.excute(bank);
-    		List<BankEntity> banklist= response.getBanklist();
-    		/*for(BankEntity bankEntity:banklist){
-    			bankEntity.getBankCode();
-    			bankEntity.getBankName();
-    		}*/
+    		response= bankListImpl.excute(bank);
     	} catch (FssException e) {
              response.setResp_code(e.getMessage());
     	}
@@ -156,16 +140,9 @@ public class FssAccountApi {
      */
     @RequestMapping(value = "/getBankCardInfo",method = RequestMethod.POST)
     public Object getBankCardInfo(BankCardDto bankcard){
-    	BankCardResponse response= new BankCardResponse();
+    	Response response= new Response();
     	try {
-    		response = (BankCardResponse)bankCardListImpl.excute(bankcard);
-    		List<BankCardInfoEntity> bankcardlist=response.getBankcardlist();
-    	/*	for (BankCardInfoEntity bankCardEntity:bankcardlist) {
-    			String bankNo = bankCardEntity.getBankNo();
-    			String bankLongName = bankCardEntity.getBankLongName();
-    			String bankSortName = bankCardEntity.getBankSortName();
-			}*/
-    		
+    		response = bankCardListImpl.excute(bankcard);
     	} catch (Exception e) {
     		response.setResp_code(e.getMessage());
     	}
@@ -180,11 +157,9 @@ public class FssAccountApi {
      */
     @RequestMapping(value = "/getTradFlow",method = RequestMethod.POST)
     public Object getTradFlow(TradflowDto tradflowDto){
-    	TradeFlowResponse response= new TradeFlowResponse();
+    	Response response= new Response();
     	try {
-    		response = (TradeFlowResponse)accountTradflowImpl.excute(tradflowDto);
-    		List<FundFlowBean> fundflowlist=response.getList();
-    		response.getList();
+    		response =accountTradflowImpl.excute(tradflowDto);
     	} catch (Exception e) {
     		response.setResp_code(e.getMessage());
     	}
