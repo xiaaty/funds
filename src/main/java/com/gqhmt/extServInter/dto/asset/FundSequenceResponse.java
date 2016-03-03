@@ -19,7 +19,7 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2016/2/28  于泳      1.0     1.0 Version
  */
-public class TradeFlowResponse extends Response {
+public class FundSequenceResponse extends Response {
 
     private  List<FundFlowBean> list;
 

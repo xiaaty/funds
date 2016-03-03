@@ -2,11 +2,11 @@ package com.gqhmt.extServInter.service.asset.impl;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.asset.TradeFlowResponse;
-import com.gqhmt.extServInter.dto.fund.TradflowDto;
-import com.gqhmt.extServInter.service.asset.IAccountTradFlow;
+import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
+import com.gqhmt.extServInter.dto.asset.FundSequenceResponse;
+import com.gqhmt.extServInter.service.asset.IFundSeqence;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
-import com.gqhmt.pay.service.ITradeFlowRecord;
+import com.gqhmt.pay.service.IFundSequence;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -19,15 +19,15 @@ import org.springframework.stereotype.Service;
  * @author 柯禹来
  */
 @Service
-public class AccountTradflowImpl implements IAccountTradFlow{
+public class FundSeqenceImpl implements IFundSeqence{
 	@Resource
-	private ITradeFlowRecord tradeFlowRecordImpl;
+	private IFundSequence fundSequenceImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	TradeFlowResponse response = new TradeFlowResponse();
+    	FundSequenceResponse response = new FundSequenceResponse();
     	try {
-    		List<FundFlowBean> fundFlowlist=tradeFlowRecordImpl.getTradFlow((TradflowDto) dto);
+    		List<FundFlowBean> fundFlowlist=fundSequenceImpl.queryFundSequence((FundSequenceDto) dto);
     		response.setList(fundFlowlist);
 			response.setResp_code("0000");
 		} catch (FssException e) {

@@ -8,8 +8,9 @@ public class AssetDto extends SuperDto {
 	    private Long id;                          
 	    private String cust_no;                     
 	    private String user_no;             
-	    private String acc_no   ; 
-	    private String busi_no   ; 
+	    private String acc_no; 
+	    private String busi_no; 
+	    private int busi_type; 
 	    
 		public Long getId() {
 			return id;
@@ -41,5 +42,10 @@ public class AssetDto extends SuperDto {
 		public void setBusi_no(String busi_no) {
 			this.busi_no = busi_no;
 		}
-	    
+		public int getBusi_type() {
+			return busi_type;
+		}
+		public void setBusi_type(int busi_type) {
+			this.busi_type = busi_type;
+		}
 }

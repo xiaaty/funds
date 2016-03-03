@@ -1,4 +1,4 @@
-package com.gqhmt.extServInter.service.account;
+package com.gqhmt.extServInter.service.asset;
 import com.gqhmt.extServInter.service.ExtService;
 
 /**

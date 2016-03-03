@@ -42,13 +42,13 @@
               </when>
          </choose>
 	</select>
-	
-	<select id="queryFundTradeFlow" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
+	<!-- 查询账户资金流水 -->
+	<select id="getFundSequence" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
 		SELECT 
-			s.fund_type fundType,
-			s.amount amount,
-			date_format(s.create_time,'%Y-%m-%d %H:%i') create_time,
-			date_format(s.create_time,'%Y-%m') ym
+			s.fund_type as fundType,
+			s.amount as amount,
+			date_format(s.create_time,'%Y-%m-%d %H:%i:%m') as create_time,
+			date_format(s.create_time,'%Y-%m') as create_ym
 		From t_gq_fund_account a,t_gq_fund_sequence s 
 		WHERE a.id = s.account_id and (a.busi_type=3 or a.busi_type=99) and a.user_id=${user_no}
 		<choose>

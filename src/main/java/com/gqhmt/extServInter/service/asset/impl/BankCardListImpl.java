@@ -1,10 +1,10 @@
-package com.gqhmt.extServInter.service.account.impl;
+package com.gqhmt.extServInter.service.asset.impl;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.BankCardDto;
 import com.gqhmt.extServInter.dto.account.BankCardResponse;
-import com.gqhmt.extServInter.service.account.IBankCardList;
+import com.gqhmt.extServInter.service.asset.IBankCardList;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.pay.service.IFundBankCard;
 import com.gqhmt.core.APIExcuteErrorException;
