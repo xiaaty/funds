@@ -12,6 +12,6 @@ public interface IFundSequence {
 	 * @param tradrecord
 	 * @return
 	 */
-	public List<FundFlowBean> getFundSequence(FundSequenceDto fundSeqDto) throws FssException;
+	public List<FundFlowBean> queryFundSequence(FundSequenceDto fundSeqDto) throws FssException;
 	
 }

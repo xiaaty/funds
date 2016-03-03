@@ -224,6 +224,6 @@ public interface IFundsTrade {
 	 * @param tradrecord
 	 * @return
 	 */
-    public List<FundTradeEntity> getFundTrade(FundTradeDto tradrecord) throws FssException;
+    public List<FundTradeEntity> queryFundTrade(FundTradeDto tradrecord) throws FssException;
 	
 }

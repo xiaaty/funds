@@ -27,7 +27,7 @@ public class FundSeqenceImpl implements IFundSeqence{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	FundSequenceResponse response = new FundSequenceResponse();
     	try {
-    		List<FundFlowBean> fundFlowlist=fundSequenceImpl.getFundSequence((FundSequenceDto) dto);
+    		List<FundFlowBean> fundFlowlist=fundSequenceImpl.queryFundSequence((FundSequenceDto) dto);
     		response.setList(fundFlowlist);
 			response.setResp_code("0000");
 		} catch (FssException e) {

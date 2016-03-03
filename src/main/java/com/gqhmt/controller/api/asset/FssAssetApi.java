@@ -1,5 +1,6 @@
 package com.gqhmt.controller.api.asset;
 
+import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -97,8 +98,9 @@ public class FssAssetApi {
      * time:2016年3月1日
      * function：账户资金流水查询
      */
-    @RequestMapping(value = "/getFundSequence",method = RequestMethod.POST)
-    public Object getFundSequence(FundSequenceDto tradflowDto){
+    @AutoPage
+    @RequestMapping(value = "/queryFundSequence",method = RequestMethod.POST)
+    public Object queryFundSequence(FundSequenceDto tradflowDto){
     	Response response= new Response();
     	try {
     		response =fundSeqenceImpl.excute(tradflowDto);
@@ -112,8 +114,9 @@ public class FssAssetApi {
      * time:2016年3月1日
      * function：交易记录查询
      */
-    @RequestMapping(value = "/getFundTrade",method = RequestMethod.POST)
-    public Object getFundTrade(FundTradeDto fundTradeDto){
+    @AutoPage
+    @RequestMapping(value = "/queryFundTrade",method = RequestMethod.POST)
+    public Object queryFundTrade(FundTradeDto fundTradeDto){
     	Response response=new Response();
     	try {
     		response = fundTradeImpl.excute(fundTradeDto);

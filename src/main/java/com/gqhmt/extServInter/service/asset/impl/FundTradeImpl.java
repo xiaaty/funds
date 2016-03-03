@@ -29,7 +29,7 @@ public class FundTradeImpl implements IFundTrade{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
 		AssetResponse response = new AssetResponse();
     	try {
-    		List list = fundsTradeImpl.getFundTrade((FundTradeDto)dto);
+    		List list = fundsTradeImpl.queryFundTrade((FundTradeDto)dto);
 			response.setPlain(list);
 			response.setResp_code("0000");
 		} catch (FssException e) {

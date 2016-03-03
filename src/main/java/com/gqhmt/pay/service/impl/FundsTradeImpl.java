@@ -288,13 +288,13 @@ public class FundsTradeImpl  implements IFundsTrade {
 	 * @param tradrecord
 	 * @return
 	 */
-	public List<FundTradeEntity> getFundTrade(FundTradeDto tradrecord) throws FssException{
+	public List<FundTradeEntity> queryFundTrade(FundTradeDto tradrecord) throws FssException{
 		
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
 		 if(primaryAccount==null){
 			 throw new FssException("90002001");//账户信息不存在
 		 }
-		 List<FundTradeEntity> tradelist= tradeRecordService.getFundTrade(tradrecord.getCust_no(),tradrecord.getStr_trade_time(),tradrecord.getEnd_trade_time(),tradrecord.getTradeFilters());
+		 List<FundTradeEntity> tradelist= tradeRecordService.queryFundTrade(tradrecord.getCust_no(),tradrecord.getStr_trade_time(),tradrecord.getEnd_trade_time(),tradrecord.getTradeFilters());
 		 if(tradelist.size()==0){
 			throw new FssException("90003");
 		 }

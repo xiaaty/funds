@@ -24,8 +24,8 @@ public class FundSequenceImpl  implements IFundSequence {
 	 * @param tradrecord
 	 * @return
 	 */
-	public List<FundFlowBean> getFundSequence(FundSequenceDto fundSeqDto) throws FssException{
-		List<FundFlowBean> fundSeqList = fundSequenceService.getFundSequence(fundSeqDto.getUser_no(),fundSeqDto.getFundType());
+	public List<FundFlowBean> queryFundSequence(FundSequenceDto fundSeqDto) throws FssException{
+		List<FundFlowBean> fundSeqList = fundSequenceService.queryFundSequence(fundSeqDto.getUser_no(),fundSeqDto.getFundType());
 		 if(fundSeqList==null){
 			 throw new FssException("90002001");//账户信息不存在
 		 }
