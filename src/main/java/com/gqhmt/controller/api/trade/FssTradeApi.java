@@ -2,11 +2,8 @@ package com.gqhmt.controller.api.trade;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
-import com.gqhmt.extServInter.service.asset.IFundTrade;
 import com.gqhmt.extServInter.service.trade.*;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -302,8 +299,7 @@ public class FssTradeApi {
     	return response;
     }
 	
-    /**
-     * author:柯禹来
+    /**     * author:柯禹来
      * time:2016年3月1日
      * function：实时代扣
      */
