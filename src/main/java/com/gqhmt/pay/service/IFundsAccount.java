@@ -110,7 +110,7 @@ public interface IFundsAccount {
      * @return
      * @throws FssException
      */
-    public FundAccountEntity getAccountAccByCustId(AssetDto accessdto) throws FssException;
+    public FundAccountEntity getAccountBanlance(AssetDto accessdto) throws FssException;
     
     /**
      * 查询账户资产

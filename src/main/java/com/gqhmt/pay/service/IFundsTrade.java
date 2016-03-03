@@ -2,9 +2,12 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Filename:    com.gq.funds.interaction.IFundsTrade
@@ -216,5 +219,11 @@ public interface IFundsTrade {
      */
     //public boolean compensateByLoad(String thirdPartyType,int custID,int costMode,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
-
+	/**
+	 * 查询交易记录
+	 * @param tradrecord
+	 * @return
+	 */
+    public List<FundTradeEntity> queryFundTrade(FundTradeDto tradrecord) throws FssException;
+	
 }
