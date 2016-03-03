@@ -2,9 +2,9 @@ package com.gqhmt.controller.api.trade;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
+import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
-import com.gqhmt.extServInter.service.asset.ITransaction;
+import com.gqhmt.extServInter.service.asset.IFundTrade;
 import com.gqhmt.extServInter.service.trade.*;
 
 import org.springframework.context.ApplicationContext;
@@ -86,11 +86,6 @@ public class FssTradeApi {
 	
 	@Resource
 	private ISsdkTrade ssdkTradeImpl;
-	
-	@Resource
-	private ITransaction transactionImpl;
-	
-	
 	
     /**
      * 
@@ -317,23 +312,6 @@ public class FssTradeApi {
     	Response response=new Response();
     	try {
     		response = ssdkTradeImpl.excute(ssdkDto);
-    	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
-    	}
-    	return response;
-    }
-
-    /**
-     * author:柯禹来
-     * time:2016年3月1日
-     * function：交易记录
-     */
-    @RequestMapping(value = "/getTradeRecord",method = RequestMethod.POST)
-    public Object getTradeRecord(TradeRecordDto tradeRecordDto){
-    	Response response=new Response();
-    	try {
-    		response = transactionImpl.excute(tradeRecordDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());

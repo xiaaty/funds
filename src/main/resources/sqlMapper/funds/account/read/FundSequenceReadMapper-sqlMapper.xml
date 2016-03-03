@@ -42,8 +42,8 @@
               </when>
          </choose>
 	</select>
-	
-	<select id="queryFundTradeFlow" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
+	<!-- 查询账户资金流水 -->
+	<select id="getFundSequence" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
 		SELECT 
 			s.fund_type as fundType,
 			s.amount as amount,

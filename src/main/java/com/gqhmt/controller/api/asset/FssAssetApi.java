@@ -1,26 +1,33 @@
 package com.gqhmt.controller.api.asset;
 
 import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.account.BankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
+import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
+import com.gqhmt.extServInter.dto.asset.FundTradeDto;
+import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.service.asset.IAccountBanlance;
-import com.gqhmt.extServInter.service.asset.ITransaction;
+import com.gqhmt.extServInter.service.asset.IFundSeqence;
+import com.gqhmt.extServInter.service.asset.IBankCardList;
+import com.gqhmt.extServInter.service.asset.IBankList;
+import com.gqhmt.extServInter.service.asset.IFundTrade;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.controller.api.asset.FssAssetApi
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
- *
  * @author 于泳
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/2/28 22:09
- * Description:
+ * Description:与查询相关的API
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -30,62 +37,92 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping(value = "/api")
 public class FssAssetApi {
-
-    @Resource
-    private IAccountBanlance accountBanlance;
-    
     @Resource
     private IAccountBanlance accountBanlanceImpl;
-
-    private ITransaction transaction;
-
-  /*  @RequestMapping(value = "/balance")
-    public Object balance(AssetDto dto){
-        Response response = null;
-        try {
-           response =  accountBanlance.excute(dto);
-        } catch (APIExcuteErrorException e) {
-            excute(e);
-        }
-        return response;
-    }*/
-
-    @RequestMapping(value = "/getAccountAccByCustId")
-    public Object getAccountAccByCustId(AssetDto dto){
+    @Resource
+    private IBankList bankListImpl;
+    @Resource
+    private IBankCardList bankCardListImpl;
+    @Resource
+    private IFundSeqence fundSeqenceImpl;
+	@Resource
+	private IFundTrade fundTradeImpl;
+    /**
+     * 账户余额查询
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/getAccountBanlance")
+    public Object getAccountBanlance(AssetDto dto){
         Response response = new Response();
         try {
-           response =  accountBanlance.excute(dto);
+           response =  accountBanlanceImpl.excute(dto);
         } catch (APIExcuteErrorException e) {
             excute(e);
         }
         return response;
     }
-    
-    
-
-    @RequestMapping(value = "/queryTradeRecord")
-    public Object tradeRecord(AssetDto dto){
-        Response response = null;
-        try {
-            response =  transaction.excute(dto);
-        } catch (APIExcuteErrorException e) {
-            excute(e);
-        }
-        return response;
+    /**
+     * author:柯禹来
+     * time:2016年3月1日
+     * function：银行列表查询
+     */
+    @RequestMapping(value = "/getBankInfo",method = RequestMethod.POST)
+    public Object getBankInfo(BankDto bank) throws APIExcuteErrorException{
+    	Response response= new Response();
+    	try {
+    		response= bankListImpl.excute(bank);
+    	} catch (FssException e) {
+             response.setResp_code(e.getMessage());
+    	}
+    	return response;
     }
-
-    @RequestMapping(value = "/querySecRecord")
-    public Object SecRecord(AssetDto dto){
-       /* Response response = null;
-        try {
-            response =  transaction.excute(dto);
-        } catch (APIExcuteErrorException e) {
-            excute(e);
-        }*/
-        return null;
+    /**
+     * author:柯禹来
+     * time:2016年3月1日
+     * function：银行卡信息查询
+     */
+    @RequestMapping(value = "/getBankCardInfo",method = RequestMethod.POST)
+    public Object getBankCardInfo(BankCardDto bankcard){
+    	Response response= new Response();
+    	try {
+    		response = bankCardListImpl.excute(bankcard);
+    	} catch (Exception e) {
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
     }
-
-//    public  Object
+    /**
+     * author:柯禹来
+     * time:2016年3月1日
+     * function：账户资金流水查询
+     */
+    @RequestMapping(value = "/getFundSequence",method = RequestMethod.POST)
+    public Object getFundSequence(FundSequenceDto tradflowDto){
+    	Response response= new Response();
+    	try {
+    		response =fundSeqenceImpl.excute(tradflowDto);
+    	} catch (Exception e) {
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    /**
+     * author:柯禹来
+     * time:2016年3月1日
+     * function：交易记录查询
+     */
+    @RequestMapping(value = "/getFundTrade",method = RequestMethod.POST)
+    public Object getFundTrade(FundTradeDto fundTradeDto){
+    	Response response=new Response();
+    	try {
+    		response = fundTradeImpl.excute(fundTradeDto);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
 
     private Response excute(Exception e){
         LogUtil.error(this.getClass(), e);

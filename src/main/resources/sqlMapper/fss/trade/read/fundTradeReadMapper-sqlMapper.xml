@@ -23,7 +23,7 @@
 		AND t.trade_type IN
 		<foreach collection="list" item="tradeType" index="index"
            open="(" close=")" separator=",">
-           #{trade_type}
+           #{tradeType}
        </foreach>
 		ORDER BY t.trade_time DESC,t.id DESC
 	</select>

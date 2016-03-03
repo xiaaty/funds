@@ -31,7 +31,6 @@
 		where cust_id = ${cusID} and busi_type = ${type}
 	</select>
 
-
 	<!-- 账户管理 -->
 	<select id="findAcountList" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean">
 		SELECT
@@ -93,4 +92,11 @@
 		b.has_Third_Account hasThirdAccount
 		FROM `t_gq_customer_info` a , `t_gq_fund_account` b where a.ID=b.user_id and b.id=#{withHoldId}
 	</select>
+	
+	
+	<select id="getAccountBanlance" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		<include refid="fieldSql" />
+		where cust_id = ${cust_no} and busi_type = ${busi_type}
+	</select>
+	
 </mapper>

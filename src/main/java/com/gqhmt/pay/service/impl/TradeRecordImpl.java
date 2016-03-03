@@ -1,20 +1,11 @@
 package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.asset.TradeRecordDto;
-import com.gqhmt.extServInter.dto.fund.TradflowDto;
-import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.pay.service.ITradeRecord;
-import com.gqhmt.pay.service.TradeRecordService;
-import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
 /**
  * 交易记录查询
@@ -24,47 +15,10 @@ import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 @Service
 public class TradeRecordImpl  implements ITradeRecord {
 
-    @Resource
-    private TradeRecordService tradeRecordService;
-    
+   
     @Resource
     private FundAccountService fundaccountService;
-    
-    @Resource
-    private FundSequenceService fundSequenceService;
-    
 
-	/**
-	 * 查询交易记录
-	 * @param tradrecord
-	 * @return
-	 */
-	public List<FundTradeEntity> getTradeRecord(TradeRecordDto tradrecord) throws FssException{
-		
-		FundAccountEntity primaryAccount = fundaccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-		 if(primaryAccount==null){
-			 throw new FssException("90002001");//账户信息不存在
-		 }
-		 List<FundTradeEntity> tradelist= tradeRecordService.getTradeRecordByParams(tradrecord.getCust_no(),tradrecord.getStr_trade_time(),tradrecord.getEnd_trade_time(),tradrecord.getTradeFilters());
-		 if(tradelist.size()==0){
-			throw new FssException("90003");
-		 }
-		 return tradelist;
-	}
-	
-	/**
-	 * 查询资金流水
-	 * @param tradrecord
-	 * @return
-	 */
-	public List<FundFlowBean> getTradFlow(TradflowDto tradflowDto) throws FssException{
-		List<FundFlowBean> fundFlowBeanlist = fundSequenceService.getFundFlow(tradflowDto.getUser_no(),tradflowDto.getFundType());
-		 if(fundFlowBeanlist==null){
-			 throw new FssException("90002001");//账户信息不存在
-		 }
-		return fundFlowBeanlist;
-	}
-	
 	/**
 	 * 费用接口
 	 */

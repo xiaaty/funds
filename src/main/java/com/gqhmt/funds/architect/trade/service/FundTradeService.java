@@ -122,7 +122,7 @@ public class FundTradeService {
      * @param busi_no
      * @return
      */
-    public List<FundTradeEntity> searchTradeRecord(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters){
+    public List<FundTradeEntity> getFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters){
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);

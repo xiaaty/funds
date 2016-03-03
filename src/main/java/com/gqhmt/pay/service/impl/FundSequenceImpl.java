@@ -1,9 +1,9 @@
 package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.fund.TradflowDto;
+import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
-import com.gqhmt.pay.service.ITradeFlowRecord;
+import com.gqhmt.pay.service.IFundSequence;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
  * @author 柯禹来
  */
 @Service
-public class TradeFlowRecordImpl  implements ITradeFlowRecord {
+public class FundSequenceImpl  implements IFundSequence {
 	
     @Resource
     private FundSequenceService fundSequenceService;
@@ -24,12 +24,12 @@ public class TradeFlowRecordImpl  implements ITradeFlowRecord {
 	 * @param tradrecord
 	 * @return
 	 */
-	public List<FundFlowBean> getTradFlow(TradflowDto tradflowDto) throws FssException{
-		List<FundFlowBean> fundFlowBeanlist = fundSequenceService.getFundFlow(tradflowDto.getUser_no(),tradflowDto.getFundType());
-		 if(fundFlowBeanlist==null){
+	public List<FundFlowBean> getFundSequence(FundSequenceDto fundSeqDto) throws FssException{
+		List<FundFlowBean> fundSeqList = fundSequenceService.getFundSequence(fundSeqDto.getUser_no(),fundSeqDto.getFundType());
+		 if(fundSeqList==null){
 			 throw new FssException("90002001");//账户信息不存在
 		 }
-		return fundFlowBeanlist;
+		return fundSeqList;
 	}
 	
 }

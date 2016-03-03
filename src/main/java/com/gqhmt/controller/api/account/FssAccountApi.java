@@ -1,19 +1,11 @@
 package com.gqhmt.controller.api.account;
 
-import com.gqhmt.core.APIExcuteErrorException;
-import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.account.BankCardDto;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
-import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.dto.fund.TradflowDto;
-import com.gqhmt.extServInter.service.account.IBankCardList;
-import com.gqhmt.extServInter.service.account.IBankList;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
-import com.gqhmt.extServInter.service.asset.IAccountTradFlow;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,15 +43,6 @@ public class FssAccountApi {
     
     @Resource
     private IChangeBankCardAccount changeBankCardAccountImpl;
-    
-    @Resource
-    private IBankList bankListImpl;
-    
-    @Resource
-    private IBankCardList bankCardListImpl;
-    
-    @Resource
-    private IAccountTradFlow accountTradflowImpl;
     
     /**
      * 富友开户,通用接口
@@ -117,55 +100,6 @@ public class FssAccountApi {
     	return response;
     }
 
-    /**
-     * author:柯禹来
-     * time:2016年3月1日
-     * function：银行信息
-     */
-    @RequestMapping(value = "/getBankInfo",method = RequestMethod.POST)
-    public Object getBankInfo(BankDto bank) throws APIExcuteErrorException{
-    	Response response= new Response();
-    	try {
-    		response= bankListImpl.excute(bank);
-    	} catch (FssException e) {
-             response.setResp_code(e.getMessage());
-    	}
-    	return response;
-    }
-    
-    /**
-     * author:柯禹来
-     * time:2016年3月1日
-     * function：银行卡信息
-     */
-    @RequestMapping(value = "/getBankCardInfo",method = RequestMethod.POST)
-    public Object getBankCardInfo(BankCardDto bankcard){
-    	Response response= new Response();
-    	try {
-    		response = bankCardListImpl.excute(bankcard);
-    	} catch (Exception e) {
-    		response.setResp_code(e.getMessage());
-    	}
-    	return response;
-    }
-    
-    
-    /**
-     * author:柯禹来
-     * time:2016年3月1日
-     * function：资金流水
-     */
-    @RequestMapping(value = "/getTradFlow",method = RequestMethod.POST)
-    public Object getTradFlow(TradflowDto tradflowDto){
-    	Response response= new Response();
-    	try {
-    		response =accountTradflowImpl.excute(tradflowDto);
-    	} catch (Exception e) {
-    		response.setResp_code(e.getMessage());
-    	}
-    	return response;
-    }
-    
     private Response excute(Exception e){
         LogUtil.error(this.getClass(), e);
         Response response = new Response();
