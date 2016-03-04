@@ -29,7 +29,7 @@ public class MenuEntity implements Serializable{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                    //bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    private String id;                    //bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
 
     @Column(name = "menu_name")
     private String menuName;           // varchar(30) NOT NULL COMMENT '菜单名',
@@ -50,7 +50,7 @@ public class MenuEntity implements Serializable{
     private String parmaDefaule;
 
     @Column(name = "parent_id")
-    private Long parentId;             // bigint(20) NOT NULL DEFAULT '0' COMMENT '上级菜单',
+    private String parentId;             // bigint(20) NOT NULL DEFAULT '0' COMMENT '上级菜单',
 
     @Column(name = "sort")
     private Long sort;                  //int(11) NOT NULL COMMENT '排序',
@@ -65,11 +65,11 @@ public class MenuEntity implements Serializable{
     @Transient
     private List<MenuEntity> list = new ArrayList<>();
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -106,12 +106,12 @@ public class MenuEntity implements Serializable{
         this.parma = parma;
     }
 
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parent_id) {
-        this.parentId = parent_id;
+    public void setParentId(String string) {
+        this.parentId = string;
     }
 
     public Long getSort() {
