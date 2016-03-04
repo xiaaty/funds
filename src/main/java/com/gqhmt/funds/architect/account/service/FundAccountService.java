@@ -410,7 +410,15 @@ public class FundAccountService {
 		return fundaccount;
 	}
 	
-	
+	   /**
+	    * 
+	    * author:柯禹来
+	    * time:2016年2月22日
+	    * function 查询账户余额
+	    */
+	    public FundAccountEntity getAccountBanlance(int cust_no, int busi_type){
+	        return this.fundsAccountReadMapper.getAccountBanlance(cust_no,busi_type);
+	    }
 	
 	
 	

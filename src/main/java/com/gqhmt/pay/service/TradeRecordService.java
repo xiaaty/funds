@@ -1,18 +1,15 @@
 package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.ThirdPartyType;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,8 +75,8 @@ public class TradeRecordService {
      * @param busi_no
      * @return
      */
-    public List<FundTradeEntity> getTradeRecordByParams(Integer cust_no,Integer user_no,Integer busi_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
-    	List<FundTradeEntity> tradelist = fundTradeService.searchTradeRecord(cust_no,user_no,busi_no,str_trade_time,end_trade_time,tradeFilters);
+    public List<FundTradeBean> queryFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
+    	List<FundTradeBean> tradelist = fundTradeService.queryFundTrade(cust_no,str_trade_time,end_trade_time,tradeFilters);
     	return tradelist;
     }
     
@@ -91,8 +88,8 @@ public class TradeRecordService {
      * @return
      * @throws FssException
      */
-    public FundAccountSequenceBean getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+  /*  public FundAccountSequenceBean getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
     	FundAccountSequenceBean fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
     	return fundsequencelist;
-    }
+    }*/
 }

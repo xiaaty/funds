@@ -3,11 +3,13 @@ package com.gqhmt.pay.service.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 交易相关api
@@ -279,4 +282,23 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         return primaryAccount;
     }
+    
+    /**
+	 * 查询交易记录
+	 * @param tradrecord
+	 * @return
+	 */
+	public List<FundTradeBean> queryFundTrade(FundTradeDto tradrecord) throws FssException{
+		
+		/*FundAccountEntity primaryAccount = fundAccountService.getFundAccount(tradrecord.getCust_no(), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+		 if(primaryAccount==null){
+			 throw new FssException("90002001");//账户信息不存在
+		 }*/
+		 List<FundTradeBean> tradelist= tradeRecordService.queryFundTrade(tradrecord.getCust_no(),tradrecord.getStr_trade_time(),tradrecord.getEnd_trade_time(),tradrecord.getTradeFilters());
+		 if(tradelist.size()==0){
+			throw new FssException("90002015");
+		 }
+		 return tradelist;
+	}
+    
 }

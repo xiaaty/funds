@@ -1,6 +1,7 @@
 package com.gqhmt.funds.architect.trade.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 
 import java.math.BigDecimal;
@@ -30,5 +31,5 @@ public BigDecimal getSumBigDecimal(Integer userID);
 
 public BigDecimal getSumBigDecimalByCus(Integer cusID);
 
-public List<FundTradeEntity> queryFundTradeList(Map map);
+public List<FundTradeBean> queryFundTradeList(Map map);
 }

@@ -371,7 +371,7 @@ public class FundSequenceService {
      * @param busi_no
      * @return
      */
-    public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+ /*   public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);
@@ -380,7 +380,7 @@ public class FundSequenceService {
     		map.put("user_no", user_no);
     	}
     	return this.fundSequenceReadMapper.queryFundTradeFlow(map);
-    }
+    }*/
     
    public void insertFundSequence(FundSequenceEntity fundsequence)  throws FssException{
 	  this.fundSequenceWriteMapper.insert(fundsequence);
@@ -414,11 +414,18 @@ public class FundSequenceService {
    }
    
    /**
-    * 账户资金
+    * 账户资金流水
     * @return
     */
-  public List<FundFlowBean> getFundFlow(Integer user_no,Integer fundType) throws FssException{
-	  List<FundFlowBean> list=fundSequenceReadMapper.queryFundTradeFlow(user_no,fundType);
+  public List<FundFlowBean> queryFundSequence(Integer user_no,Integer fundType) throws FssException{
+	  Map map=new HashMap();
+	  if(StringUtils.isNoneBlank(user_no.toString())){
+		  map.put("user_no", user_no.intValue());
+	  }
+	  if(StringUtils.isNoneBlank(fundType.toString())){
+		  map.put("fundType", fundType.intValue());
+	  }
+	  List<FundFlowBean> list=fundSequenceReadMapper.getFundSequence(map);
 	  return list;
   }
    
