@@ -4,8 +4,7 @@ package com.gqhmt.pay.service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
-import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
-
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -224,6 +223,6 @@ public interface IFundsTrade {
 	 * @param tradrecord
 	 * @return
 	 */
-    public List<FundTradeEntity> queryFundTrade(FundTradeDto tradrecord) throws FssException;
+    public List<FundTradeBean> queryFundTrade(FundTradeDto tradrecord) throws FssException;
 	
 }

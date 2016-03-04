@@ -1,7 +1,9 @@
 package com.gqhmt.funds.architect.trade.service;
 
+import com.github.pagehelper.PageHelper;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.FundTradeReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.FundTradeWriteMapper;
@@ -122,7 +124,7 @@ public class FundTradeService {
      * @param busi_no
      * @return
      */
-    public List<FundTradeEntity> queryFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters){
+    public List<FundTradeBean> queryFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters){
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);
@@ -167,6 +169,7 @@ public class FundTradeService {
 		    if(list!=null && list.size()>0){
 	    		map.put("list", list);
 	    	}
-    	return this.fundTradeReadMapper.queryFundTradeList(map);
+		    List<FundTradeBean> fundtradelist=this.fundTradeReadMapper.queryFundTradeList(map);
+		    return fundtradelist;
     }
 }

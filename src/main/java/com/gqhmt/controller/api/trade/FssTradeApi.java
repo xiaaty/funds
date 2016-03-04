@@ -2,16 +2,12 @@ package com.gqhmt.controller.api.trade;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
-import com.gqhmt.extServInter.service.asset.IFundTrade;
 import com.gqhmt.extServInter.service.trade.*;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 
 /**
@@ -79,7 +75,7 @@ public class FssTradeApi {
 	private IUnFreeze unFreezeImpl;
 
 	@Resource
-	private ITransefer transefer;
+	private ITransefer transeferImpl;
     
 	@Resource
 	private ISstxTrade sstxTradeImpl;
@@ -274,11 +270,16 @@ public class FssTradeApi {
 		return response;
 	}
 
+	/**
+	 * 转账
+	 * @param dto
+	 * @return
+	 */
 	@RequestMapping(value = "/transfer",method = RequestMethod.POST)
 	public Object transfer(TransferDto dto){
 		Response response= null;
 		try {
-			response = transefer.excute(dto);
+			response = transeferImpl.excute(dto);
 		} catch (Exception e) {
 			response = excute(e);
 		}
