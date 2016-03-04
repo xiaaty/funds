@@ -41,7 +41,7 @@ public class MenuTag extends TagSupport {
         sb.append("<ul>");
         for(MenuFunc menuFunc : func){
             LogUtil.debug(this.getClass(),"tag:"+url+"___"+menuFunc.getFuncUrl());
-            if(menuFunc.getFuncId() == fid){
+            if(Integer.parseInt(menuFunc.getFuncId()) == fid){
                 sb.append(" <li class='active'>");
             }else{
                 sb.append(" <li class=''>");
