@@ -26,13 +26,13 @@ public class LoginController {
 	private UserService  userService;
 
 		@RequestMapping(value="/login",method=RequestMethod.POST)
-		public String login(@RequestParam(value="loginName",required=false,defaultValue="")String loginName,
+		public Object login(@RequestParam(value="loginName",required=false,defaultValue="")String loginName,
 				@RequestParam(value="loginPwd",required=false,defaultValue="")String loginPwd,
 				@RequestParam(value="verifyCode",required=false,defaultValue="")String verifyCode,HttpServletRequest request,ModelMap model){
 
 			Boolean result = Boolean.FALSE;
 
-			Boolean isResponseCorrect = imageCaptchaService.validateResponseForID(request.getSession().getId(), verifyCode);
+//			Boolean isResponseCorrect = imageCaptchaService.validateResponseForID("1", verifyCode);
 
 //			if(!isResponseCorrect){
 //				return "redirect:/";
@@ -60,7 +60,7 @@ public class LoginController {
 	@RequestMapping(value="/main")
 	public String menu(HttpServletRequest request, HttpServletResponse response){
 
-		return "/main/main";
+		return "main/main";
 	}
 /*	
 	@RequestMapping(value="/index")
