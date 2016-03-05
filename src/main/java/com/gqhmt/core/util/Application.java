@@ -152,16 +152,16 @@ public class Application {
         LogUtil.debug(this.getClass(),menus.toString());
         //循环菜单项，初始化菜单
         for(MenuEntity menu:menus){
-            menuMap.put(menu.getId(),menu);
-            if(menu.getParentId() == 0){
+            menuMap.put(Long.parseLong(menu.getId()),menu);
+            if(Integer.parseInt(menu.getParentId() )== 0){
                 this.menus.add(menu);
             }
         }
         for(MenuEntity menu:menus){
-            if(menu.getParentId() == 0){
+            if(Integer.parseInt(menu.getParentId() ) == 0){
                 continue;
             }
-            Long parentId = menu.getParentId();
+            Long parentId = Long.parseLong(menu.getParentId());
             MenuEntity menu1 = menuMap.get(parentId);
             if(menu1 != null){
                 menu1.addMenu(menu);
