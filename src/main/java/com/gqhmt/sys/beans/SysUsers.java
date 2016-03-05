@@ -6,7 +6,7 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.StringUtils;
 
 public class SysUsers {
-	private long id;
+	private String id;
     private long createId;
     private long modifyId;
     private int sex;
@@ -155,11 +155,11 @@ public class SysUsers {
         return sb.substring(0,sb.length()-1).toString();
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
