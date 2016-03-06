@@ -3,7 +3,7 @@ package com.gqhmt.pay.service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.pay.service.impl.FundsAccountImpl;
+import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
