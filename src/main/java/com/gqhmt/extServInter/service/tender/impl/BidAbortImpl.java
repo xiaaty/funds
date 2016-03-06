@@ -6,7 +6,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.FailureBidDto;
 import com.gqhmt.extServInter.service.tender.IBidAbort;
-import com.gqhmt.pay.service.IFundFailure;
+import com.gqhmt.pay.service.tender.IFundFailure;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 

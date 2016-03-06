@@ -8,7 +8,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WebOrderResponse;
 import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
 import com.gqhmt.extServInter.service.trade.IRechargeOrder;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -6,7 +6,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.RepayDto;
 import com.gqhmt.extServInter.service.tender.IBidRepay;
-import com.gqhmt.pay.service.IRepayBid;
+import com.gqhmt.pay.service.tender.IRepayBid;
 
 import javax.annotation.Resource;
 

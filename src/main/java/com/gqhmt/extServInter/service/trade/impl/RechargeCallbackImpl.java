@@ -6,7 +6,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
 import com.gqhmt.extServInter.service.trade.IRechargeCallback;
-import com.gqhmt.pay.service.ISuccessAccount;
+import com.gqhmt.pay.service.trade.ISuccessAccount;
 
 import org.springframework.stereotype.Service;
 

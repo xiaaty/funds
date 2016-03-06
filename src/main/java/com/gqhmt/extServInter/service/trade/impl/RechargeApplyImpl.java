@@ -4,7 +4,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.RechargeApplyDto;
 import com.gqhmt.extServInter.service.trade.IRechargeApply;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 

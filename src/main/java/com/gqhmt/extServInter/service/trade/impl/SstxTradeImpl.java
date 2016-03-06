@@ -4,7 +4,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.SstxDto;
 import com.gqhmt.extServInter.service.trade.ISstxTrade;
-import com.gqhmt.pay.service.IFundSstx;
+import com.gqhmt.pay.service.trade.IFundSstx;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import javax.annotation.Resource;

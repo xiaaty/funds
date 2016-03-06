@@ -9,7 +9,7 @@ import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.asset.BalanceResponse;
 import com.gqhmt.extServInter.service.asset.IAccountBanlance;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.pay.service.IFundsAccount;
+import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

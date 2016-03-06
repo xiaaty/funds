@@ -3,10 +3,9 @@ package com.gqhmt.extServInter.service.trade.impl;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.trade.FreezeDto;
 import com.gqhmt.extServInter.dto.trade.UnFreezeDto;
 import com.gqhmt.extServInter.service.trade.IUnFreeze;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.core.FssException;
 
 import javax.annotation.Resource;

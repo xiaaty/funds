@@ -4,7 +4,7 @@ import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.service.account.IOnlineBankRecarge;
-import com.gqhmt.pay.service.ITradeRecord;
+import com.gqhmt.pay.service.asset.ITradeRecord;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

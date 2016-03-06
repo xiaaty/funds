@@ -1,12 +1,11 @@
 package com.gqhmt.funds.architect.trade.service;
 
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.pay.service.exception.NeedSMSValidException;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
-import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
