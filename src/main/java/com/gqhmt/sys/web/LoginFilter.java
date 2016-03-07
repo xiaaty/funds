@@ -149,7 +149,7 @@ public class LoginFilter implements Filter {
 		session.setAttribute("AURORA_USER_LOGIN", Boolean.TRUE);
 //		
 		//跳转到登陆成功后的页面（系统自定义）
-		response.sendRedirect(request.getRequestURI()+"main");
+		response.sendRedirect(request.getContextPath()+"/main");
 		}else{
 			chain.doFilter(servletRequest, servletResponse);
 		}
