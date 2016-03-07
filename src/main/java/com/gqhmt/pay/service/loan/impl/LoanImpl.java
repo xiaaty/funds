@@ -2,8 +2,6 @@ package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.loan.ILoan;
 
@@ -33,18 +31,13 @@ public class LoanImpl implements ILoan {
     @Override
     public void createAccount(CreateLoanAccountDto dto) throws FssException {
         //富友
-        FundAccountEntity primaryAccount = new FundAccountEntity();
-        primaryAccount.setId(-1l);
-        CustomerInfoEntity customerInfoEntity = new CustomerInfoEntity();
-        customerInfoEntity.setCustomerName(dto.getName());
-        customerInfoEntity.setCertNo(dto.getCert_no());
-        customerInfoEntity.setMobilePhone(dto.getMobile());
-        customerInfoEntity.setCityCode(dto.getCity_id());
-        customerInfoEntity.setParentBankCode(dto.getBank_id());
-        customerInfoEntity.setBankLongName("");
-        customerInfoEntity.setBankNo(dto.getBank_card());
-        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-        paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+        //创建customer  usr  bank
+
+
+//        paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+
+
+        //fss_account
 
 
     }
