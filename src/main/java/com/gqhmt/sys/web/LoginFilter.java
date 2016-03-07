@@ -3,14 +3,9 @@ package com.gqhmt.sys.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gqhmt.core.util.AuthMenu;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.sys.beans.SysUsers;
 import com.gqhmt.sys.entity.MenuEntity;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -26,6 +21,10 @@ import org.apache.http.util.EntityUtils;
 import org.jasig.cas.client.util.AssertionHolder;
 import org.jasig.cas.client.validation.Assertion;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +85,8 @@ public class LoginFilter implements Filter {
 		 //执行本系统的登陆。跟平常同时校验用户名和密码不同，这里只有用户名。
 		 try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
-			HttpPost httpPost = new HttpPost("http://10.100.200.113:8091/AuthManagement/api/rest/userInfo");
+			 String authUrl = ResourceUtil.getValue("config.appContext","authUrl");
+			HttpPost httpPost = new HttpPost(authUrl);
 			// 拼接参数
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 			nvps.add(new BasicNameValuePair("loginName", loginName));
