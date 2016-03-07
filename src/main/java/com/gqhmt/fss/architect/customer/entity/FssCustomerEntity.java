@@ -36,32 +36,32 @@ public class FssCustomerEntity implements Serializable{
     private String mobile;                                       //` varchar(45) DEFAULT NULL COMMENT '客户手机号',
 
     @Column(name="cert_type")
-    private Integer cert_type;                                    // varchar(45) DEFAULT NULL COMMENT '证件类型，1身份证',
+    private Integer certType;                                    // varchar(45) DEFAULT NULL COMMENT '证件类型，1身份证',
 
 
     @Column(name="cert_no")
-    private String cert_no;                                      // varchar(45) DEFAULT NULL COMMENT '证件号码',
+    private String certNo;                                      // varchar(45) DEFAULT NULL COMMENT '证件号码',
 
     @Column(name="user_id")
-    private String user_id;                                      // bigint(20) DEFAULT NULL COMMENT '冠e通用户表id',
+    private String userId;                                      // bigint(20) DEFAULT NULL COMMENT '冠e通用户表id',
 
     @Column(name="create_time")
-    private Date create_time;                                    // varchar(45) DEFAULT NULL COMMENT '创建时间',
+    private Date createTime;                                    // varchar(45) DEFAULT NULL COMMENT '创建时间',
 
     @Column(name="modify_time")
-    private Date modify_time;                                    // varchar(45) DEFAULT NULL COMMENT '最后修改时间',
+    private Date modifyTime;                                    // varchar(45) DEFAULT NULL COMMENT '最后修改时间',
 
     @Column(name="cust_no")
-    private String cust_no;                                      // varchar(45) DEFAULT NULL COMMENT '客户编号唯一',
+    private String custNo;                                      // varchar(45) DEFAULT NULL COMMENT '客户编号唯一',
 
     @Column(name="user_no")
-    private String user_no;                                      // varchar(45) DEFAULT NULL COMMENT '用户编号 唯一',
+    private String userUo;                                      // varchar(45) DEFAULT NULL COMMENT '用户编号 唯一',
 
     @Column(name="is_auth_real_name")
-    private Integer is_auth_real_name;                               // varchar(45) DEFAULT NULL COMMENT '是否实名验证，0未验证，1富友方式验证，2接入身份证验证系统验证，4面对面验证，8图片上传验证',
+    private Integer isAuthRealName;                               // varchar(45) DEFAULT NULL COMMENT '是否实名验证，0未验证，1富友方式验证，2接入身份证验证系统验证，4面对面验证，8图片上传验证',
 
     @Column(name="create_user_id")
-    private Long create_user_id;                                 // bigint(20) DEFAULT NULL,
+    private Long createUserId;                                 // bigint(20) DEFAULT NULL,
 
     @Column(name="modify_user_id")
     private Long modifyUserId;                                 // bigint(20) DEFAULT NULL,
@@ -71,6 +71,7 @@ public class FssCustomerEntity implements Serializable{
 
     @Column(name="modify_user_id")
     private String mchnChild;                                  // varchar(45) DEFAULT NULL COMMENT '子商户号',
+
 
 	public Long getId() {
 		return id;
@@ -96,76 +97,76 @@ public class FssCustomerEntity implements Serializable{
 		this.mobile = mobile;
 	}
 
-	public Integer getCert_type() {
-		return cert_type;
+	public Integer getCertType() {
+		return certType;
 	}
 
-	public void setCert_type(Integer cert_type) {
-		this.cert_type = cert_type;
+	public void setCertType(Integer certType) {
+		this.certType = certType;
 	}
 
-	public String getCert_no() {
-		return cert_no;
+	public String getCertNo() {
+		return certNo;
 	}
 
-	public void setCert_no(String cert_no) {
-		this.cert_no = cert_no;
+	public void setCertNo(String certNo) {
+		this.certNo = certNo;
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public Date getCreate_time() {
-		return create_time;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreate_time(Date create_time) {
-		this.create_time = create_time;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
-	public Date getModify_time() {
-		return modify_time;
+	public Date getModifyTime() {
+		return modifyTime;
 	}
 
-	public void setModify_time(Date modify_time) {
-		this.modify_time = modify_time;
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 
-	public String getCust_no() {
-		return cust_no;
+	public String getCustNo() {
+		return custNo;
 	}
 
-	public void setCust_no(String cust_no) {
-		this.cust_no = cust_no;
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
 	}
 
-	public String getUser_no() {
-		return user_no;
+	public String getUserUo() {
+		return userUo;
 	}
 
-	public void setUser_no(String user_no) {
-		this.user_no = user_no;
+	public void setUserUo(String userUo) {
+		this.userUo = userUo;
 	}
 
-	public Integer getIs_auth_real_name() {
-		return is_auth_real_name;
+	public Integer getIsAuthRealName() {
+		return isAuthRealName;
 	}
 
-	public void setIs_auth_real_name(Integer is_auth_real_name) {
-		this.is_auth_real_name = is_auth_real_name;
+	public void setIsAuthRealName(Integer isAuthRealName) {
+		this.isAuthRealName = isAuthRealName;
 	}
 
-	public Long getCreate_user_id() {
-		return create_user_id;
+	public Long getCreateUserId() {
+		return createUserId;
 	}
 
-	public void setCreate_user_id(Long create_user_id) {
-		this.create_user_id = create_user_id;
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
 	}
 
 	public Long getModifyUserId() {
@@ -191,6 +192,4 @@ public class FssCustomerEntity implements Serializable{
 	public void setMchnChild(String mchnChild) {
 		this.mchnChild = mchnChild;
 	}
-
-	
 }

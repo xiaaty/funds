@@ -4,7 +4,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.service.cost.ICost;
-import com.gqhmt.pay.service.ITradeRecord;
+import com.gqhmt.pay.service.asset.ITradeRecord;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;

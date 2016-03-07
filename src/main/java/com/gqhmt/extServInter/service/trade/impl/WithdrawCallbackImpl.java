@@ -4,7 +4,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawSuccessDto;
 import com.gqhmt.extServInter.service.trade.IWithdrawCallback;
-import com.gqhmt.pay.service.ISuccessAccount;
+import com.gqhmt.pay.service.trade.ISuccessAccount;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 

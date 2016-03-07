@@ -9,7 +9,7 @@ import com.gqhmt.extServInter.service.trade.ITransefer;
 
 import javax.annotation.Resource;
 
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 /**

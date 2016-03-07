@@ -6,7 +6,7 @@ import com.gqhmt.extServInter.dto.account.BankCardDto;
 import com.gqhmt.extServInter.dto.account.BankCardResponse;
 import com.gqhmt.extServInter.service.asset.IBankCardList;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.pay.service.IFundBankCard;
+import com.gqhmt.pay.service.account.IFundBankCard;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;

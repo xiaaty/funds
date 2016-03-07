@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.trade.service;
 
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.pay.service.exception.NeedSMSValidException;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;

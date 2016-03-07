@@ -7,7 +7,7 @@ import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

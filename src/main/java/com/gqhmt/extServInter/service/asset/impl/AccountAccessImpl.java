@@ -9,7 +9,7 @@ import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.asset.AssetResponse;
 import com.gqhmt.extServInter.service.asset.IAccountAccess;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
-import com.gqhmt.pay.service.IFundsAccount;
+import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.extServInter.service.tender.IBidTender;
-import com.gqhmt.pay.service.IFundsTender;
+import com.gqhmt.pay.service.tender.IFundsTender;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 

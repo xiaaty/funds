@@ -6,7 +6,7 @@ import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
 import com.gqhmt.extServInter.dto.asset.FundSequenceResponse;
 import com.gqhmt.extServInter.service.asset.IFundSeqence;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
-import com.gqhmt.pay.service.IFundSequence;
+import com.gqhmt.pay.service.asset.IFundSequence;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
