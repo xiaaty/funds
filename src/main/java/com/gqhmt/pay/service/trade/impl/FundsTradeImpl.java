@@ -197,7 +197,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         //第三方交易
         FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,transferDto.getAmt(),transferDto.getBusi_type(),transferDto.getBusi_id(),transferDto.getBusi_type());
         //资金处理
-        tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),transferDto.getFunds_type(),fundOrderEntity);
+        this.tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),transferDto.getFunds_type(),fundOrderEntity);
         return true;
     }
 
