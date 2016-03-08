@@ -2,6 +2,9 @@ package com.gqhmt.pay.service.loan;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.extServInter.dto.loan.FailedBidDto;
+import com.gqhmt.extServInter.dto.loan.LendingDto;
+import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.ILoan
@@ -22,6 +25,27 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 public interface ILoan {
 
     public void createAccount(CreateLoanAccountDto dto) throws FssException;
+    /**
+     * 
+     * author:jhz
+     * time:2016年3月7日
+     * function：放款
+     */
+	public boolean lending(LendingDto dto) throws FssException;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：抵押权人提现接口
+	 */
+	public boolean mortgageeWithDraw(MortgageeWithDrawDto dto) throws FssException;
+	/**
+	 * .
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：流标接口
+	 */
+	public boolean failedBid(FailedBidDto dto)throws FssException;
 
 
 }
