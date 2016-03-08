@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper">
+
+	<sql id="whereSql">
+			<if test="mchnNo != null and mchnNo != ''">
+				and t.mchn_no = #{mchnNo}
+			</if>
+			<if test="seqNo != null and seqNo != ''">
+				and t.seq_no = #{seqNo}
+			</if>
+	</sql>
+	<!-- 得到借款人放款回调对象 -->
+	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.LendingResponse" >
+		SELECT 
+			t.id,
+		    t.contract_id contractId,
+		    t.mortgagee_acc_no mortgageeAccNo,
+		    t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.pay_amt payAmt,
+			t.loan_platform loanPlatform
+			FROM t_gq_fss_loan t
+			where 1=1
+			<include refid="whereSql" />
+	</select>
+	<!-- 通过id得到收费列表 -->
+	<select id="getFeeList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssFeeList" >
+		SELECT 
+			f.id,
+			f.fee_type feeType,
+			f.fee_amt feeAmt,
+			FROM t_gq_fss_feeList f
+			where t.id=#{id}
+	</select>
+	<!-- 抵押权人提现回盘 -->
+	<select id="getLendWithDrawRespons"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons" >
+		SELECT 
+			t.id id,
+		    t.contract_id contractId,
+		    t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.pay_amt payAmt,
+			t.loan_platform loanPlatform  			
+			FROM t_gq_fss_loan t 
+			where 1=1
+			<include refid="whereSql" />
+	</select>
+	<!-- 流标回盘回盘 -->
+	<select id="getFailedBidResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.FailedBidResponse" >
+		SELECT 
+			t.id,
+		    t.contract_id contractId,
+		    t.mortgagee_acc_no mortgageeAccNo,
+		    t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.pay_amt payAmt,
+			t.loan_platform loanPlatform
+			FROM t_gq_fss_loan t
+			where 1=1
+			<include refid="whereSql" />
+	</select>
+</mapper>
