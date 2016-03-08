@@ -107,7 +107,10 @@ public class FssChangeCardEntity implements java.io.Serializable{
 
     @Column(name="seq_no")
     private String seqNo;
-
+    
+    @Column(name="mchn")
+    private String mchn;
+    
     public Long getCreateUserId() {
         return createUserId;
     }
@@ -327,4 +330,13 @@ public class FssChangeCardEntity implements java.io.Serializable{
     public void setSeqNo(String seqNo) {
         this.seqNo = seqNo;
     }
+
+	public String getMchn() {
+		return mchn;
+	}
+
+	public void setMchn(String mchn) {
+		this.mchn = mchn;
+	}
+    
 }

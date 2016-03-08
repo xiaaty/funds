@@ -87,7 +87,7 @@ public class CustomerInfoService {
 	 * @param loanAccountDto
 	 * @throws FssException
 	 */
-	public boolean createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
+	public CustomerInfoEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
 			//1.创建账户	t_gq_customer_info 
 			CustomerInfoEntity customer=new CustomerInfoEntity();
 			customer.setCustomerName(loanAccountDto.getName());
@@ -121,7 +121,6 @@ public class CustomerInfoService {
 			userEntity.setCreditLevel(0);
 			userEntity.setCustId(customer.getId());
 			userEntity.setUserFrom(0);
-			userEntity.setIsFirstCast("0");
 			userEntity.setIsFirstDebt(0);
 			userEntity.setUserType(1);
 			userEntity.setIsVerify(0);
@@ -142,7 +141,7 @@ public class CustomerInfoService {
 			bankCardInfoEntity.setSource("");
 			bankCardinfoService.insert(bankCardInfoEntity);
 		
-		return true;
+		return customer;
 	}
 
 	/**

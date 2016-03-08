@@ -168,8 +168,18 @@ public class FssAccountService {
         }
     }
     
-    
-    
+    /**
+     * 根据cust_id查询账户
+     * @param id
+     * @return
+     */
+    public FssAccountEntity getFssAccountByCustId(Integer custId){
+    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+    	fssAccountEntity.setCustId(custId);
+    	accountReadMapper.selectOne(fssAccountEntity);
+    	return fssAccountEntity;
+    	
+    }
     
     
     

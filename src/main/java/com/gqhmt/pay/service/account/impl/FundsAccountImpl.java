@@ -8,6 +8,7 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -18,6 +19,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.core.factory.ThirdpartyFactory;
 import com.gqhmt.pay.exception.CommandParmException;
@@ -28,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import javax.annotation.Resource;
 
@@ -231,17 +232,16 @@ public class FundsAccountImpl implements IFundsAccount {
 		 		}
 		 	}
 		 	FssChangeCardEntity changeCardEntity=fssChangeCardService.getChangeCardByCustId(Long.valueOf(cusId));
-		 	
 	        String cardNo = bankCardInfoEntity.getBankNo();
 	        String bankCd = changeCardEntity.getBankType();
 	        String bankNm = changeCardEntity.getBankAdd();
 	        String cityId = changeCardEntity.getBankCity();
 	        String fileName = cardChangeDto.getFileName().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
-	        FundAccountEntity primaryAccount =fundAccountService.getFundsAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	        FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
 	        
 	        //订单号
 	        FundOrderEntity fundOrderEntity = fundOrderService.createOrder(primaryAccount,null,BigDecimal.ZERO,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,Long.valueOf(bankcardId),Integer.valueOf(GlobalConstants.BUSINESS_UPDATE_CARE),"2");
-	        CommandResponse response = ThirdpartyFactory.command(ThirdPartyType.FUIOU.toString(), "", fundOrderEntity, primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
+	        CommandResponse response =ThirdpartyFactory.command(ThirdPartyType.FUIOU.toString(), PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankNm,bankCd,cityId,fileName);
 //	        execExction(response,fundOrderEntity);
 	        changeCardEntity.setOrderNo(fundOrderEntity.getOrderNo());
 	        try {
@@ -265,6 +265,18 @@ public class FundsAccountImpl implements IFundsAccount {
 			}
 		}
 	
-	
-	
+		/**
+		 * 	银行卡变更完成，通知变更发起方（借款系统）
+		 */
+	    public Response bankCardChangeCallBack(String seqNo,String mchn) throws FssException{
+	    	Response response=new Response();
+	    	FssChangeCardEntity changeCardEntity=fssChangeCardService.queryChangeCardByParam(seqNo,mchn);
+	    	if(changeCardEntity==null){
+	    		throw new FssException("90004001");
+	    	}
+	    	response.setMchn(changeCardEntity.getMchn());
+	    	response.setSeq_no(changeCardEntity.getSeqNo());
+	    	response.setResp_code("0000");
+	    	return response;
+	    }
 }
