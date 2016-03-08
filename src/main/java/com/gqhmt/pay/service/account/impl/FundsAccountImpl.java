@@ -3,20 +3,33 @@ package com.gqhmt.pay.service.account.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
+import com.gqhmt.extServInter.dto.loan.CardChangeDto;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.pay.core.command.CommandResponse;
+import com.gqhmt.pay.core.factory.ThirdpartyFactory;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.account.IFundsAccount;
+import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-
 import javax.annotation.Resource;
 
 /**
@@ -35,6 +48,15 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	@Resource
 	private PaySuperByFuiou paySuperByFuiou;
+	
+	@Resource
+	private BankCardInfoService bankCardInfoService;
+	
+	@Resource
+	private FundOrderService fundOrderService;
+	
+	@Resource
+	private FssChangeCardService fssChangeCardService;
 
 	/**
      * 创建账户
@@ -188,6 +210,60 @@ public class FundsAccountImpl implements IFundsAccount {
 		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getUser_no(),asset.getAcc_no(),asset.getCust_no());
 		return assetEntity;
 	}
+	
+	/**
+	 * 银行卡变更
+	 */
+	 public boolean queryAccountByAccNo(CardChangeDto cardChangeDto)throws FssException{
+		 BankCardInfoEntity bankCardInfoEntity=null;
+		 Integer cusId=null;
+		 Integer bankcardId=null;
+		 	FssAccountEntity fssAccountEntity= fundAccountService.getFssFundAccountInfo(cardChangeDto.getAcc_no());
+		 	if(null!=fssAccountEntity){
+		 		fssAccountEntity.getCustNo();
+		 	}
+		 	CustomerInfoEntity  customerInfoEntity=customerInfoService.queryCustomeById(Integer.parseInt(fssAccountEntity.getCustNo()));
+		 	if(null!=customerInfoEntity){
+		 		cusId =	customerInfoEntity.getId().intValue();
+		 		bankCardInfoEntity = bankCardInfoService.getBankCardById(customerInfoEntity.getBankId());
+		 		if(bankCardInfoEntity!=null){
+		 			bankcardId=bankCardInfoEntity.getId();
+		 		}
+		 	}
+		 	FssChangeCardEntity changeCardEntity=fssChangeCardService.getChangeCardByCustId(Long.valueOf(cusId));
+		 	
+	        String cardNo = bankCardInfoEntity.getBankNo();
+	        String bankCd = changeCardEntity.getBankType();
+	        String bankNm = changeCardEntity.getBankAdd();
+	        String cityId = changeCardEntity.getBankCity();
+	        String fileName = cardChangeDto.getFileName().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
+	        FundAccountEntity primaryAccount =fundAccountService.getFundsAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	        
+	        //订单号
+	        FundOrderEntity fundOrderEntity = fundOrderService.createOrder(primaryAccount,null,BigDecimal.ZERO,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,Long.valueOf(bankcardId),Integer.valueOf(GlobalConstants.BUSINESS_UPDATE_CARE),"2");
+	        CommandResponse response = ThirdpartyFactory.command(ThirdPartyType.FUIOU.toString(), "", fundOrderEntity, primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
+//	        execExction(response,fundOrderEntity);
+	        changeCardEntity.setOrderNo(fundOrderEntity.getOrderNo());
+	        try {
+	        	fssChangeCardService.update(changeCardEntity);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        this.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
+		 return true;
+	 }
+	
+		@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { CommandParmException.class }, readOnly = false)
+		public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws CommandParmException {
+			fundOrderEntity.setOrderState(status);
+			fundOrderEntity.setRetCode(code);
+			fundOrderEntity.setRetMessage(msg);
+			try {
+				fundOrderService.update(fundOrderEntity);
+			} catch (Exception e) {
+				throw new CommandParmException(e.getMessage());
+			}
+		}
 	
 	
 	

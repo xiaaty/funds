@@ -15,8 +15,7 @@ import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:38
- * Description:
- * <p>
+ * Description:开户
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
@@ -24,7 +23,6 @@ import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
  */
 public interface ILoan {
 
-    public void createAccount(CreateLoanAccountDto dto) throws FssException;
     /**
      * 
      * author:jhz
@@ -46,6 +44,7 @@ public interface ILoan {
 	 * function：流标接口
 	 */
 	public boolean failedBid(FailedBidDto dto)throws FssException;
+	
 
-
+	public String createLoanAccount(CreateLoanAccountDto dto) throws FssException;
 }
