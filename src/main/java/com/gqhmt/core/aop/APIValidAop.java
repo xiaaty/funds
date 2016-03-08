@@ -4,11 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.PageSuperDto;
+import com.gqhmt.extServInter.dto.QueryListResponse;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
@@ -24,6 +26,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.core.aop.APIValidAop
@@ -64,11 +67,12 @@ public class APIValidAop {
         Response response = null;
         String code = "90099999";
         SuperDto dto = null;
-
+        Object targetClass = null;
+        String methodName = null;
         try {
             dto = getArgsDto(joinPoint);
-            Object targetClass = joinPoint.getTarget();
-            String methodName = joinPoint.getSignature().getName();
+            targetClass = joinPoint.getTarget();
+            methodName = joinPoint.getSignature().getName();
             //校验商户
             this.validMch(targetClass,methodName,dto);
             //交易类型校验
@@ -77,7 +81,6 @@ public class APIValidAop {
             this.validData(dto);
             //生成交易订单
             this.generate(dto);
-
             //查询分页设置
             generateAutoPage(targetClass,methodName,dto);
             response = (Response)joinPoint.proceed();
@@ -104,8 +107,11 @@ public class APIValidAop {
 
         //处理成功返回值
         response.setResp_msg(Integer.parseInt(response.getResp_code())==0 ? "成功": Application.getInstance().getDictName(response.getResp_code()));
+
+        generateAutoPage(targetClass,methodName,response);
         //更改订单结果
         this.callbackOrder(response,dto);
+
         return response;
     }
 
@@ -122,7 +128,6 @@ public class APIValidAop {
             String name = field.getName();
             //空值校验
             validIsNull(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
-
         }
         for(Field field:fields){
             String name = field.getName();
@@ -252,26 +257,44 @@ public class APIValidAop {
     private void generateAutoPage(Object obj,String  methodName,SuperDto dto){
         Class class1 = obj.getClass();
         try {
-            Method method = class1.getMethod(methodName);
+            Method method = class1.getMethod(methodName,SuperDto.class);
             AutoPage autoPage =  method.getAnnotation(AutoPage.class);
             if (null != autoPage){
-                Integer pageNum = 10;
-                Integer pageSize = 0;
+                Integer pageNum = 0;
+                Integer pageSize = 10;
                 if (dto instanceof PageSuperDto){
                     PageSuperDto pageSuperDto = (PageSuperDto) dto;
                     pageNum = pageSuperDto.getCpage();
                     pageSize = pageSuperDto.getPageNum();
                 }
-
                 if(pageNum == null){
-                    pageNum = 10;
+                    pageNum = 0;
                 }
-
                 if(pageSize == null){
-                    pageSize = 0;
+                    pageSize = 10;
                 }
-
                 PageHelper.startPage(pageNum, pageSize);
+
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void generateAutoPage(Object obj,String  methodName,Response response){
+        Class class1 = obj.getClass();
+        try {
+            Method method = class1.getMethod(methodName,SuperDto.class);
+            AutoPage autoPage =  method.getAnnotation(AutoPage.class);
+            if (null != autoPage){
+                if(response instanceof QueryListResponse){
+                    QueryListResponse q = (QueryListResponse) response;
+                    Object plain = q.getPlain();
+                    if(plain instanceof List){
+                        q.setPlain(new GqPageInfo((List)plain));
+                    }
+                }
 
             }
         } catch (NoSuchMethodException e) {

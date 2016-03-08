@@ -1,5 +1,7 @@
 package com.gqhmt.funds.architect.trade.bean;
 
+import com.gqhmt.core.util.GlobalConstants;
+
 import java.math.BigDecimal;
 import java.util.Date;
 /**
@@ -50,6 +52,12 @@ public class FundTradeBean  implements java.io.Serializable{
 		this.tradeNo = tradeNo;
 	}
 
+
+	public String getTradeTypeName(){
+		return GlobalConstants.fundsType.get(this.getTradeType());
+
+
+	}
 
 	public Integer getTradeType() {
 		return this.tradeType;

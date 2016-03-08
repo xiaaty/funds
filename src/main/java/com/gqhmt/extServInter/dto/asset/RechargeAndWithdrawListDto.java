@@ -24,11 +24,22 @@ public class RechargeAndWithdrawListDto extends PageSuperDto{
     @APIValidNull(errorCode = "90002006")
     private String cust_no;
 
+    @APIValidNull(errorCode = "90004015")
+    private int  type;
+
     public String getCust_no() {
         return cust_no;
     }
 
     public void setCust_no(String cust_no) {
         this.cust_no = cust_no;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

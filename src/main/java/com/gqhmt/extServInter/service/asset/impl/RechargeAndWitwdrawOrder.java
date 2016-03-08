@@ -2,9 +2,9 @@ package com.gqhmt.extServInter.service.asset.impl;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.extServInter.dto.QueryListResponse;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.asset.AssetResponse;
 import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
 import com.gqhmt.extServInter.service.asset.IRechargeAndWithdrawOrder;
 import com.gqhmt.funds.architect.order.bean.FundOrderBean;
@@ -39,10 +39,10 @@ public class RechargeAndWitwdrawOrder implements IRechargeAndWithdrawOrder {
     @AutoPage
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-        AssetResponse response = new AssetResponse();
+        QueryListResponse response = new QueryListResponse();
         try {
             RechargeAndWithdrawListDto dd = (RechargeAndWithdrawListDto) dto;
-            List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(Integer.parseInt(dd.getCust_no()));
+            List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(Integer.parseInt(dd.getCust_no()),dd.getType());
             response.setResp_code("00000000");
             response.setPlain(list);
         }catch (Exception e){

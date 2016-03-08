@@ -1,6 +1,7 @@
 package com.gqhmt.funds.architect.order.bean;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Filename:    com.gqhmt.funds.architect.order.bean.FundOrderBean
@@ -20,6 +21,8 @@ import java.math.BigDecimal;
  */
 public class FundOrderBean {
 
+    private String orderNo;
+
     private int orderType;          //交易类型
 
     private String orderTypeName;   //交易类型中文
@@ -32,7 +35,11 @@ public class FundOrderBean {
 
     private String  orderStateName;//交易状态中文
 
-    private String  tradeDate;    //交易时间
+    private Date tradeDate;    //交易时间
+
+    private String retMessage;
+
+    private Date completeTime;
 
 
     public int getOrderType() {
@@ -53,8 +60,6 @@ public class FundOrderBean {
         }else{
             typeName = "未知";
         }
-
-
         return typeName;
     }
 
@@ -87,18 +92,52 @@ public class FundOrderBean {
     }
 
     public String getOrderStateName() {
-        return orderStateName;
+        String orderType = "";
+        if(orderState == 2){
+            orderType = "支付成功";
+        }else if(orderState == 3){
+            orderType = "支付失败";
+        }else{
+            orderType = "未支付";
+        }
+        return orderType;
     }
 
     public void setOrderStateName(String orderStateName) {
         this.orderStateName = orderStateName;
     }
 
-    public String getTradeDate() {
+
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public String getRetMessage() {
+        return retMessage;
+    }
+
+    public void setRetMessage(String retMessage) {
+        this.retMessage = retMessage;
+    }
+
+    public Date getTradeDate() {
         return tradeDate;
     }
 
-    public void setTradeDate(String tradeDate) {
+    public void setTradeDate(Date tradeDate) {
         this.tradeDate = tradeDate;
+    }
+
+    public Date getCompleteTime() {
+        return completeTime;
+    }
+
+    public void setCompleteTime(Date completeTime) {
+        this.completeTime = completeTime;
     }
 }

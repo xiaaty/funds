@@ -64,7 +64,7 @@ public class FondOrderServiceTest {
 
 	@Test
 	public void getFundOrderList(){
-		List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(44915);
+		List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(44915,1103);
 
 		assert list.size() >0;
 	}
