@@ -1,11 +1,11 @@
 package com.gqhmt.sys.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.AuthMenu;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.sys.beans.SysUsers;
-import com.gqhmt.sys.entity.MenuEntity;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 /**
  * 
@@ -112,10 +111,12 @@ public class LoginFilter implements Filter {
                 sysUsers.setLoginName((String) userInfo.get("loginName"));
                 sysUsers.setEmployeeNo((String) userInfo.get("no"));
                 GlobalConstants.setSession(request, GlobalConstants.SESSION_EMP, sysUsers);
-                /**..end--记录用户session信息**/ 
-                
+                /**..end--记录用户session信息**/
+
                 /**..start--记录菜单session信息**/
-                List<Map<String, String>> menuList = (List<Map<String, String>>) userInfo.get("menuList");
+				String url  =  request.getServletPath();
+				String context = request.getContextPath();
+                /*List<Map<String, String>> menuList = (List<Map<String, String>>) userInfo.get("menuList");
                 List<MenuEntity> menuEntities=new ArrayList<>();
                 MenuEntity menuEntity=null;
                 if(null != menuList){
@@ -130,12 +131,13 @@ public class LoginFilter implements Filter {
 					menuEntity.setParma(map.get("isShow"));
 					menuEntities.add(menuEntity);
 					}
-				String url  =  request.getServletPath();
-				String context = request.getContextPath();
-				String menu = authMenu.getMenu(menuEntities,context,url);
+
+
+				*//**..end--记录菜单session信息**//*
+                }*/
+
+				String menu = Application.getInstance().getMenu(context,url);
 				request.getSession().setAttribute("menu", menu);
-				/**..end--记录菜单session信息**/
-                }
 				// 消耗掉response
 				EntityUtils.consume(entity);
 			} finally {
