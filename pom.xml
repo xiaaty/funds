@@ -10,6 +10,7 @@
 	<packaging>war</packaging>
 	<version>1.1-SNAPSHOT</version>
 
+
 	<name>funds</name>
 	<url>http://maven.apache.org</url>
 	<description>Fund settlement system</description>
