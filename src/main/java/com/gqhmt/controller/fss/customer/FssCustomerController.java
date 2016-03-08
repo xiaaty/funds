@@ -64,8 +64,8 @@ public class FssCustomerController {
     	if(StringUtils.isNotEmptyString(customer.getName())){
     		map.put("name",customer.getName());
     	}
-    	if(StringUtils.isNotEmptyString(customer.getCert_no())){
-    		map.put("cert_no", customer.getCert_no());
+    	if(StringUtils.isNotEmptyString(customer.getCertNo())){
+    		map.put("cert_no", customer.getCertNo());
     	}
     	if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
 			map.put("startime", startime+" 00:00:00");

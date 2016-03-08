@@ -13,6 +13,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
@@ -343,4 +344,20 @@ public class FssChangeCardService {
         }
         return cardNo.substring(0,4)+"***"+cardNo.substring(cardNo.length()-4);
     }
+    
+    
+   public FssChangeCardEntity getChangeCardByCustId(Long custId) throws FssException{
+	   FssChangeCardEntity fssChangeCardEntity=new FssChangeCardEntity();
+	   fssChangeCardEntity.setCustId(custId);
+	   return fssChangeCardEntity;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
@@ -18,7 +19,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.StringUtils;
-
+import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -58,6 +59,9 @@ public class FundAccountService {
     
     @Resource
     private  FssAssetReadMapper assetReadMapper;
+    
+    @Resource
+    private FssAccountReadMapper fssAccountReadMapper;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -420,7 +424,12 @@ public class FundAccountService {
 	        return this.fundsAccountReadMapper.getAccountBanlance(cust_no,busi_type);
 	    }
 	
-	
+	    
+	    public FssAccountEntity getFssFundAccountInfo(String accNo) throws FssException{
+	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+	    	fssAccountEntity.setAccNo(accNo);
+	        return fssAccountReadMapper.selectByPrimaryKey(accNo);
+	    }
 	
 }
 

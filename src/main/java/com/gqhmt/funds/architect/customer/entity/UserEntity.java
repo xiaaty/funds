@@ -104,6 +104,23 @@ private Integer isFirstDebt;
 */
 private Integer userFrom;
 
+private String source;//用户来源，主要针对推广。
+
+private String IsFirstCast;//是否是首投，0:首投，1:非首投
+
+private String yrtUserId;
+
+private String nickname;
+
+private Integer userType;
+
+private Integer isVerify;
+
+private String openId;
+
+private Integer riskScore;
+
+private Date riskEvalTime;
 // Constructors
 
 /** default constructor */
@@ -323,6 +340,84 @@ return isFirstDebt;
 
 public void setIsFirstDebt(Integer isFirstDebt) {
 this.isFirstDebt = isFirstDebt;
+}
+
+
+
+
+
+@Column(name = "source")
+public String getSource() {
+	return source;
+}
+
+public void setSource(String source) {
+	this.source = source;
+}
+@Column(name = "first_cast")
+public String getIsFirstCast() {
+	return IsFirstCast;
+}
+
+public void setIsFirstCast(String isFirstCast) {
+	IsFirstCast = isFirstCast;
+}
+@Column(name = "yrt_user_id")
+public String getYrtUserId() {
+	return yrtUserId;
+}
+
+public void setYrtUserId(String yrtUserId) {
+	this.yrtUserId = yrtUserId;
+}
+@Column(name = "nickname")
+public String getNickname() {
+	return nickname;
+}
+
+public void setNickname(String nickname) {
+	this.nickname = nickname;
+}
+@Column(name = "user_type")
+public Integer getUserType() {
+	return userType;
+}
+
+public void setUserType(Integer userType) {
+	this.userType = userType;
+}
+
+@Column(name = "is_verify")
+public Integer getIsVerify() {
+	return isVerify;
+}
+
+public void setIsVerify(Integer isVerify) {
+	this.isVerify = isVerify;
+}
+@Column(name = "openId")
+public String getOpenId() {
+	return openId;
+}
+
+public void setOpenId(String openId) {
+	this.openId = openId;
+}
+@Column(name = "risk_score")
+public Integer getRiskScore() {
+	return riskScore;
+}
+
+public void setRiskScore(Integer riskScore) {
+	this.riskScore = riskScore;
+}
+@Column(name = "risk_eval_time")
+public Date getRiskEvalTime() {
+	return riskEvalTime;
+}
+
+public void setRiskEvalTime(Date riskEvalTime) {
+	this.riskEvalTime = riskEvalTime;
 }
 
 }
