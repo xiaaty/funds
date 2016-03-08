@@ -24,13 +24,13 @@ public class CreateLoanAccountDto extends SuperDto {
     @APIValidNull(errorCode = "90002006")
 	private String busi_no;			//业务编号
 
-    @APIValidNull(errorCode = "90002006")
+    @APIValidNull(errorCode = "90002009")
     private String mobile;			//手机号
 
-    @APIValidNull(errorCode = "90002006")
+    @APIValidNull(errorCode = "90002010")
     private String cert_no;			//身份证号
 
-    @APIValidNull(errorCode = "90002006")
+    @APIValidNull(errorCode = "90002011")
     private String name;			//客户姓名
 
     @APIValidNull(errorCode = "90002012")
@@ -41,6 +41,9 @@ public class CreateLoanAccountDto extends SuperDto {
 
     @APIValidNull(errorCode = "90002014")
     private String city_id;			//开户地区
+    
+    @APIValidNull(errorCode = "90002016")
+    private String contract_id;	   //合同Id
     
     
     
@@ -100,6 +103,12 @@ public class CreateLoanAccountDto extends SuperDto {
 		this.busi_no = busi_no;
 	}
 
-	
+	public String getContract_id() {
+		return contract_id;
+	}
+
+	public void setContract_id(String contract_id) {
+		this.contract_id = contract_id;
+	}
     
 }

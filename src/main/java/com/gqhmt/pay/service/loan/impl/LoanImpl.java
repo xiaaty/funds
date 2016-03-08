@@ -2,12 +2,16 @@ package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.pay.service.loan.ILoan;
-
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.impl.LoanImpl
@@ -25,27 +29,42 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2016/3/6  于泳      1.0     1.0 Version
  */
+@Service
 public class LoanImpl implements ILoan {
 
     @Resource
     private PaySuperByFuiou paySuperByFuiou;
-
+    @Resource
+    private CustomerInfoService customerInfoService;
+	@Resource
+	private FundsAccountImpl fundsAccountImpl;
+	@Resource
+	private FssAccountService fssAccountService;
+    
     @Override
-    public void createAccount(CreateLoanAccountDto dto) throws FssException {
+    public String createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
         //富友
-        FundAccountEntity primaryAccount = new FundAccountEntity();
-        primaryAccount.setId(-1l);
-        CustomerInfoEntity customerInfoEntity = new CustomerInfoEntity();
-        customerInfoEntity.setCustomerName(dto.getName());
-        customerInfoEntity.setCertNo(dto.getCert_no());
-        customerInfoEntity.setMobilePhone(dto.getMobile());
-        customerInfoEntity.setCityCode(dto.getCity_id());
-        customerInfoEntity.setParentBankCode(dto.getBank_id());
-        customerInfoEntity.setBankLongName("");
-        customerInfoEntity.setBankNo(dto.getBank_card());
-        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-        paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-
-
+    	FssAccountEntity  fssAccountEntity=null;
+    	String accNo=null;
+    	CustomerInfoEntity customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(loanAccountDto);
+    	if(customerInfoEntity==null){
+    		customerInfoService.createLoanAccount(loanAccountDto);
+    		if(true){
+    			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
+    		}
+    	}
+    	fundsAccountImpl.createAccount(customerInfoEntity, "", "");
+    	if(true){
+//    	  fssAccountEntity=fssAccountService.createFssAccount(loanAccountDto,customerInfoEntity);
+    	  fssAccountEntity=fssAccountService.createFssAccountEntity(loanAccountDto,customerInfoEntity);
+    	  if(null!=fssAccountEntity){
+    		   accNo=fssAccountEntity.getAccNo();
+    	  }
+    	}
+    	//通知富有开户
+//        paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+        
+        //5.返回  acc_no; return acc_no
+    	return accNo;
     }
 }

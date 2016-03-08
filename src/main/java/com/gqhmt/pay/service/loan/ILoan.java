@@ -12,8 +12,7 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:38
- * Description:
- * <p>
+ * Description:开户
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
@@ -21,7 +20,7 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
  */
 public interface ILoan {
 
-    public void createAccount(CreateLoanAccountDto dto) throws FssException;
+    public String createLoanAccount(CreateLoanAccountDto dto) throws FssException;
 
 
 }

@@ -1,15 +1,25 @@
 package com.gqhmt.funds.architect.customer.service;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
+import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
+import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.funds.architect.mapping.service.FuiouAreaService;
 import com.gqhmt.funds.architect.mapping.service.FuiouBankCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -32,6 +42,9 @@ public class CustomerInfoService {
 
 	@Autowired
 	private FundsAccountReadMapper fundAccountReadMapper;
+	
+	@Autowired
+	private FundsAccountWriteMapper fundAccountWriteMapper;
 
 	@Autowired
 	private BankCardInfoService bankCardinfoService;
@@ -48,6 +61,12 @@ public class CustomerInfoService {
 
 	@Resource
 	private FssChangeCardService changeCardService;
+	
+	@Resource
+	private GqUserWriteMapper gqUserWriteMapper;
+	
+	@Resource
+	private FssAccountWriteMapper fssAccountWriteMapper;
 /*
 	*//**
 	 * 查询客户管理列表
@@ -56,242 +75,77 @@ public class CustomerInfoService {
 	public Page queryCustomerList(CustomerInfoBean customerInfo, String flg) {
 		return null;
 	}
-
-	*//**
-	 * 批量插入客户信息 富友调用
-	 *
-	 *//*
-	public void savaCustomerInfofuyou(List<CustomerInfoEntity> customerInfoList, String sysUserId) throws FssException {
-
-		List<String> custNoList = new ArrayList<String>();
-		List<String> phoneNoList = new ArrayList<String>();
-		List<String> bankNoList = new ArrayList<String>();
-		List<String> areaCodeList = new ArrayList<String>();
-		List<String> bankCodeList = new ArrayList<String>();
-
-		// 客户信息bean
-		CustomerInfoEntity customerInfo = null;
-		// 用户信息bean
-		UserEntity userBean = null;
-
-		// 银行卡信息实体bean
-		BankCardInfoEntity bankCardinfoEntity = null;
-
-		List<CustomerInfoEntity> changeList = new ArrayList<CustomerInfoEntity>();
-		for (CustomerInfoEntity customerInfoEntity : customerInfoList) {
-			customerInfo = queryCustomerInfoByCertNo(customerInfoEntity.getCertNo());
-			if (customerInfo != null) {
-				custNoList.add(customerInfoEntity.getCertNo());
-				continue;
-			}
-			customerInfo = queryCustomerInfoByMobile(customerInfoEntity.getMobilePhone());
-			if (customerInfo != null) {
-				phoneNoList.add(customerInfoEntity.getMobilePhone());
-				continue;
-			}
-			// 查询卡号是否存在
-			bankCardinfoEntity = bankCardinfoService.queryBankCardinfoByBankNo(customerInfoEntity.getBankNo());
-			if (bankCardinfoEntity != null) {
-				bankNoList.add(customerInfoEntity.getBankNo());
-				continue;
-			}
-			customerInfoEntity.setCertNo(customerInfoEntity.getCertNo().trim().toUpperCase());
-			customerInfoEntity.setCustomerName(customerInfoEntity.getCustomerName().trim());
-			customerInfoEntity.setMobilePhone(customerInfoEntity.getMobilePhone().trim());
-			customerInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
-			customerInfoEntity.setCreateUserId(Integer.parseInt(sysUserId));
-
-			// 如果地区code填写有误 error列表里面添加
-			if (!fuiouAreaService.queryFuiouAreaCodeValueByCode(customerInfoEntity.getCityCode())) {
-				areaCodeList.add(customerInfoEntity.getCityCode());
-				continue;
-			}
-			// 如果银行code填写有误 error列表里面添加
-			if (!fuiouBankCodeService.queryFuiouBankCodeValueByCode(customerInfoEntity.getParentBankCode())) {
-				bankCodeList.add(customerInfoEntity.getParentBankCode());
-				continue;
-			}
-			if (custNoList.size() > 0 || phoneNoList.size() > 0 || bankNoList.size() > 0 || areaCodeList.size() > 0 || bankCodeList.size() > 0) {
-				continue;
-			}
-			// 保存客户信息
-			this.customerInfoWriteMapper.insertSelective(customerInfoEntity);
-			*//*************************************************************//*
-
-			// 划扣银行信息
-			bankCardinfoEntity = new BankCardInfoEntity();
-			// 客户id
-			bankCardinfoEntity.setCustId(customerInfoEntity.getId());
-			// 银行名称具体地址
-			bankCardinfoEntity.setBankLongName(customerInfoEntity.getBankLongName());
-			// 银行名称
-			bankCardinfoEntity.setBankSortName(customerInfoEntity.getParentBankCode());
-			// 银行卡号
-			bankCardinfoEntity.setBankNo(customerInfoEntity.getBankNo());
-			// 开户行地区代码
-			bankCardinfoEntity.setCityId(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoEntity.getCityCode()));
-			// 开户行行别
-			bankCardinfoEntity.setParentBankId(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoEntity.getParentBankCode()));
-			// 是否个人银行卡 1：个人
-			bankCardinfoEntity.setIsPersonalCard(1);
-			// 富友默认卡已经签约
-			bankCardinfoEntity.setCardIndex("fuyou");
-			// 创建时间
-			bankCardinfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
-			bankCardinfoEntity.setCreateUserId(Integer.parseInt(sysUserId));
-			// 身份证号码
-			bankCardinfoEntity.setCertNo(customerInfoEntity.getCertNo());
-			// 银行卡绑定的手机号码 默认和客户信息的 手机号码一致 暂时
-			bankCardinfoEntity.setMobile(customerInfoEntity.getMobilePhone());
-			// 银行卡对应的开户名字 默认和客户信息一致 暂时
-			bankCardinfoEntity.setCertName(customerInfoEntity.getCustomerName());
-			// 保存划扣银行信息
-			bankCardinfoService.insert(bankCardinfoEntity);
-
-			// 富有开户关联用银行卡id
-			customerInfoEntity.setBankId(bankCardinfoEntity.getId());
-			// 设置支付渠道为 富友
-			customerInfoEntity.setPayChannel(2);
-			*//*************************************************************//*
-
-			userBean = new UserEntity();
-			// 客户关联用id
-			userBean.setCustId(customerInfoEntity.getId());
-			// 用户Uuid
-			userBean.setUserUuid(CommonUtil.getUUID());
-			// 用户名
-			userBean.setUserName(customerInfoEntity.getMobilePhone());
-			// 手机号
-			userBean.setMobilePhone(customerInfoEntity.getMobilePhone());
-			// 邮箱
-			userBean.setEmail(customerInfoEntity.getEmail());
-			// 密码
-			userBean.setPassword(MD5Util.encryption(customerInfoEntity.getMobilePhone().substring(customerInfoEntity.getMobilePhone().length() - 6)));
-			// 推荐人
-			userBean.setRecommender(customerInfoEntity.getEmployeeNo());
-			// 1:可用，2:禁用
-			userBean.setDisable("1");
-			// 首次转让
-			userBean.setIsFirstDebt(1);
-			userBean.setCreateTime(new Date(System.currentTimeMillis()));
-			userBean.setModifyTime(new Date(System.currentTimeMillis()));
-
-			// 用户来源 0：线上注册，1线下自动
-			userBean.setUserFrom(1);
-			// 注册用户信息
-//			this.userDao.saveOrUpdate(userBean);
-
-			// 更新客户信息的 用户ID
-			customerInfoEntity.setUserId(userBean.getId());
-			// 有效用户
-			customerInfoEntity.setIsvalid(0);
-
-			// 是否签署第三方协议 默认导入的客户都是签署的
-			customerInfoEntity.setHasThirdAgreement(1);
-
-			// 是否实名认证 0：未认证 1:已认证
-			customerInfoEntity.setNameIdentification(0);
-			// 是否电话认证 0：未认证 1:已认证
-			customerInfoEntity.setPhoneIdentification(0);
-
-			// 是否创建账户
-			customerInfoEntity.setHasAcount(0);
-
-			// 是否email认证 0：未认证 1:已认证
-			customerInfoEntity.setEmailIdentification(0);
-
-			// 开户行地区代码
-			customerInfoEntity.setCityCode(fuiouAreaService.queryFuiouAreaCodeByValue(customerInfoEntity.getCityCode()));
-			// 开户行行别
-			customerInfoEntity.setParentBankCode(fuiouBankCodeService.queryFuiouBankCodeByValue(customerInfoEntity.getParentBankCode()));
-
-			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
-
-			changeList.add(customerInfoEntity);
-		}
-
-		// 身份证相同的客户信息已经存在，抛出异常
-		if (custNoList.size() > 0) {
-			StringBuffer no = new StringBuffer();
-			for (int i = 0; i < custNoList.size(); i++) {
-				if (i == custNoList.size() - 1) {
-					no.append(custNoList.get(i));
-				} else {
-					no.append(custNoList.get(i)).append(",");
-				}
-
-			}
-			throw new Exception("0012" + no.toString());
-		}
-
-		// 手机号重复的的客户信息已经存在，抛出异常
-		if (phoneNoList.size() > 0) {
-			StringBuffer no = new StringBuffer();
-			for (int i = 0; i < phoneNoList.size(); i++) {
-				if (i == phoneNoList.size() - 1) {
-					no.append(phoneNoList.get(i));
-				} else {
-					no.append(phoneNoList.get(i)).append(",");
-				}
-
-			}
-			throw new FssException("0013" + no.toString());
-		}
-
-		// 银行卡号重复的的客户信息已经存在，抛出异常
-		if (bankNoList.size() > 0) {
-			StringBuffer no = new StringBuffer();
-			for (int i = 0; i < bankNoList.size(); i++) {
-				if (i == bankNoList.size() - 1) {
-					no.append(bankNoList.get(i));
-				} else {
-					no.append(bankNoList.get(i)).append(",");
-				}
-
-			}
-			throw new Exception("0014" + no.toString());
-		}
-
-		// 地区code不存在的的的客户信息已经存在，抛出异常
-		if (areaCodeList.size() > 0) {
-			StringBuffer no = new StringBuffer();
-			for (int i = 0; i < areaCodeList.size(); i++) {
-				if (i == areaCodeList.size() - 1) {
-					no.append(areaCodeList.get(i));
-				} else {
-					no.append(areaCodeList.get(i)).append(",");
-				}
-
-			}
-			throw new Exception("0015" + no.toString());
-		}
-
-		// 银行code不存在的的的客户信息，抛出异常
-		if (bankCodeList.size() > 0) {
-			StringBuffer no = new StringBuffer();
-			for (int i = 0; i < bankCodeList.size(); i++) {
-				if (i == bankCodeList.size() - 1) {
-					no.append(bankCodeList.get(i));
-				} else {
-					no.append(bankCodeList.get(i)).append(",");
-				}
-
-			}
-			throw new Exception("0016" + no.toString());
-		}
-
-		// // TODO 富友接口 开发中
-		for (CustomerInfoEntity customer:changeList) {
-			try{
-			//注册账户信息
-//				 AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_CREATE,ThirdPartyType.FUIOU, customer);
-			} catch(CommandParmException e){
-				 throw new Exception("0020" + e.getMessage());
-			}
-		}
+	*/
+	
+	public CustomerInfoEntity searchCustomerInfoByMobile(CreateLoanAccountDto loanAccountDto) throws FssException {
+		CustomerInfoEntity customerInfoEntity = queryCustomerInfoByMobile(loanAccountDto.getMobile());
+		return customerInfoEntity;
+	}
+	
+	/**
+	 * 开户
+	 * @param loanAccountDto
+	 * @throws FssException
+	 */
+	public boolean createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
+			//1.创建账户	t_gq_customer_info 
+			CustomerInfoEntity customer=new CustomerInfoEntity();
+			customer.setCustomerName(loanAccountDto.getName());
+			customer.setCustomerType(1);
+			customer.setMobilePhone(loanAccountDto.getMobile());
+			customer.setCertType(1);
+			customer.setCertNo(loanAccountDto.getCert_no());
+			customer.setNameIdentification(0);
+			customer.setPhoneIdentification(0);
+			customer.setEmailIdentification(0);
+			customer.setUserId(1);
+			customer.setIsvalid(0);
+			customer.setHasThirdAgreement(0);
+			customer.setHasAcount(0);
+			customer.setPayChannel(2);
+			customer.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
+			customer.setIsBatchSendmsgCalled(0);
+			customer.setCreateTime((new Timestamp(new Date().getTime())));
+			customer.setCreateUserId(0);
+			customer.setModifyTime((new Timestamp(new Date().getTime())));
+			customer.setModifyUserId(0);
+			customerInfoWriteMapper.insertSelective(customer);
+			
+			//2.创建用户         t_gq_user	
+			UserEntity userEntity=new UserEntity();
+			userEntity.setUserUuid("0");
+			userEntity.setMobilePhone(loanAccountDto.getMobile());
+			userEntity.setCreateTime((new Timestamp(new Date().getTime())));
+			userEntity.setModifyTime((new Timestamp(new Date().getTime())));
+			userEntity.setIntegral(0);
+			userEntity.setCreditLevel(0);
+			userEntity.setCustId(customer.getId());
+			userEntity.setUserFrom(0);
+			userEntity.setIsFirstCast("0");
+			userEntity.setIsFirstDebt(0);
+			userEntity.setUserType(1);
+			userEntity.setIsVerify(0);
+			gqUserWriteMapper.insertSelective(userEntity);
+			
+			//3.创建银行卡信息     t_gq_bank_info
+			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+			bankCardInfoEntity.setBankNo(loanAccountDto.getBank_card());
+			bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
+			bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
+			bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
+			bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+			bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
+			bankCardInfoEntity.setCreateUserId(1);
+			bankCardInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
+			bankCardInfoEntity.setModifyUserId(1);
+			bankCardInfoEntity.setChangeState(0);
+			bankCardInfoEntity.setSource("");
+			bankCardinfoService.insert(bankCardInfoEntity);
+		
+		return true;
 	}
 
-	*//**
+	/**
 	 * 添加客户信息
 	 *
 	 *//*
@@ -562,14 +416,14 @@ public class CustomerInfoService {
 	 *
 	 * @param mobile
 	 * @return
-	 *//*
+	 */
 	public CustomerInfoEntity queryCustomerInfoByMobile(String mobile) {
 		CustomerInfoEntity entity = new CustomerInfoEntity();
 		entity.setMobilePhone(mobile);
 		return customerInfoReadMapper.selectOne(entity);
 	}
 
-	*//**
+	/**
 	 * 根据id删除客户信息
 	 *
 	 * @param id
@@ -1237,5 +1091,23 @@ public class CustomerInfoService {
 	public CustomerInfoEntity queryCustomeById(Integer id) {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
 	}
+	
+	/**
+	 * 查询账户信息
+	 * @param bankId
+	 * @return
+	 */
+	public CustomerInfoEntity queryCustomeByBankId(Integer bankId){
+		CustomerInfoEntity entity = new CustomerInfoEntity();
+		entity.setBankId(bankId);
+		return customerInfoReadMapper.selectOne(entity);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 }
