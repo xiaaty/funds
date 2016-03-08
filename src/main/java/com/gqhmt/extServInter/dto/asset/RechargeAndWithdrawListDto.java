@@ -1,7 +1,7 @@
 package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.annotations.APIValidNull;
-import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.PageSuperDto;
 
 /**
  * Filename:    com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto
@@ -19,7 +19,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * -----------------------------------------------------------------
  * 16/3/8  于泳      1.0     1.0 Version
  */
-public class RechargeAndWithdrawListDto extends SuperDto{
+public class RechargeAndWithdrawListDto extends PageSuperDto{
 
     @APIValidNull(errorCode = "90002006")
     private String cust_no;

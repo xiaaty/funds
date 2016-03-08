@@ -1,11 +1,14 @@
 package com.gqhmt.core.aop;
 
+import com.github.pagehelper.PageHelper;
 import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.PageSuperDto;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Filename:    com.gqhmt.core.aop.APIValidAop
@@ -73,6 +77,9 @@ public class APIValidAop {
             this.validData(dto);
             //生成交易订单
             this.generate(dto);
+
+            //查询分页设置
+            generateAutoPage(targetClass,methodName,dto);
             response = (Response)joinPoint.proceed();
         } catch (Throwable throwable) {
             LogUtil.debug(this.getClass(),throwable);
@@ -239,5 +246,37 @@ public class APIValidAop {
         } catch (FssException e) {
             LogUtil.error(this.getClass(),e);
         }
+    }
+
+
+    private void generateAutoPage(Object obj,String  methodName,SuperDto dto){
+        Class class1 = obj.getClass();
+        try {
+            Method method = class1.getMethod(methodName);
+            AutoPage autoPage =  method.getAnnotation(AutoPage.class);
+            if (null != autoPage){
+                Integer pageNum = 10;
+                Integer pageSize = 0;
+                if (dto instanceof PageSuperDto){
+                    PageSuperDto pageSuperDto = (PageSuperDto) dto;
+                    pageNum = pageSuperDto.getCpage();
+                    pageSize = pageSuperDto.getPageNum();
+                }
+
+                if(pageNum == null){
+                    pageNum = 10;
+                }
+
+                if(pageSize == null){
+                    pageSize = 0;
+                }
+
+                PageHelper.startPage(pageNum, pageSize);
+
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
     }
 }
