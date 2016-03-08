@@ -42,22 +42,33 @@
               </when>
          </choose>
 	</select>
-	
-	<select id="queryFundTradeFlow" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean">
+	<!-- 查询账户资金流水 -->
+	<select id="getFundSequence" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
 		SELECT 
-		b.id,
-		b.account_no,
-		b.cust_name,
-		b.account_type,
-		b.busi_type,
-	 	a.actionType,
-		a.amount,
-		a.CREATE_TIME,
-		a.thirdparty_type
-		FROM `t_gq_fund_account` b ,`t_gq_fund_sequence` a
-		WHERE b.cust_id=a.account_id
-		AND b.cust_id=${cust_no} 
-		AND b.user_id=${user_no} 
+			s.fund_type as fundType,
+			s.amount as amount,
+			date_format(s.create_time,'%Y-%m-%d %H:%i:%m') as create_time,
+			date_format(s.create_time,'%Y-%m') as create_ym
+		From t_gq_fund_account a,t_gq_fund_sequence s 
+		WHERE a.id = s.account_id and (a.busi_type=3 or a.busi_type=99) and a.user_id=${user_no}
+		<choose>
+			<when test="fundType == 1012">
+				AND s.fund_type in(1003,1012)
+			</when>
+			<when test="fundType == 1002">
+				AND s.fund_type in(1001,1002)
+			</when>
+			<when test="fundType == 3001">
+				AND s.fund_type =3001
+			</when>
+			<when test="fundType == 4010">
+				AND s.fund_type =4010
+			</when>
+			<when test="fundType == 3005">
+				AND s.fund_type in(3005,3006)
+			</when>
+		</choose>
+		
 	</select>
 	
 <!-- 	

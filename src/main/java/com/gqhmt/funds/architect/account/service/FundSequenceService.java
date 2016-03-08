@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -17,6 +18,7 @@ import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.Encriptor;
 import com.gqhmt.util.ThirdPartyType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -369,7 +371,7 @@ public class FundSequenceService {
      * @param busi_no
      * @return
      */
-    public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+ /*   public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);
@@ -378,7 +380,7 @@ public class FundSequenceService {
     		map.put("user_no", user_no);
     	}
     	return this.fundSequenceReadMapper.queryFundTradeFlow(map);
-    }
+    }*/
     
    public void insertFundSequence(FundSequenceEntity fundsequence)  throws FssException{
 	  this.fundSequenceWriteMapper.insert(fundsequence);
@@ -410,4 +412,25 @@ public class FundSequenceService {
    public List<FundSequenceEntity> getSumByDay(){
        return fundSequenceReadMapper.getSumByDay();
    }
+   
+   /**
+    * 账户资金流水
+    * @return
+    */
+  public List<FundFlowBean> queryFundSequence(Integer user_no,Integer fundType) throws FssException{
+	  Map map=new HashMap();
+	  if(StringUtils.isNoneBlank(user_no.toString())){
+		  map.put("user_no", user_no.intValue());
+	  }
+	  if(StringUtils.isNoneBlank(fundType.toString())){
+		  map.put("fundType", fundType.intValue());
+	  }
+	  List<FundFlowBean> list=fundSequenceReadMapper.getFundSequence(map);
+	  return list;
+  }
+   
+   
+   
+   
+   
 }

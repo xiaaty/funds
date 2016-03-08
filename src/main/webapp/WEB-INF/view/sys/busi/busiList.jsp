@@ -100,7 +100,9 @@
                                                     <td style="text-align:left;">
                                                         <a href="${contextPath}/sys/busi/update/${t.mchnNo}?parentId=${t.parentId}">修改</a>
                                                         <a href="${contextPath}/sys/busi/list/${t.id}">查看</a>
+                                                        <c:if test="${parentId !=0}">
                                                         <a href="${contextPath}/sys/busi/toBusinessApiAdd/${t.mchnNo}?mchnName=${t.mchnName}&parentId=${t.parentId}">API授权</a>
+                                                   		</c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

@@ -16,6 +16,8 @@ import com.gqhmt.pay.service.IFundsAccount;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 import javax.annotation.Resource;
 
 /**
@@ -162,10 +164,20 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
 	 * 查询账户余额
 	 */
-	 public FundAccountEntity getAccountAccByCustId(AssetDto accessdto) throws FssException{
-		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		 FundAccountEntity account = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-		 account.setFreezeAmount(primaryAccount.getFreezeAmount());
+	 public FundAccountEntity getAccountBanlance(AssetDto accessdto) throws FssException{
+//		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+//		 FundAccountEntity account = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+		 int cust_no=Integer.parseInt(accessdto.getCust_no());
+		 int busi_type=accessdto.getBusi_type();
+		 FundAccountEntity account = fundAccountService.getAccountBanlance(cust_no,busi_type);
+		 if(account==null){
+			 throw new FssException("90002001");
+		 }else{
+			 if(account.getFreezeAmount()==BigDecimal.ZERO){
+				 throw new FssException("90004007");
+			 }
+		 }
+//		 account.setFreezeAmount(account.getFreezeAmount());
 		 return account;
 	 }
 	

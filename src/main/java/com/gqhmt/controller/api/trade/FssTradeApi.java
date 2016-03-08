@@ -4,12 +4,10 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.extServInter.service.trade.*;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 
 /**
@@ -77,7 +75,7 @@ public class FssTradeApi {
 	private IUnFreeze unFreezeImpl;
 
 	@Resource
-	private ITransefer transefer;
+	private ITransefer transeferImpl;
     
 	@Resource
 	private ISstxTrade sstxTradeImpl;
@@ -85,7 +83,6 @@ public class FssTradeApi {
 	@Resource
 	private ISsdkTrade ssdkTradeImpl;
 	
-    
     /**
      * 
      * author:jhz
@@ -273,11 +270,16 @@ public class FssTradeApi {
 		return response;
 	}
 
+	/**
+	 * 转账
+	 * @param dto
+	 * @return
+	 */
 	@RequestMapping(value = "/transfer",method = RequestMethod.POST)
 	public Object transfer(TransferDto dto){
 		Response response= null;
 		try {
-			response = transefer.excute(dto);
+			response = transeferImpl.excute(dto);
 		} catch (Exception e) {
 			response = excute(e);
 		}
@@ -289,7 +291,7 @@ public class FssTradeApi {
      * time:2016年3月1日
      * function：实时提现
      */
-    @RequestMapping(value = "/sstxBusiness",method = RequestMethod.POST)
+    @RequestMapping(value = "/withhold",method = RequestMethod.POST)
     public Object sstxBusiness(SstxDto sstxDto){
     	Response response=new Response();
     	try {
@@ -301,12 +303,11 @@ public class FssTradeApi {
     	return response;
     }
 	
-    /**
-     * author:柯禹来
+    /**     * author:柯禹来
      * time:2016年3月1日
      * function：实时代扣
      */
-    @RequestMapping(value = "/ssdkBusiness",method = RequestMethod.POST)
+    @RequestMapping(value = "/agentWithdraw ",method = RequestMethod.POST)
     public Object ssdkBusiness(SsdkDto ssdkDto){
     	Response response=new Response();
     	try {
@@ -317,7 +318,7 @@ public class FssTradeApi {
     	}
     	return response;
     }
-
+    
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();

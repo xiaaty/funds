@@ -1,22 +1,23 @@
-package com.gqhmt.extServInter.dto.fund;
+package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
  *资产信息接口---资金流水查询接口参数
  */
-public class TradflowDto extends SuperDto {
+public class FundSequenceDto extends SuperDto {
 	
-	private Integer id;
+	private Integer fundType;
 	private String trade_no;//交易号码
 	private Integer cust_no;//客户编号
 	private Integer user_no;//用户编号
 	private Integer busi_no;//业务编号
-	public Integer getId() {
-		return id;
+
+	public Integer getFundType() {
+		return fundType;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setFundType(Integer fundType) {
+		this.fundType = fundType;
 	}
 	public String getTrade_no() {
 		return trade_no;

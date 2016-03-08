@@ -1,7 +1,7 @@
 package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import java.util.List;
 
 /**
@@ -19,15 +19,15 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2016/2/28  于泳      1.0     1.0 Version
  */
-public class TradeFlowResponse extends Response {
+public class FundSequenceResponse extends Response {
 
-    private  List<FundSequenceEntity> list;
+    private  List<FundFlowBean> list;
 
-	public List<FundSequenceEntity> getList() {
+	public List<FundFlowBean> getList() {
 		return list;
 	}
 
-	public void setList(List<FundSequenceEntity> list) {
+	public void setList(List<FundFlowBean> list) {
 		this.list = list;
 	}
 

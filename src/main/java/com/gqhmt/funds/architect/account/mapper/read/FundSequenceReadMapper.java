@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.account.mapper.read;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
@@ -9,6 +10,8 @@ import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Filename:    com.gq.p2p.account.Bean
@@ -55,8 +58,7 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	 * @param map
 	 * @return
 	 */
-	public FundAccountSequenceBean queryFundTradeFlow(Map map);
-	
+	public List<FundFlowBean> getFundSequence(Map map);
 	
 	
 	public List<FundSequenceEntity> getSumByDay();

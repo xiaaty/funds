@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.FundTradeReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.FundTradeWriteMapper;
@@ -122,24 +123,22 @@ public class FundTradeService {
      * @param busi_no
      * @return
      */
-    public List<FundTradeEntity> searchTradeRecord(Integer cust_no,Integer user_no,Integer busi_no,String str_trade_time,String end_trade_time,String tradeFilters){
+    public List<FundTradeBean> queryFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
     	Map map=new HashMap();
     	if(null!=cust_no){
     		map.put("cust_no", cust_no);
     	}
-    	if(null!=user_no){
-    		map.put("user_no", user_no);
-    	}
     	if(str_trade_time!=null && !"".equals(str_trade_time)){
-    		map.put("str_trade_time",str_trade_time);
+    			map.put("str_trade_time",str_trade_time);
+    		
     	}
     	if(end_trade_time!=null && !"".equals(end_trade_time)){
-    		map.put("end_trade_time",end_trade_time);
+    			map.put("end_trade_time",end_trade_time);
     	}
-    	String trade_type=null; 
+    	String tradeType=null; 
+    	StringBuffer types = new StringBuffer();
     	if(tradeFilters!=null && !"".equals(tradeFilters)){
     		if(!tradeFilters.equals("c-w-b-r-o")){
-    			StringBuffer types = new StringBuffer();
     			types.append("-1,");//空的，不存在
     			if(tradeFilters.indexOf("c")>=0){//充值
     				types.append("1001,");		
@@ -157,26 +156,23 @@ public class FundTradeService {
     				types.append("1002,1005,1006,1007,1008,1009,1010,1011,2005,2007,2008,2009,2010,3003,3004,3007,3008,3010,3011,4001,4002,4003,4004,4005,4006,4007,4010,");
 				}
     			types.deleteCharAt(types.length()-1);
-    			trade_type=types.append(types).toString();
     			}
+    		}else{//当tradeFilters为空的默认查询所有状态
+    			types.append("-1,1001,1003,1004,1012,2001,2002,2003,2004,2006,3001,3002,3009,3005,3006,1002,1005,1006,1007,1008,1009,1010,1011,2005,2007,2008,2009,2010,3003,3004,3007,3008,3010,3011,4001,4002,4003,4004,4005,4006,4007,4010");//空的，不存在
     		}
-
+    		tradeType=types.toString();
 	    	List list=new ArrayList();
-	 	   	if(StringUtils.isNotEmptyString(trade_type)){
-	 		   String str[]=trade_type.split(",");
+	 	   	if(StringUtils.isNotEmptyString(tradeType)){
+	 		   String str[]=tradeType.split(",");
 	 		   for (int i = 0; i < str.length; i++){
 	 			   list.add(str[i]);
 	 		   }
 	 	   }
-	 	   	
 		    if(list!=null && list.size()>0){
 	    		map.put("list", list);
 	    	}
-    	return this.fundTradeReadMapper.queryFundTradeList(map);
+		    List<FundTradeBean> fundtradelist=this.fundTradeReadMapper.queryFundTradeList(map);
+		    return fundtradelist;
     }
-    
-    
-    
-    
     
 }

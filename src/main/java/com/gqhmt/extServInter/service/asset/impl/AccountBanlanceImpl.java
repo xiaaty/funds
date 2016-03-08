@@ -30,7 +30,7 @@ public class AccountBanlanceImpl implements IAccountBanlance{
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
 		BalanceResponse response = new BalanceResponse();
     	try {
-    		FundAccountEntity fundAccountEntity = fundsAccountImpl.getAccountAccByCustId((AssetDto) dto);
+    		FundAccountEntity fundAccountEntity = fundsAccountImpl.getAccountBanlance((AssetDto) dto);
 			response.setAmount(fundAccountEntity.getAmount());
 			response.setFrozeAmount(fundAccountEntity.getFreezeAmount());
 			response.setResp_code("0000");
