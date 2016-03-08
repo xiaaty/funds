@@ -428,7 +428,7 @@ public class FundAccountService {
 	    public FssAccountEntity getFssFundAccountInfo(String accNo) throws FssException{
 	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
 	    	fssAccountEntity.setAccNo(accNo);
-	        return fssAccountReadMapper.selectByPrimaryKey(accNo);
+	        return fssAccountReadMapper.selectOne(fssAccountEntity);
 	    }
 	
 }

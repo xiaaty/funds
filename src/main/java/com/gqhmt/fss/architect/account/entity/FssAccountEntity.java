@@ -75,7 +75,11 @@ public class FssAccountEntity implements Serializable {
 
     @Column(name="mchn_child")
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
-
+    
+    
+    @Column(name="cust_id")
+    private Integer custId;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
+    
 	public Long getId() {
 		return id;
 	}
@@ -202,6 +206,14 @@ public class FssAccountEntity implements Serializable {
 
 	public void setMchnChild(String mchnChild) {
 		this.mchnChild = mchnChild;
+	}
+
+	public Integer getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Integer custId) {
+		this.custId = custId;
 	}
     
 }

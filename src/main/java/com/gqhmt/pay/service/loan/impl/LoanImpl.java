@@ -44,27 +44,26 @@ public class LoanImpl implements ILoan {
     @Override
     public String createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
         //富友
+    	//paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+        //5.返回  acc_no; return acc_no
     	FssAccountEntity  fssAccountEntity=null;
     	String accNo=null;
+    	//1.查询是否已经开通资金账号
     	CustomerInfoEntity customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(loanAccountDto);
-    	if(customerInfoEntity==null){
-    		customerInfoService.createLoanAccount(loanAccountDto);
-    		if(true){
-    			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
+    	if(customerInfoEntity!=null){
+    		//资金平台已经开通账户，则返回已经开户的信息给借款系统
+    		Integer custId=customerInfoEntity.getId();
+    		fssAccountEntity=fssAccountService.getFssAccountByCustId(custId);
+    		accNo=fssAccountEntity.getAccNo();
+    		throw new FssException("账户已经开通！");
+    	}else{//资金平台未开通账户，则开通，并将借款系统传来的数据发送给富友作为开通账户信息
+    		CustomerInfoEntity fssCustomerEntity = customerInfoService.createLoanAccount(loanAccountDto);
+    		if(true){//customer、用户、银行卡创建成功后，最后创建账户信息
+    			fundsAccountImpl.createAccount(fssCustomerEntity,"","");
     		}
+    		fssAccountEntity=fssAccountService.createFssAccount(loanAccountDto, fssCustomerEntity);
+    		accNo=fssAccountEntity.getAccNo();
     	}
-    	fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    	if(true){
-//    	  fssAccountEntity=fssAccountService.createFssAccount(loanAccountDto,customerInfoEntity);
-    	  fssAccountEntity=fssAccountService.createFssAccountEntity(loanAccountDto,customerInfoEntity);
-    	  if(null!=fssAccountEntity){
-    		   accNo=fssAccountEntity.getAccNo();
-    	  }
-    	}
-    	//通知富有开户
-//        paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-        
-        //5.返回  acc_no; return acc_no
     	return accNo;
     }
 }

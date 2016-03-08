@@ -17,7 +17,7 @@ import com.gqhmt.extServInter.dto.Response;
  * -----------------------------------------------------------------
  * 16/1/12  于泳      1.0     1.0 Version
  */
-public class ChangeCardResponse  extends Response {
+public class WithDrawApplyResponse  extends Response {
 	private String mchn;//商户号
 	private String seqNo;//流水号
 	public String getMchn() {

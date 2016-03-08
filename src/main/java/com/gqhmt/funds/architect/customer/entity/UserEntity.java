@@ -106,7 +106,7 @@ private Integer userFrom;
 
 private String source;//用户来源，主要针对推广。
 
-private String IsFirstCast;//是否是首投，0:首投，1:非首投
+private Integer IsFirstCast;//是否是首投，0:首投，1:非首投
 
 private String yrtUserId;
 
@@ -355,11 +355,11 @@ public void setSource(String source) {
 	this.source = source;
 }
 @Column(name = "first_cast")
-public String getIsFirstCast() {
+public Integer getIsFirstCast() {
 	return IsFirstCast;
 }
 
-public void setIsFirstCast(String isFirstCast) {
+public void setIsFirstCast(Integer isFirstCast) {
 	IsFirstCast = isFirstCast;
 }
 @Column(name = "yrt_user_id")
