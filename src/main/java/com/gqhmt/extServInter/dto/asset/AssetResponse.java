@@ -2,8 +2,6 @@ package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.extServInter.dto.Response;
 
-import java.util.List;
-
 /**
  * Filename:    com.gqhmt.extServInter.dto.asset.AssetResponse
  * Copyright:   Copyright (c)2015
@@ -21,13 +19,13 @@ import java.util.List;
  * 2016/2/28  于泳      1.0     1.0 Version
  */
 public class AssetResponse extends Response {
-    private List plain;
+    private Object plain;
 
-    public List getPlain() {
+    public Object getPlain() {
         return plain;
     }
 
-    public void setPlain(List plain) {
+    public void setPlain(Object plain) {
         this.plain = plain;
     }
 }

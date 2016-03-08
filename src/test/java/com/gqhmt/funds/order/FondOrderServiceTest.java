@@ -1,16 +1,16 @@
 package com.gqhmt.funds.order;
 
+import com.gqhmt.funds.architect.order.bean.FundOrderBean;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.service.MenuServiceTest
@@ -29,7 +29,7 @@ import javax.annotation.Resource;
  * 2015/12/18  于泳      1.0     1.0 Version
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
+@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
 public class FondOrderServiceTest {
 
     @Resource
@@ -60,6 +60,14 @@ public class FondOrderServiceTest {
     	fundOrder.setId(407L);
     	fundOrderService.update(fundOrder);
     }
+
+
+	@Test
+	public void getFundOrderList(){
+		List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(44915);
+
+		assert list.size() >0;
+	}
 
 
 }

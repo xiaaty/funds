@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.service.asset.impl;
 
+import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -25,7 +26,9 @@ public class FundTradeImpl implements IFundTrade{
 	/**
 	 * 交易记录查询
 	 */
-    @Override
+
+	@AutoPage
+	@Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
 		AssetResponse response = new AssetResponse();
     	try {

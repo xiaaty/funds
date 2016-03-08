@@ -25,4 +25,12 @@
   where order_no=#{orderNo}
  </select>
 
+
+ <select id="getFundOrderRechargeAndWithdraw" resultType="com.gqhmt.funds.architect.order.bean.FundOrderBean">
+
+  SELECT t.* FROM `t_gq_fund_order` t , `t_gq_fund_account` f WHERE t.`account_id` = f.`id` AND f.`busi_type`  = 3
+  AND t.`order_type` IN (1,2,9,12) AND f.`cust_id` = #{custId}
+
+ </select>
+
 </mapper>
