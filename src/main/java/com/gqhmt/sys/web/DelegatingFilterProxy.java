@@ -110,6 +110,7 @@ public class DelegatingFilterProxy implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String url = httpServletRequest.getServletPath();
         Matcher matcher = pattern.matcher(url);
