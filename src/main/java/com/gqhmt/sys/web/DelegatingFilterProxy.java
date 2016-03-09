@@ -1,7 +1,6 @@
 package com.gqhmt.sys.web;
 
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.core.util.LocalIPUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.util.Resources;
@@ -12,7 +11,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +45,7 @@ public class DelegatingFilterProxy implements Filter {
 
 
     private String targetBean;
-    private Filter[] proxy;
+    private Filter proxy;
 
     private Pattern pattern = null;
     private String exclude=null;
@@ -70,41 +68,29 @@ public class DelegatingFilterProxy implements Filter {
         if(this.targetBean == null){
             return;
         }
-
-        String[] targetProxy = this.targetBean.split(",");
-        this.proxy = new Filter[targetProxy.length];
-
-        for (int i = 0;i<targetProxy.length;i++){
-            String tmp = targetProxy[i];
-            if(tmp == null){
-                continue;
-            }
-            Filter filter= (Filter) wac.getBean(tmp);
-
-            if (filter instanceof AuthenticationFilter){
-                FssFilterConfig fssFilterConfig = new FssFilterConfig(filterConfig.getFilterName(),filterConfig.getServletContext());
-                fssFilterConfig.setParm("serverName",this.serverName);
-                fssFilterConfig.setParm("casServerLoginUrl",this.casServerLoginUrl);
-                filter.init(fssFilterConfig);
+        Filter filter= (Filter) wac.getBean(this.targetBean);
+        if (filter instanceof AuthenticationFilter){
+            FssFilterConfig fssFilterConfig = new FssFilterConfig(filterConfig.getFilterName(),filterConfig.getServletContext());
+            fssFilterConfig.setParm("serverName",this.serverName);
+            fssFilterConfig.setParm("casServerLoginUrl",this.casServerLoginUrl);
+            filter.init(fssFilterConfig);
 //                AuthenticationFilter authenticationFilter = (AuthenticationFilter)filter;
 //                authenticationFilter.setServerName(this.serverName);
 //                authenticationFilter.setCasServerLoginUrl(casServerLoginUrl);
-            }else if(filter instanceof org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter){
-                FssFilterConfig fssFilterConfig = new FssFilterConfig(filterConfig.getFilterName(),filterConfig.getServletContext());
-                fssFilterConfig.setParm("serverName",this.serverName);
-                fssFilterConfig.setParm("casServerUrlPrefix",this.casServerUrlPrefix);
-                fssFilterConfig.setParm("redirectAfterValidation","false");
-                filter.init(fssFilterConfig);
+        }else if(filter instanceof org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter){
+            FssFilterConfig fssFilterConfig = new FssFilterConfig(filterConfig.getFilterName(),filterConfig.getServletContext());
+            fssFilterConfig.setParm("serverName",this.serverName);
+            fssFilterConfig.setParm("casServerUrlPrefix",this.casServerUrlPrefix);
+            fssFilterConfig.setParm("redirectAfterValidation","false");
+            filter.init(fssFilterConfig);
 
-            }else{
-                filter.init(filterConfig);
-            }
-            this.proxy[i] = filter;
+        }else if(filter != null){
+            filter.init(filterConfig);
+        }else{
+            filter = this;
         }
 
-
-        List<String> localIps = LocalIPUtil.getLocalIpList();
-
+        proxy = filter;
 
     }
 
@@ -120,13 +106,12 @@ public class DelegatingFilterProxy implements Filter {
             return;
 
         }
-        if(proxy == null || proxy.length == 0){
+        if(proxy == null){
             chain.doFilter(request,response);
             return;
         }
-        for(Filter filter:proxy){
-            filter.doFilter(request,response,chain);
-        }
+
+        this.proxy.doFilter(request,response,chain);
     }
 
     @Override

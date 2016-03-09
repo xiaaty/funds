@@ -5,6 +5,7 @@ import org.jasig.cas.client.authentication.AuthenticationFilter;
 
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import java.util.regex.Pattern;
 
 /**
  * Filename:    com.gqhmt.sys.web.FssAuthFilter
@@ -23,11 +24,16 @@ import javax.servlet.ServletException;
  * 16/3/8  于泳      1.0     1.0 Version
  */
 public class FssAuthFilter extends AuthenticationFilter {
+    private Pattern pattern = null;
+    private String exclude=null;
 
     @Override
     protected void initInternal(FilterConfig filterConfig) throws ServletException {
         super.initInternal(filterConfig);
         super.setServerName( ResourceUtil.getValue("config.appContext","localServerName"));
         super.setCasServerLoginUrl(ResourceUtil.getValue("config.appContext","casLoginUrl"));
+
     }
+
+
 }

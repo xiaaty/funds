@@ -165,6 +165,7 @@
 //     }
 	//校验函数
 	function validateCheck() {
+        var flag = false;
 		var mchnNo = $("#mchnNo").val();
 		$.ajax("${contextPath}/sys/busi/checkCode",{
             async:false,
