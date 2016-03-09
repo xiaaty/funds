@@ -81,6 +81,7 @@ public class FundAccountEntity {
     @Column(name = "settle_type")
     private Integer settleType ;
 
+    @Transient
     private CustomerInfoEntity customerInfoEntity;
 
     public Long getId() {

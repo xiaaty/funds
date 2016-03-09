@@ -4,6 +4,7 @@ package com.gqhmt.core.util;
 import com.gqhmt.annotations.AutoDate;
 import com.gqhmt.annotations.AutoDateType;
 import com.gqhmt.annotations.AutoMapping;
+import com.gqhmt.core.FssException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -50,7 +51,7 @@ public class GenerateBeanUtil {
      * @return
      * @throws Exception
      */
-    public static <T> T GenerateClassInstance(Class<T> tClass) throws Exception {
+    private static <T> T GenerateClassInstance(Class<T> tClass) throws Exception {
         try {
             T t = tClass.newInstance();
            List<Field> fields = getFields(tClass);
@@ -87,6 +88,24 @@ public class GenerateBeanUtil {
         return t;
     }
 
+    /**
+     * 复制类--数据实体bean,对来源类与生成类存在相同属性,自动获取该值,
+     * <span>本功能请注意,属性相同,不一定表示为同一属性.如特殊,需要重新赋值</span>
+     * @param targerObj
+     * @param sourceObj
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public static <T> T GenerateClassInstance(Object targerObj,Object  sourceObj) throws Exception {
+        Class tClass = targerObj.getClass();
+        Class<Object> sourceClass = (Class<Object>) sourceObj.getClass();
+        List<Field> fields = getFields(sourceClass);
+        for(Field field:fields){
+            sourceFidleMethod(tClass,sourceClass,field,sourceObj,targerObj);
+        }
+        return (T) targerObj;
+    }
 
     /**
      * 对生产新的实例赋值
@@ -96,28 +115,17 @@ public class GenerateBeanUtil {
      * @param sourceObj
      * @param targerObj
      */
-    private static void sourceFidleMethod(Class tClass,Class sourceClass,Field sourceField,Object sourceObj,Object targerObj){
+    private static void sourceFidleMethod(Class tClass,Class sourceClass,Field sourceField,Object sourceObj,Object targerObj) throws FssException {
         Object value = getSourceFieldObjValue(sourceClass,sourceField,sourceObj);
 
         if(value == null) return;
 
-
-        Field targerField = sourceField;
-        AutoMapping autoMapping = sourceField.getAnnotation(AutoMapping.class);
-
-        if(autoMapping != null){
-            String mappingValue = autoMapping.value();
-            try {
-                Field field = tClass.getDeclaredField(mappingValue);
-                targerField = field;
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+        Field targerField = null;
+        try {
+            targerField = getField(tClass,sourceField.getName(),sourceField);
+        } catch (FssException e) {
+            return;
         }
-
-        if (fieldMap.containsKey(tClass.getName()+"."+targerField.getName()) == false) return;
-
-
 
         try {
             Method method = getFieldSetMethod(tClass,targerField);
@@ -125,6 +133,27 @@ public class GenerateBeanUtil {
         } catch (Exception e) {
             LogUtil.error(GenerateBeanUtil.class,e);
         }
+    }
+
+    private static Field getField(Class tClass, String name,Field sourceField) throws FssException {
+
+        try {
+            Field targetField = tClass.getDeclaredField(sourceField.getName());
+            return targetField;
+        } catch (NoSuchFieldException e) {
+        }
+
+        AutoMapping autoMapping = sourceField.getAnnotation(AutoMapping.class);
+        if(autoMapping != null){
+            String mappingValue = autoMapping.value();
+            try {
+                Field field = tClass.getDeclaredField(mappingValue);
+                return field;
+            } catch (NoSuchFieldException e) {
+            }
+        }
+
+        throw new FssException("don't find field");
     }
 
     /**
@@ -253,7 +282,7 @@ public class GenerateBeanUtil {
      * @param instance
      * @param parmam
      */
-    public static void methodInvoke(Method method,Object instance,Object ... parmam){
+    private static void methodInvoke(Method method,Object instance,Object ... parmam){
         try {
             method.invoke(instance,parmam);
         } catch (IllegalAccessException e) {

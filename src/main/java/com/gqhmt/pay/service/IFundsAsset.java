@@ -126,6 +126,6 @@ public interface IFundsAsset {
      * @throws FssException
      */
     public Map liabilities(int custID) throws FssException;
-
+    
 
 }

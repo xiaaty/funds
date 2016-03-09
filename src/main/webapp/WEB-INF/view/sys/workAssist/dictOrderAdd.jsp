@@ -89,7 +89,7 @@
 			                                                    <section style="width:210px">
 			                                                    <label class="select">
 													                <select id="role_list"  name ="role_list" multiple="true" style="width:200px;height:300px;">
-													                    <option  value="">--请选择--</option>
+													                    <!-- <option  value="">--请选择--</option> -->
 													                	<c:forEach items="${dictlist}" var="dict">
 													                    	<option value="${dict.dictId}"> ${dict.dictName} </option>
 													                	</c:forEach>

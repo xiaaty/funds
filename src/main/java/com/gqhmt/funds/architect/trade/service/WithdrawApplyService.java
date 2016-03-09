@@ -1,10 +1,12 @@
 package com.gqhmt.funds.architect.trade.service;
 
-import com.github.pagehelper.Page;
+import com.gqhmt.pay.service.IFundsTrade;
 import com.gqhmt.pay.service.exception.NeedSMSValidException;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
+import com.gqhmt.extServInter.dto.trade.WithdrawDto;
+import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.trade.bean.WithdrawApplyBean;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
@@ -41,6 +43,8 @@ public class WithdrawApplyService {
 	private WithdrawApplyReadMapper withdrawApplyReadMapper;
 	@Resource
 	private WithdrawApplyWriteMapper withdrawApplyWriteMapper;
+	@Resource
+	private IFundsTrade fundsTradeImpl;
 
 //	@Autowired
 //	private TenderService tenderService;
@@ -232,7 +236,6 @@ public class WithdrawApplyService {
 		// 审核user
 		withdrawApplyEntity.setReviewUserId(Integer.parseInt(sysUserId));
 
-		
 
 		String returnCode = "0000";
 
@@ -240,6 +243,12 @@ public class WithdrawApplyService {
 		if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 
 			try {
+				WithdrawDto withdrawDto=new WithdrawDto();
+				withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+				withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
+				withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+				fundsTradeImpl.withdraw(withdrawDto);
+
 //				WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
 				// 代扣
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity, withdrawApplyCallback.getClass());
@@ -288,18 +297,29 @@ public class WithdrawApplyService {
 	 */
 	public String updateWithdrawRechSave(WithdrawApplyEntity withdrawApplyEntity, BigDecimal drawAmount,boolean callBackFlg) throws Exception {
 
-
-		String returnCode = "0000";
 		withdrawApplyEntity.setDrawAmount(drawAmount);
+		String returnCode = "0000";
 		// 富友支付
 		if (withdrawApplyEntity.getThirdPartyType().intValue() == 2) {
 //			WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
 			try {
 				if (callBackFlg) {
+
 					// 提现
+					WithdrawDto withdrawDto=new WithdrawDto();
+					withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+					withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
+					withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+					fundsTradeImpl.withdraw(withdrawDto);
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity,withdrawApplyCallback.getClass());
 				} else {
 					// 提现
+					WithdrawDto withdrawDto=new WithdrawDto();
+					withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+					withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
+					withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+					fundsTradeImpl.withdraw(withdrawDto);
+
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
 				}
 	
@@ -363,8 +383,13 @@ public class WithdrawApplyService {
 				
 				// 富有支付
 				if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
-
+					
 					try {
+						WithdrawDto withdrawDto=new WithdrawDto();
+						withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+						withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
+						withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+						fundsTradeImpl.withdraw(withdrawDto);
 //						WithdrawApplyCallback withdrawApplyCallback = new WithdrawApplyCallback();
 						// 代扣
 //						AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity, withdrawApplyCallback.getClass());
@@ -429,7 +454,6 @@ public class WithdrawApplyService {
 				
 				//金额超过银行代付单笔上限  && withdrawApplyEntity.getDrawAmount().compareTo(bankDealamountLimitEntity.getLimitAmount()) > 0
 			} else if (bankDealamountLimitEntity != null)  {
-				
 				BigDecimal bg[] = withdrawApplyEntity.getDrawAmount().divideAndRemainder(new BigDecimal(0));//TODO bankDealamountLimitEntity.getLimitAmount()
 				
 				int splitCount = bg[0].intValue();
@@ -455,6 +479,11 @@ public class WithdrawApplyService {
 						if (withdrawApplyEntity.getThirdPartyType().intValue() ==2) {
 							try {
 								// 代扣
+								WithdrawDto withdrawDto=new WithdrawDto();
+								withdrawDto.setCust_no(withdrawApplyEntity.getCustId().toString());
+								withdrawDto.setAmt(withdrawApplyEntity.getDrawAmount());
+								withdrawDto.setCharge_amt(withdrawApplyEntity.getProcedureFee());
+								fundsTradeImpl.withdraw(withdrawDto);
 //								AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW,withdrawApplyEntity.getThirdPartyType(), withdrawApplyEntity);
 							}catch (ThirdpartyErrorAsyncException e){
 								//需要手动核对

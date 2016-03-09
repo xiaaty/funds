@@ -1,7 +1,6 @@
 package com.gqhmt.sys.beans;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,18 +23,18 @@ public class MenuFunc implements Serializable{
 
 //    private final long
 
-    private long funcId;
+    private String funcId;
     private String funcName;
     private String funcUrl;
-    private List<MenuFunc> child = new LinkedList<>();
+    private List<MenuFunc> child ;
     private boolean isChild;
     private String icoClass;
 
-    public long getFuncId() {
+    public String getFuncId() {
         return funcId;
     }
 
-    public void setFuncId(long funcId) {
+    public void setFuncId(String funcId) {
         this.funcId = funcId;
     }
 

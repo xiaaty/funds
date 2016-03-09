@@ -2,6 +2,7 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.tender.BidDto;
 
 /**
  * Filename:    com.gq.funds.interaction.IFundsTender
@@ -61,7 +62,7 @@ public interface IFundsTender {
      * @return
      * @throws FssException
      */
-    public boolean bid(String thirdPartyType,Long tenderId) throws FssException;
+    public boolean bid(BidDto bidDto) throws FssException;
 
 
     /**

@@ -32,23 +32,18 @@ public interface FssCustomerReadMapper extends ReadMapper<FssCustomerEntity> {
 	 */
 	public List<FssCustomerEntity> findCustomerByParams(Map map);
 
-	
-
-
 	public List<CustomerAndUser> findbankCardAll();
-
-
 	/**
 	 * 
-	 * author:jhz
-	 * time:2016年1月26日
+	 * author:kyl
+	 * time:2016年2月16日
 	 * function：得到银行卡和用户信息列表
 	 */
 	public List<CustomerAndUser> findbankCardAll(CustomerAndUser customerAndUser);
 	/**
 	 * 
-	 * author:jhz
-	 * time:2016年1月26日
+	 * author:kyl
+	 * time:2016年2月16日
 	 * function：查询要申请变更银行卡用户信息
 	 */
 	public CustomerAndUser findCustomerAndUser(Long id);

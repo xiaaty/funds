@@ -2,10 +2,8 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
-
 import java.util.List;
 
 /**
@@ -26,8 +24,6 @@ import java.util.List;
  */
 public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity> {
 
-    public Page query(FssChangeCardEntity changeCardEntity);
-
-    public List<FssChangeCardEntity> queryNotPass();
+    public List<FssChangeCardEntity> queryChangeCardList(FssChangeCardEntity fssBankcard);
 
 }

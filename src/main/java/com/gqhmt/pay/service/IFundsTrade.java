@@ -2,8 +2,11 @@ package com.gqhmt.pay.service;
 
 
 import com.gqhmt.core.FssException;
-
+import com.gqhmt.extServInter.dto.asset.FundTradeDto;
+import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Filename:    com.gq.funds.interaction.IFundsTrade
@@ -38,7 +41,7 @@ import java.math.BigDecimal;
 public interface IFundsTrade {
 
     /**
-     * 生成web充值提现订单
+     * 生成web提现订单
      * @param thirdPartyType            支付渠道
      * @param custID                    客户id
      * @param amount                    交易金额
@@ -47,30 +50,34 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public String webOrderNo(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int type) throws FssException;
+    public String webWithdrawOrder(WithdrawOrderDto withdrawOrderDto) throws FssException;
+    /**
+     * 生成web充值订单
+     * @param thirdPartyType            支付渠道
+     * @param custID                    客户id
+     * @param amount                    交易金额
+     * @param chargeAmount              交易手续费
+     * @param type                      交易类型 1.充值；2.提现
+     * @return
+     * @throws FssException
+     */
+    public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException;
 
 
     /**
      * 线上代扣充值
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    充值金额
-     * @param sourceType                充值来源  1，web端，2wap端，3手机app
+     * @param withholdDto
      * @return
      */
-    public boolean withholding(String thirdPartyType,int custID,BigDecimal amount,int sourceType)throws FssException;
+    public boolean withholding(WithholdDto withholdDto)throws FssException;
 
     /**
      *线上提现，目前已直连富友代付接口，未来改为异步，存入数据库，定时跑批提现
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    提现金额
-     * @param chargeAmount              手续费
-     * @param sourceType                来源1，web端，2wap端，3手机app
+     * @param withdrawDto
      * @return
      * @throws FssException
      */
-    public boolean withdraw(String thirdPartyType,int custID,BigDecimal amount,BigDecimal chargeAmount,int sourceType) throws FssException;
+    public boolean withdraw(WithdrawDto withdrawDto) throws FssException;
 
     /**
      * 代扣申请
@@ -82,7 +89,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean withholdingApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FssException;
+    public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException;
 
     /**
      *
@@ -95,7 +102,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean withdrawApply(String thirdPartyType,int custID,int businessType,String contractNo,BigDecimal amount,Long bid) throws FssException;
+    public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
 
 
     /**
@@ -113,6 +120,59 @@ public interface IFundsTrade {
      * @throws FssException
      */
     public boolean transefer(String thirdPartyType,Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：线下代扣充值
+     * @param custID                    客户id
+     * @param businessType              业务类型1，出借赎回代付，2借款放款代付；3借款其他资金代付；4抵押权人资金代付；5代偿人资金代付；99，其他代付
+     * @param contractNo
+     * @param amount
+     * @return
+     * @throws FssException
+	 */
+    boolean withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount,
+			Long busiId) throws FssException;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年2月27日
+	 * function：线下提现代付
+     * @param custID                    客户id
+     * @param businessType              业务类型1，出借赎回代付，2借款放款代付；3借款其他资金代付；4抵押权人资金代付；5代偿人资金代付；99，其他代付
+     * @param contractNo
+     * @param amount
+     * @return
+     * @throws FssException
+	 */
+    boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
+			Long busiId) throws FssException;
+
+    /**
+     * 转账接口
+     * @param transferDto
+     * @return
+     * @throws FssException
+     */
+    public boolean transfer(TransferDto transferDto) throws FssException;
+
+
+    /**
+     * 冻结
+     * @param dto
+     * @return
+     * @throws FssException
+     */
+    public boolean froze(FreezeDto dto) throws FssException;
+
+    /**
+     * 解冻
+     * @param dto
+     * @return
+     * @throws FssException
+     */
+    public boolean unFroze( UnFreezeDto dto) throws FssException;
 
     /**
      * 费用接口
@@ -158,7 +218,11 @@ public interface IFundsTrade {
      */
     //public boolean compensateByLoad(String thirdPartyType,int custID,int costMode,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
-
-
-
+	/**
+	 * 查询交易记录
+	 * @param tradrecord
+	 * @return
+	 */
+    public List<FundTradeBean> queryFundTrade(FundTradeDto tradrecord) throws FssException;
+	
 }

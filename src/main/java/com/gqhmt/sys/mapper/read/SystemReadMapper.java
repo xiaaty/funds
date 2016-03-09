@@ -2,6 +2,8 @@ package com.gqhmt.sys.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sys.entity.DictEntity;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -24,9 +26,11 @@ public interface SystemReadMapper extends ReadMapper<DictEntity> {
 
     public List<DictEntity> selectDictmain(DictEntity dictmain);
     
-    public DictEntity getDictMainById(String dictId);
+    public DictEntity getDictMainById(@Param("dictId") String dictId);
     
     public List<DictEntity> selectDictByOrderList(List list);
+    
+    public List<DictEntity> selectDictOrderList(List list);
     
     
 

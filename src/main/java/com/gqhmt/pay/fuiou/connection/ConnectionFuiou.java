@@ -1,7 +1,9 @@
 package com.gqhmt.pay.fuiou.connection;
 
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.XmlUtil;
 import com.gqhmt.pay.exception.ApplicationNotConnectionRemoteUrl;
+import com.gqhmt.pay.fuiou.util.SecurityUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -51,7 +53,7 @@ public class ConnectionFuiou {
             Map resultMap = (Map)apMap.get("plain");
             return resultMap;
         } catch (IOException e) {
-            throw new ApplicationNotConnectionRemoteUrl("网络中断,无法连接第三方支付通道",e);
+            throw new ApplicationNotConnectionRemoteUrl("90099004",e);
         }
 
     }
@@ -86,7 +88,7 @@ public class ConnectionFuiou {
      */
     private static Map getResult(String result){
 
-        return  null;//XmlUtil.getMap(result);
+        return  XmlUtil.getMap(result);
     }
 
     /**
@@ -94,13 +96,13 @@ public class ConnectionFuiou {
      * @param result
      */
     private static void check(String result,String sign){
-//         result = result.substring(result.indexOf("<plain>"),result.lastIndexOf("<signature>"));
-//
-//        boolean isCheck = SecurityUtils.verifySign(result,sign);
-//
-//        if (!isCheck) {
-//            throw new RuntimeException("验签失败");
-//        }
+         result = result.substring(result.indexOf("<plain>"),result.lastIndexOf("<signature>"));
+
+        boolean isCheck = SecurityUtils.verifySign(result,sign);
+
+        if (!isCheck) {
+            throw new RuntimeException("验签失败");
+        }
 
     }
 

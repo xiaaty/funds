@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Filename:    com.gqhmt.pay.service.PaySuperByFuiou
+ * Filename:    com.gqhmt.pay.service.PaySuperByFuiouTest
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
@@ -99,6 +99,7 @@ public class PaySuperByFuiou {
      * @param bankNm
      * @param cityId
      * @param fileName
+     * @param bankNm 
      * @return
      * @throws FssException
      */
@@ -106,7 +107,7 @@ public class PaySuperByFuiou {
                                 String cityId, String fileName) throws FssException {
         LogUtil.info(this.getClass(),"第三方个人提现规则设置:"+primaryAccount.getAccountNo()+":"+cardNo+":"+bankCd+":"+bankNm+":"+cityId+":"+fileName);
         FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,0,0,thirdPartyType);
-        CommandResponse response =ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
+        CommandResponse response =ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankNm,bankCd,cityId,fileName);
         return execExction(response,fundOrderEntity);
 
     }
@@ -147,7 +148,7 @@ public class PaySuperByFuiou {
         LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+chargeAmount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = fundOrderService.createOrder(entity,null,amount,chargeAmount,orderType,busiId,busiType,thirdPartyType);
         //提现手续费记录
-        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_WITHHOLDING, fundOrderEntity, entity,amount,"提现 "+amount.toPlainString()+"元");
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_AGENT_WITHDRAW, fundOrderEntity, entity,amount,"提现 "+amount.toPlainString()+"元");
         execExction(response,fundOrderEntity);
         return fundOrderEntity;
     }
@@ -172,7 +173,8 @@ public class PaySuperByFuiou {
         LogUtil.info(this.getClass(),"第三方预授权:"+fromEntity.getAccountNo()+":"+toSFEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = this.createOrder(fromEntity, amount, orderType, busiId,busiType, thirdPartyType);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_INVEST_BID, fundOrderEntity, fromEntity, String.valueOf(busiId), amount, "投标预授权", toSFEntity);
-         execExction(response,fundOrderEntity);
+        execExction(response,fundOrderEntity);
+        response.setFundOrderEntity(fundOrderEntity);
         return response;
     }
 
@@ -198,8 +200,7 @@ public class PaySuperByFuiou {
         execExction(response,fundOrderEntityCharge);
     }
 
-
-    /**
+     /**
      * 设置提现 时效方法
      * @param primaryAccount
      * @param cashWithSet
@@ -254,17 +255,32 @@ public class PaySuperByFuiou {
             case "0000":
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_SUCCESS,response.getThirdReturnCode(),response.getMsg());
                 return true;
-            case "0001":
-                throw new FssException(fundOrderEntity.getOrderNo()+":验证码已发送");
-            case "0002":
-                throw new FssException(fundOrderEntity.getOrderNo()+":等待回调通知");
-            case "0009":
+            case "90007001":
+                throw new FssException("90007001:"+fundOrderEntity.getOrderNo()+":验证码已发送");
+            case "90007002":
+                throw new FssException("90007002:"+fundOrderEntity.getOrderNo()+":等待回调通知");
+            case "90007009":
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
-                throw new ThirdpartyErrorAsyncException();
+                throw new ThirdpartyErrorAsyncException("90007009");
             default:
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_FAILED,response.getThirdReturnCode(),response.getMsg());
-                throw new CommandParmException(response.getMsg());
+                throw new CommandParmException(toLocalCode(response.getThirdReturnCode()));
         }
+    }
+
+
+    private String toLocalCode(String code){
+        if(code == null )  return "90099999";
+        if(code.length() == 4){
+            return "9100"+code;
+        }else if(code.length() == 5){
+            return "910"+code;
+        }else if(code.length() == 4){
+            return "91"+code;
+        }
+
+        return "90099999";
+
     }
 
     /**

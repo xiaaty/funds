@@ -1,7 +1,8 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
+import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -15,14 +16,14 @@ import com.gqhmt.funds.architect.account.mapper.write.FundSequenceWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.Encriptor;
-import org.springframework.stereotype.Service;
+import com.gqhmt.util.ThirdPartyType;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.g
@@ -82,7 +83,7 @@ public class FundSequenceService {
      * @param accountType
      * @param amount
      */
-    public void charge(FundAccountEntity entity, int accountType, BigDecimal amount, String thirdPartyType, FundOrderEntity orderEntity) throws FssException {
+    public void charge(FundAccountEntity entity, int accountType, BigDecimal amount, ThirdPartyType thirdPartyType, FundOrderEntity orderEntity) throws FssException {
         //校验账户信息
         if(entity == null || entity.getId() == null){
             throw new FundAccountNullException();
@@ -95,7 +96,11 @@ public class FundSequenceService {
         FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 1, accountType, amount, thirdPartyType, orderEntity, 0L) ;
         fundSequenceEntity.setSumary("充值");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
-        this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
+        try{
+            this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
+        }catch (Exception e){
+
+        }
 
         this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "充值成功，充值金额 " + amount + "元");
     }
@@ -107,7 +112,7 @@ public class FundSequenceService {
      * @param amount
      * @throws AmountFailException 
      */
-    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,String thirdPartyType,FundOrderEntity orderEntity) throws FssException {
+    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
 
         if(entity.getBusiType() == 99){
             throw new FssException("出账账户错误");
@@ -119,6 +124,24 @@ public class FundSequenceService {
         }
 //        操作类型1充值、2提现、3转账、4冻结、5解冻
         //校验资金,提现金额不能大于账户余额 ？？此处传值，是正值还是负值呢，如果传入正值，后台需要处理为负值
+        if(amount.multiply(new BigDecimal("100")).longValue()<0){
+            throw new AmountFailException("传入金额不能小于0");
+        }
+        BigDecimal refundAmount = new BigDecimal("-"+amount.toPlainString());
+        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 2, accountType, refundAmount, thirdPartyType, orderEntity, 0l);
+        fundSequenceEntity.setSumary("提现");
+        fundSequenceEntity.setToken(getToken(orderEntity,accountType));
+        this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
+        this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "提现成功，提现金额 " + amount + "元");
+    }
+
+    private void refundByFroze(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
+        if(entity.getBusiType() == 99){
+            throw new FssException("出账账户错误");
+        }
+        FundAccountEntity frozeEntity = this.fundAccountService.getFundAccount(entity.getCustId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+//        操作类型1充值、2提现、3转账、4冻结、5解冻
+        //校验资金,提现金额不能大于账户余额 ？？此处传值，是正值还是负值呢，如果传入正值，后台需要处理为负值
         if(amount.multiply(new BigDecimal(100)).longValue()>0){
             throw new ChargeAmountNotenoughException();
         }
@@ -126,7 +149,7 @@ public class FundSequenceService {
             throw new AmountFailException("传入金额不能小于0");
         }
         amount = new BigDecimal("-"+amount.toPlainString());
-        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 2, accountType, amount, thirdPartyType, orderEntity, 0l);
+        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(frozeEntity.getId(), 2, accountType, amount, thirdPartyType, orderEntity, entity.getId());
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
@@ -141,11 +164,10 @@ public class FundSequenceService {
      * @param toEntiry      转入转换
      * @param amount        转账金额
      */
-    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,String thirdPartyType,FundOrderEntity orderEntity) throws FssException {
+    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,Map<Integer,Long> map,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
         if(amount.multiply(new BigDecimal("100")).longValue()<0){
             throw new AmountFailException("传入金额不能小于0");
         }
-
         int toActionType = accountType;
         if(accountType == 1005){
             toActionType = 1006;
@@ -168,25 +190,31 @@ public class FundSequenceService {
         }else if(accountType == 4005){
             toActionType = 1009;
         }
+        Map<Integer,Long> mappingFrom= new HashMap<>();
+        if(map!=null){
+            mappingFrom.putAll(map);
+        }
         FundSequenceEntity fromFundSequenceEntity =this.getFundSequenceEntity(fromEntity.getId(), actionType, accountType, new BigDecimal("-" + amount.toPlainString()), thirdPartyType, orderEntity, toEntiry.getId());
         fromFundSequenceEntity.setSumary("转账转出  转给"+toEntiry.getCustName()+"("+toEntiry.getId()+") ");
-        this.fundSequenceWriteMapper.insertSelective(fromFundSequenceEntity);
 
+        mappingFrom.put(GlobalConstants.BUSINESS_MAPPINF_CUSTOMER, Long.valueOf(toEntiry.getCustId()));
         FundSequenceEntity toFundSequenceEntity = this.getFundSequenceEntity(toEntiry.getId(), actionType, toActionType, amount, thirdPartyType, orderEntity, fromEntity.getId());
         toFundSequenceEntity.setSumary("转账转入 "+fromEntity.getCustName()+"("+fromEntity.getId()+")转入");
-        this.fundSequenceWriteMapper.insertSelective(toFundSequenceEntity);
-
-        this.fundAccountService.update(fromEntity);
-        this.fundAccountService.update(toEntiry);
+        List<FundSequenceEntity> list = new ArrayList<>();
+        list.add(fromFundSequenceEntity);
+        list.add(toFundSequenceEntity);
+        this.fundSequenceWriteMapper.insertList(list);
+        this.fundTradeService.addFundTrade(fromEntity, amount, BigDecimal.ZERO, accountType, "转账转出",BigDecimal.ZERO);
+        this.fundTradeService.addFundTrade(toEntiry,BigDecimal.ZERO,amount, accountType, "转账转入",BigDecimal.ZERO);
     }
-
+    
     /**
      * 冻结金额
      * @param orgEntity
      * @param frozenEntiry
      * @param amount
      */
-    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,String thirdPartyType,FundOrderEntity orderEntity) throws  FundAccountNullException, AmountFailException {
+    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,BigDecimal bounsAmount) throws FssException {
         if(orgEntity == null || orgEntity.getId() == null || frozenEntiry == null || frozenEntiry.getId() == null){
             throw new FundAccountNullException();
             //此处抛出异常
@@ -199,7 +227,6 @@ public class FundSequenceService {
 
         FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(), 4, accountType, new BigDecimal(-money).divide(new BigDecimal("10000")), thirdPartyType, orderEntity, frozenEntiry.getId());
         orgFundSequenceEntity.setSumary("冻结");
-        this.fundSequenceWriteMapper.insertSelective(orgFundSequenceEntity);
         int frozenType = 2007;
         if(accountType==1007){
             frozenType = 2007;
@@ -209,10 +236,15 @@ public class FundSequenceService {
             frozenType = 2001;
         }
         FundSequenceEntity frozenFundSequenceEntity = this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount, thirdPartyType, orderEntity, orgEntity.getId());
-        this.fundSequenceWriteMapper.insertSelective(frozenFundSequenceEntity);
         frozenFundSequenceEntity.setSumary("冻结");
-        this.fundAccountService.update(orgEntity);
-        this.fundAccountService.update(frozenEntiry);
+        List<FundSequenceEntity> list = new ArrayList<>();
+        list.add(orgFundSequenceEntity);
+        list.add(frozenFundSequenceEntity);
+        this.fundSequenceWriteMapper.insertList(list);
+        this.fundTradeService.addFundTrade(orgEntity, amount, BigDecimal.ZERO, accountType, memo,bounsAmount);
+
+//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+
 
     }
 
@@ -222,7 +254,7 @@ public class FundSequenceService {
      * @param frozenEntiry
      * @param amount
      */
-    public void unfreeze(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,String thirdPartyType,FundOrderEntity orderEntity) throws FundAccountNullException, AmountFailException {
+    public void unfreeze(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
         if(orgEntity == null || orgEntity.getId() == null || frozenEntiry == null || frozenEntiry.getId() == null){
             throw new FundAccountNullException();
             //此处抛出异常
@@ -245,12 +277,13 @@ public class FundSequenceService {
         }
         FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),thirdPartyType,orderEntity,frozenEntiry.getId());
         orgFundSequenceEntity.setSumary("解冻");
-        this.fundSequenceWriteMapper.insertSelective(orgFundSequenceEntity);
         FundSequenceEntity frozenFundSequenceEntity =this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount, thirdPartyType, orderEntity, orgEntity.getId());
         frozenFundSequenceEntity.setSumary("解冻");
-        this.fundSequenceWriteMapper.insertSelective(frozenFundSequenceEntity);
-        this.fundAccountService.update(orgEntity);
-        this.fundAccountService.update(frozenEntiry);
+        List<FundSequenceEntity> list = new ArrayList<>();
+        list.add(orgFundSequenceEntity);
+        list.add(frozenFundSequenceEntity);
+        this.fundSequenceWriteMapper.insertList(list);
+        this.fundTradeService.addFundTrade(orgEntity, amount, BigDecimal.ZERO, accountType, memo,BigDecimal.ZERO);
     }
 
 
@@ -258,8 +291,18 @@ public class FundSequenceService {
         return fundSequenceReadMapper.getSumAmount(id);
     }
 
-
-    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,String thirdPartyType,FundOrderEntity orderEntity,Long oAccountId){
+    /**
+     * 创建流水
+     * @param accountID
+     * @param actionType
+     * @param accountType
+     * @param amount
+     * @param thirdPartyType
+     * @param orderEntity
+     * @param oAccountId
+     * @return
+     */
+    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,Long oAccountId){
         FundSequenceEntity entity = new FundSequenceEntity();
         entity.setCreateTime(new Timestamp(new Date().getTime()));
         entity.setAmount(amount);
@@ -267,7 +310,7 @@ public class FundSequenceService {
         entity.setCurrency("0001");
         entity.setFundType(accountType);
         entity.setActionType(actionType);
-        entity.setThirdPartyType(Integer.valueOf(thirdPartyType));
+        entity.setThirdPartyType(thirdPartyType.getKey());
         if(orderEntity != null){
             entity.setOrderNo(orderEntity.getOrderNo());
         }
@@ -320,4 +363,74 @@ public class FundSequenceService {
     public List<FundAccountSequenceBean> selectAccountSequenceList(Map fasMap) {
     	return fundSequenceReadMapper.selectAccountSequenceList(fasMap);
     }
+    
+    /**
+     * 账户资金流水查询
+     * @param cust_no
+     * @param user_no
+     * @param busi_no
+     * @return
+     */
+ /*   public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+    	Map map=new HashMap();
+    	if(null!=cust_no){
+    		map.put("cust_no", cust_no);
+    	}
+    	if(null!=user_no){
+    		map.put("user_no", user_no);
+    	}
+    	return this.fundSequenceReadMapper.queryFundTradeFlow(map);
+    }*/
+    
+   public void insertFundSequence(FundSequenceEntity fundsequence)  throws FssException{
+	  this.fundSequenceWriteMapper.insert(fundsequence);
+    }
+   
+   /**
+    * 查询账户余额
+    * @param entity
+    * @param amount
+    * @throws FssException
+    */
+   public void hasEnoughBanlance(FundAccountEntity entity, BigDecimal amount) throws FssException {
+		BigDecimal seqamount = fundSequenceReadMapper.getSumAmount(entity.getId());
+		if (seqamount.compareTo(amount) < 0) {
+			throw new FssException("账户余额不足");
+		}
+	}
+   
+   /**
+    * 存储流水记录
+    * @param entity
+    */
+   public void save(FundSequenceEntity entity,Map<Integer,Long> map){
+       entity.setModifyTime(new Date());
+       fundSequenceWriteMapper.insert(entity);
+   }
+   
+
+   public List<FundSequenceEntity> getSumByDay(){
+       return fundSequenceReadMapper.getSumByDay();
+   }
+   
+   /**
+    * 账户资金流水
+    * @return
+    */
+  public List<FundFlowBean> queryFundSequence(Integer user_no,Integer fundType) throws FssException{
+	  Map map=new HashMap();
+	  if(StringUtils.isNoneBlank(user_no.toString())){
+		  map.put("user_no", user_no.intValue());
+	  }
+	  if(StringUtils.isNoneBlank(fundType.toString())){
+		  map.put("fundType", fundType.intValue());
+	  }
+	  List<FundFlowBean> list=fundSequenceReadMapper.getFundSequence(map);
+	  return list;
+  }
+   
+   
+   
+   
+   
 }

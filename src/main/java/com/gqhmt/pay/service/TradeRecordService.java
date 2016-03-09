@@ -4,11 +4,13 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
+import com.gqhmt.util.ThirdPartyType;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.pay.service.TradeRecordService
@@ -39,9 +41,55 @@ public class TradeRecordService {
     private FundTradeService fundTradeService;
 
     public void recharge(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
-        sequenceService.charge(entity, fundType, amount, thirdPartyType, fundOrderEntity);
-       // this.fundTradeService.createFundTrade(entity, amount, BigDecimal.ZERO, fundType, "充值成功，充值金额 " + amount + "元");
+        sequenceService.charge(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity);
+        // this.fundTradeService.createFundTrade(entity, amount, BigDecimal.ZERO, fundType, "充值成功，充值金额 " + amount + "元");
         //super.sendNotice(NoticeService.NoticeType.FUND_CHARGE, entity, amount,BigDecimal.ZERO);
     }
 
+    public void withdraw(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
+        sequenceService.refund(entity,fundType,amount,ThirdPartyType.FUIOU,fundOrderEntity);
+    }
+
+    public void withdrawByFroze(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
+        sequenceService.refund(entity,fundType,amount,ThirdPartyType.FUIOU,fundOrderEntity);
+    }
+
+
+    public void frozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int fundType,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout) throws FssException {
+        sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity,boundsAmout);
+//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+    }
+
+    public void unFrozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int fundType,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout) throws FssException {
+        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity);
+//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+    }
+
+    public void transfer(FundAccountEntity fromAcc,FundAccountEntity toAcc,BigDecimal amount,Integer  fundType,FundOrderEntity fundOrderEntity) throws FssException {
+        sequenceService.transfer(fromAcc,toAcc,amount,8,fundType,null,ThirdPartyType.FUIOU,fundOrderEntity);
+    }
+    /**
+     * 交易记录查询
+     * @param cust_no
+     * @param user_no
+     * @param busi_no
+     * @return
+     */
+    public List<FundTradeBean> queryFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
+    	List<FundTradeBean> tradelist = fundTradeService.queryFundTrade(cust_no,str_trade_time,end_trade_time,tradeFilters);
+    	return tradelist;
+    }
+    
+    /**
+     * 账户资金流水查询
+     * @param cust_no
+     * @param user_no
+     * @param busi_no
+     * @return
+     * @throws FssException
+     */
+  /*  public FundAccountSequenceBean getTradFlowByParams(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
+    	FundAccountSequenceBean fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
+    	return fundsequencelist;
+    }*/
 }

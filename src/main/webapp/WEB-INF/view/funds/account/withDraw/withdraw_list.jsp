@@ -46,7 +46,7 @@
     </div>
 
     <div id="content">
-        <section id="widget-grid" class="">
+        <section  class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -195,6 +195,9 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                     <DIV>
+                                  <button class="btn btn-default table-nobg-btn" id="btn_rech" type="button" >批量提现</button>
+                                      </div>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                        <%--  <col width="200" />
                                         <col /> --%>
@@ -265,10 +268,10 @@
 									</td>
 									<td style="text-align:center;">
 											<c:if test="${wd.applyStatus == 1}">
-	                                                <a href="${cxt}/web/redirectReview/${wd.id}">审核</a>
+	                                                <a href="${contextPath}/account/withdraw/redirectReview/${wd.id}">审核</a>
 											</c:if>
 											<c:if test="${wd.applyStatus == 6}">
-	                                           <a href="${cxt}/web/redirectReviewGoon?id=${wd.id}">继续提现</a>
+	                                           <a href="${contextPath}/account/withdraw/redirectReviewGoon/${wd.id}">继续提现</a>
 											</c:if>
 									</td>
 								</tr>
@@ -303,7 +306,62 @@
            });
        });
        
+       //批量代付按钮
+       $('#btn_rech').click(function () {
+           var no = $('#borrow-rep-table12 tbody :checkbox:checked');
+           if (no.size() == 0) {
+               alert("请选择件数！");
+               return false;
+           }
 
+           var param = [];
+           no.each(function () {
+               param.push($(this).val());
+           })
+           alert(param);
+           console.info(param);
+// 	        var pageLoad =$.layer({
+// 			    type: 1,
+// 			    title: '',
+// 			    area: ['100', '100'],
+// 			    border: [0,0,'#44a9d5'], //认边框
+// 			    shade: [0.5, '#999'], //遮罩
+// 			    bgcolor:'',
+// 			    closeBtn: false,
+// 			    move: false,
+// 			    page: {
+// 			    	html:'<img src="${contextPath}/images/loading.gif">'
+// 			    }
+// 			});
+
+           $.post("${contextPath}//account/withdraw/withdrawDepute?", {'no': param.toString()}, function (data) {
+//            	layer.close(pageLoad);
+               if (data.code == '0000') {
+	
+                   jAlert(data.message + "!", '确认信息');
+                   $("#withdrawApplyForm").submit();
+                   $("#checkAll").removeAttr("checked");
+                   return false;
+               } else if (data.code == '0001') {
+                   alert(data.agreeNo + '的合同 ' + data.message);
+               } else if (data.code == '0002') {
+                   alert(data.agreeNo + '的合同 ' + data.message);
+               } else if (data.code == '0003') {
+                   alert(data.agreeNo + '的合同 ' + data.message);
+               } else if (data.code == '0004') {
+                   alert(data.agreeNo + '的合同 ' + data.message);
+               } else if (data.code == '0008') {
+                   alert(data.message);
+               } else {
+                   alert(data.message);
+                   
+               }
+               $("#withdrawForm").submit();
+               $("#checkAll").removeAttr("checked");
+               return false;
+           }, "json");
+
+       });
             
 	       function selectedInit() {
 			

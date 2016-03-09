@@ -3,6 +3,7 @@ package com.gqhmt.funds.architect.job.bean;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * Created by yuyonf on 15/4/6.
@@ -70,6 +71,21 @@ public class FuiouFtpColomField implements Serializable {
     @Column(name="return_msg")
     private String returnMsg;
 
+    @Column(name="business_code")
+    private String businessCode;
+    
+    @Column(name="input_date")
+    private Date inputDate;
+    
+    @Column(name="feild_order_no")
+    private String feildOrderNo;
+    
+    @Column(name="feild_order_no_his")
+    private String feildOrderNoHis;
+    
+    @Column(name="tender_id")
+    private Long tenderId;
+    
 
     public Long getId() {
         return id;
@@ -206,4 +222,45 @@ public class FuiouFtpColomField implements Serializable {
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
     }
+
+	public String getBusinessCode() {
+		return businessCode;
+	}
+
+	public void setBusinessCode(String businessCode) {
+		this.businessCode = businessCode;
+	}
+
+	public Date getInputDate() {
+		return inputDate;
+	}
+
+	public void setInputDate(Date inputDate) {
+		this.inputDate = inputDate;
+	}
+
+	public String getFeildOrderNo() {
+		return feildOrderNo;
+	}
+
+	public void setFeildOrderNo(String feildOrderNo) {
+		this.feildOrderNo = feildOrderNo;
+	}
+
+	public String getFeildOrderNoHis() {
+		return feildOrderNoHis;
+	}
+
+	public void setFeildOrderNoHis(String feildOrderNoHis) {
+		this.feildOrderNoHis = feildOrderNoHis;
+	}
+
+	public Long getTenderId() {
+		return tenderId;
+	}
+
+	public void setTenderId(Long tenderId) {
+		this.tenderId = tenderId;
+	}
+    
 }

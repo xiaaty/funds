@@ -13,20 +13,20 @@
 	<!--  -->
 	<mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager"/>
 	<mvc:default-servlet-handler/>
-	<!--<mvc:annotation-driven enable-matrix-variables="true">
-		&lt;!&ndash;<mvc:message-converters>
+	<mvc:annotation-driven enable-matrix-variables="true">
+		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<property name="objectMapper" ref="objectMapper"/>
 			</bean>
-			<bean class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter">
+			<!--<bean class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter">
 				<property name="objectMapper" ref="xmlMapper"/>
-			</bean>
-		</mvc:message-converters>&ndash;&gt;
-	</mvc:annotation-driven>-->
+			</bean>-->
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 
 
 
-	<context:component-scan base-package="com.gqhmt.sys.controller,com.gqhmt.fss.controller,com.gqhmt.funds.architect.controller">
+	<context:component-scan base-package="com.gqhmt.sys.controller,com.gqhmt.controller">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -108,7 +108,7 @@
 	<!--		</props>
 		</property>
 	</bean>-->
-	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+	<!--<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>-->
 
 	<bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
@@ -132,7 +132,6 @@
 			<value>
 				html=text/html
 				json=application/json
-				xml=application/xml
 			</value>
 		</property>
 	</bean>

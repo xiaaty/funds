@@ -1,5 +1,8 @@
 package com.gqhmt.core.util;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
+import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
@@ -31,7 +34,10 @@ public class Application {
     private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<MenuEntity>());
 
     private final Map<String,String> dict = new ConcurrentHashMap<>();
+    private final Map<String,DictEntity> dictEntityMap = new ConcurrentHashMap<>();
     private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
+
+    private final Map<String,MerchantEntity>   merchantEntityMap = new ConcurrentHashMap<>();
 
     private void init(){
         synchronized (this){
@@ -47,6 +53,7 @@ public class Application {
             menus.clear();
             dict.clear();
             dictOrder.clear();
+            merchantEntityMap.clear();
             update();
         }
     }
@@ -54,6 +61,7 @@ public class Application {
     private void update(){
         initMenu();
         initDict();
+        initMerchant();
     }
 
     /*======================================数据字典初始化及应用========================================================*/
@@ -64,28 +72,76 @@ public class Application {
 
         for(DictEntity dictEntity:dicts){
             this.dict.put(dictEntity.getDictId(),dictEntity.getDictName());
+            dictEntityMap.put(dictEntity.getDictId(),dictEntity);
         }
 
         List<DictOrderEntity> dictOrders = systemService.findALlDictOrder();
         for(DictOrderEntity dictEntity:dictOrders){
             this.dictOrder.put(dictEntity.getOrderDict(),dictEntity.getOrderList());
+
+           /* File file = new File("");
+            file.exists();*/
         }
 
+    }
+
+
+    public boolean existsDice(String  key){
+        return this.dict.containsKey(key);
+    }
+
+    public String getDictParentKey(String key) throws FssException {
+        DictEntity dictEntity = dictEntityMap.get(key);
+        if(dictEntity == null){
+            throw new FssException("90008403");
+        }
+        return dictEntity.getParentId();
     }
 
     public String getDictName(String key){
+        if(key == null){
+            return "未知错误";
+        }
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
-            value = "数据字典未配置此项";
+            value = "未知错误";
         }
         return value;
     }
+
+
     public String getDictOrderValue(String key){
         String value = this.dictOrder.get(key);
         if(value == null || "".equals(value)){
             value = "数据字典类型未配置";
         }
         return value;
+    }
+
+
+    /**
+     * 商户内存加载
+     */
+    private  void initMerchant(){
+        MerchantService merchantService = ServiceLoader.get(MerchantService.class);
+
+        List<MerchantEntity> merchantEntities = merchantService.findBusinessALl();
+
+        for(MerchantEntity merchantEntity:merchantEntities) {
+            merchantEntityMap.put(merchantEntity.getMchnNo(),merchantEntity);
+        }
+    }
+
+    public boolean  existsMchn(String  mchn){
+        return merchantEntityMap.containsKey(mchn);
+    }
+
+    public String getParentMchn(String mchn) throws FssException {
+        MerchantEntity merchantEntity = merchantEntityMap.get(mchn);
+        if(merchantEntity == null){
+            throw new FssException("90008102");
+        }
+        return merchantEntity.getParentNo();
     }
 
     /*======================================菜单初始化及应用========================================================*/
@@ -96,16 +152,16 @@ public class Application {
         LogUtil.debug(this.getClass(),menus.toString());
         //循环菜单项，初始化菜单
         for(MenuEntity menu:menus){
-            menuMap.put(menu.getId(),menu);
-            if(menu.getParentId() == 0){
+            menuMap.put(Long.parseLong(menu.getId()),menu);
+            if(Integer.parseInt(menu.getParentId() )== 0){
                 this.menus.add(menu);
             }
         }
         for(MenuEntity menu:menus){
-            if(menu.getParentId() == 0){
+            if(Integer.parseInt(menu.getParentId() ) == 0){
                 continue;
             }
-            Long parentId = menu.getParentId();
+            Long parentId = Long.parseLong(menu.getParentId());
             MenuEntity menu1 = menuMap.get(parentId);
             if(menu1 != null){
                 menu1.addMenu(menu);
@@ -229,6 +285,9 @@ public class Application {
 
 
     private String relpaceDefaultValue(MenuEntity menu){
+        if(menu == null || menu.getParma() == null){
+            return "";
+        }
         String[] param = menu.getParma().split(",");
         String[] paramValue = menu.getParmaDefaule().split(",");
         String url  = menu.getMenuUrl();

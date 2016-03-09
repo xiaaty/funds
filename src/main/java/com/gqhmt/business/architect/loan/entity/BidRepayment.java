@@ -82,13 +82,13 @@ public class BidRepayment {
     public void setId(Integer id) {
         this.id = id;
     }
+    private BigDecimal preDiffAmount;
     /*private Date contractRealDate;
     private BigDecimal contractRealPrincipal;
     private BigDecimal contractRealInterest;
     private BigDecimal contractRealAmount;
     private BigDecimal preDiffPrincipal;
     private BigDecimal preDiffInterest;
-    private BigDecimal preDiffAmount;
     private BigDecimal realDiffPrincipal;
     private BigDecimal realDiffInterest;
     private BigDecimal realDiffAmount;
@@ -105,6 +105,126 @@ public class BidRepayment {
     private Integer modifyUserId;
     private Integer status = 0;
     private Integer payState = 0;*/
+
+	public Integer getBidId() {
+		return bidId;
+	}
+
+	public void setBidId(Integer bidId) {
+		this.bidId = bidId;
+	}
+
+	public Integer getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
+
+	public Date getBidPreDate() {
+		return bidPreDate;
+	}
+
+	public void setBidPreDate(Date bidPreDate) {
+		this.bidPreDate = bidPreDate;
+	}
+
+	public BigDecimal getBidPrePrincipal() {
+		return bidPrePrincipal;
+	}
+
+	public void setBidPrePrincipal(BigDecimal bidPrePrincipal) {
+		this.bidPrePrincipal = bidPrePrincipal;
+	}
+
+	public BigDecimal getBidPreInterest() {
+		return bidPreInterest;
+	}
+
+	public void setBidPreInterest(BigDecimal bidPreInterest) {
+		this.bidPreInterest = bidPreInterest;
+	}
+
+	public BigDecimal getBidPreAmount() {
+		return bidPreAmount;
+	}
+
+	public void setBidPreAmount(BigDecimal bidPreAmount) {
+		this.bidPreAmount = bidPreAmount;
+	}
+
+	public Date getBidRealDate() {
+		return bidRealDate;
+	}
+
+	public void setBidRealDate(Date bidRealDate) {
+		this.bidRealDate = bidRealDate;
+	}
+
+	public BigDecimal getBidRealPrincipal() {
+		return bidRealPrincipal;
+	}
+
+	public void setBidRealPrincipal(BigDecimal bidRealPrincipal) {
+		this.bidRealPrincipal = bidRealPrincipal;
+	}
+
+	public BigDecimal getBidRealInterest() {
+		return bidRealInterest;
+	}
+
+	public void setBidRealInterest(BigDecimal bidRealInterest) {
+		this.bidRealInterest = bidRealInterest;
+	}
+
+	public BigDecimal getBidRealAmount() {
+		return bidRealAmount;
+	}
+
+	public void setBidRealAmount(BigDecimal bidRealAmount) {
+		this.bidRealAmount = bidRealAmount;
+	}
+
+	public Date getContractPreDate() {
+		return contractPreDate;
+	}
+
+	public void setContractPreDate(Date contractPreDate) {
+		this.contractPreDate = contractPreDate;
+	}
+
+	public BigDecimal getContractPrePrincipal() {
+		return contractPrePrincipal;
+	}
+
+	public void setContractPrePrincipal(BigDecimal contractPrePrincipal) {
+		this.contractPrePrincipal = contractPrePrincipal;
+	}
+
+	public BigDecimal getContractPreInterest() {
+		return contractPreInterest;
+	}
+
+	public void setContractPreInterest(BigDecimal contractPreInterest) {
+		this.contractPreInterest = contractPreInterest;
+	}
+
+	public BigDecimal getContractPreAmount() {
+		return contractPreAmount;
+	}
+
+	public void setContractPreAmount(BigDecimal contractPreAmount) {
+		this.contractPreAmount = contractPreAmount;
+	}
+
+	public BigDecimal getPreDiffAmount() {
+		return preDiffAmount;
+	}
+
+	public void setPreDiffAmount(BigDecimal preDiffAmount) {
+		this.preDiffAmount = preDiffAmount;
+	}
 
 
 }

@@ -21,9 +21,9 @@ import java.util.Date;
 @Entity
 @Table(name="t_gq_fss_changeCard_record")
 public class FssChangeCardEntity implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
 
-
-    @Id
+	@Id
     @Column(name="id",updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                    //bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -92,7 +92,7 @@ public class FssChangeCardEntity implements java.io.Serializable{
     @Column(name = "type")
     private Integer type;
 
-    @Column
+    @Column(name = "mobile")
     private String mobile;
 
 

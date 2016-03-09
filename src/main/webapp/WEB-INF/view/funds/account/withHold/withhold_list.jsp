@@ -29,7 +29,8 @@
 
 </head>
 
-<body>
+</head>
+    <body>
 <%@include file="../../../../view/include/menu.jsp"%>
 <div id="main" role="main">
 
@@ -39,7 +40,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>资金管理</li>
-            <li>代扣管理</li>
+             <li>代扣管理</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -56,7 +57,7 @@
                             </header>
                             <!-- widget div-->
                             <div>
-                           
+                                
                                 <form class="smart-form" id="withholdApplyForm" action="${contextPath}/withholdApply/queryWithholdList" method="post" >
                               
                                     <!-- widget edit box -->
@@ -67,6 +68,7 @@
                                     <!-- widget content -->
                                     <div class="widget-body no-padding">
                                         <div class="mt10 mb10">
+ 				
                                             <table class="table lh32">
                                                 <col />
                                                 <tbody>
@@ -182,7 +184,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>代扣管理</h2>
+                              <h2>代扣管理</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -193,7 +195,11 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                <DIV>
+                                            <button class="btn btn-default table-nobg-btn" id="btn_rech" type="button" >批量代扣</button>
+                                     </div>
+                                      <div class="clearfix ml20 mb5" id="addErrorMsg" style="color:red;"></div> 
+                                    <table id ="rechtable" class="table table-bordered mt15" style="text-align:center;">
                                        <%--  <col width="200" />
                                         <col /> --%>
                                         <thead>
@@ -216,9 +222,10 @@
 						                        <th>第三方渠道</th>
 						                        <th>操作</th>
 						                    </tr>
-                                        </thead>
-                                        <tbody>
-                                             <c:forEach items="${page.list}" var="wd" varStatus="status">
+                    </tr>
+                </thead>
+                <tbody>
+							<c:forEach items="${page.list}" var="wd" varStatus="status">
 									<tr>
 										<td><input type="checkbox" class="checkBoxAll" value="${wd.id}"/></td>
 										<td>${wd.custName}</td>
@@ -254,10 +261,10 @@
 	                                    </td>
 										<td>
 												<c:if test="${wd.applyStatus == 1}">
-		                                                <a href="${cxt}/account/withholdReview?id=${wd.id}">代扣金额拆分</a>
+		                                                <a href="${contextPath}/account/withhold/withholdReview?id=${wd.id}">代扣金额拆分</a>
 												</c:if>
 												<c:if test="${wd.applyStatus == 6}">
-		                                                <a href="${cxt}/account/withholdReviewGoon?id=${wd.id}">继续代扣</a>
+		                                                <a href="${contextPath}/account/withhold/withholdReviewGoon?id=${wd.id}">继续代扣</a>
 												</c:if>
 										</td>
 									</tr>
@@ -267,67 +274,181 @@
                                 </div>
                                 <!-- end widget content -->
                             </form>
+					<%@include file="../../../../view/include/common_footer_css_js.jsp"%>
                         </div>
                     </div>
                 </article>
             </div>
         </section>
     </div>
+  <%@include file="../../../../view/include/foot.jsp"%>
     </div>
-<%@include file="../../../../view/include/common_footer_css_js.jsp"%>
+    </body>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
- <script type="text/javascript" charset="utf-8">
-	 $(document).ready(function () {
-	     pageSetUp();
-	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#withholdApplyForm"));
-		 selectedInit();
-		 $("#checkAll").removeAttr("checked");
-	 }); 
-	 $('#checkAll').bind('click', function () {
-         var that = this;
-         $('.checkBoxAll').each(function () {
-             this.checked = that.checked;
+    <script src="${contextPath}/js/layer.min.js"></script>
+       <script type="text/javascript">
+      
+       $(document).ready(function () {
+  	     pageSetUp();
+  	     DT_page("rechtable", true, '${page.JSON}', $("#withholdApplyForm"));
+  		 selectedInit();
+  		 $("#checkAll").removeAttr("checked");
+  	 }); 
+  	 $('#checkAll').bind('click', function () {
+           var that = this;
+           $('.checkBoxAll').each(function () {
+               this.checked = that.checked;
+           });
+       });
+  	   function selectedInit() {
+  			
+           $("#bussinessType").val($("#hiddenbussinessType").val());
+           $("#applyStatus").val( $("#hiddenapplyStatus").val());
+           $("#thirdPartyType").val($("#hiddenthirdPartyType").val());
+         }
+  	   $('#checkAll').bind('click', function () {
+             var that = this;
+             $('.checkBoxAll').each(function () {
+                 this.checked = that.checked;
+             });
          });
-     });
-	   function selectedInit() {
-			
-         $("#bussinessType").val($("#hiddenbussinessType").val());
-         $("#applyStatus").val( $("#hiddenapplyStatus").val());
-         $("#thirdPartyType").val($("#hiddenthirdPartyType").val());
-       }
-	 $('.selectdate').datetimepicker({
-	        language:  'zh-CN',
-	        weekStart: 1,
-	        autoclose: 1,
-	        format:'yyyy-mm-dd',
-	        todayHighlight: 1,
-	        startView: 2,
-	        minView: 2,
-	        forceParse: 0
-	    });
-	    function verify(){
-	    	var a=document.getElementsByName("startTime");
-	    	var b=document.getElementsByName("endTime");
-	    	if(b[0].value!=null&&b[0].value!=''){
-	    		if(a[0].value>b[0].value){
-	    			alert("请检查您输入的日期");
-	    		}else{
-	    			$("#withholdApplyForm").submit();
-	    		}
-	    	}else{
-	    		var d = new Date();
-	    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
-	    		if(a[0].value>str){
-	    			alert("请检查您输入的日期");
-	    		}else{
-	    			$("#withholdApplyForm").submit();
-	    		}
-	    	}
-	    }
-</script>
 
-<%@include file="../../../../view/include/foot.jsp"%>
-</body>
+         $('.checkBoxAll').each(function () {
+             $(this).click(function () {
+                 if (this.checked == false) {
+                     $("#checkAll").removeAttr("checked");
+                     return;
+                 }
+             });
+         });
+         
+         function overReview(id){
+         	 if(confirm("确定结束代扣？")){
+         		 $.post("${contextPath}/account/withholdReviewOver?", {'id': id}, function (data) {
+              		if(data.code == '0000'){
+              			$("#withholdForm").submit();
+     					return false;
+     				} else {
+     					alert(data.message);
+     					return false;
+     				}
+             	 }, "json");
+     		 }else{
+     			 
+     		 }
+         }
+         
+         //批量代扣按钮
+         $('#btn_rech').click(function () {
+             var no = $('#rechtable tbody :checkbox:checked');
+             if (no.size() == 0) {
+                 alert("请选择要代扣的申请！");
+                 return false;
+             }
 
+             var param = [];
+             no.each(function () {
+                 param.push($(this).val());
+             })
+             
+//   	        var pageLoad =$.layer({
+//   			    type: 1,
+//   			    title: '',
+//   			    area: ['100', '100'],
+//   			    border: [0,0,'#44a9d5'], //认边框
+//   			    shade: [0.5, '#999'], //遮罩
+//   			    bgcolor:'',
+//   			    closeBtn: false,
+//   			    move: false,
+//   			    page: {
+//   			    	html:'<img src="${contextPath}/images/loading.gif">'
+//   			    }
+//   			});
+
+             $.post("${contextPath}/account/withhold/withholdRech?", {'no': param.toString()}, function (data) {
+//              	layer.close(pageLoad);
+                 if (data.code == '0000') {
+  					 var message = data.successCount + "件代扣成功，" +  data.failCount + "件代扣失败。" 
+  					 var html="";
+  					 if (data.failCustname001 != "" || data.failCustname002 != "" || data.message8 != "") {
+  						 message = message + "具体错误信息查看error区域：";
+  						 if (data.failCustname001 != "") {
+  							 message = message + '\n' + data.failCustname001 + "的代扣审核失败，" + data.message1;
+  							 if (html != "") {
+  								 html = html + '<br>';
+  							 }
+  							 html = html + data.failCustname001 + "的代扣审核失败，" + data.message1;
+  						 }
+  						 if (data.failCustname002 != "") {
+  							 message = message + '\n' + data.failCustname002 + "的代扣审核失败，" + data.message2;
+  							 if (html != "") {
+  								 html = html + '<br>';
+  							 }
+  							 html = html + data.failCustname002 + "的代扣审核失败，" + data.message2;
+  						 } 
+  						 if (data.message8 != "") {
+  							 if (html != "") {
+  								 html = html + '<br>';
+  							 }
+  							 message = message + '\n' + data.message8;
+  							 html = html + data.message8;
+  						 } 
+  					 } else {
+  						 html="代扣成功！";
+  					 } 
+  					 message=message.replace(/<br>/g,"\n");
+  					
+                     $("#addErrorMsg").html(html);
+                     $("html,body").animate({scrollTop: $("#addErrorMsg").offset().top - 400}, 0);
+  	
+                     alert(message);
+                     
+                     if (html == '代扣成功！') {
+                     	$("#withholdForm").submit();
+                     	$("#checkAll").removeAttr("checked");
+                     }
+                     return false;
+                 } else {
+                 	var message = data.successCount + "件代扣成功，" +  data.failCount + "件代扣失败。 处理中断。。。" 
+                     $("#addErrorMsg").html(html)
+                     $("html,body").animate({scrollTop: $("#addErrorMsg").offset().top - 100}, 0);
+                     alert(data.message);
+                 }
+                 $("#withholdForm").submit();
+                 $("#checkAll").removeAttr("checked");
+                 return false;
+             }, "json");
+
+         });
+  	 $('.selectdate').datetimepicker({
+  	        language:  'zh-CN',
+  	        weekStart: 1,
+  	        autoclose: 1,
+  	        format:'yyyy-mm-dd',
+  	        todayHighlight: 1,
+  	        startView: 2,
+  	        minView: 2,
+  	        forceParse: 0
+  	    });
+  	    function verify(){
+  	    	var a=document.getElementsByName("startTime");
+  	    	var b=document.getElementsByName("endTime");
+  	    	if(b[0].value!=null&&b[0].value!=''){
+  	    		if(a[0].value>b[0].value){
+  	    			alert("请检查您输入的日期");
+  	    		}else{
+  	    			$("#withholdApplyForm").submit();
+  	    		}
+  	    	}else{
+  	    		var d = new Date();
+  	    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+  	    		if(a[0].value>str){
+  	    			alert("请检查您输入的日期");
+  	    		}else{
+  	    			$("#withholdApplyForm").submit();
+  	    		}
+  	    	}
+  	    }
+       </script>
 </html>

@@ -35,10 +35,15 @@ ul.user_login li{padding-bottom: 14px;position:relative;}
     line-height: 30px;
     padding: 3px;
     vertical-align: middle;
+
 }
+
+
+
 .table > tbody > tr.table_input > td {
     padding: 4px 4px;
     vertical-align: middle;
+    word-break: keep-all;
 }
 .table > tbody > tr.table_input > td .input input {
     line-height: 20px;

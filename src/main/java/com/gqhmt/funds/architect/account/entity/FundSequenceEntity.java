@@ -1,6 +1,9 @@
 package com.gqhmt.funds.architect.account.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.gqhmt.util.ThirdPartyType;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -24,9 +27,6 @@ import java.util.Date;
 @Table(name = "t_gq_fund_sequence")
 public class FundSequenceEntity  implements java.io.Serializable{
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "id")
@@ -53,8 +53,9 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     @Column(name = "MODIFY_TIME")
     private Date modifyTime;
-    @Column(name = "thirdparty_type")
-    private Integer thirdPartyType;
+
+    @Column(name="thirdparty_type")
+    private int thirdPartyType;
 
     @Column(name = "order_no")
     private String orderNo;
@@ -173,13 +174,8 @@ public class FundSequenceEntity  implements java.io.Serializable{
         return result.intValue();
     }
 
-    public Integer getThirdPartyType() {
-        return thirdPartyType;
-    }
 
-    public void setThirdPartyType(Integer thirdPartyType) {
-        this.thirdPartyType = thirdPartyType;
-    }
+
 
 
     public String getOrderNo() {
@@ -214,5 +210,13 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getThirdPartyType() {
+        return thirdPartyType;
+    }
+
+    public void setThirdPartyType(int thirdPartyType) {
+        this.thirdPartyType = thirdPartyType;
     }
 }

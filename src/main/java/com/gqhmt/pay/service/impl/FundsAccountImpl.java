@@ -2,7 +2,11 @@ package com.gqhmt.pay.service.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.extServInter.dto.asset.AccountAccessDto;
+import com.gqhmt.extServInter.dto.asset.AssetDto;
+import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
@@ -11,6 +15,8 @@ import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.IFundsAccount;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
@@ -26,7 +32,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	private CustomerInfoService  customerInfoService  ;
 
 	@Resource
-	FundAccountService fundAccountService;
+	private FundAccountService fundAccountService;
 
 	@Resource
 	private PaySuperByFuiou paySuperByFuiou;
@@ -34,26 +40,30 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
      * 创建账户
      *
-     * @param thirdPartyType 支付渠道
-     * @param custId         客户id
+     * @param createAccountDto         客户id
      * @throws FssException
      */
-	public boolean createAccount(String thirdPartyType, int custId) throws FssException {
-		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(custId);
-		if(customerInfoEntity == null) throw new FssException("客户不存在");
-		return this.createAccount(thirdPartyType,customerInfoEntity,"","");
+	public boolean createAccount(CreateAccountDto createAccountDto) throws FssException {
+		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(Integer.parseInt(createAccountDto.getCust_no()));
+		if(customerInfoEntity == null) throw new FssException("90002007");
+		customerInfoEntity.setParentBankCode(createAccountDto.getBank_id());
+		customerInfoEntity.setBankNo(createAccountDto.getBank_card());
+		customerInfoEntity.setCityCode(createAccountDto.getCity_id());
+		customerInfoEntity.setCertNo(createAccountDto.getCert_no());
+		customerInfoEntity.setMobilePhone(createAccountDto.getMobile());
+		customerInfoEntity.setCustomerName(createAccountDto.getName());
+		return this.createAccount(customerInfoEntity,"","");
 	}
 
 	/**
      * 创建账户
      *
-     * @param thirdPartyType     支付渠道
      * @param customerInfoEntity 客户实体
      * @param pwd                支付渠道登陆密码
      * @param taradPwd           支付渠道交易密码
      * @throws FssException
      */
-	public boolean createAccount(String thirdPartyType,CustomerInfoEntity customerInfoEntity,
+	public boolean createAccount(CustomerInfoEntity customerInfoEntity,
 						String pwd, String taradPwd) throws FssException {
 
 		Integer cusId = customerInfoEntity.getId();
@@ -103,20 +113,19 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	/**
      * 银行卡变更
-     * @param thirdPartyType            支付渠道
-     * @param changeCardEntity
+     * @param changeBankCardDto            支付渠道
      * @throws FssException
      */
-	public boolean changeCard(String thirdPartyType,FssChangeCardEntity changeCardEntity) throws FssException {
-		Integer cusId = changeCardEntity.getCustId().intValue();
-		String cardNo = changeCardEntity.getCardNo();
-		String bankCd = changeCardEntity.getBankType();
-		String bankNm = changeCardEntity.getBankAdd();
-		String cityId = changeCardEntity.getBankCity();
-		String fileName = changeCardEntity.getFilePath().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
+	public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException {
+		Integer cusId = Integer.parseInt(changeBankCardDto.getCust_no());
+		String cardNo = changeBankCardDto.getBank_card();
+		String bankCd = changeBankCardDto.getBank_id();
+		String cityId = changeBankCardDto.getCity_id();
+		String fileName = changeBankCardDto.getImage();
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
-		paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankNm,cityId,fileName);
-		return true;
+		boolean changeCard = paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankCd,cityId,fileName);
+		if(!changeCard) throw new FssException("90002001");
+		return changeCard;
 	}
 
 	/**
@@ -147,9 +156,40 @@ public class FundsAccountImpl implements IFundsAccount {
 	private FundAccountEntity getPrimaryAccount(Integer cusId){
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 		if(primaryAccount == null){
-			throw new CommandParmException("主账户不存在");
+			throw new CommandParmException("90002003");
 		}
 		return primaryAccount;
 	}
 
+	/**
+	 * 查询账户余额
+	 */
+	 public FundAccountEntity getAccountBanlance(AssetDto accessdto) throws FssException{
+//		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+//		 FundAccountEntity account = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+		 int cust_no=Integer.parseInt(accessdto.getCust_no());
+		 int busi_type=accessdto.getBusi_type();
+		 FundAccountEntity account = fundAccountService.getAccountBanlance(cust_no,busi_type);
+		 if(account==null){
+			 throw new FssException("90002001");
+		 }else{
+			 if(account.getFreezeAmount()==BigDecimal.ZERO){
+				 throw new FssException("90004007");
+			 }
+		 }
+//		 account.setFreezeAmount(account.getFreezeAmount());
+		 return account;
+	 }
+	
+	/**
+	 * 账户资产
+	 */
+	@Override
+	public FssAssetEntity getAccountAsset(AssetDto asset) throws FssException {
+		FssAssetEntity assetEntity = fundAccountService.getAccountAsset(asset.getUser_no(),asset.getAcc_no(),asset.getCust_no());
+		return assetEntity;
+	}
+	
+	
+	
 }

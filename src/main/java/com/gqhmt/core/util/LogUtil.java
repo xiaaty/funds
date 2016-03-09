@@ -1,5 +1,7 @@
 package com.gqhmt.core.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,6 +60,16 @@ public class LogUtil {
         logger.debug(message);
     }
 
+    public final static void debug(Class class1,Throwable throwable){
+        Logger logger = loggerMap.get(class1.getName());
+        if(logger == null){
+            logger = LoggerFactory.getLogger(class1);
+            loggerMap.put(class1.getName(),logger);
+        }
+
+        logger.debug(throwable.getMessage(),throwable);
+    }
+
     public final static void debug(Class class1,String message,Throwable throwable){
         Logger logger = loggerMap.get(class1.getName());
         if(logger == null){
@@ -110,6 +122,15 @@ public class LogUtil {
 
 
 
+	@SuppressWarnings("rawtypes")
+	public static void debug1(Class class1,Object message){
+		Log log =  LogFactory.getLog(class1);
+		if(log.isDebugEnabled()){
+			log.debug(message);
+			
+		}
+		
+	}
 
 
 

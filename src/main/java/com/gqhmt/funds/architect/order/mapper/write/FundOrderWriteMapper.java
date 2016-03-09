@@ -21,4 +21,6 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
  */
 
 public interface FundOrderWriteMapper extends ReadAndWriteMapper<FundOrderEntity> {
+	
+//	 public void saveOrUpdate(FundOrderEntity entity);
 }

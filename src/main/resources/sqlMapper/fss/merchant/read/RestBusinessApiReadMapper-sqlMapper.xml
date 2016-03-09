@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.MerchantApiReadMapper">
+	<sql id="fieldSql">
+		SELECT
+		b.id id,
+		a.api_name apiName,
+		a.api_url apiUrl,
+		a.api_no apiNo,
+		b.mchn_no mchnNo,
+		c.mchn_name mchnName,
+		b.return_url returnUrl,
+		b.is_return isReturn,
+		b.create_time createTime,
+		b.modify_time modifyTime
+		FROM t_gq_fss_api a,t_gq_fss_mchn_api b,t_gq_fss_mchn c
+		where a.api_no=b.api_no and b.mchn_no=c.mchn_no 
+	</sql>
+	<sql id="whereSql">
+		<if test="mchnNo != null and mchnNo != ''">
+			and a.mchn_no = #{mchnNo}
+		</if>
+	</sql>
+
+	<sql id="otherSql">
+		<choose>
+			<when test="orderStr != null">
+				order by ${orderStr}
+			</when>
+			<otherwise>
+				order by auth_type asc
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 查询api录入列表 -->
+	<select id="findBusinessApiList" parameterType="com.gqhmt.fss.architect.merchant.bean.BusinessApiBean"
+		resultType="com.gqhmt.fss.architect.merchant.bean.BusinessApiBean">
+		<include refid="fieldSql" />
+		<if test="mchnName!=null and mchnName.trim()!=''">
+		and c.mchn_name like  concat('%',#{mchnName},'%')
+		</if> 
+		<if test="mchnNo!=null and mchnNo.trim() !=''">
+		and b.mchn_no like  concat('%',#{mchnNo},'%') 
+		</if>
+		<if test="apiName!=null and apiName.trim() !=''">
+		and a.api_name like  concat('%',#{apiName},'%') 
+		</if>
+		<if test="isReturn!=null">
+		and b.is_return =#{isReturn} 
+		</if>
+		
+		ORDER BY createTime desc
+	</select>
+<!-- 	根据id查询商户API对象 -->
+	<select id="selectBusinessApi" parameterType="java.lang.Long"
+		resultType="com.gqhmt.fss.architect.merchant.bean.BusinessApiBean">
+		<include refid="fieldSql" />
+		and b.id=#{id}
+		</select>
+</mapper>

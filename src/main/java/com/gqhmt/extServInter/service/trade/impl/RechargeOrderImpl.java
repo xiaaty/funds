@@ -1,0 +1,58 @@
+package com.gqhmt.extServInter.service.trade.impl;
+
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.GenerateBeanUtil;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.trade.WebOrderResponse;
+import com.gqhmt.extServInter.dto.trade.RechargeOrderDto;
+import com.gqhmt.extServInter.service.trade.IRechargeOrder;
+import com.gqhmt.pay.service.IFundsTrade;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ * 
+ * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
+ * Copyright:   Copyright (c)2015
+ * Company:     冠群驰骋投资管理(北京)有限公司
+ *
+ * @author jhz
+ * @version: 1.0
+ * @since: JDK 1.7
+ * Create at:   2016年2月20日
+ * Description:  代扣充值
+ * <p>
+ * Modification History:
+ * Date    Author      Version     Description
+ * -----------------------------------------------------------------
+ * 2016年2月20日  jhz      1.0     1.0 Version
+ */
+@Service
+public class RechargeOrderImpl implements IRechargeOrder {
+	@Resource
+	private IFundsTrade fundsTradeImpl;
+	
+    @Override
+    public Response excute(SuperDto dto) {
+		WebOrderResponse response = null;
+		try {
+			response = GenerateBeanUtil.GenerateClassInstance(WebOrderResponse.class,dto);
+		} catch (Exception e) {
+			response = new WebOrderResponse();
+		}
+		try {
+    		String result = fundsTradeImpl.webRechargeOrder((RechargeOrderDto)dto);
+			response.setResp_code("0000");
+			String[] tmp = result.split(":");
+			response.setOrder_no(tmp[0]);
+			response.setMchnt(tmp[1]);
+		} catch (FssException e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+        return response;
+    }
+}
