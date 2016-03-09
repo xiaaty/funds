@@ -8,7 +8,6 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -215,30 +214,31 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
 	 * 银行卡变更
 	 */
-	 public boolean queryAccountByAccNo(CardChangeDto cardChangeDto)throws FssException{
-		 BankCardInfoEntity bankCardInfoEntity=null;
-		 Integer cusId=null;
-		 Integer bankcardId=null;
+	 public boolean bankCardChange(CardChangeDto cardChangeDto)throws FssException{
+			BankCardInfoEntity bankCardInfoEntity=null;
+			Integer cusId=null;
+			Integer bankcardId=null;
+			CustomerInfoEntity  customerInfoEntity=null;
 		 	FssAccountEntity fssAccountEntity= fundAccountService.getFssFundAccountInfo(cardChangeDto.getAcc_no());
 		 	if(null!=fssAccountEntity){
-		 		fssAccountEntity.getCustNo();
-		 	}
-		 	CustomerInfoEntity  customerInfoEntity=customerInfoService.queryCustomeById(Integer.parseInt(fssAccountEntity.getCustNo()));
-		 	if(null!=customerInfoEntity){
-		 		cusId =	customerInfoEntity.getId().intValue();
-		 		bankCardInfoEntity = bankCardInfoService.getBankCardById(customerInfoEntity.getBankId());
-		 		if(bankCardInfoEntity!=null){
-		 			bankcardId=bankCardInfoEntity.getId();
+		 		customerInfoEntity=customerInfoService.queryCustomeById(Integer.parseInt(fssAccountEntity.getCustNo()));
+		 		if(null!=customerInfoEntity){
+//		 			cusId =	customerInfoEntity.getId().intValue();
+		 			bankCardInfoEntity = bankCardInfoService.getBankCardById(customerInfoEntity.getBankId());
+		 			if(bankCardInfoEntity!=null){
+		 				bankcardId=bankCardInfoEntity.getId();
+		 			}
+		 		}else{
+		 			throw new FssException("未得到用户信息");
 		 		}
 		 	}
-		 	FssChangeCardEntity changeCardEntity=fssChangeCardService.getChangeCardByCustId(Long.valueOf(cusId));
+		 	FssChangeCardEntity changeCardEntity=fssChangeCardService.getChangeCardByCustId(Long.valueOf(customerInfoEntity.getId()));
 	        String cardNo = bankCardInfoEntity.getBankNo();
 	        String bankCd = changeCardEntity.getBankType();
 	        String bankNm = changeCardEntity.getBankAdd();
 	        String cityId = changeCardEntity.getBankCity();
 	        String fileName = cardChangeDto.getFileName().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
 	        FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
-	        
 	        //订单号
 	        FundOrderEntity fundOrderEntity = fundOrderService.createOrder(primaryAccount,null,BigDecimal.ZERO,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,Long.valueOf(bankcardId),Integer.valueOf(GlobalConstants.BUSINESS_UPDATE_CARE),"2");
 	        CommandResponse response =ThirdpartyFactory.command(ThirdPartyType.FUIOU.toString(), PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankNm,bankCd,cityId,fileName);
@@ -252,6 +252,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	        this.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
 		 return true;
 	 }
+	 
 	
 		@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { CommandParmException.class }, readOnly = false)
 		public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws CommandParmException {
@@ -268,15 +269,12 @@ public class FundsAccountImpl implements IFundsAccount {
 		/**
 		 * 	银行卡变更完成，通知变更发起方（借款系统）
 		 */
-	    public Response bankCardChangeCallBack(String seqNo,String mchn) throws FssException{
-	    	Response response=new Response();
-	    	FssChangeCardEntity changeCardEntity=fssChangeCardService.queryChangeCardByParam(seqNo,mchn);
+	    public FssChangeCardEntity bankCardChangeCallBack(String seqNo,String mchn) throws FssException{
+	    	FssChangeCardEntity changeCardEntity=null;
+	    	changeCardEntity=fssChangeCardService.queryChangeCardByParam(seqNo,mchn);
 	    	if(changeCardEntity==null){
 	    		throw new FssException("90004001");
 	    	}
-	    	response.setMchn(changeCardEntity.getMchn());
-	    	response.setSeq_no(changeCardEntity.getSeqNo());
-	    	response.setResp_code("0000");
-	    	return response;
+	    	return changeCardEntity;
 	    }
 }

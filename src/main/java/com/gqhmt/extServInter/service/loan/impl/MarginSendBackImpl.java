@@ -2,30 +2,29 @@ package com.gqhmt.extServInter.service.loan.impl;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.loan.CardChangeDto;
-import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
-import com.gqhmt.extServInter.service.loan.IChangeCard;
-import com.gqhmt.pay.service.account.IFundsAccount;
+import com.gqhmt.extServInter.dto.loan.MarginDto;
+import com.gqhmt.extServInter.dto.loan.MarginResponse;
+import com.gqhmt.extServInter.service.loan.IMarginSendBack;
+import com.gqhmt.pay.service.loan.IMarginReturn;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-
 /**
- * 出借系统--银行卡变更申请
+ * 保证金退还
  * @author 柯禹来
  */
 @Service
-public class ChangeCardImpl implements IChangeCard{
+public class MarginSendBackImpl implements IMarginSendBack{
 	@Resource
-	private IFundsAccount fundsAccountImpl;
+	private IMarginReturn marginReturnImpl;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	ChangeCardResponse response = new ChangeCardResponse();
+    	MarginResponse response = new MarginResponse();
     	try {
-    		fundsAccountImpl.bankCardChange((CardChangeDto)dto);
+    		marginReturnImpl.marginSendBack((MarginDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

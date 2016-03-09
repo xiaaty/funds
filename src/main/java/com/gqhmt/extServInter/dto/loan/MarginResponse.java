@@ -1,6 +1,5 @@
 package com.gqhmt.extServInter.dto.loan;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 
 /**
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -18,15 +17,19 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
  * -----------------------------------------------------------------
  * 16/1/12  于泳      1.0     1.0 Version
  */
-public class WithDrawApplyResponse  extends Response {
-	private FssTradeApplyEntity fssTradeApplyEntity;
-
-	public FssTradeApplyEntity getFssTradeApplyEntity() {
-		return fssTradeApplyEntity;
+public class MarginResponse  extends Response {
+	private String mchn;//商户号
+	private String seqNo;//流水号
+	public String getMchn() {
+		return mchn;
 	}
-
-	public void setFssTradeApplyEntity(FssTradeApplyEntity fssTradeApplyEntity) {
-		this.fssTradeApplyEntity = fssTradeApplyEntity;
+	public void setMchn(String mchn) {
+		this.mchn = mchn;
 	}
-	
+	public String getSeqNo() {
+		return seqNo;
+	}
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
+	}
 }

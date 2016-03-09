@@ -1,28 +1,23 @@
 package com.gqhmt.pay.service.loan;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.extServInter.dto.loan.MarginDto;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.ILoan
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
- *
  * @author 于泳
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:38
- * Description:借款人提现
+ * Description:保证金退还
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016/3/6  于泳      1.0     1.0 Version
  */
-public interface IWithDrawApply {
+public interface IMarginReturn {
 
-    public void createWithDrawApply(LoanWithDrawApplyDto dto) throws FssException;
-
-    public FssTradeApplyEntity withDrasApplyCallBack(String seqNo,String mchn) throws FssException;
-
+    public boolean marginSendBack(MarginDto dto) throws FssException;
 }

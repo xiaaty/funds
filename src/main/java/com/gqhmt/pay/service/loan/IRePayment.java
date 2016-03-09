@@ -1,9 +1,10 @@
 package com.gqhmt.pay.service.loan;
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import java.util.List;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.loan.RepaymentDto;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 /**
  * Filename:    com.gqhmt.pay.service.loan.ILoan
  * Copyright:   Copyright (c)2015
@@ -13,16 +14,16 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:38
- * Description:借款人提现
+ * Description:还款划扣
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016/3/6  于泳      1.0     1.0 Version
  */
-public interface IWithDrawApply {
+public interface IRePayment {
 
-    public void createWithDrawApply(LoanWithDrawApplyDto dto) throws FssException;
+    public boolean createRefundDraw(List<RepaymentDto> repaymentlist) throws FssException;
 
-    public FssTradeApplyEntity withDrasApplyCallBack(String seqNo,String mchn) throws FssException;
+    public List<FssRepaymentEntity> rePaymentCallBack(String seqNo,String mchn) throws FssException;
 
 }

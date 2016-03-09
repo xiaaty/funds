@@ -1,7 +1,6 @@
 package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
@@ -82,17 +81,13 @@ public class WithDrawApplyImpl implements IWithDrawApply {
 	 * 完成抵押标借款人提现后，通知借款系统
 	 */
 	@Override
-	public Response withDrasApplyCallBack(String seqNo, String mchn) throws FssException {
-		Response response = new Response();
-		FssTradeApplyEntity fssTradeApplyEntity=fssTradeApplyService.getTradeApplyByParam(seqNo,mchn);
-		if(fssTradeApplyEntity!=null){
-			response.setResp_code("0000");
-			response.setSeq_no(fssTradeApplyEntity.getSeqNo());
-			response.setMchn(fssTradeApplyEntity.getMchnChild());
-		}else{
+	public FssTradeApplyEntity withDrasApplyCallBack(String seqNo, String mchn) throws FssException {
+		FssTradeApplyEntity fssTradeApplyEntity=null;
+		fssTradeApplyEntity=fssTradeApplyService.getTradeApplyByParam(seqNo,mchn);
+		if(fssTradeApplyEntity==null){
 			throw new FssException("90004002");
 		}
-		return response;
+		return fssTradeApplyEntity;
 	}
 	
 	
