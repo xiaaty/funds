@@ -1,33 +1,30 @@
-package com.gqhmt.extServInter.dto.asset;
-
-import com.gqhmt.extServInter.dto.Response;
-
-import java.util.List;
+package com.gqhmt.extServInter.dto;
 
 /**
- * Filename:    com.gqhmt.extServInter.dto.asset.AssetResponse
+ * Filename:    com.gqhmt.extServInter.dto.QueryListResponse
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
  * @author 于泳
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016/2/28 23:49
+ * Create at:   2016/3/8 23:37
  * Description:
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016/2/28  于泳      1.0     1.0 Version
+ * 2016/3/8  于泳      1.0     1.0 Version
  */
-public class AssetResponse extends Response {
-    private List plain;
+public class QueryListResponse extends Response {
 
-    public List getPlain() {
+    private Object plain;
+
+    public Object getPlain() {
         return plain;
     }
 
-    public void setPlain(List plain) {
+    public void setPlain(Object plain) {
         this.plain = plain;
     }
 }

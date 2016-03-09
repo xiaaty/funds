@@ -1,11 +1,11 @@
 package com.gqhmt.extServInter.dto.asset;
 
 import com.gqhmt.annotations.APIValidNull;
-import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.PageSuperDto;
 /**
  *交易记录查询接口参数
  */
-public class FundTradeDto extends SuperDto {
+public class FundTradeDto extends PageSuperDto {
 	
 	@APIValidNull(errorCode = "90003001")
 	private String str_trade_time;//交易开始时间
