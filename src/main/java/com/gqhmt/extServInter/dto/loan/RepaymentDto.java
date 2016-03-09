@@ -1,7 +1,8 @@
 package com.gqhmt.extServInter.dto.loan;
-
 import java.math.BigDecimal;
+
 import com.gqhmt.extServInter.dto.SuperDto;
+
 /**
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2015
@@ -10,17 +11,24 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/1/12 14:09
- * Description:退还保证金接口参数
+ * Description:还款划扣接口参数
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 16/1/12  于泳      1.0     1.0 Version
  */
-public class MarginDto extends SuperDto {
-
-    private String contract_id; //合同Id
-    private String acc_no;       //资金平台账号
-    private BigDecimal refund_amt;   //退还保证金金额
+public class RepaymentDto extends SuperDto {
+    private String serial_number; //序列号
+    private String contract_id;   //合同Id
+    private String acc_no;        //借款人资金平台账号
+    private BigDecimal amt;       //还款金额
+    private String remark;    //还款备注
+	public String getSerial_number() {
+		return serial_number;
+	}
+	public void setSerial_number(String serial_number) {
+		this.serial_number = serial_number;
+	}
 	public String getContract_id() {
 		return contract_id;
 	}
@@ -33,11 +41,17 @@ public class MarginDto extends SuperDto {
 	public void setAcc_no(String acc_no) {
 		this.acc_no = acc_no;
 	}
-	public BigDecimal getRefund_amt() {
-		return refund_amt;
+	public BigDecimal getAmt() {
+		return amt;
 	}
-	public void setRefund_amt(BigDecimal refund_amt) {
-		this.refund_amt = refund_amt;
+	public void setAmt(BigDecimal amt) {
+		this.amt = amt;
 	}
-	
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+    
 }

@@ -1,10 +1,11 @@
 package com.gqhmt.extServInter.callback.loan;
 
 import javax.annotation.Resource;
-
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.loan.CardChangeDto;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.pay.service.account.IFundsAccount;
 /**
  * Filename:    com.gqhmt.extServInter.callback.loan.ChangeBankCallback
@@ -27,16 +28,14 @@ public class ChangeBankCallback{
 	@Resource
 	private IFundsAccount fundsAccountImpl;
     
-    public Response bankCardChangeCallBack() throws FssException{
-    	Response response = new Response();
-    	
+    public Response bankCardChangeCallBack(String seqNo,String mchn) throws FssException{
+    	ChangeCardResponse response = new ChangeCardResponse();
     	try {
-			CardChangeDto dto=new CardChangeDto();
-			String seqNo=dto.getSeq_no();
-			String mchn=dto.getMchn();
-			fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
+    		FssChangeCardEntity fssChangeCardEntity = fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
+    		response.setFssChangeCardEntity(fssChangeCardEntity);
 			response.setResp_code("0000");
 		} catch (FssException e) {
+			LogUtil.info(this.getClass(), e.getMessage());
 			response.setResp_code(e.getMessage());
 		}
     	return response;

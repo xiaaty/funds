@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.dto.loan;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 
 /**
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -18,18 +19,12 @@ import com.gqhmt.extServInter.dto.Response;
  * 16/1/12  于泳      1.0     1.0 Version
  */
 public class ChangeCardResponse  extends Response {
-	private String mchn;//商户号
-	private String seqNo;//流水号
-	public String getMchn() {
-		return mchn;
+	private FssChangeCardEntity fssChangeCardEntity;
+
+	public FssChangeCardEntity getFssChangeCardEntity() {
+		return fssChangeCardEntity;
 	}
-	public void setMchn(String mchn) {
-		this.mchn = mchn;
-	}
-	public String getSeqNo() {
-		return seqNo;
-	}
-	public void setSeqNo(String seqNo) {
-		this.seqNo = seqNo;
+	public void setFssChangeCardEntity(FssChangeCardEntity fssChangeCardEntity) {
+		this.fssChangeCardEntity = fssChangeCardEntity;
 	}
 }

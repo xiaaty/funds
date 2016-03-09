@@ -1,12 +1,13 @@
 package com.gqhmt.extServInter.callback.loan;
 
-import javax.annotation.Resource;
+import java.util.List;
 
+import javax.annotation.Resource;
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
-import com.gqhmt.pay.service.loan.IWithDrawApply;
+import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
+import com.gqhmt.pay.service.loan.IRePayment;
 /**
  * Filename:    com.gqhmt.extServInter.callback.loan.ChangeBankCallback
  * Copyright:   Copyright (c)2015
@@ -15,23 +16,23 @@ import com.gqhmt.pay.service.loan.IWithDrawApply;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:32
- * Description:借款人提现通知
+ * Description:还款划扣通知
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016/3/6  于泳      1.0     1.0 Version
  */
-public class WithDrawApplyCallback{
-//	完成抵押标借款人提现后，通知借款系统 
+public class PaymentCallback{
+//	完成划扣流程后，通知借款系统 
 	@Resource
-	private IWithDrawApply withDrawApplyImpl;
+	private IRePayment rePaymentImpl;
     
     public Response withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
-    	WithDrawApplyResponse response = new WithDrawApplyResponse();
+    	RepaymentResponse response = new RepaymentResponse();
     	try {
-    		FssTradeApplyEntity fssTradeApplyEntity=withDrawApplyImpl.withDrasApplyCallBack(seqNo,mchn);
-    		response.setFssTradeApplyEntity(fssTradeApplyEntity);
-    		response.setResp_code("0000");
+    		List<FssRepaymentEntity> repaymentlist = rePaymentImpl.rePaymentCallBack(seqNo,mchn);
+    		response.setRepaymentlist(repaymentlist);
+			response.setResp_code("0000");
 		} catch (FssException e) {
 			response.setResp_code(e.getMessage());
 		}

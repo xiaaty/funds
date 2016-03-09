@@ -10,7 +10,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/1/12 14:09
- * Description:
+ * Description:银行卡变更接口参数
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
