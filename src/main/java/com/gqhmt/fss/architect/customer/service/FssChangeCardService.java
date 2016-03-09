@@ -345,16 +345,32 @@ public class FssChangeCardService {
         return cardNo.substring(0,4)+"***"+cardNo.substring(cardNo.length()-4);
     }
     
-    
+   /**
+    * 根据custId查询银行卡变更账户
+    * @param custId
+    * @return
+    * @throws FssException
+    */
    public FssChangeCardEntity getChangeCardByCustId(Long custId) throws FssException{
 	   FssChangeCardEntity fssChangeCardEntity=new FssChangeCardEntity();
 	   fssChangeCardEntity.setCustId(custId);
+	   changeCardReadMapper.select(fssChangeCardEntity);
 	   return fssChangeCardEntity;
     }
-    
-    
-    
-    
+    /**
+     * 根据流水号和商户号查询返回银行卡变更信息
+     * @param seqNo
+     * @param mchn
+     * @return
+     * @throws FssException
+     */
+   public FssChangeCardEntity queryChangeCardByParam(String seqNo,String mchn) throws FssException{
+	   FssChangeCardEntity fssChangeCardEntity=new FssChangeCardEntity();
+	   fssChangeCardEntity.setSeqNo(seqNo);
+	   fssChangeCardEntity.setMchn(mchn);
+	   changeCardReadMapper.selectOne(fssChangeCardEntity);
+	   return fssChangeCardEntity;
+    }
     
     
     
