@@ -1,5 +1,8 @@
 package com.gqhmt.funds.architect.order.bean;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gqhmt.core.json.BigDecimalSerialize;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -67,6 +70,7 @@ public class FundOrderBean {
         this.orderTypeName = orderTypeName;
     }
 
+    @JsonSerialize(using = BigDecimalSerialize.class)
     public BigDecimal getAmt() {
         return amt;
     }
@@ -75,6 +79,7 @@ public class FundOrderBean {
         this.amt = amt;
     }
 
+    @JsonSerialize(using = BigDecimalSerialize.class)
     public BigDecimal getChargeAmt() {
         return chargeAmt;
     }
