@@ -1,23 +1,22 @@
 package com.gqhmt.controller.api.loan;
 
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.callback.loan.EnterAccountCallback;
+import com.gqhmt.extServInter.callback.loan.FailedBidCallback;
+import com.gqhmt.extServInter.callback.loan.MortgageeWithDrawCallback;
+import com.gqhmt.extServInter.callback.loan.LendingCallback;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
-import com.gqhmt.extServInter.dto.loan.FailedBidDto;
-import com.gqhmt.extServInter.dto.loan.LendingDto;
-import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
-import com.gqhmt.extServInter.service.loan.IEnterAccount;
-import com.gqhmt.extServInter.service.loan.ILending;
-import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
-import com.gqhmt.extServInter.service.loan.impl.FailedBidImpl;
+import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+
 
 /**
  * 
@@ -29,7 +28,7 @@ import javax.annotation.Resource;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月8日
- * Description:
+ * Description:	回调控制类
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -38,32 +37,32 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping(value = "/api")
-public class FssLoan {
+public class FssCallback {
 
     @Resource
-    private FailedBidImpl failedBidImpl;
+    private EnterAccountCallback enterAccountCallback;
     
     @Resource
-    private ILending lendingImpl;
+    private FailedBidCallback failedBidCallback;
     
     @Resource
-    private IMortgageeWithDraw mortgageeWithDrawImpl;
+    private LendingCallback lendingCallback;
     
     @Resource
-    private IEnterAccount enterAccountImpl;
+    private MortgageeWithDrawCallback mortgageeWithDrawCallback;
     
    /**
     * 
     * author:jhz
     * time:2016年2月22日
-    * function：流标
+    * function：流标回调
     */
-    @RequestMapping(value = "/loan/failedBid",method = RequestMethod.POST)
-    public Object ceeateAccount(FailedBidDto failedBidDto){
+    @RequestMapping(value = "/loan/failedBidCallback",method = RequestMethod.POST)
+    public Object ceeateAccount(String mchnNo,String seqNo){
     	Response response= null;
         try {
         	
-             response = failedBidImpl.excute(failedBidDto);
+             response = failedBidCallback.getResponse(mchnNo, seqNo);
         } catch (Exception e) {
             response = this.excute(e);
         }
@@ -75,11 +74,11 @@ public class FssLoan {
      * time:2016年3月8日
      * function：借款人放款
      */
-    @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
-    public Object changeBankCard(LendingDto lendingDto){
+    @RequestMapping(value = "/loan/lendingCallback",method = RequestMethod.POST)
+    public Object changeBankCard(String mchnNo,String seqNo){
     	Response response= null;
     	try {
-    		response = lendingImpl.excute(lendingDto);
+    		response = lendingCallback.getResponse(mchnNo, seqNo);
     	} catch (Exception e) {
             response = this.excute(e);
     	}
@@ -91,11 +90,11 @@ public class FssLoan {
      * time:2016年3月8日
      * function：抵押权人放款
      */
-    @RequestMapping(value = "/loan/mortgageeWithDraw",method = RequestMethod.POST)
-    public Object MortgageeWithDraw(MortgageeWithDrawDto mortgageeWithDrawDto){
+    @RequestMapping(value = "/loan/mortgageeWithDrawCallback",method = RequestMethod.POST)
+    public Object MortgageeWithDraw(String mchnNo,String seqNo){
     	Response response= null;
     	try {
-    		response = mortgageeWithDrawImpl.excute(mortgageeWithDrawDto);
+    		response = mortgageeWithDrawCallback.getResponse(mchnNo, seqNo);
     	} catch (Exception e) {
     		response = this.excute(e);
     	}
@@ -107,13 +106,13 @@ public class FssLoan {
      * time:2016年3月8日
      * function：入账接口
      */
-    @RequestMapping(value = "/loan/enterAccount",method = RequestMethod.POST)
-    public Object EnterAccount(List<EnterAccountDto> enterAccountDtos){
-    	Response response= null;
+	@RequestMapping(value = "/loan/enterAccountCallback",method = RequestMethod.POST)
+    public Object EnterAccount(List<Map<String,String>> maps){
+    	List<EnterAccountResponse> response=null;
     	try {
-    		response = enterAccountImpl.excute(enterAccountDtos);
+    		 response = enterAccountCallback.getResponse(maps);
     	} catch (Exception e) {
-    		response = this.excute(e);
+    		response = (List<EnterAccountResponse>) this.excute(e);
     	}
     	return response;
     }

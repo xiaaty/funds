@@ -1,5 +1,8 @@
 package com.gqhmt.extServInter.service.loan.impl;
 
+
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -7,9 +10,8 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
-import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
+import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
+import com.gqhmt.extServInter.service.loan.IEnterAccount;
 import com.gqhmt.pay.service.loan.ILoan;
 
 /**
@@ -22,7 +24,7 @@ import com.gqhmt.pay.service.loan.ILoan;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月7日
- * Description:	抵押权人提现接口
+ * Description:	入账
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -30,15 +32,15 @@ import com.gqhmt.pay.service.loan.ILoan;
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
 @Service
-public class MortgageeWithDrawImpl implements IMortgageeWithDraw {
+public class EnterAccountImpl implements IEnterAccount {
 
 	@Resource
 	private ILoan loanImpl;
 	
-    public Response excute(SuperDto dto) {
+	public Response excute(List<EnterAccountDto> enterAccountDtos) {
     	Response response = new Response();
     	try {
-    		loanImpl.mortgageeWithDraw((MortgageeWithDrawDto)dto);
+    		loanImpl.enterAccount(enterAccountDtos);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

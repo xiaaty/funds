@@ -2,6 +2,10 @@ package com.gqhmt.extServInter.callback.loan;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 
@@ -22,6 +26,7 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
  * -----------------------------------------------------------------
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
+@Service
 public class LendingCallback {
 	@Resource
 	private FssLoanService fssLoanService;
@@ -33,12 +38,14 @@ public class LendingCallback {
 	 */
 	public LendingResponse getResponse(String mchnNo,String seqNo){
 		
-		 LendingResponse response = fssLoanService.getLendingResponse(mchnNo,seqNo) ;
-		 if(response!=null){
-			 response.setResp_code("00000000");
-		 }else{
-			 
-		 }
+		 LendingResponse response = null;
+		 try {
+			response= fssLoanService.getLendingResponse(mchnNo,seqNo) ;
+			response.setResp_code("0000");
+			} catch (FssException e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+		    	response.setResp_code(e.getMessage());
+			}
 		 return response;
 	}
 	

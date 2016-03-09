@@ -1,15 +1,17 @@
 package com.gqhmt.fss.architect.loan.mapper.read;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 
 /**
  * 
@@ -35,14 +37,14 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * time:2016年3月7日
 	 * function：得到借款人放款回调对象
 	 */
-	LendingResponse getResponse(Map<String, String> map);
+	LendingResponse getResponse(Map<String, String> map) throws FssException;
 	/**
 	 * 
 	 * author:jhz
 	 * time:2016年3月7日
 	 * function：抵押权人提现回盘
 	 */
-	MortgageeWithDrawRespons getMortgageeWithDrawRespons(Map<String, String> map);
+	MortgageeWithDrawRespons getMortgageeWithDrawRespons(Map<String, String> map)throws FssException;
 	/**
 	 * 
 	 * author:jhz
@@ -56,5 +58,18 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * time:2016年3月8日
 	 * function：流标回盘
 	 */
-	FailedBidResponse getFailedBidResponse(Map<String, String> map);
+	FailedBidResponse getFailedBidResponse(Map<String, String> map)throws FssException;
+	 /**
+	 * 
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：通过id得到费用列表
+	 */
+	List<FssSettleListEntity> getFssSettleList(Long id)throws FssException;
+	/**
+	 * author:jhz
+	 * time:2016年3月9日
+	 * function：入账回盘
+	 */
+	EnterAccountResponse getEnterAccountResponse(Map<String, String> map)throws FssException;
 }

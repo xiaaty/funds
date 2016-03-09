@@ -20,7 +20,7 @@ import javax.persistence.Table;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月7日
- * Description:	收费列表
+ * Description:	清算列表
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -28,19 +28,19 @@ import javax.persistence.Table;
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_feeList")
-public class FssFeeList implements Serializable {
+@Table(name = "t_gq_fss_settleList")
+public class FssSettleListEntity implements Serializable {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
     
-    @Column(name = "fee_type")
-    private String feeType   ;                                //费用类型        YES             (NULL)                   select,insert,update,references  账户总资产
+    @Column(name = "account_type")
+    private String accountType   ;                                //账务科目       YES             (NULL)                   select,insert,update,references  账户总资产
     
-    @Column(name = "fee_amt")
-    private BigDecimal feeAmt   ;                                //费用金额       YES             (NULL)                   select,insert,update,references  账户总资产
+    @Column(name = "settle_amt")
+    private BigDecimal settleAmt   ;                                //清算金额             (NULL)                   select,insert,update,references  账户总资产
    
   
 	public Long getId() {
@@ -51,21 +51,23 @@ public class FssFeeList implements Serializable {
 		this.id = id;
 	}
 
-	public String getFeeType() {
-		return feeType;
+	public String getAccountType() {
+		return accountType;
 	}
 
-	public void setFeeType(String feeType) {
-		this.feeType = feeType;
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
 	}
 
-	public BigDecimal getFeeAmt() {
-		return feeAmt;
+	public BigDecimal getSettleAmt() {
+		return settleAmt;
 	}
 
-	public void setFeeAmt(BigDecimal feeAmt) {
-		this.feeAmt = feeAmt;
+	public void setSettleAmt(BigDecimal settleAmt) {
+		this.settleAmt = settleAmt;
 	}
 
+	
+	
 
 }

@@ -1,8 +1,7 @@
 package com.gqhmt.fss.architect.loan.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
-import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper
@@ -20,19 +19,5 @@ import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
  * -----------------------------------------------------------------
  * 2016/1/10  于泳      1.0     1.0 Version
  */
-public interface FssLoanWriteMapper extends ReadAndWriteMapper<FssLoanEntity> {
-	 /**
-     * 
-     * author:jhz
-     * time:2016年3月7日
-     * function：添加
-     */
-	public long insertLending(FssLoanEntity fssLoanEntity);
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月9日
-	 * function：添加入账
-	 */
-	public long insertEnterAccount(FssEnterAccountEntity fssEnterAccountEntity);
+public interface FssSettleListWriteMapper extends ReadAndWriteMapper<FssSettleListEntity> {
 }

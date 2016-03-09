@@ -11,7 +11,6 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.FailedBidDto;
 import com.gqhmt.extServInter.service.loan.IFailedBid;
-import com.gqhmt.extServInter.service.loan.ILending;
 import com.gqhmt.pay.service.loan.ILoan;
 
 /**

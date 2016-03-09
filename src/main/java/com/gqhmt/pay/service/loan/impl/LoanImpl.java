@@ -3,6 +3,7 @@ package com.gqhmt.pay.service.loan.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.dto.loan.FailedBidDto;
 import com.gqhmt.extServInter.dto.loan.LendingDto;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
@@ -14,6 +15,9 @@ import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.pay.service.loan.ILoan;
+
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -102,12 +106,7 @@ public class LoanImpl implements ILoan {
      */
 	@Override
 	public boolean mortgageeWithDraw(MortgageeWithDrawDto dto) throws FssException {
-		try {
 			 loanService.insertmortgageeWithDraw(dto);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-		}
-		
 		 return true;
 	}
 	/**
@@ -117,12 +116,22 @@ public class LoanImpl implements ILoan {
 	 * function：流标接口
 	 */
 	public boolean failedBid(FailedBidDto dto)throws FssException {
-		try {
 			 loanService.insertfailedBidDto(dto);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-		}
-		
-		return false;
+		return true;
 	}
-}
+	/**
+	 * .
+	 * author:jhz
+	 * time:2016年3月9日
+	 * function：入账接口
+	 */
+	@Override
+	public boolean enterAccount(List<EnterAccountDto> enterAccountDtos) throws FssException {
+		if(enterAccountDtos==null){
+			return false;
+		}else{
+			loanService.insertEnterAccount(enterAccountDtos);
+			}
+			return true;
+		}
+	}

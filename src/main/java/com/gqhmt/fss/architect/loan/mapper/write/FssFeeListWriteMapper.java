@@ -2,7 +2,6 @@ package com.gqhmt.fss.architect.loan.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
-import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper

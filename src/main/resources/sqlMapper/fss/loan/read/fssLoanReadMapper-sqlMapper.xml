@@ -4,7 +4,7 @@
 
 	<sql id="whereSql">
 			<if test="mchnNo != null and mchnNo != ''">
-				and t.mchn_no = #{mchnNo}
+				and t.mchn_child = #{mchnNo}
 			</if>
 			<if test="seqNo != null and seqNo != ''">
 				and t.seq_no = #{seqNo}
@@ -14,12 +14,12 @@
 	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.LendingResponse" >
 		SELECT 
 			t.id,
-		    t.contract_id contractId,
-		    t.mortgagee_acc_no mortgageeAccNo,
-		    t.acc_no accNo,
-			t.contract_amt contractAmt,
-			t.pay_amt payAmt,
-			t.loan_platform loanPlatform
+		    t.contract_id contract_id,
+		    t.mortgagee_acc_no mortgagee_acc_no,
+		    t.acc_no acc_no,
+			t.contract_amt contract_amt,
+			t.pay_amt pay_amt,
+			t.loan_platform loan_platform
 			FROM t_gq_fss_loan t
 			where 1=1
 			<include refid="whereSql" />
@@ -29,18 +29,19 @@
 		SELECT 
 			f.id,
 			f.fee_type feeType,
-			f.fee_amt feeAmt,
+			f.fee_amt feeAmt
 			FROM t_gq_fss_feeList f
-			where t.id=#{id}
+			where f.id=#{id}
 	</select>
 	<!-- 抵押权人提现回盘 -->
-	<select id="getLendWithDrawRespons"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons" >
+				
+	<select id="getMortgageeWithDrawRespons"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons" >
 		SELECT 
 			t.id id,
-		    t.contract_id contractId,
-		    t.acc_no accNo,
-			t.contract_amt contractAmt,
-			t.pay_amt payAmt,
+		    t.contract_id contract_id,
+		    t.acc_no acc_no,
+			t.contract_amt contract_amt,
+			t.pay_amt pay_amt,
 			t.loan_platform loanPlatform  			
 			FROM t_gq_fss_loan t 
 			where 1=1
@@ -50,13 +51,26 @@
 	<select id="getFailedBidResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.FailedBidResponse" >
 		SELECT 
 			t.id,
-		    t.contract_id contractId,
-		    t.mortgagee_acc_no mortgageeAccNo,
-		    t.acc_no accNo,
-			t.contract_amt contractAmt,
-			t.pay_amt payAmt,
+		    t.contract_id contract_id,
+		    t.mortgagee_acc_no mortgagee_acc_no,
+		    t.acc_no acc_no,
+			t.contract_amt contract_amt,
+			t.pay_amt pay_amt,
 			t.loan_platform loanPlatform
 			FROM t_gq_fss_loan t
+			where 1=1
+			<include refid="whereSql" />
+	</select>
+	<!-- 入账回盘-->
+	<select id="enterAccountResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.EnterAccountResponse" >
+		SELECT 
+			t.id,
+		    t.contract_id contract_id,
+		    t.serial_number serial_number,
+		    t.accounting_no accounting_no,
+			t.mortgagee_acc_no mortgagee_acc_no,
+			t.acc_no acc_no
+			FROM t_gq_fss_enterAccount t
 			where 1=1
 			<include refid="whereSql" />
 	</select>

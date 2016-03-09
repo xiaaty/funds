@@ -10,4 +10,14 @@
 		VALUES
     	(null,#{custNo},#{userNo},#{accNo},#{contractId},#{contractAmt},#{payAmt},#{transferTime},#{busiNo},#{seqNo},#{mortgageeAccNo},#{createTime},#{mchnParent},#{mchnChild},#{loanPlatform})
     </insert>  
+	<insert id="insertEnterAccount"  parameterType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity"  > 
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+       INSERT INTO 
+		`t_gq_fss_enterAccount`
+		(id,contract_id,acc_no,busi_no,mortgagee_acc_no,seq_no,create_time,mchn_parent,mchn_child,serial_number,accounting_no)
+		VALUES
+    	(null,#{contractId},#{accNo},#{busiNo},#{mortgageeAccNo},#{seqNo},#{createTime},#{mchnParent},#{mchnChild},#{serialNumber},#{accountingNo})
+    </insert>  
 </mapper>

@@ -1,19 +1,26 @@
 package com.gqhmt.fss.architect.loan.service;
 
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
+import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import com.gqhmt.extServInter.dto.loan.FailedBidDto;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingDto;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
+import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +38,14 @@ import javax.annotation.Resource;
  * @since: JDK 1.7
  * Create at:   2015/1/16 16:36
  * Description:
- * <p/>
+ * <p/>借款人放款接口
+ * <p/>得到借款人放款回调对象（回盘）
+ * <p/>抵押权人提现接口
+ * <p/>抵押权人提现回盘
+ * <p/>流标申请
+ * <p/>流标回盘
+ * <p/>入账接口（批量）
+ * <p/>入账回盘
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
@@ -48,6 +62,8 @@ public class FssLoanService {
     private MerchantService merchantService;
     @Resource
     private FssFeeListService feeListService;
+    @Resource
+    private FssSettleListService fssSettleListService;
     
     /**
      * 
@@ -55,7 +71,7 @@ public class FssLoanService {
      * time:2016年3月7日
      * function：借款人放款接口
      */
-    public void insertLending(LendingDto dto){
+    public void insertLending(LendingDto dto)throws FssException{
     	FssLoanEntity fssLoanEntity=new FssLoanEntity();
     	MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(dto.getMchn());
 		fssLoanEntity.setPayAmt(dto.getPay_amt());
@@ -72,11 +88,13 @@ public class FssLoanService {
 		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
 //		feeList
 		List<FssFeeList> feeLists = dto.getFeeLists();
-		for (FssFeeList fssFeeList : feeLists) {
-			fssFeeList.setId(insertLending);
-			fssFeeList.setFeeType(fssFeeList.getFeeType());
-			fssFeeList.setFeeAmt(fssFeeList.getFeeAmt() );
-			feeListService.insert(fssFeeList);
+		if(feeLists!=null){
+			for (FssFeeList fssFeeList : feeLists) {
+				fssFeeList.setId(insertLending);
+				fssFeeList.setFeeType(fssFeeList.getFeeType());
+				fssFeeList.setFeeAmt(fssFeeList.getFeeAmt() );
+				feeListService.insert(fssFeeList);
+				}
 		}
     }
 	/**
@@ -85,7 +103,7 @@ public class FssLoanService {
 	 * time:2016年3月7日
 	 * function：得到借款人放款回调对象
 	 */
-	public LendingResponse getLendingResponse(String mchnNo, String seqNo) {
+	public LendingResponse getLendingResponse(String mchnNo, String seqNo)throws FssException {
 		Map<String,String> map=new HashMap<>();
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
@@ -102,7 +120,7 @@ public class FssLoanService {
 	 * function：抵押权人提现接口
 	 * @return 
 	 */
-	public long insertmortgageeWithDraw(MortgageeWithDrawDto dto) {
+	public long insertmortgageeWithDraw(MortgageeWithDrawDto dto) throws FssException {
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
     	MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(dto.getMchn());
     	fssLoanEntity.setPayAmt(dto.getPay_amt());
@@ -123,7 +141,7 @@ public class FssLoanService {
 	 * time:2016年3月7日
 	 * function：抵押权人提现回盘
 	 */
-	public MortgageeWithDrawRespons getMortgageeWithDrawRespons(String mchnNo, String seqNo) {
+	public MortgageeWithDrawRespons getMortgageeWithDrawRespons(String mchnNo, String seqNo)throws FssException {
 		Map<String,String> map=new HashMap<>();
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
@@ -135,7 +153,7 @@ public class FssLoanService {
 	 * time:2016年3月8日
 	 * function：流标申请
 	 */
-	public void insertfailedBidDto(FailedBidDto dto) {
+	public void insertfailedBidDto(FailedBidDto dto) throws FssException{
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
     	MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(dto.getMchn());
     	fssLoanEntity.setContractId(dto.getContract_id());
@@ -155,11 +173,13 @@ public class FssLoanService {
 		
 		try {
 			List<FssFeeList> feeLists = dto.getFeeLists();
+			if(feeLists!=null){
 			for (FssFeeList fssFeeList : feeLists) {
 				fssFeeList.setId(insertLending);
 				fssFeeList.setFeeType(fssFeeList.getFeeType());
 				fssFeeList.setFeeAmt(fssFeeList.getFeeAmt() );
 				feeListService.insert(fssFeeList);
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -172,7 +192,7 @@ public class FssLoanService {
 	 * time:2016年3月8日
 	 * function：流标回盘
 	 */
-	public FailedBidResponse getFailedBidResponse(String mchnNo, String seqNo) {
+	public FailedBidResponse getFailedBidResponse(String mchnNo, String seqNo)throws FssException {
 		Map<String,String> map=new HashMap<>();
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
@@ -180,6 +200,58 @@ public class FssLoanService {
 		failedBidResponse.setFeeLists(feeListService.getFeeList(failedBidResponse.getId()));
 		return failedBidResponse;
 	}
-
-    
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月9日
+	 * function：入账接口（批量）
+	 */
+	public void insertEnterAccount(List<EnterAccountDto> enterAccountDtos)throws FssException {
+		FssEnterAccountEntity fssEnterAccountEntity=null;
+		List<FssSettleListEntity> settleListEntities =null;
+		for (EnterAccountDto enterAccountDto : enterAccountDtos) {
+			MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(enterAccountDto.getMchn());
+			fssEnterAccountEntity=new FssEnterAccountEntity();
+			fssEnterAccountEntity.setAccNo(enterAccountDto.getAcc_no());	
+			fssEnterAccountEntity.setAccounting_no(enterAccountDto.getAccounting_no());
+			fssEnterAccountEntity.setContractId(enterAccountDto.getContract_id());	
+			fssEnterAccountEntity.setCreateTime(new Date());	
+			fssEnterAccountEntity.setMchnChild(enterAccountDto.getMchn());	
+			fssEnterAccountEntity.setMchnParent(findMerchantByMchnNo.getParentNo());	
+			fssEnterAccountEntity.setMortgageeAccNo(enterAccountDto.getMortgagee_acc_no());	
+			fssEnterAccountEntity.setSeqNo(enterAccountDto.getSeq_no());
+			fssEnterAccountEntity.setSerialNumber(enterAccountDto.getSerial_number());	
+			fssEnterAccountEntity.setBusiNo(enterAccountDto.getTrade_type());
+			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
+			settleListEntities= enterAccountDto.getSettleListEntities();
+			if(settleListEntities!=null){
+				for (FssSettleListEntity fssSettleListEntity : settleListEntities) {
+					fssSettleListEntity.setId(insertEnterAccount);
+					fssSettleListService.insert(fssSettleListEntity);
+				}
+			}
+		}
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月8日
+	 * function：入账回盘
+	 */
+	public List<EnterAccountResponse> getResponse(List<Map<String,String>> maps) {
+		List<EnterAccountResponse> enterAccountResponses=new ArrayList<>();
+		for (Map<String,String> map : maps) {
+			EnterAccountResponse enterAccountResponse=null;
+			try {
+				enterAccountResponse = fssLoanReadMapper.getEnterAccountResponse(map);
+				enterAccountResponse.setSettleListEntities(fssSettleListService.getFeeList(enterAccountResponse.getId()));
+				enterAccountResponse.setResp_code("00000000");
+			} catch (FssException e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				enterAccountResponse.setResp_code(e.getMessage());
+			}
+			enterAccountResponses.add(enterAccountResponse);
+		}
+		return enterAccountResponses;
+	}
 }	
