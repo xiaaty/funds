@@ -1,6 +1,8 @@
 package com.gqhmt.core.mybatis;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -37,11 +39,13 @@ public class GqPageInfo<T> extends PageInfo {
         super(list);
     }
 
+
+    @JsonIgnore
     public String getJSON(){
         return JsonUtil.getInstance().getJson(getjsonMap());
     }
 
-    public Map<String,String> getjsonMap(){
+    private Map<String,String> getjsonMap(){
         Map<String,String> map = new HashMap<>();
         map.put("pageNum",String.valueOf(super.getPageNum()));
         map.put("pageSize",String.valueOf(super.getPageSize()));

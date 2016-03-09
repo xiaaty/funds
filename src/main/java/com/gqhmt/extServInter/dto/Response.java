@@ -29,7 +29,7 @@ public class Response {
     private String signature;
 
     private String resp_code;
-
+    private String resp_msg;
 
 
     public String getMchn() {
@@ -72,7 +72,7 @@ public class Response {
         this.resp_msg = resp_msg;
     }
 
-    private String resp_msg;
+
 
 
 

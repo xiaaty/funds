@@ -1,11 +1,11 @@
 package com.gqhmt.extServInter.dto.asset;
 
-import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.PageSuperDto;
 
 /**
  *资产信息接口---资金流水查询接口参数
  */
-public class FundSequenceDto extends SuperDto {
+public class FundSequenceDto extends PageSuperDto {
 	
 	private Integer fundType;
 	private String trade_no;//交易号码

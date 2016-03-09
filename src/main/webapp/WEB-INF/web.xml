@@ -6,8 +6,6 @@
     <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
   </listener>
 
-
-
   <filter>
     <filter-name>delegatingFilterProxy</filter-name>
     <filter-class>com.gqhmt.sys.web.DelegatingFilterProxy</filter-class>
