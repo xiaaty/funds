@@ -1,6 +1,5 @@
 package com.gqhmt.funds.order;
 
-import com.gqhmt.funds.architect.order.bean.FundOrderBean;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import org.junit.Test;
@@ -10,7 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.service.MenuServiceTest
@@ -64,9 +62,9 @@ public class FondOrderServiceTest {
 
 	@Test
 	public void getFundOrderList(){
-		List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(44915,1103);
+//		List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(44915,1103);
 
-		assert list.size() >0;
+//		assert list.size() >0;
 	}
 
 

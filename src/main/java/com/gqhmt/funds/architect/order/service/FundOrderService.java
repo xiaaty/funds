@@ -141,8 +141,8 @@ public class FundOrderService  {
 		}
 	}
     
-    public List<FundOrderBean> getFundOrderReWithList(Integer custId,Integer type){
-        return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type);
+    public List<FundOrderBean> getFundOrderReWithList(Integer custId,Integer type,String strTime,String endTime){
+        return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type,strTime,endTime);
     }
     
 }

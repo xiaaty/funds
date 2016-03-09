@@ -42,7 +42,7 @@ public class RechargeAndWitwdrawOrder implements IRechargeAndWithdrawOrder {
         QueryListResponse response = new QueryListResponse();
         try {
             RechargeAndWithdrawListDto dd = (RechargeAndWithdrawListDto) dto;
-            List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(Integer.parseInt(dd.getCust_no()),dd.getType());
+            List<FundOrderBean> list = fundOrderService.getFundOrderReWithList(Integer.parseInt(dd.getCust_no()),dd.getType(),dd.getStr_trade_time(),dd.getEnd_trade_time());
             response.setResp_code("00000000");
             response.setPlain(list);
         }catch (Exception e){

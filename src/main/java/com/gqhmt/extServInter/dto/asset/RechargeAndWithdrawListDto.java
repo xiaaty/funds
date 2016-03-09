@@ -27,6 +27,11 @@ public class RechargeAndWithdrawListDto extends PageSuperDto{
     @APIValidNull(errorCode = "90004015")
     private int  type;
 
+    //@APIValidNull(errorCode = "90003001")
+    private String str_trade_time;              //交易开始时间
+    //@APIValidNull(errorCode = "90003001")
+    private String end_trade_time;//交易结束时间
+
     public String getCust_no() {
         return cust_no;
     }
@@ -41,5 +46,21 @@ public class RechargeAndWithdrawListDto extends PageSuperDto{
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getStr_trade_time() {
+        return str_trade_time;
+    }
+
+    public void setStr_trade_time(String str_trade_time) {
+        this.str_trade_time = str_trade_time;
+    }
+
+    public String getEnd_trade_time() {
+        return end_trade_time;
+    }
+
+    public void setEnd_trade_time(String end_trade_time) {
+        this.end_trade_time = end_trade_time;
     }
 }

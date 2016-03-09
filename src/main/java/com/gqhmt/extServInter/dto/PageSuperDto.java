@@ -19,16 +19,10 @@ package com.gqhmt.extServInter.dto;
 public class PageSuperDto extends SuperDto {
 
 
-    private Integer cpage;
+    private Integer pageSize;
     private Integer pageNum;
 
-    public Integer getCpage() {
-        return cpage;
-    }
 
-    public void setCpage(Integer cpage) {
-        this.cpage = cpage;
-    }
 
     public Integer getPageNum() {
         return pageNum;
@@ -36,5 +30,13 @@ public class PageSuperDto extends SuperDto {
 
     public void setPageNum(Integer pageNum) {
         this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

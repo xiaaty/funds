@@ -264,8 +264,8 @@ public class APIValidAop {
                 Integer pageSize = 10;
                 if (dto instanceof PageSuperDto){
                     PageSuperDto pageSuperDto = (PageSuperDto) dto;
-                    pageNum = pageSuperDto.getCpage();
-                    pageSize = pageSuperDto.getPageNum();
+                    pageNum = pageSuperDto.getPageNum();
+                    pageSize = pageSuperDto.getPageSize();
                 }
                 if(pageNum == null){
                     pageNum = 0;
