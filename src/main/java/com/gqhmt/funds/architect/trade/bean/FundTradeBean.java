@@ -1,5 +1,7 @@
 package com.gqhmt.funds.architect.trade.bean;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gqhmt.core.json.BigDecimalSerialize;
 import com.gqhmt.core.util.GlobalConstants;
 
 import java.math.BigDecimal;
@@ -85,7 +87,7 @@ public class FundTradeBean  implements java.io.Serializable{
 		this.accountId = accountId;
 	}
 
-	
+	@JsonSerialize(using = BigDecimalSerialize.class)
 	public BigDecimal getIncome() {
 		return this.income;
 	}
@@ -94,7 +96,7 @@ public class FundTradeBean  implements java.io.Serializable{
 		this.income = income;
 	}
 
-	
+	@JsonSerialize(using = BigDecimalSerialize.class)
 	public BigDecimal getSpending() {
 		return this.spending;
 	}
@@ -103,7 +105,7 @@ public class FundTradeBean  implements java.io.Serializable{
 		this.spending = spending;
 	}
 
-	
+	@JsonSerialize(using = BigDecimalSerialize.class)
 	public BigDecimal getUsableSum() {
 		return this.usableSum;
 	}

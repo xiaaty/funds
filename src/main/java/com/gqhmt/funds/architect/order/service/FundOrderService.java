@@ -142,7 +142,8 @@ public class FundOrderService  {
 	}
     
     public List<FundOrderBean> getFundOrderReWithList(Integer custId,Integer type,String strTime,String endTime){
-        return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type,strTime,endTime);
+
+        return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type == null?0:type==1003?1:2,strTime,endTime);
     }
     
 }

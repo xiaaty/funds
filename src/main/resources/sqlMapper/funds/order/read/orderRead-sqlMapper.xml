@@ -39,19 +39,24 @@
   FROM t_gq_fund_order t , t_gq_fund_account f
   WHERE t.account_id = f.id
   AND f.busi_type  = 3
-  <if test="type == 1103">
-   AND t.order_type IN (1,2)
-  </if>
-  <if test="type == 1104">
-   AND t.order_type IN (9,12)
-  </if>
-  <if test="strTime != null and strTime !='' "> <![CDATA[and STR_TO_DATE(t.create_time,'%Y-%m-%d') >= STR_TO_DATE(#{strTime},'%Y-%m-%d')]]> </if>
-  <if test="endTime != null and endTime !='' "><![CDATA[ and STR_TO_DATE(t.create_time,'%Y-%m-%d') <= STR_TO_DATE(#{endTime},'%Y-%m-%d')]]> </if>
+  AND (t.order_type = -1
+   <if test="order_type==1 ">
+    OR t.order_type = 1
+     OR t.order_type = 2
+    </if>
+    <if test="order_type==2 ">
+     OR t.order_type = 9
+     OR t.order_type = 12
+    </if>
+
+   )
+   <if test="strTime != null and strTime !='' "> <![CDATA[and STR_TO_DATE(t.create_time,'%Y-%m-%d') >= STR_TO_DATE(#{strTime},'%Y-%m-%d')]]> </if>
+   <if test="endTime != null and endTime !='' "><![CDATA[ and STR_TO_DATE(t.create_time,'%Y-%m-%d') <= STR_TO_DATE(#{endTime},'%Y-%m-%d')]]> </if>
 
 
   AND f.cust_id = #{custId}
   AND t.order_amount IS NOT NULL
-
+  ORDER BY t.create_time DESC,t.id DESC
  </select>
 
 </mapper>
