@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="com.gqhmt.sys.beans.MenuFunc"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
+<%@page import="com.gqhmt.core.util.ResourceUtil"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <header id="header">
 			<div id="logo-group">
 
@@ -23,7 +22,7 @@
 
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
-					<span> <a href="${contextPath}/loginout.jsp" title="退出登录"><i class="fa fa-sign-out"></i></a> </span>
+					<span> <a href="/logout" title="退出登录"><i class="fa fa-sign-out"></i></a> </span>
 				</div>
 				<!-- end logout button -->
 

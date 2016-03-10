@@ -36,7 +36,8 @@ public class ChangeBankCardDto extends SuperDto{
     private String city_id;                           //  '地区码',
     
     private String image;							// 核验图片
-
+    
+    private String acc_no;                          //借款人资金平台账号
 
 
 	public String getCust_no() {
@@ -95,6 +96,13 @@ public class ChangeBankCardDto extends SuperDto{
 		this.image = image;
 	}
 
+	public String getAcc_no() {
+		return acc_no;
+	}
+
+	public void setAcc_no(String acc_no) {
+		this.acc_no = acc_no;
+	}
 	
 
 }

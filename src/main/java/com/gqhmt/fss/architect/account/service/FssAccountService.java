@@ -4,6 +4,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
@@ -12,6 +13,8 @@ import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssFuiouAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -118,5 +121,70 @@ public class FssAccountService {
         return "";
     }
 
+    /**
+     * 新增账户信息
+     * @param dto
+     * @param fssCustomerEntity
+     * @return
+     * @throws FssException
+     */
+    public FssAccountEntity createFssAccount(CreateLoanAccountDto dto,CustomerInfoEntity fssCustomerEntity) throws FssException {
+        try {
+            FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
+            fssAccountEntity.setCustNo(dto.getFssSeqOrderEntity().getCustNo());
+            fssAccountEntity.setAccBalance(BigDecimal.ZERO);
+            fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
+            fssAccountEntity.setAccAvai(BigDecimal.ZERO);
+            fssAccountEntity.setAccNo(getAccno(dto.getTrade_type()));
+            //设置账户类型
+            //设置开户来源
+            //设置渠道id
+            fssAccountWriteMapper.insertSelective(fssAccountEntity);
+            return fssAccountEntity;
+        } catch (Exception e) {
+            LogUtil.error(this.getClass(),e);
+            throw new FssException("");
+        }
+    }
+    
+    
+    
+    public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,CustomerInfoEntity fssCustomerEntity) throws FssException {
+        try {
+            FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
+            fssAccountEntity.setCustNo(String.valueOf(fssCustomerEntity.getId()));
+            fssAccountEntity.setAccBalance(BigDecimal.ZERO);
+            fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
+            fssAccountEntity.setAccAvai(BigDecimal.ZERO);
+            fssAccountEntity.setAccNo(getAccno(dto.getTrade_type()));
+            //设置账户类型
+            //设置开户来源
+            //设置渠道id
+            fssAccountWriteMapper.insertSelective(fssAccountEntity);
+            return fssAccountEntity;
+        } catch (Exception e) {
+            LogUtil.error(this.getClass(),e);
+            throw new FssException("");
+        }
+    }
+    
+    /**
+     * 根据cust_id查询账户
+     * @param id
+     * @return
+     */
+    public FssAccountEntity getFssAccountByCustId(Integer custId){
+    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+    	fssAccountEntity.setCustId(custId);
+    	accountReadMapper.selectOne(fssAccountEntity);
+    	return fssAccountEntity;
+    	
+    }
+    
+    
+    
+    
+    
+    
 
 }

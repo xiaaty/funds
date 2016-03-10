@@ -11,7 +11,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/1/12 14:09
- * Description:
+ * Description:开户接口参数
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -20,17 +20,16 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class CreateLoanAccountDto extends SuperDto {
 
-
-    @APIValidNull(errorCode = "90002006")
-	private String busi_no;			//业务编号
-
-    @APIValidNull(errorCode = "90002006")
+    @APIValidNull(errorCode = "90002016")
+    private String contract_id;		//合同Id
+ 
+    @APIValidNull(errorCode = "90002009")
     private String mobile;			//手机号
 
-    @APIValidNull(errorCode = "90002006")
+    @APIValidNull(errorCode = "90002010")
     private String cert_no;			//身份证号
 
-    @APIValidNull(errorCode = "90002006")
+    @APIValidNull(errorCode = "90002011")
     private String name;			//客户姓名
 
     @APIValidNull(errorCode = "90002012")
@@ -41,9 +40,7 @@ public class CreateLoanAccountDto extends SuperDto {
 
     @APIValidNull(errorCode = "90002014")
     private String city_id;			//开户地区
-    
-    
-    
+
     public String getMobile() {
         return mobile;
     }
@@ -92,14 +89,12 @@ public class CreateLoanAccountDto extends SuperDto {
         this.city_id = city_id;
     }
 
-	public String getBusi_no() {
-		return busi_no;
+	public String getContract_id() {
+		return contract_id;
 	}
 
-	public void setBusi_no(String busi_no) {
-		this.busi_no = busi_no;
+	public void setContract_id(String contract_id) {
+		this.contract_id = contract_id;
 	}
-
-	
     
 }

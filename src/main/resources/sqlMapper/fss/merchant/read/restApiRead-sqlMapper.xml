@@ -120,5 +120,22 @@
 		t_gq_fss_mchn_api WHERE mchn_no=#{mchnNo}
 	</delete>
 	
+	<select id="selectByMchnNo" parameterType="java.lang.String"
+		resultType="com.gqhmt.fss.architect.merchant.entity.MerchantEntity">
+		SELECT
+		a.id,
+		a.mchn_name mchnName,
+		a.mchn_no mchnNo,
+		a.parent_id parentId,
+		a.parent_no parentNo,
+		a.mchn_key mchnKey,
+		a.mchn_key_end_date
+		mchnKeyEndDate,
+		a.create_time
+		createTime,
+		a.modify_time modifyTime,
+		a.state
+		FROM t_gq_fss_mchn a where a.mchn_no=#{mchn_no}
+	</select>
 	
 </mapper>

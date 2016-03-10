@@ -27,9 +27,9 @@ import java.util.Map;
 
 public interface FundTradeReadMapper extends ReadMapper<FundTradeEntity> {
 
-public BigDecimal getSumBigDecimal(Integer userID);
+    public BigDecimal getSumBigDecimal(Integer userID);
 
-public BigDecimal getSumBigDecimalByCus(Integer cusID);
+    public BigDecimal getSumBigDecimalByCus(Integer cusID);
 
-public List<FundTradeBean> queryFundTradeList(Map map);
+    public List<FundTradeBean> queryFundTradeList(Map map);
 }

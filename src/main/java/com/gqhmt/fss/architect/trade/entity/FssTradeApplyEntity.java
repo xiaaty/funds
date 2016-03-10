@@ -81,4 +81,148 @@ public class FssTradeApplyEntity implements Serializable {
 
     @Column(name = "seq_no")
     private String seqNo     ;                                 //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  api业务交易流水号
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
+
+	public Integer getApplyType() {
+		return applyType;
+	}
+
+	public void setApplyType(Integer applyType) {
+		this.applyType = applyType;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+
+	public String getBusinessNo() {
+		return businessNo;
+	}
+
+	public void setBusinessNo(String businessNo) {
+		this.businessNo = businessNo;
+	}
+
+	public Integer getBusiype() {
+		return busiype;
+	}
+
+	public void setBusiype(Integer busiype) {
+		this.busiype = busiype;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public BigDecimal getTradeAmount() {
+		return tradeAmount;
+	}
+
+	public void setTradeAmount(BigDecimal tradeAmount) {
+		this.tradeAmount = tradeAmount;
+	}
+
+	public BigDecimal getRealTradeAmount() {
+		return realTradeAmount;
+	}
+
+	public void setRealTradeAmount(BigDecimal realTradeAmount) {
+		this.realTradeAmount = realTradeAmount;
+	}
+
+	public BigDecimal getTradeChargeAmount() {
+		return tradeChargeAmount;
+	}
+
+	public void setTradeChargeAmount(BigDecimal tradeChargeAmount) {
+		this.tradeChargeAmount = tradeChargeAmount;
+	}
+
+	public Integer getTradetate() {
+		return tradetate;
+	}
+
+	public void setTradetate(Integer tradetate) {
+		this.tradetate = tradetate;
+	}
+
+	public String getApplyState() {
+		return applyState;
+	}
+
+	public void setApplyState(String applyState) {
+		this.applyState = applyState;
+	}
+
+	public String getMchnParent() {
+		return mchnParent;
+	}
+
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
+
+	public String getMchnChild() {
+		return mchnChild;
+	}
+
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getSeqNo() {
+		return seqNo;
+	}
+
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
+	}
 }

@@ -1,16 +1,11 @@
 package com.gqhmt.sys.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.AuthMenu;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.sys.beans.SysUsers;
-import com.gqhmt.sys.entity.MenuEntity;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -26,11 +21,14 @@ import org.apache.http.util.EntityUtils;
 import org.jasig.cas.client.util.AssertionHolder;
 import org.jasig.cas.client.validation.Assertion;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 /**
  * 
@@ -67,7 +65,14 @@ public class LoginFilter implements Filter {
 		SysUsers sysUsers = new SysUsers();  
 		HttpServletRequest request = (HttpServletRequest)servletRequest;
 		HttpServletResponse response = (HttpServletResponse)servletResponse;
-		HttpSession session = request.getSession();
+		HttpSession session = null;
+		try{
+			session = request.getSession();
+		}catch (Exception e){
+			chain.doFilter(request, response);
+			return;
+		}
+
 		//在session中自定义一个参数，以它来校验是否完成过自动登陆
 		Object user_login = session.getAttribute("AURORA_USER_LOGIN");
 		if (user_login != null){
@@ -86,7 +91,8 @@ public class LoginFilter implements Filter {
 		 //执行本系统的登陆。跟平常同时校验用户名和密码不同，这里只有用户名。
 		 try {
 			CloseableHttpClient httpclient = HttpClients.createDefault();
-			HttpPost httpPost = new HttpPost("http://10.100.200.113:8091/AuthManagement/api/rest/userInfo");
+			 String authUrl = ResourceUtil.getValue("config.appContext","authUrl");
+			HttpPost httpPost = new HttpPost(authUrl);
 			// 拼接参数
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 			nvps.add(new BasicNameValuePair("loginName", loginName));
@@ -112,10 +118,12 @@ public class LoginFilter implements Filter {
                 sysUsers.setLoginName((String) userInfo.get("loginName"));
                 sysUsers.setEmployeeNo((String) userInfo.get("no"));
                 GlobalConstants.setSession(request, GlobalConstants.SESSION_EMP, sysUsers);
-                /**..end--记录用户session信息**/ 
-                
+                /**..end--记录用户session信息**/
+
                 /**..start--记录菜单session信息**/
-                List<Map<String, String>> menuList = (List<Map<String, String>>) userInfo.get("menuList");
+				String url  =  request.getServletPath();
+				String context = request.getContextPath();
+                /*List<Map<String, String>> menuList = (List<Map<String, String>>) userInfo.get("menuList");
                 List<MenuEntity> menuEntities=new ArrayList<>();
                 MenuEntity menuEntity=null;
                 if(null != menuList){
@@ -130,12 +138,13 @@ public class LoginFilter implements Filter {
 					menuEntity.setParma(map.get("isShow"));
 					menuEntities.add(menuEntity);
 					}
-				String url  =  request.getServletPath();
-				String context = request.getContextPath();
-				String menu = authMenu.getMenu(menuEntities,context,url);
+
+
+				*//**..end--记录菜单session信息**//*
+                }*/
+
+				String menu = Application.getInstance().getMenu(context,url);
 				request.getSession().setAttribute("menu", menu);
-				/**..end--记录菜单session信息**/
-                }
 				// 消耗掉response
 				EntityUtils.consume(entity);
 			} finally {
@@ -149,7 +158,7 @@ public class LoginFilter implements Filter {
 		session.setAttribute("AURORA_USER_LOGIN", Boolean.TRUE);
 //		
 		//跳转到登陆成功后的页面（系统自定义）
-		response.sendRedirect(request.getRequestURI()+"main");
+		response.sendRedirect(request.getContextPath()+"/main");
 		}else{
 			chain.doFilter(servletRequest, servletResponse);
 		}
