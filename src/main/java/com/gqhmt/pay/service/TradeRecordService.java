@@ -3,11 +3,13 @@ package com.gqhmt.pay.service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
+import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.util.ThirdPartyType;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,8 +42,18 @@ public class TradeRecordService {
     @Resource
     private FundTradeService fundTradeService;
 
+    @Resource
+    private FundWithrawChargeService fundWithrawChargeService;
+
     public void recharge(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
-        sequenceService.charge(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity);
+        try {
+            sequenceService.charge(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity);
+        }catch (Exception e){
+            String  tmp = e.getMessage();
+            if(tmp != null && tmp.contains("funds_token_uk")){
+                throw new FssException("90004019");
+            }
+        }
         // this.fundTradeService.createFundTrade(entity, amount, BigDecimal.ZERO, fundType, "充值成功，充值金额 " + amount + "元");
         //super.sendNotice(NoticeService.NoticeType.FUND_CHARGE, entity, amount,BigDecimal.ZERO);
     }
@@ -71,13 +83,17 @@ public class TradeRecordService {
     /**
      * 交易记录查询
      * @param cust_no
-     * @param user_no
-     * @param busi_no
      * @return
      */
     public List<FundTradeBean> queryFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
     	List<FundTradeBean> tradelist = fundTradeService.queryFundTrade(cust_no,str_trade_time,end_trade_time,tradeFilters);
     	return tradelist;
+    }
+
+
+    public void chargeAmount(FundAccountEntity entity, FundAccountEntity toEntity, FundOrderEntity fundOrderEntity, FundOrderEntity fundOrderEntityCharge) throws FssException {
+        sequenceService.transfer(entity, toEntity, fundOrderEntity.getChargeAmount(), 22,4010,"收取提现手续费", ThirdPartyType.FUIOU, fundOrderEntityCharge);
+        this.fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(),3);
     }
     
     /**

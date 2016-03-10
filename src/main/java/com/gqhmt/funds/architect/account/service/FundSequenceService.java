@@ -132,7 +132,7 @@ public class FundSequenceService {
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
-        this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "提现成功，提现金额 " + amount + "元");
+        this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
     }
 
     private void refundByFroze(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
@@ -153,7 +153,7 @@ public class FundSequenceService {
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
-        this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "提现成功，提现金额 " + amount + "元");
+        this.fundTradeService.addFundTrade(entity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
     }
 
 
@@ -164,7 +164,7 @@ public class FundSequenceService {
      * @param toEntiry      转入转换
      * @param amount        转账金额
      */
-    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,Map<Integer,Long> map,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
+    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
         if(amount.multiply(new BigDecimal("100")).longValue()<0){
             throw new AmountFailException("传入金额不能小于0");
         }
@@ -190,22 +190,18 @@ public class FundSequenceService {
         }else if(accountType == 4005){
             toActionType = 1009;
         }
-        Map<Integer,Long> mappingFrom= new HashMap<>();
-        if(map!=null){
-            mappingFrom.putAll(map);
-        }
+
         FundSequenceEntity fromFundSequenceEntity =this.getFundSequenceEntity(fromEntity.getId(), actionType, accountType, new BigDecimal("-" + amount.toPlainString()), thirdPartyType, orderEntity, toEntiry.getId());
         fromFundSequenceEntity.setSumary("转账转出  转给"+toEntiry.getCustName()+"("+toEntiry.getId()+") ");
 
-        mappingFrom.put(GlobalConstants.BUSINESS_MAPPINF_CUSTOMER, Long.valueOf(toEntiry.getCustId()));
         FundSequenceEntity toFundSequenceEntity = this.getFundSequenceEntity(toEntiry.getId(), actionType, toActionType, amount, thirdPartyType, orderEntity, fromEntity.getId());
         toFundSequenceEntity.setSumary("转账转入 "+fromEntity.getCustName()+"("+fromEntity.getId()+")转入");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(fromFundSequenceEntity);
         list.add(toFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(fromEntity, amount, BigDecimal.ZERO, accountType, "转账转出",BigDecimal.ZERO);
-        this.fundTradeService.addFundTrade(toEntiry,BigDecimal.ZERO,amount, accountType, "转账转入",BigDecimal.ZERO);
+        this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,  accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
+        this.fundTradeService.addFundTrade(toEntiry,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
     }
     
     /**
@@ -241,7 +237,7 @@ public class FundSequenceService {
         list.add(orgFundSequenceEntity);
         list.add(frozenFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(orgEntity, amount, BigDecimal.ZERO, accountType, memo,bounsAmount);
+        this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType, memo,bounsAmount);
 
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
 
@@ -366,9 +362,6 @@ public class FundSequenceService {
     
     /**
      * 账户资金流水查询
-     * @param cust_no
-     * @param user_no
-     * @param busi_no
      * @return
      */
  /*   public FundAccountSequenceBean searchTradFlow(Integer cust_no,Integer user_no,Integer busi_no) throws FssException{
