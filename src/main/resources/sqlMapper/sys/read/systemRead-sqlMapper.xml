@@ -21,19 +21,19 @@
 	<select id="selectDictmain" parameterType="DictMain"  resultType="DictMain">
 
 		<include refid="field"/>
-		where t.parent_id =${parentId}
+		where t.parent_id =#{parentId}
 		<!--<if test="dictId ! = null and dictId != ''">
 			/*and t.dict_id like  concat('%',${dictId},'%')*/
 		</if>-->
 		<if test="dictName != null and dictName !=''">
-			and t.dict_name like  concat('%',${dictName},'%')
+			and t.dict_name like  concat('%',#{dictName},'%')
 		</if>
 	</select>
 	
 	
 	<select id="getDictMainById" parameterType="java.lang.String" resultType="DictMain">
 		<include refid="field"/>
-	   where t.dict_id=${dictId}
+	   where t.dict_id=#{dictId}
 	</select>
 	
 	<select id="selectDictByOrderList" parameterType="java.util.List" resultType="DictMain">

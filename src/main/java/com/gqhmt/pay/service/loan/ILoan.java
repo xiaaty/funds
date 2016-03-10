@@ -1,7 +1,13 @@
 package com.gqhmt.pay.service.loan;
 
+import java.util.List;
+
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
+import com.gqhmt.extServInter.dto.loan.FailedBidDto;
+import com.gqhmt.extServInter.dto.loan.LendingDto;
+import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.ILoan
@@ -12,8 +18,12 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:38
- * Description:
- * <p>
+ * Description: 开户
+ * <p>开户
+ * <p>流标接口
+ * <p>放款给借款人
+ * <p>抵押权人提现接口
+ * <p>入账
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
@@ -21,7 +31,40 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
  */
 public interface ILoan {
 
-    public void createAccount(CreateLoanAccountDto dto) throws FssException;
-
-
+    /**
+     * 
+     * author:jhz
+     * time:2016年3月7日
+     * function：放款
+     */
+	public boolean lending(LendingDto dto) throws FssException;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：抵押权人提现接口
+	 */
+	public boolean mortgageeWithDraw(MortgageeWithDrawDto dto) throws FssException;
+	/**
+	 * .
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：流标接口
+	 */
+	public boolean failedBid(FailedBidDto dto)throws FssException;
+	
+	/**
+	 * .
+	 * author:jhz
+	 * time:2016年3月9日
+	 * function：入账接口
+	 */
+	public boolean enterAccount(List<EnterAccountDto> enterAccountDtos)throws FssException;
+	/**
+	 * 
+	 * author:kyl
+	 * time:2016年3月9日
+	 * function：开户
+	 */
+	public String createLoanAccount(CreateLoanAccountDto dto) throws FssException;
 }

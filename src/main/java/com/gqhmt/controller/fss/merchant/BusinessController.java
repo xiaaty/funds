@@ -107,7 +107,6 @@ public class BusinessController {
     /**
      * 商户新增确认
      * @param request
-     * @param busiCode
      * @return
      */
     @RequestMapping(value = "/sys/busi/checkCode")

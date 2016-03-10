@@ -3,10 +3,10 @@ package com.gqhmt.extServInter.service.asset.impl;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.QueryListResponse;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
-import com.gqhmt.extServInter.dto.asset.AssetResponse;
 import com.gqhmt.extServInter.service.asset.IAccountAccess;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.pay.service.account.IFundsAccount;
@@ -31,7 +31,7 @@ public class AccountAccessImpl implements IAccountAccess{
 	 */
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	AssetResponse response = new AssetResponse();
+		QueryListResponse response = new QueryListResponse();
     	List list=new ArrayList();
     	try {
     		FssAssetEntity fssAssetEntity = fundsAccountImpl.getAccountAsset((AssetDto)dto);

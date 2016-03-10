@@ -1,13 +1,13 @@
 package com.gqhmt.funds.architect.order.service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.util.ThirdPartyType;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.order.bean.FundOrderBean;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
-import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.pay.exception.CommandParmException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -141,6 +141,9 @@ public class FundOrderService  {
 		}
 	}
     
-    
+    public List<FundOrderBean> getFundOrderReWithList(Integer custId,Integer type,String strTime,String endTime){
+
+        return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type == null?0:type==1003?1:2,strTime,endTime);
+    }
     
 }

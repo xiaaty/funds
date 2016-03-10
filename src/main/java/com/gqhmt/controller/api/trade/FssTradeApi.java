@@ -291,7 +291,7 @@ public class FssTradeApi {
      * time:2016年3月1日
      * function：实时提现
      */
-    @RequestMapping(value = "/sstxBusiness",method = RequestMethod.POST)
+    @RequestMapping(value = "/withhold",method = RequestMethod.POST)
     public Object sstxBusiness(SstxDto sstxDto){
     	Response response=new Response();
     	try {
@@ -303,12 +303,11 @@ public class FssTradeApi {
     	return response;
     }
 	
-    /**
-     * author:柯禹来
+    /**     * author:柯禹来
      * time:2016年3月1日
      * function：实时代扣
      */
-    @RequestMapping(value = "/ssdkBusiness",method = RequestMethod.POST)
+    @RequestMapping(value = "/agentWithdraw ",method = RequestMethod.POST)
     public Object ssdkBusiness(SsdkDto ssdkDto){
     	Response response=new Response();
     	try {

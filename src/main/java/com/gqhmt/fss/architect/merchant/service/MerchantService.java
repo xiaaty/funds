@@ -261,6 +261,15 @@ public class MerchantService {
 	public List<MerchantApiEntity> findMerchantApiAll(){
 		return merchantApiReadMapper.selectAll();
 	}
-
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：通过商户号查询商户对象
+	 */
+	public MerchantEntity findMerchantByMchnNo(String mchnNo){
+		return merchantReadMapper.selectByMchnNo(mchnNo);
+	}
+	
 	
 }

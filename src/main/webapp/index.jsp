@@ -2,7 +2,12 @@
     pageEncoding="UTF-8"%>
     <%@page import="com.gqhmt.core.util.GlobalConstants"%>
     <%@page import="com.gqhmt.util.RequestUtil"%>
+
+<script language="javascript">
+    window.location.href="<%=request.getContextPath()%>/main";
+</script>
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

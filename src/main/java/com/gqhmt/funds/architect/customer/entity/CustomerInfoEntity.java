@@ -194,6 +194,8 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	//汇总是否发短信0-发送；1-不发送
 	private Integer sendMsgTransferAllFouyou;
 
+	private Date nameIdentificationTime;//实名认证时间
+	
 	// Property accessors
 	public Integer getId() {
 		return this.id;
@@ -795,5 +797,17 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	public void setBankNo(String bankNo) {
 		this.bankNo = bankNo;
 	}
+	
+	@Column(name = "name_identification_time",insertable = false)
+	public Date getNameIdentificationTime() {
+		return nameIdentificationTime;
+	}
+
+	public void setNameIdentificationTime(Date nameIdentificationTime) {
+		this.nameIdentificationTime = nameIdentificationTime;
+	}
+	
+	
+	
 	
 }

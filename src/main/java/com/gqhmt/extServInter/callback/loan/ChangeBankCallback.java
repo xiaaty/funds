@@ -1,5 +1,12 @@
 package com.gqhmt.extServInter.callback.loan;
 
+import javax.annotation.Resource;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
+import com.gqhmt.pay.service.account.IFundsAccount;
 /**
  * Filename:    com.gqhmt.extServInter.callback.loan.ChangeBankCallback
  * Copyright:   Copyright (c)2015
@@ -9,12 +16,30 @@ package com.gqhmt.extServInter.callback.loan;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:32
- * Description:
+ * Description:银行卡变更完成通知回调
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016/3/6  于泳      1.0     1.0 Version
  */
-public class ChangeBankCallback {
+public class ChangeBankCallback{
+//	银行卡变更完成，通知变更发起方（借款系统）返回 seqNo 流水号 和 mchn  商户号 
+	@Resource
+	private IFundsAccount fundsAccountImpl;
+    
+    public Response bankCardChangeCallBack(String seqNo,String mchn) throws FssException{
+    	ChangeCardResponse response = new ChangeCardResponse();
+    	try {
+    		FssChangeCardEntity fssChangeCardEntity = fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
+    		response.setFssChangeCardEntity(fssChangeCardEntity);
+			response.setResp_code("0000");
+		} catch (FssException e) {
+			LogUtil.info(this.getClass(), e.getMessage());
+			response.setResp_code(e.getMessage());
+		}
+    	return response;
+    }
+    
+    
 }
