@@ -1,6 +1,7 @@
 package com.gqhmt.sys.controller;
 
 
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.sys.beans.MenuFunc;
 import com.gqhmt.sys.service.UserService;
@@ -86,4 +87,16 @@ public class LoginController {
 		return "/index";
 	}
 		*/
+
+	@RequestMapping(value = "/sys/cache/reloadView")
+	public String cacheReloadVie(){
+
+		return "sys/menu/cacheReload";
+	}
+
+	@RequestMapping(value = "/sys/cache/reload")
+	public String cacheReload(){
+		Application.getInstance().reload();
+		return "redirect:/sys/cache/reloadView" ;
+	}
 }

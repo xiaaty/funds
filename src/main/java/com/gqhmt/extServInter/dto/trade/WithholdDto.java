@@ -1,7 +1,9 @@
 package com.gqhmt.extServInter.dto.trade;
 
 
+import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -32,6 +34,7 @@ public class WithholdDto extends SuperDto {
 
 
 	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;	//代扣金额
 
 

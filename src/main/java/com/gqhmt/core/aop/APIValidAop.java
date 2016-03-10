@@ -1,7 +1,9 @@
 package com.gqhmt.core.aop;
 
 import com.github.pagehelper.PageHelper;
+import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.GqPageInfo;
@@ -26,6 +28,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -128,11 +131,13 @@ public class APIValidAop {
             String name = field.getName();
             //空值校验
             validIsNull(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
+            validMoney(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
         }
         for(Field field:fields){
             String name = field.getName();
             //空值校验
             validIsNull(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
+            validMoney(field,dto,"get"+name.substring(0,1).toUpperCase()+name.substring(1));
         }
     }
 
@@ -172,22 +177,86 @@ public class APIValidAop {
      */
     private void validIsNull(Field superField,Object obj,String methodName) throws FssException {
         APIValidNull api = superField.getAnnotation(APIValidNull.class);
-        if(api != null ){
-            try {
-                Object value = MethodUtils.invokeMethod(obj,methodName,null);
-                if( value == null){
-                    throw  new FssException(api.errorCode());
-                }
-            } catch (NoSuchMethodException e) {
-                throw new FssException("90099998",e);
-            } catch (IllegalAccessException e) {
-                throw new FssException("90099998",e);
-            } catch (InvocationTargetException e) {
-                throw new FssException("90099998",e);
+        if(api == null )return;
+
+        try {
+            Object value = MethodUtils.invokeMethod(obj,methodName,null);
+            if( value == null){
+                throw  new FssException(api.errorCode());
             }
+        } catch (NoSuchMethodException e) {
+            throw new FssException("90099998",e);
+        } catch (IllegalAccessException e) {
+            throw new FssException("90099998",e);
+        } catch (InvocationTargetException e) {
+            throw new FssException("90099998",e);
         }
 
     }
+
+    private void validMoney(Field superField,Object obj,String methodName) throws FssException {
+        APIValid apiValid = superField.getAnnotation(APIValid.class);
+        if(apiValid == null){
+            return;
+        }
+        APIValidType apiValidType = apiValid.type();
+        if(APIValidType.MONEY != apiValidType && apiValidType!=APIValidType.MONEY_ZERO) return;
+        Object value = null;
+        try {
+            value = MethodUtils.invokeMethod(obj,methodName,null);
+            if( value == null) return;
+
+            long money = 0;
+
+            //金额判断,必须大于0
+            if(value instanceof BigDecimal){
+                BigDecimal bigDecimal = (BigDecimal) ((BigDecimal) value).multiply(new BigDecimal(100));
+                money = bigDecimal.longValue();
+            }else if(value instanceof  Long){
+                money = value == null ? 0:(long) value;
+            }else if(value instanceof  String){
+                BigDecimal bigDecimal = new BigDecimal(value.toString()).multiply(new BigDecimal(100));
+                money = bigDecimal.longValue();
+            }else{
+                throw  new FssException("90099006");
+            }
+
+            if(APIValidType.MONEY == apiValidType && money <=0){
+                throw  new FssException(apiValid.errorCode());
+            }
+            if(APIValidType.MONEY_ZERO == apiValidType && money <0){
+                throw  new FssException(apiValid.errorCode());
+            }
+
+            //单位判断,小数点只能2位
+            if(value instanceof BigDecimal){
+                String moneyStr = ((BigDecimal) value).toPlainString();
+                String[] moneySplit = moneyStr.split("\\.");
+                if(moneySplit.length<2 || moneySplit[1].length()>2){
+                    throw  new FssException("90004016");
+                }
+            }else if(value instanceof  String){
+                String moneyStr = value.toString();
+                String[] moneySplit = moneyStr.split("\\.");
+                if(moneySplit.length<2 || moneySplit[1].length()>2){
+                    throw  new FssException("90004016");
+                }
+            }
+
+
+
+        } catch (NoSuchMethodException e) {
+            throw new FssException("90099998",e);
+        } catch (IllegalAccessException e) {
+            throw new FssException("90099998",e);
+        } catch (InvocationTargetException e) {
+            throw new FssException("90099998",e);
+        }
+
+
+    }
+
+
 
 
     /**
