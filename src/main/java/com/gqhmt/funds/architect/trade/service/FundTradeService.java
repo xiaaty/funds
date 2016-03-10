@@ -119,8 +119,6 @@ public class FundTradeService {
     /**
      * 查询交易记录
      * @param cust_no
-     * @param user_no
-     * @param busi_no
      * @return
      */
     public List<FundTradeBean> queryFundTrade(Integer cust_no,String str_trade_time,String end_trade_time,String tradeFilters) throws FssException{
@@ -138,8 +136,6 @@ public class FundTradeService {
     	String tradeType=null; 
     	StringBuffer types = new StringBuffer();
     	if(tradeFilters!=null && !"".equals(tradeFilters)){
-    		if(!tradeFilters.equals("c-w-b-r-o")){
-    			types.append("-1,");//空的，不存在
     			if(tradeFilters.indexOf("c")>=0){//充值
     				types.append("1001,");		
     			}
@@ -151,14 +147,13 @@ public class FundTradeService {
     			}
     			if(tradeFilters.indexOf("r")>=0){//回款
     				types.append("3005,3006,");
-    				}
+				}
     			if(tradeFilters.indexOf("o")>=0){//其他
     				types.append("1002,1005,1006,1007,1008,1009,1010,1011,2005,2007,2008,2009,2010,3003,3004,3007,3008,3010,3011,4001,4002,4003,4004,4005,4006,4007,4010,");
 				}
     			types.deleteCharAt(types.length()-1);
-    			}
     		}else{//当tradeFilters为空的默认查询所有状态
-    			types.append("-1,1001,1003,1004,1012,2001,2002,2003,2004,2006,3001,3002,3009,3005,3006,1002,1005,1006,1007,1008,1009,1010,1011,2005,2007,2008,2009,2010,3003,3004,3007,3008,3010,3011,4001,4002,4003,4004,4005,4006,4007,4010");//空的，不存在
+    			types.append("-1");//空的，不存在
     		}
     		tradeType=types.toString();
 	    	List list=new ArrayList();
