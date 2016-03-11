@@ -160,9 +160,9 @@ public class FssChangeCardService {
         }
 
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(bankCardId);
-        if(bankNo.equals(bankCardinfoEntity.getBankNo())){
+       /* if(bankNo.equals(bankCardinfoEntity.getBankNo())){
             throw new FssException("0020");
-        }
+        }*/
 
         FssChangeCardEntity entity = getChangeCardInstance(custom,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo);
         insert(entity);
@@ -379,11 +379,9 @@ public class FssChangeCardService {
      * @return
      * @throws FssException
      */
-   public FssChangeCardEntity queryChangeCardByParam(String seqNo,String mchn) throws FssException{
-	   FssChangeCardEntity fssChangeCardEntity=new FssChangeCardEntity();
-	   fssChangeCardEntity.setSeqNo(seqNo);
-	   fssChangeCardEntity.setMchn(mchn);
-	   changeCardReadMapper.selectOne(fssChangeCardEntity);
+   public FssChangeCardEntity queryChangeCardByParam(String seq_no,String mchn) throws FssException{
+	   FssChangeCardEntity fssChangeCardEntity=null;
+	   fssChangeCardEntity=changeCardReadMapper.getChangeCardByParam(seq_no,mchn);
 	   return fssChangeCardEntity;
     }
     

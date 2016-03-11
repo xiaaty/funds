@@ -75,17 +75,37 @@ public class CustomerInfoService {
 	 */
 	public FssAccountEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
 //			1.创建账户	t_gq_customer_info 
-			CustomerInfoEntity customerInfoEntity=this.createCustomerInfo(loanAccountDto);
-			customerInfoWriteMapper.insertSelective(customerInfoEntity);
+			CustomerInfoEntity customerInfoEntity;
+			try {
+				customerInfoEntity = this.createCustomerInfo(loanAccountDto);
+				customerInfoWriteMapper.insertSelective(customerInfoEntity);
+			} catch (Exception e) {
+				throw new FssException("创建客户信息失败！");
+			}
 			//2.创建用户         t_gq_user	
-			UserEntity userEntity=this.createUser(loanAccountDto,customerInfoEntity);
-			gqUserWriteMapper.insertSelective(userEntity);
+			UserEntity userEntity;
+			try {
+				userEntity = this.createUser(loanAccountDto,customerInfoEntity);
+				gqUserWriteMapper.insertSelective(userEntity);
+			} catch (Exception e) {
+				throw new FssException("创建用户信息失败！");
+			}
 			//3.创建银行卡信息     t_gq_bank_info
-			BankCardInfoEntity bankCardInfoEntity=this.createBankCardInfoEntity(loanAccountDto,customerInfoEntity,userEntity);
-			bankCardinfoService.insert(bankCardInfoEntity);
+			BankCardInfoEntity bankCardInfoEntity;
+			try {
+				bankCardInfoEntity = this.createBankCardInfoEntity(loanAccountDto,customerInfoEntity,userEntity);
+				bankCardinfoService.insert(bankCardInfoEntity);
+			} catch (Exception e) {
+				throw new FssException("创建用户银行卡信息失败！");
+			}
 //			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-			FssAccountEntity fssAccount=this.createFssAccount(loanAccountDto, customerInfoEntity, userEntity, bankCardInfoEntity);
-			fssAccountWriteMapper.insertSelective(fssAccount);
+			FssAccountEntity fssAccount;
+			try {
+				fssAccount = this.createFssAccount(loanAccountDto, customerInfoEntity, userEntity, bankCardInfoEntity);
+				fssAccountWriteMapper.insertSelective(fssAccount);
+			} catch (Exception e) {
+				throw new FssException("创建客户资金账户失败！");
+			}
 			//4.创建资金账户
 		return fssAccount;
 	}
@@ -1109,6 +1129,7 @@ public class CustomerInfoService {
 	 */
 	public BankCardInfoEntity createBankCardInfoEntity(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity) throws FssException{
 		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+		bankCardInfoEntity.setId(customer.getBankId());
 		bankCardInfoEntity.setCustId(customer.getId());
 		bankCardInfoEntity.setBankLongName("");
 		bankCardInfoEntity.setBankSortName("");
@@ -1118,7 +1139,7 @@ public class CustomerInfoService {
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
 		bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
-		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+//		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
 		bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
 		bankCardInfoEntity.setCreateUserId(1);
 		bankCardInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));

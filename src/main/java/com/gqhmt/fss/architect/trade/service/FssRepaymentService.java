@@ -56,5 +56,15 @@ public class FssRepaymentService {
 		return fssRepaymentReadMapper.select(entity);
 	}
 	
+	/**
+	 * 查询所有借款代扣信息
+	 * @return
+	 * @throws FssException
+	 */
+	public List<FssRepaymentEntity> queryFssRepaymentEntity(FssRepaymentEntity repayment) throws FssException{
+			return fssRepaymentReadMapper.queryFssRepayment(repayment);
+	}
+		
+	
 	
 }
