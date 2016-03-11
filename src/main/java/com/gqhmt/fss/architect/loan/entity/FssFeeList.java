@@ -36,13 +36,46 @@ public class FssFeeList implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
     
+    @Column(name = "loan_id")
+    private Long loanId;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
+    
     @Column(name = "fee_type")
     private String feeType   ;                                //费用类型        YES             (NULL)                   select,insert,update,references  账户总资产
+  
+    @Column(name = "trade_status")
+    private String tradeStatus   ;                                //交易状态        YES             (NULL)                   select,insert,update,references  账户总资产
+    
+    @Column(name = "is_true")
+    private String isTrue   ;                                // 0成功还是1失败        YES             (NULL)                   select,insert,update,references  账户总资产
+   
+    @Column(name="loan_platform")
+    private String loanPlatform;              // 借款平台 “北京”、"上海"...
     
     @Column(name = "fee_amt")
     private BigDecimal feeAmt   ;                                //费用金额       YES             (NULL)                   select,insert,update,references  账户总资产
    
+    @Column(name="rep_code")
+    private String repCode;              // 返回码
   
+    @Column(name="rep_msg")
+    private String repMsg;              // 返回码
+  
+	public String getRepCode() {
+		return repCode;
+	}
+
+	public void setRepCode(String repCode) {
+		this.repCode = repCode;
+	}
+
+	public String getRepMsg() {
+		return repMsg;
+	}
+
+	public void setRepMsg(String repMsg) {
+		this.repMsg = repMsg;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +98,38 @@ public class FssFeeList implements Serializable {
 
 	public void setFeeAmt(BigDecimal feeAmt) {
 		this.feeAmt = feeAmt;
+	}
+
+	public Long getLoanId() {
+		return loanId;
+	}
+
+	public void setLoanId(Long loanId) {
+		this.loanId = loanId;
+	}
+
+	public String getTradeStatus() {
+		return tradeStatus;
+	}
+
+	public void setTradeStatus(String tradeStatus) {
+		this.tradeStatus = tradeStatus;
+	}
+
+	public String getIsTrue() {
+		return isTrue;
+	}
+
+	public void setIsTrue(String isTrue) {
+		this.isTrue = isTrue;
+	}
+
+	public String getLoanPlatform() {
+		return loanPlatform;
+	}
+
+	public void setLoanPlatform(String loanPlatform) {
+		this.loanPlatform = loanPlatform;
 	}
 
 

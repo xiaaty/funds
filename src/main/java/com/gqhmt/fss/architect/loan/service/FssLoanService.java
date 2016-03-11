@@ -78,7 +78,7 @@ public class FssLoanService {
 		fssLoanEntity.setContractAmt(dto.getContract_amt());
 		fssLoanEntity.setSeqNo(dto.getSeq_no());
 		fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_acc_no());
-		fssLoanEntity.setBusiNo(dto.getTrade_type());
+		fssLoanEntity.setTradeType(dto.getTrade_type());
 		fssLoanEntity.setContractId(dto.getContract_id());
 		fssLoanEntity.setCreateTime(new Date());
 		fssLoanEntity.setMchnChild(dto.getMchn());
@@ -89,9 +89,8 @@ public class FssLoanService {
 		List<FssFeeList> feeLists = dto.getFeeLists();
 		if(feeLists!=null){
 			for (FssFeeList fssFeeList : feeLists) {
-				fssFeeList.setId(insertLending);
-				fssFeeList.setFeeType(fssFeeList.getFeeType());
-				fssFeeList.setFeeAmt(fssFeeList.getFeeAmt() );
+				fssFeeList.setLoanId(insertLending);
+				fssFeeList.setLoanPlatform(dto.getLoan_platform());
 				feeListService.insert(fssFeeList);
 				}
 		}
@@ -126,7 +125,7 @@ public class FssLoanService {
     	fssLoanEntity.setContractAmt(dto.getContract_amt());
     	fssLoanEntity.setSeqNo(dto.getSeq_no());
     	fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_acc_no());
-    	fssLoanEntity.setBusiNo(dto.getTrade_type());
+    	fssLoanEntity.setTradeType(dto.getTrade_type());
     	fssLoanEntity.setContractId(dto.getContract_id());
     	fssLoanEntity.setCreateTime(new Date());
     	fssLoanEntity.setMchnChild(dto.getMchn());
@@ -161,7 +160,7 @@ public class FssLoanService {
     	fssLoanEntity.setContractAmt(dto.getContract_amt());
 		fssLoanEntity.setPayAmt(dto.getPay_amt());
 		fssLoanEntity.setSeqNo(dto.getSeq_no());
-		fssLoanEntity.setBusiNo(dto.getTrade_type());
+		fssLoanEntity.setTradeType(dto.getTrade_type());
 		fssLoanEntity.setLoanPlatform(dto.getLoan_platform());
 		fssLoanEntity.setCreateTime(new Date());
 		fssLoanEntity.setMchnChild(dto.getMchn());
@@ -174,9 +173,8 @@ public class FssLoanService {
 			List<FssFeeList> feeLists = dto.getFeeLists();
 			if(feeLists!=null){
 			for (FssFeeList fssFeeList : feeLists) {
-				fssFeeList.setId(insertLending);
-				fssFeeList.setFeeType(fssFeeList.getFeeType());
-				fssFeeList.setFeeAmt(fssFeeList.getFeeAmt() );
+				fssFeeList.setLoanId(insertLending);
+				fssFeeList.setLoanPlatform(dto.getLoan_platform());
 				feeListService.insert(fssFeeList);
 				}
 			}
@@ -225,7 +223,7 @@ public class FssLoanService {
 			settleListEntities= enterAccount.getSettleListEntities();
 			if(settleListEntities!=null){
 				for (FssSettleListEntity fssSettleListEntity : settleListEntities) {
-					fssSettleListEntity.setId(insertEnterAccount);
+					fssSettleListEntity.setEnterId(insertEnterAccount);
 					fssSettleListService.insert(fssSettleListEntity);
 				}
 			}

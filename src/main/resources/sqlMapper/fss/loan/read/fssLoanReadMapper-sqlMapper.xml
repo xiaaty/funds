@@ -17,6 +17,8 @@
 		    t.contract_id contract_id,
 		    t.mortgagee_acc_no mortgagee_acc_no,
 		    t.acc_no acc_no,
+		    t.rep_code repCode,
+			t.rep_msg repMsg,
 			t.contract_amt contract_amt,
 			t.pay_amt pay_amt,
 			t.loan_platform loan_platform
@@ -29,6 +31,8 @@
 		SELECT 
 			f.id,
 			f.fee_type feeType,
+			f.rep_code repCode,
+			f.rep_msg repMsg,
 			f.fee_amt feeAmt
 			FROM t_gq_fss_feeList f
 			where f.id=#{id}
@@ -41,6 +45,8 @@
 		    t.contract_id contract_id,
 		    t.acc_no acc_no,
 			t.contract_amt contract_amt,
+			t.rep_code repCode,
+			t.rep_msg repMsg,
 			t.pay_amt pay_amt,
 			t.loan_platform loanPlatform  			
 			FROM t_gq_fss_loan t 
@@ -54,6 +60,8 @@
 		    t.contract_id contract_id,
 		    t.mortgagee_acc_no mortgagee_acc_no,
 		    t.acc_no acc_no,
+		    t.rep_code repCode,
+			t.rep_msg repMsg,
 			t.contract_amt contract_amt,
 			t.pay_amt pay_amt,
 			t.loan_platform loanPlatform
@@ -67,6 +75,8 @@
 			t.id,
 		    t.contract_id contract_id,
 		    t.serial_number serial_number,
+		    t.rep_code repCode,
+			t.rep_msg repMsg,
 		    t.accounting_no accounting_no,
 			t.mortgagee_acc_no mortgagee_acc_no,
 			t.acc_no acc_no

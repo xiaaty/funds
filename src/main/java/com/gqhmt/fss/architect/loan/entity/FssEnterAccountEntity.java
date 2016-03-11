@@ -72,7 +72,12 @@ public class FssEnterAccountEntity implements Serializable {
     @Column(name="is_true")
     private String isTrue;              // 0成功还是1失败
     
+    @Column(name="rep_code")
+    private String repCode;              // 返回码
   
+    @Column(name="rep_msg")
+    private String repMsg;              // 返回码
+    
 	public Long getId() {
 		return id;
 	}
@@ -167,6 +172,30 @@ public class FssEnterAccountEntity implements Serializable {
 
 	public void setMchnChild(String mchnChild) {
 		this.mchnChild = mchnChild;
+	}
+
+	public String getIsTrue() {
+		return isTrue;
+	}
+
+	public void setIsTrue(String isTrue) {
+		this.isTrue = isTrue;
+	}
+
+	public String getRepCode() {
+		return repCode;
+	}
+
+	public void setRepCode(String repCode) {
+		this.repCode = repCode;
+	}
+
+	public String getRepMsg() {
+		return repMsg;
+	}
+
+	public void setRepMsg(String repMsg) {
+		this.repMsg = repMsg;
 	}
 
 	
