@@ -160,9 +160,9 @@ public class FssChangeCardService {
         }
 
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(bankCardId);
-        if(bankNo.equals(bankCardinfoEntity.getBankNo())){
+       /* if(bankNo.equals(bankCardinfoEntity.getBankNo())){
             throw new FssException("0020");
-        }
+        }*/
 
         FssChangeCardEntity entity = getChangeCardInstance(custom,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo);
         insert(entity);

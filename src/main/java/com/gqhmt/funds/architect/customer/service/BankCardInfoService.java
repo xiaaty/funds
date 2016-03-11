@@ -451,18 +451,11 @@ public class BankCardInfoService {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public BankCardInfoEntity getBankCardByBankId(Integer bankid){
+		BankCardInfoEntity  bankCardInfo=new BankCardInfoEntity();
+		bankCardInfo.setBankNo(bankid.toString());
+		bankCardinfoReadMapper.selectOne(bankCardInfo);
+		return bankCardInfo;
+	}
 	
 }

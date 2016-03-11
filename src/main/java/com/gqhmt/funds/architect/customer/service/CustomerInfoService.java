@@ -1109,6 +1109,7 @@ public class CustomerInfoService {
 	 */
 	public BankCardInfoEntity createBankCardInfoEntity(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity) throws FssException{
 		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+		bankCardInfoEntity.setId(customer.getBankId());
 		bankCardInfoEntity.setCustId(customer.getId());
 		bankCardInfoEntity.setBankLongName("");
 		bankCardInfoEntity.setBankSortName("");
@@ -1118,7 +1119,7 @@ public class CustomerInfoService {
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
 		bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
-		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+//		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
 		bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
 		bankCardInfoEntity.setCreateUserId(1);
 		bankCardInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
