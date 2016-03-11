@@ -16,7 +16,6 @@ import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.pay.service.loan.ILoan;
 
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -145,11 +144,11 @@ public class LoanImpl implements ILoan {
 	 * function：入账接口
 	 */
 	@Override
-	public boolean enterAccount(List<EnterAccountDto> enterAccountDtos) throws FssException {
-		if(enterAccountDtos==null){
+	public boolean enterAccount(EnterAccountDto enterAccountDto) throws FssException {
+		if(enterAccountDto==null){
 			return false;
 		}else{
-			loanService.insertEnterAccount(enterAccountDtos);
+			loanService.insertEnterAccount(enterAccountDto);
 			}
 			return true;
 		}

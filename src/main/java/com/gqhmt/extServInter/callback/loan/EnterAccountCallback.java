@@ -1,12 +1,13 @@
 package com.gqhmt.extServInter.callback.loan;
 
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 
@@ -37,10 +38,17 @@ public class EnterAccountCallback {
 	 * time:2016年3月7日
 	 * function：得到入账回调对象
 	 */
-	public List<EnterAccountResponse> getResponse(List<Map<String,String>> maps){
-		
-		List<EnterAccountResponse> responses = fssLoanService.getResponse(maps);
-		 return responses;
+	public Response getResponse(String mchnNo,String seqNo){
+
+		Response response = null;
+		 try {
+			 response = fssLoanService.getResponse(mchnNo,seqNo);
+			response.setResp_code("0000");
+			} catch (FssException e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+		    	response.setResp_code(e.getMessage());
+			}
+		 return response;
 	}
 	
 }

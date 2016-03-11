@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -107,12 +105,12 @@ public class FssCallback {
      * function：入账接口
      */
 	@RequestMapping(value = "/loan/enterAccountCallback",method = RequestMethod.POST)
-    public Object EnterAccount(List<Map<String,String>> maps){
-    	List<EnterAccountResponse> response=null;
+    public Object EnterAccount(String mchnNo,String seqNo){
+		Response response=null;
     	try {
-    		 response = enterAccountCallback.getResponse(maps);
+    		 response = enterAccountCallback.getResponse(mchnNo, seqNo);
     	} catch (Exception e) {
-    		response = (List<EnterAccountResponse>) this.excute(e);
+    		response = (EnterAccountResponse) this.excute(e);
     	}
     	return response;
     }

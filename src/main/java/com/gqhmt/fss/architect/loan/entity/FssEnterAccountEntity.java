@@ -28,7 +28,7 @@ import javax.persistence.Table;
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_enterAccount")
+@Table(name = "t_gq_fss_enter_account")
 public class FssEnterAccountEntity implements Serializable {
 
     @Id
@@ -69,6 +69,9 @@ public class FssEnterAccountEntity implements Serializable {
     @Column(name="mchn_child")
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
   
+    @Column(name="is_true")
+    private String isTrue;              // 0成功还是1失败
+    
   
 	public Long getId() {
 		return id;

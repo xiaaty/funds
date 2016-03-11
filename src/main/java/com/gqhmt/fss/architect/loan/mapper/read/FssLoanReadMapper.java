@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
+import com.gqhmt.extServInter.dto.loan.EnterAccount;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
@@ -71,5 +71,5 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * time:2016年3月9日
 	 * function：入账回盘
 	 */
-	EnterAccountResponse getEnterAccountResponse(Map<String, String> map)throws FssException;
+	List<EnterAccount> getEnterAccount(Map<String, String> map)throws FssException;
 }

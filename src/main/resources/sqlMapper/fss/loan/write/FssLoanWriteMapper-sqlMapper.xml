@@ -15,7 +15,7 @@
 		SELECT LAST_INSERT_ID() AS id
 		</selectKey>
        INSERT INTO 
-		`t_gq_fss_enterAccount`
+		`t_gq_fss_enter_account`
 		(id,contract_id,acc_no,busi_no,mortgagee_acc_no,seq_no,create_time,mchn_parent,mchn_child,serial_number,accounting_no)
 		VALUES
     	(null,#{contractId},#{accNo},#{busiNo},#{mortgageeAccNo},#{seqNo},#{createTime},#{mchnParent},#{mchnChild},#{serialNumber},#{accountingNo})
