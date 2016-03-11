@@ -3,17 +3,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>账户管理--旧版账户--冠群驰骋投资管理(北京)有限公司</title>
+    <title>交易管理--交易审核--代扣审核--借款代扣--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
+
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
-   <%@include file="../../../view/include/common_css_js.jsp"%>
+   <%@include file="../../include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn{
             font:15/29px;
@@ -26,36 +24,32 @@
         }
 
     </style>
-
 </head>
 
 <body>
-<%@include file="../../../view/include/menu.jsp"%>
+<%@include file="../../include/menu.jsp"%>
 <div id="main" role="main">
 
     <!-- RIBBON -->
     <div id="ribbon">
-
-        <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>客户信息管理</li>
-            <li>客户核心信息</li>
+            <li>交易管理</li>
+            <li>交易审核</li>
+            <li>代扣审核</li>
+            <li>借款代扣</li>
         </ol>
-        <!-- end breadcrumb -->
     </div>
 
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
-                <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
- 				<!-- NEW WIDGET START -->
-                      <div class="jarviswidget" id="wid-id-11"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="Form">
+                                <form class="smart-form" action=""  method="post" id="repaymentForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -70,46 +64,30 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr">手机号码：</td>
+                                                        <td class="tr">商户号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="mobile" value="${customer.mobile}" />
+                                                                <input type="text" style="width:300px" name="mchnChild" value="${repayment.mchnChild}" />
                                                             </label>
                                                         </td>
-                                                         <td class="tr">证件号码：</td>
-                                                        <td>
-                                                            <label class="input" style="width:210px" >
-                                                                <input type="text" name="certNo" value="${customer.certNo}" />
+                                                         <td class="tr">流水号：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:300px" name="seqNo" value="${repayment.seqNo}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">姓名:</td>
-                                                        <td>
-                                                            <label class="input"  style="width:210px" >
-                                                                <input type="text" name="name" value="${customer.name}"/>
+                                                         <td class="tr">合同号：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:300px" name="contractId" value="${repayment.contractId}" />
                                                             </label>
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="tr">开户日期：</td>
-			                                            <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
-			                                                    </label>
-			                                                </section>
-			                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <footer>
-                                            <button type="submit" class="btn btn-primary" onclick="tijiao()">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button type="submit" class="btn btn-primary">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -117,14 +95,11 @@
                     		</div>
                 		</div>
                 
-                
-                
                     <!-- NEW WIDGET START -->
-                    <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>客户核心信息列表</h2>
+                            <h2>借款代扣</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -135,35 +110,50 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                   <%--  <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                                        <c:if test="${parent_id !=0}">
+                                            <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_return"><i class="fa fa-plus"></i>&nbsp;返回</button>
+                                        </c:if>
+                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                                    </div> --%>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                       <%--  <col width="200" />
-                                        <col /> --%>
                                         <thead>
                                         <tr>
-                                              <td>客户编号</td>
-                                              <td>客户姓名</td>
-                                              <td>客户手机号</td>
-                                              <td>证件类型</td>
-                                              <td>证件号码</td>
-                                              <td>是否第三方开户</td>
-                                              <td>创建日期</td>
-                                              <td>修改日期</td> 
-                                              <td>操作</td> 
+                                              <td>交易账号</td>
+                                              <td>交易类型</td>
+                                              <td>交易金额</td>
+                                              <td>执行状态</td>
+                                              <td>执行结果</td>
+                                              <td>创建时间</td>
+                                              <td>修改时间</td>
+                                              <td>流水号</td>
+                                              <td>序列号</td>
+                                              <td>合同号</td>
+                                              <td>父商户号</td>
+                                              <td>子商户号</td>
+                                              <td>备注</td>
+                                              <td>交易代码</td>
+                                              <td>返回信息</td>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                             <c:forEach items="${page.list}" var="customer">
+                                         <tbody>
+                                             <c:forEach items="${page.list}" var="repayment">
                                                 <tr>
-                                                    <td>${customer.custNo}</td>
-                                                    <td>${customer.name}</td>
-                                                    <td>${customer.mobile}</td>
-                                                    <td>${customer.certType==1?"身份证":"护照"}</td>
-                                                    <td>${customer.certNo}</td>
-                                                    <td>否</td>
-                                                    <td><fmt:formatDate value="${customer.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${customer.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <%-- <td><a href="${contextPath}/fss/account/customerAccountDetail">查看账户资产</a></td>--%>
-                                                    <td><a href="${contextPath}/fss/account/customerAccountDetail/${customer.custNo}">查看账户资产</a></td> 
+                                                    <td>${repayment.accNo}</td>
+                                                     <td><fss:dictView key="${repayment.tradeType}" /></td>
+                                                    <td>${repayment.amt}</td>
+	                                                <td><fss:dictView key="${repayment.state}" /></td>
+	                                                <td><fss:dictView key="${repayment.resultState}" /></td>
+                                                    <td><fss:fmtDate value="${repayment.createTime}"/></td>
+                                                    <td><fss:fmtDate value="${repayment.motifyTime}"/></td>
+                                                    <td>${repayment.seqNo}</td>
+                                                    <td>${repayment.serialNumber}</td>
+                                                    <td>${repayment.contractId}</td>
+                                                    <td>${repayment.mchnParent}</td>
+                                                    <td>${repayment.mchnChild}</td>
+                                                    <td>${repayment.remark}</td>
+                                                    <td>${repayment.respCode}</td>
+                                                    <td>${repayment.respMsg}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -178,15 +168,13 @@
         </section>
     </div>
     </div>
-<%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<%@include file="../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
  <script type="text/javascript" charset="utf-8">
 	 $(document).ready(function () {
 	     pageSetUp();
-	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
-	     
-	     
+	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#repaymentForm"));
 	     $('.selectdate').datetimepicker({
              language: 'zh-CN',
              weekStart: 1,
@@ -197,10 +185,7 @@
              minView: 2,
              forceParse: 0
          });
-	     
 	     dateCheck();
-	     
-	     
          $('.selectdate_time').datetimepicker({
              language: 'zh-CN',
              weekStart: 1,
@@ -306,38 +291,19 @@
 	    		} 
 	    	return ErrorMsg; 
 	    } 
-	 
-	    //验证输入的开户开始日期与结束日期 
-	    function tijiao(){
-	    	var startime=$("#startime").val();
-	    	var endtime=$("#endtime").val();
-	    	var d=new Date();
-	    	var nowday=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-	    	var d1 = new Date(startime.replace(/\-/g, "\/"));  
-    		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
-    		var d3 = new Date(nowday.replace(/\-/g, "\/"));  
-	    	
-	    	if(startime!="" && endtime.length==0){
-	    		if(d1>d3){
-	    			alert('查询开始时间不能早于当前时间！');
-	    			return false;
-	    		}
-	    	}else
-	    	if(startime!="" && endtime!=""){
-	    		if(d1>d3 && d1<=d2){
-	    			alert('您查询时间范围超前了！');
-	    			return false;
-	    		}else
-	    		if(d1>d2){
-	    			alert('查询开始时间不能早于结束时间！');
-	    			return false;
-	    		}
-	    	}
-	    }
-	 
+	    
+	/*   //添加按钮按下
+        $("#btn_add").button().click(function() {
+        	window.open("${contextPath}/sys/workassist/dictAdd/${parent_id}","_self");
+        });
+     //添加按钮按下
+     $("#btn_return").button().click(function() {
+         window.open("${contextPath}/sys/workassist/dictionary/${returnId}","_self");
+     });
+	     */
 </script>
 
-<%@include file="../../../view/include/foot.jsp"%>
+<%@include file="../../include/foot.jsp"%>
 </body>
 
 </html>

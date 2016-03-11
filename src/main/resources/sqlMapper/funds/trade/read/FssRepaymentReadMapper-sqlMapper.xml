@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper">
+	<select id="queryFssRepayment" parameterType="com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity">
+		 SELECT  
+			acc_no accNo,
+			trade_type tradeType,
+			create_time createTime,
+			motify_time motifyTime,
+			amt,
+			state,
+			result_state resultState,
+			seq_no seqNo,
+			serial_number serialNumber,
+			contract_id contractId,
+			mchn_parent mchnParent,
+			mchn_child mchnChild,
+			remark,
+			resp_code respCode,
+			resp_msg respMsg
+		FROM t_gq_fss_repayment 
+		<where>
+			<if test="mchnChild != null and mchnChild !=''">
+			 	and mchn_child like  CONCAT('%',#{mchnChild},'%')
+			</if>
+			<if test="seqNo != null and seqNo !=''">
+			 	and seq_no like  CONCAT('%',#{seqNo},'%')
+			</if>
+			<if test="contractId != null and contractId !=''">
+			  	and contract_id like  CONCAT('%',#{contractId},'%')
+			</if>
+		</where>
+	</select>
+
+</mapper>

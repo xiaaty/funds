@@ -81,7 +81,13 @@ public class FssTradeApplyEntity implements Serializable {
 
     @Column(name = "seq_no")
     private String seqNo     ;                                 //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  api业务交易流水号
-
+    
+    @Column(name = "bespoke_date")  //预约到账日期
+    private Date bespokedate ;   
+    
+    @Column(name = "contract_id")//合同Id
+    private String contractId;
+    
 	public Long getId() {
 		return id;
 	}
@@ -225,4 +231,21 @@ public class FssTradeApplyEntity implements Serializable {
 	public void setSeqNo(String seqNo) {
 		this.seqNo = seqNo;
 	}
+
+	public Date getBespokedate() {
+		return bespokedate;
+	}
+
+	public void setBespokedate(Date bespokedate) {
+		this.bespokedate = bespokedate;
+	}
+
+	public String getContractId() {
+		return contractId;
+	}
+
+	public void setContractId(String contractId) {
+		this.contractId = contractId;
+	}
+	
 }

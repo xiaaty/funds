@@ -61,4 +61,42 @@
 	<select id="quaryBankCardInfoList" parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity">
 		
 	</select>
+	
+	<select resultType="customer" parameterType="java.util.Map" id="findCustomerByParams">
+		SELECT 
+			t.id id,
+			t.cust_no custNo,
+			t.name name,
+			t.mobile mobile,
+			t.cert_type certType,
+			t.cert_no certNo,
+			t.create_time createTime,
+			t.modify_time modifyTime
+		FROM t_gq_fss_customer t
+		<where>
+			<if test="mobile!=null and mobile!=''">
+			 	AND t.mobile Like CONCAT(CONCAT('%',#{mobile}),'%') 
+			</if>    
+			<if test="cert_no != null and cert_no != ''"> 
+				AND t.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
+			 </if>    
+			<if test="name!=null and name!=''"> 
+				AND  t.name Like CONCAT(CONCAT('%',#{name}),'%')
+			 </if>    
+			 <if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
+				AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			</if>
+		</where>
+</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

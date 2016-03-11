@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.dto.loan;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.gqhmt.extServInter.dto.SuperDto;
 
@@ -24,6 +25,7 @@ public class LoanWithDrawApplyDto  extends SuperDto {
 	private String acc_no;//借款人资金平台账号
 	private BigDecimal contract_amt;//合同金额
 	private BigDecimal pay_amt;//放款（提现）金额
+	private Date bespoke_date;
 	public String getContract_id() {
 		return contract_id;
 	}
@@ -49,6 +51,11 @@ public class LoanWithDrawApplyDto  extends SuperDto {
 		this.pay_amt = pay_amt;
 	}
 	//预约到账日期
-	
+	public Date getBespoke_date() {
+		return bespoke_date;
+	}
+	public void setBespoke_date(Date bespoke_date) {
+		this.bespoke_date = bespoke_date;
+	}
 	
 }
