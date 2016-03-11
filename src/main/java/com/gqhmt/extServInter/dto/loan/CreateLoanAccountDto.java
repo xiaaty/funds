@@ -11,7 +11,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/1/12 14:09
- * Description:
+ * Description:开户接口参数
  * <p>
  * Modification History:
  * Date    Author      Version     Description

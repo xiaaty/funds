@@ -10,7 +10,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/1/12 14:09
- * Description:退还保证金接口
+ * Description:退还保证金接口参数
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------

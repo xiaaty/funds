@@ -10,7 +10,7 @@ import com.gqhmt.extServInter.service.ExtService;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/2/18 16:43
- * Description:	开户
+ * Description:	还款划扣
  * <p/>
  * Modification History:
  * Date    Author      Version     Description

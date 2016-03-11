@@ -1,16 +1,21 @@
 package com.gqhmt.controller.api.loan;
-
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
+import com.gqhmt.extServInter.dto.loan.MarginDto;
+import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.extServInter.service.loan.IChangeCard;
 import com.gqhmt.extServInter.service.loan.ICreateLoan;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
+import com.gqhmt.extServInter.service.loan.IMarginSendBack;
+import com.gqhmt.extServInter.service.loan.IRepayment;
 import com.gqhmt.pay.service.account.IFundsAccount;
+import com.gqhmt.pay.service.loan.IRePayment;
 import com.gqhmt.pay.service.loan.IWithDrawApply;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +52,12 @@ public class LoanAccountApi {
     private ILoadWithDraw loadWithDrawImpl;
     @Resource
     private IWithDrawApply withDrawApplyImpl;
+    @Resource
+    private IMarginSendBack marginSendBackImpl;
+    @Resource
+    private IRepayment repaymentImpl;
+    @Resource
+    private IRePayment rePaymentImpl;
     
     /**
      * author:柯禹来
@@ -70,8 +81,8 @@ public class LoanAccountApi {
      * @param
      * @return
      */
-    @RequestMapping(value = "/queryAccountByAccNo",method = RequestMethod.POST)
-    public Object queryAccountByAccNo(CardChangeDto changeCardDto){
+    @RequestMapping(value = "/bankCardChange",method = RequestMethod.POST)
+    public Object bankCardChange(CardChangeDto changeCardDto){
     	Response response=new Response();
     	try {
     		response = changeCardImpl.excute(changeCardDto);
@@ -91,7 +102,8 @@ public class LoanAccountApi {
     public Object bankCardChangeCallBack(String seqNo,String mchn){
     	Response response=new Response();
     	try {
-    		response = fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
+    		fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
+    		response.setResp_code("0000");
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -125,7 +137,60 @@ public class LoanAccountApi {
     public Object withDrasApplyCallBack(String seqNo,String mchn){
     	Response response=new Response();
     	try {
-    		response = withDrawApplyImpl.withDrasApplyCallBack(seqNo,mchn);
+    		withDrawApplyImpl.withDrasApplyCallBack(seqNo,mchn);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    /**
+     * 保证金退还
+     * @param seqNo
+     * @param mchn
+     * @return
+     */
+    @RequestMapping(value = "/marginSendBack",method = RequestMethod.POST)
+    public Object marginSendBack(MarginDto dto){
+    	Response response=new Response();
+    	try {
+    		response = marginSendBackImpl.excute(dto);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    /**
+     * 还款划扣
+     * @param seqNo
+     * @param mchn
+     * @return
+     */
+    @RequestMapping(value = "/createRefundDraw",method = RequestMethod.POST)
+    public Object createRefundDraw(@RequestBody RepaymentDto dto){
+    	Response response=new Response();
+    	try {
+    		response = repaymentImpl.excute(dto);
+    	} catch (Exception e) {
+    		LogUtil.error(this.getClass(), e);
+    		response.setResp_code(e.getMessage());
+    	}
+    	return response;
+    }
+    
+    /**
+     * 还款划扣通知
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/rePaymentCallBack",method = RequestMethod.POST)
+    public Object rePaymentCallBack(String seqNo,String mchn){
+    	Response response=new Response();
+    	try {
+    		rePaymentImpl.rePaymentCallBack(seqNo,mchn);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());

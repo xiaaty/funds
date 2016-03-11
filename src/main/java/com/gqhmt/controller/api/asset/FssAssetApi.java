@@ -1,6 +1,5 @@
 package com.gqhmt.controller.api.asset;
 
-import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -9,15 +8,13 @@ import com.gqhmt.extServInter.dto.account.BankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
+import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
-import com.gqhmt.extServInter.service.asset.IAccountBanlance;
-import com.gqhmt.extServInter.service.asset.IFundSeqence;
-import com.gqhmt.extServInter.service.asset.IBankCardList;
-import com.gqhmt.extServInter.service.asset.IBankList;
-import com.gqhmt.extServInter.service.asset.IFundTrade;
+import com.gqhmt.extServInter.service.asset.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 
 /**
@@ -48,6 +45,9 @@ public class FssAssetApi {
     private IFundSeqence fundSeqenceImpl;
 	@Resource
 	private IFundTrade fundTradeImpl;
+
+    @Resource
+    private IRechargeAndWithdrawOrder rechargeAndWithdrawOrder;
     /**
      * 账户余额查询
      * @param dto
@@ -74,7 +74,7 @@ public class FssAssetApi {
     	try {
     		response= bankListImpl.excute(bank);
     	} catch (FssException e) {
-             response.setResp_code(e.getMessage());
+            excute(e);
     	}
     	return response;
     }
@@ -89,7 +89,7 @@ public class FssAssetApi {
     	try {
     		response = bankCardListImpl.excute(bankcard);
     	} catch (Exception e) {
-    		response.setResp_code(e.getMessage());
+            excute(e);
     	}
     	return response;
     }
@@ -98,14 +98,13 @@ public class FssAssetApi {
      * time:2016年3月1日
      * function：账户资金流水查询
      */
-    @AutoPage
     @RequestMapping(value = "/queryFundSequence",method = RequestMethod.POST)
     public Object queryFundSequence(FundSequenceDto tradflowDto){
     	Response response= new Response();
     	try {
     		response =fundSeqenceImpl.excute(tradflowDto);
     	} catch (Exception e) {
-    		response.setResp_code(e.getMessage());
+            excute(e);
     	}
     	return response;
     }
@@ -114,15 +113,13 @@ public class FssAssetApi {
      * time:2016年3月1日
      * function：交易记录查询
      */
-    @AutoPage
     @RequestMapping(value = "/queryFundTrade",method = RequestMethod.POST)
     public Object queryFundTrade(FundTradeDto fundTradeDto){
-    	Response response=new Response();
+    	Response response=null;
     	try {
     		response = fundTradeImpl.excute(fundTradeDto);
     	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
+            excute(e);
     	}
     	return response;
     }
@@ -131,6 +128,26 @@ public class FssAssetApi {
         LogUtil.error(this.getClass(), e);
         Response response = new Response();
         response.setResp_code(e.getMessage());
+        return response;
+    }
+
+
+    /**
+     *
+     * @param dto
+     * @return
+     */
+
+    @RequestMapping(value = "/queryOrders",method = RequestMethod.POST)
+    public Object queryFundOrder(RechargeAndWithdrawListDto dto){
+        Response response=null;
+
+        try {
+            response = rechargeAndWithdrawOrder.excute(dto);
+        } catch (APIExcuteErrorException e) {
+            excute(e);
+        }
+
         return response;
     }
 }

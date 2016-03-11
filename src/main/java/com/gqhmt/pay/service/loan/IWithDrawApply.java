@@ -1,8 +1,8 @@
 package com.gqhmt.pay.service.loan;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
+import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.ILoan
@@ -23,6 +23,6 @@ public interface IWithDrawApply {
 
     public void createWithDrawApply(LoanWithDrawApplyDto dto) throws FssException;
 
-    public Response withDrasApplyCallBack(String seqNo,String mchn) throws FssException;
+    public FssTradeApplyEntity withDrasApplyCallBack(String seqNo,String mchn) throws FssException;
 
 }
