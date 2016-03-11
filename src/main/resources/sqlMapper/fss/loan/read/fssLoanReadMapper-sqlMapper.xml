@@ -26,7 +26,7 @@
 			where 1=1
 			<include refid="whereSql" />
 	</select>
-	<!-- 通过id得到收费列表 -->
+	<!-- 通过loanId得到收费列表 -->
 	<select id="getFeeList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssFeeList" >
 		SELECT 
 			f.id,
@@ -35,7 +35,18 @@
 			f.rep_msg repMsg,
 			f.fee_amt feeAmt
 			FROM t_gq_fss_feeList f
-			where f.id=#{id}
+			where f.loan_id=#{id}
+	</select>
+	<!-- 通过入账id得到费用列表 -->
+	<select id="getFssSettleList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssSettleListEntity" >
+		SELECT 
+			f.id,
+			f.account_type accountType,
+			f.rep_code repCode,
+			f.rep_msg repMsg,
+			f.settle_amt settleAmt
+			FROM t_gq_fss_settlelist f
+			where f.enter_id=#{id}
 	</select>
 	<!-- 抵押权人提现回盘 -->
 				

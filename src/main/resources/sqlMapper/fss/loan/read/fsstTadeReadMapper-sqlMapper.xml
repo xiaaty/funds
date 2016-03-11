@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.loan.mapper.read.FssLoanTadeReadMapper">
+
+<!-- 	<sql id="whereSql"> -->
+<!-- 			<if test="mchnNo != null and mchnNo != ''"> -->
+<!-- 				and t.mchn_child = #{mchnNo} -->
+<!-- 			</if> -->
+<!-- 			<if test="seqNo != null and seqNo != ''"> -->
+<!-- 				and t.seq_no = #{seqNo} -->
+<!-- 			</if> -->
+<!-- 	</sql> -->
+	<!-- 借款人提现列表 -->
+	<select id="getBorrowWithDraw"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+		SELECT 
+			t.id id,
+		    t.contract_id contractId,
+		    t.acc_no accNo,
+			t.trade_amount tradeAmount,
+			t.seq_no seqNo,
+			t.bespoke_date bespokeDate,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.mchn_child mchnChild,
+			t.is_true isTrue,
+			t.trade_state tradetate,
+			t.real_trade_amount realTradeAmount,
+			t.loan_platform loanPlatform  	
+			FROM t_gq_fss_loan t 
+			where t.apply_type=11091001
+			<if test="contractId != null and contractId != ''">
+				and t.contract_id like concat('%',#{contractId},'%')
+			</if>
+			<if test="seqNo != null and seqNo != ''">
+				and t.seq_no like concat('%',#{seqNo},'%')
+			</if>
+			<if test="mchnChild != null and mchnChild != ''">
+				and t.mchn_child like concat('%',#{mchnChild},'%')
+			</if>
+			<choose>
+				<when test="creatTime == null or creatTime == '' and modifyTime==null ">
+					AND 1=1
+				</when>
+				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
+					AND t.create_time BETWEEN #{creatTime} AND SYSDATE()
+				</when>
+				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
+					AND t.create_time BETWEEN #{creatTime} AND #{modifyTime}
+				</when>
+				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
+					AND t.create_time &lt; #{modifyTime} 
+				</when>
+			</choose>
+	</select>
+	<!-- 通过loanId得到收费列表 -->
+	<select id="findFeeList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssFeeList" >
+		SELECT 
+			f.id,
+			f.fee_type feeType,
+			f.rep_code repCode,
+			f.rep_msg repMsg,
+			f.trade_status tradeStatus,
+			f.is_true isTrue,
+			f.loan_platform loanPlatform,
+			f.fee_amt feeAmt
+			FROM t_gq_fss_feeList f
+			where f.loan_id=#{id}
+	</select>
+	<!-- 通过入账id得到费用列表 -->
+<!-- 	<select id="getFssSettleList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssSettleListEntity" > -->
+<!-- 		SELECT  -->
+<!-- 			f.id, -->
+<!-- 			f.account_type accountType, -->
+<!-- 			f.rep_code repCode, -->
+<!-- 			f.rep_msg repMsg, -->
+<!-- 			f.settle_amt settleAmt -->
+<!-- 			FROM t_gq_fss_settlelist f -->
+<!-- 			where f.enter_id=#{id} -->
+<!-- 	</select> -->
+	
+	<!-- 抵押权人放款列表 -->
+	<select id="findBorrowerLoan"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
+		SELECT 
+			t.id id,
+		    t.contract_id contractId,
+		    t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.rep_code repCode,
+			t.seq_no seqNo,
+			t.mortgagee_acc_no mortgageeAccNo,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.mchn_parent mchnParent,
+			t.mchn_child mchnChild,
+			t.is_true isTrue,
+			t.trade_type tradeType,
+			t.status status,
+			t.rep_msg repMsg,
+			t.pay_amt pay_amt,
+			t.loan_platform loanPlatform  	
+			FROM t_gq_fss_loan t 
+			where t.trade_type in ("11090001","11090002")
+			<if test="contractId != null and contractId != ''">
+				and t.contract_id like concat('%',#{contractId},'%')
+			</if>
+			<if test="seqNo != null and seqNo != ''">
+				and t.seq_no like concat('%',#{seqNo},'%')
+			</if>
+			<if test="mchnChild != null and mchnChild != ''">
+				and t.mchn_child like concat('%',#{mchnChild},'%')
+			</if>
+			<choose>
+				<when test="creatTime == null or creatTime == '' and modifyTime==null ">
+					AND 1=1
+				</when>
+				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
+					AND t.create_time BETWEEN #{creatTime} AND SYSDATE()
+				</when>
+				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
+					AND t.create_time BETWEEN #{creatTime} AND #{modifyTime}
+				</when>
+				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
+					AND t.create_time &lt; #{modifyTime} 
+				</when>
+			</choose>
+	</select>
+	<!-- 流标回盘回盘 -->
+<!-- 	<select id="getFailedBidResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.FailedBidResponse" > -->
+<!-- 		SELECT  -->
+<!-- 			t.id, -->
+<!-- 		    t.contract_id contract_id, -->
+<!-- 		    t.mortgagee_acc_no mortgagee_acc_no, -->
+<!-- 		    t.acc_no acc_no, -->
+<!-- 		    t.rep_code repCode, -->
+<!-- 			t.rep_msg repMsg, -->
+<!-- 			t.contract_amt contract_amt, -->
+<!-- 			t.pay_amt pay_amt, -->
+<!-- 			t.loan_platform loanPlatform -->
+<!-- 			FROM t_gq_fss_loan t -->
+<!-- 			where 1=1 -->
+<!-- 			<include refid="whereSql" /> -->
+<!-- 	</select> -->
+	<!-- 入账回盘-->
+<!-- 	<select id="getEnterAccount"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.EnterAccount" > -->
+<!-- 		SELECT  -->
+<!-- 			t.id, -->
+<!-- 		    t.contract_id contract_id, -->
+<!-- 		    t.serial_number serial_number, -->
+<!-- 		    t.rep_code repCode, -->
+<!-- 			t.rep_msg repMsg, -->
+<!-- 		    t.accounting_no accounting_no, -->
+<!-- 			t.mortgagee_acc_no mortgagee_acc_no, -->
+<!-- 			t.acc_no acc_no -->
+<!-- 			FROM t_gq_fss_enter_account t -->
+<!-- 			where 1=1 -->
+<!-- 			<include refid="whereSql" /> -->
+<!-- 	</select> -->
+</mapper>

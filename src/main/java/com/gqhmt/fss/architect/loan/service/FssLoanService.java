@@ -243,7 +243,7 @@ public class FssLoanService {
 		List<EnterAccount> enterAccounts=null;
 				enterAccounts= fssLoanReadMapper.getEnterAccount(map);
 				for (EnterAccount enterAccount : enterAccounts) {
-					enterAccount.setSettleListEntities(fssSettleListService.getFeeList(enterAccount.getId()));
+					enterAccount.setSettleListEntities(fssSettleListService.getsettleList(enterAccount.getId()));
 					enterAccounts.add(enterAccount);
 				}
 			enterAccountResponse.setEnterAccounts(enterAccounts);

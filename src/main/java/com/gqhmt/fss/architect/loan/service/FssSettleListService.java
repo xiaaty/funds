@@ -7,10 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
-import com.gqhmt.fss.architect.loan.mapper.write.FssFeeListWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssSettleListWriteMapper;
 
 /**
@@ -52,10 +50,8 @@ public class FssSettleListService {
 		 * time:2016年3月7日
 		 * function：通过id得到费用列表
 		 */
-		public List<FssSettleListEntity> getFeeList(Long id)throws FssException {
+		public List<FssSettleListEntity> getsettleList(Long id)throws FssException {
 		return fssLoanReadMapper.getFssSettleList(id);
 	}
-	 
-	    
 	    
 }
