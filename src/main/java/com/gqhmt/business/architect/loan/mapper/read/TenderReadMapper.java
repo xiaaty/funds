@@ -14,5 +14,11 @@ import com.gqhmt.core.mybatis.ReadMapper;
  */
 public interface TenderReadMapper extends ReadMapper<Tender> {
 	public List<Tender> getTenderByBidId(Long bidId);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月10日
+	 * function：通过标的ID得到产品名称
+	 */
 	public String getProductName(Integer bidId);
 }

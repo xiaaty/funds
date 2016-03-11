@@ -1,13 +1,13 @@
 package com.gqhmt.funds.architect.order.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.bean.FundOrderBean;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
-import com.gqhmt.pay.exception.CommandParmException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gq.p2p.account.service
@@ -110,7 +112,11 @@ public class FundOrderService  {
     }
 
     public List<FundOrderEntity> queryFundOrder(int orderType,int orderSource,int orderFromId){
-        return fundOrderReadMapper.queryFundOrder(orderType,orderSource,orderFromId);
+    	Map<Object,Object> map=new HashMap<>();
+    	map.put("orderType", orderType);
+    	map.put("orderSource", orderSource);
+    	map.put("orderFromId", orderFromId);
+        return fundOrderReadMapper.queryFundOrder(map);
     }
 
     public boolean checkWithdrawNumber(long accountId){

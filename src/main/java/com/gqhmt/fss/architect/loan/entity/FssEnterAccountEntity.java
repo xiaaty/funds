@@ -28,7 +28,7 @@ import javax.persistence.Table;
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_enterAccount")
+@Table(name = "t_gq_fss_enter_account")
 public class FssEnterAccountEntity implements Serializable {
 
     @Id
@@ -69,7 +69,15 @@ public class FssEnterAccountEntity implements Serializable {
     @Column(name="mchn_child")
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
   
+    @Column(name="is_true")
+    private String isTrue;              // 0成功还是1失败
+    
+    @Column(name="rep_code")
+    private String repCode;              // 返回码
   
+    @Column(name="rep_msg")
+    private String repMsg;              // 返回码
+    
 	public Long getId() {
 		return id;
 	}
@@ -164,6 +172,30 @@ public class FssEnterAccountEntity implements Serializable {
 
 	public void setMchnChild(String mchnChild) {
 		this.mchnChild = mchnChild;
+	}
+
+	public String getIsTrue() {
+		return isTrue;
+	}
+
+	public void setIsTrue(String isTrue) {
+		this.isTrue = isTrue;
+	}
+
+	public String getRepCode() {
+		return repCode;
+	}
+
+	public void setRepCode(String repCode) {
+		this.repCode = repCode;
+	}
+
+	public String getRepMsg() {
+		return repMsg;
+	}
+
+	public void setRepMsg(String repMsg) {
+		this.repMsg = repMsg;
 	}
 
 	

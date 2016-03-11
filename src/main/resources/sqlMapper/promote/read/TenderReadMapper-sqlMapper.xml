@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.business.architect.loan.mapper.read.TenderReadMapper">
+	
+	<select id="queryPackIdByBidId" parameterType="java.lang.Integer"  resultType="Integer">
+		select p.pack_id from t_gq_product_pack_bid_map p where p.is_delete = 1 and p.bid_id = ${bidId}
+	</select>
+	
+	<select  id="getProductName" parameterType="java.lang.Integer"  resultType="java.lang.String">
+		select product_name as productName from 
+		t_gq_product_sales_pack where 
+		id= (select pack_id from t_gq_product_pack_bid_map 
+		where isDelete =1 and bid_id = #{bidId} )
+	</select>
+</mapper>

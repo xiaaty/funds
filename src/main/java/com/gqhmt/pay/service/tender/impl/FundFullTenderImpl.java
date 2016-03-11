@@ -93,6 +93,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 	 */
     public void settle(FullBidDto fullbidto) throws FssException {
 		Bid bid=bidService.findById(fullbidto.getBusi_id());
+		//通过标的ID得到资金交易订单列表
 		List<FundOrderEntity> listFundOrder = fundOrderService.queryFundOrder(GlobalConstants.ORDER_SETTLE, GlobalConstants.BUSINESS_SETTLE, bid.getId());
 		if (listFundOrder != null && listFundOrder.size() > 0) {
 			FundOrderEntity fundOrderEntity = listFundOrder.get(0);
@@ -130,15 +131,12 @@ public class FundFullTenderImpl  implements IFundFullTender {
 				bonusAmount = bonusAmount.add(tender.getBonusAmount());
 			}
 		}
-		
 		fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
 
 		if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
 			FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-			fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, title, null));
+			fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, title, null);
 		}
-		fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
-
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
 		this.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 		throw new FssException("异步处理，等待回调通知");
