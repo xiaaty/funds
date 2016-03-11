@@ -28,6 +28,7 @@ public class CreateAccountDto extends SuperDto {
 	
 	private String busi_no;			//业务编号
 
+
     private String mobile;			//手机号
 
     private String cert_no;			//身份证号

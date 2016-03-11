@@ -3,8 +3,9 @@ package com.gqhmt.pay.service.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.trade.SstxDto;
 import com.gqhmt.pay.service.IFundSstx;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 实时提现
@@ -22,7 +23,7 @@ public class FundSstxImpl  implements IFundSstx {
      */
 	@Override
 	public boolean sstxBusiness(SstxDto sstx) throws FssException {
-		fundsTradeImpl.withdrawApply(sstx.getCust_no().intValue(), sstx.getBusi_type().intValue(), "",sstx.getAmt(), sstx.getBusi_id());
+		fundsTradeImpl.withdrawApply(sstx.getCust_no().intValue(), sstx.getBusi_type().intValue(), "",sstx.getAmt(), sstx.getBusi_id(),sstx.getSettleType());
 		return true;
 	}
    

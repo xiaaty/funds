@@ -8,7 +8,6 @@ import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.service.IFundsTrade;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,15 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
@@ -139,7 +137,7 @@ public class FundsAccountController {
 	public Object withdraw(HttpServletRequest request, HttpServletResponse response, ModelMap modell, Integer custId, int businessType, BigDecimal amount) throws FssException, IOException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null);
+			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null,1);
 			map.put("tips", "提现成功!!");
 
 		} catch (FssException e) {
@@ -211,7 +209,7 @@ public class FundsAccountController {
 	public Object accountWithdraw(HttpServletRequest request, HttpServletResponse response, ModelMap model, Integer custId, int businessType, BigDecimal amount) throws FssException, IOException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null);
+			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null,1);
 			map.put("tips", "提现成功!!");
 
 		} catch (Exception e) {

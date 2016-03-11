@@ -2,7 +2,9 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
+import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -39,6 +41,7 @@ public class RechargeSuccessDto extends SuperDto{
 	private String mobile_no;		//第三方交易返回手机号
 
 	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal amt;	//充值金额
     
     private String bank_id;		//银行类型

@@ -147,7 +147,7 @@ public interface IFundsTrade {
      * @throws FssException
 	 */
     boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
-			Long busiId) throws FssException;
+			Long busiId,int selletType) throws FssException;
 
     /**
      * 转账接口
@@ -224,5 +224,22 @@ public interface IFundsTrade {
 	 * @return
 	 */
     public List<FundTradeBean> queryFundTrade(FundTradeDto tradrecord) throws FssException;
-	
+
+
+    /**
+     *
+     * author:jhz
+     * time:2016年2月27日
+     * function：充值成功入账
+     */
+    public void recharge(RechargeSuccessDto rechargeSuccessDto) throws FssException;
+    /**
+     *
+     * author:jhz
+     * time:2016年2月27日
+     * function：提现成功入账
+     */
+    public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException;
+
+
 }

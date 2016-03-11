@@ -152,7 +152,6 @@ public class GenerateBeanUtil {
             } catch (NoSuchFieldException e) {
             }
         }
-
         throw new FssException("don't find field");
     }
 

@@ -65,7 +65,14 @@ public class LoginFilter implements Filter {
 		SysUsers sysUsers = new SysUsers();  
 		HttpServletRequest request = (HttpServletRequest)servletRequest;
 		HttpServletResponse response = (HttpServletResponse)servletResponse;
-		HttpSession session = request.getSession();
+		HttpSession session = null;
+		try{
+			session = request.getSession();
+		}catch (Exception e){
+			chain.doFilter(request, response);
+			return;
+		}
+
 		//在session中自定义一个参数，以它来校验是否完成过自动登陆
 		Object user_login = session.getAttribute("AURORA_USER_LOGIN");
 		if (user_login != null){
