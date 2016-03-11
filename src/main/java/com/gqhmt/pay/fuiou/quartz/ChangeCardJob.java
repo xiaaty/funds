@@ -1,10 +1,17 @@
 package com.gqhmt.pay.fuiou.quartz;
 
 import com.gqhmt.pay.fuiou.util.FtpClient;
+import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.pay.core.PayCommondConstants;
+import com.gqhmt.pay.core.command.AccountCommandResponse;
+import com.gqhmt.pay.core.command.CommandResponse;
+import com.gqhmt.pay.core.command.ThirdpartyCommand;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
@@ -38,7 +45,11 @@ public class ChangeCardJob extends AJob{
     @Resource
     public FssChangeCardService changeCardService;
     
+    @Resource
+    public PaySuperByFuiou paySuperByFuiou;
     
+    @Resource
+    public FundAccountService fundAccountService;
    
     
     private static boolean isRunning = false;
@@ -102,11 +113,11 @@ public class ChangeCardJob extends AJob{
             return;
         }
         System.out.println("轮询结果");
-     /*   try {
-            Response response =  Response.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD_QUERY, ThirdPartyType.FUIOU,changeCardEntity);
-
+        try {
+        	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccount(Integer.parseInt(changeCardEntity.getCustId().toString()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+        	AccountCommandResponse response = paySuperByFuiou.changeCardResult(fundAccountEntity,changeCardEntity.getOrderNo(),Long.valueOf(fundAccountEntity.getBusiType()));
             if( response != null ){
-            	Response r  = (Response) response;
+            	CommandResponse r  = (CommandResponse) response;
                 String orderNo = (String) r.getMap().get("txn_ssn");
                 String bankNo = (String) r.getMap().get("card_no");
                 String state = (String) r.getMap().get("examine_st");
@@ -116,7 +127,7 @@ public class ChangeCardJob extends AJob{
 
         }catch (Exception e){
 
-        }*/
+        }
     }
 
 

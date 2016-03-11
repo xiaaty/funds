@@ -1,5 +1,4 @@
 package com.gqhmt.controller.api.loan;
-
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
@@ -16,6 +15,7 @@ import com.gqhmt.pay.service.account.IFundsAccount;
 import com.gqhmt.pay.service.loan.IRePayment;
 import com.gqhmt.pay.service.loan.IWithDrawApply;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -170,7 +170,7 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/createRefundDraw",method = RequestMethod.POST)
-    public Object createRefundDraw(RepaymentDto dto){
+    public Object createRefundDraw(@RequestBody RepaymentDto dto){
     	Response response=new Response();
     	try {
     		response = repaymentImpl.excute(dto);

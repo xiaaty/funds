@@ -8,8 +8,6 @@ import com.gqhmt.extServInter.service.loan.IRepayment;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.gqhmt.pay.service.loan.IRePayment;
@@ -25,9 +23,8 @@ public class RepaymentImpl implements IRepayment{
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	RepaymentResponse response = new RepaymentResponse();
-    	List<RepaymentDto> list=new ArrayList<RepaymentDto>();
     	try {
-    		rePaymentImpl.createRefundDraw(list);
+    		rePaymentImpl.createRefundDraw((RepaymentDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

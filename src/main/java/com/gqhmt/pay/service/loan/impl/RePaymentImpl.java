@@ -1,6 +1,7 @@
 package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.loan.Repayment;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
@@ -38,30 +39,27 @@ public class RePaymentImpl implements IRePayment {
 	 * 还款划扣
 	 */
     @Override
-    public boolean createRefundDraw(List<RepaymentDto> repaymentlist) throws FssException {
+    public boolean createRefundDraw(RepaymentDto repaymentDto) throws FssException {
     	List<FssRepaymentEntity> fssRepaymentlist=new ArrayList<FssRepaymentEntity>();
-    	
+    	List<Repayment> repaymentlist=null;
+    	repaymentlist=repaymentDto.getList();
     	if(repaymentlist==null || repaymentlist.size()==0){
     		throw new FssException("还款信息为空！");
     	}else{
-	    	for(RepaymentDto dto:repaymentlist){
+	    	for(Repayment dto:repaymentlist){
 	    		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
 	    		repaymentEntity.setAccNo(dto.getAcc_no());
-	    		repaymentEntity.setTradeType(dto.getTrade_type());
-	    		repaymentEntity.setSignature(dto.getSignature());
+	    		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
 	    		repaymentEntity.setCreateTime((new Timestamp(new Date().getTime())));
-	    		repaymentEntity.setCreateUserId(0);
 	    		repaymentEntity.setModifyTime((new Timestamp(new Date().getTime())));
-	    		repaymentEntity.setMotifyUserId(0);
 	    		repaymentEntity.setAmt(dto.getAmt());
 	    		repaymentEntity.setState("0");
-	    		repaymentEntity.setSeqNo(dto.getSeq_no());
+	    		repaymentEntity.setResultState("0");
+	    		repaymentEntity.setSeqNo(repaymentDto.getSeq_no());
 	    		repaymentEntity.setSerialNumber(dto.getSerial_number());
 	    		repaymentEntity.setContractId(dto.getContract_id());
-	    		repaymentEntity.setMchnParent("");
-	    		repaymentEntity.setMchnChild(dto.getMchn());
+	    		repaymentEntity.setMchnChild(repaymentDto.getMchn());
 	    		repaymentEntity.setRemark(dto.getRemark());
-	    		repaymentEntity.setFailReson("");
 	    		fssRepaymentlist.add(repaymentEntity);
 	    	}
     	}

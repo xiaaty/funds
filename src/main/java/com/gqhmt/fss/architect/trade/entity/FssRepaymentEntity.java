@@ -32,15 +32,9 @@ public class FssRepaymentEntity implements Serializable {
     
     @Column(name = "acc_no") 
     private String  accNo ;     //账号          
-     
-    @Column(name = "signature") //签名
-    private String signature;                     
-
+    
     @Column(name = "trade_type")
     private String tradeType ;  //交易类型    
-
-    @Column(name = "amt")
-    private BigDecimal amt;     //还款金额 
 
     @Column(name = "create_time")
     private Date createTime;    //创建时间      
@@ -48,11 +42,14 @@ public class FssRepaymentEntity implements Serializable {
     @Column(name = "modify_time")
     private Date modifyTime;   //修改时间          
 
-    @Column(name = "create_user_id")
-    private Integer createUserId;  //创建人
+    @Column(name = "amt")
+    private BigDecimal amt;     //还款金额 
+
+    @Column(name = "state")
+    private String state ;  //执行状态
     
-    @Column(name = "motify_user_id")
-    private Integer motifyUserId;  //修改人
+    @Column(name = "result_state")
+    private String resultState ;  //还款划扣结果
     
     @Column(name = "seq_no")
     private String seqNo;	//流水号
@@ -72,11 +69,11 @@ public class FssRepaymentEntity implements Serializable {
     @Column(name = "remark")
     private String remark ;  //备注
     
-    @Column(name = "payment_state")
-    private String state ;  //还款代扣状态（0：成功，1：失败）
+    @Column(name = "resp_code")
+    private String respCode ;  //交易标识
     
-    @Column(name = "fail_reson")
-    private String failReson ;  //失败原因
+    @Column(name = "resp_msg")
+    private String respMsg ;  //异常信息
 
 	public Long getId() {
 		return id;
@@ -92,14 +89,6 @@ public class FssRepaymentEntity implements Serializable {
 
 	public void setAccNo(String accNo) {
 		this.accNo = accNo;
-	}
-
-	public String getSignature() {
-		return signature;
-	}
-
-	public void setSignature(String signature) {
-		this.signature = signature;
 	}
 
 	public String getTradeType() {
@@ -132,22 +121,6 @@ public class FssRepaymentEntity implements Serializable {
 
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
-	}
-
-	public Integer getCreateUserId() {
-		return createUserId;
-	}
-
-	public void setCreateUserId(Integer createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public Integer getMotifyUserId() {
-		return motifyUserId;
-	}
-
-	public void setMotifyUserId(Integer motifyUserId) {
-		this.motifyUserId = motifyUserId;
 	}
 
 	public String getSeqNo() {
@@ -206,15 +179,27 @@ public class FssRepaymentEntity implements Serializable {
 		this.state = state;
 	}
 
-	public String getFailReson() {
-		return failReson;
+	public String getResultState() {
+		return resultState;
 	}
 
-	public void setFailReson(String failReson) {
-		this.failReson = failReson;
+	public void setResultState(String resultState) {
+		this.resultState = resultState;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public String getRespCode() {
+		return respCode;
+	}
+
+	public void setRespCode(String respCode) {
+		this.respCode = respCode;
+	}
+
+	public String getRespMsg() {
+		return respMsg;
+	}
+
+	public void setRespMsg(String respMsg) {
+		this.respMsg = respMsg;
 	}
 }
