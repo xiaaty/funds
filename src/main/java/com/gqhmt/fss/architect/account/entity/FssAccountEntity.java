@@ -57,7 +57,6 @@ public class FssAccountEntity implements Serializable {
     @Column(name = "modify_time")
     private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
 
-
     @Column(name = "acc_type")
     private Integer accType;                           // int(11) DEFAULT NULL COMMENT '账户类型，1借款账户；2线下出借账户；3线上账户；4抵押权人账户；5代偿人账户；99，冻结账户100公司账户',
 
@@ -76,9 +75,8 @@ public class FssAccountEntity implements Serializable {
     @Column(name="mchn_child")
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
     
-    
     @Column(name="cust_id")
-    private Integer custId;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
+    private Integer custId;              // 跟t_gq_custinfo_info表中的id对应
     
 	public Long getId() {
 		return id;

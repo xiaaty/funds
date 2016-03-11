@@ -13,12 +13,25 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.funds.architect.account.service.NoticeService;
+import com.gqhmt.funds.architect.mapping.service.FuiouBankCodeService;
+import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -58,14 +71,16 @@ public class FssChangeCardService {
     @Resource
     private FundOrderService fundOrderService;
 
-//    @Resource
-//    private InvestmentService investmentService;
+    @Resource
+    private FuiouBankCodeService fuiouBankCodeService;
 
-//    @Resource
-//    private NoticeService noticeService;
+    @Resource
+    private NoticeService noticeService;
+    
+    @Resource
+    private InvestmentService investmentService;
 
-
-    public void insert(FssChangeCardEntity changeCardEntity) throws Exception{
+    public void insert(FssChangeCardEntity changeCardEntity) throws FssException{
     	changeCardWriteMapper.insertSelective(changeCardEntity);
     }
     
@@ -91,7 +106,7 @@ public class FssChangeCardService {
      * @param filePath
      * @throws Exception
      */
-    public void addChangeCard(int customId, String bankNo, String bankId, String bankAddr, String bankCity, String filePath) throws Exception {
+    public void addChangeCard(int customId, String bankNo, String bankId, String bankAddr, String bankCity, String filePath) throws FssException {
         CustomerInfoEntity customerInfo  = customerInfoService.queryCustomerById(customId);
         this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,1,null);
     }
@@ -128,25 +143,25 @@ public class FssChangeCardService {
      * @param filePath
      * @throws Exception
      */
-    public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo) throws Exception {
+    public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo) throws FssException {
         if(bankNo.length()>19){
-            throw new Exception("银行卡号错误");
+            throw new FssException("银行卡号错误");
         }
         if(bankCity.length()>4){
-            throw new Exception("银行所属地区错误");
+            throw new FssException("银行所属地区错误");
         }
         if(bankId.length()>4){
-            throw new Exception("所属银行错误");
+            throw new FssException("所属银行错误");
         }
 
         Integer bankCardId = custom.getBankId();
         if(bankCardId == null){
-            throw new Exception("0021");
+            throw new FssException("0021");
         }
 
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(bankCardId);
         if(bankNo.equals(bankCardinfoEntity.getBankNo())){
-            throw new Exception("0020");
+            throw new FssException("0020");
         }
 
         FssChangeCardEntity entity = getChangeCardInstance(custom,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo);
@@ -243,6 +258,7 @@ public class FssChangeCardService {
 	            bankCardinfoEntity.setMobile(changeCardEntity.getMobile());
 	            bankCardinfoEntity.setBankLongName(changeCardEntity.getBankAdd());
 	            bankCardinfoEntity.setParentBankId(changeCardEntity.getBankType());
+	            bankCardinfoEntity.setBankSortName(fuiouBankCodeService.queryFuiouBankValueByCode(changeCardEntity.getBankType()));
 	            bankCardinfoEntity.setMemo("变更成功");
 	            bankCardinfoService.saveOrUpdate(bankCardinfoEntity);
 	            changeCardEntity.setState(2);
@@ -251,8 +267,7 @@ public class FssChangeCardService {
 	            FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(changeCardEntity.getCustId().intValue(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 	            fundAccountEntity.setIshangeBankCard(0);
 	            fundAccountService.update(fundAccountEntity);
-	
-	//            this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUCESS, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),tmCardNo(changeCardEntity.getCardNo()));
+	            this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUCESS, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),tmCardNo(changeCardEntity.getCardNo()));
 	
 	            CustomerInfoEntity customerInfoEntity = customerInfoService.queryCustomerById(changeCardEntity.getCustId().intValue());
 	            customerInfoEntity.setHasThirdAgreement(0);
@@ -306,13 +321,13 @@ public class FssChangeCardService {
 	            fundAccountEntity.setIshangeBankCard(0);
 	            fundAccountService.update(fundAccountEntity);
 	
-	            //noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_FAIL, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),changeCardEntity.getRespMsg()!= null?changeCardEntity.getRespMsg():"未知错误",tmCardNo (bankCardinfoEntity.getBankNo()));
+	            noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_FAIL, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),changeCardEntity.getRespMsg()!= null?changeCardEntity.getRespMsg():"未知错误",tmCardNo (bankCardinfoEntity.getBankNo()));
 	            update(changeCardEntity);
 	        }
         }
     }
 
-
+/*
     public void syncBusiness(){
         List<FssChangeCardEntity> list = query(99);
         if(list != null && list.size() > 0) {
@@ -336,7 +351,7 @@ public class FssChangeCardService {
 	            update(changeCardEntity);
 	        }
         }
-    }
+    }*/
 
     private String tmCardNo(String cardNo){
         if(cardNo == null || "".equals(cardNo)){
@@ -373,7 +388,106 @@ public class FssChangeCardService {
     }
     
     
-    
-    
+
+   public void syncBusiness(){
+       List<FssChangeCardEntity> list = query(99);
+       if(list == null) return;
+       for(FssChangeCardEntity changeCardEntity:list){
+           //同步业务系统数据,暂时只考虑出借系统
+           boolean isSuccess = false;
+           int type = changeCardEntity.getType();
+           if(type ==3 ){
+               try {
+                   this.syscBusinessLend(changeCardEntity);
+               } catch (IOException e) {
+                   LogUtil.error(this.getClass(),e);
+                   continue;
+               }
+//               changeCardEntity.setTradeState(101);
+               isSuccess = true;
+           }else{
+               int count = investmentService.queryByCustId(Integer.parseInt(changeCardEntity.getCustId().toString()));
+               if(count>0){
+                   try {
+                       this.syscBusinessLend(changeCardEntity);
+                   } catch (IOException e) {
+                       LogUtil.error(this.getClass(),e);
+                       continue;
+                   }
+//                   changeCardEntity.setTradeState(101);
+               }
+               isSuccess = true;
+           }
+           if(isSuccess) {
+               changeCardEntity.setTradeState(100);
+           }
+       }
+
+//       this.saveOrUpdateAll(list);
+       changeCardWriteMapper.insertList(list);
+   }
+   
+   private boolean syscBusinessLend(FssChangeCardEntity changeCardEntity) throws IOException {
+       StringBuffer result = new StringBuffer();
+       result.append("certNo=").append(changeCardEntity.getCertNo()).append("&");
+       result.append("bankCity=").append(changeCardEntity.getBankCity()).append("&");
+       result.append("bankId=").append(changeCardEntity.getBankType()).append("&");
+       result.append("bankNo=").append(changeCardEntity.getCardNo()).append("&");
+       try {
+           result.append("bankAddr=").append(URLEncoder.encode(changeCardEntity.getBankAdd(), "utf-8")).append("&");
+       } catch (UnsupportedEncodingException e) {
+           e.printStackTrace();
+           return false;
+       }
+       result.append("seqNo=").append(changeCardEntity.getSeqNo()!=null ? changeCardEntity.getSeqNo():"").append("&");
+       result.append("filePath=").append(changeCardEntity.getFilePath()).append("&");
+       result.append("resultCode=").append(changeCardEntity.getState()==2?"0000":"0001").append("&");
+       result.append("msg=").append(changeCardEntity.getState()==2?"0000":changeCardEntity.getRespMsg());
+       String urlValue  = ResourceUtil.getValue("config.server","lendCallback.url");
+       try {
+           PrintWriter out = null;
+           URL url = new URL(urlValue);
+           URLConnection conn  = url.openConnection();
+           conn.setRequestProperty("accept", "*/*");
+           conn.setRequestProperty("connection", "Keep-Alive");
+           conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0;Windows NT 5.1;SV1)");
+
+           conn.setDoOutput(true);
+           conn.setDoInput(true);
+           conn.setReadTimeout(15*1000);
+           // 获得对象输出流
+           out = new PrintWriter(conn.getOutputStream());
+           // 发送请求参数
+           out.print(result.toString());
+           // 输出流缓冲
+           out.flush();
+
+           InputStream is = conn.getInputStream();
+           BufferedReader in = null;
+           String resultReturn = "";
+           String line;
+           try {
+               in = new BufferedReader(new InputStreamReader(is));
+               while ((line = in.readLine()) != null) {
+                   resultReturn += line;
+               }
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+
+           System.out.println(resultReturn);
+           if("0".equals(resultReturn)){
+               return true;
+           }
+       } catch (MalformedURLException e) {
+           LogUtil.error(this.getClass(),e);
+           throw e;
+       } catch (IOException e) {
+           LogUtil.error(this.getClass(),e);
+           throw e;
+       }
+
+       return false;
+   }
     
 }

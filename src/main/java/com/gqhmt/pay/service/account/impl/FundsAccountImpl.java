@@ -18,12 +18,9 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
-import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
-import com.gqhmt.pay.core.factory.ThirdpartyFactory;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.account.IFundsAccount;
-import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -219,18 +216,30 @@ public class FundsAccountImpl implements IFundsAccount {
 			Integer cusId=null;
 			Integer bankcardId=null;
 			CustomerInfoEntity  customerInfoEntity=null;
+			//1.根据账号查询该客户账户信息
 		 	FssAccountEntity fssAccountEntity= fundAccountService.getFssFundAccountInfo(cardChangeDto.getAcc_no());
 		 	if(null!=fssAccountEntity){
-		 		customerInfoEntity=customerInfoService.queryCustomeById(Integer.parseInt(fssAccountEntity.getCustNo()));
+		 		//查询该账户客户信息
+		 		customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());
 		 		if(null!=customerInfoEntity){
-//		 			cusId =	customerInfoEntity.getId().intValue();
+		 			//通过客户表中的bankid查询该客户要变更的银行卡信息
 		 			bankCardInfoEntity = bankCardInfoService.getBankCardById(customerInfoEntity.getBankId());
+		 			
 		 			if(bankCardInfoEntity!=null){
-		 				bankcardId=bankCardInfoEntity.getId();
+		 				try {
+		 					//将变更银行卡信息插入到银行卡变更表
+							fssChangeCardService.addChangeCard(customerInfoEntity.getId().intValue(), bankCardInfoEntity.getBankNo(), String.valueOf(bankCardInfoEntity.getId()), "", cardChangeDto.getCity_id(), cardChangeDto.getFileName());
+		 				} catch (FssException e) {
+							throw new FssException("银行卡变更记录插入失败");
+						}
+		 			}else{
+		 				throw new FssException("未查到得到该客户银行卡信息");
 		 			}
 		 		}else{
-		 			throw new FssException("未得到用户信息");
+		 			throw new FssException("未查到得到该户信息");
 		 		}
+		 	}else{
+		 		throw new FssException("资金平台未查到该账户信息");
 		 	}
 		 	FssChangeCardEntity changeCardEntity=fssChangeCardService.getChangeCardByCustId(Long.valueOf(customerInfoEntity.getId()));
 	        String cardNo = bankCardInfoEntity.getBankNo();
@@ -239,10 +248,10 @@ public class FundsAccountImpl implements IFundsAccount {
 	        String cityId = changeCardEntity.getBankCity();
 	        String fileName = cardChangeDto.getFileName().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
 	        FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
+	        paySuperByFuiou.changeCard(primaryAccount, cardNo, bankCd, bankNm, cityId, fileName);
 	        //订单号
 	        FundOrderEntity fundOrderEntity = fundOrderService.createOrder(primaryAccount,null,BigDecimal.ZERO,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,Long.valueOf(bankcardId),Integer.valueOf(GlobalConstants.BUSINESS_UPDATE_CARE),"2");
-	        CommandResponse response =ThirdpartyFactory.command(ThirdPartyType.FUIOU.toString(), PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankNm,bankCd,cityId,fileName);
-//	        execExction(response,fundOrderEntity);
+	        CommandResponse response=  paySuperByFuiou.changeCardResult(primaryAccount, fundOrderEntity.getOrderNo(),changeCardEntity.getId());
 	        changeCardEntity.setOrderNo(fundOrderEntity.getOrderNo());
 	        try {
 	        	fssChangeCardService.update(changeCardEntity);

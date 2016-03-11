@@ -22,7 +22,7 @@ import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
  */
 public interface IRePayment {
 
-    public boolean createRefundDraw(List<RepaymentDto> repaymentlist) throws FssException;
+    public boolean createRefundDraw(RepaymentDto repaymentdto) throws FssException;
 
     public List<FssRepaymentEntity> rePaymentCallBack(String seqNo,String mchn) throws FssException;
 

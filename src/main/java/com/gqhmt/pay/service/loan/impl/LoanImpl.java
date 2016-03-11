@@ -55,49 +55,33 @@ public class LoanImpl implements ILoan {
 	@Resource
 	private FssAccountService fssAccountService;
     
-
+	/**
+	 * 开户
+	 */
     @Override
     public String createLoanAccount(CreateLoanAccountDto dto) throws FssException {
         //富友
-    	//paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-        //5.返回  acc_no; return acc_no
+    	FssAccountEntity  fssAccountEntity=null; //新版账户体系
     	CustomerInfoEntity customerInfoEntity=null;
-    	FssAccountEntity  fssAccountEntity=null;
     	String accNo=null;
-    	 customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(dto);
-    	if(customerInfoEntity==null){
-    		customerInfoService.createLoanAccount(dto);
-    		if(true){
-    			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    	//1.查询是否已经开通资金账号
-    	 customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(dto);
+    	//1.根据借款系统传入的手机号码，查询资金平台有没有此客户信息
+    	customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(dto);
     	if(customerInfoEntity!=null){
-    		//资金平台已经开通账户，则返回已经开户的信息给借款系统
-    		Integer custId=customerInfoEntity.getId();
-    		fssAccountEntity=fssAccountService.getFssAccountByCustId(custId);
-    		accNo=fssAccountEntity.getAccNo();
-    		throw new FssException("账户已经开通！");
-    	}else{//资金平台未开通账户，则开通，并将借款系统传来的数据发送给富友作为开通账户信息
-    		CustomerInfoEntity fssCustomerEntity = customerInfoService.createLoanAccount(dto);
-    		if(true){//customer、用户、银行卡创建成功后，最后创建账户信息
-    			fundsAccountImpl.createAccount(fssCustomerEntity,"","");
+    		//2.根据accNo查询资金平台有没有开户，已经开户就直接返回
+    		fssAccountEntity =fssAccountService.getFssAccountByCustId(customerInfoEntity.getId());
+    		if(fssAccountEntity!=null){
+    			throw new FssException("91004013");
     		}
-    		fssAccountEntity=fssAccountService.createFssAccount(dto, fssCustomerEntity);
-    		accNo=fssAccountEntity.getAccNo();
-    	}
-    	fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    	if(true){
-//    	  fssAccountEntity=fssAccountService.createFssAccount(loanAccountDto,customerInfoEntity);
-    	  fssAccountEntity=fssAccountService.createFssAccountEntity(dto,customerInfoEntity);
-    	  if(null!=fssAccountEntity){
-    		   accNo=fssAccountEntity.getAccNo();
-    	  }
+    	}else{
+    		try {
+				FssAccountEntity fssAccount=customerInfoService.createLoanAccount(dto);
+				accNo=fssAccount.getAccNo();
+			} catch (FssException e) {
+				throw new FssException("91004013");
+			}
     	}
     	//通知富有开户
 //        paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-    		} 
-        //5.返回  acc_no; return acc_no
-    	}
     	return accNo;
     }
     /**

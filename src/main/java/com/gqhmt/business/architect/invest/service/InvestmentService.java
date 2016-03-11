@@ -32,4 +32,12 @@ public class InvestmentService {
 		investmentWriteMapper.deleteByPrimaryKey(id);
 	}
 	
+	public int queryByCustId(Integer custId){
+		InvestmentInfo investmentInfo=new InvestmentInfo();
+		investmentInfo.setCustId(custId);
+		int res = investmentReadMapper.selectCount(investmentInfo);
+		return res;
+	}
+	
+	
 }
