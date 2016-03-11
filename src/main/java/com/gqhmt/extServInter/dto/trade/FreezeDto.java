@@ -2,7 +2,9 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
+import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -31,6 +33,7 @@ public class FreezeDto extends SuperDto{
 	private String user_no;		//用户编号
 
 	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;			//冻结金额
 	
 	private int busi_type;		//账户类型

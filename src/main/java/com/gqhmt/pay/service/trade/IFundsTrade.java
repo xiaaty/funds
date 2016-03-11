@@ -42,22 +42,12 @@ public interface IFundsTrade {
 
     /**
      * 生成web提现订单
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    交易金额
-     * @param chargeAmount              交易手续费
-     * @param type                      交易类型 1.充值；2.提现
      * @return
      * @throws FssException
      */
     public String webWithdrawOrder(WithdrawOrderDto withdrawOrderDto) throws FssException;
     /**
      * 生成web充值订单
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param amount                    交易金额
-     * @param chargeAmount              交易手续费
-     * @param type                      交易类型 1.充值；2.提现
      * @return
      * @throws FssException
      */
@@ -81,11 +71,6 @@ public interface IFundsTrade {
 
     /**
      * 代扣申请
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param businessType              业务类型，1出借客户投资代扣；2借款客户还款代扣；3抵押权人代扣；4代偿人代扣；99其他代扣
-     * @param contractNo                业务合同，出借和借款合同号，出借客户必须提供出借合同号，借款还款，必须提供借款合同号，需保证每种类型合同号唯一
-     * @param amount                    代扣金额
      * @return
      * @throws FssException
      */
@@ -94,11 +79,6 @@ public interface IFundsTrade {
     /**
      *
      * 代付申请
-     * @param thirdPartyType            支付渠道
-     * @param custID                    客户id
-     * @param businessType              业务类型1，出借赎回代付，2借款放款代付；3借款其他资金代付；4抵押权人资金代付；5代偿人资金代付；99，其他代付
-     * @param contractNo
-     * @param amount
      * @return
      * @throws FssException
      */
@@ -147,7 +127,7 @@ public interface IFundsTrade {
      * @throws FssException
 	 */
     boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
-			Long busiId) throws FssException;
+			Long busiId,int selletType) throws FssException;
 
     /**
      * 转账接口
@@ -224,5 +204,22 @@ public interface IFundsTrade {
 	 * @return
 	 */
     public List<FundTradeBean> queryFundTrade(FundTradeDto tradrecord) throws FssException;
-	
+
+    /**
+     *
+     * author:jhz
+     * time:2016年2月27日
+     * function：充值成功入账
+     */
+    public void recharge(RechargeSuccessDto rechargeSuccessDto) throws FssException;
+    /**
+     *
+     * author:jhz
+     * time:2016年2月27日
+     * function：提现成功入账
+     */
+    public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException;
+
+
+
 }
