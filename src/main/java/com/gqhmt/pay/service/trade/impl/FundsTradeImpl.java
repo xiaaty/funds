@@ -402,5 +402,19 @@ public class FundsTradeImpl  implements IFundsTrade {
         tradeRecordService.chargeAmount(entity,toEntity,fundOrderEntity,fundOrderEntityCharge);
     }
 
+    /**
+     * 实时提现
+     */
+    @Override
+    public boolean sstxBusiness(SstxDto sstx) throws FssException {
+        this.withdrawApply(sstx.getCust_no().intValue(), sstx.getBusi_type().intValue(), "",sstx.getAmt(), sstx.getBusi_id(),sstx.getSettleType());
+        return true;
+    }
+
+    @Override
+    public boolean ssdkBusiness(SsdkDto ssdk) throws FssException {
+        this.withholdingApply(ssdk.getCust_no().intValue(), ssdk.getBusi_type().intValue(),"", ssdk.getAmt(), ssdk.getBusi_id());
+        return true;
+    }
 
 }

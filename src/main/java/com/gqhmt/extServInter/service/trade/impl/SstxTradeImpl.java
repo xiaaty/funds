@@ -1,13 +1,15 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.SstxDto;
 import com.gqhmt.extServInter.service.trade.ISstxTrade;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
-import javax.annotation.Resource;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
@@ -29,13 +31,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SstxTradeImpl implements ISstxTrade {
 	@Resource
-	private IFundSstx fundSstxImpl;
+	private IFundsTrade fundsTrade;
 	
     @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		fundSstxImpl.sstxBusiness((SstxDto)dto);
+			fundsTrade.sstxBusiness((SstxDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

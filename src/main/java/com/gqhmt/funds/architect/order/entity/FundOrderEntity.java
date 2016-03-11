@@ -24,23 +24,35 @@ public class FundOrderEntity implements java.io.Serializable {
 
 	@Column(name = "account_id" ,updatable = false)
 	private Long accountId;
-    private Long toAccountId;             //to_account_id
+	@Column(name = "to_account_id" ,updatable = false)
+	private Long toAccountId;             //to_account_id
 
-	@Column(name = "order_no", length = 30)
+	@Column(name = "order_no", length = 30,updatable = false)
 	private String orderNo;
 
 	@Column(name = "order_type",updatable = false)
 	private Integer orderType;
+
+	@Column(name = "order_frorm_id",updatable = false)
 	private Long orderFrormId;
+
+	@Column(name = "order_Source",updatable = false)
 	private Integer orderSource;
+
+	@Column(name = "order_amount",updatable = false)
 	private BigDecimal orderAmount;
+
 	private Integer orderState;
 	private String retCode;
 	private String retMessage;
+
+	@Column(name = "order_frorm_id",updatable = false)
 	private Date createTime;
 	private Date lastModifyTime;
 	@Column(name = "thirdparty_type",updatable = false,nullable = false)
     private String thirdPartyType;
+
+	@Column(name = "order_frorm_id",updatable = false)
     private BigDecimal chargeAmount;
 
 	public Long getId() {

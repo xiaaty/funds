@@ -125,5 +125,9 @@ public class SystemService {
 	   }
 	   return  this.systemReadMapper.selectDictOrderList(list);
    }
+
+   public void insertDictList(List<DictEntity> list){
+       this.systemWriteMapper.insertList(list);
+   }
    
 }
