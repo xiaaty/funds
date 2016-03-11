@@ -53,13 +53,13 @@ public class WithDrawApplyImpl implements IWithDrawApply {
 	 		}else{
 	 			//创建提现申请信息
 	 			fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
-	 			fssTradeApplyEntity.setApplyType(2);
+	 			fssTradeApplyEntity.setApplyType(Integer.valueOf(wthDrawApplyDto.getTrade_type()));
 	 			fssTradeApplyEntity.setCustNo(fssAccountEntity.getCustNo());
 	 			fssTradeApplyEntity.setUserNo(fssAccountEntity.getUserNo());
 	 			fssTradeApplyEntity.setBusinessNo(fssAccountEntity.getBusiNo());
 	 			fssTradeApplyEntity.setBusiype(0);
 	 			fssTradeApplyEntity.setAccNo(wthDrawApplyDto.getAcc_no());
-	 			fssTradeApplyEntity.setTradeAmount(wthDrawApplyDto.getPay_amt());
+	 			fssTradeApplyEntity.setTradeAmount(wthDrawApplyDto.getContract_amt());
 	 			fssTradeApplyEntity.setRealTradeAmount(wthDrawApplyDto.getPay_amt());
 	 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 	 			fssTradeApplyEntity.setTradetate(Integer.parseInt(wthDrawApplyDto.getTrade_type()));
@@ -68,6 +68,8 @@ public class WithDrawApplyImpl implements IWithDrawApply {
 	 			fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
 	 			fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
 	 			fssTradeApplyEntity.setSeqNo(wthDrawApplyDto.getSeq_no());
+	 			fssTradeApplyEntity.setBespokedate(wthDrawApplyDto.getBespoke_date());
+	 			fssTradeApplyEntity.setContractId(wthDrawApplyDto.getContract_id());
 	 			try {
 					fssTradeApplyService.createTradeApply(fssTradeApplyEntity);
 				} catch (FssException e) {

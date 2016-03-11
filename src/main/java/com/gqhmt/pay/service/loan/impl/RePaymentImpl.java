@@ -51,7 +51,7 @@ public class RePaymentImpl implements IRePayment {
 	    		repaymentEntity.setAccNo(dto.getAcc_no());
 	    		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
 	    		repaymentEntity.setCreateTime((new Timestamp(new Date().getTime())));
-	    		repaymentEntity.setModifyTime((new Timestamp(new Date().getTime())));
+	    		repaymentEntity.setMotifyTime((new Timestamp(new Date().getTime())));
 	    		repaymentEntity.setAmt(dto.getAmt());
 	    		repaymentEntity.setState("0");
 	    		repaymentEntity.setResultState("0");

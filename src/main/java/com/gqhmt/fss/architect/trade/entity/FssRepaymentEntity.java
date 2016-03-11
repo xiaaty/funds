@@ -39,8 +39,8 @@ public class FssRepaymentEntity implements Serializable {
     @Column(name = "create_time")
     private Date createTime;    //创建时间      
 
-    @Column(name = "modify_time")
-    private Date modifyTime;   //修改时间          
+    @Column(name = "motify_time")
+    private Date motifyTime;   //修改时间          
 
     @Column(name = "amt")
     private BigDecimal amt;     //还款金额 
@@ -115,12 +115,12 @@ public class FssRepaymentEntity implements Serializable {
 		this.createTime = createTime;
 	}
 
-	public Date getModifyTime() {
-		return modifyTime;
+	public Date getMotifyTime() {
+		return motifyTime;
 	}
 
-	public void setModifyTime(Date modifyTime) {
-		this.modifyTime = modifyTime;
+	public void setMotifyTime(Date motifyTime) {
+		this.motifyTime = motifyTime;
 	}
 
 	public String getSeqNo() {
