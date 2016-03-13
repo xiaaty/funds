@@ -1,6 +1,7 @@
 package com.gqhmt.core.util;
 
 
+import com.fasterxml.jackson.databind.ser.std.ClassSerializer;
 import com.gqhmt.annotations.AutoDate;
 import com.gqhmt.annotations.AutoDateType;
 import com.gqhmt.annotations.AutoMapping;
@@ -54,7 +55,8 @@ public class GenerateBeanUtil {
     private static <T> T GenerateClassInstance(Class<T> tClass) throws Exception {
         try {
             T t = tClass.newInstance();
-           List<Field> fields = getFields(tClass);
+            List<Field> fields = getFields(tClass);
+
             for(Field field:fields){
                 fieldMethod(tClass,field,t);
             }
@@ -136,21 +138,15 @@ public class GenerateBeanUtil {
     }
 
     private static Field getField(Class tClass, String name,Field sourceField) throws FssException {
+        Field targetField = getField(tClass,name);
 
-        try {
-            Field targetField = tClass.getDeclaredField(sourceField.getName());
-            return targetField;
-        } catch (NoSuchFieldException e) {
-        }
+        if(targetField != null)    return targetField;
 
         AutoMapping autoMapping = sourceField.getAnnotation(AutoMapping.class);
         if(autoMapping != null){
             String mappingValue = autoMapping.value();
-            try {
-                Field field = tClass.getDeclaredField(mappingValue);
-                return field;
-            } catch (NoSuchFieldException e) {
-            }
+            Field field = getField(tClass,mappingValue);
+            if(field != null)   return field;
         }
         throw new FssException("don't find field");
     }
@@ -302,7 +298,6 @@ public class GenerateBeanUtil {
             if(!fieldMap.containsKey(tClass.getName()+"."+field.getName())){
                 fieldMap.put(tClass.getName()+"."+field.getName(),field);
             }
-
             list.add(field);
         }
 
@@ -310,9 +305,28 @@ public class GenerateBeanUtil {
         if( superClass != null &&  !superClass.getName().equals("java.lang.Object")){
             list.addAll(getFields(superClass));
         }
-
         return list;
+    }
 
+
+    public static Field getField(Class tClass,String name) throws FssException {
+        Field field = null;
+        try {
+            field  = tClass.getDeclaredField(name);
+        } catch (NoSuchFieldException e) {
+
+        }
+
+        if(field == null){
+            Class supperClass = tClass.getSuperclass();
+            if(supperClass == null || supperClass.getName().equals("java.lang.Ocject")){
+               return null;
+            }
+
+            field = getField(supperClass,name);
+        }
+
+        return field;
     }
 
 }
