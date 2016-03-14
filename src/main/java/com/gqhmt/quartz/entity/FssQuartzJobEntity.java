@@ -20,7 +20,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "t_gq_fss_quartz")
-public class FssQuartz {
+public class FssQuartzJobEntity {
 
 
     @Id
