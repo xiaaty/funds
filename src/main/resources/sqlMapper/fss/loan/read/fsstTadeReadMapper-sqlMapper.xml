@@ -15,18 +15,18 @@
 		SELECT 
 			t.id id,
 		    t.contract_id contractId,
-		    t.acc_no accNo,
-			t.trade_amount tradeAmount,
 			t.seq_no seqNo,
 			t.bespoke_date bespokeDate,
+		    t.acc_no accNo,
+			t.trade_amount tradeAmount,
 			t.create_time createTime,
 			t.modify_time modifyTime,
 			t.mchn_child mchnChild,
-			t.is_true isTrue,
+			t.bespoke_date bespokedate,
 			t.trade_state tradetate,
-			t.real_trade_amount realTradeAmount,
-			t.loan_platform loanPlatform  	
-			FROM t_gq_fss_loan t 
+			t.real_trade_amount realTradeAmount
+<!-- 			t.loan_platform loanPlatform  	 -->
+			FROM t_gq_fss_trade_apply t 
 			where t.apply_type=11091001
 			<if test="contractId != null and contractId != ''">
 				and t.contract_id like concat('%',#{contractId},'%')
