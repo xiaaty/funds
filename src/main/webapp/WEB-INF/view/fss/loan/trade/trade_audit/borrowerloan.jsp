@@ -45,7 +45,7 @@
             <li>交易管理</li>
             <li>交易审核</li>
             <li>代付审核</li>
-            <li>借款付款</li>
+            <li>借款人放款</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -140,7 +140,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>借款人人付款表</h2>
+                            <h2>借款人放款表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -178,6 +178,7 @@
                                                 <tr>
                                                     <td>${t.id}</td>
                                                     <td>${t.mortgageeAccNo}</td>
+                                                    <td>${t.accNo}</td>
                                                     <td>${t.seqNo}</td>
                                                     <td>${t.contractId}</td>
                                                     <td>${t.contractAmt}</td>

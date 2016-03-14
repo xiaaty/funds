@@ -1,5 +1,8 @@
 package com.gqhmt.fss.architect.trade.service;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -55,5 +58,13 @@ public class FssTradeApplyService {
 		fssTradeApplyReadMapper.selectOne(fssTradeApplyEntity);
 		return fssTradeApplyEntity;
 	}
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月11日
+	 * function：借款人提现
+	 */
+	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map) {
+		return fssTradeApplyReadMapper.getBorrowWithDraw(map);
+	}
 }

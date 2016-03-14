@@ -35,6 +35,9 @@
 			f.fee_type feeType,
 			f.rep_code repCode,
 			f.rep_msg repMsg,
+			f.trade_status tradeStatus,
+			f.is_true isTrue,
+			f.loan_platform loanPlatform,
 			f.fee_amt feeAmt
 			FROM t_gq_fss_feeList f
 			where f.loan_id=#{id}
@@ -51,7 +54,6 @@
 			where f.enter_id=#{id}
 	</select>
 	<!-- 抵押权人提现回盘 -->
-				
 	<select id="getMortgageeWithDrawRespons"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons" >
 		SELECT 
 			t.id id,
@@ -102,5 +104,51 @@
 			FROM t_gq_fss_enter_account t
 			where 1=1
 			<include refid="whereSql" />
+	</select>
+		<!-- 抵押权人放款列表 -->
+	<select id="findBorrowerLoan"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
+		SELECT 
+			t.id id,
+		    t.contract_id contractId,
+		    t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.rep_code repCode,
+			t.seq_no seqNo,
+			t.mortgagee_acc_no mortgageeAccNo,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.mchn_parent mchnParent,
+			t.mchn_child mchnChild,
+			t.is_true isTrue,
+			t.trade_type tradeType,
+			t.status status,
+			t.rep_msg repMsg,
+			t.pay_amt pay_amt,
+			t.loan_platform loanPlatform  	
+			FROM t_gq_fss_loan t 
+			where t.trade_type in ("11090001","11090002")
+			<if test="contractId != null and contractId != ''">
+				and t.contract_id like concat('%',#{contractId},'%')
+			</if>
+			<if test="seqNo != null and seqNo != ''">
+				and t.seq_no like concat('%',#{seqNo},'%')
+			</if>
+			<if test="mchnChild != null and mchnChild != ''">
+				and t.mchn_child like concat('%',#{mchnChild},'%')
+			</if>
+			<choose>
+				<when test="creatTime == null or creatTime == '' and modifyTime==null ">
+					AND 1=1
+				</when>
+				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
+					AND t.create_time BETWEEN #{creatTime} AND SYSDATE()
+				</when>
+				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
+					AND t.create_time BETWEEN #{creatTime} AND #{modifyTime}
+				</when>
+				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
+					AND t.create_time &lt; #{modifyTime} 
+				</when>
+			</choose>
 	</select>
 </mapper>

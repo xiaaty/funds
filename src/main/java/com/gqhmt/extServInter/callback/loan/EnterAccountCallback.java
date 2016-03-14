@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
-import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 
 /**
  * 
@@ -21,7 +20,7 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月7日
- * Description:	借款人放款回盘接口
+ * Description:	入账回盘
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -31,7 +30,8 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
 @Service
 public class EnterAccountCallback {
 	@Resource
-	private FssLoanService fssLoanService;
+	private FssEnterAccountService fssEnterAccountService;
+	
 	/**
 	 * 
 	 * author:jhz
@@ -42,7 +42,7 @@ public class EnterAccountCallback {
 
 		Response response = null;
 		 try {
-			 response = fssLoanService.getResponse(mchnNo,seqNo);
+			 response = fssEnterAccountService.getResponse(mchnNo,seqNo);
 			response.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
