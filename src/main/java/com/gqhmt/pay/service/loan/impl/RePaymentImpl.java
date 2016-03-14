@@ -6,9 +6,7 @@ import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
 import com.gqhmt.pay.service.loan.IRePayment;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,7 @@ import org.springframework.stereotype.Service;
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author 于泳
+ * @author 柯禹来
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:52
@@ -27,7 +25,7 @@ import org.springframework.stereotype.Service;
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016/3/6  于泳      1.0     1.0 Version
+ * 2016/3/6  柯禹来     1.0     1.0 Version
  */
 @Service
 public class RePaymentImpl implements IRePayment {
@@ -47,19 +45,7 @@ public class RePaymentImpl implements IRePayment {
     		throw new FssException("还款信息为空！");
     	}else{
 	    	for(Repayment dto:repaymentlist){
-	    		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
-	    		repaymentEntity.setAccNo(dto.getAcc_no());
-	    		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
-	    		repaymentEntity.setCreateTime((new Timestamp(new Date().getTime())));
-	    		repaymentEntity.setMotifyTime((new Timestamp(new Date().getTime())));
-	    		repaymentEntity.setAmt(dto.getAmt());
-	    		repaymentEntity.setState("0");
-	    		repaymentEntity.setResultState("0");
-	    		repaymentEntity.setSeqNo(repaymentDto.getSeq_no());
-	    		repaymentEntity.setSerialNumber(dto.getSerial_number());
-	    		repaymentEntity.setContractId(dto.getContract_id());
-	    		repaymentEntity.setMchnChild(repaymentDto.getMchn());
-	    		repaymentEntity.setRemark(dto.getRemark());
+	    		FssRepaymentEntity repaymentEntity = fssRepaymentService.createFssRepaymentEntity(dto,repaymentDto);
 	    		fssRepaymentlist.add(repaymentEntity);
 	    	}
     	}

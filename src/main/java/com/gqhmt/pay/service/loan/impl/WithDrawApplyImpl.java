@@ -7,9 +7,6 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.pay.service.loan.IWithDrawApply;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +15,7 @@ import org.springframework.stereotype.Service;
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author 于泳
+ * @author 柯禹来
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/3/6 22:52
@@ -27,7 +24,7 @@ import org.springframework.stereotype.Service;
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016/3/6  于泳      1.0     1.0 Version
+ * 2016/3/6  柯禹来      1.0     1.0 Version
  */
 @Service
 public class WithDrawApplyImpl implements IWithDrawApply {
@@ -52,25 +49,8 @@ public class WithDrawApplyImpl implements IWithDrawApply {
 	 			throw new FssException("90004007");
 	 		}else{
 	 			//创建提现申请信息
-	 			fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
-	 			fssTradeApplyEntity.setApplyType(Integer.valueOf(wthDrawApplyDto.getTrade_type()));
-	 			fssTradeApplyEntity.setCustNo(fssAccountEntity.getCustNo());
-	 			fssTradeApplyEntity.setUserNo(fssAccountEntity.getUserNo());
-	 			fssTradeApplyEntity.setBusinessNo(fssAccountEntity.getBusiNo());
-	 			fssTradeApplyEntity.setBusiype(0);
-	 			fssTradeApplyEntity.setAccNo(wthDrawApplyDto.getAcc_no());
-	 			fssTradeApplyEntity.setTradeAmount(wthDrawApplyDto.getContract_amt());
-	 			fssTradeApplyEntity.setRealTradeAmount(wthDrawApplyDto.getPay_amt());
-	 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-	 			fssTradeApplyEntity.setTradetate(Integer.parseInt(wthDrawApplyDto.getTrade_type()));
-	 			fssTradeApplyEntity.setApplyState("0");
-	 			fssTradeApplyEntity.setMchnChild(wthDrawApplyDto.getMchn());
-	 			fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
-	 			fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
-	 			fssTradeApplyEntity.setSeqNo(wthDrawApplyDto.getSeq_no());
-	 			fssTradeApplyEntity.setBespokedate(wthDrawApplyDto.getBespoke_date());
-	 			fssTradeApplyEntity.setContractId(wthDrawApplyDto.getContract_id());
 	 			try {
+	 			    fssTradeApplyEntity = fssTradeApplyService.createTreadeApplyEntity(fssAccountEntity,wthDrawApplyDto);
 					fssTradeApplyService.createTradeApply(fssTradeApplyEntity);
 				} catch (FssException e) {
 					throw new FssException("90099005");

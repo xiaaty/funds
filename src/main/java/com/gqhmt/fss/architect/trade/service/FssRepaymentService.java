@@ -1,9 +1,13 @@
 package com.gqhmt.fss.architect.trade.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.loan.Repayment;
+import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
@@ -65,6 +69,30 @@ public class FssRepaymentService {
 			return fssRepaymentReadMapper.queryFssRepayment(repayment);
 	}
 		
+	/**
+	 * 创建实体类FssRepaymentEntity
+	 * @param dto
+	 * @param repaymentDto
+	 * @return
+	 */
+	public FssRepaymentEntity createFssRepaymentEntity(Repayment dto,RepaymentDto repaymentDto){
+		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
+		repaymentEntity.setAccNo(dto.getAcc_no());
+		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
+		repaymentEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		repaymentEntity.setMotifyTime((new Timestamp(new Date().getTime())));
+		repaymentEntity.setAmt(dto.getAmt());
+		repaymentEntity.setState("0");
+		repaymentEntity.setResultState("0");
+		repaymentEntity.setSeqNo(repaymentDto.getSeq_no());
+		repaymentEntity.setSerialNumber(dto.getSerial_number());
+		repaymentEntity.setContractId(dto.getContract_id());
+		repaymentEntity.setMchnChild(repaymentDto.getMchn());
+		repaymentEntity.setRemark(dto.getRemark());
+		return repaymentEntity;
+	}
+	
+	
 	
 	
 }

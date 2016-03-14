@@ -116,9 +116,17 @@ public class FssAccountService {
      * @param trade_type
      * @return
      */
+	/*	账务账号共16位 0000-0000000000-1-1，账务账号与业务编号一一对应。
+		账务账号分为三部分，第一部分 4位数字 为业务编号定义，
+		，中间10位为账户账号，生成规则，随机 or 顺序（根据实现），倒数第二位，为账户类型标志，
+		偶数（0，2，4，6，8）表示冻结账户，单数（1，3，5，7，9）表示正常账户每个账户随机使用某个数值，最后一位为校验位，校验规则待定。
+	*/
     private String getAccno(String trade_type) {
-
-        return "";
+    	String acc_no="";
+    	StringBuffer busi_no=new StringBuffer("1001");
+    	StringBuffer str=this.getRedom();
+    	acc_no=busi_no.append(str).append(this.getSecond()).toString();
+        return acc_no;
     }
 
     /**
@@ -181,8 +189,34 @@ public class FssAccountService {
     	
     }
     
-    
-    
+    /**
+     * 生成10位随机数
+     * @return
+     */
+	public StringBuffer getRedom(){
+		StringBuffer sb=new StringBuffer();
+		int a[] = new int[10];
+	      for(int i=0;i<a.length;i++ ) {
+	          a[i] = (int)(10*(Math.random()));
+	          System.out.print(a[i]);
+	          sb.append(a[i]+"");
+	      }
+	      return sb;
+	}
+	/**
+	 * 生成2位随机数
+	 * @return
+	 */
+	public StringBuffer getSecond(){
+		StringBuffer sb=new StringBuffer();
+		int a[] = new int[2];
+		for(int i=0;i<a.length;i++ ) {
+			a[i] = (int)(2*(Math.random()));
+			System.out.print(a[i]);
+			sb.append(a[i]+"");
+		}
+		return sb;
+	}
     
     
     
