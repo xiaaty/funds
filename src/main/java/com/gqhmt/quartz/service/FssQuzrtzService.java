@@ -3,6 +3,7 @@ package com.gqhmt.quartz.service;
 import com.gqhmt.quartz.entity.FssQuartzJobEntity;
 import com.gqhmt.quartz.mapper.read.FssQuartzReadMapper;
 import com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,6 +35,10 @@ public class FssQuzrtzService {
     private FssQuartzWriteMapper quartzWriteMapper;
 
 
+    @Resource
+    private SchedulerFactoryBean schedulerFactoryBean;
+
+
     public List<FssQuartzJobEntity> findAll(){
         return  this.quartzReadMapper.selectAll();
     }
@@ -45,6 +50,13 @@ public class FssQuzrtzService {
     public void insertList(List<FssQuartzJobEntity> list){
         this.quartzWriteMapper.insertList(list);
     }
+
+
+
+
+
+
+
 
 
 }
