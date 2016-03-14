@@ -190,15 +190,16 @@ public class PaySuperByFuiou {
 
     /*=============================================收   费==============================================*/
 
-    private void chargeAmount(FundAccountEntity entity,FundAccountEntity toEntity,BigDecimal chargeAmount) throws CommandParmException, FssException {
+    public FundOrderEntity chargeAmount(FundAccountEntity entity,FundAccountEntity toEntity,BigDecimal chargeAmount) throws CommandParmException, FssException {
         if(chargeAmount == null || BigDecimal.ZERO.compareTo(chargeAmount)>=0){
-            return;
+            return null;
         }
-
         //this.unfreezeByThird(entity.getCustId(),fundOrderEntity.getChargeAmount());
         FundOrderEntity fundOrderEntityCharge =this.createOrder(entity,chargeAmount,GlobalConstants.ORDER_WITHDRAW_CHARGE_AMOUNT,0,0,thirdPartyType);
-        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_MMS, fundOrderEntityCharge, entity.getUserName(),toEntity.getUserName(),chargeAmount,"收取账户手续费 "+chargeAmount+"元");
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_CHARGE_WITHDRAW, fundOrderEntityCharge, entity.getUserName(),toEntity.getUserName(),chargeAmount,"收取账户手续费 "+chargeAmount+"元");
         execExction(response,fundOrderEntityCharge);
+
+        return fundOrderEntityCharge;
     }
 
      /**
@@ -302,6 +303,10 @@ public class PaySuperByFuiou {
 
     private final FundOrderEntity createOrder(final FundAccountEntity primaryAccount,final  FundAccountEntity toAccountEntity,final BigDecimal amount,final int orderType,final long sourceID, final int sourceType, final String thirdPartyType) throws CommandParmException, FssException {
         return fundOrderService.createOrder(primaryAccount,toAccountEntity,amount,BigDecimal.ZERO,orderType,sourceID,sourceType,thirdPartyType);
+    }
+
+    public final FundOrderEntity createOrderByRefund(final FundAccountEntity primaryAccount,final BigDecimal amount,final BigDecimal chargeAmt,final int orderType,final long sourceID, final int sourceType, final String thirdPartyType) throws CommandParmException, FssException {
+        return fundOrderService.createOrder(primaryAccount,null,amount,chargeAmt,orderType,sourceID,sourceType,thirdPartyType);
     }
 
     /**

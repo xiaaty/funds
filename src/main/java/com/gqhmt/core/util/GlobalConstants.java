@@ -103,6 +103,9 @@ public class GlobalConstants {
 	public static final int ORDER_POINT_GQ_RETURN_FEE = 37;  //冠钱返现
 	public static final int ORDER_MOBILE_CHECK_CARD = 38;  //手机签约
 
+
+    public static final int ORDER_COST = 2199;  //收费
+
 	public static final int ORDER_DROP_USER = 39;
 	public static final int ORDER_UPDATE_CARD_QUERY = 40;
 
