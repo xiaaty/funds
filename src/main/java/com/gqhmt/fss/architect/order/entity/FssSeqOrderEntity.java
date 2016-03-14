@@ -29,61 +29,61 @@ import java.util.Date;
 public class FssSeqOrderEntity implements Serializable {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                    // bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
 
-    @Column(name = "seq_no")
+    @Column(name = "seq_no",updatable = false)
     private String seqNo;                              // varchar(45) NOT NULL COMMENT '交易流水号',
 
 
-    @Column(name = "cust_no")
+    @Column(name = "cust_no",updatable = false)
     private String custNo;                             // varchar(45) DEFAULT NULL COMMENT '客户编号',
 
 
-    @Column(name = "user_no")
+    @Column(name = "user_no",updatable = false)
     private String userNo;                             // varchar(45) DEFAULT NULL COMMENT '用户编号',
 
 
-    @Column(name = "acc_no")
+    @Column(name = "acc_no",updatable = false)
     private String accNo;                              // varchar(45) DEFAULT NULL COMMENT '账务账户编号',
 
 
-    @Column(name = "trade_type")
+    @Column(name = "trade_type",updatable = false)
     private String tradeType;                          // varchar(45) NOT NULL COMMENT '交易类型，1账户，2充值，3，提现，4标的，5收费，6转账，7，暂未定义 ，8资产查询，9其他',
 
 
-    @Column(name = "trade_type_child")
+    @Column(name = "trade_type_child",updatable = false)
     private String tradeTypeChild;                    // varchar(45) DEFAULT NULL COMMENT '见，kvcode表',
 
 
-    @Column(name = "amount")
+    @Column(name = "amount",updatable = false)
     private BigDecimal amount;                          // decimal(17,2) DEFAULT NULL COMMENT '操作资金金额',
 
 
-    @Column(name = "charge_amount")
+    @Column(name = "charge_amount",updatable = false)
     private BigDecimal chargeAmount;                   // decimal(17,2) DEFAULT NULL COMMENT '本次交易手续费',
 
 
-    @Column(name = "api_no")
+    @Column(name = "api_no",updatable = false)
     private String apiNo;                              // varchar(45) NOT NULL COMMENT '接口编号',
 
 
-    @Column(name = "mchn_parent")
+    @Column(name = "mchn_parent",updatable = false)
     private String mchnParent;                         // varchar(45) NOT NULL COMMENT '大商户编号',
 
 
-    @Column(name = "mchn_child")
+    @Column(name = "mchn_child",updatable = false)
     private String mchnChild;                          // varchar(45) NOT NULL COMMENT '子商户号',
 
 
     @AutoDate(type = AutoDateType.DATE_CHAR_8)
-    @Column(name = "trade_date")
+    @Column(name = "trade_date",updatable = false)
     private String tradeDate;                          // char(8) DEFAULT NULL COMMENT '交易日期',
 
 
     @AutoDate(type = AutoDateType.TIME_CHAR_6)
-    @Column(name = "trade_time")
+    @Column(name = "trade_time",updatable = false)
     private String tradeTime;                          // char(6) DEFAULT NULL COMMENT '交易时间',
 
 
@@ -95,7 +95,7 @@ public class FssSeqOrderEntity implements Serializable {
     private Integer returnState;                       //  int(11) NOT NULL DEFAULT '0' COMMENT '0，不需回调通知，1待回调通知，2已回调通知—具体参数，见kvcode表。',
 
     @AutoDate
-    @Column(name = "create_time")
+    @Column(name = "create_time",updatable = false)
     private Date createTime;                           // datetime DEFAULT NULL COMMENT '创建时间',
 
 
@@ -107,7 +107,7 @@ public class FssSeqOrderEntity implements Serializable {
     @Column(name = "memo")
     private String  memo;                               //varchar(45) DEFAULT NULL,
 
-    @Column(name = "trade_param")
+    @Column(name = "trade_param",updatable = false)
     private String tradeParam;                         // blob COMMENT '交易参数存储字段',
 
     @Column(name = "resp_code")

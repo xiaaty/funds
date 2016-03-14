@@ -2,7 +2,9 @@ package com.gqhmt.extServInter.dto.trade;
 
 
 
+import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -29,6 +31,7 @@ public class SsdkDto extends SuperDto{
 	private Integer cust_no;		//客户编号
 	private Integer user_no;		//用户编号
 	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;		//代扣金额
 	private Integer busi_type;			//账户类型
 	private Long busi_id;			//业务id

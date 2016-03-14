@@ -23,6 +23,7 @@ public enum APIValidType {
     STRING,
     DATE,
     MONEY,
+    MONEY_ZERO,
     CERT_NO,
     BANK_CARD,
     MOBILE

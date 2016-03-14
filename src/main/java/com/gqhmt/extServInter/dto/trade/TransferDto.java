@@ -1,7 +1,9 @@
 package com.gqhmt.extServInter.dto.trade;
 
 
+import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -36,6 +38,7 @@ public class TransferDto extends SuperDto {
 	private Integer to_cust_type;//入账用户编号
 
 	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt; //转账金额
 	private Integer  funds_type;//交易子类型
 	private Integer  busi_type;//业务类型
