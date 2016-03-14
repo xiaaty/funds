@@ -73,7 +73,7 @@ public class CustomerInfoService {
 	 * @param loanAccountDto
 	 * @throws FssException
 	 */
-	public FssAccountEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
+	public CustomerInfoEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
 //			1.创建账户	t_gq_customer_info 
 			CustomerInfoEntity customerInfoEntity;
 			try {
@@ -98,16 +98,7 @@ public class CustomerInfoService {
 			} catch (Exception e) {
 				throw new FssException("创建用户银行卡信息失败！");
 			}
-//			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-			FssAccountEntity fssAccount;
-			try {
-				fssAccount = this.createFssAccount(loanAccountDto, customerInfoEntity, userEntity, bankCardInfoEntity);
-				fssAccountWriteMapper.insertSelective(fssAccount);
-			} catch (Exception e) {
-				throw new FssException("创建客户资金账户失败！");
-			}
-			//4.创建资金账户
-		return fssAccount;
+		return customerInfoEntity;
 	}
 
 	/**

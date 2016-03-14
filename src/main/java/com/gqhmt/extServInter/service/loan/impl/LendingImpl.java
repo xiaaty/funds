@@ -1,16 +1,14 @@
 package com.gqhmt.extServInter.service.loan.impl;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.LendingDto;
 import com.gqhmt.extServInter.service.loan.ILending;
-import com.gqhmt.pay.service.loan.ILoan;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 
 /**
  * 
@@ -31,14 +29,13 @@ import com.gqhmt.pay.service.loan.ILoan;
  */
 @Service
 public class LendingImpl implements ILending {
-
 	@Resource
-	private ILoan loanImpl;
+	private FssLoanService loanService;
 	
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		loanImpl.lending((LendingDto)dto);
+    		loanService.insertLending((LendingDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

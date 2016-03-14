@@ -488,4 +488,45 @@ public class FssChangeCardService {
        return false;
    }
     
+   /**
+    * 创建银行卡变更实体类型
+    * @param cus
+    * @param bankNo
+    * @param bankId
+    * @param bankAddr
+    * @param bankCity
+    * @param filePath
+    * @param type
+    * @param seqNo
+    * @return
+    */
+   public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn){
+       FssChangeCardEntity entity = new FssChangeCardEntity();
+       entity.setCustId(cus.getId().longValue());
+       entity.setCardNo(bankNo);
+       entity.setBankType(bankId);
+       entity.setBankAdd(bankAddr);
+       entity.setBankCity(bankCity);
+       entity.setFilePath(filePath);
+
+       entity.setbBankInfoId(cus.getBankId().longValue());
+       entity.setCertNo(cus.getCertNo());
+       entity.setCustName(cus.getCustomerName());
+       entity.setCreateUserId(-1l);
+       entity.setCreateTime(new Date());
+       entity.setModifyTime(new Date());
+       entity.setState(1);
+       entity.setTradeState(1);
+       entity.setCertType(cus.getCertType());
+       entity.setMobile(cus.getMobilePhone());
+       entity.setType(type);
+       if(seqNo != null){
+           entity.setSeqNo(seqNo);
+       }
+       if(mchn != null){
+       	entity.setMchn(mchn);
+       }
+       return  entity;
+   }
+   
 }
