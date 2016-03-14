@@ -1,17 +1,14 @@
 package com.gqhmt.extServInter.service.loan.impl;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
 import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
-import com.gqhmt.pay.service.loan.ILoan;
-
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -31,15 +28,14 @@ import com.gqhmt.pay.service.loan.ILoan;
  */
 @Service
 public class MortgageeWithDrawImpl implements IMortgageeWithDraw {
-
-	@Resource
-	private ILoan loanImpl;
 	
+	@Resource
+	private FssLoanService loanService;
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		loanImpl.mortgageeWithDraw((MortgageeWithDrawDto)dto);
-			 response.setResp_code("00000000");
+    		loanService.insertmortgageeWithDraw((MortgageeWithDrawDto)dto);
+			response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
