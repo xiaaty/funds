@@ -3,8 +3,6 @@ package com.gqhmt.quartz.service;
 import com.gqhmt.quartz.entity.FssQuartzJobEntity;
 import com.gqhmt.quartz.mapper.read.FssQuartzReadMapper;
 import com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper;
-
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +34,6 @@ public class FssQuzrtzService {
     @Resource
     private FssQuartzWriteMapper fssQuartzWriteMapper;
 
-
     public List<FssQuartzJobEntity> findAll(){
         return  this.fssQuartzReadMapper.selectAll();
     }
@@ -66,6 +63,13 @@ public class FssQuzrtzService {
 	public FssQuartzJobEntity selectByPrimaryKey(Long id) {
 		return (FssQuartzJobEntity) this.fssQuartzWriteMapper.selectByPrimaryKey(id);
 	}
+
+
+
+
+
+
+
 
 
 }
