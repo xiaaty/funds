@@ -6,9 +6,9 @@
 		SELECT LAST_INSERT_ID() AS id
 		</selectKey>
        	INSERT INTO t_gq_fss_loan
-		(id,cust_no,user_no,acc_no,contract_id,contract_amt,pay_amt,transfer_time,trade_type,seq_no,mortgagee_acc_no,create_time,mchn_parent,mchn_child,loan_platform)
+		(id,cust_no,user_no,acc_no,contract_id,contract_amt,pay_amt,bespoke_date,trade_type,seq_no,mortgagee_acc_no,create_time,mchn_parent,mchn_child,loan_platform)
 		VALUES
-    	(null,#{custNo},#{userNo},#{accNo},#{contractId},#{contractAmt},#{payAmt},#{transferTime},#{tradeType},#{seqNo},#{mortgageeAccNo},#{createTime},#{mchnParent},#{mchnChild},#{loanPlatform})
+    	(null,#{custNo},#{userNo},#{accNo},#{contractId},#{contractAmt},#{payAmt},#{bespokeDate},#{tradeType},#{seqNo},#{mortgageeAccNo},#{createTime},#{mchnParent},#{mchnChild},#{loanPlatform})
     </insert>  
 	<insert id="insertEnterAccount"  parameterType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity"  > 
 		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">

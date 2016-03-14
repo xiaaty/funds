@@ -54,7 +54,7 @@ public class FssLoanTradeController {
 	 * 
 	 * author:jhz
 	 * time:2016年3月11日
-	 * function：借款人付款
+	 * function：借款人放款
 	 */
 	@RequestMapping(value = "/fss/loan/trade/borrow", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
@@ -95,11 +95,11 @@ public class FssLoanTradeController {
 		if (modifyTime != null && !modifyTime.equals("")) {
 			modifyTime = modifyTime + " 23:59:59";
 		}
-		map.put("contractId", contractId.trim());
-		map.put("mchnChild", mchnChild.trim());
+		map.put("contractId", contractId);
+		map.put("mchnChild", mchnChild);
 		map.put("creatTime", creatTime);
 		map.put("modifyTime", modifyTime);
-		map.put("seqNo", seqNo.trim());
+		map.put("seqNo", seqNo);
 		fssLoanTradeService.getBorrowWithDraw(map);
 		model.addAttribute("map", map);
 //		model.addAttribute("page", selectAccountSequenceList);

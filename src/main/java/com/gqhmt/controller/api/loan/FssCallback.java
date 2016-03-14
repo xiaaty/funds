@@ -11,7 +11,7 @@ import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -56,6 +56,7 @@ public class FssCallback {
     * function：流标回调
     */
     @RequestMapping(value = "/loan/failedBidCallback",method = RequestMethod.POST)
+    @ResponseBody
     public Object ceeateAccount(String mchnNo,String seqNo){
     	Response response= null;
         try {
@@ -73,6 +74,7 @@ public class FssCallback {
      * function：借款人放款
      */
     @RequestMapping(value = "/loan/lendingCallback",method = RequestMethod.POST)
+    @ResponseBody
     public Object changeBankCard(String mchnNo,String seqNo){
     	Response response= null;
     	try {
@@ -89,6 +91,7 @@ public class FssCallback {
      * function：抵押权人放款
      */
     @RequestMapping(value = "/loan/mortgageeWithDrawCallback",method = RequestMethod.POST)
+    @ResponseBody
     public Object MortgageeWithDraw(String mchnNo,String seqNo){
     	Response response= null;
     	try {
@@ -105,6 +108,7 @@ public class FssCallback {
      * function：入账接口
      */
 	@RequestMapping(value = "/loan/enterAccountCallback",method = RequestMethod.POST)
+	 @ResponseBody
     public Object EnterAccount(String mchnNo,String seqNo){
 		Response response=null;
     	try {
