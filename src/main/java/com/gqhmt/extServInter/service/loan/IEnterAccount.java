@@ -1,9 +1,6 @@
 package com.gqhmt.extServInter.service.loan;
-import java.util.List;
 
-import com.gqhmt.core.APIExcuteErrorException;
-import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
+import com.gqhmt.extServInter.service.ExtService;
 
 /**
  * 
@@ -22,8 +19,7 @@ import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
  * -----------------------------------------------------------------
  * 2016年3月9日  jhz      1.0     1.0 Version
  */
-public interface IEnterAccount  {
+public interface IEnterAccount  extends ExtService{
 	
-	public Response excute(List<EnterAccountDto> enterAccountDtos) throws APIExcuteErrorException;
 
 }

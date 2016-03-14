@@ -1,15 +1,16 @@
 package com.gqhmt.extServInter.service.loan.impl;
 
 
-import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.service.loan.IEnterAccount;
 import com.gqhmt.pay.service.loan.ILoan;
@@ -37,10 +38,10 @@ public class EnterAccountImpl implements IEnterAccount {
 	@Resource
 	private ILoan loanImpl;
 	
-	public Response excute(List<EnterAccountDto> enterAccountDtos) {
+	public Response excute(SuperDto dto) throws APIExcuteErrorException{
     	Response response = new Response();
     	try {
-    		loanImpl.enterAccount(enterAccountDtos);
+    		loanImpl.enterAccount((EnterAccountDto) dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

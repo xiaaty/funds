@@ -130,6 +130,6 @@ public interface IFundsAccount {
     /**
 	 * 	银行卡变更完成，通知变更发起方（借款系统）
 	 */
-    public FssChangeCardEntity bankCardChangeCallBack(String seqNo,String mchn) throws FssException;
+    public FssChangeCardEntity bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
 
 }

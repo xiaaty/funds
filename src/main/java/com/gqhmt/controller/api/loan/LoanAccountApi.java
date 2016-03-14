@@ -1,7 +1,7 @@
 package com.gqhmt.controller.api.loan;
-
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardResponse;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
@@ -12,10 +12,12 @@ import com.gqhmt.extServInter.service.loan.ICreateLoan;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
 import com.gqhmt.extServInter.service.loan.IMarginSendBack;
 import com.gqhmt.extServInter.service.loan.IRepayment;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import com.gqhmt.pay.service.loan.IRePayment;
 import com.gqhmt.pay.service.loan.IWithDrawApply;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,10 +101,11 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/bankCardChangeCallBack",method = RequestMethod.POST)
-    public Object bankCardChangeCallBack(String seqNo,String mchn){
-    	Response response=new Response();
+    public Object bankCardChangeCallBack(String seq_no,String mchn){
+    	ChangeBankCardResponse response=new ChangeBankCardResponse();
     	try {
-    		fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
+    		FssChangeCardEntity fssChangeCardEntity = fundsAccountImpl.bankCardChangeCallBack(seq_no,mchn);
+    		response.setFssChangeCardEntity(fssChangeCardEntity);
     		response.setResp_code("0000");
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
@@ -170,7 +173,7 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/createRefundDraw",method = RequestMethod.POST)
-    public Object createRefundDraw(RepaymentDto dto){
+    public Object createRefundDraw(@RequestBody RepaymentDto dto){
     	Response response=new Response();
     	try {
     		response = repaymentImpl.excute(dto);

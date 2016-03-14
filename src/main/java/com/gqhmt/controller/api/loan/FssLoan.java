@@ -12,10 +12,10 @@ import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
 import com.gqhmt.extServInter.service.loan.impl.FailedBidImpl;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -108,10 +108,10 @@ public class FssLoan {
      * function：入账接口
      */
     @RequestMapping(value = "/loan/enterAccount",method = RequestMethod.POST)
-    public Object EnterAccount(List<EnterAccountDto> enterAccountDtos){
+    public Object EnterAccount(@RequestBody EnterAccountDto enterAccountDto){
     	Response response= null;
     	try {
-    		response = enterAccountImpl.excute(enterAccountDtos);
+    		response = enterAccountImpl.excute(enterAccountDto);
     	} catch (Exception e) {
     		response = this.excute(e);
     	}

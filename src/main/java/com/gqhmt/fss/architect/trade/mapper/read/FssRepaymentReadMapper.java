@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.trade.mapper.read;
 
+import java.util.List;
+
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 
@@ -20,4 +22,7 @@ import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
  * 2016/1/10  于泳      1.0     1.0 Version
  */
 public interface FssRepaymentReadMapper extends ReadMapper<FssRepaymentEntity> {
+	
+	public List<FssRepaymentEntity> queryFssRepayment(FssRepaymentEntity repayment);
+	
 }

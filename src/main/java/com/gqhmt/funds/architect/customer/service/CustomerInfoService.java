@@ -5,8 +5,6 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
-import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
-import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
@@ -14,12 +12,13 @@ import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
-import com.gqhmt.funds.architect.mapping.service.FuiouAreaService;
-import com.gqhmt.funds.architect.mapping.service.FuiouBankCodeService;
+import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -39,23 +38,8 @@ public class CustomerInfoService {
 	private CustomerInfoReadMapper customerInfoReadMapper;
 	@Autowired
 	private CustomerInfoWriteMapper customerInfoWriteMapper;
-
-	@Autowired
-	private FundsAccountReadMapper fundAccountReadMapper;
-	
-	@Autowired
-	private FundsAccountWriteMapper fundAccountWriteMapper;
-
 	@Autowired
 	private BankCardInfoService bankCardinfoService;
-
-//	@Autowired
-//	private UserDao userDao;
-	@Autowired
-	private FuiouAreaService fuiouAreaService;
-	@Autowired
-	private FuiouBankCodeService fuiouBankCodeService;
-
 	@Autowired
 	FundAccountService fundAccountService;
 
@@ -67,6 +51,8 @@ public class CustomerInfoService {
 	
 	@Resource
 	private FssAccountWriteMapper fssAccountWriteMapper;
+	@Resource
+	private FundsAccountImpl fundsAccountImpl;
 /*
 	*//**
 	 * 查询客户管理列表
@@ -87,61 +73,41 @@ public class CustomerInfoService {
 	 * @param loanAccountDto
 	 * @throws FssException
 	 */
-	public CustomerInfoEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
-			//1.创建账户	t_gq_customer_info 
-			CustomerInfoEntity customer=new CustomerInfoEntity();
-			customer.setCustomerName(loanAccountDto.getName());
-			customer.setCustomerType(1);
-			customer.setMobilePhone(loanAccountDto.getMobile());
-			customer.setCertType(1);
-			customer.setCertNo(loanAccountDto.getCert_no());
-			customer.setNameIdentification(0);
-			customer.setPhoneIdentification(0);
-			customer.setEmailIdentification(0);
-			customer.setUserId(1);
-			customer.setIsvalid(0);
-			customer.setHasThirdAgreement(0);
-			customer.setHasAcount(0);
-			customer.setPayChannel(2);
-			customer.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
-			customer.setIsBatchSendmsgCalled(0);
-			customer.setCreateTime((new Timestamp(new Date().getTime())));
-			customer.setCreateUserId(0);
-			customer.setModifyTime((new Timestamp(new Date().getTime())));
-			customer.setModifyUserId(0);
-			customerInfoWriteMapper.insertSelective(customer);
-			
+	public FssAccountEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
+//			1.创建账户	t_gq_customer_info 
+			CustomerInfoEntity customerInfoEntity;
+			try {
+				customerInfoEntity = this.createCustomerInfo(loanAccountDto);
+				customerInfoWriteMapper.insertSelective(customerInfoEntity);
+			} catch (Exception e) {
+				throw new FssException("创建客户信息失败！");
+			}
 			//2.创建用户         t_gq_user	
-			UserEntity userEntity=new UserEntity();
-			userEntity.setUserUuid("0");
-			userEntity.setMobilePhone(loanAccountDto.getMobile());
-			userEntity.setCreateTime((new Timestamp(new Date().getTime())));
-			userEntity.setModifyTime((new Timestamp(new Date().getTime())));
-			userEntity.setIntegral(0);
-			userEntity.setCreditLevel(0);
-			userEntity.setCustId(customer.getId());
-			userEntity.setUserFrom(0);
-			userEntity.setIsFirstDebt(0);
-			userEntity.setUserType(1);
-			userEntity.setIsVerify(0);
-			gqUserWriteMapper.insertSelective(userEntity);
-			
+			UserEntity userEntity;
+			try {
+				userEntity = this.createUser(loanAccountDto,customerInfoEntity);
+				gqUserWriteMapper.insertSelective(userEntity);
+			} catch (Exception e) {
+				throw new FssException("创建用户信息失败！");
+			}
 			//3.创建银行卡信息     t_gq_bank_info
-			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
-			bankCardInfoEntity.setBankNo(loanAccountDto.getBank_card());
-			bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
-			bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
-			bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
-			bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
-			bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
-			bankCardInfoEntity.setCreateUserId(1);
-			bankCardInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
-			bankCardInfoEntity.setModifyUserId(1);
-			bankCardInfoEntity.setChangeState(0);
-			bankCardInfoEntity.setSource("");
-			bankCardinfoService.insert(bankCardInfoEntity);
-		
-		return customer;
+			BankCardInfoEntity bankCardInfoEntity;
+			try {
+				bankCardInfoEntity = this.createBankCardInfoEntity(loanAccountDto,customerInfoEntity,userEntity);
+				bankCardinfoService.insert(bankCardInfoEntity);
+			} catch (Exception e) {
+				throw new FssException("创建用户银行卡信息失败！");
+			}
+//			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
+			FssAccountEntity fssAccount;
+			try {
+				fssAccount = this.createFssAccount(loanAccountDto, customerInfoEntity, userEntity, bankCardInfoEntity);
+				fssAccountWriteMapper.insertSelective(fssAccount);
+			} catch (Exception e) {
+				throw new FssException("创建客户资金账户失败！");
+			}
+			//4.创建资金账户
+		return fssAccount;
 	}
 
 	/**
@@ -1102,11 +1068,120 @@ public class CustomerInfoService {
 		return customerInfoReadMapper.selectOne(entity);
 	}
 	
+	/**
+	 * 创建账户
+	 * @param loanAccountDto
+	 * @return
+	 * @throws FssException
+	 */
+	public CustomerInfoEntity createCustomerInfo(CreateLoanAccountDto loanAccountDto) throws FssException{
+		CustomerInfoEntity customer=new CustomerInfoEntity();
+		customer.setCustomerName(loanAccountDto.getName());
+		customer.setCustomerType(1);
+		customer.setMobilePhone(loanAccountDto.getMobile());
+		customer.setCertType(1);
+		customer.setCertNo(loanAccountDto.getCert_no());
+		customer.setNameIdentification(0);
+		customer.setPhoneIdentification(0);
+		customer.setEmailIdentification(0);
+		customer.setUserId(1);
+		customer.setIsvalid(0);
+		customer.setHasThirdAgreement(0);
+		customer.setHasAcount(0);
+		customer.setPayChannel(2);
+		customer.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
+		customer.setIsBatchSendmsgCalled(0);
+		customer.setCreateTime((new Timestamp(new Date().getTime())));
+		customer.setCreateUserId(0);
+		customer.setModifyTime((new Timestamp(new Date().getTime())));
+		customer.setModifyUserId(0);
+		return customer;
+	}
 	
+	/**
+	 * 创建用户
+	 * @param loanAccountDto
+	 * @return
+	 */
+	public UserEntity createUser(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer) throws FssException{
+		UserEntity userEntity=new UserEntity();
+		userEntity.setUserUuid(this.getUUID());
+		userEntity.setUserName(loanAccountDto.getMobile());
+		userEntity.setMobilePhone(loanAccountDto.getMobile());
+		userEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		userEntity.setModifyTime((new Timestamp(new Date().getTime())));
+		userEntity.setIntegral(0);
+		userEntity.setCreditLevel(0);
+		userEntity.setCustId(customer.getId());
+		userEntity.setUserFrom(0);
+		userEntity.setIsFirstDebt(0);
+		userEntity.setUserType(1);
+		userEntity.setIsVerify(0);
+		return userEntity;
+	}
 	
+	/**
+	 * 创建银行账户
+	 * @param loanAccountDto
+	 * @param customer
+	 * @return
+	 * @throws FssException
+	 */
+	public BankCardInfoEntity createBankCardInfoEntity(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity) throws FssException{
+		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+		bankCardInfoEntity.setId(customer.getBankId());
+		bankCardInfoEntity.setCustId(customer.getId());
+		bankCardInfoEntity.setBankLongName("");
+		bankCardInfoEntity.setBankSortName("");
+		bankCardInfoEntity.setBankNo(loanAccountDto.getBank_card());
+		bankCardInfoEntity.setIsPersonalCard(1);
+		bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
+		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
+		bankCardInfoEntity.setCertName(customer.getCustomerName());
+		bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
+//		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+		bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		bankCardInfoEntity.setCreateUserId(1);
+		bankCardInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
+		bankCardInfoEntity.setModifyUserId(1);
+		return bankCardInfoEntity;
+	}
+	/**
+	 * 创建资金账户
+	 * @param loanAccountDto
+	 * @param customer
+	 * @param userEntity
+	 * @param bankCardInfoEntity
+	 * @return
+	 * @throws FssException
+	 */
+	public FssAccountEntity createFssAccount(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity,BankCardInfoEntity bankCardInfoEntity) throws FssException{
+		FssAccountEntity fssAccount=new FssAccountEntity();
+		fssAccount.setAccNo(fundAccountService.getAccountNo());
+		fssAccount.setAccBalance(BigDecimal.ZERO);
+		fssAccount.setAccFreeze(BigDecimal.ZERO);
+		fssAccount.setAccAvai(BigDecimal.ZERO);
+		fssAccount.setAccNotran(BigDecimal.ZERO);
+		fssAccount.setCustNo(loanAccountDto.getContract_id());
+		fssAccount.setUserNo(userEntity.getId().toString());
+		fssAccount.setCreateTime((new Timestamp(new Date().getTime())));
+		fssAccount.setModifyTime((new Timestamp(new Date().getTime())));
+		fssAccount.setAccType(1);
+		fssAccount.setState(1);
+		fssAccount.setBusiNo("");
+		fssAccount.setMchnChild(loanAccountDto.getMchn());
+		fssAccount.setCustId(customer.getId());
+		return fssAccount;
+	}
 	
-	
-	
-	
+	/**
+	 * 生成UUid
+	 * @return
+	 */
+	 public String getUUID() {  
+		  String str=UUID.randomUUID().toString();
+	      String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);  
+	      return temp;  
+	    } 
 	
 }

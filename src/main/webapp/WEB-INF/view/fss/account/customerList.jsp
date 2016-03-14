@@ -79,7 +79,7 @@
                                                          <td class="tr">证件号码：</td>
                                                         <td>
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="cert_no" value="${customer.cert_no}" />
+                                                                <input type="text" name="certNo" value="${customer.certNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">姓名:</td>
@@ -154,16 +154,16 @@
                                         <tbody>
                                              <c:forEach items="${page.list}" var="customer">
                                                 <tr>
-                                                    <td>${customer.cust_no}</td>
+                                                    <td>${customer.custNo}</td>
                                                     <td>${customer.name}</td>
                                                     <td>${customer.mobile}</td>
-                                                    <td>${customer.cert_type==1?"身份证":"护照"}</td>
-                                                    <td>${customer.cert_no}</td>
+                                                    <td>${customer.certType==1?"身份证":"护照"}</td>
+                                                    <td>${customer.certNo}</td>
                                                     <td>否</td>
-                                                    <td><fmt:formatDate value="${customer.create_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${customer.modify_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${customer.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${customer.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <%-- <td><a href="${contextPath}/fss/account/customerAccountDetail">查看账户资产</a></td>--%>
-                                                    <td><a href="${contextPath}/fss/account/customerAccountDetail/${customer.cust_no}">查看账户资产</a></td> 
+                                                    <td><a href="${contextPath}/fss/account/customerAccountDetail/${customer.custNo}">查看账户资产</a></td> 
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

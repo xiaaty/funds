@@ -54,11 +54,11 @@ public class FssLoanEntity implements Serializable {
 //    @Column(name = "bail_amt")
 //    private BigDecimal bailAmt  ;                                  //保证金退还        YES             (NULL)                   select,insert,update,references  账户可用余额
 
-    @Column(name = "transfer_time")
-    private Date transferTime  ;                               //预约到账日期       (NULL)           YES             (NULL)                   select,insert,update,references
+    @Column(name = "bespoke_date")
+    private Date bespoke_date  ;                               //预约到账日期       (NULL)           YES             (NULL)                   select,insert,update,references
     
-    @Column(name = "busi_no")
-    private String busiNo  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
+    @Column(name = "trade_type")
+    private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
   
     @Column(name = "seq_no")
     private String seqNo  ;                               //交易流水号    (NULL)           YES             (NULL)                   select,insert,update,references
@@ -83,6 +83,12 @@ public class FssLoanEntity implements Serializable {
    
    @Column(name="status")
    private String status;              // 状态
+   
+   @Column(name="rep_code")
+   private String repCode;              // 返回码
+ 
+   @Column(name="rep_msg")
+   private String repMsg;              // 返回码
    
    @Column(name="is_true")
    private String isTrue;              // 0成功还是1失败
@@ -135,21 +141,21 @@ public class FssLoanEntity implements Serializable {
 	public void setPayAmt(BigDecimal payAmt) {
 		this.payAmt = payAmt;
 	}
-
-	public Date getTransferTime() {
-		return transferTime;
+	
+	public Date getBespoke_date() {
+		return bespoke_date;
 	}
 
-	public void setTransferTime(Date transferTime) {
-		this.transferTime = transferTime;
+	public void setBespoke_date(Date bespoke_date) {
+		this.bespoke_date = bespoke_date;
 	}
 
-	public String getBusiNo() {
-		return busiNo;
+	public String getTradeType() {
+		return tradeType;
 	}
 
-	public void setBusiNo(String busiNo) {
-		this.busiNo = busiNo;
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
 	}
 
 	public String getSeqNo() {
@@ -231,6 +237,22 @@ public class FssLoanEntity implements Serializable {
 
 	public void setLoanPlatform(String loanPlatform) {
 		this.loanPlatform = loanPlatform;
+	}
+
+	public String getRepCode() {
+		return repCode;
+	}
+
+	public void setRepCode(String repCode) {
+		this.repCode = repCode;
+	}
+
+	public String getRepMsg() {
+		return repMsg;
+	}
+
+	public void setRepMsg(String repMsg) {
+		this.repMsg = repMsg;
 	}
 	
     

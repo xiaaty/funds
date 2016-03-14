@@ -36,13 +36,43 @@ public class FssSettleListEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
     
+    @Column(name = "enter_id")
+    private Long enterId;                          //入账表ID
+    
     @Column(name = "account_type")
     private String accountType   ;                                //账务科目       YES             (NULL)                   select,insert,update,references  账户总资产
     
     @Column(name = "settle_amt")
     private BigDecimal settleAmt   ;                                //清算金额             (NULL)                   select,insert,update,references  账户总资产
    
+    @Column(name = "trade_status")
+    private String tradeStatus   ;                                //交易状态        YES             (NULL)                   select,insert,update,references  账户总资产
+    
+    @Column(name = "is_true")
+    private String isTrue   ;                                // 0成功还是1失败        YES             (NULL)                   select,insert,update,references  账户总资产
+    
+    @Column(name="rep_code")
+    private String repCode;              // 返回码
   
+    @Column(name="rep_msg")
+    private String repMsg;              // 返回码
+    
+	public String getRepCode() {
+		return repCode;
+	}
+
+	public void setRepCode(String repCode) {
+		this.repCode = repCode;
+	}
+
+	public String getRepMsg() {
+		return repMsg;
+	}
+
+	public void setRepMsg(String repMsg) {
+		this.repMsg = repMsg;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +95,30 @@ public class FssSettleListEntity implements Serializable {
 
 	public void setSettleAmt(BigDecimal settleAmt) {
 		this.settleAmt = settleAmt;
+	}
+
+	public String getTradeStatus() {
+		return tradeStatus;
+	}
+
+	public void setTradeStatus(String tradeStatus) {
+		this.tradeStatus = tradeStatus;
+	}
+
+	public String getIsTrue() {
+		return isTrue;
+	}
+
+	public void setIsTrue(String isTrue) {
+		this.isTrue = isTrue;
+	}
+
+	public Long getEnterId() {
+		return enterId;
+	}
+
+	public void setEnterId(Long enterId) {
+		this.enterId = enterId;
 	}
 
 	

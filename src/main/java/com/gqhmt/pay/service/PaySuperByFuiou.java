@@ -120,11 +120,12 @@ public class PaySuperByFuiou {
      * @return
      * @throws FssException
      */
-    public boolean changeCardResult(FundAccountEntity primaryAccount,String  orderNo,Long busiId) throws FssException {
+    public CommandResponse changeCardResult(FundAccountEntity primaryAccount,String  orderNo,Long busiId) throws FssException {
         LogUtil.info(this.getClass(),"第三方个人提现规则设置:"+primaryAccount.getAccountNo()+":"+orderNo+":"+busiId);
         FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD_QUERY,busiId,GlobalConstants.BUSINESS_UPDATE_CARE,thirdPartyType);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_QUERYCARD, fundOrderEntity, primaryAccount,primaryAccount.getUserName(),orderNo);
-        return execExction(response,fundOrderEntity);
+        execExction(response,fundOrderEntity);
+        return response;
     }
     /*=============================================账户结束==============================================*/
 

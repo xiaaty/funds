@@ -18,18 +18,17 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
-import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
-import com.gqhmt.pay.core.factory.ThirdpartyFactory;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.account.IFundsAccount;
-import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 /**
@@ -216,65 +215,87 @@ public class FundsAccountImpl implements IFundsAccount {
 	 */
 	 public boolean bankCardChange(CardChangeDto cardChangeDto)throws FssException{
 			BankCardInfoEntity bankCardInfoEntity=null;
-			Integer cusId=null;
-			Integer bankcardId=null;
 			CustomerInfoEntity  customerInfoEntity=null;
+			//1.根据账号查询该客户账户信息
 		 	FssAccountEntity fssAccountEntity= fundAccountService.getFssFundAccountInfo(cardChangeDto.getAcc_no());
 		 	if(null!=fssAccountEntity){
-		 		customerInfoEntity=customerInfoService.queryCustomeById(Integer.parseInt(fssAccountEntity.getCustNo()));
+		 		//查询该账户客户信息
+		 		customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());
 		 		if(null!=customerInfoEntity){
-//		 			cusId =	customerInfoEntity.getId().intValue();
-		 			bankCardInfoEntity = bankCardInfoService.getBankCardById(customerInfoEntity.getBankId());
+		 			//通过客户表中的bankid查询该客户要变更的银行卡信息
+		 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());
 		 			if(bankCardInfoEntity!=null){
-		 				bankcardId=bankCardInfoEntity.getId();
+		 				try {
+		 					//将变更银行卡信息插入到银行卡变更表
+							FssChangeCardEntity fssChangeCardEntity=this.createChangeCardInstance(customerInfoEntity, bankCardInfoEntity.getBankNo(), cardChangeDto.getBank_id(), "", cardChangeDto.getCity_id(), cardChangeDto.getFileName(), 4, cardChangeDto.getSeq_no(),cardChangeDto.getMchn());
+							fssChangeCardService.insert(fssChangeCardEntity);
+							//银行卡变更记录插入成功之后，进入跑批处理
+		 				} catch (FssException e) {
+							throw new FssException("银行卡变更记录插入失败");
+						}
+		 			}else{
+		 				throw new FssException("未查到得到该客户银行卡信息");
 		 			}
 		 		}else{
-		 			throw new FssException("未得到用户信息");
+		 			throw new FssException("未查到得到该户信息");
 		 		}
+		 	}else{
+		 		throw new FssException("资金平台未查到该账户信息");
 		 	}
-		 	FssChangeCardEntity changeCardEntity=fssChangeCardService.getChangeCardByCustId(Long.valueOf(customerInfoEntity.getId()));
-	        String cardNo = bankCardInfoEntity.getBankNo();
-	        String bankCd = changeCardEntity.getBankType();
-	        String bankNm = changeCardEntity.getBankAdd();
-	        String cityId = changeCardEntity.getBankCity();
-	        String fileName = cardChangeDto.getFileName().substring(changeCardEntity.getFilePath().lastIndexOf("/"));
-	        FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
-	        //订单号
-	        FundOrderEntity fundOrderEntity = fundOrderService.createOrder(primaryAccount,null,BigDecimal.ZERO,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,Long.valueOf(bankcardId),Integer.valueOf(GlobalConstants.BUSINESS_UPDATE_CARE),"2");
-	        CommandResponse response =ThirdpartyFactory.command(ThirdPartyType.FUIOU.toString(), PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CARD, fundOrderEntity, primaryAccount,cardNo,bankNm,bankCd,cityId,fileName);
-//	        execExction(response,fundOrderEntity);
-	        changeCardEntity.setOrderNo(fundOrderEntity.getOrderNo());
-	        try {
-	        	fssChangeCardService.update(changeCardEntity);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	        this.updateOrder(fundOrderEntity,2,response.getCode(),response.getMsg());
 		 return true;
 	 }
-	 
-	
-		@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { CommandParmException.class }, readOnly = false)
-		public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws CommandParmException {
-			fundOrderEntity.setOrderState(status);
-			fundOrderEntity.setRetCode(code);
-			fundOrderEntity.setRetMessage(msg);
-			try {
-				fundOrderService.update(fundOrderEntity);
-			} catch (Exception e) {
-				throw new CommandParmException(e.getMessage());
-			}
-		}
 	
 		/**
 		 * 	银行卡变更完成，通知变更发起方（借款系统）
 		 */
-	    public FssChangeCardEntity bankCardChangeCallBack(String seqNo,String mchn) throws FssException{
+	    public FssChangeCardEntity bankCardChangeCallBack(String seq_no,String mchn) throws FssException{
 	    	FssChangeCardEntity changeCardEntity=null;
-	    	changeCardEntity=fssChangeCardService.queryChangeCardByParam(seqNo,mchn);
+	    	changeCardEntity=fssChangeCardService.queryChangeCardByParam(seq_no,mchn);
 	    	if(changeCardEntity==null){
 	    		throw new FssException("90004001");
 	    	}
 	    	return changeCardEntity;
 	    }
+	    
+	    /**
+	     * 创建银行卡变更实体类型
+	     * @param cus
+	     * @param bankNo
+	     * @param bankId
+	     * @param bankAddr
+	     * @param bankCity
+	     * @param filePath
+	     * @param type
+	     * @param seqNo
+	     * @return
+	     */
+	    public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn){
+	        FssChangeCardEntity entity = new FssChangeCardEntity();
+	        entity.setCustId(cus.getId().longValue());
+	        entity.setCardNo(bankNo);
+	        entity.setBankType(bankId);
+	        entity.setBankAdd(bankAddr);
+	        entity.setBankCity(bankCity);
+	        entity.setFilePath(filePath);
+
+	        entity.setbBankInfoId(cus.getBankId().longValue());
+	        entity.setCertNo(cus.getCertNo());
+	        entity.setCustName(cus.getCustomerName());
+	        entity.setCreateUserId(-1l);
+	        entity.setCreateTime(new Date());
+	        entity.setModifyTime(new Date());
+	        entity.setState(1);
+	        entity.setTradeState(1);
+	        entity.setCertType(cus.getCertType());
+	        entity.setMobile(cus.getMobilePhone());
+	        entity.setType(type);
+	        if(seqNo != null){
+	            entity.setSeqNo(seqNo);
+	        }
+	        if(mchn != null){
+	        	entity.setMchn(mchn);
+	        }
+	        return  entity;
+	    }
+	    
 }

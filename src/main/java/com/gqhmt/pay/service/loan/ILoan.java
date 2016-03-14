@@ -1,6 +1,5 @@
 package com.gqhmt.pay.service.loan;
 
-import java.util.List;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
@@ -59,7 +58,7 @@ public interface ILoan {
 	 * time:2016年3月9日
 	 * function：入账接口
 	 */
-	public boolean enterAccount(List<EnterAccountDto> enterAccountDtos)throws FssException;
+	public boolean enterAccount(EnterAccountDto enterAccountDto)throws FssException;
 	/**
 	 * 
 	 * author:kyl
