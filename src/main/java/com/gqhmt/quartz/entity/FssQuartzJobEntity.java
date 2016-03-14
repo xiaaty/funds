@@ -28,13 +28,20 @@ public class FssQuartzJobEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name") 
     private String  name;
-
+    
+    @Column(name = "className") 
     private String className;
 
+    @Column(name = "cron")
     private String  cron;
-
+    
+    @Column(name = "state")
     private String state;
+    
+    @Column(name = "ip")
+    private String ip;
 
     public Long getId() {
         return id;
@@ -84,7 +91,6 @@ public class FssQuartzJobEntity {
         this.ip = ip;
     }
 
-    private String ip;
 
 
 

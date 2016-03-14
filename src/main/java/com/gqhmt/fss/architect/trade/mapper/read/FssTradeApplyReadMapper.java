@@ -1,5 +1,8 @@
 package com.gqhmt.fss.architect.trade.mapper.read;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 
@@ -20,4 +23,11 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
  * 2016/1/10  于泳      1.0     1.0 Version
  */
 public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity> {
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月11日
+	 * function：借款人提现
+	 */
+	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map);
 }

@@ -3,11 +3,11 @@ package com.gqhmt.quartz.service;
 import com.gqhmt.quartz.entity.FssQuartzJobEntity;
 import com.gqhmt.quartz.mapper.read.FssQuartzReadMapper;
 import com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper;
-import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.quartz.service.FssQuzrtzService
@@ -29,27 +29,40 @@ import java.util.List;
 public class FssQuzrtzService {
 
     @Resource
-    private FssQuartzReadMapper quartzReadMapper;
+    private FssQuartzReadMapper fssQuartzReadMapper;
 
     @Resource
-    private FssQuartzWriteMapper quartzWriteMapper;
-
-
-    @Resource
-    private SchedulerFactoryBean schedulerFactoryBean;
-
+    private FssQuartzWriteMapper fssQuartzWriteMapper;
 
     public List<FssQuartzJobEntity> findAll(){
-        return  this.quartzReadMapper.selectAll();
+        return  this.fssQuartzReadMapper.selectAll();
     }
 
     public void insert(FssQuartzJobEntity entity){
-        this.quartzWriteMapper.insertSelective(entity);
+        this.fssQuartzWriteMapper.insertSelective(entity);
     }
 
     public void insertList(List<FssQuartzJobEntity> list){
-        this.quartzWriteMapper.insertList(list);
+        this.fssQuartzWriteMapper.insertList(list);
     }
+    /**
+     * 
+     * author:jhz
+     * time:2016年3月14日
+     * function：修改
+     */
+	public void update(FssQuartzJobEntity fssQuartzJobEntity) {
+		this.fssQuartzWriteMapper.updateByPrimaryKey(fssQuartzJobEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月14日
+	 * function：根据ID查找
+	 */
+	public FssQuartzJobEntity selectByPrimaryKey(Long id) {
+		return (FssQuartzJobEntity) this.fssQuartzWriteMapper.selectByPrimaryKey(id);
+	}
 
 
 
