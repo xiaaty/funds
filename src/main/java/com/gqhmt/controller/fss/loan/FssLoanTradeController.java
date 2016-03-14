@@ -54,7 +54,7 @@ public class FssLoanTradeController {
 	 * 
 	 * author:jhz
 	 * time:2016年3月11日
-	 * function：借款人付款
+	 * function：借款人放款
 	 */
 	@RequestMapping(value = "/fss/loan/trade/borrow", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
@@ -95,11 +95,11 @@ public class FssLoanTradeController {
 		if (modifyTime != null && !modifyTime.equals("")) {
 			modifyTime = modifyTime + " 23:59:59";
 		}
-		map.put("contractId", contractId.trim());
-		map.put("mchnChild", mchnChild.trim());
+		map.put("contractId", contractId);
+		map.put("mchnChild", mchnChild);
 		map.put("creatTime", creatTime);
 		map.put("modifyTime", modifyTime);
-		map.put("seqNo", seqNo.trim());
+		map.put("seqNo", seqNo);
 		fssLoanTradeService.getBorrowWithDraw(map);
 		model.addAttribute("map", map);
 //		model.addAttribute("page", selectAccountSequenceList);
@@ -121,64 +121,5 @@ public class FssLoanTradeController {
 		return "fss/loan/trade/trade_audit/feeList.jsp";
 	}
 
-	/**
-	 * author:jhz
-	 * time:2016年2月25日
-	 * function：为指定的客户代扣
-	 *
-	 * @throws IOException
-	 */
-	@RequestMapping(value = "/funds/acount/withhold", method = RequestMethod.POST)
-	@ResponseBody
-	public Object updateRechargeAccount(HttpServletRequest request, HttpServletResponse response, ModelMap model, Integer custId, int businessType, BigDecimal amount) throws FssException, IOException {
-		Map<String, Object> map = new HashMap<String, Object>();
-//                List<BankCardinfoEntity> bankCardinfoList = new ArrayList<BankCardinfoEntity>();
-//                bankCardinfoList = bankCardinfoService.queryInvestmentByCustId(custId);
-//                if(bankCardinfoList == null && bankCardinfoList.size() < 1){
-//                    throw new Exception("客户无对应的银行信息");
-//                }
-		try {
-			fundsTradeImpl.withholdingApply(custId, businessType, null, amount, null);
-			map.put("tips", "提现成功!!");
-		} catch (FssException e) {
-			LogUtil.error(this.getClass(), e.getMessage(), e);
-			map.put("tips", "代扣失败!!" + e.getMessage());
-		}
-		return map;
-	}
 
-//	/**
-//	 * author:jhz
-//	 * time:2016年2月18日
-//	 * function： 跳转到为指定的客户代付页面
-//	 */
-//	@RequestMapping("/funds/acount/custAccountWithdraw/{withDrawId}")
-//	public String toAccountWithdraw(HttpServletRequest request, ModelMap model, @PathVariable Integer withDrawId) {
-//		FundAccountCustomerBean accountWithdraw = fundAccountService.fundAccountCustomerById(withDrawId);
-//		model.addAttribute("acct", accountWithdraw);
-//		return "funds/account/withDraw/account_withdraw";
-//	}
-
-	/**
-	 * author:jhz
-	 * time:2016年2月18日
-	 * function： 为指定的客户代付提现
-	 *
-	 * @throws IOException
-	 */
-	@RequestMapping("/funds/acount/withDraw")
-	@ResponseBody
-	public Object accountWithdraw(HttpServletRequest request, HttpServletResponse response, ModelMap model, Integer custId, int businessType, BigDecimal amount) throws FssException, IOException {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null);
-			map.put("tips", "提现成功!!");
-
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e.getMessage(), e);
-			map.put("tips", "提现失败!!" + e.getMessage());
-		}
-
-		return map;
-	}
 }
