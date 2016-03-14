@@ -1,5 +1,7 @@
 package com.gqhmt.core.util;
 
+import com.gqhmt.extServInter.dto.QueryListResponse;
+import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import org.junit.Test;
 
 /**
@@ -21,7 +23,7 @@ import org.junit.Test;
 public class GenerateBeanUtilTest {
 
     @Test
-    public void generateBeanTest(){
+    public void generateBeanTest() throws Exception {
 //        FssSeqOrderEntity fssSeqOrderEntity = null;
 //        CreateAccountByFuiou createAccountByFuiou = new CreateAccountByFuiou();
 //        createAccountByFuiou.setSeq_no("123456");
@@ -33,6 +35,23 @@ public class GenerateBeanUtilTest {
 //            assert false;
 //        }
 //
+
+
 //        assert fssSeqOrderEntity != null && fssSeqOrderEntity.getModifyTime() != null;
+
+        QueryListResponse queryListResponse = new QueryListResponse();
+        queryListResponse.setResp_code("00000");
+        FundTradeDto fundTradeDto = new FundTradeDto();
+
+        fundTradeDto.setMchn("213123213");
+        fundTradeDto.setSeq_no("2ffafdasf");
+        fundTradeDto.setTrade_type("10010001");
+        fundTradeDto.setSignature("r23r23");
+
+        queryListResponse = GenerateBeanUtil.GenerateClassInstance(queryListResponse,fundTradeDto);
+
+
+        assert  fundTradeDto.getMchn().equals(queryListResponse.getMchn());
+
     }
 }

@@ -6,8 +6,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
 import com.gqhmt.extServInter.service.trade.IRechargeCallback;
-import com.gqhmt.pay.service.trade.ISuccessAccount;
-
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,13 +31,13 @@ import javax.annotation.Resource;
 @Service
 public class RechargeCallbackImpl implements IRechargeCallback {
 	@Resource
-	private ISuccessAccount SuccessAccountImpl;
+	private IFundsTrade iFundsTrade;
 	
     @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		SuccessAccountImpl.recharge((RechargeSuccessDto)dto);
+			iFundsTrade.recharge((RechargeSuccessDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

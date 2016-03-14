@@ -3,7 +3,8 @@ package com.gqhmt.controller.fss.loan;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
-import com.gqhmt.fss.architect.loan.service.FssLoanTradeService;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,7 +37,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class FssLoanTradeController {
 	@Resource
-	private FssLoanTradeService fssLoanTradeService;
+	private FssTradeApplyService fssTradeApplyService;
+	@Resource
+	private FssLoanService fssLoanService;
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 
@@ -45,7 +48,7 @@ public class FssLoanTradeController {
 	 * 
 	 * author:jhz
 	 * time:2016年3月11日
-	 * function：借款人付款
+	 * function：借款人放款
 	 */
 	@RequestMapping(value = "/fss/loan/trade/borrow", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
@@ -54,16 +57,16 @@ public class FssLoanTradeController {
 		Map<Object, Object> map = new HashMap<>();
 		if (creatTime != null && !creatTime.equals("")) {
 			creatTime = creatTime + " 00:00:00";
+			map.put("creatTime", creatTime);
 		}
 		if (modifyTime != null && !modifyTime.equals("")) {
 			modifyTime = modifyTime + " 23:59:59";
+			map.put("modifyTime", modifyTime);
 		}
-		map.put("contractId", contractId.trim());
-		map.put("mchnChild", mchnChild.trim());
-		map.put("creatTime", creatTime);
-		map.put("modifyTime", modifyTime);
-		map.put("seqNo", seqNo.trim());
-		List<FssLoanEntity> findMortgrageePayment = fssLoanTradeService.findBorrowerLoan(map);
+		map.put("contractId", contractId);
+		map.put("mchnChild", mchnChild);
+		map.put("seqNo", seqNo);
+		List<FssLoanEntity> findMortgrageePayment = fssLoanService.findBorrowerLoan(map);
 		model.addAttribute("page", findMortgrageePayment);
 		model.addAttribute("map", map);
 			return "fss/loan/trade/trade_audit/borrowerloan";
@@ -86,12 +89,12 @@ public class FssLoanTradeController {
 		if (modifyTime != null && !modifyTime.equals("")) {
 			modifyTime = modifyTime + " 23:59:59";
 		}
-		map.put("contractId", contractId.trim());
-		map.put("mchnChild", mchnChild.trim());
+		map.put("contractId", contractId);
+		map.put("mchnChild", mchnChild);
 		map.put("creatTime", creatTime);
 		map.put("modifyTime", modifyTime);
-		map.put("seqNo", seqNo.trim());
-		fssLoanTradeService.getBorrowWithDraw(map);
+		map.put("seqNo", seqNo);
+		fssTradeApplyService.getBorrowWithDraw(map);
 		model.addAttribute("map", map);
 //		model.addAttribute("page", selectAccountSequenceList);
 		return "fss/loan/trade/trade_audit/borrowWithDraw";
@@ -107,7 +110,7 @@ public class FssLoanTradeController {
 	 */
 	@RequestMapping("/fss/loan/trade/feeList/{loanId}")
 	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long loanId) {
-		List<FssFeeList> findFeeList = fssLoanTradeService.findFeeList(loanId);
+		List<FssFeeList> findFeeList = fssLoanService.getFeeList(loanId);
 		model.addAttribute("feeList", findFeeList);
 		return "fss/loan/trade/trade_audit/feeList.jsp";
 	}

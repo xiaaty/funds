@@ -9,6 +9,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.service.loan.IEnterAccount;
+import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 
 /**
@@ -32,11 +33,11 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
 public class EnterAccountImpl implements IEnterAccount {
 
 	@Resource
-	private FssLoanService loanService;
+	private FssEnterAccountService fssEnterAccountService;
 	public Response excute(SuperDto dto) throws APIExcuteErrorException{
     	Response response = new Response();
     	try {
-    		loanService.insertEnterAccount((EnterAccountDto) dto);
+    		fssEnterAccountService.insertEnterAccount((EnterAccountDto) dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

@@ -3,11 +3,10 @@ package com.gqhmt.fss.architect.trade.service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
-
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -92,11 +91,13 @@ public class FssTradeApplyService {
 		return fssTradeApplyEntity;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月11日
+	 * function：借款人提现
+	 */
+	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map) {
+		return fssTradeApplyReadMapper.getBorrowWithDraw(map);
+	}
 }

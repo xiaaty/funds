@@ -11,11 +11,8 @@ import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.pay.service.loan.ILoan;
-
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.impl.LoanImpl

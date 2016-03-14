@@ -72,4 +72,12 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * function：入账回盘
 	 */
 	List<EnterAccount> getEnterAccount(Map<String, String> map)throws FssException;
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月11日
+	 * function：抵押权人付款列表
+	 */
+	public List<FssLoanEntity> findBorrowerLoan(Map map);
+	
 }

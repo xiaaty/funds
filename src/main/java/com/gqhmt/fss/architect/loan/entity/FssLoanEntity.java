@@ -55,7 +55,7 @@ public class FssLoanEntity implements Serializable {
 //    private BigDecimal bailAmt  ;                                  //保证金退还        YES             (NULL)                   select,insert,update,references  账户可用余额
 
     @Column(name = "bespoke_date")
-    private Date bespoke_date  ;                               //预约到账日期       (NULL)           YES             (NULL)                   select,insert,update,references
+    private Date bespokeDate  ;                               //预约到账日期       (NULL)           YES             (NULL)                   select,insert,update,references
     
     @Column(name = "trade_type")
     private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
@@ -142,12 +142,13 @@ public class FssLoanEntity implements Serializable {
 		this.payAmt = payAmt;
 	}
 	
-	public Date getBespoke_date() {
-		return bespoke_date;
+
+	public Date getBespokeDate() {
+		return bespokeDate;
 	}
 
-	public void setBespoke_date(Date bespoke_date) {
-		this.bespoke_date = bespoke_date;
+	public void setBespokeDate(Date bespokeDate) {
+		this.bespokeDate = bespokeDate;
 	}
 
 	public String getTradeType() {

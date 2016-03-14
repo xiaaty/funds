@@ -1,9 +1,5 @@
 package com.gqhmt.pay.service.tender.impl;
 
-import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
-import com.gqhmt.funds.architect.job.service.FuiouFtpColomFieldService;
-import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
-import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
@@ -16,6 +12,9 @@ import com.gqhmt.extServInter.dto.tender.FullBidDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
+import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
+import com.gqhmt.funds.architect.job.service.FuiouFtpColomFieldService;
+import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
@@ -23,12 +22,14 @@ import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.service.tender.IFundFullTender;
 import com.gqhmt.pay.service.PaySuperByFuiou;
-import javax.annotation.Resource;
+import com.gqhmt.util.ThirdPartyType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,7 +90,6 @@ public class FundFullTenderImpl  implements IFundFullTender {
     private final String thirdPartyType = PayCommondConstants.PAY_CHANNEL_FUIOU;
     /**
 	 * 满标清算
-	 * @param objects
 	 */
     public void settle(FullBidDto fullbidto) throws FssException {
 		Bid bid=bidService.findById(fullbidto.getBusi_id());
@@ -210,7 +210,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
  			mapping.put(GlobalConstants.BUSINESS_MAPPINF_TENDER, Long.valueOf(tender.getId()));
  			FundAccountEntity fromEntity = fundAccountService.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
  			try {
-				sequenceService.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,mapping,ThirdPartyType.FUIOU, fundOrderEntity);
+				sequenceService.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null,ThirdPartyType.FUIOU, fundOrderEntity);
 			} catch (FssException e) {
 				LogUtil.error(this.getClass(), e.getMessage());
 			}
