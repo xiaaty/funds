@@ -23,7 +23,7 @@ import org.quartz.JobExecutionException;
 public class ResultJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        //分析结果,
+        //分析结果
         //资金入账
     }
 }
