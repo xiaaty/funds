@@ -30,8 +30,11 @@ import javax.servlet.http.HttpServletRequest;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月11日
- * Description:
- * <p>抵押权人付款
+ * Description:  代付审核
+ * <p>借款人放款
+ * <p>借款人提现
+ * <p>代偿人付款
+ * <p>出借赎回
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
@@ -115,7 +118,7 @@ public class FssLoanTradeController {
 	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long loanId) {
 		List<FssFeeList> findFeeList = fssLoanService.getFeeList(loanId);
 		model.addAttribute("feeList", findFeeList);
-		return "fss/loan/trade/trade_audit/feeList.jsp";
+		return "fss/loan/trade/trade_audit/feeList";
 	}
 
 
