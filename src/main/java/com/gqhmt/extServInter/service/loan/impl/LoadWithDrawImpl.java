@@ -5,7 +5,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
-import com.gqhmt.pay.service.loan.IWithDrawApply;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -19,13 +19,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoadWithDrawImpl implements ILoadWithDraw{
 	@Resource
-	private IWithDrawApply withDrawApplyImpl;
+	private FundAccountService fundAccountService;
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
     	WithDrawApplyResponse response = new WithDrawApplyResponse();
     	try {
-    		withDrawApplyImpl.createWithDrawApply((LoanWithDrawApplyDto)dto);
+    		fundAccountService.createWithDrawApply((LoanWithDrawApplyDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
