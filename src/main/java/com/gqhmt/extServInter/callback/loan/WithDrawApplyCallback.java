@@ -3,10 +3,11 @@ package com.gqhmt.extServInter.callback.loan;
 import javax.annotation.Resource;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
-import com.gqhmt.pay.service.loan.IWithDrawApply;
+import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 /**
  * Filename:    com.gqhmt.extServInter.callback.loan.ChangeBankCallback
  * Copyright:   Copyright (c)2015
@@ -24,15 +25,16 @@ import com.gqhmt.pay.service.loan.IWithDrawApply;
 public class WithDrawApplyCallback{
 //	完成抵押标借款人提现后，通知借款系统 
 	@Resource
-	private IWithDrawApply withDrawApplyImpl;
+	private FssTradeApplyService fssTradeApplyService;
     
     public Response withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
     	WithDrawApplyResponse response = new WithDrawApplyResponse();
     	try {
-    		FssTradeApplyEntity fssTradeApplyEntity=withDrawApplyImpl.withDrasApplyCallBack(seqNo,mchn);
+    		FssTradeApplyEntity fssTradeApplyEntity=fssTradeApplyService.withDrasApplyCallBack(seqNo,mchn);
     		response.setFssTradeApplyEntity(fssTradeApplyEntity);
     		response.setResp_code("0000");
 		} catch (FssException e) {
+			LogUtil.info(this.getClass(), e.getMessage());
 			response.setResp_code(e.getMessage());
 		}
     	return response;

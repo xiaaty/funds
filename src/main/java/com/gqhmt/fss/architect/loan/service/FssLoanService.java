@@ -2,19 +2,15 @@ package com.gqhmt.fss.architect.loan.service;
 
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.loan.EnterAccount;
-import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
-import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import com.gqhmt.extServInter.dto.loan.FailedBidDto;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingDto;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
-import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
-import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
+import com.gqhmt.fss.architect.loan.mapper.write.FssFeeListWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
@@ -43,6 +39,7 @@ import javax.annotation.Resource;
  * <p/>抵押权人提现回盘
  * <p/>流标申请
  * <p/>流标回盘
+ * <p/>放借款收费列表
  * <p/>入账接口（批量）
  * <p/>入账回盘
  * Modification History:
@@ -60,9 +57,25 @@ public class FssLoanService {
     @Resource
     private MerchantService merchantService;
     @Resource
-    private FssFeeListService feeListService;
-    @Resource
-    private FssSettleListService fssSettleListService;
+    private FssFeeListWriteMapper fssFeeListWriteMapper;
+	 /**
+	  * 
+	  * author:jhz
+	  * time:2016年3月7日
+	  * function：添加费用
+	  */
+	 public void insert(FssFeeList feeList){
+		 fssFeeListWriteMapper.insert(feeList);
+	 }
+	 /**
+		 * 
+		 * author:jhz
+		 * time:2016年3月7日
+		 * function：通过id得到收费列表
+		 */
+		public List<FssFeeList> getFeeList(Long id) {
+		return fssLoanReadMapper.getFeeList(id);
+	}
     
     /**
      * 
@@ -91,7 +104,7 @@ public class FssLoanService {
 			for (FssFeeList fssFeeList : feeLists) {
 				fssFeeList.setLoanId(insertLending);
 				fssFeeList.setLoanPlatform(dto.getLoan_platform());
-				feeListService.insert(fssFeeList);
+				this.insert(fssFeeList);
 				}
 		}
     }
@@ -106,7 +119,7 @@ public class FssLoanService {
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
 		LendingResponse response = fssLoanReadMapper.getResponse(map);
-		response.setFeeLists(feeListService.getFeeList(response.getId()));
+		response.setFeeLists(this.getFeeList(response.getId()));
 		return response;
 	}
 	
@@ -175,7 +188,7 @@ public class FssLoanService {
 			for (FssFeeList fssFeeList : feeLists) {
 				fssFeeList.setLoanId(insertLending);
 				fssFeeList.setLoanPlatform(dto.getLoan_platform());
-				feeListService.insert(fssFeeList);
+				this.insert(fssFeeList);
 				}
 			}
 		} catch (Exception e) {
@@ -194,59 +207,17 @@ public class FssLoanService {
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
 		FailedBidResponse failedBidResponse = fssLoanReadMapper.getFailedBidResponse(map);
-		failedBidResponse.setFeeLists(feeListService.getFeeList(failedBidResponse.getId()));
+		failedBidResponse.setFeeLists(this.getFeeList(failedBidResponse.getId()));
 		return failedBidResponse;
 	}
 	/**
 	 * 
 	 * author:jhz
-	 * time:2016年3月9日
-	 * function：入账接口（批量）
+	 * time:2016年3月11日
+	 * function：抵押权人付款列表
 	 */
-	public void insertEnterAccount(EnterAccountDto enterAccountDto)throws FssException {
-		FssEnterAccountEntity fssEnterAccountEntity=null;
-		List<FssSettleListEntity> settleListEntities =null;
-		for (EnterAccount enterAccount : enterAccountDto.getEnterAccounts()) {
-			MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(enterAccountDto.getMchn());
-			fssEnterAccountEntity=new FssEnterAccountEntity();
-			fssEnterAccountEntity.setAccNo(enterAccount.getAcc_no());	
-			fssEnterAccountEntity.setAccounting_no(enterAccount.getAccounting_no());
-			fssEnterAccountEntity.setContractId(enterAccount.getContract_id());	
-			fssEnterAccountEntity.setCreateTime(new Date());	
-			fssEnterAccountEntity.setMchnChild(enterAccountDto.getMchn());	
-			fssEnterAccountEntity.setMchnParent(findMerchantByMchnNo.getParentNo());	
-			fssEnterAccountEntity.setMortgageeAccNo(enterAccount.getMortgagee_acc_no());	
-			fssEnterAccountEntity.setSeqNo(enterAccountDto.getSeq_no());
-			fssEnterAccountEntity.setSerialNumber(enterAccount.getSerial_number());	
-			fssEnterAccountEntity.setBusiNo(enterAccountDto.getTrade_type());
-			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
-			settleListEntities= enterAccount.getSettleListEntities();
-			if(settleListEntities!=null){
-				for (FssSettleListEntity fssSettleListEntity : settleListEntities) {
-					fssSettleListEntity.setEnterId(insertEnterAccount);
-					fssSettleListService.insert(fssSettleListEntity);
-				}
-			}
-		}
+	public List<FssLoanEntity> findBorrowerLoan(Map map) {
+		return fssLoanReadMapper.findBorrowerLoan(map);
 	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月8日
-	 * function：入账回盘
-	 */
-	public EnterAccountResponse getResponse(String mchnNo,String seqNo)throws FssException  {
-		EnterAccountResponse enterAccountResponse=new EnterAccountResponse();
-		Map<String,String> map=new HashMap<>();
-		map.put("mchnNo", mchnNo);
-		map.put("seqNo", seqNo);
-		List<EnterAccount> enterAccounts=null;
-				enterAccounts= fssLoanReadMapper.getEnterAccount(map);
-				for (EnterAccount enterAccount : enterAccounts) {
-					enterAccount.setSettleListEntities(fssSettleListService.getsettleList(enterAccount.getId()));
-					enterAccounts.add(enterAccount);
-				}
-			enterAccountResponse.setEnterAccounts(enterAccounts);
-		return enterAccountResponse;
-	}
+
 }	

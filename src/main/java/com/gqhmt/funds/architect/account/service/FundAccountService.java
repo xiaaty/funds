@@ -5,9 +5,12 @@ import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
+import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -62,7 +65,12 @@ public class FundAccountService {
     
     @Resource
     private FssAccountReadMapper fssAccountReadMapper;
-
+    @Resource
+	private FssTradeApplyService fssTradeApplyService;
+    
+    
+    
+    
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
@@ -423,8 +431,35 @@ public class FundAccountService {
 	    public FundAccountEntity getAccountBanlance(int cust_no, int busi_type){
 	        return this.fundsAccountReadMapper.getAccountBanlance(cust_no,busi_type);
 	    }
-	
 	    
+		/**
+		 * 借款人提现
+		 */
+		public boolean createWithDrawApply(LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
+			FssTradeApplyEntity fssTradeApplyEntity=null;
+			//1.根据acc_no查询借款人账户信息
+		 	FssAccountEntity fssAccountEntity= this.getFssFundAccountInfo(wthDrawApplyDto.getAcc_no());
+		 	if(fssAccountEntity==null){
+		 		throw new FssException("90004006");
+		 	}else{//账户余额小于提现金额
+	 			//创建提现申请信息
+	 			try {
+	 			    fssTradeApplyEntity = fssTradeApplyService.createTreadeApplyEntity(fssAccountEntity,wthDrawApplyDto);
+					fssTradeApplyService.createTradeApply(fssTradeApplyEntity);
+				} catch (FssException e) {
+					LogUtil.info(this.getClass(), e.getMessage());
+					throw new FssException("90099005");
+				}
+	 		
+		 	}
+		 	return true;
+		}
+	    /**
+	     * 根据accNo查询账户
+	     * @param accNo
+	     * @return
+	     * @throws FssException
+	     */
 	    public FssAccountEntity getFssFundAccountInfo(String accNo) throws FssException{
 	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
 	    	fssAccountEntity.setAccNo(accNo);

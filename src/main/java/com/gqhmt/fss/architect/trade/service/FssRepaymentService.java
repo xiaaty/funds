@@ -1,9 +1,15 @@
 package com.gqhmt.fss.architect.trade.service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.loan.Repayment;
+import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
@@ -64,7 +70,74 @@ public class FssRepaymentService {
 	public List<FssRepaymentEntity> queryFssRepaymentEntity(FssRepaymentEntity repayment) throws FssException{
 			return fssRepaymentReadMapper.queryFssRepayment(repayment);
 	}
-		
+	/**
+	 * 还款划扣
+	 * @param repaymentDto
+	 * @return
+	 * @throws FssException
+	 */
+	 public boolean createRefundDraw(RepaymentDto repaymentDto) throws FssException {
+		List<FssRepaymentEntity> fssRepaymentlist=new ArrayList<FssRepaymentEntity>();
+    	List<Repayment> repaymentlist=null;
+    	repaymentlist=repaymentDto.getList();
+    	for(Repayment repyament:repaymentlist){
+    		FssRepaymentEntity repaymentEntity = this.createFssRepaymentEntity(repyament,repaymentDto);
+    		fssRepaymentlist.add(repaymentEntity);
+    	}
+    	try {
+			this.createRepayments(fssRepaymentlist);
+		} catch (FssException e) {
+			LogUtil.info(this.getClass(), e.getMessage());
+			throw new FssException("还款划扣失败！");
+		}
+    	return true;
+	 }
+	
+	/**
+	 * 创建实体类FssRepaymentEntity
+	 * @param dto
+	 * @param repaymentDto
+	 * @return
+	 */
+	public FssRepaymentEntity createFssRepaymentEntity(Repayment repyament,RepaymentDto repaymentDto){
+		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
+		repaymentEntity.setAccNo(repyament.getAcc_no());
+		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
+		repaymentEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		repaymentEntity.setMotifyTime((new Timestamp(new Date().getTime())));
+		repaymentEntity.setAmt(repyament.getAmt());
+		repaymentEntity.setState("0");
+		repaymentEntity.setResultState("0");
+		repaymentEntity.setSeqNo(repaymentDto.getSeq_no());
+		repaymentEntity.setSerialNumber(repyament.getSerial_number());
+		repaymentEntity.setContractId(repyament.getContract_id());
+		repaymentEntity.setMchnChild(repaymentDto.getMchn());
+		repaymentEntity.setRemark(repyament.getRemark());
+		return repaymentEntity;
+	}
+	
+	/**
+	 * 还款划扣通知
+	 */
+    public List<FssRepaymentEntity> rePaymentCallBack(String seqNo,String mchn) throws FssException{
+    	List<FssRepaymentEntity> repaymentlist=null;
+    	repaymentlist=this.searRepaymentByparam(seqNo,mchn);
+    	if(repaymentlist==null){
+    		throw new FssException("还款划扣失败");
+    	}
+    	return repaymentlist;
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
