@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
@@ -9,6 +10,7 @@ import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.BankCardInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.read.BankReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
@@ -19,6 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -457,5 +461,36 @@ public class BankCardInfoService {
 		bankCardinfoReadMapper.selectOne(bankCardInfo);
 		return bankCardInfo;
 	}
+	
+	
+	/**
+	 * 创建银行账户
+	 * @param loanAccountDto
+	 * @param customer
+	 * @return
+	 * @throws FssException
+	 */
+	public BankCardInfoEntity createBankCardInfoEntity(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity) throws FssException{
+		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+//		bankCardInfoEntity.setId(customer.getBankId());
+		bankCardInfoEntity.setCustId(customer.getId());
+		bankCardInfoEntity.setBankLongName("");
+		bankCardInfoEntity.setBankSortName("");
+		bankCardInfoEntity.setBankNo(loanAccountDto.getBank_card());
+		bankCardInfoEntity.setIsPersonalCard(1);
+		bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
+		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
+		bankCardInfoEntity.setCertName(customer.getCustomerName());
+		bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
+//		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+		bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		bankCardInfoEntity.setCreateUserId(1);
+		bankCardInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
+		bankCardInfoEntity.setModifyUserId(1);
+		return bankCardInfoEntity;
+	}
+	
+	
+	
 	
 }

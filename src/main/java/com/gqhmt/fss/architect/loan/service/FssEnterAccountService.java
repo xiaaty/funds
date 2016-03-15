@@ -93,7 +93,9 @@ public class FssEnterAccountService {
 			fssEnterAccountEntity.setSeqNo(enterAccountDto.getSeq_no());
 			fssEnterAccountEntity.setSerialNumber(enterAccount.getSerial_number());
 			fssEnterAccountEntity.setTradeType(enterAccountDto.getTrade_type());
+//			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
 			long insertEnterAccount = fssEnterAccountWriteMapper.insertEnterAccount(fssEnterAccountEntity);
+
 			settleListEntities = enterAccount.getSettleListEntities();
 			if (settleListEntities != null) {
 				for (FssSettleListEntity fssSettleListEntity : settleListEntities) {

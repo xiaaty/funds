@@ -175,9 +175,6 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	private FundAccountEntity getPrimaryAccount(Integer cusId){
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		if(primaryAccount == null){
-			throw new CommandParmException("90002003");
-		}
 		return primaryAccount;
 	}
 
