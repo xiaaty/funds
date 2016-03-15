@@ -437,6 +437,7 @@ public class GlobalConstants {
         fundsType.put(1010, "债权转让手续费");
         fundsType.put(1011, "账务修正");
         fundsType.put(1012,"实时提现");
+        fundsType.put(1013,"红包变现");
 
         /*
 
