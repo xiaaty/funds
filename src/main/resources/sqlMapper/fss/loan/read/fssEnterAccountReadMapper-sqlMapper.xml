@@ -10,17 +10,6 @@
 				and t.seq_no = #{seqNo}
 			</if>
 	</sql>
-	<!-- 通过入账id得到费用列表 -->
-	<select id="getFssSettleList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssSettleListEntity" >
-		SELECT 
-			f.id,
-			f.account_type accountType,
-			f.rep_code repCode,
-			f.rep_msg repMsg,
-			f.settle_amt settleAmt
-			FROM t_gq_fss_settlelist f
-			where f.enter_id=#{id}
-	</select>
 	<!-- 入账回盘-->
 	<select id="getEnterAccount"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.EnterAccount" >
 		SELECT 
@@ -38,43 +27,31 @@
 			<include refid="whereSql" />
 	</select>
 		<!-- 得到入账表 -->
-	<select id="getEnterAccountEntities"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
+	<select id="getEnterAccountEntities"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.bean.EnterAccountBean" >
 		SELECT 
-			t.id,
-		    t.contract_id contract_id,
-		    t.serial_number serial_number,
-		    t.seq_no seq_no,
-		    t.mchn_child mchn,
-		    t.rep_code repCode,
-			t.rep_msg repMsg,
-		    t.accounting_no accounting_no,
-			t.mortgagee_acc_no mortgagee_acc_no,
-			t.acc_no acc_no
+			COUNT(*) count,
+		    t.seq_no seqNo,
+		    t.mchn_child mchnChild,
+		    t.mchn_parent mchnParent,
+		    t.trade_type tradeType
 			FROM t_gq_fss_enter_account t
-			where 1=1
-			<include refid="whereSql" />
-			<if test="contractId != null and contractId != ''">
-				and t.contract_id like concat('%',#{contractId},'%')
-			</if>
+			where 1=1 
 			<if test="seqNo != null and seqNo != ''">
 				and t.seq_no like concat('%',#{seqNo},'%')
+			</if>
+			<if test="tradeType != null and tradeType != ''">
+				and t.trade_type like concat('%',#{tradeType},'%')
 			</if>
 			<if test="mchnChild != null and mchnChild != ''">
 				and t.mchn_child like concat('%',#{mchnChild},'%')
 			</if>
-			<choose>
-				<when test="creatTime == null or creatTime == '' and modifyTime==null ">
-					AND 1=1
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
-					AND t.create_time BETWEEN #{creatTime} AND SYSDATE()
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time BETWEEN #{creatTime} AND #{modifyTime}
-				</when>
-				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time &lt; #{modifyTime} 
-				</when>
-			</choose>
+			group by t.seq_no
+	</select>
+		<!-- 根据流水号得到相应的每一批的交易成功数量 -->
+	<select id="getIsTrue"  parameterType="java.lang.String" resultType="java.lang.Integer" >
+		SELECT 
+			COUNT(*) 
+			FROM t_gq_fss_enter_account t
+			where t.seq_no=#{seqNo} and t.is_true ='98060001' 
 	</select>
 </mapper>

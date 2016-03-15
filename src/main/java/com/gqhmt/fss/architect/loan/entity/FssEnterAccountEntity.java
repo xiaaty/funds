@@ -69,8 +69,8 @@ public class FssEnterAccountEntity implements Serializable {
     @Column(name="mchn_child")
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
   
-    @Column(name="is_true")
-    private String isTrue;              // 0成功还是1失败
+    @Column(name="result")
+    private String result;              // 98060001成功98060002部分成功还是98060003失败
     
     @Column(name="rep_code")
     private String repCode;              // 返回码
@@ -175,12 +175,13 @@ public class FssEnterAccountEntity implements Serializable {
 		this.mchnChild = mchnChild;
 	}
 
-	public String getIsTrue() {
-		return isTrue;
+
+	public String getResult() {
+		return result;
 	}
 
-	public void setIsTrue(String isTrue) {
-		this.isTrue = isTrue;
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	public String getRepCode() {

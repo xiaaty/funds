@@ -90,8 +90,8 @@ public class FssLoanEntity implements Serializable {
    @Column(name="rep_msg")
    private String repMsg;              // 返回码
    
-   @Column(name="is_true")
-   private String isTrue;              // 0成功还是1失败
+   @Column(name="result")
+   private String result;              // 98060001成功98060002部分成功还是98060003失败
    
 	public Long getId() {
 		return id;
@@ -224,12 +224,13 @@ public class FssLoanEntity implements Serializable {
 		this.status = status;
 	}
 
-	public String getIsTrue() {
-		return isTrue;
+
+	public String getResult() {
+		return result;
 	}
 
-	public void setIsTrue(String isTrue) {
-		this.isTrue = isTrue;
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	public String getLoanPlatform() {

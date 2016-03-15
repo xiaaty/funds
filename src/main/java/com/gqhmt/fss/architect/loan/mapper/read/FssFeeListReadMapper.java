@@ -8,6 +8,7 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
+import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 
 /**
@@ -27,35 +28,13 @@ import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
  * -----------------------------------------------------------------
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
-public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
+public interface FssFeeListReadMapper extends ReadMapper<FssFeeList> {
 	/**
 	 * 
 	 * author:jhz
 	 * time:2016年3月7日
-	 * function：得到借款人放款回调对象
+	 * function：通过id得到收费列表
 	 */
-	LendingResponse getResponse(Map<String, String> map) throws FssException;
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月7日
-	 * function：抵押权人提现回盘
-	 */
-	MortgageeWithDrawRespons getMortgageeWithDrawRespons(Map<String, String> map)throws FssException;
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月8日
-	 * function：流标回盘
-	 */
-	FailedBidResponse getFailedBidResponse(Map<String, String> map)throws FssException;
-	
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月11日
-	 * function：抵押权人付款列表
-	 */
-	public List<FssLoanEntity> findBorrowerLoan(Map map);
+	List<FssFeeList> getFeeList(Long id);
 	
 }
