@@ -1,6 +1,8 @@
 package com.gqhmt.extServInter.dto.loan;
 import java.util.List;
 
+import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 
 /**
@@ -20,7 +22,7 @@ import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
  * -----------------------------------------------------------------
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
-public class EnterAccount  {
+public class EnterAccount extends Response {
 
 	private Long id;
 	

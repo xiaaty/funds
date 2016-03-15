@@ -40,7 +40,6 @@ public class LendingResponse extends Response {
     
     private String loan_platform;			//借款平台
     
-    private String resp_msg;			//返回信息内容
     
 
 	public String getContract_id() {
@@ -97,14 +96,6 @@ public class LendingResponse extends Response {
 
 	public void setLoan_platform(String loan_platform) {
 		this.loan_platform = loan_platform;
-	}
-
-	public String getResp_msg() {
-		return resp_msg;
-	}
-
-	public void setResp_msg(String resp_msg) {
-		this.resp_msg = resp_msg;
 	}
 
 	public Long getId() {
