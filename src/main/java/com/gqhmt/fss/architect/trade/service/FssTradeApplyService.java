@@ -100,4 +100,18 @@ public class FssTradeApplyService {
 	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map) {
 		return fssTradeApplyReadMapper.getBorrowWithDraw(map);
 	}
+	
+	/**
+	 * 完成抵押标借款人提现后，通知借款系统
+	 */
+	public FssTradeApplyEntity withDrasApplyCallBack(String seqNo, String mchn) throws FssException {
+		FssTradeApplyEntity fssTradeApplyEntity=null;
+		fssTradeApplyEntity=this.getTradeApplyByParam(seqNo,mchn);
+		if(fssTradeApplyEntity==null){
+			throw new FssException("90004002");
+		}
+		return fssTradeApplyEntity;
+	}
+	
+	
 }
