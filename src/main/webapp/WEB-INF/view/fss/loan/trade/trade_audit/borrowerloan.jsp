@@ -203,7 +203,7 @@
                                                   <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td>
-                                                    <a href="${contextPath}/fss/loan/trade/feeList">查看</a>
+                                                    <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
                                                     &nbsp; &nbsp; &nbsp; 
                                                       <c:if test="${t.tradeType == '11090001' && t.status=='10050004'}">
 														<a href="${contextPath}/fss/loan/trade/feeList">代扣</a>
