@@ -36,8 +36,8 @@ public class FssEnterAccountEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
     
-    @Column(name = "busi_no")
-    private String busiNo  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
+    @Column(name = "trade_type")
+    private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
   
     @Column(name = "contract_id")
     private String contractId   ;  
@@ -86,12 +86,13 @@ public class FssEnterAccountEntity implements Serializable {
 		this.id = id;
 	}
 
-	public String getBusiNo() {
-		return busiNo;
+
+	public String getTradeType() {
+		return tradeType;
 	}
 
-	public void setBusiNo(String busiNo) {
-		this.busiNo = busiNo;
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
 	}
 
 	public String getContractId() {
