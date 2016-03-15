@@ -57,8 +57,12 @@ public class LoanImpl implements ILoan {
     	//1.根据借款系统传入的手机号码，查询资金平台有没有此客户信息
     	customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(dto);
     	if(customerInfoEntity!=null){
-    		fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    		fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
+    		if(dto.getTrade_type().equals("11020009") || dto.getTrade_type().equals("11029004") ){ //线下开户不走富友
+    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
+    		}else{
+    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
+    			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
+    		}
     	}else{
     		try {
     			customerInfoEntity=fssAccountService.createLoanAccount(dto);
@@ -66,8 +70,12 @@ public class LoanImpl implements ILoan {
     	    	customerInfoEntity.setParentBankCode(dto.getBank_id());
     			customerInfoEntity.setBankLongName("");
     			customerInfoEntity.setBankNo(dto.getBank_card());
-    			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
+    			if(dto.getTrade_type().equals("11020009") || dto.getTrade_type().equals("11029004") ){ //线下开户不走富友
+    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
+    			}else{
+    				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
+    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
+    			}
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 				throw new FssException("91004013");
