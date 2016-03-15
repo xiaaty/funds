@@ -15,6 +15,7 @@ import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
+import com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssSettleListWriteMapper;
@@ -51,6 +52,9 @@ public class FssEnterAccountService {
 
 	@Resource
 	private FssLoanReadMapper fssLoanReadMapper;
+	
+	@Resource
+	private FssEnterAccountReadMapper enterAccountReadMapper;
 
 	/**
 	 * 
@@ -65,7 +69,7 @@ public class FssEnterAccountService {
 	 * author:jhz time:2016年3月7日 function：通过id得到费用列表
 	 */
 	public List<FssSettleListEntity> getsettleList(Long id) throws FssException {
-		return fssLoanReadMapper.getFssSettleList(id);
+		return enterAccountReadMapper.getFssSettleList(id);
 	}
 
 	/**
@@ -109,12 +113,23 @@ public class FssEnterAccountService {
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
 		List<EnterAccount> enterAccounts = null;
-		enterAccounts = fssLoanReadMapper.getEnterAccount(map);
+		enterAccounts = enterAccountReadMapper.getEnterAccount(map);
 		for (EnterAccount enterAccount : enterAccounts) {
 			enterAccount.setSettleListEntities(this.getsettleList(enterAccount.getId()));
 			enterAccounts.add(enterAccount);
 		}
 		enterAccountResponse.setEnterAccounts(enterAccounts);
 		return enterAccountResponse;
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月15日
+	 * function：得到入账表
+	 */
+	public List<FssEnterAccountEntity> getEnterAccountEntities(Map map){
+		
+		return enterAccountReadMapper.getEnterAccountEntities(map);
+		
 	}
 }

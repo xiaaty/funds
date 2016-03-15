@@ -5,13 +5,11 @@ import java.util.Map;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.extServInter.dto.loan.EnterAccount;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
-import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 
 /**
  * 
@@ -59,19 +57,7 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * function：流标回盘
 	 */
 	FailedBidResponse getFailedBidResponse(Map<String, String> map)throws FssException;
-	 /**
-	 * 
-	 * author:jhz
-	 * time:2016年3月7日
-	 * function：通过id得到费用列表
-	 */
-	List<FssSettleListEntity> getFssSettleList(Long id)throws FssException;
-	/**
-	 * author:jhz
-	 * time:2016年3月9日
-	 * function：入账回盘
-	 */
-	List<EnterAccount> getEnterAccount(Map<String, String> map)throws FssException;
+	
 	/**
 	 * 
 	 * author:jhz
