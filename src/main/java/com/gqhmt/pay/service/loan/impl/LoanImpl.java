@@ -1,6 +1,7 @@
 package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
@@ -60,10 +61,15 @@ public class LoanImpl implements ILoan {
     		fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
     	}else{
     		try {
-    			customerInfoEntity = customerInfoService.createLoanAccount(dto);
+    			customerInfoEntity=fssAccountService.createLoanAccount(dto);
+    			customerInfoEntity.setCityCode(dto.getCity_id());
+    	    	customerInfoEntity.setParentBankCode(dto.getBank_id());
+    			customerInfoEntity.setBankLongName("");
+    			customerInfoEntity.setBankNo(dto.getBank_card());
     			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-        		fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
+    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
 			} catch (FssException e) {
+				LogUtil.info(this.getClass(), e.getMessage());
 				throw new FssException("91004013");
 			}
     	}
@@ -72,11 +78,11 @@ public class LoanImpl implements ILoan {
     }
     
     /**
-     * 保证金返回
+     * 保证金退还
      */
 	@Override
 	public boolean marginSendBack(MarginDto dto) throws FssException {
-
+		
 		
 		return true;
 	}

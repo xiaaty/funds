@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
@@ -13,12 +14,24 @@ import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssFuiouAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
+import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
+import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
+import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
+import com.gqhmt.sys.service.SystemService;
+import com.gqhmt.sys.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,17 +56,25 @@ public class FssAccountService {
 
     @Resource
     private FssCustomerService fssCustomerService;
-
 	@Resource
     private FssAccountReadMapper accountReadMapper;
-
     @Resource
     private FssAccountWriteMapper fssAccountWriteMapper;
-
-
     @Resource
     private FssFuiouAccountWriteMapper fssFuiouAccountWriteMapper;
-   
+    @Resource
+    private CustomerInfoService customerInfoService;
+    @Resource
+   	private CustomerInfoWriteMapper customerInfoWriteMapper;
+    @Resource
+    private UserService userService;
+    @Resource
+	private GqUserWriteMapper gqUserWriteMapper;
+    @Resource
+	private BankCardInfoService bankCardinfoService;
+    @Resource
+	private FundAccountService fundAccountService;
+    
     public List<FssAccountEntity> findCustomerAccountByParams(Map map){
         return this.accountReadMapper.findCustomerAccountByParams(map);
     }
@@ -155,24 +176,105 @@ public class FssAccountService {
         }
     }
     
-    
-    
+    /**
+     * 创建资金账户
+     * @param dto
+     * @param fssCustomerEntity
+     * @return
+     * @throws FssException
+     */
     public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,CustomerInfoEntity fssCustomerEntity) throws FssException {
         try {
             FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
+            fssAccountEntity.setAccNo(getAccno(dto.getTrade_type()));
             fssAccountEntity.setCustNo(String.valueOf(fssCustomerEntity.getId()));
             fssAccountEntity.setAccBalance(BigDecimal.ZERO);
             fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
             fssAccountEntity.setAccAvai(BigDecimal.ZERO);
-            fssAccountEntity.setAccNo(getAccno(dto.getTrade_type()));
-            //设置账户类型
+            fssAccountEntity.setAccNotran(BigDecimal.ZERO);
+            fssAccountEntity.setCustNo("");
+            fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
+            fssAccountEntity.setCreateTime((new Timestamp(new Date().getTime())));
+            fssAccountEntity.setModifyTime((new Timestamp(new Date().getTime())));
+            String accType="";//设置账户类型
+            String channelNo="";//渠道编号
+            switch (dto.getTrade_type()){
+            case "11020001"://web开户
+            	accType="10010001"; //互联网账户
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020002"://wep开户
+            	accType="10010001";
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020003"://app开户
+            	accType="10010001";
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020004"://委托出借开户
+            	accType="10010002";//委托出借账户
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020005"://借款人开户（冠e通）
+            	accType="10010003";//借款账户
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020006"://代偿人开户
+            	accType="10010005";//代偿人账户
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020007"://抵押权人开户
+            	accType="10010006";//抵押权人账户
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020008"://保理合同开户
+            	accType="10010004";//保理业务账户
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11020009"://借款人（纯线下）开户
+            	accType="10010003";
+            	channelNo="97010000";//本地账户
+            	break;
+            case "11020010"://借款人开户（借款系统）
+            	accType="10010003";
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11029001"://借款人（出借系统）银行卡变更
+            	accType="10010003";
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11029002"://线下出借人（借款系统）银行卡变更
+            	accType="10011000";
+            	channelNo="97010001";//富友开户
+            	break;
+            case "11029003"://互联网客户银行卡变更
+            	accType="10010001";
+            	channelNo="";//富友开户
+            	break;
+            case "11029004"://银行号变更（纯线下）
+            	accType="10011000";//公司账户
+            	channelNo="97010000";//本地账户
+            	break;
+            default:
+            	throw new FssException("90008403");//交易类型错误
+            }
+           /* 
+            97010000  本地账户
+            97010001  上海富友
+            97010002  银联商务（第二方）
+            */
+            fssAccountEntity.setAccType(Integer.parseInt(accType));
+            fssAccountEntity.setState(10020001);//默认为有效账户
+            fssAccountEntity.setBusiNo(dto.getContract_id());
+            fssAccountEntity.setCustId(fssCustomerEntity.getId());
             //设置开户来源
             //设置渠道id
+            fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
             fssAccountWriteMapper.insertSelective(fssAccountEntity);
             return fssAccountEntity;
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e);
-            throw new FssException("");
+            throw new FssException("91009804");
         }
     }
     
@@ -218,7 +320,39 @@ public class FssAccountService {
 		return sb;
 	}
     
-    
-    
-
+	/**
+	 * 开户
+	 * @param loanAccountDto
+	 * @throws FssException
+	 */
+	public CustomerInfoEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
+//			1.创建账户	t_gq_customer_info 
+			CustomerInfoEntity customerInfoEntity;
+			try {
+				customerInfoEntity = customerInfoService.createCustomerInfo(loanAccountDto);
+				customerInfoWriteMapper.insertSelective(customerInfoEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+			//2.创建用户         t_gq_user	
+			UserEntity userEntity;
+			try {
+				userEntity = userService.createUser(loanAccountDto,customerInfoEntity);
+				gqUserWriteMapper.insertSelective(userEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+			//3.创建银行卡信息     t_gq_bank_info
+			BankCardInfoEntity bankCardInfoEntity;
+			try {
+				bankCardInfoEntity = bankCardinfoService.createBankCardInfoEntity(loanAccountDto,customerInfoEntity,userEntity);
+				bankCardinfoService.insert(bankCardInfoEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+		return customerInfoEntity;
+	}
 }

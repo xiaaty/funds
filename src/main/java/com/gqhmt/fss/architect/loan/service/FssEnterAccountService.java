@@ -91,7 +91,7 @@ public class FssEnterAccountService {
 			fssEnterAccountEntity.setMortgageeAccNo(enterAccount.getMortgagee_acc_no());
 			fssEnterAccountEntity.setSeqNo(enterAccountDto.getSeq_no());
 			fssEnterAccountEntity.setSerialNumber(enterAccount.getSerial_number());
-			fssEnterAccountEntity.setBusiNo(enterAccountDto.getTrade_type());
+			fssEnterAccountEntity.setTradeType(enterAccountDto.getTrade_type());
 			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
 			settleListEntities = enterAccount.getSettleListEntities();
 			if (settleListEntities != null) {
