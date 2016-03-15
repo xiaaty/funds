@@ -1,7 +1,7 @@
-package com.gqhmt.funds.architect.job.mapper.read;
+package com.gqhmt.fss.architect.fuiouFtp.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 
 import java.util.List;
 import java.util.Map;

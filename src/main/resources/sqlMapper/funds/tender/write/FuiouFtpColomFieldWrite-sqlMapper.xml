@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.funds.architect.job.mapper.write.FuiouFtpColomFieldWriteMapper">
+<mapper namespace="com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper">
 
 	<insert id="saveOrUpdateAll">
 		insert into t_fuiou_ftp_field (from_account_Id,from_userName,from_cn_userName,to_account_Id,to_userName,to_cn_userName,amt,rem,contract_no,state,file_id,seq_no,order_id,order_no,type,return_Code,return_msg,business_code,input_date,feild_order_no,feild_order_no_his,tender_id) values

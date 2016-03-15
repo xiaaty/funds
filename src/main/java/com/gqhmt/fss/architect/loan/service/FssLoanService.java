@@ -1,12 +1,7 @@
 package com.gqhmt.fss.architect.loan.service;
 
-import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.loan.FailedBidDto;
-import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
-import com.gqhmt.extServInter.dto.loan.LendingDto;
-import com.gqhmt.extServInter.dto.loan.LendingResponse;
-import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawDto;
+import com.gqhmt.extServInter.dto.loan.*;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
@@ -16,12 +11,11 @@ import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 /**
  * Filename:    com.gq.p2p.customer.service
@@ -218,6 +212,15 @@ public class FssLoanService {
 	 */
 	public List<FssLoanEntity> findBorrowerLoan(Map map) {
 		return fssLoanReadMapper.findBorrowerLoan(map);
+	}
+
+
+	/**
+	 * 获取需要满标转账的数据列表(信用标,抵押权人提现,新增状态)
+	 * @return
+     */
+	public List<FssLoanEntity> findLoanBySettle(){
+		return this.fssLoanReadMapper.findLoanBySettle();
 	}
 
 }	

@@ -1,9 +1,9 @@
-package com.gqhmt.funds.architect.job.mapper.read;
+package com.gqhmt.fss.architect.fuiouFtp.mapper.read;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
-import com.gqhmt.funds.architect.job.bean.FundOrder;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FundOrder;
 
 import java.util.List;
 

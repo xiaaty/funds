@@ -26,59 +26,59 @@ import java.util.Date;
 public class FssLoanEntity implements Serializable {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
 
-    @Column(name = "cust_no")
+    @Column(name = "cust_no",updatable = false)
     private String custNo;                                     // varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
 
-    @Column(name = "user_no")
+    @Column(name = "user_no",updatable = false)
     private String userNo  ;                                   //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
 
-    @Column(name = "acc_no")
+    @Column(name = "acc_no",updatable = false)
     private String accNo   ;                                //借款人资金平台账号
    
-    @Column(name = "contract_id")
+    @Column(name = "contract_id",updatable = false)
     private String contractId   ;                                //合同ID
 
-    @Column(name = "contract_amt")
+    @Column(name = "contract_amt",updatable = false)
     private BigDecimal contractAmt   ;                                //合同金额        YES             (NULL)                   select,insert,update,references  账户总资产
 
 //    @Column(name = "service_amt")
 //    private BigDecimal serviceAmt ;                               // 服务费金额        YES             (NULL)                   select,insert,update,references  账户余额
 
-    @Column(name = "pay_amt")
+    @Column(name = "pay_amt",updatable = false)
     private BigDecimal payAmt  ;                                  //放款（提现）金额           YES             (NULL)                   select,insert,update,references  账户可用余额
    
 //    @Column(name = "bail_amt")
 //    private BigDecimal bailAmt  ;                                  //保证金退还        YES             (NULL)                   select,insert,update,references  账户可用余额
 
-    @Column(name = "bespoke_date")
+    @Column(name = "bespoke_date",updatable = false)
     private Date bespokeDate  ;                               //预约到账日期       (NULL)           YES             (NULL)                   select,insert,update,references
     
-    @Column(name = "trade_type")
+    @Column(name = "trade_type",updatable = false)
     private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
   
-    @Column(name = "seq_no")
+    @Column(name = "seq_no",updatable = false)
     private String seqNo  ;                               //交易流水号    (NULL)           YES             (NULL)                   select,insert,update,references
    
-   @Column(name = "mortgagee_acc_no")
+   @Column(name = "mortgagee_acc_no",updatable = false)
     private String mortgageeAccNo;						//抵押权人资金平台账号
    	
-   @Column(name = "create_time")
+   @Column(name = "create_time",updatable = false)
    private Date createTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
 
    @Column(name = "modify_time")
    private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
    
-   @Column(name="mchn_parent")
+   @Column(name="mchn_parent",updatable = false)
    private String mchnParent;             // varchar(45) NOT NULL COMMENT '大商户号',
 
-   @Column(name="mchn_child")
+   @Column(name="mchn_child",updatable = false)
    private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
    
-   @Column(name="loan_platform")
+   @Column(name="loan_platform",updatable = false)
    private String loanPlatform;              // 借款平台 “北京”、"上海"...
    
    @Column(name="status")

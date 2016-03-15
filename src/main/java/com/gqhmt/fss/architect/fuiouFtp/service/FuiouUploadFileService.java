@@ -1,8 +1,8 @@
-package com.gqhmt.funds.architect.job.service;
+package com.gqhmt.fss.architect.fuiouFtp.service;
 
-import com.gqhmt.funds.architect.job.bean.FuiouUploadFile;
-import com.gqhmt.funds.architect.job.mapper.read.FuiouUploadFileReadMapper;
-import com.gqhmt.funds.architect.job.mapper.write.FuiouUploadFileWriteMapper;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouUploadFileReadMapper;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouUploadFileWriteMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

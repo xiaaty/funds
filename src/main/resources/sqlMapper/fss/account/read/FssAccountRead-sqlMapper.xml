@@ -59,4 +59,22 @@
         	AND customer.cert_no Like CONCAT(CONCAT('%',#{bussinesscertno}),'%')
         </if> 
 	</select>
+
+	<select id="findAccountByAccNo" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+		SELECT
+		account.id id,
+		account.busi_no busiNo,
+		account.acc_no accNo,
+		account.cust_no custNo,
+		account.acc_balance accBalance,
+		account.acc_freeze accFreeze,
+		account.acc_avai accAvai,
+		account.create_time accCreateTime,
+		account.modify_time accModifyTime,
+		account.cust_id custId
+
+		FROM t_gq_fss_account account
+		where account.acc_no = #{accNo}
+
+	</select>
 </mapper>

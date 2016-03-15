@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.tender.impl;
 
-import com.gqhmt.funds.architect.job.service.FuiouFtpColomFieldService;
-import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;

@@ -91,7 +91,7 @@ public class FuiouUploadFileJob extends AJob{
             return;
         }
         if(isAbortRunning) return;
-        System.out.println("job: abort");
+        System.out.println("fuiouFtp: abort");
         isAbortRunning = true;
         AbortBidService abortBidService = ServiceLoader.get(AbortBidService.class);
         try{
@@ -110,7 +110,7 @@ public class FuiouUploadFileJob extends AJob{
             return;
         }
         if(isSumDayRunning) return;
-        System.out.println("job: sumByDay");
+        System.out.println("fuiouFtp: sumByDay");
         isSumDayRunning = true;
         FundSequenceService fundSequenceService = ServiceLoader.get(FundSequenceService.class);
 
