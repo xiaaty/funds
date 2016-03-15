@@ -13,11 +13,12 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.EnterAccount;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
+import com.gqhmt.fss.architect.loan.bean.EnterAccountBean;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountReadMapper;
-import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
-import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
+import com.gqhmt.fss.architect.loan.mapper.read.FssSettleListReadMapper;
+import com.gqhmt.fss.architect.loan.mapper.write.FssEnterAccountWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssSettleListWriteMapper;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
@@ -43,16 +44,16 @@ import com.gqhmt.fss.architect.merchant.service.MerchantService;
 public class FssEnterAccountService {
 	@Resource
 	private MerchantService merchantService;
-
+	
 	@Resource
-	private FssLoanWriteMapper fssLoanWriteMapper;
+	private FssSettleListReadMapper fssSettleListReadMapper;
+	
+	@Resource
+	private FssEnterAccountWriteMapper fssEnterAccountWriteMapper;
 
 	@Resource
 	private FssSettleListWriteMapper fssSettleListWriteMapper;
 
-	@Resource
-	private FssLoanReadMapper fssLoanReadMapper;
-	
 	@Resource
 	private FssEnterAccountReadMapper enterAccountReadMapper;
 
@@ -69,7 +70,7 @@ public class FssEnterAccountService {
 	 * author:jhz time:2016年3月7日 function：通过id得到费用列表
 	 */
 	public List<FssSettleListEntity> getsettleList(Long id) throws FssException {
-		return enterAccountReadMapper.getFssSettleList(id);
+		return fssSettleListReadMapper.getFssSettleList(id);
 	}
 
 	/**
@@ -92,7 +93,9 @@ public class FssEnterAccountService {
 			fssEnterAccountEntity.setSeqNo(enterAccountDto.getSeq_no());
 			fssEnterAccountEntity.setSerialNumber(enterAccount.getSerial_number());
 			fssEnterAccountEntity.setTradeType(enterAccountDto.getTrade_type());
-			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
+//			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
+			long insertEnterAccount = fssEnterAccountWriteMapper.insertEnterAccount(fssEnterAccountEntity);
+
 			settleListEntities = enterAccount.getSettleListEntities();
 			if (settleListEntities != null) {
 				for (FssSettleListEntity fssSettleListEntity : settleListEntities) {
@@ -127,9 +130,19 @@ public class FssEnterAccountService {
 	 * time:2016年3月15日
 	 * function：得到入账表
 	 */
-	public List<FssEnterAccountEntity> getEnterAccountEntities(Map map){
+	public List<EnterAccountBean> getEnterAccountEntities(Map map){
 		
 		return enterAccountReadMapper.getEnterAccountEntities(map);
 		
+	}
+
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月15日
+	 * function：根据流水号得到相应的每一批的交易成功数量
+	 */
+	public int getIsTrue(String seqNo) {
+		return enterAccountReadMapper.getIsTrue(seqNo);
 	}
 }

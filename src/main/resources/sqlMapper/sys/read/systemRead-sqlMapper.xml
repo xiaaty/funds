@@ -47,7 +47,8 @@
 	</select>
 	
 	<select id="selectDictOrderList" parameterType="java.util.List" resultType="DictMain">
-		FROM `t_gq_fss_dict` t where t.dict_id IN
+		<include refid="field"/>
+		 where t.dict_id IN
 	    <foreach collection="list" item="dictId" index="index"
            open="(" close=")" separator=",">
            #{dictId}
