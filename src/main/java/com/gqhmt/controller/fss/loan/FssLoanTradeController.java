@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,7 +105,58 @@ public class FssLoanTradeController {
 		return "fss/trade/trade_audit/borrowWithDraw";
 	}
 
-
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：代扣
+	 */
+	@RequestMapping("/fss/loan/trade/withHold/{id}")
+    public String withhold( HttpServletRequest request, @PathVariable Long id, ModelMap model) {
+//		通过id查询交易对象
+		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		 //把交易状态 修改为‘代扣中’
+		 fssLoanEntityById.setStatus("10050002");
+		 fssLoanService.update(fssLoanEntityById);
+		 
+        return "redirect:/fss/loan/trade/borrow";
+    }
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：转给借款人
+	 */
+	@RequestMapping("/fss/loan/trade/transfer/{id}")
+	public String transfer( HttpServletRequest request, @PathVariable Long id, ModelMap model) {
+//		通过id查询交易对象
+		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		//跑批 修改交易状态
+//		fssLoanEntityById.setStatus("10050002");
+		fssLoanService.update(fssLoanEntityById);
+		
+		return "redirect:/fss/loan/trade/borrow";
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：收费
+	 */
+	@RequestMapping("/fss/loan/trade/charge/{id}")
+	public String  charge( HttpServletRequest request, @PathVariable Long id, ModelMap model) {
+//		通过id查询交易对象
+		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		
+		
+		//跑批    收费 并 修改交易状态
+		
+		
+//		fssLoanEntityById.setStatus("10050002");
+//		fssLoanService.update(fssLoanEntityById);
+		
+		return "redirect:/fss/loan/trade/borrow";
+	}
 
 	/**
 	 * 

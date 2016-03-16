@@ -136,56 +136,24 @@
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <th>抵押权人资金平台账号</th>
-                                            <th>借款人资金平台账号</th>
                                             <th>交易流水号</th>
-                                            <th>合同ID</th>
-                                            <th>合同金额  </th>
-                                            <th>放款金额   </th>
-                                            <th>借款平台</th>
-                                            <th>交易结果</th>
                                             <th>交易类型</th>
                                             <th>大商户号</th>
                                             <th>子商户号 </th>
+                                            <th>交易结果</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${t.id}</td>
-                                                    <td>${t.mortgageeAccNo}</td>
-                                                    <td>${t.accNo}</td>
                                                     <td>${t.seqNo}</td>
-                                                    <td>${t.contractId}</td>
-                                                    <td>${t.contractAmt}</td>
-                                                    <td>${t.payAmt}</td>
-                                                    <td>
-                                                    <c:if test="${t.loanPlatform == '10040001'}">北京</c:if>
-										   			 <c:if test="${t.loanPlatform == '10040002'}">天津</c:if>
-										   			 <c:if test="${t.loanPlatform == '10040003'}">上海</c:if>
-                                                    
-                                                    </td>
-                                                    <td>${t.status}</td>
-                                                    <td>
-                                                    <c:if test="${t.isTrue == '0'}"><span style="color: green">成功</span></c:if>
-										   			 <c:if test="${t.isTrue == '1'}"><span style="color: red">失败</span></c:if>
-                                                    </td>
-                                                    <td>
-                                                    <c:if test="${t.tradeType == '11090001'}">抵押标放款</c:if>
-                                                    <c:if test="${t.tradeType == '11090002'}">信用标放款</c:if>
-                                                    </td>
+                                                    <td>${t.tradeType}</td>
                                                     <td>${t.mchnParent}</td>
                                                     <td>${t.mchnChild}</td>
-                                                  <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+                                                    <td>该批交易共${t.count}批，${t.isSuccess}批成功，${t.isFailed}批失败</td>
                                                     <td>
-                                                    <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
-                                                    &nbsp; &nbsp; &nbsp; 
-                                                      <c:if test="${t.tradeType == '11090001' && t.status=='10050004'}">
-														<a href="${contextPath}/fss/loan/trade/feeList">代扣</a>
-														</c:if>
-                                                    
+                                                    <a href="${contextPath}/fss/enterAccount/detail/${t.seqNo}">查看详情</a>
                                                     </td>
                                                 </tr>
                                         </c:forEach>

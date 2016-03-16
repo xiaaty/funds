@@ -43,10 +43,9 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
           <li>交易管理</li>
-            <li>交易审核</li>
-            <li>代付审核</li>
-            <li>借款付款</li>
-            <li>收费列表</li>
+            <li>交易记录</li>
+            <li>入账记录</li>
+            <li>费用列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -72,14 +71,13 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                 <div class="mb20" id="wid-id-713">
-                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/loan/trade/borrow'" ><i class="fa fa-minus"></i>返回</button>
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/enterAccount/detail/${seqNo}'" ><i class="fa fa-minus"></i>返回</button>
                                       </div>
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <td>费用类型</td>
-                                            <td>费用金额</td>
-                                            <td>费用平台</td>
+                                            <td>账务科目 </td>
+                                            <td>清算金额  </td>
                                             <td>交易状态</td>
                                             <td>最终结果</td>
                                             <td>返回码</td>
@@ -87,16 +85,12 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${feeList}" var="t">
+                                            <c:forEach items="${settleList}" var="t">
                                                 <tr>
-                                                    <td>${t.feeType}</td>
-                                                    <td>${t.feeAmt}</td>
-                                                    <td>${t.loanPlatform}</td>
+                                                    <td>${t.accountType}</td>
+                                                    <td>${t.settleAmt}</td>
                                                     <td>${t.tradeStatus}</td>
-                                                    <td>
-                                                    <c:if test="${t.result == '98060001'}"><span style="color: green">成功</span></c:if>
-										   			 <c:if test="${t.result == '98060003'}"><span style="color: red">失败</span></c:if>
-                                                    </td>
+                                                    <td>${t.result=='98060001'?'成功':'失败'}</td>
                                                     <td>${t.repCode}</td>
                                                     <td>${t.repMsg}</td>
                                                 </tr>

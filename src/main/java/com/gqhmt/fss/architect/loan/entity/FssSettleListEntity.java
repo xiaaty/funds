@@ -48,8 +48,8 @@ public class FssSettleListEntity implements Serializable {
     @Column(name = "trade_status")
     private String tradeStatus   ;                                //交易状态        YES             (NULL)                   select,insert,update,references  账户总资产
     
-    @Column(name = "is_true")
-    private String isTrue   ;                                // 0成功还是1失败        YES             (NULL)                   select,insert,update,references  账户总资产
+    @Column(name = "result")
+    private String result   ;                                // 0成功还是1失败        YES             (NULL)                   select,insert,update,references  账户总资产
     
     @Column(name="rep_code")
     private String repCode;              // 返回码
@@ -105,12 +105,13 @@ public class FssSettleListEntity implements Serializable {
 		this.tradeStatus = tradeStatus;
 	}
 
-	public String getIsTrue() {
-		return isTrue;
+
+	public String getResult() {
+		return result;
 	}
 
-	public void setIsTrue(String isTrue) {
-		this.isTrue = isTrue;
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	public Long getEnterId() {

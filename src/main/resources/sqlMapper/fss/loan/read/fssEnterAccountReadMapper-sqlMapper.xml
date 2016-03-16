@@ -52,6 +52,21 @@
 		SELECT 
 			COUNT(*) 
 			FROM t_gq_fss_enter_account t
-			where t.seq_no=#{seqNo} and t.is_true ='98060001' 
+			where t.seq_no=#{seqNo} and t.result ='98060001' 
+	</select>
+		<!-- 根据流水号得到相应的每一批的交易成功数量 -->
+	<select id="getDetail"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
+		SELECT 
+			t.id,
+		    t.contract_id contractId,
+		    t.serial_number serialNumber,
+		    t.accounting_no accountingNo,
+		    t.acc_no accNo,
+		    t.mortgagee_acc_no mortgageeAccNo,
+		    t.create_time createTime,
+		    t.modify_time modifyTime,
+		    t.result result
+			FROM t_gq_fss_enter_account t
+			where t.seq_no=#{seqNO}
 	</select>
 </mapper>
