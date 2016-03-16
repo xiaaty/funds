@@ -5,10 +5,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>交易记录--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>交易审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <%@include file= "../../../../../view/include/common_css_js.jsp"%>
+    <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -32,7 +32,7 @@
 </head>
 
 <body>
-<%@include file= "../../../../../view/include/menu.jsp"%>
+<%@include file= "../../../../view/include/menu.jsp"%>
 
 
 <div id="main" role="main">
@@ -45,7 +45,7 @@
             <li>交易管理</li>
             <li>交易审核</li>
             <li>代付审核</li>
-            <li>借款人提现</li>
+            <li>借款人放款</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -61,7 +61,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="borrowWithDraw" action="${contextPath}/fss/loan/trade/borrow/${t.id}" method="post" >
+                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/fss/loan/trade/borrow" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -101,7 +101,16 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                         <td class="tr">开户日期：</td>
+                                                    <td class="tr" nowrap="nowrap">交易状态：</td>
+                                                        <td nowrap="nowrap">
+                                                    		<input type="hidden" id="tradeStatus" value="${map.status}">
+							                                <select class="select02" style="width:202px;" name="status" id="status">
+							                                   <fss:dictOrder var="order" dictOrder="tradeStatus">
+                                                                            <option value="${order.key}">${order.value}</option>
+                                                                        </fss:dictOrder>
+							                                </select>
+                                                        </td>
+                                                         <td class="tr">交易日期：</td>
                                             <td colspan="3">
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
@@ -140,7 +149,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>借款人提现列表</h2>
+                            <h2>借款人放款表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -156,53 +165,64 @@
                                         <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>抵押权人资金平台账号</th>
                                             <th>借款人资金平台账号</th>
                                             <th>交易流水号</th>
                                             <th>合同ID</th>
+                                            <th>合同金额  </th>
                                             <th>放款金额   </th>
                                             <th>借款平台</th>
                                             <th>交易状态 </th>
                                             <th>交易结果</th>
+                                            <th>交易类型</th>
                                             <th>大商户号</th>
                                             <th>子商户号 </th>
                                             <th>交易日期 </th>
                                             <th>修改日期 </th>
-                                            <th>预约到账日期</th>
-<!--                                             <th>操作</th> -->
+                                            <th width="100px">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
                                                     <td>${t.id}</td>
+                                                    <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.accNo}</td>
                                                     <td>${t.seqNo}</td>
                                                     <td>${t.contractId}</td>
-                                                    <td>${t.tradeAmount}</td>
+                                                    <td>${t.contractAmt}</td>
+                                                    <td>${t.payAmt}</td>
                                                     <td>
                                                     <c:if test="${t.loanPlatform == '10040001'}">北京</c:if>
 										   			 <c:if test="${t.loanPlatform == '10040002'}">天津</c:if>
 										   			 <c:if test="${t.loanPlatform == '10040003'}">上海</c:if>
-                                                    
                                                     </td>
-                                                    <td>${t.applyState}</td>
                                                     <td>
-                                                    <c:if test="${t.tradetate == '0'}"><span style="color: green">成功</span></c:if>
-										   			 <c:if test="${t.tradetate == '1'}"><span style="color: red">失败</span></c:if>
+	                                                    <fss:dictOrder var="order" dictOrder="tradeStatus">
+	                                                    	<c:if test="${t.status == order.key}">${order.value}</c:if>
+	                                                     </fss:dictOrder>
+                                                    </td>
+                                                    <td>
+                                                    <c:if test="${t.result == '98060001'}"><span style="color: green">成功</span></c:if>
+										   			 <c:if test="${t.result == '98060002'}"><span style="color: green">部分成功</span></c:if>
+										   			 <c:if test="${t.result == '98060003'}"><span style="color: red">失败</span></c:if>
+                                                    </td>
+                                                    <td>
+                                                    <c:if test="${t.tradeType == '11090001'}">抵押标放款</c:if>
+                                                    <c:if test="${t.tradeType == '11090002'}">信用标放款</c:if>
                                                     </td>
                                                     <td>${t.mchnParent}</td>
                                                     <td>${t.mchnChild}</td>
                                                   <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td> <fmt:formatDate value="${t.bespokedate}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-<!--                                                     <td> -->
-<%--                                                     <a href="${contextPath}/fss/loan/trade/feeList">查看</a> --%>
-<!--                                                     &nbsp; &nbsp; &nbsp;  -->
-<%--                                                       <c:if test="${t.tradeType == '11090001' && t.status=='10050004'}"> --%>
-<%-- 														<a href="${contextPath}/fss/loan/trade/feeList">代扣</a> --%>
-<%-- 														</c:if> --%>
+                                                    <td width="100px">
+                                                    <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
+                                                    &nbsp; &nbsp; &nbsp; 
+                                                      <c:if test="${t.tradeType == '11090001'}">
+														<a href="${contextPath}/fss/loan/trade/feeList">代扣</a>
+														</c:if>
                                                     
-<!--                                                     </td> -->
+                                                    </td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -217,14 +237,15 @@
 
         </section>
     </div>
-<%@include file= "../../../../../view/include/common_footer_css_js.jsp"%>
+<%@include file= "../../../../view/include/common_footer_css_js.jsp"%>
 </div>
 
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#borrowWithDraw"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortgageePayment"));
+    	$("#status").val($("#tradeStatus").val());
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',
@@ -237,28 +258,28 @@
         forceParse: 0
     });
     function verify(){
-    	var a=document.getElementsByName("startDate");
-    	var b=document.getElementsByName("endDate");
+    	var a=document.getElementsByName("creatTime");
+    	var b=document.getElementsByName("modifyTime");
     	if(b[0].value!=null&&b[0].value!=''){
     		
     		if(a[0].value>b[0].value){
-    			alert("请检查您输入的日期");
+    			JAlert("请检查您输入的日期","提示消息");
     		}else{
-    			$("#borrowWithDraw").submit();
+    			$("#mortgageePayment").submit();
     		}
     	}else{
     		var d = new Date();
     		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
     		if(a[0].value>str){
-    			alert("请检查您输入的日期");
+    			JAlert("请检查您输入的日期","提示消息");
     		}else{
-    			$("#borrowWithDraw").submit();
+    			$("#mortgageePayment").submit();
     		}
     	}
     }
 </script>
 
-<%@include file= "../../../../../view/include/foot.jsp"%>
+<%@include file= "../../../../view/include/foot.jsp"%>
 </body>
 
 </html>

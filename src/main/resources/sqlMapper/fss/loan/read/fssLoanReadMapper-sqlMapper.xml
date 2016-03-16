@@ -29,19 +29,6 @@
 			<include refid="whereSql" />
 	</select>
 	<!-- 通过loanId得到收费列表 -->
-	<select id="getFeeList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssFeeList" >
-		SELECT 
-			f.id,
-			f.fee_type feeType,
-			f.rep_code repCode,
-			f.rep_msg repMsg,
-			f.trade_status tradeStatus,
-			f.is_true isTrue,
-			f.loan_platform loanPlatform,
-			f.fee_amt feeAmt
-			FROM t_gq_fss_feeList f
-			where f.loan_id=#{id}
-	</select>
 	<!-- 抵押权人提现回盘 -->
 	<select id="getMortgageeWithDrawRespons"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons" >
 		SELECT 
@@ -77,7 +64,7 @@
 			where 1=1
 			<include refid="whereSql" />
 	</select>
-		<!-- 抵押权人放款列表 -->
+		<!-- 借款人放款列表 -->
 	<select id="findBorrowerLoan"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
 		SELECT 
 			t.id id,
@@ -91,11 +78,11 @@
 			t.modify_time modifyTime,
 			t.mchn_parent mchnParent,
 			t.mchn_child mchnChild,
-			t.is_true isTrue,
+			t.result result,
 			t.trade_type tradeType,
 			t.status status,
 			t.rep_msg repMsg,
-			t.pay_amt pay_amt,
+			t.pay_amt payAmt,
 			t.loan_platform loanPlatform  	
 			FROM t_gq_fss_loan t 
 			where t.trade_type in ("11090001","11090002")
@@ -104,6 +91,9 @@
 			</if>
 			<if test="seqNo != null and seqNo != ''">
 				and t.seq_no like concat('%',#{seqNo},'%')
+			</if>
+			<if test="status != null and status != ''">
+				and t.status like concat('%',#{status},'%')
 			</if>
 			<if test="mchnChild != null and mchnChild != ''">
 				and t.mchn_child like concat('%',#{mchnChild},'%')

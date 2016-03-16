@@ -4,6 +4,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.loan.*;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssFeeListWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
@@ -52,6 +53,8 @@ public class FssLoanService {
     private MerchantService merchantService;
     @Resource
     private FssFeeListWriteMapper fssFeeListWriteMapper;
+    @Resource
+    private FssFeeListReadMapper fssFeeListReadMapper;
 	 /**
 	  * 
 	  * author:jhz
@@ -65,10 +68,10 @@ public class FssLoanService {
 		 * 
 		 * author:jhz
 		 * time:2016年3月7日
-		 * function：通过id得到收费列表
+		 * function：通过loan_id得到相应的收费列表
 		 */
 		public List<FssFeeList> getFeeList(Long id) {
-		return fssLoanReadMapper.getFeeList(id);
+		return fssFeeListReadMapper.getFeeList(id);
 	}
     
     /**
@@ -208,11 +211,21 @@ public class FssLoanService {
 	 * 
 	 * author:jhz
 	 * time:2016年3月11日
-	 * function：抵押权人付款列表
+	 * function：借款人付款列表
 	 */
 	public List<FssLoanEntity> findBorrowerLoan(Map map) {
 		return fssLoanReadMapper.findBorrowerLoan(map);
 	}
+//	/**
+//	 * 
+//	 * author:jhz
+//	 * time:2016年3月15日
+//	 * function：通过交易类型查询交易列表
+//	 */
+//	public List<FssLoanEntity> findByTradeType(String tradeType,String stutas) {
+//		return fssLoanReadMapper.findByTradeType(tradeType);
+//	}
+	
 
 
 	/**

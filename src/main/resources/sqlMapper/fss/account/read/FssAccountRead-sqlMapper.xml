@@ -41,7 +41,8 @@
 		customer.name bussinessname,
 		customer.cert_no bussinesscertno
 		FROM `t_gq_fss_customer` customer,`t_gq_fss_account` account 
-		WHERE account.cust_no=customer.cust_no AND account.busi_no=#{busiNo} 
+		WHERE account.cust_no=customer.cust_no
+		<!-- AND account.busi_no=#{busiNo}  -->
 	
 		 <if test="accNo!= null and accNo!= '' ">
         	AND account.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')

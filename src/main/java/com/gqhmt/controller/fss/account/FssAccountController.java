@@ -2,6 +2,7 @@ package com.gqhmt.controller.fss.account;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssWaterService;
@@ -96,8 +97,8 @@ public class FssAccountController {
     	if(StringUtils.isNotEmptyString(bussinesscertno)){
     		map.put("bussinesscertno",bussinesscertno);
     	}
-//    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(map);
-//		model.addAttribute("page", accountList);
+    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(map);
+		model.addAttribute("page", accountList);
 		model.addAttribute("accNo", accNo);
 		model.addAttribute("custNo", custNo);
 		model.addAttribute("bussinessname", bussinessname);
