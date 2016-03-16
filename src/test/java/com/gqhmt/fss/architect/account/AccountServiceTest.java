@@ -43,8 +43,9 @@ public class AccountServiceTest {
 
             System.out.println(t);
 
-
-            assert t.equals("UVegZXR6ETZpy3AkeFoAzF9qWiwVoYl+FSMjVtCRAr7pbo2PVLa1A5YraeDmEGGaicGduk2HaJ5C0gQsPt+oCPXW5zUsNzFW2QA0k2h0nE8Ta75iboSOS6IkkIAj3IzsAbglGKL1DvT4or5hDCYpHESb+AZ6LnSDXj62ZWCHM8k=");
+           boolean f =  com.gqhmt.pay.fuiou.util.SecurityUtils.verifySign("5000000|http://p2pmis.gqget.com/interaction/withholdingFuiouCallback|13818380974|0001000F0279762|201603158653653727|","UVegZXR6ETZpy3AkeFoAzF9qWiwVoYl+FSMjVtCRAr7pbo2PVLa1A5YraeDmEGGaicGduk2HaJ5C0gQsPt+oCPXW5zUsNzFW2QA0k2h0nE8Ta75iboSOS6IkkIAj3IzsAbglGKL1DvT4or5hDCYpHESb+AZ6LnSDXj62ZWCHM8k=");//
+            assert f;
+            // assert t.equals("UVegZXR6ETZpy3AkeFoAzF9qWiwVoYl+FSMjVtCRAr7pbo2PVLa1A5YraeDmEGGaicGduk2HaJ5C0gQsPt+oCPXW5zUsNzFW2QA0k2h0nE8Ta75iboSOS6IkkIAj3IzsAbglGKL1DvT4or5hDCYpHESb+AZ6LnSDXj62ZWCHM8k=");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

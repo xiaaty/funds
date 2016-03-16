@@ -38,7 +38,7 @@ public class SettleBeforeJob implements Job {
         List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();
 
         for (FssLoanEntity loanEntity:loanEntities){
-
+            
         }
 
     }
