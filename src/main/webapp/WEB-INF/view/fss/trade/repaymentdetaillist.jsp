@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>交易管理--交易审核--代扣审核--借款代扣--冠群驰骋投资管理(北京)有限公司</title>
+    <title>交易管理--交易审核--代扣审核--借款代扣--借款代扣明细--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
@@ -37,6 +37,7 @@
             <li>交易审核</li>
             <li>代扣审核</li>
             <li>借款代扣</li>
+            <li>借款代扣明细</li>
         </ol>
     </div>
 
@@ -64,16 +65,22 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                     <td class="tr">流水号：</td>
+                                                        <td class="tr">账号：</td>
                                                          <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="seqNo" value="${repayment.seqNo}" />
+                                                                <input type="text" style="width:200px" name="accNo" value="${repayment.accNo}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">商户号：</td>
+                                                        <td class="tr">合同号：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:200px" name="contractId" value="${repayment.contractId}" />
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">序列号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="mchnChild" value="${repayment.mchnChild}" />
+                                                                <input type="text" style="width:200px" name="serialNumber" value="${repayment.serialNumber}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">执行状态：</td>
@@ -84,7 +91,7 @@
 										                    	<option  <c:if test="${repayment.state==10090002}"> selected="selected" </c:if> value="10090002" >划扣中</option>
 										                    	<option  <c:if test="${repayment.state==10090003}"> selected="selected" </c:if> value="10090003" >划扣完成</option>
 										                    </select>
-                                                        </td> 
+                                                        </td>
                                                         <td class="tr">执行结果：</td>
                                                         <td>
                                                            <select id = "resultState" name = "resultState" style="width:150px;height: 30px;" >
@@ -112,7 +119,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>借款代扣</h2>
+                            <h2>借款代扣明细</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -126,44 +133,43 @@
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                              <td>编号</td>
-                                              <td>流水号</td>
+                                        	  <td>编号</td>
+                                              <td>资金账号</td>
                                               <td>交易类型</td>
-                                              <td>交易条数</td>
-                                              <td>成功条数</td>
-                                              <td>失败条数</td>
+                                              <td>流水号</td>
+                                              <td>合同号</td>
                                               <td>执行状态</td>
                                               <td>执行结果</td>
                                               <td>还款金额</td>
-                                              <td>实际代扣金额</td>
                                               <td>创建时间</td>
                                               <td>修改时间</td>
+                                              <td>序列号</td>
                                               <td>父商户号</td>
                                               <td>子商户号</td>
+                                              <td>交易代码</td>
+                                              <td>返回信息</td>
                                               <td>备注</td>
-                                              <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
                                              <c:forEach items="${page.list}" var="repayment">
                                                 <tr>
-                                                	
                                                     <td>${repayment.id}</td>
-                                                    <td>${repayment.seqNo}</td>
+                                                    <td>${repayment.accNo}</td>
                                                     <td><fss:dictView key="${repayment.tradeType}" /></td>
-                                                    <td>${repayment.tradeCount}</td>
-                                                    <td>${repayment.successCount}</td>
-                                                    <td>${repayment.filedCount}</td>
+                                                    <td>${repayment.seqNo}</td>
+                                                    <td>${repayment.contractId}</td>
 	                                                <td><fss:dictView key="${repayment.state}" /></td>
 	                                                <td><fss:dictView key="${repayment.resultState}" /></td>
                                                     <td>${repayment.amt}</td>
-                                                    <td>${repayment.payAmt}</td>
                                                     <td><fss:fmtDate value="${repayment.createTime}"/></td>
                                                     <td><fss:fmtDate value="${repayment.motifyTime}"/></td>
+                                                    <td>${repayment.serialNumber}</td>
                                                     <td>${repayment.mchnParent}</td>
                                                     <td>${repayment.mchnChild}</td>
+                                                    <td>${repayment.respCode}</td>
+                                                    <td>${repayment.respMsg}</td>
                                                     <td>${repayment.remark}</td>
-                                                    <td><a href="${contextPath}/repayment/repaymentdetail/${repayment.id}">查看详细</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

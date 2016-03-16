@@ -65,7 +65,7 @@ public class LoanImpl implements ILoan {
     		}
     	}else{
     		try {
-    			customerInfoEntity=fssAccountService.createLoanAccount(dto);
+    			customerInfoEntity=customerInfoService.createLoanAccount(dto);
     			customerInfoEntity.setCityCode(dto.getCity_id());
     	    	customerInfoEntity.setParentBankCode(dto.getBank_id());
     			customerInfoEntity.setBankLongName("");

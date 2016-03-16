@@ -1,16 +1,20 @@
 package com.gqhmt.fss.architect.trade.service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.Repayment;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
+import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
 
@@ -39,13 +43,16 @@ public class FssRepaymentService {
 	@Resource
 	private FssRepaymentReadMapper fssRepaymentReadMapper;
 	
+	@Resource
+	private FssRepaymentParentReadMapper fssRepaymentParentReadMapper;
 	/**
 	 * 创建借款人提现申请
 	 * @param fssTradeApplyEntity
 	 * @throws FssException
 	 */
 	public void createRepayments(List<FssRepaymentEntity> repayments) throws FssException{
-		fssRepaymentWriteMapper.insertRepaymentList(repayments);
+		fssRepaymentWriteMapper.insertList(repayments);
+//		fssRepaymentWriteMapper.insertRepaymentList(repayments);
 	}
 	
 	/**
@@ -63,7 +70,15 @@ public class FssRepaymentService {
 	}
 	
 	/**
-	 * 查询所有借款代扣信息
+	 * 查询所有借款代扣主表信息
+	 * @return
+	 * @throws FssException
+	 */
+	public List<FssRepaymentParentEntity> queryRepaymentParents(FssRepaymentParentEntity repayment) throws FssException{
+		return fssRepaymentParentReadMapper.queryFssRepaymentParent(repayment);
+	}
+	/**
+	 * 查询所有借款代扣详细
 	 * @return
 	 * @throws FssException
 	 */
@@ -99,20 +114,24 @@ public class FssRepaymentService {
 	 * @param repaymentDto
 	 * @return
 	 */
-	public FssRepaymentEntity createFssRepaymentEntity(Repayment repyament,RepaymentDto repaymentDto){
+	public FssRepaymentEntity createFssRepaymentEntity(Repayment repyament,RepaymentDto repaymentDto) throws FssException{
 		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
 		repaymentEntity.setAccNo(repyament.getAcc_no());
 		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
-		repaymentEntity.setCreateTime((new Timestamp(new Date().getTime())));
-		repaymentEntity.setMotifyTime((new Timestamp(new Date().getTime())));
+		repaymentEntity.setCreateTime(new Date());
+		repaymentEntity.setMotifyTime(new Date());
 		repaymentEntity.setAmt(repyament.getAmt());
-		repaymentEntity.setState("0");
-		repaymentEntity.setResultState("0");
+		repaymentEntity.setState("10090001");
+		repaymentEntity.setResultState("10080001");
 		repaymentEntity.setSeqNo(repaymentDto.getSeq_no());
 		repaymentEntity.setSerialNumber(repyament.getSerial_number());
 		repaymentEntity.setContractId(repyament.getContract_id());
+		repaymentEntity.setMchnParent(Application.getInstance().getParentMchn(repaymentDto.getMchn()));
 		repaymentEntity.setMchnChild(repaymentDto.getMchn());
 		repaymentEntity.setRemark(repyament.getRemark());
+		repaymentEntity.setRespCode("");
+		repaymentEntity.setRespMsg("");
+		repaymentEntity.setParentId(1l);
 		return repaymentEntity;
 	}
 	
