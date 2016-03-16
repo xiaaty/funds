@@ -1,11 +1,15 @@
 package com.gqhmt.controller.fss.loan;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.loan.bean.EnterAccountBean;
+import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
+import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.HashMap;
@@ -59,53 +63,40 @@ public class FssEnterAccountController {
 		for (EnterAccountBean enterAccountBean : enterAccountEntities) {
 			int isTrue = fssEnterAccountService.getIsTrue(enterAccountBean.getSeqNo());
 			enterAccountBean.setIsSuccess(isTrue);
+			enterAccountBean.setIsFailed(enterAccountBean.getCount()-isTrue);
 		}
 		model.addAttribute("page", enterAccountEntities);
 		model.addAttribute("map", map);
 		return "fss/trade/trade_record/enterAccount_list";
 	}
 
-//	/**
-//	 * 
-//	 * author:jhz
-//	 * time:2016年3月15日
-//	 * function：
-//	 */
-//	@RequestMapping(value = "/fss/loan/trade/borrowWithDraw", method = {RequestMethod.GET, RequestMethod.POST})
-//	@AutoPage
-//	public Object accountWater(HttpServletRequest request, ModelMap model,String mchnChild,
-//			String seqNo ,String contractId, String creatTime, String modifyTime) {
-//		Map<Object, Object> map = new HashMap<>();
-//		if (creatTime != null && !creatTime.equals("")) {
-//			creatTime = creatTime + " 00:00:00";
-//		}
-//		if (modifyTime != null && !modifyTime.equals("")) {
-//			modifyTime = modifyTime + " 23:59:59";
-//		}
-//		map.put("contractId", contractId);
-//		map.put("mchnChild", mchnChild);
-//		map.put("creatTime", creatTime);
-//		map.put("modifyTime", modifyTime);
-//		map.put("seqNo", seqNo);
-//		fssTradeApplyService.getBorrowWithDraw(map);
-//		model.addAttribute("map", map);
-////		model.addAttribute("page", selectAccountSequenceList);
-//		return "fss/loan/trade/trade_audit/borrowWithDraw";
-//	}
-//
-//
-//
-//	/**
-//	 * 
-//	 * author:jhz
-//	 * time:2016年3月11日
-//	 * function：查看收费列表
-//	 */
-//	@RequestMapping("/fss/loan/trade/feeList/{loanId}")
-//	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long loanId) {
-//		List<FssFeeList> findFeeList = fssLoanService.getFeeList(loanId);
-//		model.addAttribute("feeList", findFeeList);
-//		return "fss/loan/trade/trade_audit/feeList";
-//	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：查看该批流水详情
+	 */
+	@RequestMapping(value = "/fss/enterAccount/detail/{seqNo}", method = {RequestMethod.GET, RequestMethod.POST})
+	public Object accountWater(HttpServletRequest request, ModelMap model,@PathVariable String seqNo) {
+		//通过流水好查询该批次的详情
+		List<FssEnterAccountEntity> detail = fssEnterAccountService.getDetail(seqNo);
+		model.addAttribute("detail", detail);
+		return "fss/trade/trade_record/enterAccount_detail";
+	}
+
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月11日
+	 * function：查看收费列表
+	 * @throws FssException 
+	 */
+	@RequestMapping("/fss/enterAccount/settleList/{id}")
+	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long id,String seqNo) throws FssException {
+		List<FssSettleListEntity> settleList = fssEnterAccountService.getsettleList(id);
+		model.addAttribute("settleList", settleList);
+		model.addAttribute("seqNo", seqNo);
+		return "fss/trade/trade_record/settleList";
+	}
 
 }

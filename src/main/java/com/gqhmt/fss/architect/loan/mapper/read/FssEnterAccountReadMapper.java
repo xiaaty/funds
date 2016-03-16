@@ -48,5 +48,12 @@ public interface FssEnterAccountReadMapper extends ReadMapper<FssEnterAccountEnt
 		 * function：根据流水号得到相应的每一批的交易成功数量
 		 */
 		int getIsTrue(String seqNo);
+		/**
+		 * 
+		 * author:jhz
+		 * time:2016年3月16日
+		 * function：根据流水号查看该批流水详情
+		 */
+		List<FssEnterAccountEntity> getDetail(String seqNo);
 	
 }

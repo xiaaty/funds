@@ -231,6 +231,25 @@ public class FssLoanService {
 //	public List<FssLoanEntity> findByTradeType(String tradeType,String stutas) {
 //		return fssLoanReadMapper.findByTradeType(tradeType);
 //	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：通过ID查询放款信息
+	 */
+	public FssLoanEntity getFssLoanEntityById(Long id) {
+		// TODO Auto-generated method stub
+		return fssLoanReadMapper.selectByPrimaryKey(id);
+	}
+	/**.
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：修改
+	 */
+	public void update(FssLoanEntity fssLoanEntityById) {
+		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntityById);
+	}
 	
 
 }	

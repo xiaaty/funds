@@ -46,7 +46,7 @@ public class FssEnterAccountEntity implements Serializable {
     private String serialNumber  ;                               //序列号    (NULL)           YES             (NULL)                   select,insert,update,references
    
     @Column(name = "accounting_no")
-    private String accounting_no  ;                               //账务流水号  (NULL)           YES             (NULL)                   select,insert,update,references
+    private String accountingNo  ;                               //账务流水号  (NULL)           YES             (NULL)                   select,insert,update,references
     
     @Column(name = "seq_no")
     private String seqNo  ;                               //交易流水号    (NULL)           YES             (NULL)                   select,insert,update,references
@@ -111,12 +111,13 @@ public class FssEnterAccountEntity implements Serializable {
 		this.serialNumber = serialNumber;
 	}
 
-	public String getAccounting_no() {
-		return accounting_no;
+
+	public String getAccountingNo() {
+		return accountingNo;
 	}
 
-	public void setAccounting_no(String accounting_no) {
-		this.accounting_no = accounting_no;
+	public void setAccountingNo(String accountingNo) {
+		this.accountingNo = accountingNo;
 	}
 
 	public String getSeqNo() {

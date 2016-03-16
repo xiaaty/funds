@@ -10,7 +10,7 @@
 			f.rep_code repCode,
 			f.rep_msg repMsg,
 			f.trade_status tradeStatus,
-			f.is_true isTrue,
+			f.result result,
 			f.loan_platform loanPlatform,
 			f.fee_amt feeAmt
 			FROM t_gq_fss_feeList f

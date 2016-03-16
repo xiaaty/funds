@@ -208,19 +208,39 @@
 										   			 <c:if test="${t.result == '98060003'}"><span style="color: red">失败</span></c:if>
                                                     </td>
                                                     <td>
-                                                    <c:if test="${t.tradeType == '11090001'}">抵押标放款</c:if>
-                                                    <c:if test="${t.tradeType == '11090002'}">信用标放款</c:if>
+                                                      <fss:dictOrder var="order" dictOrder="tradeType">
+                                                    <c:if test="${t.tradeType == order.key}">${order.value}</c:if>
+                                                   	 </fss:dictOrder>
                                                     </td>
                                                     <td>${t.mchnParent}</td>
                                                     <td>${t.mchnChild}</td>
                                                   <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td width="100px">
+                                                    <td >
+                                                    <c:if test="${t.tradeType != '11092001'}">
                                                     <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
+                                                    </c:if>
                                                     &nbsp; &nbsp; &nbsp; 
-                                                      <c:if test="${t.tradeType == '11090001'}">
-														<a href="${contextPath}/fss/loan/trade/feeList">代扣</a>
-														</c:if>
+                                                      <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
+                                                      		<c:if test="${t.status== '10050001'}">
+																<a href="${contextPath}/fss/loan/trade/withHold/${t.id}">代扣</a>
+																&nbsp; &nbsp; &nbsp;
+															</c:if>
+															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
+																<a href="${contextPath}/fss/loan/trade/transfer/${t.id}">转给借款人</a>
+																&nbsp; &nbsp; &nbsp;
+															</c:if>
+															<c:if test="${t.status == '10050005'}">
+																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
+																&nbsp; &nbsp; &nbsp;
+															</c:if>
+													  </c:if>
+                                                      <c:if test="${t.tradeType == '11090002'}">
+															<c:if test="${t.status == '10050005'}">
+																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
+																&nbsp; &nbsp; &nbsp;
+															</c:if>
+													  </c:if>
                                                     
                                                     </td>
                                                 </tr>
