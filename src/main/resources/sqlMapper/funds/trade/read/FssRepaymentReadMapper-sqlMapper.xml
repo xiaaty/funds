@@ -3,6 +3,8 @@
 <mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper">
 	<select id="queryFssRepayment" parameterType="com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity">
 		 SELECT  
+		 	id id,
+		 	parent_id parentId,
 			acc_no accNo,
 			trade_type tradeType,
 			create_time createTime,
@@ -20,15 +22,25 @@
 			resp_msg respMsg
 		FROM t_gq_fss_repayment 
 		<where>
-			<if test="mchnChild != null and mchnChild !=''">
-			 	and mchn_child like  CONCAT('%',#{mchnChild},'%')
+			<if test="parentId != null and parentId !=''">
+			 	and parent_id = #{parentId}
 			</if>
-			<if test="seqNo != null and seqNo !=''">
-			 	and seq_no like  CONCAT('%',#{seqNo},'%')
+			<if test="accNo != null and accNo !=''">
+			  	and acc_no like  CONCAT('%',#{accNo},'%')
 			</if>
 			<if test="contractId != null and contractId !=''">
 			  	and contract_id like  CONCAT('%',#{contractId},'%')
 			</if>
+			<if test="serialNumber != null and serialNumber !=''">
+			 	and serial_number like  CONCAT('%',#{serialNumber},'%')
+			</if>
+			<if test="state != null and state !=''">
+			 	and state = #{state}
+			</if>
+			<if test="resultState != null and resultState !=''">
+			 	and result_state = #{resultState}
+			</if>
+			
 		</where>
 	</select>
 
