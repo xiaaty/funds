@@ -355,4 +355,8 @@ public class FssAccountService {
 			}
 		return customerInfoEntity;
 	}
+
+    public FssAccountEntity fundAccountBuAccNo(String accNo) throws FssException{
+        return this.accountReadMapper.findAccountByAccNo(accNo);
+    }
 }

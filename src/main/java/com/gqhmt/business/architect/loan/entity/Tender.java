@@ -56,6 +56,19 @@ public class Tender {
     @Column(name="guanqian_amount")
     private BigDecimal guanqianAmount;
 
+    @Column(name="invest_amount")
+
+    private BigDecimal investAmount;
+
+    @Column(name="invest_time")
+    private Date investTime;
+
+    @Column(name="invest_type")
+    private Integer investType;
+
+    @Column(name="state")
+    private Integer state;
+
     public Long getId() {
         return id;
     }
@@ -168,18 +181,7 @@ public class Tender {
         this.state = state;
     }
 
-    @Column(name="invest_amount")
 
-    private BigDecimal investAmount;
-
-    @Column(name="invest_time")
-    private Date investTime;
-
-    @Column(name="invest_type")
-    private Integer investType;
-
-    @Column(name="state")
-    private Integer state;
 //    private Date createTime;
 //    private String createUserId;
 //    private Date modifyTime;

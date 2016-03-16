@@ -1,5 +1,6 @@
 package com.gqhmt.excel;
 
+import com.gqhmt.TestService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.service.SystemService;
 import org.apache.poi.ss.usermodel.Cell;
@@ -8,9 +9,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -35,9 +33,7 @@ import java.util.*;
  * -----------------------------------------------------------------
  * 16/3/11  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
-public class ImportExcel {
+public class ImportExcel extends TestService {
 
     @Resource
     private SystemService systemService;

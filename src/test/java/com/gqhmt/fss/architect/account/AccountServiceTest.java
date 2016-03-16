@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.account;
 
+import com.gqhmt.TestService;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -23,7 +24,7 @@ import java.net.URLDecoder;
  */
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
-public class AccountServiceTest {
+public class AccountServiceTest extends TestService {
 
 //    @Resource
 //    private FssAccountService fssAccountService;

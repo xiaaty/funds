@@ -1,5 +1,9 @@
 package com.gqhmt;
 
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 /**
  * Filename:    com.gqhmt.TestService
  * Copyright:   Copyright (c)2015
@@ -16,5 +20,7 @@ package com.gqhmt;
  * -----------------------------------------------------------------
  * 16/3/16  于泳      1.0     1.0 Version
  */
-public class TestService {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/spring-*.xml")
+public abstract class TestService {
 }

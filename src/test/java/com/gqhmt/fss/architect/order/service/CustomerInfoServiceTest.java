@@ -1,15 +1,12 @@
 package com.gqhmt.fss.architect.order.service;
 
+import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
@@ -29,9 +26,7 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class CustomerInfoServiceTest extends AbstractJUnit4SpringContextTests {
+public class CustomerInfoServiceTest extends TestService {
 
     @Resource
     private CustomerInfoService customerInfoService;

@@ -1,14 +1,12 @@
 package com.gqhmt.extServInter.fetchService;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.core.util.ResourceUtil;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.net.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +37,7 @@ public class FetchDataService {
         InputStream inputStream = this.sendData(url);
         String result = this.parseResponse(inputStream);
 
-        return null;
+        return JsonUtil.getInstance().parseJsonToList(result,tClass);
     }
 
     public  <T> T featchDataSingle(Class<T> tClass, String utlType, Map<String, String> map){
@@ -47,10 +45,30 @@ public class FetchDataService {
 
     }
 
+    public  <T> T featchDataSingle(Class<T> tClass, String urlType,String key, String param) throws FssException {
+        String url = this.parseUrl(urlType,key,param);
+        InputStream inputStream = this.sendData(url);
+        String result = this.parseResponse(inputStream);
+        return JsonUtil.getInstance().parseJson(result,tClass);
+    }
+
+    public  <T> T featchDataSingleNotJson(Class<T> tClass, String urlType,String key, String param) throws FssException {
+        String url = this.parseUrl(urlType,key,param);
+        InputStream inputStream = this.sendData(url);
+        String result = this.parseResponse(inputStream);
+        return parseBaseType(result ,tClass);
+    }
+
+
+
     public  Map<String,String> featchDataMap(String utlType, Map<String, String> map){
         return null;
 
     }
+
+
+
+
 
 
     private String parseUrl(String urlType,Map<String, String> map) throws FssException {
@@ -60,25 +78,60 @@ public class FetchDataService {
         }
 
         if(map != null && map.size()>0){
-            this.parseParam(url,map);
+            url = this.parseParam(url,map);
         }
 
 
         return url;
     }
 
+    private String parseUrl(String urlType,String key,String param) throws FssException {
+        String url = ResourceUtil.getValue("config.appContext",urlType);
+        if(url == null || "".equals(url)){
+            throw new FssException("90099007");
+        }
 
-    private void parseParam(String url,Map<String, String> map) throws FssException {
+            url = this.parseParam(url,key,param);
+
+
+        return url;
+    }
+
+
+    private String  parseParam(String url,Map<String, String> map) throws FssException {
         if(map == null || map.size() == 0){
             throw new FssException("90099008");
         }
 
         Set<String> set = map.keySet();
 
-        for(String tmp:set){
-            url = url.replace("${"+tmp+"}", URLEncoder.encode(map.get(tmp)));
+
+        try {
+            for(String tmp:set){
+                url = url.replace("{"+tmp+"}", URLEncoder.encode(map.get(tmp),"utf-8"));
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw  new FssException("90099010",e);
         }
+
+
+        return  url;
     }
+
+    private String  parseParam(String url,String key,String param) throws FssException {
+        if(param == null || param.length() == 0){
+            throw new FssException("90099008");
+        }
+
+        try {
+            url = url.replace("{"+key+"}", URLEncoder.encode(param,"utf-8"));
+        } catch (UnsupportedEncodingException e) {
+           throw  new FssException("90099010",e);
+        }
+
+        return  url;
+    }
+
 
 
     private InputStream sendData(String urlParam) throws FssException {
@@ -98,22 +151,31 @@ public class FetchDataService {
 
         try {
             URL realUrl = new URL(url);
-            URLConnection conn = realUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection)realUrl.openConnection();
             // 设置请求
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0;Windows NT 5.1;SV1)");
-            conn.setDoOutput(true);
+
+            conn.setRequestMethod("GET");
+
+            //            conn.setReadTimeout(60*1000);
             conn.setDoInput(true);
-//            conn.setReadTimeout(60*1000);
-            // 获得对象输出流
-            out = new PrintWriter(conn.getOutputStream());
-            // 发送请求参数
-            if(param != null) {
+            if(param == null){
+                conn.setDoOutput(false);
+            }else{
+                conn.setDoOutput(true);
+                // 获得对象输出流
+                out = new PrintWriter(conn.getOutputStream());
+                // 发送请求参数
                 out.print(param);
+                // 输出流缓冲
+                out.flush();
             }
-            // 输出流缓冲
-            out.flush();
+
+
+
+
             // 定义输入流得到响应
             return conn.getInputStream();
         } catch (MalformedURLException e) {
@@ -147,5 +209,34 @@ public class FetchDataService {
             e.printStackTrace();
         }
         return result;
+    }
+
+
+    private <T> T parseBaseType(String result, Class<T> tClass) {
+        T t = null;
+        try {
+            t = tClass.newInstance();
+            if(t instanceof Long){
+                Long tmp  = (Long)t;
+                tmp = Long.valueOf(result);
+            }else if(t instanceof Integer){
+                Integer tmp = (Integer) t;
+                tmp = Integer.valueOf(result);
+            }else if(t instanceof Short){
+                Short tmp = (Short) t;
+                tmp = Short.valueOf(result);
+            }else if(t instanceof Double){
+                Double tmp = (Double) t;
+                tmp = Double.parseDouble(result);
+            }
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
+
+        return t;
     }
 }

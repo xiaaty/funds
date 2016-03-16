@@ -1,11 +1,9 @@
 package com.gqhmt.funds.customer;
 
+import com.gqhmt.TestService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
@@ -25,9 +23,8 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class CustomerServiceTest {
+
+public class CustomerServiceTest extends TestService {
 
     @Resource
     private CustomerInfoService customerInfoService;
