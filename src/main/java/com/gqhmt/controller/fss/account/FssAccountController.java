@@ -80,29 +80,26 @@ public class FssAccountController {
      */
     @RequestMapping(value = "/fss/account/interaccountlist/{busiNo}",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-    public Object intenetAccountList(HttpServletRequest request,ModelMap model,@PathVariable String busiNo,String accNo,String custNo,String bussinessname,String bussinesscertno) throws FssException {
+    public Object intenetAccountList(HttpServletRequest request,ModelMap model,BussAndAccountBean bussaccount) throws FssException {
     	Map map=new HashMap();
-    	if(StringUtils.isNotEmptyString(busiNo)){//业务编号
-    		map.put("busiNo",busiNo);
+    	if(StringUtils.isNotEmptyString(bussaccount.getAccNo())){//业务编号
+    		map.put("accNo",bussaccount.getAccNo());
     	}
-    	if(StringUtils.isNotEmptyString(accNo)){
-    		map.put("accNo",accNo);
+    	if(StringUtils.isNotEmptyString(bussaccount.getCustNo())){
+    		map.put("custNo",bussaccount.getCustNo());
     	}
-    	if(StringUtils.isNotEmptyString(custNo)){
-    		map.put("custNo",custNo);
+    	if(StringUtils.isNotEmptyString(bussaccount.getCustName())){
+    		map.put("custName",bussaccount.getCustName());
     	}
-    	if(StringUtils.isNotEmptyString(bussinessname)){
-    		map.put("bussinessname",bussinessname);
+    	if(StringUtils.isNotEmptyString(bussaccount.getCertNo())){
+    		map.put("certNo",bussaccount.getCertNo());
     	}
-    	if(StringUtils.isNotEmptyString(bussinesscertno)){
-    		map.put("bussinesscertno",bussinesscertno);
+    	if(StringUtils.isNotEmptyString(bussaccount.getAccType())){
+    		map.put("accType",bussaccount.getAccType());
     	}
     	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(map);
 		model.addAttribute("page", accountList);
-		model.addAttribute("accNo", accNo);
-		model.addAttribute("custNo", custNo);
-		model.addAttribute("bussinessname", bussinessname);
-		model.addAttribute("bussinesscertno", bussinesscertno);
+		model.addAttribute("bussaccount", bussaccount);
 		return "fss/account/internetAccountList";
     }
     
