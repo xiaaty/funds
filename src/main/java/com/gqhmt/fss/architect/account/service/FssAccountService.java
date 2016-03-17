@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.SuperDto;
@@ -254,6 +255,8 @@ public class FssAccountService {
             //设置开户来源
             //设置渠道id
             fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
+            fssAccountEntity.setMchnChild(dto.getMchn());
+            fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
             fssAccountWriteMapper.insertSelective(fssAccountEntity);
             return fssAccountEntity;
         } catch (Exception e) {

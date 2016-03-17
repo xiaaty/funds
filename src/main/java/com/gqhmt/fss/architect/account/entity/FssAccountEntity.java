@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.account.entity;
 
+import com.gqhmt.annotations.AutoDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -52,9 +54,11 @@ public class FssAccountEntity implements Serializable {
     private String userNo;                             // varchar(45) NOT NULL COMMENT '用户表编号',
 
     @Column(name = "create_time")
+	@AutoDate
     private Date createTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
 
     @Column(name = "modify_time")
+	@AutoDate
     private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
 
     @Column(name = "acc_type")

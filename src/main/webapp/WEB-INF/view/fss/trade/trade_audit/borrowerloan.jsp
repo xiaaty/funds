@@ -105,6 +105,7 @@
                                                         <td nowrap="nowrap">
                                                     		<input type="hidden" id="tradeStatus" value="${map.status}">
 							                                <select class="select02" style="width:202px;" name="status" id="status">
+                                                                <option>所有</option>
 							                                   <fss:dictOrder var="order" dictOrder="tradeStatus">
                                                                             <option value="${order.key}">${order.value}</option>
                                                                         </fss:dictOrder>
@@ -140,7 +141,6 @@
 
                         </div>
 
-                        </div>
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
@@ -161,7 +161,23 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                        <col width="60" />
+                                        <col width="220" />
+                                        <col width="220" />
+                                        <col width="150" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="300"/>
                                         <thead>
                                         <tr>
                                             <th>ID</th>
@@ -179,7 +195,7 @@
                                             <th>子商户号 </th>
                                             <th>交易日期 </th>
                                             <th>修改日期 </th>
-                                            <th width="100px">操作</th>
+                                            <th >操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -190,12 +206,14 @@
                                                     <td>${t.accNo}</td>
                                                     <td>${t.seqNo}</td>
                                                     <td>${t.contractId}</td>
-                                                    <td>${t.contractAmt}</td>
-                                                    <td>${t.payAmt}</td>
                                                     <td>
-                                                    <c:if test="${t.loanPlatform == '10040001'}">北京</c:if>
-										   			 <c:if test="${t.loanPlatform == '10040002'}">天津</c:if>
-										   			 <c:if test="${t.loanPlatform == '10040003'}">上海</c:if>
+                                                        <fss:money money="${t.contractAmt}"/>
+                                                    </td>
+                                                    <td>
+                                                        <fss:money money="${t.payAmt}"/>
+                                                    </td>
+                                                    <td>
+                                                        <fss:dictView key="${t.loanPlatform}" />
                                                     </td>
                                                     <td>
 	                                                    <fss:dictOrder var="order" dictOrder="tradeStatus">
@@ -203,9 +221,7 @@
 	                                                     </fss:dictOrder>
                                                     </td>
                                                     <td>
-                                                    <c:if test="${t.result == '98060001'}"><span style="color: green">成功</span></c:if>
-										   			 <c:if test="${t.result == '98060002'}"><span style="color: green">部分成功</span></c:if>
-										   			 <c:if test="${t.result == '98060003'}"><span style="color: red">失败</span></c:if>
+                                                        <fss:dictView key="${t.result}" />
                                                     </td>
                                                     <td>
                                                       <fss:dictOrder var="order" dictOrder="tradeType">
@@ -214,31 +230,31 @@
                                                     </td>
                                                     <td>${t.mchnParent}</td>
                                                     <td>${t.mchnChild}</td>
-                                                  <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+                                                  <td> <fss:fmtDate value="${t.createTime}"/></td>
+                                                    <td> <fss:fmtDate value="${t.createTime}"/></td>
                                                     <td >
                                                     <c:if test="${t.tradeType != '11092001'}">
                                                     <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
                                                     </c:if>
-                                                    &nbsp; &nbsp; &nbsp; 
+                                                    &nbsp; &nbsp;
                                                       <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
                                                       		<c:if test="${t.status== '10050001'}">
 																<a href="${contextPath}/fss/loan/trade/withHold/${t.id}">代扣</a>
-																&nbsp; &nbsp; &nbsp;
+																&nbsp; &nbsp;
 															</c:if>
 															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
 																<a href="${contextPath}/fss/loan/trade/transfer/${t.id}">转给借款人</a>
-																&nbsp; &nbsp; &nbsp;
+																&nbsp; &nbsp;
 															</c:if>
 															<c:if test="${t.status == '10050005'}">
 																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp; &nbsp;
+																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
                                                       <c:if test="${t.tradeType == '11090002'}">
 															<c:if test="${t.status == '10050005'}">
 																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp; &nbsp;
+																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
                                                     
