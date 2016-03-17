@@ -85,7 +85,7 @@
 			t.pay_amt payAmt,
 			t.loan_platform loanPlatform  	
 			FROM t_gq_fss_loan t 
-			where t.trade_type in ("11090001","11090002")
+			where t.trade_type in ("11090001","11090002","11090010","11092001")
 			<if test="contractId != null and contractId != ''">
 				and t.contract_id like concat('%',#{contractId},'%')
 			</if>

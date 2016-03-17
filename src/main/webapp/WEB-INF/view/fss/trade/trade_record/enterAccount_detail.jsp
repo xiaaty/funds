@@ -4,11 +4,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>交易记录--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <%@include file="../../../../view/include/common_css_js.jsp"%>
+    <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -32,7 +31,7 @@
 </head>
 
 <body>
-<%@include file="../../../../view/include/menu.jsp"%>
+<%@include file= "../../../../view/include/menu.jsp"%>
 
 
 <div id="main" role="main">
@@ -42,15 +41,12 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-          <li>交易管理</li>
-            <li>交易审核</li>
-            <li>代付审核</li>
-            <li>借款付款</li>
-            <li>收费列表</li>
+            <li>交易管理</li>
+            <li>交易记录</li>
+            <li>入账记录</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
-
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
@@ -59,51 +55,55 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>收费列表</h2>
+                            <h2>入账记录表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="feeList">
+                            <form class="smart-form" id="">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
                                 </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
-                                <div class="widget-body">
-                                <div class="mb20" id="wid-id-713">
-                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/loan/trade/borrow'" ><i class="fa fa-minus"></i>返回</button>
+                                 <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/loan/enterAccountList'" ><i class="fa fa-minus"></i>返回</button>
                                       </div>
+                                <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
                                         <thead>
                                         <tr>
-                                            <td>费用类型</td>
-                                            <td>费用金额</td>
-                                            <td>费用平台</td>
-                                            <td>交易状态</td>
-                                            <td>最终结果</td>
-                                            <td>返回码</td>
-                                            <td>返回消息</td>
+                                            <th>序列号</th>
+                                            <th>账务流水号  </th>
+                                            <th>合同ID</th>
+                                            <th>借款人资金平台账号</th>
+                                            <th>抵押权人资金平台账号</th>
+                                            <th>执行结果</th>
+                                            <th>创建时间 </th>
+                                            <th>修改时间</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${feeList}" var="t">
+                                        <c:forEach items="${detail}" var="t">
                                                 <tr>
-                                                    <td>${t.feeType}</td>
-                                                    <td>${t.feeAmt}</td>
-                                                    <td>${t.loanPlatform}</td>
-                                                    <td>${t.tradeStatus}</td>
+                                                    <td>${t.serialNumber}</td>
+                                                    <td>${t.accountingNo}</td>
+                                                    <td>${t.contractId}</td>
+                                                    <td>${t.accNo}</td>
+                                                    <td>${t.mortgageeAccNo}</td>
+                                                    <td>${t.result=='98060001'?'成功':'失败'}</td>
+                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
+                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td>
-                                                    <c:if test="${t.result == '98060001'}"><span style="color: green">成功</span></c:if>
-										   			 <c:if test="${t.result == '98060003'}"><span style="color: red">失败</span></c:if>
+                                                    <a href="${contextPath}/fss/enterAccount/settleList/${t.id}?seqNo=${seqNo}">查看费用</a>
                                                     </td>
-                                                    <td>${t.repCode}</td>
-                                                    <td>${t.repMsg}</td>
                                                 </tr>
-                                            </c:forEach>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
+                                <!-- end widget content -->
                             </form>
                         </div>
                     </div>
@@ -112,16 +112,15 @@
 
         </section>
     </div>
-<%@include file="../../../../view/include/common_footer_css_js.jsp"%>
-</div>
+    </div>
+<%@include file= "../../../../view/include/common_footer_css_js.jsp"%>
 
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#feeList"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortgageePayment"));
     });
-
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>

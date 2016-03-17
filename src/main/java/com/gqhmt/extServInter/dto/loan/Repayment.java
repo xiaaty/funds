@@ -2,8 +2,10 @@ package com.gqhmt.extServInter.dto.loan;
 
 import java.math.BigDecimal;
 
+import com.gqhmt.extServInter.dto.Response;
 
-public class Repayment {
+
+public class Repayment extends Response{
 
  	private String serial_number; //序列号
     private String contract_id;   //合同Id

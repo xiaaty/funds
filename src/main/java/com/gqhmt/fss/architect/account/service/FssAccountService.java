@@ -1,8 +1,8 @@
 package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
@@ -15,18 +15,10 @@ import com.gqhmt.fss.architect.account.mapper.write.FssFuiouAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
-import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
-import com.gqhmt.sys.service.SystemService;
-import com.gqhmt.sys.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -67,11 +59,7 @@ public class FssAccountService {
     @Resource
    	private CustomerInfoWriteMapper customerInfoWriteMapper;
     @Resource
-    private UserService userService;
-    @Resource
 	private GqUserWriteMapper gqUserWriteMapper;
-    @Resource
-	private BankCardInfoService bankCardinfoService;
     @Resource
 	private FundAccountService fundAccountService;
     
@@ -144,7 +132,7 @@ public class FssAccountService {
 	*/
     private String getAccno(String trade_type) {
     	String acc_no="";
-    	StringBuffer busi_no=new StringBuffer("1001");
+    	StringBuffer busi_no=new StringBuffer(trade_type.substring(0,4));
     	StringBuffer str=this.getRedom();
     	acc_no=busi_no.append(str).append(this.getSecond()).toString();
         return acc_no;
@@ -270,6 +258,8 @@ public class FssAccountService {
             //设置开户来源
             //设置渠道id
             fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
+            fssAccountEntity.setMchnChild(dto.getMchn());
+            fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
             fssAccountWriteMapper.insertSelective(fssAccountEntity);
             return fssAccountEntity;
         } catch (Exception e) {
@@ -319,44 +309,10 @@ public class FssAccountService {
 		}
 		return sb;
 	}
-    
-	/**
-	 * 开户
-	 * @param loanAccountDto
-	 * @throws FssException
-	 */
-	public CustomerInfoEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
-//			1.创建账户	t_gq_customer_info 
-			CustomerInfoEntity customerInfoEntity;
-			try {
-				customerInfoEntity = customerInfoService.createCustomerInfo(loanAccountDto);
-				customerInfoWriteMapper.insertSelective(customerInfoEntity);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
-			}
-			//2.创建用户         t_gq_user	
-			UserEntity userEntity;
-			try {
-				userEntity = userService.createUser(loanAccountDto,customerInfoEntity);
-				gqUserWriteMapper.insertSelective(userEntity);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
-			}
-			//3.创建银行卡信息     t_gq_bank_info
-			BankCardInfoEntity bankCardInfoEntity;
-			try {
-				bankCardInfoEntity = bankCardinfoService.createBankCardInfoEntity(loanAccountDto,customerInfoEntity,userEntity);
-				bankCardinfoService.insert(bankCardInfoEntity);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
-			}
-		return customerInfoEntity;
-	}
+
 
     public FssAccountEntity fundAccountBuAccNo(String accNo) throws FssException{
         return this.accountReadMapper.findAccountByAccNo(accNo);
     }
+
 }

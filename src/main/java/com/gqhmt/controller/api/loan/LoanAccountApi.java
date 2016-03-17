@@ -11,6 +11,7 @@ import com.gqhmt.extServInter.service.loan.ICreateLoan;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
 import com.gqhmt.extServInter.service.loan.IMarginSendBack;
 import com.gqhmt.extServInter.service.loan.IRepayment;
+import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +52,9 @@ public class LoanAccountApi {
     private IMarginSendBack marginSendBackImpl;
     @Resource
     private IRepayment repaymentImpl;
+    
+    @Resource
+	private FssRepaymentService fssRepaymentService;
     
     /**
      * author:柯禹来

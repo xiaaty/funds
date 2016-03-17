@@ -84,7 +84,7 @@ public class FssEnterAccountService {
 			MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(enterAccountDto.getMchn());
 			fssEnterAccountEntity = new FssEnterAccountEntity();
 			fssEnterAccountEntity.setAccNo(enterAccount.getAcc_no());
-			fssEnterAccountEntity.setAccounting_no(enterAccount.getAccounting_no());
+			fssEnterAccountEntity.setAccountingNo(enterAccount.getAccounting_no());
 			fssEnterAccountEntity.setContractId(enterAccount.getContract_id());
 			fssEnterAccountEntity.setCreateTime(new Date());
 			fssEnterAccountEntity.setMchnChild(enterAccountDto.getMchn());
@@ -144,5 +144,15 @@ public class FssEnterAccountService {
 	 */
 	public int getIsTrue(String seqNo) {
 		return enterAccountReadMapper.getIsTrue(seqNo);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：根据流水号查看该批流水详情
+	 */
+	public List<FssEnterAccountEntity> getDetail(String seqNo) {
+		
+		return enterAccountReadMapper.getDetail(seqNo);
 	}
 }

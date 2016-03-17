@@ -1,15 +1,20 @@
 package com.gqhmt.funds.architect.customer.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
+import com.gqhmt.sys.service.UserService;
+
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -42,6 +47,10 @@ public class CustomerInfoService {
 	private FssAccountWriteMapper fssAccountWriteMapper;
 	@Resource
 	private FundsAccountImpl fundsAccountImpl;
+	@Resource
+    private UserService userService;
+	@Resource
+	private BankCardInfoService bankCardinfoService;
 /*
 	*//**
 	 * 查询客户管理列表
@@ -1013,6 +1022,43 @@ public class CustomerInfoService {
 		CustomerInfoEntity entity = new CustomerInfoEntity();
 		entity.setBankId(bankId);
 		return customerInfoReadMapper.selectOne(entity);
+	}
+	
+	
+	/**
+	 * 开户
+	 * @param loanAccountDto
+	 * @throws FssException
+	 */
+	public CustomerInfoEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
+//			1.创建账户	t_gq_customer_info 
+			CustomerInfoEntity customerInfoEntity;
+			try {
+				customerInfoEntity = this.createCustomerInfo(loanAccountDto);
+				customerInfoWriteMapper.insertSelective(customerInfoEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+			//2.创建用户         t_gq_user	
+			UserEntity userEntity;
+			try {
+				userEntity = userService.createUser(loanAccountDto,customerInfoEntity);
+				gqUserWriteMapper.insertSelective(userEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+			//3.创建银行卡信息     t_gq_bank_info
+			BankCardInfoEntity bankCardInfoEntity;
+			try {
+				bankCardInfoEntity = bankCardinfoService.createBankCardInfoEntity(loanAccountDto,customerInfoEntity,userEntity);
+				bankCardinfoService.insert(bankCardInfoEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+		return customerInfoEntity;
 	}
 	
 	/**

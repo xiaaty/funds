@@ -27,9 +27,11 @@ public class EnterAccountBean {
 		
 		private int  isSuccess;			//成功数
 		
+		private int  isFailed;			//失败数
+		
 	    private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
 	  
-	    private String seqNo   ;  
+	    private String seqNo   ;  		//交易流水号
 	    
 	    private String mchnParent;             // varchar(45) NOT NULL COMMENT '大商户号',
 
@@ -91,6 +93,15 @@ public class EnterAccountBean {
 		public void setIsSuccess(int isSuccess) {
 			this.isSuccess = isSuccess;
 		}
+
+		public int getIsFailed() {
+			return isFailed;
+		}
+
+		public void setIsFailed(int isFailed) {
+			this.isFailed = isFailed;
+		}
+		
 
 		
 }
