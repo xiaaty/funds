@@ -184,10 +184,12 @@ public class FssAccountService {
      * @return
      * @throws FssException
      */
-    public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,CustomerInfoEntity fssCustomerEntity,String accNo) throws FssException {
-        try {
+    public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,CustomerInfoEntity fssCustomerEntity) throws FssException {
+    		FssFuiouAccountEntity fssFuiouAccountEntity=null;
+    		fssFuiouAccountEntity=this.createAccount(dto);	
+    	try {
             FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
-            fssAccountEntity.setAccNo(accNo);
+            fssAccountEntity.setAccNo(fssFuiouAccountEntity.getAccNo());
             fssAccountEntity.setCustNo(String.valueOf(fssCustomerEntity.getId()));
             fssAccountEntity.setAccBalance(BigDecimal.ZERO);
             fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
