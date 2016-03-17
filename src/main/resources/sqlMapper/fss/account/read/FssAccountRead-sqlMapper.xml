@@ -29,6 +29,55 @@
 	
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">
 		SELECT 
+		   a.acc_no accNo,
+		   a.cust_id custNo,
+		   c.CUSTOMER_NAME custName,
+		   c.CUSTOMER_TYPE customerType,
+		   c.CERT_TYPE certType,
+		   c.CERT_NO certNo,
+		   c.sex sex,
+		   c.BIRTHDATE birthday,
+		   c.MOBILE_PHONE mobile,
+		   a.state state,
+		   a.acc_type accType,
+		   a.acc_balance accBalance,
+		   a.acc_freeze accFreeze,
+		   a.acc_avai accAvai,
+		   a.busi_no busiNo,
+		   a.third_acc_no thirdAccNo,
+		   a.mchn_child mchnChild,
+		   a.mchn_parent mchnParent,
+		   c.EDUCATION education,
+		   c.MARITAL_STATUS maritalStatus,
+		   c.ADDRESS address,
+		   c.industry industry,
+		   c.isvalid isValid,
+		   c.bank_id bankId,
+		   a.create_time createTime,
+		   a.modify_time modifyTime
+	   FROM `t_gq_fss_account` a,`t_gq_customer_info` c
+	   WHERE a.cust_id=c.id
+	   <if test="accNo!= null and accNo!= '' ">
+       	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
+       </if>
+       
+	   <if test="custNo!= null and custNo!= '' ">
+       	  AND a.cust_no Like CONCAT(CONCAT('%',#{custNo}),'%')
+       </if>
+       
+	   <if test="custName != null and custName != '' ">
+       	  AND c.CUSTOMER_NAME Like CONCAT(CONCAT('%',#{custName}),'%')
+       </if>
+	   <if test="certNo != null and certNo != '' ">
+	      AND c.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
+	   </if> 
+	   <if test="accType != null and accType != '' ">
+	      AND a.acc_type = #{accType}
+	   </if> 
+	</select>
+
+	<select id="findAccountByAccNo" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+		SELECT
 		account.id id,
 		account.busi_no busiNo,
 		account.acc_no accNo,
@@ -38,26 +87,10 @@
 		account.acc_avai accAvai,
 		account.create_time accCreateTime,
 		account.modify_time accModifyTime,
-		customer.name bussinessname,
-		customer.cert_no bussinesscertno
-		FROM `t_gq_fss_customer` customer,`t_gq_fss_account` account 
-		WHERE account.cust_no=customer.cust_no
-		<!-- AND account.busi_no=#{busiNo}  -->
-	
-		 <if test="accNo!= null and accNo!= '' ">
-        	AND account.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
-        </if>
-        
-		<if test="custNo!= null and custNo!= '' ">
-        	AND account.cust_no Like CONCAT(CONCAT('%',#{custNo}),'%')
-        </if>
-        
-		<if test="bussinessname != null and bussinessname != '' ">
-        	AND customer.name Like CONCAT(CONCAT('%',#{bussinessname}),'%')
-        </if>
-        
-		<if test="bussinesscertno != null and bussinesscertno != '' ">
-        	AND customer.cert_no Like CONCAT(CONCAT('%',#{bussinesscertno}),'%')
-        </if> 
+		account.cust_id custId
+
+		FROM t_gq_fss_account account
+		where account.acc_no = #{accNo}
+
 	</select>
 </mapper>

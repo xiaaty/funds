@@ -9,25 +9,22 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.tender.FullBidDto;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
-import com.gqhmt.funds.architect.job.service.FuiouFtpColomFieldService;
-import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.core.PayCommondConstants;
-import com.gqhmt.pay.service.tender.IFundFullTender;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.tender.IFundFullTender;
 import com.gqhmt.util.ThirdPartyType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -92,7 +89,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 	 * 满标清算
 	 */
     public void settle(FullBidDto fullbidto) throws FssException {
-		Bid bid=bidService.findById(fullbidto.getBusi_id());
+		/*Bid bid=bidService.findById(fullbidto.getBusi_id());
 		//通过标的ID得到资金交易订单列表
 		List<FundOrderEntity> listFundOrder = fundOrderService.queryFundOrder(GlobalConstants.ORDER_SETTLE, GlobalConstants.BUSINESS_SETTLE, bid.getId());
 		if (listFundOrder != null && listFundOrder.size() > 0) {
@@ -139,7 +136,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 		}
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
 		this.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
-		throw new FssException("异步处理，等待回调通知");
+		throw new FssException("异步处理，等待回调通知");*/
 	}
     
     /**
@@ -150,7 +147,6 @@ public class FundFullTenderImpl  implements IFundFullTender {
      * @param msg
      * @throws FssException
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { FssException.class }, readOnly = false)
 	public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws FssException {
 		fundOrderEntity.setOrderState(status);
 		fundOrderEntity.setRetCode(code);

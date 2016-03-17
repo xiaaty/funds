@@ -1,4 +1,4 @@
-package com.gqhmt.funds.architect.job.bean;
+package com.gqhmt.fss.architect.fuiouFtp.bean;
 
 import javax.persistence.*;
 import java.io.Serializable;

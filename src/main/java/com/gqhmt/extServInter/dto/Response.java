@@ -1,7 +1,5 @@
 package com.gqhmt.extServInter.dto;
 
-import com.gqhmt.annotations.AutoMapping;
-
 /**
  * Filename:    com.gqhmt.extServInter.dto.Response
  * Copyright:   Copyright (c)2015
@@ -27,6 +25,7 @@ public class Response {
     private String signature;
 
     private String trade_type;
+
     private String resp_code;
     private String resp_msg;
 

@@ -1,7 +1,7 @@
 package com.gqhmt.pay.fuiou.service;
 
-import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
-import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
@@ -77,12 +77,12 @@ public class AbortBidService {
 //                AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_ABORT_ASYN, ThirdPartyType.FUIOU, tender,fuiouPreauth.getContractNo());
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.insert(fuiouPreauth);
-                System.out.println("job:abortBid:success:"+fuiouFtpOrder.getOrderNo());
+                System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
             }catch (Exception e){
                 fuiouPreauth.setState(3);
                 fuiouPreauthService.insert(fuiouPreauth);
                 falidSize++;
-                System.out.println("job:abortBid:failed:"+fuiouFtpOrder.getOrderNo());
+                System.out.println("fuiouFtp:abortBid:failed:"+fuiouFtpOrder.getOrderNo());
             }
         }
 
@@ -121,9 +121,9 @@ public class AbortBidService {
                 AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_BID_FAILED_RETURN, ThirdPartyType.FUIOU, fuiouPreauth);
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.insert(fuiouPreauth);
-                System.out.println("job:BidFailed:success:"+fuiouPreauth.getOrderNo());
+                System.out.println("fuiouFtp:BidFailed:success:"+fuiouPreauth.getOrderNo());
             }catch (FssException e){
-                System.out.println("job:BidFailed:failed:"+fuiouPreauth.getOrderNo());
+                System.out.println("fuiouFtp:BidFailed:failed:"+fuiouPreauth.getOrderNo());
             }*/
         }
     }

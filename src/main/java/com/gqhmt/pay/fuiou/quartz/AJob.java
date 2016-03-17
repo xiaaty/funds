@@ -28,8 +28,8 @@ import java.util.List;
 public abstract class AJob {
     protected final boolean isIp(String type) throws PayChannelNotSupports{
         Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
-        config.getValue("job."+type+".value");
-        String apachIp = (String)config.getValue("job.ip.value");
+        config.getValue("fuiouFtp."+type+".value");
+        String apachIp = (String)config.getValue("fuiouFtp.ip.value");
         List<String> localIpList = LocalIPUtil.getLocalIpList();
         boolean isSame = false;
         for (String localIp : localIpList) {
@@ -39,12 +39,12 @@ public abstract class AJob {
             }
         }
         if (!isSame){
-            LogUtil.debug(this.getClass(),"job:not allowed execute");
+            LogUtil.debug(this.getClass(),"fuiouFtp:not allowed execute");
             return isSame;
         }
 
 
-        String  value = (String) config.getValue("job."+type+".value");
+        String  value = (String) config.getValue("fuiouFtp."+type+".value");
         isSame = new Boolean(value);
         return isSame;
     }

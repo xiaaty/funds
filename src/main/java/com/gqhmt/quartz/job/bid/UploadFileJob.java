@@ -5,7 +5,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * Filename:    com.gqhmt.quartz.job.bid.UploadFileJob
+ * Filename:    com.gqhmt.quartz.fuiouFtp.bid.UploadFileJob
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

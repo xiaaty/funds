@@ -1,14 +1,11 @@
 package com.gqhmt.fss.architect.order.service;
 
+import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.util.ThirdPartyType;
 import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -31,9 +28,8 @@ import java.util.Date;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class FundSequenceServiceTest extends AbstractJUnit4SpringContextTests {
+
+public class FundSequenceServiceTest extends TestService {
 
     @Resource
     private FundSequenceService fundSequenceService;

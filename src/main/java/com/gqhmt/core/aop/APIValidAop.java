@@ -1,10 +1,7 @@
 package com.gqhmt.core.aop;
 
 import com.github.pagehelper.PageHelper;
-import com.gqhmt.annotations.APIValid;
-import com.gqhmt.annotations.APIValidNull;
-import com.gqhmt.annotations.APIValidType;
-import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.annotations.*;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.core.util.Application;
@@ -79,7 +76,7 @@ public class APIValidAop {
             //校验商户
             this.validMch(targetClass,methodName,dto);
             //交易类型校验
-
+            this.validTradeType(targetClass,methodName,dto);
             //数据校验
             this.validData(dto);
             //生成交易订单
@@ -194,6 +191,13 @@ public class APIValidAop {
 
     }
 
+    /**
+     * 交易金额校验
+     * @param superField
+     * @param obj
+     * @param methodName
+     * @throws FssException
+     */
     private void validMoney(Field superField,Object obj,String methodName) throws FssException {
         APIValid apiValid = superField.getAnnotation(APIValid.class);
         if(apiValid == null){
@@ -242,8 +246,6 @@ public class APIValidAop {
                     throw  new FssException("90004016");
                 }
             }
-
-
 
         } catch (NoSuchMethodException e) {
             throw new FssException("90099998",e);
@@ -298,6 +300,11 @@ public class APIValidAop {
     }
 
 
+    /**
+     * 生成交易订单
+     * @param dto
+     * @throws Exception
+     */
     private void generate(final SuperDto dto) throws Exception {
         FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,dto);
         fssSeqOrderEntity.setTradeType(Application.getInstance().getDictParentKey(dto.getTrade_type()));
@@ -307,6 +314,11 @@ public class APIValidAop {
         fssSeqOrderService.save(fssSeqOrderEntity);
     }
 
+    /**
+     * 交易完成,更新订单状态
+     * @param response
+     * @param dto
+     */
     private void callbackOrder(Response response, SuperDto dto){
         FssSeqOrderEntity fssSeqOrderEntity = dto.getFssSeqOrderEntity();
         if (fssSeqOrderEntity == null){
@@ -323,6 +335,12 @@ public class APIValidAop {
     }
 
 
+    /**
+     * API分页控制
+     * @param obj
+     * @param methodName
+     * @param dto
+     */
     private void generateAutoPage(Object obj,String  methodName,SuperDto dto){
         Class class1 = obj.getClass();
         try {
@@ -351,6 +369,12 @@ public class APIValidAop {
 
     }
 
+    /**
+     * 分页返回结果处理
+     * @param obj
+     * @param methodName
+     * @param response
+     */
     private void generateAutoPage(Object obj,String  methodName,Response response){
         Class class1 = obj.getClass();
         try {
@@ -367,8 +391,31 @@ public class APIValidAop {
 
             }
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            LogUtil.error(this.getClass(),e);
         }
 
+    }
+
+
+    private void validTradeType(Object obj,String methodName,SuperDto dto) throws FssException {
+        Class class1 = obj.getClass();
+        String tradeType = dto.getTrade_type();
+        boolean isSuccess = false;
+        try {
+            Method method = class1.getMethod(methodName,SuperDto.class);
+            APITradeTypeValid apiValidType = method.getAnnotation(APITradeTypeValid.class);
+            String  value = apiValidType.value();
+            String  type = apiValidType.filterType();
+            String  filter = type == null || "".equals(type) ?"" : Application.getInstance().getDictOrderValue(type);
+            String  tradeFilter = apiValidType.mchnFilter();
+            String mchnFilter =tradeFilter == null || "".equals(tradeFilter)?"": Application.getInstance().getDictOrderValue(dto.getMchn()+"_"+tradeFilter);
+            String validType = value+","+mchnFilter+","+filter;
+            if(!validType.contains(tradeType)){
+                throw new FssException("90004020");
+            }
+
+        } catch (NoSuchMethodException e) {
+            LogUtil.error(this.getClass(),e);
+        }
     }
 }

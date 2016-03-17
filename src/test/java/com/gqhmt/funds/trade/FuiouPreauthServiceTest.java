@@ -1,14 +1,9 @@
 package com.gqhmt.funds.trade;
 
+import com.gqhmt.TestService;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
-import com.gqhmt.util.ThirdPartyType;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 
 import javax.annotation.Resource;
 
@@ -28,9 +23,8 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class FuiouPreauthServiceTest {
+
+public class FuiouPreauthServiceTest extends TestService {
 
     @Resource
     private FuiouPreauthService fuiouPreauthService;

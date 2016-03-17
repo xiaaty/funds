@@ -5,19 +5,18 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.gqhmt.core.FssException;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
-import com.gqhmt.funds.architect.job.bean.FuiouUploadFile;
-import com.gqhmt.funds.architect.job.service.FuiouFtpColomFieldService;
-import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
-import com.gqhmt.funds.architect.job.service.FuiouUploadFileService;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouUploadFileService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
-import com.gqhmt.util.ThirdPartyType;
 
 import javax.annotation.Resource;
 import java.io.*;
@@ -62,7 +61,7 @@ public class FtpUploadService {
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listFile();//fuiouFtpOrderService.listNotUpload();
         for(FuiouFtpOrder fuiouFtpOrder:list){
             this.upload(fuiouFtpOrder);
-            System.out.println("job:upload:"+fuiouFtpOrder.getOrderNo()+":"+fuiouFtpOrder.getUploadStatus());
+            System.out.println("fuiouFtp:upload:"+fuiouFtpOrder.getOrderNo()+":"+fuiouFtpOrder.getUploadStatus());
         }
     }
 

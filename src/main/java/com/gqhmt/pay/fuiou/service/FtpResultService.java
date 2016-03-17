@@ -11,10 +11,10 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
-import com.gqhmt.funds.architect.job.service.FuiouFtpColomFieldService;
-import com.gqhmt.funds.architect.job.service.FuiouFtpOrderService;
-import com.gqhmt.funds.architect.job.service.FuiouUploadFileService;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouUploadFileService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 
@@ -72,7 +72,7 @@ public class FtpResultService {
                 continue;
             }
 
-            System.out.println("job:parseDownloadResult:"+((FuiouFtpOrder) fuiouFtpOrder).getOrderNo());
+            System.out.println("fuiouFtp:parseDownloadResult:"+((FuiouFtpOrder) fuiouFtpOrder).getOrderNo());
         }
         fuiouFtpOrderService.saveOrUpdateAll(list);
     }
@@ -101,7 +101,7 @@ public class FtpResultService {
      */
 
     public void parseResult(FuiouFtpOrder order){
-        System.out.println("job:parseResult:"+order.getOrderNo());
+        System.out.println("fuiouFtp:parseResult:"+order.getOrderNo());
         List<String> reqCode  = fuiouFtpColomFieldService.getReqCode(order.getOrderNo());
         if(reqCode == null || reqCode.size() == 0){
             return;
@@ -224,7 +224,7 @@ public class FtpResultService {
         }
         for(Object object:list){
             FuiouFtpOrder fuiouFtpOrder = (FuiouFtpOrder) object;
-            System.out.println("job:notReturnResult:"+fuiouFtpOrder.getOrderNo());
+            System.out.println("fuiouFtp:notReturnResult:"+fuiouFtpOrder.getOrderNo());
             FundOrderEntity orderEntity = fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
             returnResult(orderEntity,fuiouFtpOrder);
         }

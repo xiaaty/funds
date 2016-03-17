@@ -1,12 +1,10 @@
 package com.gqhmt.sys.service;
 
-import com.gqhmt.sys.entity.MenuEntity;
+import com.gqhmt.TestService;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.util.ServiceLoader;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,9 +25,8 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class MenuServiceTest {
+
+public class MenuServiceTest extends TestService{
 
     @Resource
     private MenuService menuService;

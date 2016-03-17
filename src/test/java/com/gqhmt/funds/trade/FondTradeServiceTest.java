@@ -1,11 +1,9 @@
 package com.gqhmt.funds.trade;
 
+import com.gqhmt.TestService;
 import com.gqhmt.funds.architect.trade.entity.FundTradeEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
@@ -25,9 +23,8 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2015/12/18  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class FondTradeServiceTest {
+
+public class FondTradeServiceTest extends TestService {
 
     @Resource
     private FundTradeService fundTradeService;
