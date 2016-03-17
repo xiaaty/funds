@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,12 +9,14 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.Repayment;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
+import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentParentWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
 
 /**
@@ -45,6 +46,11 @@ public class FssRepaymentService {
 	
 	@Resource
 	private FssRepaymentParentReadMapper fssRepaymentParentReadMapper;
+	
+	@Resource
+	private FssRepaymentParentWriteMapper fssRepaymentParentWriteMapper;
+	
+	
 	/**
 	 * 创建借款人提现申请
 	 * @param fssTradeApplyEntity
@@ -52,7 +58,6 @@ public class FssRepaymentService {
 	 */
 	public void createRepayments(List<FssRepaymentEntity> repayments) throws FssException{
 		fssRepaymentWriteMapper.insertList(repayments);
-//		fssRepaymentWriteMapper.insertRepaymentList(repayments);
 	}
 	
 	/**
@@ -91,21 +96,39 @@ public class FssRepaymentService {
 	 * @return
 	 * @throws FssException
 	 */
-	 public boolean createRefundDraw(RepaymentDto repaymentDto) throws FssException {
+	 public Response createRefundDraw(RepaymentDto repaymentDto) throws FssException {
+		Response response=new Response();
 		List<FssRepaymentEntity> fssRepaymentlist=new ArrayList<FssRepaymentEntity>();
     	List<Repayment> repaymentlist=null;
     	repaymentlist=repaymentDto.getList();
-    	for(Repayment repyament:repaymentlist){
-    		FssRepaymentEntity repaymentEntity = this.createFssRepaymentEntity(repyament,repaymentDto);
-    		fssRepaymentlist.add(repaymentEntity);
+    	BigDecimal amtSum=new BigDecimal("0");
+    	for(Repayment r:repaymentlist){//还款总额
+    		amtSum=amtSum.add(r.getAmt());
     	}
     	try {
-			this.createRepayments(fssRepaymentlist);
+    		//创建主表信息
+			FssRepaymentParentEntity repaymentParent = this.createRepaymentParentEntity(repaymentDto,amtSum);
+			for(Repayment repyament:repaymentlist){
+	    		FssRepaymentEntity repaymentEntity = this.createFssRepaymentEntity(repyament,repaymentDto,repaymentParent);
+	    		fssRepaymentlist.add(repaymentEntity);
+	    	}
+	    	try {
+				this.createRepayments(fssRepaymentlist);
+				response.setMchn(repaymentDto.getMchn());
+				response.setSeq_no(repaymentDto.getSeq_no());
+				response.setTrade_type(repaymentDto.getTrade_type());
+				response.setSignature(repaymentDto.getSignature());
+				response.setResp_code("0000");
+				response.setResp_msg("执行成功！");
+			} catch (FssException e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("还款划扣失败！");
+			}
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-			throw new FssException("还款划扣失败！");
+			throw new FssException("还款划扣主表创建失败！");
 		}
-    	return true;
+    	return response;
 	 }
 	
 	/**
@@ -114,7 +137,7 @@ public class FssRepaymentService {
 	 * @param repaymentDto
 	 * @return
 	 */
-	public FssRepaymentEntity createFssRepaymentEntity(Repayment repyament,RepaymentDto repaymentDto) throws FssException{
+	public FssRepaymentEntity createFssRepaymentEntity(Repayment repyament,RepaymentDto repaymentDto,FssRepaymentParentEntity repaymentParent) throws FssException{
 		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
 		repaymentEntity.setAccNo(repyament.getAcc_no());
 		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
@@ -131,8 +154,31 @@ public class FssRepaymentService {
 		repaymentEntity.setRemark(repyament.getRemark());
 		repaymentEntity.setRespCode("");
 		repaymentEntity.setRespMsg("");
-		repaymentEntity.setParentId(1l);
+		repaymentEntity.setParentId(repaymentParent.getId());
 		return repaymentEntity;
+	}
+	
+	/**
+	 * 创建还款代扣主表信息
+	 */
+	public FssRepaymentParentEntity createRepaymentParentEntity(RepaymentDto repaymentDto,BigDecimal amtSum) throws FssException{
+		FssRepaymentParentEntity repaymentParent=new FssRepaymentParentEntity();
+		repaymentParent.setSeqNo(repaymentDto.getSeq_no());
+		repaymentParent.setTradeType(repaymentDto.getTrade_type());
+		repaymentParent.setTradeCount(repaymentDto.getList().size());
+		repaymentParent.setSuccessCount(repaymentDto.getList().size());
+		repaymentParent.setFiledCount(repaymentDto.getList().size());
+		repaymentParent.setState("10090001");
+		repaymentParent.setResultState("10080001");
+		repaymentParent.setAmt(amtSum);
+		repaymentParent.setPayAmt(amtSum);
+		repaymentParent.setCreateTime(new Date());
+		repaymentParent.setMotifyTime(new Date());
+		repaymentParent.setMchnChild(repaymentDto.getMchn());
+		repaymentParent.setMchnParent(Application.getInstance().getParentMchn(repaymentDto.getMchn()));
+		repaymentParent.setRemark("");
+		fssRepaymentParentWriteMapper.insertSelective(repaymentParent);
+		return repaymentParent;
 	}
 	
 	/**
@@ -146,17 +192,4 @@ public class FssRepaymentService {
     	}
     	return repaymentlist;
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
