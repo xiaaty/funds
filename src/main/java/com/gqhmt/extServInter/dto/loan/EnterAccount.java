@@ -1,8 +1,8 @@
 package com.gqhmt.extServInter.dto.loan;
 import java.util.List;
 
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 
 /**
@@ -25,11 +25,12 @@ import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 public class EnterAccount extends Response {
 
 	private Long id;
-	
+	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//合同ID
 	
 	private String serial_number;			//序列号
 	
+	@APIValidNull(errorCode = "90004021")
 	private String accounting_no;			//账务流水号
 
     private String mortgagee_acc_no;			//抵押权人资金平台账号

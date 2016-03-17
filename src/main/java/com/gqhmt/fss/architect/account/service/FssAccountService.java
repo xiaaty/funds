@@ -280,6 +280,18 @@ public class FssAccountService {
     	return fssAccountEntity;
     	
     }
+    /**
+     * 
+     * author:jhz
+     * time:2016年3月17日
+     * function：根据acc_no查询账户
+     */
+    public FssAccountEntity getFssAccountByAccNo(String accNo){
+    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+    	fssAccountEntity.setAccNo(accNo);
+    	accountReadMapper.selectOne(fssAccountEntity);
+    	return fssAccountEntity;
+    }
     
     /**
      * 生成10位随机数
@@ -309,5 +321,5 @@ public class FssAccountService {
 		}
 		return sb;
 	}
-
+	
 }

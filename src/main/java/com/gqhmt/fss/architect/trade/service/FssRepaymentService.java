@@ -1,7 +1,5 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +14,7 @@ import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
+import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentParentWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
 
 /**
@@ -45,6 +44,8 @@ public class FssRepaymentService {
 	
 	@Resource
 	private FssRepaymentParentReadMapper fssRepaymentParentReadMapper;
+	@Resource
+	private FssRepaymentParentWriteMapper fssRepaymentParentWriteMapper;
 	/**
 	 * 创建借款人提现申请
 	 * @param fssTradeApplyEntity
@@ -78,12 +79,39 @@ public class FssRepaymentService {
 		return fssRepaymentParentReadMapper.queryFssRepaymentParent(repayment);
 	}
 	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：根据id查询主表对象
+	 */
+	public FssRepaymentParentEntity queryRepaymentParentById(Long id){
+		return fssRepaymentParentReadMapper.selectByPrimaryKey(id);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：修改主表状态
+	 */
+	public int updateRepaymentParent(FssRepaymentParentEntity fssRepaymentParentEntity){
+		return fssRepaymentParentWriteMapper.updateByPrimaryKey(fssRepaymentParentEntity);
+	}
+	/**
 	 * 查询所有借款代扣详细
 	 * @return
 	 * @throws FssException
 	 */
 	public List<FssRepaymentEntity> queryFssRepaymentEntity(FssRepaymentEntity repayment) throws FssException{
 			return fssRepaymentReadMapper.queryFssRepayment(repayment);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：修改借款代扣交易状态
+	 */
+	public int updateRepaymentEntity(FssRepaymentEntity repayment){
+		return fssRepaymentWriteMapper.updateByPrimaryKey(repayment);
 	}
 	/**
 	 * 还款划扣
@@ -147,7 +175,24 @@ public class FssRepaymentService {
     	return repaymentlist;
     }
 	
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：查询该批次交易总数
+	 */
+	public int getTradeCount(Long parentId) {
+		return fssRepaymentReadMapper.getTradeCount(parentId);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：查询该批次交易成功数
+	 */
+	public int getSuccessCount(Long parentId) {
+		return fssRepaymentReadMapper.getSuccessCount(parentId);
+	}
 	
 	
 	
