@@ -56,7 +56,7 @@ public class ChangeCardJob extends AJob{
 
     @Scheduled(cron="0 0/10 8-21  * * * ")
     public void changeCard() throws PayChannelNotSupports{
-        System.out.println("Change bank card job");
+        System.out.println("Change bank card fuiouFtp");
         if(!isIp("upload")){
             return;
         }

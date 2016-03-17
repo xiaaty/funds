@@ -5,7 +5,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 /**
- * Filename:    com.gqhmt.quartz.job.account.ChangeBankCardJob
+ * Filename:    com.gqhmt.quartz.fuiouFtp.account.ChangeBankCardJob
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

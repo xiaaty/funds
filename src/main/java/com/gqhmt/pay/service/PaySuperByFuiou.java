@@ -317,7 +317,7 @@ public class PaySuperByFuiou {
      * @param msg
      * @throws CommandParmException
      */
-    private final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws CommandParmException {
+    public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws CommandParmException {
         fundOrderEntity.setOrderState(status);
         fundOrderEntity.setRetCode(code);
         fundOrderEntity.setRetMessage(msg);

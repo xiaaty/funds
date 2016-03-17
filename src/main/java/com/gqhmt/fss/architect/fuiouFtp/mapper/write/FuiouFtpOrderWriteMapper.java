@@ -1,11 +1,11 @@
-package com.gqhmt.funds.architect.job.mapper.write;
+package com.gqhmt.fss.architect.fuiouFtp.mapper.write;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 
 /**
  * Filename:    com.fuiou.dao

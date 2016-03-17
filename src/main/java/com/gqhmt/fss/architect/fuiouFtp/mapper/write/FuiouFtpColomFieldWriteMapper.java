@@ -1,11 +1,10 @@
-package com.gqhmt.funds.architect.job.mapper.write;
-
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
+package com.gqhmt.fss.architect.fuiouFtp.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Created by yuyong on 15/4/6.

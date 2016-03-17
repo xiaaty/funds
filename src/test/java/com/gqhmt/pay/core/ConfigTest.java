@@ -1,12 +1,10 @@
 package com.gqhmt.pay.core;
 
+import com.gqhmt.TestService;
 import com.gqhmt.fss.event.account.CreateAccountEvent;
 import com.gqhmt.pay.core.factory.ThirdpartyFactory;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
@@ -26,9 +24,8 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 15/12/28  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class ConfigTest {
+
+public class ConfigTest extends TestService {
 
     @Resource
     private ApplicationContext applicationContext;

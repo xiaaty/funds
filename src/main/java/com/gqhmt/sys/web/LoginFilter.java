@@ -1,11 +1,11 @@
 package com.gqhmt.sys.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.AuthMenu;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.sys.beans.SysUsers;
+import com.gqhmt.sys.entity.MenuEntity;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 /**
  * 
@@ -123,7 +124,7 @@ public class LoginFilter implements Filter {
                 /**..start--记录菜单session信息**/
 				String url  =  request.getServletPath();
 				String context = request.getContextPath();
-                /*List<Map<String, String>> menuList = (List<Map<String, String>>) userInfo.get("menuList");
+                List<Map<String, String>> menuList = (List<Map<String, String>>) userInfo.get("menuList");
                 List<MenuEntity> menuEntities=new ArrayList<>();
                 MenuEntity menuEntity=null;
                 if(null != menuList){
@@ -139,11 +140,11 @@ public class LoginFilter implements Filter {
 					menuEntities.add(menuEntity);
 					}
 
+				/**..end--记录菜单session信息**/
+                }
 
-				*//**..end--记录菜单session信息**//*
-                }*/
-
-				String menu = Application.getInstance().getMenu(context,url);
+//				String menu = Application.getInstance().getMenu(context,url);//
+				String menu = authMenu.getMenu(menuEntities,context,url);
 				request.getSession().setAttribute("menu", menu);
 				// 消耗掉response
 				EntityUtils.consume(entity);

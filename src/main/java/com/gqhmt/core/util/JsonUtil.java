@@ -2,11 +2,15 @@ package com.gqhmt.core.util;
 
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.util
@@ -53,6 +57,19 @@ public class JsonUtil {
         try {
             T t = objectMapper.readValue(json, class1);
             return t;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public <T> List<T> parseJsonToList(String json, Class<T> tClass){
+        try {
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class,tClass);
+            List<T> list = (List<T>) objectMapper.readValue(json, javaType);
+            return list;
         } catch (IOException e) {
             e.printStackTrace();
         }

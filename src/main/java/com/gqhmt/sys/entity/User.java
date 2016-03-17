@@ -75,7 +75,7 @@ public class User implements Serializable{
     @Column(name="leader")
     private String leader;                          //` varchar(50) DEFAULT NULL,
 
-    @Column(name="job")
+    @Column(name="fuiouFtp")
     private String job;                             //` varchar(20) DEFAULT NULL,
 
     public Long getId() {

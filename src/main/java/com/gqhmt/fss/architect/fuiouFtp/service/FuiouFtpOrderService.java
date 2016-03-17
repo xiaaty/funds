@@ -1,13 +1,12 @@
-package com.gqhmt.funds.architect.job.service;
+package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpColomField;
-import com.gqhmt.funds.architect.job.bean.FuiouFtpOrder;
-import com.gqhmt.funds.architect.job.bean.FuiouUploadFile;
-import com.gqhmt.funds.architect.job.bean.FundOrder;
-import com.gqhmt.funds.architect.job.mapper.read.FuiouFtpOrderReadMapper;
-import com.gqhmt.funds.architect.job.mapper.write.FuiouFtpOrderWriteMapper;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FundOrder;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpOrderReadMapper;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpOrderWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import org.springframework.stereotype.Service;

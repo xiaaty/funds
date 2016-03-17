@@ -43,7 +43,7 @@
 			}
 			// The percentage object contains some well tested math to turn values
 			// to and from percentages. It can be a bit strange to wrap your head
-			// around the individual calls, but they'll do their job with all positive
+			// around the individual calls, but they'll do their fuiouFtp with all positive
 			// and negative input values.
 			,percentage = {
 				 to: function ( range, value ) {
