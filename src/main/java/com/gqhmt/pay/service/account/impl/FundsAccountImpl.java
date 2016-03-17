@@ -2,34 +2,27 @@ package com.gqhmt.pay.service.account.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
-import com.gqhmt.pay.core.command.CommandResponse;
-import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.pay.service.account.IFundsAccount;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * 账户相关api
@@ -100,7 +93,12 @@ public class FundsAccountImpl implements IFundsAccount {
 
 		primaryAccount.setCustomerInfoEntity(customerInfoEntity);
 		//富友
-		paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+		if (primaryAccount.getHasThirdAccount() ==1){
+			paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+			primaryAccount.setHasThirdAccount(2);
+			fundAccountService.update(primaryAccount);
+		}
+
 		return true;
 	}
 

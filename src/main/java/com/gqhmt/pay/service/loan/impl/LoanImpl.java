@@ -60,8 +60,9 @@ public class LoanImpl implements ILoan {
     		if(dto.getTrade_type().equals("11020009") || dto.getTrade_type().equals("11029004") ){ //线下开户不走富友
     			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
     		}else{
+				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
     			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    			fundsAccountImpl.createAccount(customerInfoEntity, "", "");
+
     		}
     	}else{
     		try {

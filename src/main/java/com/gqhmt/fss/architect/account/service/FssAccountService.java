@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.SuperDto;
@@ -20,10 +19,9 @@ import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -182,8 +180,6 @@ public class FssAccountService {
             fssAccountEntity.setAccNotran(BigDecimal.ZERO);
             fssAccountEntity.setCustNo("");
             fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
-            fssAccountEntity.setCreateTime((new Timestamp(new Date().getTime())));
-            fssAccountEntity.setModifyTime((new Timestamp(new Date().getTime())));
             String accType="";//设置账户类型
             String channelNo="";//渠道编号
             switch (dto.getTrade_type()){
@@ -258,19 +254,21 @@ public class FssAccountService {
             //设置开户来源
             //设置渠道id
             fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
-            fssAccountEntity.setMchnChild(dto.getMchn());
-            fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
             fssAccountWriteMapper.insertSelective(fssAccountEntity);
             return fssAccountEntity;
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e);
-            throw new FssException("91009804");
+            if(e != null && e.getMessage().contains("busi_no_uk")){
+                throw new FssException("90002017");
+            }else{
+                throw new FssException("90099005");
+            }
+
         }
     }
     
     /**
      * 根据cust_id查询账户
-     * @param id
      * @return
      */
     public FssAccountEntity getFssAccountByCustId(Integer custId){
