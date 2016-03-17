@@ -8,8 +8,6 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
-import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
@@ -56,19 +54,15 @@ public class LoanImpl implements ILoan {
         //富友
     	FssAccountEntity  fssAccount=null; //新版账户体系
     	CustomerInfoEntity customerInfoEntity=null;
-    	FssFuiouAccountEntity fssFuiouAccountEntity=null;
     	String accNo=null;
     	//1.根据借款系统传入的手机号码，查询资金平台有没有此客户信息
     	customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(dto);
     	if(customerInfoEntity!=null){
     		if(dto.getTrade_type().equals("11020009") || dto.getTrade_type().equals("11029004") ){ //线下开户不走富友
-    			fssFuiouAccountEntity=fssAccountService.createAccount(dto);
-    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity,fssFuiouAccountEntity.getAccNo());
+    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
     		}else{
 				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-				fssFuiouAccountEntity = fssAccountService.createAccount(dto);
-    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity,fssFuiouAccountEntity.getAccNo());
-
+    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
     		}
     	}else{
     		try {
@@ -78,12 +72,10 @@ public class LoanImpl implements ILoan {
     			customerInfoEntity.setBankLongName("");
     			customerInfoEntity.setBankNo(dto.getBank_card());
     			if(dto.getTrade_type().equals("11020009") || dto.getTrade_type().equals("11029004") ){ //线下开户不走富友
-    				fssFuiouAccountEntity=fssAccountService.createAccount(dto);
-    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity,fssFuiouAccountEntity.getAccNo());
+    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
     			}else{
     				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    				fssFuiouAccountEntity=fssAccountService.createAccount(dto);
-    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity,fssFuiouAccountEntity.getAccNo());
+    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
     			}
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
