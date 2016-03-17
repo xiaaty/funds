@@ -3,7 +3,6 @@ package com.gqhmt.extServInter.service.loan.impl;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
-import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
 import com.gqhmt.extServInter.service.loan.IRepayment;
 import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
 import com.gqhmt.core.APIExcuteErrorException;
@@ -22,9 +21,9 @@ public class RepaymentImpl implements IRepayment{
 	
     @Override
     public Response excute(SuperDto dto) throws APIExcuteErrorException {
-    	RepaymentResponse response = new RepaymentResponse();
+    	Response response = new Response();
     	try {
-    		fssRepaymentService.createRefundDraw((RepaymentDto)dto);
+    		response=fssRepaymentService.createRefundDraw((RepaymentDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
