@@ -1,8 +1,8 @@
-package com.gqhmt.fss.architect.trade.mapper.write;
+package com.gqhmt.sys.mapper.read;
 
+import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.sys.entity.BankDealamountLimitEntity;
 
-import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 
 /**
  * 
@@ -15,13 +15,12 @@ import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
  * @since: JDK 1.7
  * Create at:   2016年3月17日
  * Description:
- * <p>
+ * <p>银行交易限额mapper
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016年3月17日  jhz      1.0     1.0 Version
  */
-public interface FssRepaymentParentWriteMapper extends ReadAndWriteMapper<FssRepaymentParentEntity> {
+public interface BankDealamountLimitReadMapper extends ReadMapper<BankDealamountLimitEntity> {
 
-	
 }

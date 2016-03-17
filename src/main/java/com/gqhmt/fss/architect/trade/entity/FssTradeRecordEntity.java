@@ -86,4 +86,165 @@ public class FssTradeRecordEntity implements Serializable {
 
     @Column(name = "order_no")
     private String orderNo    ;                    // varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public Integer getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(Integer tradeType) {
+		this.tradeType = tradeType;
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	public BigDecimal getCharge() {
+		return charge;
+	}
+
+	public void setCharge(BigDecimal charge) {
+		this.charge = charge;
+	}
+
+	public BigDecimal getThirdparytCharge() {
+		return thirdparytCharge;
+	}
+
+	public void setThirdparytCharge(BigDecimal thirdparytCharge) {
+		this.thirdparytCharge = thirdparytCharge;
+	}
+
+	public String getTradeDate() {
+		return tradeDate;
+	}
+
+	public void setTradeDate(String tradeDate) {
+		this.tradeDate = tradeDate;
+	}
+
+	public String getTradeTime() {
+		return tradeTime;
+	}
+
+	public void setTradeTime(String tradeTime) {
+		this.tradeTime = tradeTime;
+	}
+
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
+
+	public Integer getSettleType() {
+		return settleType;
+	}
+
+	public void setSettleType(Integer settleType) {
+		this.settleType = settleType;
+	}
+
+	public Integer getTradeState() {
+		return tradeState;
+	}
+
+	public void setTradeState(Integer tradeState) {
+		this.tradeState = tradeState;
+	}
+
+	public Integer getTradeResult() {
+		return tradeResult;
+	}
+
+	public void setTradeResult(Integer tradeResult) {
+		this.tradeResult = tradeResult;
+	}
+
+	public String getSumary() {
+		return sumary;
+	}
+
+	public void setSumary(String sumary) {
+		this.sumary = sumary;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getMchnParent() {
+		return mchnParent;
+	}
+
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
+
+	public String getMchnChild() {
+		return mchnChild;
+	}
+
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+    
 }

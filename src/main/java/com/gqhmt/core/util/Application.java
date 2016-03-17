@@ -3,13 +3,16 @@ package com.gqhmt.core.util;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
+import com.gqhmt.sys.entity.BankDealamountLimitEntity;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
+import com.gqhmt.sys.service.BankDealamountLimitService;
 import com.gqhmt.sys.service.MenuService;
 import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.ServiceLoader;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +41,8 @@ public class Application {
     private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
 
     private final Map<String,MerchantEntity>   merchantEntityMap = new ConcurrentHashMap<>();
+    
+    private final Map<String,BankDealamountLimitEntity>   bankDealamountLimitEntityMap = new ConcurrentHashMap<>();
 
     private void init(){
         synchronized (this){
@@ -45,6 +50,11 @@ public class Application {
         }
         LogUtil.debug(this.getClass(),menus.toString());
         LogUtil.debug(this.getClass(),menuMap.toString());
+        LogUtil.debug(this.getClass(),dict.toString());
+        LogUtil.debug(this.getClass(),dictEntityMap.toString());
+        LogUtil.debug(this.getClass(),dictOrder.toString());
+        LogUtil.debug(this.getClass(),merchantEntityMap.toString());
+        LogUtil.debug(this.getClass(),bankDealamountLimitEntityMap.toString());
     }
 
     public void reload(){
@@ -54,6 +64,7 @@ public class Application {
             dict.clear();
             dictOrder.clear();
             merchantEntityMap.clear();
+            bankDealamountLimitEntityMap.clear();
             update();
         }
     }
@@ -62,6 +73,7 @@ public class Application {
         initMenu();
         initDict();
         initMerchant();
+        initBankDealamountLimit();
     }
 
     /*======================================数据字典初始化及应用========================================================*/
@@ -117,8 +129,29 @@ public class Application {
         }
         return value;
     }
+    /*======================================银行交易限额初始化及应用========================================================*/
 
-
+	private  void initBankDealamountLimit(){
+    	BankDealamountLimitService bankDealamountLimitService = ServiceLoader.get(BankDealamountLimitService.class);
+    	
+    	List<BankDealamountLimitEntity> findAll = bankDealamountLimitService.findAll();  	
+    	for(BankDealamountLimitEntity bankDealamountLimitEntity:findAll) {
+    		bankDealamountLimitEntityMap.put(bankDealamountLimitEntity.getBankCode(),bankDealamountLimitEntity);
+    	}
+    }
+    
+    public boolean  existsBankDealamountLimit(String  bankCode){
+    	return bankDealamountLimitEntityMap.containsKey(bankCode);
+    }
+    
+    public BigDecimal getBankDealamountLimit(String bankCode) throws FssException {
+    	BankDealamountLimitEntity bankDealamountLimitEntity = bankDealamountLimitEntityMap.get(bankCode);
+    	if(bankDealamountLimitEntity == null){
+    		throw new FssException("90004024");
+    	}
+    	return bankDealamountLimitEntity.getLimitAmount();
+    }
+    /*======================================银行交易限额初始化及应用结束========================================================*/
     /**
      * 商户内存加载
      */

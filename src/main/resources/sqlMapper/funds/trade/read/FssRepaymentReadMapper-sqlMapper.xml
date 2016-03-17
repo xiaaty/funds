@@ -43,5 +43,20 @@
 			
 		</where>
 	</select>
+<!-- 	查询该批次交易总数 -->
+	<select id="getTradeCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		 SELECT  
+		 count(*)
+		FROM t_gq_fss_repayment 
+		where  parent_id = #{parentId}
+	</select>
+<!-- 	查询该批次交易代扣成功总数 -->
+	<select id="getSuccessCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		 SELECT  
+		 count(*)
+		FROM t_gq_fss_repayment 
+		where state='10050003' 
+		and parent_id = #{parentId}
+	</select>
 
 </mapper>

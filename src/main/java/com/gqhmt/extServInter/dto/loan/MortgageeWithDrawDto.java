@@ -1,6 +1,7 @@
 package com.gqhmt.extServInter.dto.loan;
 import java.math.BigDecimal;
 
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
@@ -22,13 +23,13 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class MortgageeWithDrawDto extends SuperDto {
 
-
+	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//合同ID
 
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
     private BigDecimal contract_amt;	//合同金额
-
+    @APIValidNull(errorCode = "90004014")
     private BigDecimal pay_amt;			//提现金额
     
     
