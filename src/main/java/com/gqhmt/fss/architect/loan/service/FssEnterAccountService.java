@@ -80,7 +80,7 @@ public class FssEnterAccountService {
 	public void insertEnterAccount(EnterAccountDto enterAccountDto) throws FssException {
 		FssEnterAccountEntity fssEnterAccountEntity = null;
 		List<FssSettleListEntity> settleListEntities = null;
-		for (EnterAccount enterAccount : enterAccountDto.getEnterAccounts()) {
+		for (EnterAccount enterAccount : enterAccountDto.getEnter_account()) {
 			MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(enterAccountDto.getMchn());
 			fssEnterAccountEntity = new FssEnterAccountEntity();
 			fssEnterAccountEntity.setAccNo(enterAccount.getAcc_no());
@@ -96,7 +96,7 @@ public class FssEnterAccountService {
 //			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
 			long insertEnterAccount = fssEnterAccountWriteMapper.insertEnterAccount(fssEnterAccountEntity);
 
-			settleListEntities = enterAccount.getSettleListEntities();
+			settleListEntities = enterAccount.getSettle_list();
 			if (settleListEntities != null) {
 				for (FssSettleListEntity fssSettleListEntity : settleListEntities) {
 					fssSettleListEntity.setEnterId(insertEnterAccount);
@@ -118,7 +118,7 @@ public class FssEnterAccountService {
 		List<EnterAccount> enterAccounts = null;
 		enterAccounts = enterAccountReadMapper.getEnterAccount(map);
 		for (EnterAccount enterAccount : enterAccounts) {
-			enterAccount.setSettleListEntities(this.getsettleList(enterAccount.getId()));
+			enterAccount.setSettle_list(this.getsettleList(enterAccount.getId()));
 			enterAccounts.add(enterAccount);
 		}
 		enterAccountResponse.setEnterAccounts(enterAccounts);
