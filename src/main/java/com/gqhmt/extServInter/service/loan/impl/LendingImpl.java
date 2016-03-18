@@ -1,7 +1,6 @@
 package com.gqhmt.extServInter.service.loan.impl;
 
-import javax.annotation.Resource;
-import org.springframework.stereotype.Service;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -9,6 +8,9 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.LendingDto;
 import com.gqhmt.extServInter.service.loan.ILending;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
@@ -31,7 +33,8 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
 public class LendingImpl implements ILending {
 	@Resource
 	private FssLoanService loanService;
-	
+
+	@APITradeTypeValid(value = "11090001,11090002,11090003")
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {

@@ -1,12 +1,15 @@
 package com.gqhmt.extServInter.dto.loan;
+import com.gqhmt.extServInter.dto.SuperDto;
+
 import java.math.BigDecimal;
 import java.util.List;
+
 
 import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.APIValidType;
-import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.fss.architect.loan.entity.FssFeeList;
+
+
 
 /**
  * 
@@ -44,7 +47,7 @@ public class LendingDto extends SuperDto {
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal pay_amt;			//放款金额
 
-    private List<FssFeeList> feeLists;			//收费列表
+    private List<LendingFeeListDto> feeList;			//收费列表
     
     private String loan_platform;			//借款平台
 
@@ -97,17 +100,16 @@ public class LendingDto extends SuperDto {
 		this.loan_platform = loan_platform;
 	}
 
-	public List<FssFeeList> getFeeLists() {
-		return feeLists;
+	public List<LendingFeeListDto> getFeeList() {
+		return feeList;
 	}
 
-	public void setFeeLists(List<FssFeeList> feeLists) {
-		this.feeLists = feeLists;
+	public void setFeeList(List<LendingFeeListDto> feeLists) {
+		this.feeList = feeLists;
 	}
-    
-    
-    
-	}
+
+
+}
 
 	
     
