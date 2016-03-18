@@ -1,12 +1,5 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
-import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
@@ -23,6 +16,14 @@ import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -88,7 +89,7 @@ public class FssTradeApplyService {
 	}
 	
 	
-	public FssTradeApplyEntity createTreadeApplyEntity(FssAccountEntity fssAccountEntity,LoanWithDrawApplyDto wthDrawApplyDto){
+	public FssTradeApplyEntity createTreadeApplyEntity(FssAccountEntity fssAccountEntity,LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		//创建提现申请信息
 			fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
@@ -103,11 +104,12 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setTradeState(wthDrawApplyDto.getTrade_type());
 			fssTradeApplyEntity.setApplyState("0");
+			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(wthDrawApplyDto.getMchn()));
 			fssTradeApplyEntity.setMchnChild(wthDrawApplyDto.getMchn());
 			fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
 			fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
 			fssTradeApplyEntity.setSeqNo(wthDrawApplyDto.getSeq_no());
-			fssTradeApplyEntity.setBespokedate(wthDrawApplyDto.getBespoke_date());
+			fssTradeApplyEntity.setBespokedate(new Date());//todo
 			fssTradeApplyEntity.setContractId(wthDrawApplyDto.getContract_id());
 		
 		return fssTradeApplyEntity;
