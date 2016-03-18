@@ -336,14 +336,9 @@ public class FssAccountService {
 		}
 		return sb;
 	}
-<<<<<<< HEAD
-	
-=======
-
 
     public FssAccountEntity fundAccountBuAccNo(String accNo) throws FssException{
         return this.accountReadMapper.findAccountByAccNo(accNo);
     }
 
->>>>>>> refs/remotes/origin/feature/FundsToLoan
 }
