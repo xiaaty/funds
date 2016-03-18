@@ -4,7 +4,6 @@ import java.util.List;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.loan.bean.SettleListBean;
-import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 
 /**
  * 
@@ -37,6 +36,8 @@ public class EnterAccount extends Response {
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
     private String acc_no;			//借款人资金平台账号
+    
+    private String loan_platform;			//借款平台
 
     
     private List<SettleListBean> settle_list;			//清算列表
@@ -95,6 +96,14 @@ public class EnterAccount extends Response {
 
 	public void setSettle_list(List<SettleListBean> settle_list) {
 		this.settle_list = settle_list;
+	}
+
+	public String getLoan_platform() {
+		return loan_platform;
+	}
+
+	public void setLoan_platform(String loan_platform) {
+		this.loan_platform = loan_platform;
 	}
 
 

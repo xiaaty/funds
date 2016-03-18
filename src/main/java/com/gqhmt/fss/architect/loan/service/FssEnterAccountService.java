@@ -113,6 +113,7 @@ public class FssEnterAccountService {
 			MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(enterAccountDto.getMchn());
 			fssEnterAccountEntity = new FssEnterAccountEntity();
 			fssEnterAccountEntity.setAccNo(enterAccount.getAcc_no());
+			fssEnterAccountEntity.setLoanPlatform(enterAccount.getLoan_platform());
 			fssEnterAccountEntity.setAccountingNo(enterAccount.getAccounting_no());
 			fssEnterAccountEntity.setContractId(enterAccount.getContract_id());
 			fssEnterAccountEntity.setCreateTime(new Date());

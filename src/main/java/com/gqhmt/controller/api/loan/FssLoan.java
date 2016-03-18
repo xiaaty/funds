@@ -74,7 +74,7 @@ public class FssLoan {
      * function：借款人放款
      */
     @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
-    public Object changeBankCard(@RequestBody LendingDto lendingDto){
+    public Object lending(@RequestBody LendingDto lendingDto){
     	Response response= null;
     	try {
     		response = lendingImpl.excute(lendingDto);

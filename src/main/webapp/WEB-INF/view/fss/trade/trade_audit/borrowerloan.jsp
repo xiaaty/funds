@@ -105,7 +105,7 @@
                                                         <td nowrap="nowrap">
                                                     		<input type="hidden" id="tradeStatus" value="${map.status}">
 							                                <select class="select02" style="width:202px;" name="status" id="status">
-                                                                <option>所有</option>
+                                                                <option value="">所有</option>
 							                                   <fss:dictOrder var="order" dictOrder="tradeStatus">
                                                                             <option value="${order.key}">${order.value}</option>
                                                                         </fss:dictOrder>
@@ -231,7 +231,7 @@
                                                     <td>${t.mchnParent}</td>
                                                     <td>${t.mchnChild}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
-                                                    <td> <fss:fmtDate value="${t.createTime}"/></td>
+                                                    <td> <fss:fmtDate value="${t.modifyTime}"/></td>
                                                     <td >
                                                     <c:if test="${t.tradeType != '11092001'}">
                                                     <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
