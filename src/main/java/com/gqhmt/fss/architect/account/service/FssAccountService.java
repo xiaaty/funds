@@ -304,10 +304,7 @@ public class FssAccountService {
      * function：根据acc_no查询账户
      */
     public FssAccountEntity getFssAccountByAccNo(String accNo){
-    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
-    	fssAccountEntity.setAccNo(accNo);
-    	accountReadMapper.selectOne(fssAccountEntity);
-    	return fssAccountEntity;
+    	return this.accountReadMapper.findAccountByAccNo(accNo);
     }
     
     /**
@@ -339,8 +336,5 @@ public class FssAccountService {
 		return sb;
 	}
 
-    public FssAccountEntity fundAccountBuAccNo(String accNo) throws FssException{
-        return this.accountReadMapper.findAccountByAccNo(accNo);
-    }
 
 }

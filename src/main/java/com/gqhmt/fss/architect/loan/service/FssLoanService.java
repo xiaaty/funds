@@ -141,6 +141,7 @@ public class FssLoanService {
     	fssLoanEntity.setPayAmt(dto.getPay_amt());
     	fssLoanEntity.setContractAmt(dto.getContract_amt());
     	fssLoanEntity.setSeqNo(dto.getSeq_no());
+    	fssLoanEntity.setAccNo(dto.getAcc_no());
     	fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_acc_no());
     	fssLoanEntity.setTradeType(dto.getTrade_type());
     	fssLoanEntity.setContractId(dto.getContract_id());
