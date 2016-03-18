@@ -1,6 +1,10 @@
 package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
+import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
+import com.gqhmt.fss.architect.trade.mapper.read.FssTransRecordReadMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
@@ -44,6 +48,12 @@ public class TradeRecordService {
 
     @Resource
     private FundWithrawChargeService fundWithrawChargeService;
+    
+    @Resource
+    private FssTradeRecordReadMapper fssTradeRecordReadMapper;
+    
+    @Resource
+    private FssTransRecordReadMapper fssTransRecordReadMapper;
 
     public void recharge(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
         try {
@@ -108,4 +118,26 @@ public class TradeRecordService {
     	FundAccountSequenceBean fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
     	return fundsequencelist;
     }*/
+    
+    /**
+     * 查询充值/提现记录
+     * @param traderecorder
+     * @return
+     */
+    public List<FssTradeRecordEntity> queryRechargeList(FssTradeRecordEntity traderecorder){
+    	List<FssTradeRecordEntity> traderecorderlist=fssTradeRecordReadMapper.select(traderecorder);
+    	return traderecorderlist;
+    }
+    
+    /**
+     * 转账交易记录查询
+     * @param transrecord
+     * @return
+     */
+    public List<FssTransRecordEntity> queryTransRecordList(FssTransRecordEntity transrecord){
+    	List<FssTransRecordEntity> transrecordlist=fssTransRecordReadMapper.select(transrecord);
+    	return transrecordlist;
+    	
+    }
+    
 }

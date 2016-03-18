@@ -14,8 +14,11 @@ public class FundTradeDto extends PageSuperDto {
 	private String trade_no;//交易号码
 	@APIValidNull(errorCode = "90002006")
 	private Integer cust_no;//客户编号
+	
 	private Integer user_no;//用户编号
+	
 	private Integer busi_no;//业务编号
+	
 	private String tradeFilters;//业务标识
 	
 	public String getStr_trade_time() {

@@ -63,7 +63,135 @@ public class FssTransRecordEntity implements Serializable {
     @Column(name = "trade_time")
     private String tradeTime ;                         //char(6)        utf8_general_ci  YES             (NULL)           select,insert,update,references
 
-    @Column(name = "create_time")
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
+
+	public String getToAccNo() {
+		return toAccNo;
+	}
+
+	public void setToAccNo(String toAccNo) {
+		this.toAccNo = toAccNo;
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	public Integer getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(Integer tradeType) {
+		this.tradeType = tradeType;
+	}
+
+	public Integer getFundsType() {
+		return fundsType;
+	}
+
+	public void setFundsType(Integer fundsType) {
+		this.fundsType = fundsType;
+	}
+
+	public String getTransNo() {
+		return transNo;
+	}
+
+	public void setTransNo(String transNo) {
+		this.transNo = transNo;
+	}
+
+	public String getTradeDate() {
+		return tradeDate;
+	}
+
+	public void setTradeDate(String tradeDate) {
+		this.tradeDate = tradeDate;
+	}
+
+	public String getTradeTime() {
+		return tradeTime;
+	}
+
+	public void setTradeTime(String tradeTime) {
+		this.tradeTime = tradeTime;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getMchnParent() {
+		return mchnParent;
+	}
+
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
+
+	public String getMchnChild() {
+		return mchnChild;
+	}
+
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
+
+	@Column(name = "create_time")
     private Date createTime ;                        //datetime       (NULL)           YES             (NULL)           select,insert,update,references
 
     @Column(name = "modify_time")
@@ -74,4 +202,5 @@ public class FssTransRecordEntity implements Serializable {
 
     @Column(name = "mchn_child")
     private String mchnChild  ;                        //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references
+
 }

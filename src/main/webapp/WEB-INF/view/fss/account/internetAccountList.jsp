@@ -76,12 +76,6 @@
                                                                 <input type="text" style="width:150px" name="accNo" value="${bussaccount.accNo}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">客户编号：</td>
-                                                        <td>
-                                                            <label class="input" style="width:150px" >
-                                                                <input type="text" name="custNo" value="${bussaccount.custNo}" />
-                                                            </label>
-                                                        </td>
                                                         <td class="tr">客户姓名:</td>
                                                         <td>
                                                             <label class="input"  style="width:150px" >
@@ -142,7 +136,6 @@
                                         <thead>
                                         <tr>
                                               <td>客户账号</td>
-                                              <td>客户编号</td>
                                               <td>客户姓名</td>
                                               <td>账户类型</td>
                                               <td>证件号码</td>
@@ -155,7 +148,6 @@
                                               <td>子商户号</td>
                                               <td>父商户号</td>
                                               <td>是否有效</td> 
-                                              <td>银行卡号</td> 
                                               <td>创建日期</td>
                                               <td>修改日期</td> 
                                               <td>操作</td> 
@@ -164,12 +156,11 @@
                                         <tbody>
                                              <c:forEach items="${page.list}" var="bussaccount">
                                                 <tr>
-                                                    <td>${bussaccount.accNo}</td>
-                                                    <td>${bussaccount.custNo}</td>
+                                                    <td><fss:fmtData value="${bussaccount.accNo}"/></td>
                                                     <td>${bussaccount.custName}</td>
                                                     <td> <fss:dictView key="${bussaccount.accType}" /></td>
-                                                    <td>${bussaccount.certNo}</td>
-                                                    <td>${bussaccount.mobile}</td>
+                                                    <td><fss:fmtData value="${bussaccount.certNo}"/></td>
+                                                    <td><fss:fmtData value="${bussaccount.mobile}"/></td>
                                                     <td> <fss:dictView key="${bussaccount.state}" /></td>
                                                     <td>${bussaccount.accBalance}</td>
                                                     <td>${bussaccount.accFreeze}</td>
@@ -178,7 +169,6 @@
                                                     <td>${bussaccount.mchnChild}</td>
                                                     <td>${bussaccount.mchnParent}</td>
                                                     <td> <fss:dictView key="${bussaccount.isValid}" /></td>
-                                                    <td>${bussaccount.bankId}</td>
                                                     <td><fmt:formatDate value="${bussaccount.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bussaccount.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><a href="${contextPath}/fss/account/waterDetail/${bussaccount.accNo}">查看流水</a></td>

@@ -174,7 +174,7 @@
                                                <td>${t.certName}</td>
                                                <td>${t.bankLongName}</td>
                                                <td>${t.bankSortName}</td>
-                                               <td>${t.bankNo}</td>
+                                               <td><fss:fmtData value="${t.bankNo}"/></td>
                                                <td>${t.isPersonalCard==1?"个人":"公司"}</td>
                                                <td>${empty t.cardIndex ? "未绑定":"已绑定"}</td>
                                                <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
