@@ -10,12 +10,10 @@ import com.gqhmt.extServInter.service.loan.IEnterAccount;
 import com.gqhmt.extServInter.service.loan.ILending;
 import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
 import com.gqhmt.extServInter.service.loan.impl.FailedBidImpl;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -36,7 +34,7 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2016年3月8日  jhz      1.0     1.0 Version
  */
-@Controller
+@RestController
 @RequestMapping(value = "/api")
 public class FssLoan {
 
@@ -76,7 +74,7 @@ public class FssLoan {
      * function：借款人放款
      */
     @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
-    public Object changeBankCard(LendingDto lendingDto){
+    public Object changeBankCard(@RequestBody LendingDto lendingDto){
     	Response response= null;
     	try {
     		response = lendingImpl.excute(lendingDto);

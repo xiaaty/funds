@@ -13,10 +13,7 @@ import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gq.p2p.customer.service
@@ -96,14 +93,24 @@ public class FssLoanService {
 		fssLoanEntity.setMchnParent(findMerchantByMchnNo.getParentNo());
 		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
 //		feeList
-		List<FssFeeList> feeLists = dto.getFeeLists();
-		if(feeLists!=null){
-			for (FssFeeList fssFeeList : feeLists) {
-				fssFeeList.setLoanId(insertLending);
-				fssFeeList.setLoanPlatform(dto.getLoan_platform());
-				this.insert(fssFeeList);
-				}
+		List<LendingFeeListDto> feeLists = dto.getFeeList();
+
+		if(feeLists==null){
+			return;
 		}
+
+		List<FssFeeList> fssFeeLists = new ArrayList<>();
+
+		for (LendingFeeListDto feeListEntity: feeLists) {
+			FssFeeList fssFeeList = new FssFeeList();
+			fssFeeList.setLoanId(fssLoanEntity.getId());
+			fssFeeList.setLoanPlatform(dto.getLoan_platform());
+			fssFeeList.setFeeAmt(feeListEntity.getFee_amt());
+			fssFeeList.setFeeType(feeListEntity.getFee_type());
+			fssFeeLists.add(fssFeeList);
+		}
+
+		this.fssFeeListWriteMapper.insertList(fssFeeLists);
     }
 	/**
 	 * 

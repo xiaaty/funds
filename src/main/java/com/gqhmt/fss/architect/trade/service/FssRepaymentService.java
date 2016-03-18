@@ -1,11 +1,5 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.annotation.Resource;
-import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
@@ -18,6 +12,13 @@ import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentParentWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -53,7 +54,7 @@ public class FssRepaymentService {
 	
 	/**
 	 * 创建借款人提现申请
-	 * @param fssTradeApplyEntity
+	 * @param repayments
 	 * @throws FssException
 	 */
 	public void createRepayments(List<FssRepaymentEntity> repayments) throws FssException{
@@ -169,7 +170,6 @@ public class FssRepaymentService {
 	
 	/**
 	 * 创建实体类FssRepaymentEntity
-	 * @param dto
 	 * @param repaymentDto
 	 * @return
 	 */
