@@ -96,6 +96,15 @@ public class FssRepaymentService {
 	 * 
 	 * author:jhz
 	 * time:2016年3月17日
+	 * function：根据id查询子表对象信息
+	 */
+	public FssRepaymentEntity queryRepaymentById(Long id){
+		return fssRepaymentReadMapper.selectByPrimaryKey(id);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
 	 * function：修改主表状态
 	 */
 	public int updateRepaymentParent(FssRepaymentParentEntity fssRepaymentParentEntity){

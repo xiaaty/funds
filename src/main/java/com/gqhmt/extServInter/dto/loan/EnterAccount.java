@@ -32,13 +32,13 @@ public class EnterAccount extends Response {
 	
 	@APIValidNull(errorCode = "90004021")
 	private String accounting_no;			//账务流水号
-
+	
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
     private String acc_no;			//借款人资金平台账号
 
     
-    private List<FssSettleListEntity> settleListEntities;			//清算列表
+    private List<FssSettleListEntity> settle_list;			//清算列表
     
 	public String getContract_id() {
 		return contract_id;
@@ -88,13 +88,14 @@ public class EnterAccount extends Response {
 		this.accounting_no = accounting_no;
 	}
 
-	public List<FssSettleListEntity> getSettleListEntities() {
-		return settleListEntities;
+	public List<FssSettleListEntity> getSettle_list() {
+		return settle_list;
 	}
 
-	public void setSettleListEntities(List<FssSettleListEntity> settleListEntities) {
-		this.settleListEntities = settleListEntities;
+	public void setSettle_list(List<FssSettleListEntity> settle_list) {
+		this.settle_list = settle_list;
 	}
+
 
     
 	}
