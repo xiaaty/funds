@@ -1,17 +1,37 @@
 package com.gqhmt.extServInter.dto.loan;
 
 import java.math.BigDecimal;
-
-import com.gqhmt.extServInter.dto.Response;
-
-
-public class Repayment extends Response{
-
- 	private String serial_number; //序列号
+import com.gqhmt.annotations.APIValidNull;
+/**
+ * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
+ * Copyright:   Copyright (c)2015
+ * Company:     冠群驰骋投资管理(北京)有限公司
+ * @author 柯禹来
+ * @version: 1.0
+ * @since: JDK 1.7
+ * Create at:   16/1/12 14:09
+ * Description:还款划扣接口参数
+ * Modification History:
+ * Date    Author      Version     Description
+ * -----------------------------------------------------------------
+ * 16/1/12  柯禹来      1.0     1.0 Version
+ */
+public class RepaymentChildDto{
+	
+	@APIValidNull(errorCode = "90002019")
+	private String serial_number; //序列号
+	
+	@APIValidNull(errorCode = "90002016")
     private String contract_id;   //合同Id
+	
+	@APIValidNull(errorCode = "90002018")
     private String acc_no;        //借款人资金平台账号
+	
+	@APIValidNull(errorCode = "90002020")
     private BigDecimal amt;       //还款金额
+    
     private String remark;    //还款备注
+    
 	public String getSerial_number() {
 		return serial_number;
 	}
@@ -42,4 +62,5 @@ public class Repayment extends Response{
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+    
 }
