@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.fss.architect.loan.bean.SettleListBean;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 
 /**
@@ -38,7 +39,7 @@ public class EnterAccount extends Response {
     private String acc_no;			//借款人资金平台账号
 
     
-    private List<FssSettleListEntity> settle_list;			//清算列表
+    private List<SettleListBean> settle_list;			//清算列表
     
 	public String getContract_id() {
 		return contract_id;
@@ -88,13 +89,14 @@ public class EnterAccount extends Response {
 		this.accounting_no = accounting_no;
 	}
 
-	public List<FssSettleListEntity> getSettle_list() {
+	public List<SettleListBean> getSettle_list() {
 		return settle_list;
 	}
 
-	public void setSettle_list(List<FssSettleListEntity> settle_list) {
+	public void setSettle_list(List<SettleListBean> settle_list) {
 		this.settle_list = settle_list;
 	}
+
 
 
     
