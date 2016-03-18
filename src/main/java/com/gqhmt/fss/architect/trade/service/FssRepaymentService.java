@@ -4,7 +4,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.loan.Repayment;
+import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
@@ -127,16 +127,16 @@ public class FssRepaymentService {
 	 public Response createRefundDraw(RepaymentDto repaymentDto) throws FssException {
 		Response response=new Response();
 		List<FssRepaymentEntity> fssRepaymentlist=new ArrayList<FssRepaymentEntity>();
-    	List<Repayment> repaymentlist=null;
+    	List<RepaymentChildDto> repaymentlist=null;
     	repaymentlist=repaymentDto.getList();
     	BigDecimal amtSum=new BigDecimal("0");
-    	for(Repayment r:repaymentlist){//还款总额
+    	for(RepaymentChildDto r:repaymentlist){//还款总额
     		amtSum=amtSum.add(r.getAmt());
     	}
     	try {
     		//创建主表信息
 			FssRepaymentParentEntity repaymentParent = this.createRepaymentParentEntity(repaymentDto,amtSum);
-			for(Repayment repyament:repaymentlist){
+			for(RepaymentChildDto repyament:repaymentlist){
 	    		FssRepaymentEntity repaymentEntity = this.createFssRepaymentEntity(repyament,repaymentDto,repaymentParent);
 	    		fssRepaymentlist.add(repaymentEntity);
 	    	}
@@ -164,7 +164,7 @@ public class FssRepaymentService {
 	 * @param repaymentDto
 	 * @return
 	 */
-	public FssRepaymentEntity createFssRepaymentEntity(Repayment repyament,RepaymentDto repaymentDto,FssRepaymentParentEntity repaymentParent) throws FssException{
+	public FssRepaymentEntity createFssRepaymentEntity(RepaymentChildDto repyament,RepaymentDto repaymentDto,FssRepaymentParentEntity repaymentParent) throws FssException{
 		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
 		repaymentEntity.setAccNo(repyament.getAcc_no());
 		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
