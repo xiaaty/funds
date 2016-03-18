@@ -27,8 +27,11 @@ public class MortgageeWithDrawDto extends SuperDto {
 	private String contract_id;			//合同ID
 
     private String mortgagee_acc_no;			//抵押权人资金平台账号
-
+    
+    private String acc_no;				//借款人资金平台账号
+    
     private BigDecimal contract_amt;	//合同金额
+    
     @APIValidNull(errorCode = "90004014")
     private BigDecimal pay_amt;			//提现金额
     
@@ -63,6 +66,14 @@ public class MortgageeWithDrawDto extends SuperDto {
 
 	public void setPay_amt(BigDecimal pay_amt) {
 		this.pay_amt = pay_amt;
+	}
+
+	public String getAcc_no() {
+		return acc_no;
+	}
+
+	public void setAcc_no(String acc_no) {
+		this.acc_no = acc_no;
 	}
 
 }    

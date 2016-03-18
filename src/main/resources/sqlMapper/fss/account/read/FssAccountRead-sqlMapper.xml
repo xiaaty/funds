@@ -76,7 +76,7 @@
 	   </if> 
 	</select>
 
-	<select id="findAccountByAccNo" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+	<select id="findAccountByAccNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
 		SELECT
 		account.id id,
 		account.busi_no busiNo,
