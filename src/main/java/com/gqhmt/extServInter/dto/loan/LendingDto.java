@@ -4,6 +4,13 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import java.math.BigDecimal;
 import java.util.List;
 
+
+import com.gqhmt.annotations.APIValid;
+import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
+
+
+
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -23,15 +30,21 @@ import java.util.List;
  */
 public class LendingDto extends SuperDto {
 
-
+	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//contract_id
 
+	@APIValidNull(errorCode = "90004022")
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
+	@APIValidNull(errorCode = "90004023")
     private String acc_no;			//借款人资金平台账号
 
+    @APIValidNull(errorCode = "90004014")
+    @APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal contract_amt;			//合同金额
-
+    
+    @APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal pay_amt;			//放款金额
 
     private List<LendingFeeListDto> feeList;			//收费列表

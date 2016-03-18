@@ -47,7 +47,7 @@ public class FssTradeApplyEntity implements Serializable {
     private String businessNo;                                 //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务编号
 
     @Column(name = "busi_type")
-    private Integer busiype ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
+    private String busiType ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
 
     @Column(name = "acc_no")
     private String accNo ;                                     //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号
@@ -62,7 +62,7 @@ public class FssTradeApplyEntity implements Serializable {
     private BigDecimal tradeChargeAmount ;                        //decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  交易手续费
 
     @Column(name = "trade_state")
-    private Integer tradetate ;                                //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败
+    private String tradeState ;                                //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败
 
     @Column(name = "apply_state")
     private String applyState  ;                               //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  申请状态，新增，审核成功，，已交易，已回调通知
@@ -136,12 +136,12 @@ public class FssTradeApplyEntity implements Serializable {
 		this.businessNo = businessNo;
 	}
 
-	public Integer getBusiype() {
-		return busiype;
+	public String getBusiType() {
+		return busiType;
 	}
 
-	public void setBusiype(Integer busiype) {
-		this.busiype = busiype;
+	public void setBusiType(String busiType) {
+		this.busiType = busiType;
 	}
 
 	public String getAccNo() {
@@ -176,12 +176,13 @@ public class FssTradeApplyEntity implements Serializable {
 		this.tradeChargeAmount = tradeChargeAmount;
 	}
 
-	public Integer getTradetate() {
-		return tradetate;
+
+	public String getTradeState() {
+		return tradeState;
 	}
 
-	public void setTradetate(Integer tradetate) {
-		this.tradetate = tradetate;
+	public void setTradeState(String tradeState) {
+		this.tradeState = tradeState;
 	}
 
 	public String getApplyState() {

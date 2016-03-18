@@ -24,5 +24,19 @@ import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 public interface FssRepaymentReadMapper extends ReadMapper<FssRepaymentEntity> {
 	
 	public List<FssRepaymentEntity> queryFssRepayment(FssRepaymentEntity repayment);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：查询该批次交易总数
+	 */
+	public int getTradeCount(Long parentId);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：查询该批次交易成功数
+	 */
+	public int getSuccessCount(Long parentId);
 	
 }
