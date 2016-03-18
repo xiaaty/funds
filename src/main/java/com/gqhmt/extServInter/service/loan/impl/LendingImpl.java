@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.service.loan.impl;
 
+import com.gqhmt.annotations.APISignature;
 import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
@@ -35,6 +36,7 @@ public class LendingImpl implements ILending {
 	private FssLoanService loanService;
 
 	@APITradeTypeValid(value = "11090001,11090002,11090003")
+	@APISignature
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
