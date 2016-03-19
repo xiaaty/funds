@@ -349,5 +349,39 @@ public class FssTradeApplyService {
 //			
 //		}
 	}
+	/**
+	 * 查询抵押权人代扣信息
+	 * @param tradeapply
+	 * @return
+	 */
+	public List<FssTradeApplyEntity> queryFssTradeApplyList(FssTradeApplyEntity tradeapply){
+		List<FssTradeApplyEntity> tradeapplylist=fssTradeApplyReadMapper.select(tradeapply);
+		return tradeapplylist;
+	}
+	
+	/**
+	 * 根据id查询借款人体现信息
+	 * @param tradeapply
+	 * @return
+	 */
+	public FssTradeApplyEntity getFssTradeApplyEntityById(Long id){
+		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectByPrimaryKey(id);
+		return tradeapply;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
