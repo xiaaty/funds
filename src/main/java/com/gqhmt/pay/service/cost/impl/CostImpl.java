@@ -2,14 +2,20 @@ package com.gqhmt.pay.service.cost.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.cost.ICost;
 
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * -----------------------------------------------------------------
  * 16/3/11  于泳      1.0     1.0 Version
  */
+@Service
 public class CostImpl  implements ICost{
 
     @Resource
@@ -40,6 +47,9 @@ public class CostImpl  implements ICost{
 
     @Resource
     private TradeRecordService tradeRecordService;
+
+    @Resource
+    private FssAccountService fssAccountService;
 
     private  final Map<String,Integer> map = new ConcurrentHashMap<>();
 
@@ -75,20 +85,27 @@ public class CostImpl  implements ICost{
 
     @Override
     public void cost(String loanType, String fundsType, Integer custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
-        Integer fromCustId = this.map.get(fundsType+"_"+loanType);
-        if (fromCustId == null) throw new FssException("");
-
-        FundAccountEntity  toAccountEntity= fundAccountService.getFundAccount(fromCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-
-        if (toAccountEntity == null) throw new FssException("");        //入账
-
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
 
-        if (fromAccountEntity == null) throw new FssException("");
+        this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,1);
 
-        FundOrderEntity fundOrderEntity  = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType);
 
-        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+
+
+    }
+
+    @Override
+    public FundOrderEntity cost(String loanType, String fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
+        FssAccountEntity accountEntity  = this.fssAccountService.getFssAccountByAccNo(accNo);
+        if (accountEntity == null ){
+            throw new CommandParmException("90004006");
+        }
+        int accType = accountEntity.getAccType();
+        int bustType = this.tradeRecordService.parseBusinessType(accType);
+        FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(accountEntity.getCustId(),bustType);
+
+        return this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,1);
+
 
     }
 
@@ -96,6 +113,43 @@ public class CostImpl  implements ICost{
     public void cost(String fundsType, Integer custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         this.cost("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
     }
+
+    @Override
+    public void costReturn(String loanType, String fundsType, Integer custId, Integer bustType, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
+        FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
+
+        this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,2);
+    }
+
+    @Override
+    public void costReturn(String loanType, String fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) {
+
+    }
+
+
+    private FundOrderEntity cost(FundAccountEntity fromAccountEntity,BigDecimal decimal,String fundsType,Long busiId,Integer busiType,String loanType,int type) throws FssException {
+
+        Integer toCustId = this.map.get(fundsType+"_"+loanType);
+        if (toCustId == null) throw new FssException("");
+
+        FundAccountEntity  toAccountEntity= fundAccountService.getFundAccount(toCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+
+        if (fromAccountEntity == null) throw new FssException("90004006");
+        FundOrderEntity fundOrderEntity = null;
+        if(type == 1){
+            fundOrderEntity  = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType);
+            tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+        }else{
+            fundOrderEntity  = paySuperByFuiou.transerer(toAccountEntity,fromAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType);
+            tradeRecordService.transfer(toAccountEntity,fromAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+        }
+
+
+        return  fundOrderEntity;
+    }
+
+
+
 
 
 }

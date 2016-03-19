@@ -74,6 +74,9 @@ public class FssEnterAccountEntity implements Serializable {
     
     @Column(name="rep_code")
     private String repCode;              // 返回码
+    
+    @Column(name="loan_platform")
+    private String loanPlatform;              // 借款平台
   
     @Column(name="rep_msg")
     private String repMsg;              // 返回码
@@ -199,6 +202,14 @@ public class FssEnterAccountEntity implements Serializable {
 
 	public void setRepMsg(String repMsg) {
 		this.repMsg = repMsg;
+	}
+
+	public String getLoanPlatform() {
+		return loanPlatform;
+	}
+
+	public void setLoanPlatform(String loanPlatform) {
+		this.loanPlatform = loanPlatform;
 	}
 
 	

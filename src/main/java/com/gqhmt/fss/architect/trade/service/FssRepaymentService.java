@@ -137,7 +137,7 @@ public class FssRepaymentService {
 		Response response=new Response();
 		List<FssRepaymentEntity> fssRepaymentlist=new ArrayList<FssRepaymentEntity>();
     	List<RepaymentChildDto> repaymentlist=null;
-    	repaymentlist=repaymentDto.getList();
+    	repaymentlist=repaymentDto.getRepay_list();
     	BigDecimal amtSum=new BigDecimal("0");
     	for(RepaymentChildDto r:repaymentlist){//还款总额
     		amtSum=amtSum.add(r.getAmt());
@@ -201,9 +201,9 @@ public class FssRepaymentService {
 		FssRepaymentParentEntity repaymentParent=new FssRepaymentParentEntity();
 		repaymentParent.setSeqNo(repaymentDto.getSeq_no());
 		repaymentParent.setTradeType(repaymentDto.getTrade_type());
-		repaymentParent.setTradeCount(repaymentDto.getList().size());
-		repaymentParent.setSuccessCount(repaymentDto.getList().size());
-		repaymentParent.setFiledCount(repaymentDto.getList().size());
+		repaymentParent.setTradeCount(repaymentDto.getRepay_list().size());
+		repaymentParent.setSuccessCount(0);
+		repaymentParent.setFiledCount(0);
 		repaymentParent.setState("10090001");
 		repaymentParent.setResultState("10080001");
 		repaymentParent.setAmt(amtSum);

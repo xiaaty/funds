@@ -4,6 +4,7 @@ package com.gqhmt.pay.service.trade;
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import java.math.BigDecimal;
 import java.util.List;
@@ -76,13 +77,26 @@ public interface IFundsTrade {
      */
     public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException;
 
+    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
+
+    public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
+
     /**
-     *
-     * 代付申请
+         *
+         * 代付申请
+         * @return
+         * @throws FssException
+         */
+    public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
+
+
+    /**
+     * 转账接口
+     * @param transferDto
      * @return
      * @throws FssException
      */
-    public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
+    public boolean transfer(TransferDto transferDto) throws FssException;
 
 
     /**
@@ -99,8 +113,13 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean transefer(String thirdPartyType,Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
-	/**
+    public FundOrderEntity transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+
+
+    public FundOrderEntity transefer(String fromAccNo,String toAccno,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+
+
+    /**
 	 * 
 	 * author:jhz
 	 * time:2016年2月27日
@@ -129,13 +148,6 @@ public interface IFundsTrade {
     boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
 			Long busiId,int selletType) throws FssException;
 
-    /**
-     * 转账接口
-     * @param transferDto
-     * @return
-     * @throws FssException
-     */
-    public boolean transfer(TransferDto transferDto) throws FssException;
 
 
     /**

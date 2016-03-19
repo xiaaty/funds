@@ -404,6 +404,9 @@ public class APIValidAop {
         try {
             Method method = class1.getMethod(methodName,SuperDto.class);
             APITradeTypeValid apiValidType = method.getAnnotation(APITradeTypeValid.class);
+            if(apiValidType == null){
+                return ;
+            }
             String  value = apiValidType.value();
             String  type = apiValidType.filterType();
             String  filter = type == null || "".equals(type) ?"" : Application.getInstance().getDictOrderValue(type);

@@ -249,8 +249,8 @@ public class FssLoanService {
 	 * time:2016年3月16日
 	 * function：修改
 	 */
-	public void update(FssLoanEntity fssLoanEntityById) {
-		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntityById);
+	public void update(FssLoanEntity fssLoanEntity) {
+		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntity);
 	}
 	
 
