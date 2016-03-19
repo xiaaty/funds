@@ -1,11 +1,15 @@
 package com.gqhmt.controller.fss.loan;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,11 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -47,6 +51,9 @@ public class FssLoanTradeController {
 	private FssLoanService fssLoanService;
 	@Resource
 	private IFundsTrade fundsTradeImpl;
+
+	@Resource
+	private ICost cost;
 
 
 	/**
@@ -143,10 +150,16 @@ public class FssLoanTradeController {
 	public String transfer( HttpServletRequest request, @PathVariable Long id, ModelMap model) {
 //		通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
-		//跑批 修改交易状态
-//		fssLoanEntityById.setStatus("10050002");
-		fssLoanService.update(fssLoanEntityById);
-		
+//
+		try {
+			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(),fssLoanEntityById.getAccNo(),fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC,fssLoanEntityById.getId(),GlobalConstants.NEW_BUSINESS_MT);
+			fssLoanEntityById.setStatus("10050002");
+			fssLoanService.update(fssLoanEntityById);
+		} catch (FssException e) {
+			e.printStackTrace();
+		}
+
+		//todo 结果返回前台页面,消息提示
 		return "redirect:/fss/loan/trade/borrow";
 	}
 	/**
@@ -159,13 +172,33 @@ public class FssLoanTradeController {
 	public String  charge( HttpServletRequest request, @PathVariable Long id, ModelMap model) {
 //		通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+
+		if (fssLoanEntityById == null){
+			//todo 处理前台页面消息提示内容
+		}
+
+		List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(id);
 		
-		
-		//跑批    收费 并 修改交易状态
-		
-		
-//		fssLoanEntityById.setStatus("10050002");
+		if (fssFeeLists == null || fssFeeLists.size() == 0){
+			//todo 处理前台页面消息提示内容
+		}else{
+
+			for (FssFeeList fssFeeList:fssFeeLists){
+				try {
+					FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),fssLoanEntityById.getAccNo(),fssFeeList.getFeeType(),fssFeeList.getFeeAmt(),fssFeeList.getId(),GlobalConstants.NEW_BUSINESS_COST);
+					//todo 修改费用状态.
+				} catch (FssException e) {
+					e.printStackTrace();
+
+				}
+			}
+
+			//todo  如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
+			//		fssLoanEntityById.setStatus("10050002");
 //		fssLoanService.update(fssLoanEntityById);
+		}
+		
+
 		
 		return "redirect:/fss/loan/trade/borrow";
 	}

@@ -139,5 +139,39 @@ public class TradeRecordService {
     	return transrecordlist;
     	
     }
+
+
+    public  int parseBusinessType(int accType){
+
+        int businessType = 0;
+
+        switch (accType){
+            case 10010001:
+                businessType = 3;
+                break;
+            case 10010002:
+                businessType = 2;
+                break;
+            case 10010003:
+                businessType = 1;
+                break;
+            case 10010004:
+                businessType = 0;
+                break;
+            case 10010005:
+                businessType = 1;
+                break;
+            case 10010006:
+                businessType = 1;
+                break;
+            case 10010007:
+                businessType = 1;
+                break;
+            default:
+                businessType = 0;
+        }
+
+        return businessType;
+    }
     
 }
