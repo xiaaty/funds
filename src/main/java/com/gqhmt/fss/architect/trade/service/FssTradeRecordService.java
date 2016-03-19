@@ -154,6 +154,7 @@ public class FssTradeRecordService {
 				//处理交易
 				for (FssTradeRecordEntity fssTradeRecordEntity : tradeRecordList) {
 		//			交易成功	
+					
 					//修改交易状态
 					fssTradeRecordEntity.setTradeState(10030002);
 					fssTradeRecordEntity.setModifyTime(new Date());
@@ -172,6 +173,19 @@ public class FssTradeRecordService {
 			}
 			
 			
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：批量代扣
+	 */
+	public List<FssTradeRecordEntity> batchWithHolding(){
+		//查询出处于划扣中的申请
+			FssTradeRecordEntity record=new FssTradeRecordEntity();
+			record.setTradeType(10030001);
+			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.select(record);
+			return tradeRecordList;
 	}
 	/**
 	 * 
