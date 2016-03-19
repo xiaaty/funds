@@ -87,6 +87,9 @@ public class FssTradeRecordEntity implements Serializable {
     @Column(name = "order_no")
     private String orderNo    ;                    // varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
 
+    @Column(name = "trade_type_child")
+    private Integer tradeTypeChild    ;                    	
+    
 	public Long getId() {
 		return id;
 	}
@@ -246,5 +249,13 @@ public class FssTradeRecordEntity implements Serializable {
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
 	}
-    
+
+	public Integer getTradeTypeChild() {
+		return tradeTypeChild;
+	}
+
+	public void setTradeTypeChild(Integer tradeTypeChild) {
+		this.tradeTypeChild = tradeTypeChild;
+	}
+	
 }

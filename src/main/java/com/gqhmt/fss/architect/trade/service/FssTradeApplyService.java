@@ -4,19 +4,14 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
-import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper;
-import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper;
-import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
-
+import com.gqhmt.util.CommonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,8 +20,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.gqhmt.util.CommonUtil;
 
 
 /**
@@ -53,10 +46,6 @@ public class FssTradeApplyService {
 	
 	@Resource
 	private FssTradeApplyReadMapper fssTradeApplyReadMapper;
-	@Resource
-	private FssTradeRecordWriteMapper fssTradeRecordWriteMapper;
-	@Resource
-	private FssTradeRecordReadMapper fssTradeRecordReadMapper;
 	
 	@Resource
 	private FundAccountService fundAccountService;
@@ -64,11 +53,7 @@ public class FssTradeApplyService {
 	@Resource
 	private FssRepaymentService fssRepaymentService;
 	
-	@Resource
-	private FssAccountService fssAccountService;
 	
-	@Resource
-	private BankCardInfoService bankCardInfoService;
 	/**
 	 * 创建借款人提现申请
 	 * @param fssTradeApplyEntity
@@ -207,74 +192,31 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setTradeState("10090002");
 			tradeApplyEntity.setApplyNo(this.getApplyNo());
 			fssTradeApplyWriteMapper.insert(tradeApplyEntity);
-			//添加交易记录
-			this.insertTradeRecord(tradeApplyEntity);
 		}
 	}
 	/**
 	 * 
 	 * author:jhz
-	 * time:2016年3月17日
-	 * function：通过账户号得到客户绑定的银行限额
-	 * @throws FssException 
+	 * time:2016年3月18日
+	 * function：把借款人放款代扣添加进代扣申请表
 	 */
-	public BigDecimal  getBankCode(String accNo) throws FssException{
-		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
-		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId());
-		Application instance = Application.getInstance();
-		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getCardIndex());
-		return bankDealamountLimit;
+	public void insertLoanTradeApply(FssLoanEntity fssLoanEntity) throws FssException {
+			FssTradeApplyEntity tradeApplyEntity=new FssTradeApplyEntity();
+			//添加代扣申请
+			tradeApplyEntity.setAccNo(fssLoanEntity.getMortgageeAccNo());
+			tradeApplyEntity.setContractId(fssLoanEntity.getContractId());
+			tradeApplyEntity.setMchnChild(fssLoanEntity.getMchnChild());
+			tradeApplyEntity.setMchnParent(fssLoanEntity.getMchnParent());
+			tradeApplyEntity.setSeqNo(fssLoanEntity.getSeqNo());
+			tradeApplyEntity.setCustNo(fssLoanEntity.getId().toString());
+			tradeApplyEntity.setCreateTime(new Date());
+			tradeApplyEntity.setRealTradeAmount(fssLoanEntity.getPayAmt());
+			tradeApplyEntity.setBusiType(fssLoanEntity.getTradeType());
+			tradeApplyEntity.setTradeState(fssLoanEntity.getStatus());
+			tradeApplyEntity.setApplyNo(this.getApplyNo());
+			fssTradeApplyWriteMapper.insert(tradeApplyEntity);
 	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月17日
-	 * function：添加进交易记录
-	 * @throws FssException 
-	 */
-	public void  insertTradeRecord(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
-		FssTradeRecordEntity tradeRecordEntity=null;
-			tradeRecordEntity=new FssTradeRecordEntity();
-			String accNo = fssTradeApplyEntity.getAccNo();
-			//交易额
-			BigDecimal realTradeAmount = fssTradeApplyEntity.getRealTradeAmount();
-			//限额
-			BigDecimal limitAmount =this.getBankCode(accNo);
-			//金额是否超过银行代付单笔上限
-			//否
-			if(realTradeAmount .compareTo(limitAmount)<=0){
-			tradeRecordEntity.setAmount(realTradeAmount);
-			tradeRecordEntity.setAccNo(accNo);
-			tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
-			tradeRecordEntity.setCreateTime(new Date());
-			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
-			}else {
-				//金额超过银行代付单笔上限
-				BigDecimal bg[] = realTradeAmount.divideAndRemainder(limitAmount);
-				int splitCount = bg[0].intValue();
-				BigDecimal lastamount = bg[1];
-				//判断是否除尽
-				if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
-					splitCount = splitCount + 1;
-				} 
-				//拆分处理
-				for (int j=0 ; j < splitCount; j++) {
-					if (j != (splitCount-1) ) {
-						tradeRecordEntity.setAmount(limitAmount);
-						tradeRecordEntity.setAccNo(accNo);
-						tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
-						tradeRecordEntity.setCreateTime(new Date());
-						fssTradeRecordWriteMapper.insert(tradeRecordEntity);
-					}else{
-						tradeRecordEntity.setAmount(lastamount);
-						tradeRecordEntity.setAccNo(accNo);
-						tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
-						tradeRecordEntity.setCreateTime(new Date());
-						fssTradeRecordWriteMapper.insert(tradeRecordEntity);
-					}
-				}
-			}
-		}
+	
 	/**
 	 * 
 	 * author:jhz
@@ -288,71 +230,6 @@ public class FssTradeApplyService {
 		List<FssTradeApplyEntity> select = fssTradeApplyReadMapper.select(fssTradeApplyEntity);
 		return select;
 		
-	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月18日
-	 * function：处理交易
-	 */
-	public void handleTrade(){
-		//查询出处于划扣中的申请
-		List<FssTradeApplyEntity> tradeAppliesByTradeStatus = getTradeAppliesByTradeStatus("10090002");
-			for (FssTradeApplyEntity tradeApply : tradeAppliesByTradeStatus) {
-				FssTradeRecordEntity record=new FssTradeRecordEntity();
-				record.setApplyNo(tradeApply.getApplyNo());
-				List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.select(record);
-				//处理交易
-				for (FssTradeRecordEntity fssTradeRecordEntity : tradeRecordList) {
-		//			交易成功	
-					//修改交易状态
-					fssTradeRecordEntity.setTradeState(10030002);
-					fssTradeRecordEntity.setModifyTime(new Date());
-					fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
-				}
-				//根据applyNo查找交易申请记录，并修改交易状态
-				tradeApply.setTradeState("10090003");
-				tradeApply.setModifyTime(new Date());
-				fssTradeApplyWriteMapper.updateByPrimaryKey(tradeApply);
-//				交易成功修改借款人放宽交易状态
-				FssRepaymentEntity fssRepaymentEntity = fssRepaymentService.queryRepaymentById(Long.parseLong(tradeApply.getCustNo()));
-				fssRepaymentEntity.setState("10090003");
-				fssRepaymentEntity.setMotifyTime(new Date());
-				fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
-				
-			}
-			
-			
-	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月18日
-	 * function：交易成功修改借款人放宽交易状态
-	 */
-	public void updateStatus(FssTradeApplyEntity tradeApply){
-//		FssRepaymentEntity fssRepaymentEntity = fssRepaymentService.queryRepaymentById(Long.parseLong(tradeApply.getCustNo()));
-//		fssRepaymentEntity.setState("10090003");
-//		fssRepaymentEntity.setMotifyTime(new Date());
-//		fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
-		//查询该批次交易成功数
-		
-//		queryRepaymentParentById.setMotifyTime(new Date());
-//		int successCount = fssRepaymentService.getSuccessCount(id);
-//		if(successCount==queryFssRepaymentEntity.size()){
-//			//成功
-//			queryRepaymentParentById.setState("10080002");
-//			fssRepaymentService.updateRepaymentParent(queryRepaymentParentById);
-//		}else if(successCount==0){
-//			//失败
-//			queryRepaymentParentById.setState("10080010");
-//			fssRepaymentService.updateRepaymentParent(queryRepaymentParentById);
-//		}else{
-//			//部分成功
-//			queryRepaymentParentById.setState("10080003");
-//			fssRepaymentService.updateRepaymentParent(queryRepaymentParentById);
-//			
-//		}
 	}
 	
 }

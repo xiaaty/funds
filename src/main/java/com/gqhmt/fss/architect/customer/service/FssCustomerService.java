@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.customer.service;
 
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;

@@ -1,16 +1,19 @@
 package com.gqhmt.extServInter.dto.asset;
 
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.PageSuperDto;
 
 /**
  *资产信息接口---资金流水查询接口参数
  */
 public class FundSequenceDto extends PageSuperDto {
-	
+	@APIValidNull(errorCode = "90002021")
 	private Integer fundType;
-	private String trade_no;//交易号码
+//	@APIValidNull(errorCode = "90002006")
 	private Integer cust_no;//客户编号
+	@APIValidNull(errorCode = "90002006")
 	private Integer user_no;//用户编号
+	
 	private Integer busi_no;//业务编号
 
 	public Integer getFundType() {
@@ -18,12 +21,6 @@ public class FundSequenceDto extends PageSuperDto {
 	}
 	public void setFundType(Integer fundType) {
 		this.fundType = fundType;
-	}
-	public String getTrade_no() {
-		return trade_no;
-	}
-	public void setTrade_no(String trade_no) {
-		this.trade_no = trade_no;
 	}
 	public Integer getCust_no() {
 		return cust_no;

@@ -141,7 +141,7 @@
                                              <c:forEach items="${page.list}" var="account">
                                                 <tr>
                                                 	<td>${account.id}</td>
-                                                    <td>${account.accNo}</td>
+                                                    <td><fss:fmtData value="${account.accNo}"/></td>
                                                     <td>${account.accBalance}</td>
                                                     <td>${account.accAvai}</td>
                                                     <td>${account.accFreeze}</td>
