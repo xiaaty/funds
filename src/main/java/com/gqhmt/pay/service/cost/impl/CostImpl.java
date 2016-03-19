@@ -13,6 +13,9 @@ import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.cost.ICost;
 
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * -----------------------------------------------------------------
  * 16/3/11  于泳      1.0     1.0 Version
  */
+@Service
 public class CostImpl  implements ICost{
 
     @Resource
