@@ -231,5 +231,24 @@ public class FssTradeApplyService {
 		return select;
 		
 	}
+
+
+	/**
+	 * 修改执行条数
+	 * @param applyNo
+     */
+	public void updateExecuteCount(String applyNo){
+
+	}
+
+
+	public void checkExecuteCount(String applyNo){
+		FssTradeApplyEntity applyEntity = this.fssTradeApplyReadMapper.selectByPrimaryKey(applyNo);
+
+		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
+
+
+		//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
+	}
 	
 }

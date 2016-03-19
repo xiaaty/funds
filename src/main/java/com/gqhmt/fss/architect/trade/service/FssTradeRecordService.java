@@ -1,23 +1,22 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import javax.annotation.Resource;
-import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
-import com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -39,9 +38,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 @Service
 public class FssTradeRecordService {
 	
-	@Resource
-    private FssTradeApplyWriteMapper fssTradeApplyWriteMapper;
-	
+
 	@Resource
 	private FssTradeRecordWriteMapper fssTradeRecordWriteMapper;
 	@Resource
@@ -144,7 +141,7 @@ public class FssTradeRecordService {
 	 * time:2016年3月18日
 	 * function：处理交易
 	 */
-	public void handleTrade(){
+	/*public void handleTrade(){
 		//查询出处于划扣中的申请
 		List<FssTradeApplyEntity> tradeAppliesByTradeStatus =fssTradeApplyService.getTradeAppliesByTradeStatus("10090002");
 			for (FssTradeApplyEntity tradeApply : tradeAppliesByTradeStatus) {
@@ -173,7 +170,7 @@ public class FssTradeRecordService {
 			}
 			
 			
-	}
+	}*/
 	/**
 	 * 
 	 * author:jhz
@@ -186,6 +183,20 @@ public class FssTradeRecordService {
 			record.setTradeType(10030001);
 			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.select(record);
 			return tradeRecordList;
+	}
+
+	/**
+	 * 修改执行状态
+	 * @param fssTradeRecordEntity		实体备案
+	 * @param state						1交易成功,2交易失败
+     */
+	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state){
+		fssTradeRecordEntity.setTradeResult(0);//(state == 1?"":"")
+		fssTradeRecordEntity.setTradeState(0);//修改交易状态为已执行
+
+		//Apply 执行数量更新
+		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
+
 	}
 	/**
 	 * 
