@@ -1,11 +1,13 @@
 package com.gqhmt.controller.fss.loan;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
+import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,6 +49,8 @@ public class FssLoanTradeController {
 	private FssLoanService fssLoanService;
 	@Resource
 	private IFundsTrade fundsTradeImpl;
+	@Resource
+	private FssTradeRecordService fssTradeRecordService;
 
 
 	/**
@@ -125,12 +129,16 @@ public class FssLoanTradeController {
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：添加到抵押权人代扣
+	 * @throws FssException 
+	 * "10100001"代扣充值
 	 */
 	@RequestMapping("/fss/loan/tradeApply/withHold")
-	public String withholdApply( HttpServletRequest request, ModelMap model,FssLoanEntity fssLoanEntity) {
-		fssLoanEntity.setStatus("10090002");
+	public String withholdApply( HttpServletRequest request, ModelMap model,FssLoanEntity fssLoanEntity) throws FssException {
+		fssLoanEntity.setStatus("10050002");
 		fssLoanService.update(fssLoanEntity);
-		
+		fssLoanEntity.setStatus("10090002");
+		fssTradeApplyService.insertLoanTradeApply(fssLoanEntity,"10100001");
+		fssTradeRecordService.insertTradeRecord();
 		return "redirect:/fss/loan/trade/borrow";
 	}
 	/**

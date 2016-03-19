@@ -68,7 +68,7 @@ public class FssTradeRecordService {
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
 		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId());
 		Application instance = Application.getInstance();
-		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getCardIndex());
+		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getParentBankId());
 		return bankDealamountLimit;
 	}
 	/**
@@ -82,6 +82,8 @@ public class FssTradeRecordService {
 		List<FssTradeApplyEntity> tradeAppliesByTradeStatus = fssTradeApplyService.getTradeAppliesByTradeStatus("10090002");
 		for (FssTradeApplyEntity fssTradeApplyEntity : tradeAppliesByTradeStatus) {
 			insertRecord(fssTradeApplyEntity);
+			fssTradeApplyEntity.setTradeState("10090004");
+			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 		}
 	}
 	/**
@@ -104,6 +106,13 @@ public class FssTradeRecordService {
 			if(realTradeAmount .compareTo(limitAmount)<=0){
 			tradeRecordEntity.setAmount(realTradeAmount);
 			tradeRecordEntity.setAccNo(accNo);
+			tradeRecordEntity.setTradeType(Integer.parseInt(fssTradeApplyEntity.getBusiType()));
+			tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
+			tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
+			tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
+			tradeRecordEntity.setTradeTypeChild(0);
+			tradeRecordEntity.setTradeDate("0");
+			tradeRecordEntity.setTradeTime("0");
 			tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 			tradeRecordEntity.setCreateTime(new Date());
 			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
@@ -115,18 +124,36 @@ public class FssTradeRecordService {
 				//判断是否除尽
 				if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
 					splitCount = splitCount + 1;
-				} 
+				} else if(lastamount.compareTo(BigDecimal.ZERO) ==0){
+					lastamount=limitAmount;
+				}
 				//拆分处理
 				for (int j=0 ; j < splitCount; j++) {
 					if (j != (splitCount-1) ) {
+						tradeRecordEntity.setId(null);
 						tradeRecordEntity.setAmount(limitAmount);
 						tradeRecordEntity.setAccNo(accNo);
+						tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
+						tradeRecordEntity.setTradeType(Integer.parseInt(fssTradeApplyEntity.getBusiType()));
+						tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
+						tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
+						tradeRecordEntity.setTradeTypeChild(0);
+						tradeRecordEntity.setTradeDate("0");
+						tradeRecordEntity.setTradeTime("0");
 						tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 						tradeRecordEntity.setCreateTime(new Date());
 						fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 					}else{
+						tradeRecordEntity.setId(null);
 						tradeRecordEntity.setAmount(lastamount);
 						tradeRecordEntity.setAccNo(accNo);
+						tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
+						tradeRecordEntity.setTradeType(Integer.parseInt(fssTradeApplyEntity.getBusiType()));
+						tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
+						tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
+						tradeRecordEntity.setTradeTypeChild(0);
+						tradeRecordEntity.setTradeDate("0");
+						tradeRecordEntity.setTradeTime("0");
 						tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 						tradeRecordEntity.setCreateTime(new Date());
 						fssTradeRecordWriteMapper.insert(tradeRecordEntity);
@@ -188,15 +215,15 @@ public class FssTradeRecordService {
 	/**
 	 * 修改执行状态
 	 * @param fssTradeRecordEntity		实体备案
-	 * @param state						1交易成功,2交易失败
+	 * @param state						98060001交易成功,98060003交易失败
      */
 	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state){
-		fssTradeRecordEntity.setTradeResult(0);//(state == 1?"":"")
-		fssTradeRecordEntity.setTradeState(0);//修改交易状态为已执行
+		fssTradeRecordEntity.setTradeResult(98060001);//(state == 1?"":"")
+		fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
 
 		//Apply 执行数量更新
 		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
-
+		
 	}
 	/**
 	 * 

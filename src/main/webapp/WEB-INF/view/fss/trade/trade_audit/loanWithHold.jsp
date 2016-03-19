@@ -131,6 +131,7 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input" >
+                                                            <input type="hidden" name="mchnParent" readonly="readonly" value="${loan.mchnParent }">
                                                             <input type="text" name="mchnChild" readonly="readonly" value="${loan.mchnChild }">
                                                         </label>
                                                     </section>
@@ -144,7 +145,8 @@
                                                 <label class="input" >
                                                     <fss:dictOrder var="order" dictOrder="tradeType">
                                                     <c:if test="${loan.tradeType == order.key}">
-                                                     <input type="text" name="tradeType" readonly="readonly" value="${order.value}">
+                                                     <input type="text" name="" readonly="readonly" value="${order.value}">
+                                                     <input type="hidden" name="tradeType" readonly="readonly" value="${order.key}">
                                                      </c:if>
                                                    	 </fss:dictOrder>
                                                    	 </label>

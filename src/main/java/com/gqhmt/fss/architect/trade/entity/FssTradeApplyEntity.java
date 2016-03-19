@@ -88,6 +88,14 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "contract_id")//合同Id
     private String contractId;
     
+    @Column(name = "count")		//总条数
+    private int count;
+    
+    @Column(name = "success_count")	//成功条数
+    private int successCount;
+    
+    
+    
 	public Long getId() {
 		return id;
 	}
@@ -247,6 +255,22 @@ public class FssTradeApplyEntity implements Serializable {
 
 	public void setContractId(String contractId) {
 		this.contractId = contractId;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public int getSuccessCount() {
+		return successCount;
+	}
+
+	public void setSuccessCount(int successCount) {
+		this.successCount = successCount;
 	}
 	
 }
