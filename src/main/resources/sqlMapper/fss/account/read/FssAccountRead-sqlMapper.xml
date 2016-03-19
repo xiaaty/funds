@@ -30,7 +30,6 @@
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">
 		SELECT 
 		   a.acc_no accNo,
-		   a.cust_id custNo,
 		   c.CUSTOMER_NAME custName,
 		   c.CUSTOMER_TYPE customerType,
 		   c.CERT_TYPE certType,
@@ -60,11 +59,6 @@
 	   <if test="accNo!= null and accNo!= '' ">
        	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
        </if>
-       
-	   <if test="custNo!= null and custNo!= '' ">
-       	  AND a.cust_no Like CONCAT(CONCAT('%',#{custNo}),'%')
-       </if>
-       
 	   <if test="custName != null and custName != '' ">
        	  AND c.CUSTOMER_NAME Like CONCAT(CONCAT('%',#{custName}),'%')
        </if>

@@ -58,4 +58,12 @@ public class FundsPaymentController {
 		return "fss/trade/repaymentdetaillist";
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
 }

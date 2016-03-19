@@ -156,9 +156,9 @@
                                                 <tr class="success">
                                                     <td>${t.cust_no}</td>
                                                     <td>${t.name}</td>
-                                                    <td>${t.mobile}</td>
+                                                    <td><fss:fmtData value="${t.mobile}"/></td>
                                                     <td>${t.cert_type==1?"身份证":"护照"}</td>
-                                                    <td>${t.cert_no}</td>
+                                                    <td><fss:fmtData value="${t.cert_no}"/></td>
                                                     <td>否</td>
                                                     <td><fmt:formatDate value="${t.create_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modify_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

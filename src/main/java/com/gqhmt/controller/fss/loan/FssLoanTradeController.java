@@ -4,6 +4,7 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Controller;
@@ -99,9 +100,9 @@ public class FssLoanTradeController {
 		map.put("creatTime", creatTime);
 		map.put("modifyTime", modifyTime);
 		map.put("seqNo", seqNo);
-		fssTradeApplyService.getBorrowWithDraw(map);
+		List<FssTradeApplyEntity> selectAccountSequenceList=fssTradeApplyService.getBorrowWithDraw(map);
 		model.addAttribute("map", map);
-//		model.addAttribute("page", selectAccountSequenceList);
+		model.addAttribute("page", selectAccountSequenceList);
 		return "fss/trade/trade_audit/borrowWithDraw";
 	}
 

@@ -85,9 +85,6 @@ public class FssAccountController {
     	if(StringUtils.isNotEmptyString(bussaccount.getAccNo())){//业务编号
     		map.put("accNo",bussaccount.getAccNo());
     	}
-    	if(StringUtils.isNotEmptyString(bussaccount.getCustNo())){
-    		map.put("custNo",bussaccount.getCustNo());
-    	}
     	if(StringUtils.isNotEmptyString(bussaccount.getCustName())){
     		map.put("custName",bussaccount.getCustName());
     	}
