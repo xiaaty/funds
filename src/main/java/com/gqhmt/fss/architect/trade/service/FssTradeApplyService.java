@@ -63,6 +63,7 @@ public class FssTradeApplyService {
 		fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
 	}
 	
+	
 	/**
 	 * 借款人提现完成通知借款系统
 	 * @param seqNo
@@ -199,8 +200,9 @@ public class FssTradeApplyService {
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：把借款人放款代扣添加进代扣申请表
+	 * applyStatus:申请类型，充值，提现
 	 */
-	public void insertLoanTradeApply(FssLoanEntity fssLoanEntity) throws FssException {
+	public void insertLoanTradeApply(FssLoanEntity fssLoanEntity,String applyStatus) throws FssException {
 			FssTradeApplyEntity tradeApplyEntity=new FssTradeApplyEntity();
 			//添加代扣申请
 			tradeApplyEntity.setAccNo(fssLoanEntity.getMortgageeAccNo());
@@ -210,8 +212,13 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setSeqNo(fssLoanEntity.getSeqNo());
 			tradeApplyEntity.setCustNo(fssLoanEntity.getId().toString());
 			tradeApplyEntity.setCreateTime(new Date());
+			tradeApplyEntity.setModifyTime(new Date());
+			tradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
+			tradeApplyEntity.setTradeAmount(fssLoanEntity.getContractAmt());
 			tradeApplyEntity.setRealTradeAmount(fssLoanEntity.getPayAmt());
 			tradeApplyEntity.setBusiType(fssLoanEntity.getTradeType());
+			tradeApplyEntity.setApplyType(1103);
+			tradeApplyEntity.setApplyState(applyStatus);
 			tradeApplyEntity.setTradeState(fssLoanEntity.getStatus());
 			tradeApplyEntity.setApplyNo(this.getApplyNo());
 			fssTradeApplyWriteMapper.insert(tradeApplyEntity);
@@ -238,17 +245,45 @@ public class FssTradeApplyService {
 	 * @param applyNo
      */
 	public void updateExecuteCount(String applyNo){
-
+		FssTradeApplyEntity applyEntity =new FssTradeApplyEntity();
+		applyEntity.setApplyNo(applyNo);
+		 List<FssTradeApplyEntity> select = this.fssTradeApplyReadMapper.select(applyEntity);
+		 applyEntity=select.get(0);
+		 applyEntity.setSuccessCount(applyEntity.getSuccessCount()+1);
+		 this.updateTradeApply(applyEntity);
 	}
 
-
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
+	 * 
+	 */
 	public void checkExecuteCount(String applyNo){
-		FssTradeApplyEntity applyEntity = this.fssTradeApplyReadMapper.selectByPrimaryKey(applyNo);
-
+		FssTradeApplyEntity applyEntity =new FssTradeApplyEntity();
+		applyEntity.setApplyNo(applyNo);
+		 List<FssTradeApplyEntity> select = this.fssTradeApplyReadMapper.select(applyEntity);
+		 applyEntity=select.get(0);
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
+		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
+			 applyEntity.setTradeState("10090003");
+			 applyEntity.setModifyTime(new Date());
+			fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+			//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
+			//todo
+			fssRepaymentService.changeTradeStatus(Long.parseLong(applyEntity.getCustNo()));
+		 }
 
-
-		//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：修改交易申请
+	 */
+	public void updateTradeApply(FssTradeApplyEntity applyEntity ){
+		fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 	}
 	/**
 	 * 查询抵押权人代扣信息

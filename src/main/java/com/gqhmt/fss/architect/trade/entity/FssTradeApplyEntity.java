@@ -89,6 +89,14 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "transaction_channel")//交易渠道
     private String transactionChannel;
     
+    @Column(name = "count")		//总条数
+    private int count;
+    
+    @Column(name = "success_count")	//成功条数
+    private int successCount;
+    
+    
+    
 	public Long getId() {
 		return id;
 	}
@@ -256,6 +264,21 @@ public class FssTradeApplyEntity implements Serializable {
 
 	public void setTransactionChannel(String transactionChannel) {
 		this.transactionChannel = transactionChannel;
+	}
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public int getSuccessCount() {
+		return successCount;
+	}
+
+	public void setSuccessCount(int successCount) {
+		this.successCount = successCount;
 	}
 	
 }

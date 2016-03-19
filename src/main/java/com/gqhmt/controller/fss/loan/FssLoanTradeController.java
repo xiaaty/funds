@@ -8,8 +8,7 @@ import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.pay.service.cost.ICost;
+import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.service.cost.ICost;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,10 +54,10 @@ public class FssLoanTradeController {
 	private FssLoanService fssLoanService;
 	@Resource
 	private IFundsTrade fundsTradeImpl;
-
+	@Resource
+	private FssTradeRecordService fssTradeRecordService;
 	@Resource
 	private ICost cost;
-
 
 	/**
 	 * 
@@ -134,12 +135,16 @@ public class FssLoanTradeController {
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：添加到抵押权人代扣
+	 * @throws FssException 
+	 * "10100001"代扣充值
 	 */
 	@RequestMapping("/fss/loan/tradeApply/withHold")
-	public String withholdApply( HttpServletRequest request, ModelMap model,FssLoanEntity fssLoanEntity) {
-		fssLoanEntity.setStatus("10090002");
+	public String withholdApply( HttpServletRequest request, ModelMap model,FssLoanEntity fssLoanEntity) throws FssException {
+		fssLoanEntity.setStatus("10050002");
 		fssLoanService.update(fssLoanEntity);
-		
+		fssLoanEntity.setStatus("10090002");
+		fssTradeApplyService.insertLoanTradeApply(fssLoanEntity,"10100001");
+		fssTradeRecordService.insertTradeRecord();
 		return "redirect:/fss/loan/trade/borrow";
 	}
 	/**
@@ -152,7 +157,7 @@ public class FssLoanTradeController {
 	public String transfer( HttpServletRequest request, @PathVariable Long id, ModelMap model) {
 //		通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
-//
+
 		try {
 			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(),fssLoanEntityById.getAccNo(),fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC,fssLoanEntityById.getId(),GlobalConstants.NEW_BUSINESS_MT);
 			fssLoanEntityById.setStatus("10050002");
@@ -180,7 +185,6 @@ public class FssLoanTradeController {
 		}
 
 		List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(id);
-		
 		if (fssFeeLists == null || fssFeeLists.size() == 0){
 			//todo 处理前台页面消息提示内容
 		}else{
@@ -200,7 +204,6 @@ public class FssLoanTradeController {
 //		fssLoanService.update(fssLoanEntityById);
 		}
 		
-
 		
 		return "redirect:/fss/loan/trade/borrow";
 	}
