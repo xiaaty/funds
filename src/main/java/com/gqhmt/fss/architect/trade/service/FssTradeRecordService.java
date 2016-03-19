@@ -177,7 +177,7 @@ public class FssTradeRecordService {
 	 * time:2016年3月19日
 	 * function：批量代扣
 	 */
-	public List<FssTradeRecordEntity> batchWithHolding(){
+	public List<FssTradeRecordEntity> findNotExecuteRecodes(){
 		//查询出处于划扣中的申请
 			FssTradeRecordEntity record=new FssTradeRecordEntity();
 			record.setTradeType(10030001);
@@ -190,9 +190,10 @@ public class FssTradeRecordService {
 	 * @param fssTradeRecordEntity		实体备案
 	 * @param state						1交易成功,2交易失败
      */
-	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state){
+	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String errCode){
 		fssTradeRecordEntity.setTradeResult(0);//(state == 1?"":"")
 		fssTradeRecordEntity.setTradeState(0);//修改交易状态为已执行
+        fssTradeRecordEntity.setSumary(errCode);
 
 		//Apply 执行数量更新
 		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
