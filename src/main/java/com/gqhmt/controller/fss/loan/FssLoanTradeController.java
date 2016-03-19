@@ -110,18 +110,29 @@ public class FssLoanTradeController {
 	 * 
 	 * author:jhz
 	 * time:2016年3月16日
-	 * function：代扣
+	 * function：点击代扣跳转到代扣页面
 	 */
 	@RequestMapping("/fss/loan/trade/withHold/{id}")
     public String withhold( HttpServletRequest request, @PathVariable Long id, ModelMap model) {
 //		通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		 //把交易状态 修改为‘代扣中’
-		 fssLoanEntityById.setStatus("10050002");
-		 fssLoanService.update(fssLoanEntityById);
-		 
-        return "redirect:/fss/loan/trade/borrow";
+		model.addAttribute("loan", fssLoanEntityById);
+        return "fss/trade/trade_audit/loanWithHold";
     }
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月18日
+	 * function：添加到抵押权人代扣
+	 */
+	@RequestMapping("/fss/loan/tradeApply/withHold")
+	public String withholdApply( HttpServletRequest request, ModelMap model,FssLoanEntity fssLoanEntity) {
+		fssLoanEntity.setStatus("10090002");
+		fssLoanService.update(fssLoanEntity);
+		
+		return "redirect:/fss/loan/trade/borrow";
+	}
 	/**
 	 * 
 	 * author:jhz

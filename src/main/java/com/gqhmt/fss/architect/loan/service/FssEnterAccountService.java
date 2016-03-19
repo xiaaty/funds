@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.loan.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import com.gqhmt.extServInter.dto.loan.EnterAccount;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import com.gqhmt.fss.architect.loan.bean.EnterAccountBean;
+import com.gqhmt.fss.architect.loan.bean.SettleListBean;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountReadMapper;
@@ -61,6 +63,17 @@ public class FssEnterAccountService {
 	 * 
 	 * author:jhz time:2016年3月7日 function：添加
 	 */
+	public void insertSettleListBean(SettleListBean settleListBean) throws FssException {
+		FssSettleListEntity fssSettleListEntity=new FssSettleListEntity();
+		fssSettleListEntity.setEnterId(settleListBean.getEnterId());
+		fssSettleListEntity.setAccountType(settleListBean.getAccount_type());
+		fssSettleListEntity.setSettleAmt(settleListBean.getSettle_amt());
+		this.insert(fssSettleListEntity);
+	}
+	/**
+	 * 
+	 * author:jhz time:2016年3月7日 function：添加
+	 */
 	public void insert(FssSettleListEntity fssSettleListEntity) throws FssException {
 		fssSettleListWriteMapper.insert(fssSettleListEntity);
 	}
@@ -72,6 +85,22 @@ public class FssEnterAccountService {
 	public List<FssSettleListEntity> getsettleList(Long id) throws FssException {
 		return fssSettleListReadMapper.getFssSettleList(id);
 	}
+	/**
+	 * 
+	 * author:jhz time:2016年3月7日 function：通过id得到费用列表
+	 */
+	public List<SettleListBean> getsettleListBean(Long id) throws FssException {
+		List<SettleListBean> settleListBeans=new ArrayList<>();
+		SettleListBean settleListBean=null;
+		 List<FssSettleListEntity> fssSettleList = fssSettleListReadMapper.getFssSettleList(id);
+		 for (FssSettleListEntity fssSettleListEntity : fssSettleList) {
+			 settleListBean=new SettleListBean();
+			 settleListBean.setAccount_type(fssSettleListEntity.getAccountType());
+			 settleListBean.setSettle_amt(fssSettleListEntity.getSettleAmt());
+			 settleListBeans.add(settleListBean);
+		}
+		 return settleListBeans;
+	}
 
 	/**
 	 * 
@@ -79,11 +108,12 @@ public class FssEnterAccountService {
 	 */
 	public void insertEnterAccount(EnterAccountDto enterAccountDto) throws FssException {
 		FssEnterAccountEntity fssEnterAccountEntity = null;
-		List<FssSettleListEntity> settleListEntities = null;
+		List<SettleListBean> settleListbeans= null;
 		for (EnterAccount enterAccount : enterAccountDto.getEnter_account()) {
 			MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(enterAccountDto.getMchn());
 			fssEnterAccountEntity = new FssEnterAccountEntity();
 			fssEnterAccountEntity.setAccNo(enterAccount.getAcc_no());
+			fssEnterAccountEntity.setLoanPlatform(enterAccount.getLoan_platform());
 			fssEnterAccountEntity.setAccountingNo(enterAccount.getAccounting_no());
 			fssEnterAccountEntity.setContractId(enterAccount.getContract_id());
 			fssEnterAccountEntity.setCreateTime(new Date());
@@ -96,11 +126,11 @@ public class FssEnterAccountService {
 //			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
 			long insertEnterAccount = fssEnterAccountWriteMapper.insertEnterAccount(fssEnterAccountEntity);
 
-			settleListEntities = enterAccount.getSettle_list();
-			if (settleListEntities != null) {
-				for (FssSettleListEntity fssSettleListEntity : settleListEntities) {
-					fssSettleListEntity.setEnterId(insertEnterAccount);
-					this.insert(fssSettleListEntity);
+			settleListbeans = enterAccount.getSettle_list();
+			if (settleListbeans != null) {
+				for (SettleListBean settleListBean : settleListbeans) {
+					settleListBean.setEnterId(insertEnterAccount);
+					this.insertSettleListBean(settleListBean);
 				}
 			}
 		}
@@ -118,7 +148,7 @@ public class FssEnterAccountService {
 		List<EnterAccount> enterAccounts = null;
 		enterAccounts = enterAccountReadMapper.getEnterAccount(map);
 		for (EnterAccount enterAccount : enterAccounts) {
-			enterAccount.setSettle_list(this.getsettleList(enterAccount.getId()));
+			enterAccount.setSettle_list(this.getsettleListBean(enterAccount.getId()));
 			enterAccounts.add(enterAccount);
 		}
 		enterAccountResponse.setEnterAccounts(enterAccounts);
@@ -131,9 +161,7 @@ public class FssEnterAccountService {
 	 * function：得到入账表
 	 */
 	public List<EnterAccountBean> getEnterAccountEntities(Map map){
-		
 		return enterAccountReadMapper.getEnterAccountEntities(map);
-		
 	}
 
 	/**
