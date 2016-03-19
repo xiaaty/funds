@@ -82,13 +82,6 @@ public class LendingResponse extends Response {
 		this.pay_amt = pay_amt;
 	}
 
-	public List<FssFeeList> getFeeLists() {
-		return feeLists;
-	}
-
-	public void setFeeLists(List<FssFeeList> feeLists) {
-		this.feeLists = feeLists;
-	}
 
 	public String getLoan_platform() {
 		return loan_platform;
@@ -105,6 +98,16 @@ public class LendingResponse extends Response {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public List<FssFeeList> getFeeLists() {
+		return feeLists;
+	}
+
+	public void setFeeLists(List<FssFeeList> feeLists) {
+		this.feeLists = feeLists;
+	}
+
+	
 
 
     

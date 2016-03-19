@@ -1,6 +1,7 @@
 package com.gqhmt.pay.service.cost;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 import java.math.BigDecimal;
 
@@ -35,6 +36,16 @@ public interface ICost {
 
 
     /**
+     * 涉及平台收费
+     * @param loanType
+     * @param fundsType
+     * @param accNo
+     * @param decimal
+     */
+    public FundOrderEntity cost(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException;
+
+
+    /**
      * 非平台收费
      * @param fundsType
      * @param custId
@@ -42,5 +53,11 @@ public interface ICost {
      * @param decimal
      */
     public void cost(String  fundsType, Integer  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
+
+
+    public void costReturn(String loanType,String  fundsType, Integer  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
+
+    public void costReturn(String loanType,String  fundsType,String accNo, BigDecimal decimal,Long busiId,Integer busiType);
+
 
 }
