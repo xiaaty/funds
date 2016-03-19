@@ -1,7 +1,5 @@
 package com.gqhmt.fss.architect.trade.entity;
 
-import org.apache.poi.hssf.record.crypto.Biff8Cipher;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -87,6 +85,9 @@ public class FssTradeApplyEntity implements Serializable {
     
     @Column(name = "contract_id")//合同Id
     private String contractId;
+    
+    @Column(name = "transaction_channel")//交易渠道
+    private String transactionChannel;
     
 	public Long getId() {
 		return id;
@@ -247,6 +248,14 @@ public class FssTradeApplyEntity implements Serializable {
 
 	public void setContractId(String contractId) {
 		this.contractId = contractId;
+	}
+
+	public String getTransactionChannel() {
+		return transactionChannel;
+	}
+
+	public void setTransactionChannel(String transactionChannel) {
+		this.transactionChannel = transactionChannel;
 	}
 	
 }
