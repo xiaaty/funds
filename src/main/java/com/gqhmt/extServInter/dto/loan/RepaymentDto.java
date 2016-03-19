@@ -1,19 +1,19 @@
 package com.gqhmt.extServInter.dto.loan;
 
-import java.util.List;
-
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.util.List;
 
 public class RepaymentDto extends SuperDto{
 	
-	private List<RepaymentChildDto> list;
+	private List<RepaymentChildDto> repay_list;
 
-	public List<RepaymentChildDto> getList() {
-		return list;
+
+	public List<RepaymentChildDto> getRepay_list() {
+		return repay_list;
 	}
 
-	public void setList(List<RepaymentChildDto> list) {
-		this.list = list;
+	public void setRepay_list(List<RepaymentChildDto> repay_list) {
+		this.repay_list = repay_list;
 	}
-	
 }
