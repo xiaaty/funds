@@ -21,10 +21,16 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,9 +77,49 @@ public class FssAccountService {
         return this.accountReadMapper.findCustomerAccountByParams(map);
     }
 
-
-    public List<BussAndAccountBean> queryAccountList(Map map)throws FssException {
-        return this.accountReadMapper.getBussinessAccountList(map);
+    /**
+     * 查询账户信息
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    public List<BussAndAccountBean> queryAccountList(BussAndAccountBean bussaccount,Long busiNo)throws FssException {
+    	List<BussAndAccountBean> bussaccountlist=null;
+    	
+    	Map map=new HashMap();
+    	String accType="";
+    	if(busiNo!=null && !"".equals(busiNo)){
+    		if(busiNo==10000001){//客户账户（互联网账户，委托出借账户，借款账户）
+    			accType="10010001,10010002,10010003";
+    		}
+    		if(busiNo==10000002){//中间人账户
+    			accType="10010004,10010005,10010006,10010007";
+    		}
+    		if(busiNo==10011000){//公司账户
+    			accType="10011000";
+    		}
+    	}
+    	if(StringUtils.isNotEmptyString(bussaccount.getAccNo())){//业务编号
+    		map.put("accNo",bussaccount.getAccNo());
+    	}
+    	if(StringUtils.isNotEmptyString(bussaccount.getCustName())){
+    		map.put("custName",bussaccount.getCustName());
+    	}
+    	if(StringUtils.isNotEmptyString(bussaccount.getCertNo())){
+    		map.put("certNo",bussaccount.getCertNo());
+    	}
+    	List list=new ArrayList();
+ 	   	if(StringUtils.isNotEmptyString(accType)){
+ 		   String str[]=accType.split(",");
+ 		   for (int i = 0; i < str.length; i++){
+ 			   list.add(str[i]);
+ 		   }
+ 	   }
+	    if(list!=null && list.size()>0){
+    		map.put("list", list);
+    	}
+	    bussaccountlist=this.accountReadMapper.getBussinessAccountList(map);
+        return bussaccountlist;
     }
 
     /**

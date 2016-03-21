@@ -73,28 +73,16 @@ public class FssAccountController {
      }
     
     /**
-     * 互联网账户列表、出借账户列表，根据账户标识符(t_gq_fss_account.busi_type)判断， 互联网账户（：10000001），出借账户（：10000002），
+     * 账户信息
      * @param request
      * @param model
      * @return
      */
     @RequestMapping(value = "/fss/account/interaccountlist/{busiNo}",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-    public Object intenetAccountList(HttpServletRequest request,ModelMap model,BussAndAccountBean bussaccount) throws FssException {
-    	Map map=new HashMap();
-    	if(StringUtils.isNotEmptyString(bussaccount.getAccNo())){//业务编号
-    		map.put("accNo",bussaccount.getAccNo());
-    	}
-    	if(StringUtils.isNotEmptyString(bussaccount.getCustName())){
-    		map.put("custName",bussaccount.getCustName());
-    	}
-    	if(StringUtils.isNotEmptyString(bussaccount.getCertNo())){
-    		map.put("certNo",bussaccount.getCertNo());
-    	}
-    	if(StringUtils.isNotEmptyString(bussaccount.getAccType())){
-    		map.put("accType",bussaccount.getAccType());
-    	}
-    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(map);
+    public Object intenetAccountList(HttpServletRequest request,ModelMap model,BussAndAccountBean bussaccount,@PathVariable Long busiNo) throws FssException {
+    	
+    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(bussaccount,busiNo);
 		model.addAttribute("page", accountList);
 		model.addAttribute("bussaccount", bussaccount);
 		return "fss/account/internetAccountList";
