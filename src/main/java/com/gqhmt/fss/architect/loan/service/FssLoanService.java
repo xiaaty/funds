@@ -62,13 +62,30 @@ public class FssLoanService {
 		 fssFeeListWriteMapper.insert(feeList);
 	 }
 	 /**
-		 * 
-		 * author:jhz
-		 * time:2016年3月7日
-		 * function：通过loan_id得到相应的收费列表
-		 */
-		public List<FssFeeList> getFeeList(Long id) {
+	 * 
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：通过loan_id得到相应的收费列表
+	 */
+	public List<FssFeeList> getFeeList(Long id) {
 		return fssFeeListReadMapper.getFeeList(id);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：把List<FssFeeList>集合转变为List<LendingFeeListDto>
+	 */
+	public List<LendingFeeListDto> getFeeListDto(List<FssFeeList> feeList){
+			List<LendingFeeListDto> feeListDtos=new ArrayList<>();
+			LendingFeeListDto feeListDto=null;
+			for (FssFeeList fee : feeList) {
+				feeListDto=new LendingFeeListDto();
+				feeListDto.setFee_amt(fee.getFeeAmt());
+				feeListDto.setFee_type(fee.getFeeType());
+				feeListDtos.add(feeListDto);
+			}
+			return feeListDtos;
 	}
     
     /**
@@ -93,7 +110,7 @@ public class FssLoanService {
 		fssLoanEntity.setMchnParent(findMerchantByMchnNo.getParentNo());
 		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
 //		feeList
-		List<LendingFeeListDto> feeLists = dto.getFeeList();
+		List<LendingFeeListDto> feeLists = dto.getFee_list();
 
 		if(feeLists==null){
 			return;
@@ -123,11 +140,9 @@ public class FssLoanService {
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
 		LendingResponse response = fssLoanReadMapper.getResponse(map);
-		response.setFeeLists(this.getFeeList(response.getId()));
+		response.setFee_list(getFeeListDto(this.getFeeList(response.getId())));
 		return response;
 	}
-	
-	
 	/**
 	 * 
 	 * author:jhz
@@ -187,19 +202,22 @@ public class FssLoanService {
 		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
 //		feeList
 		
-		try {
-			List<FssFeeList> feeLists = dto.getFeeLists();
-			if(feeLists!=null){
-			for (FssFeeList fssFeeList : feeLists) {
-				fssFeeList.setLoanId(insertLending);
-				fssFeeList.setLoanPlatform(dto.getLoan_platform());
-				this.insert(fssFeeList);
-				}
+			List<LendingFeeListDto> feeLists = dto.getFee_list();
+
+			if(feeLists==null){
+				return;
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+			List<FssFeeList> fssFeeLists = new ArrayList<>();
+
+			for (LendingFeeListDto feeListEntity: feeLists) {
+				FssFeeList fssFeeList = new FssFeeList();
+				fssFeeList.setLoanId(fssLoanEntity.getId());
+				fssFeeList.setLoanPlatform(dto.getLoan_platform());
+				fssFeeList.setFeeAmt(feeListEntity.getFee_amt());
+				fssFeeList.setFeeType(feeListEntity.getFee_type());
+				fssFeeLists.add(fssFeeList);
+			}
 	}
 	/**
 	 * 
@@ -212,7 +230,7 @@ public class FssLoanService {
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
 		FailedBidResponse failedBidResponse = fssLoanReadMapper.getFailedBidResponse(map);
-		failedBidResponse.setFeeLists(this.getFeeList(failedBidResponse.getId()));
+		failedBidResponse.setFee_list(getFeeListDto(this.getFeeList(failedBidResponse.getId())));
 		return failedBidResponse;
 	}
 	/**
@@ -243,6 +261,7 @@ public class FssLoanService {
 		// TODO Auto-generated method stub
 		return fssLoanReadMapper.selectByPrimaryKey(id);
 	}
+	
 	/**.
 	 * 
 	 * author:jhz

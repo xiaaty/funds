@@ -36,7 +36,7 @@ public class LendingResponse extends Response {
 
     private BigDecimal pay_amt;			//放款金额
     
-    private List<FssFeeList> feeLists;	//费用列表
+    private List<LendingFeeListDto> fee_list;	//费用列表
     
     private String loan_platform;			//借款平台
     
@@ -99,13 +99,14 @@ public class LendingResponse extends Response {
 		this.id = id;
 	}
 
-	public List<FssFeeList> getFeeLists() {
-		return feeLists;
+	public List<LendingFeeListDto> getFee_list() {
+		return fee_list;
 	}
 
-	public void setFeeLists(List<FssFeeList> feeLists) {
-		this.feeLists = feeLists;
+	public void setFee_list(List<LendingFeeListDto> fee_list) {
+		this.fee_list = fee_list;
 	}
+
 
 	
 

@@ -1,4 +1,5 @@
 package com.gqhmt.extServInter.dto.loan;
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 /**
@@ -17,11 +18,20 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 16/1/12  柯禹来      1.0     1.0 Version
  */
 public class CardChangeDto extends SuperDto {
-
+	
+	
+	@APIValidNull(errorCode = "90002012")
     private String bank_id;         //银行编号
+    
+	@APIValidNull(errorCode = "90002013")
     private String bank_card;       //收款账号
-    private String city_id;         //还款银行地址（省市区）国标
+    
+	@APIValidNull(errorCode = "90002014")
+    private String city_id;         //还款银行地址（省市区）国标++
+    
+    @APIValidNull(errorCode = "90004023")
     private String acc_no;          //借款人资金平台账号
+    
     private String fileName;        //文件名
 	public String getBank_id() {
 		return bank_id;

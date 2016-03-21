@@ -46,9 +46,10 @@ public class LendingDto extends SuperDto {
     @APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal pay_amt;			//放款金额
-
-    private List<LendingFeeListDto> feeList;			//收费列表
     
+    private List<LendingFeeListDto> fee_list;			//收费列表
+    
+    @APIValidNull(errorCode = "90004025")
     private String loan_platform;			//借款平台
 
 	public String getContract_id() {
@@ -100,13 +101,14 @@ public class LendingDto extends SuperDto {
 		this.loan_platform = loan_platform;
 	}
 
-	public List<LendingFeeListDto> getFeeList() {
-		return feeList;
+	public List<LendingFeeListDto> getFee_list() {
+		return fee_list;
 	}
 
-	public void setFeeList(List<LendingFeeListDto> feeLists) {
-		this.feeList = feeLists;
+	public void setFee_list(List<LendingFeeListDto> fee_list) {
+		this.fee_list = fee_list;
 	}
+
 
 
 }
