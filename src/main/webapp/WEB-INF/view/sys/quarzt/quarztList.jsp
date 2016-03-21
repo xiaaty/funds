@@ -77,16 +77,23 @@
                                  <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
                                     </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="200" />
+                                    	<col width="500" />
+                                    	<col width="300" />
+                                    	<col width="500" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="200" />
                                         <thead>
                                         <tr>
-                                        	<th>编号</th>
-                                            <th>job名称</th>
-                                            <th>job类名  </th>
-                                            <th>定时cron  </th>
-                                            <th>状态 </th>
-                                            <th>执行ip </th>
-                                            <th>操作</th>
+                                        	<td>编号</td>
+                                            <td>job名称</td>
+                                            <td>job类名  </td>
+                                            <td>定时cron  </td>
+                                            <td>状态 </td>
+                                            <td>执行ip </td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>

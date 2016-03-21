@@ -136,8 +136,8 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
+             <!--    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>银行卡列表</h2>
@@ -152,19 +152,28 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="200" />
+                                        <col width="300" />
+                                        <col width="300" />
+                                        <col width="250" />
+                                        <col width="250" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="300" />
+                                        <col width="300" />
                                         <thead>
                                         <tr>
-                                        	<th>编号</th>
-                                            <th>客户名称</th>
-                                            <th>银行名称  </th>
-                                            <th>银行简称  </th>
-                                            <th>银行账号 </th>
-                                            <th>银行卡类型 </th>
-                                            <th>是否绑定第三方银行账户</th>
-                                            <th>创建日期 </th>
-                                            <th>修改日期 </th>
-                                           <!--  <th>操作</th> -->
+                                        	<td>编号</td>
+                                            <td>客户名称</td>
+                                            <td>银行名称  </td>
+                                            <td>银行简称  </td>
+                                            <td>银行账号 </td>
+                                            <td>银行卡类型 </td>
+                                            <td>是否绑定第三方银行账户</td>
+                                            <td>创建日期 </td>
+                                            <td>修改日期 </td>
+                                           <!--  <td>操作</td> -->
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -192,7 +201,7 @@
                             </form>
                         </div>
                     </div>
-                </article>
+               <!--  </article> -->
             </div>
 
         </section>

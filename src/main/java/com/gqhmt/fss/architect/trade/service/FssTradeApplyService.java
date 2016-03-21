@@ -300,7 +300,7 @@ public class FssTradeApplyService {
 	 * @param tradeapply
 	 * @return
 	 */
-	public FssTradeApplyEntity getFssTradeApplyEntityById(Long id){
+	public FssTradeApplyEntity getFssTradeApplyEntityById(Long id) throws FssException{
 		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectByPrimaryKey(id);
 		return tradeapply;
 	}

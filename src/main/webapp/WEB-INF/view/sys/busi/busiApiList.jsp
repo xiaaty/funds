@@ -138,7 +138,17 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
                                         <thead>
                                         <tr>
                                         	<th align="left"><input type="checkbox" id="checkAll"/></th>

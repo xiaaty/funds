@@ -130,17 +130,25 @@
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
                                 </div> 
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                        <thead>
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="150" />
+                                    	<col width="350" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="" />
+                                    	<thead>
                                         <tr>
-                                            <th>编号</th>
-                                            <th>银行名称</th>
-                                            <th>银行短名称</th>
-                                            <th>银行代码</th>
-                                            <th>银行图标</th>
-                                            <th>创建时间</th>
-                                            <th>修改时间</th>
-                                            <th>操作</th>
+                                            <td>编号</td>
+                                            <td>银行名称</td>
+                                            <td>银行短名称</td>
+                                            <td>银行代码</td>
+                                            <td>银行图标</td>
+                                            <td>创建时间</td>
+                                            <td>修改时间</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -154,7 +162,7 @@
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                      <td>
-                                                     	 <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a>&nbsp;&nbsp;&nbsp;
+                                                     	 <%-- <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a> --%>&nbsp;&nbsp;&nbsp;
                                                       	 <a href="${contextPath}/fund/checkPageXe/${t.id}">查看页面限额</a>  
                                                      	 <%-- <a href="${contextPath}${t.limitPage}">查看页面限额</a> --%>
                                                      </td>
