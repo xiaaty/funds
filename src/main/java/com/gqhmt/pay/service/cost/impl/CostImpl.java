@@ -11,6 +11,7 @@ import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.cost.ICost;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * -----------------------------------------------------------------
  * 16/3/11  于泳      1.0     1.0 Version
  */
+@Service
 public class CostImpl  implements ICost{
 
     @Resource
