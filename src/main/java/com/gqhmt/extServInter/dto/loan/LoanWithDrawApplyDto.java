@@ -1,4 +1,7 @@
 package com.gqhmt.extServInter.dto.loan;
+import com.gqhmt.annotations.APIValid;
+import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
@@ -19,11 +22,25 @@ import java.math.BigDecimal;
  * 16/1/12  柯禹来      1.0     1.0 Version
  */
 public class LoanWithDrawApplyDto  extends SuperDto {
+	
+	@APIValidNull(errorCode = "90002016")
 	private String contract_id;//合同ID
+	
+	@APIValidNull(errorCode = "90004023")
 	private String acc_no;//借款人资金平台账号
+	
+	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal contract_amt;//合同金额
+	
+	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal pay_amt;//放款（提现）金额
-	private String  bespoke_date;
+	
+	
+	@APIValidNull(errorCode = "90004026")
+	private String  bespoke_date; //预约到账日期
+	
 	public String getContract_id() {
 		return contract_id;
 	}

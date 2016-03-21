@@ -28,15 +28,20 @@ public class EnterAccount extends Response {
 	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//合同ID
 	
+	@APIValidNull(errorCode = "90002019")
 	private String serial_number;			//序列号
 	
 	@APIValidNull(errorCode = "90004021")
 	private String accounting_no;			//账务流水号
 	
+	@APIValidNull(errorCode = "90004022")
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
+	@APIValidNull(errorCode = "90004023")
     private String acc_no;			//借款人资金平台账号
     
+	
+	 @APIValidNull(errorCode = "90004025")
     private String loan_platform;			//借款平台
 
     
