@@ -117,7 +117,12 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="500" />
+                                    	<col width="500" />
+                                    	<col width="500" />
+                                    	<col width="500" />
+                                    	<col width="300" />
                                         <thead>
                                         <tr>
                                           

@@ -2,10 +2,17 @@ package com.gqhmt.fss.architect.backplate.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper;
 import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper;
+import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.util.LogUtil;
+
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 /**
@@ -60,6 +67,30 @@ public class FssFssBackplateService {
     public FssBackplateEntity get(Long id){
         return fssBackplateReadMapper.selectByPrimaryKey(id);
     }
+    
+    /**
+     * 创建回盘信息
+     * @return
+     */
+    public void createFssBackplateEntity(FssTradeApplyEntity tradeapply) throws FssException {
+    	FssBackplateEntity backplateEntity=new FssBackplateEntity();
+		backplateEntity.setSeqNo(tradeapply.getSeqNo());
+		backplateEntity.setMchn(tradeapply.getMchnChild());
+		backplateEntity.setTradeType(String.valueOf(tradeapply.getApplyType()));
+		backplateEntity.setCreateTime(new Date());
+		backplateEntity.setModifyTime(new Date());
+		backplateEntity.setRepayCount(1);//回盘次数
+		backplateEntity.setRepay_result("");//回盘结果
+		try {
+			this.insert(backplateEntity);
+		} catch (Exception e) {
+			LogUtil.info(this.getClass(), e.getMessage());
+			throw new FssException("91009804");
+		}
+    }
+    
+    
+    
     
 
 }

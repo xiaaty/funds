@@ -199,28 +199,43 @@
                                             <button class="btn btn-default table-nobg-btn" id="btn_rech" type="button" >批量代扣</button>
                                      </div>
                                       <div class="clearfix ml20 mb5" id="addErrorMsg" style="color:red;"></div> 
-                                    <table id ="rechtable" class="table table-bordered mt15" style="text-align:center;">
-                                       <%--  <col width="200" />
-                                        <col /> --%>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="100"/>
+                                        <col width="100"/>
+                                        <col width="100"/>
                                         <thead>
                                         <tr>
-						                        <th align="left"><input type="checkbox" id="checkAll"/></th>
-						                        <th>客户名称</th>
-						                        <th>手机号码</th>
-						                        <th>业务类型</th>
-						                        <th>合同编号</th>
-						                        <th>大区</th>
-						                        <th>分公司名称</th>
-						                        <th>顾问姓名</th>
-						                        <th class='tr'>代扣金额</th>
-						                        <th class='tr' style="padding-right:40px;">实际代扣金额</th>
-						                        <th>代扣状态</th>
-						                        <th>申请人</th>
-						                        <th>申请时间</th>
-						                        <th>审核人</th>
-						                        <th>审核时间</th>
-						                        <th>第三方渠道</th>
-						                        <th>操作</th>
+						                        <td align="left"><input type="checkbox" id="checkAll"/></td>
+						                        <td>客户名称</td>
+						                        <td>手机号码</td>
+						                        <td>业务类型</td>
+						                        <td>合同编号</td>
+						                        <td>大区</td>
+						                        <td>分公司名称</td>
+						                        <td>顾问姓名</td>
+						                        <th class='tr'>代扣金额</td>
+						                        <th class='tr' style="padding-right:40px;">实际代扣金额</td>
+						                        <td>代扣状态</td>
+						                        <td>申请人</td>
+						                        <td>申请时间</td>
+						                        <td>审核人</td>
+						                        <td>审核时间</td>
+						                        <td>第三方渠道</td>
+						                        <td>操作</td>
 						                    </tr>
                     </tr>
                 </thead>

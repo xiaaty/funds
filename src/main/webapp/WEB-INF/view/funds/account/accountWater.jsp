@@ -188,17 +188,25 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="200" />
                                         <thead>
                                         <tr>
-                                            <th>账户编号 </th>
-                                            <th>客户姓名 </th>
-                                            <th>账户类型</th>
-                                            <th>业务类型 </th>
-                                            <th>流水类型</th>
-                                            <th>流水金额 </th>
-                                            <th>创建日期 </th>
-                                            <th>所属机构 </th>
+                                            <td>账户编号 </td>
+                                            <td>客户姓名 </td>
+                                            <td>账户类型</td>
+                                            <td>业务类型 </td>
+                                            <td>流水类型</td>
+                                            <td>流水金额 </td>
+                                            <td>创建日期 </td>
+                                            <td>所属机构 </td>
                                         </tr>
                                         </thead>
                                         <tbody>

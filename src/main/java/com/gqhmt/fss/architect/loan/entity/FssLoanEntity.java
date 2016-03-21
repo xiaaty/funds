@@ -57,6 +57,9 @@ public class FssLoanEntity implements Serializable {
     @Column(name = "bespoke_date",updatable = false)
     private Date bespokeDate  ;                               //预约到账日期       (NULL)           YES             (NULL)                   select,insert,update,references
     
+    @Column(name = "trade_type_parent",updatable = false)
+    private String tradeTypeParent;                               //交易类型前四位    (NULL)           YES             (NULL)                   select,insert,update,references
+    
     @Column(name = "trade_type",updatable = false)
     private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
   
@@ -256,6 +259,13 @@ public class FssLoanEntity implements Serializable {
 	public void setRepMsg(String repMsg) {
 		this.repMsg = repMsg;
 	}
-	
+
+	public String getTradeTypeParent() {
+		return tradeTypeParent;
+	}
+
+	public void setTradeTypeParent(String tradeTypeParent) {
+		this.tradeTypeParent = tradeTypeParent;
+	}
     
 	}

@@ -180,22 +180,22 @@
                                         <col width="300"/>
                                         <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>抵押权人资金平台账号</th>
-                                            <th>借款人资金平台账号</th>
-                                            <th>交易流水号</th>
-                                            <th>合同ID</th>
-                                            <th>合同金额  </th>
-                                            <th>放款金额   </th>
-                                            <th>借款平台</th>
-                                            <th>交易状态 </th>
-                                            <th>交易结果</th>
-                                            <th>交易类型</th>
-                                            <th>大商户号</th>
-                                            <th>子商户号 </th>
-                                            <th>交易日期 </th>
-                                            <th>修改日期 </th>
-                                            <th >操作</th>
+                                            <td>ID</td>
+                                            <td>抵押权人资金平台账号</td>
+                                            <td>借款人资金平台账号</td>
+                                            <td>交易流水号</td>
+                                            <td>合同ID</td>
+                                            <td>合同金额  </td>
+                                            <td>放款金额   </td>
+                                            <td>借款平台</td>
+                                            <td>交易状态 </td>
+                                            <td>交易结果</td>
+                                            <td>交易类型</td>
+                                            <td>大商户号</td>
+                                            <td>子商户号 </td>
+                                            <td>交易日期 </td>
+                                            <td>修改日期 </td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>

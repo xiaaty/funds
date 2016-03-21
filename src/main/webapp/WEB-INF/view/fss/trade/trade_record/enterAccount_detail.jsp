@@ -70,18 +70,27 @@
                                             <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/loan/enterAccountList'" ><i class="fa fa-minus"></i>返回</button>
                                       </div>
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                        <thead>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="200" />
+                                    	<col width="300" />
+                                    	<col width="200" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="250" />
+                                    	<col width="250" />
+                                    	<col width="200" />
+                                    	<thead>
                                         <tr>
-                                            <th>序列号</th>
-                                            <th>账务流水号  </th>
-                                            <th>合同ID</th>
-                                            <th>借款人资金平台账号</th>
-                                            <th>抵押权人资金平台账号</th>
-                                            <th>执行结果</th>
-                                            <th>创建时间 </th>
-                                            <th>修改时间</th>
-                                            <th>操作</th>
+                                            <td>序列号</td>
+                                            <td>账务流水号  </td>
+                                            <td>合同ID</td>
+                                            <td>借款人资金平台账号</td>
+                                            <td>抵押权人资金平台账号</td>
+                                            <td>执行结果</td>
+                                            <td>创建时间 </td>
+                                            <td>修改时间</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>

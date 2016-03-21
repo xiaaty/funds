@@ -135,23 +135,38 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                   <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                    	<col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                    	<col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                    	<col width="200" />
+                                        <col width="100" />
+                                        <col width="150" />
+                                    	<col width="150" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <thead>
                                         <tr>
-                                            <th>账号</th>
-                                            <th>交易日期</th>
-                                            <th>交易时间 </th>
-                                            <th>支出 </th>
-                                            <th>收入 </th>
-                                            <th>余额  </th>
-                                            <th>创建日期 </th>
-                                            <th>修改日期 </th>
-                                            <th>交易描述</th>
-                                            <th>交易渠道</th>
-                                            <th>三方交易订单号</th>
-                                            <th>API交易订单号</th>
-                                            <th>交所属商户号（大）</th>
-                                            <th>所属商户号（小）</th>
+                                            <td>账号</td>
+                                            <td>交易日期</td>
+                                            <td>交易时间 </td>
+                                            <td>支出 </td>
+                                            <td>收入 </td>
+                                            <td>余额  </td>
+                                            <td>创建日期 </td>
+                                            <td>修改日期 </td>
+                                            <td>交易描述</td>
+                                            <td>交易渠道</td>
+                                            <td>三方交易订单号</td>
+                                            <td>API交易订单号</td>
+                                            <td>交所属商户号（大）</td>
+                                            <td>所属商户号（小）</td>
                                         </tr>
                                         </thead>
                                         <tbody>

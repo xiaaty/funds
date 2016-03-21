@@ -133,15 +133,21 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="300" />
+                                    	<col width="400" />
+                                    	<col width="400" />
+                                    	<col width="400" />
+                                    	<col width="400" />
+                                    	<col width="400" />
                                         <thead>
                                         <tr>
-                                            <th>交易流水号</th>
-                                            <th>交易类型</th>
-                                            <th>大商户号</th>
-                                            <th>子商户号 </th>
-                                            <th>交易结果</th>
-                                            <th>操作</th>
+                                            <td>交易流水号</td>
+                                            <td>交易类型</td>
+                                            <td>大商户号</td>
+                                            <td>子商户号 </td>
+                                            <td>交易结果</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
