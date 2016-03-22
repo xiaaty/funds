@@ -156,24 +156,39 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                   <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="100" />
+                                        <col width="200" />
+                                        <col width="150" />
+                                        <col width="200" />
+                                        <col width="150" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="100"/>
                                         <thead>
                                         <tr>
-                                            <th>序号</th>
-                                            <th>业务编号</th>
-                                            <th>客户姓名</th>
-                                            <th>申请来源</th>
-                                            <th>证件号码 </th>
-                                            <th>开户行</th>
-                                            <th>开户地区</th>
-                                            <th>银行卡号</th>
-                                            <th>申请时间</th>
-                                            <th>审批时间</th>
-                                            <th>生效时间</th>
-                                            <th>变更结果</th>
-                                            <th>流程状态</th>
-                                            <th>备注</th>
-                                            <th>操作</th>
+                                            <td>序号</td>
+                                            <td>业务编号</td>
+                                            <td>客户姓名</td>
+                                            <td>申请来源</td>
+                                            <td>证件号码 </td>
+                                            <td>开户行</td>
+                                            <td>开户地区</td>
+                                            <td>银行卡号</td>
+                                            <td>申请时间</td>
+                                            <td>审批时间</td>
+                                            <td>生效时间</td>
+                                            <td>变更结果</td>
+                                            <td>流程状态</td>
+                                            <td>备注</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>

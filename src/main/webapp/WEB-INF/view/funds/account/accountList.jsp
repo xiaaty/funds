@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>资金管理--账号管理--冠群驰骋投资管理(北京)有限公司</title>
+    <title>账户管理--旧版账户-冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
@@ -38,8 +38,8 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>资金管理</li>
-            <li>账号管理</li>
+            <li>账户管理</li>
+            <li>旧版账户</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -119,7 +119,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>账号管理</h2>
+                            <h2>账户列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -130,9 +130,17 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                       <%--  <col width="200" />
-                                        <col /> --%>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
                                         <thead>
                                         <tr>
                                               <td>客户姓名</td>
@@ -164,8 +172,8 @@
                                                     <td>${acc.hasThirdAccount==2?"已创建":"未创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                    <a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>
-                                                    <a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a>
+                                                <%--     <a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>
+                                                    <a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a> --%>
                                                     <a href="${contextPath}/funds/account/accountWater/${acc.id}">查看流水</a>
                                                     </td>
                                                 </tr>

@@ -6,7 +6,6 @@ import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 
 /**
  * 
@@ -28,13 +27,18 @@ import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 public class FailedBidDto extends SuperDto {
 
 	private Long id;
+	
 	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//contract_id
 
+	@APIValidNull(errorCode = "90004022")
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
+	@APIValidNull(errorCode = "90004023")
     private String acc_no;			//借款人资金平台账号
 
+	 @APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal contract_amt;			//合同金额
     
     @APIValidNull(errorCode = "90004014")
@@ -42,9 +46,11 @@ public class FailedBidDto extends SuperDto {
     private BigDecimal pay_amt;			//放款金额
 
     
-    private List<FssFeeList> feeLists;			//收费列表
+    private List<LendingFeeListDto> fee_list;			//收费列表
     
+    @APIValidNull(errorCode = "90004025")
     private String loan_platform;	//借款平台
+    
 	public String getContract_id() {
 		return contract_id;
 	}
@@ -85,12 +91,13 @@ public class FailedBidDto extends SuperDto {
 		this.pay_amt = pay_amt;
 	}
 
-	public List<FssFeeList> getFeeLists() {
-		return feeLists;
+
+	public List<LendingFeeListDto> getFee_list() {
+		return fee_list;
 	}
 
-	public void setFeeLists(List<FssFeeList> feeLists) {
-		this.feeLists = feeLists;
+	public void setFee_list(List<LendingFeeListDto> fee_list) {
+		this.fee_list = fee_list;
 	}
 
 	public String getLoan_platform() {

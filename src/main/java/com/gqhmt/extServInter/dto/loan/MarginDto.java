@@ -1,6 +1,10 @@
 package com.gqhmt.extServInter.dto.loan;
 
 import java.math.BigDecimal;
+
+import com.gqhmt.annotations.APIValid;
+import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 /**
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -17,10 +21,17 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 16/1/12  柯禹来      1.0     1.0 Version
  */
 public class MarginDto extends SuperDto {
-
+	
+	@APIValidNull(errorCode = "90002016")
     private String contract_id; //合同Id
+	
+	@APIValidNull(errorCode = "90004023")
     private String acc_no;       //资金平台账号
+	
+	@APIValidNull(errorCode = "90004014")
+	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal refund_amt;   //退还保证金金额
+	
 	public String getContract_id() {
 		return contract_id;
 	}

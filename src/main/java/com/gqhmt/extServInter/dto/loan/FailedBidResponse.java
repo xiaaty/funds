@@ -2,8 +2,10 @@ package com.gqhmt.extServInter.dto.loan;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.gqhmt.annotations.APIValid;
+import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 
 /**
  * 
@@ -37,7 +39,7 @@ public class FailedBidResponse extends Response {
     private BigDecimal pay_amt;			//放款金额
 
     
-    private List<FssFeeList> feeLists;			//收费列表
+    private List<LendingFeeListDto> fee_list;			//收费列表
     
     private String loanPlatform   ;                                //费用平台     YES             (NULL)                   select,insert,update,references  账户总资产
 
@@ -90,12 +92,13 @@ public class FailedBidResponse extends Response {
 		this.pay_amt = pay_amt;
 	}
 
-	public List<FssFeeList> getFeeLists() {
-		return feeLists;
+
+	public List<LendingFeeListDto> getFee_list() {
+		return fee_list;
 	}
 
-	public void setFeeLists(List<FssFeeList> feeLists) {
-		this.feeLists = feeLists;
+	public void setFee_list(List<LendingFeeListDto> fee_list) {
+		this.fee_list = fee_list;
 	}
 
 	public Long getId() {

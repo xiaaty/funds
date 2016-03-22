@@ -86,7 +86,7 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "contract_id")//合同Id
     private String contractId;
     
-    @Column(name = "transaction_channel")//交易渠道
+    @Column(name = "channel_no")//交易渠道
     private String transactionChannel;
     
     @Column(name = "count")		//总条数

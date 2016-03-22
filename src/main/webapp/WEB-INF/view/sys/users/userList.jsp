@@ -144,12 +144,19 @@
                                     <!-- end widget edit box -->
                                     <!-- widget content -->
                                     <div class="widget-body">
-                                        <table id="borrow-rep-table1" class="table table-bordered" style="text-align:center;">
-                                            <col width="270" />
-                                            <col />
+                                       <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
                                             <thead>
                                                 <tr class="fb">
-                                                
                                                     <td nowrap="nowrap">员工编号</td>
                                                     <td nowrap="nowrap">姓名</td>
                                                     <td nowrap="nowrap">登录名</td>

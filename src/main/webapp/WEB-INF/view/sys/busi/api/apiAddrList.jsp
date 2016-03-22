@@ -71,7 +71,17 @@
                                 <div class="mb20" id="wid-id-713">
                                             <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/api/toAddApi'" >添加</button>
                                       </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
+                                    	<col width="230" />
                                         <thead>
                                         <tr>
                                             <td>api名称</td>

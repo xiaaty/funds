@@ -152,21 +152,33 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="100" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
                                         <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>借款人资金平台账号</th>
-                                            <th>交易流水号</th>
-                                            <th>合同ID</th>
-                                            <th>放款金额   </th>
-                                            <th>交易状态 </th>
-                                            <th>交易结果</th>
-                                            <th>商户号</th>
-                                            <th>交易日期 </th>
-                                            <th>修改日期 </th>
-                                            <th>预约到账日期</th>
-											<th>操作</th>
+                                            <td>序号</td>
+                                            <td>借款人资金平台账号</td>
+                                            <td>交易流水号</td>
+                                            <td>合同ID</td>
+                                            <td>放款金额   </td>
+                                            <td>交易状态 </td>
+                                            <td>交易结果</td>
+                                            <td>商户号</td>
+                                            <td>交易日期 </td>
+                                            <td>修改日期 </td>
+                                            <td>预约到账日期</td>
+											<td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>

@@ -215,13 +215,6 @@ public class BankCardInfoController {
 			return map;
     }
     
-    @RequestMapping(value = "/fund/checkPageXe/{id}",method = {RequestMethod.GET,RequestMethod.POST})
-  	public Object chakanyemian(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws FssException {
-      	BankEntity bank =bankCardInfoService.getBankById(id);
-      	model.addAttribute("bank", bank);
-  		return "fss/customer/ckxe";
-  	}
-    
     /**
      * 银行卡管理
      */

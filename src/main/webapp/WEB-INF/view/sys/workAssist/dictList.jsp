@@ -112,7 +112,14 @@
                                         <input type="hidden" id="parentId" value="${dictmain.parentId}" />
                                         <%-- <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_detail"><i class="fa fa-list-ul"></i>&nbsp;详情</button>--%>
                                     </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="200" />
+                                    	<col width="300" />
+                                    	<col width="400" />
+                                    	<col width="300" />
+                                    	<col width="400" />
+                                    	<col width="400" />
+                                    	<col width="300" />
                                         <thead>
                                         <tr>
                                               <td>编号</td>
