@@ -160,14 +160,13 @@
                                             <th>交易流水号</th>
                                             <th>合同ID</th>
                                             <th>放款金额   </th>
-                                           <!--  <th>借款平台</th> -->
                                             <th>交易状态 </th>
                                             <th>交易结果</th>
                                             <th>商户号</th>
                                             <th>交易日期 </th>
                                             <th>修改日期 </th>
                                             <th>预约到账日期</th>
-<!--                                             <th>操作</th> -->
+											<th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -178,26 +177,13 @@
                                                     <td>${t.seqNo}</td>
                                                     <td>${t.contractId}</td>
                                                     <td>${t.tradeAmount}</td>
-                                                  <%--   <td>
-                                                    <c:if test="${t.loanPlatform == '10040001'}">北京</c:if>
-										   			 <c:if test="${t.loanPlatform == '10040002'}">天津</c:if>
-										   			 <c:if test="${t.loanPlatform == '10040003'}">上海</c:if>
-                                                    </td> --%>
                                                     <td> <fss:dictView key="${t.applyState}" /></td>
                                                     <td> <fss:dictView key="${t.tradeState}" /></td>
                                                     <td>${t.mchnChild}</td>
                                                     <td><fss:fmtDate value="${t.createTime}"/></td>
                                                     <td><fss:fmtDate value="${t.modifyTime}"/></td>
                                                     <td><fss:fmtDate value="${t.bespokedate}"/></td>
-                                                    
-<!--                                                     <td> -->
-<%--                                                     <a href="${contextPath}/fss/loan/trade/feeList">查看</a> --%>
-<!--                                                     &nbsp; &nbsp; &nbsp;  -->
-<%--                                                       <c:if test="${t.tradeType == '11090001' && t.status=='10050004'}"> --%>
-<%-- 														<a href="${contextPath}/fss/loan/trade/feeList">代扣</a> --%>
-<%-- 														</c:if> --%>
-                                                    
-<!--                                                     </td> -->
+                                                    <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

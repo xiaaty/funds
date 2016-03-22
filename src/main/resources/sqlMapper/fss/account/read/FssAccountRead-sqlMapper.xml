@@ -65,9 +65,11 @@
 	   <if test="certNo != null and certNo != '' ">
 	      AND c.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
 	   </if> 
-	   <if test="accType != null and accType != '' ">
-	      AND a.acc_type = #{accType}
-	   </if> 
+	      AND a.acc_type IN
+	   <foreach collection="list" item="accType" index="index"
+				 open="(" close=")" separator=",">
+			#{accType}
+		</foreach>
 	</select>
 
 	<select id="findAccountByAccNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">

@@ -6,6 +6,8 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
+import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
+import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper;
@@ -49,7 +51,8 @@ public class FssRepaymentService {
 	private FssRepaymentParentReadMapper fssRepaymentParentReadMapper;
 	@Resource
 	private FssRepaymentParentWriteMapper fssRepaymentParentWriteMapper;
-	
+	@Resource
+	private FssFssBackplateService fssBackplateService;
 	
 	
 	/**
@@ -246,5 +249,71 @@ public class FssRepaymentService {
 	 */
 	public int getSuccessCount(Long parentId) {
 		return fssRepaymentReadMapper.getSuccessCount(parentId);
+	}
+	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：修改主表执行条数
+	 */
+	public void updateSuccessCount(Long parentId){
+		FssRepaymentParentEntity queryRepaymentParentById = this.queryRepaymentParentById(parentId);
+		queryRepaymentParentById.setSuccessCount(queryRepaymentParentById.getSuccessCount()+1);
+		 this.updateRepaymentParent(queryRepaymentParentById);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：代扣成功
+	 */
+	public FssRepaymentEntity changeTradeStatus(Long id){
+		FssRepaymentEntity queryRepayment= this.queryRepaymentById(id);
+		queryRepayment.setState("10090003");
+		queryRepayment.setMotifyTime(new Date());
+		this.updateRepaymentEntity(queryRepayment);
+		//更新主表执行成功条数
+		this.updateSuccessCount(queryRepayment.getParentId());
+		return queryRepayment;
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：修改主表状态
+	 */
+	//todo
+	public void changeRepaymentParentStatus(FssRepaymentEntity queryRepayment){
+		FssRepaymentParentEntity queryRepaymentParentById = this.queryRepaymentParentById(queryRepayment.getParentId());
+		if(queryRepaymentParentById.getTradeCount()<=queryRepaymentParentById.getSuccessCount()){
+				//成功
+				queryRepaymentParentById.setResultState("10080002");
+				this.updateRepaymentParent(queryRepaymentParentById);
+		}else if(queryRepaymentParentById.getSuccessCount()==0){
+				//失败
+				queryRepaymentParentById.setResultState("10080010");
+				this.updateRepaymentParent(queryRepaymentParentById);
+		}else{
+				//部分成功
+				queryRepaymentParentById.setResultState("10080003");
+				this.updateRepaymentParent(queryRepaymentParentById);
+		}
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月19日
+	 * function：数据回盘
+	 */
+	public void insertBackplate(FssRepaymentParentEntity repaymentParent){
+		FssBackplateEntity backplateEntity=new FssBackplateEntity();
+		backplateEntity.setCreateTime(new Date());
+		backplateEntity.setMchn(repaymentParent.getMchnChild());
+		backplateEntity.setRepay_result(repaymentParent.getResultState());
+		backplateEntity.setRepayCount(repaymentParent.getTradeCount());
+		backplateEntity.setSeqNo(repaymentParent.getSeqNo());
+		backplateEntity.setTradeType(repaymentParent.getTradeType());
+		fssBackplateService.insert(backplateEntity);
 	}
 }

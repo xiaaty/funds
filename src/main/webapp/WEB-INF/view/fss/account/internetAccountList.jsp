@@ -60,12 +60,10 @@
                                     </div>
                                     <div class="widget-body no-padding">
                                         <div class="mt10 mb10">
-                                            <table class="table lh32">
-                                                <col width="100" />
-                                                <col width="220" />
-                                                <col width="100" />
-                                                <col width="220" />
-                                                <col width="100" />
+                                            <table class="table lh32" style="min-width:600px;">
+                                                <col width="200" />
+                                                <col width="200" />
+                                                <col width="200" />
                                                 <col />
                                                 <tbody>
                                                     <tr></tr>
@@ -73,34 +71,21 @@
                                                         <td class="tr">客户账号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:150px" name="accNo" value="${bussaccount.accNo}" />
+                                                                <input type="text" style="width:250px" name="accNo" value="${bussaccount.accNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">客户姓名:</td>
                                                         <td>
-                                                            <label class="input"  style="width:150px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="custName" value="${bussaccount.custName}"/>
                                                             </label>
                                                         </td>
                                                         <td class="tr">证件号码:</td>
                                                         <td>
-                                                            <label class="input"  style="width:200px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="certNo" value="${bussaccount.certNo}"/>
                                                             </label>
                                                         </td>
-                                                        <td class="tr">账户类型:</td>
-                                                        <td>
-                                                            <select id = "accType" name = "accType" style="width:150px;height: 30px;">
-										                    	<option value="">请选择</option>
-										                    	<option  <c:if test="${bussaccount.accType==10010001}"> selected="selected" </c:if> value="10010001">互联网账户</option>
-										                    	<option  <c:if test="${bussaccount.accType==10010002}"> selected="selected" </c:if> value="10010002" >委托出借账户</option>
-										                    	<option  <c:if test="${bussaccount.accType==10010003}"> selected="selected" </c:if> value="10010003" >借款账户</option>
-										                    	<option  <c:if test="${bussaccount.accType==10010004}"> selected="selected" </c:if> value="10010004" >保理业务账户</option>
-										                    	<option  <c:if test="${bussaccount.accType==10010005}"> selected="selected" </c:if> value="10010005" >代偿人账户</option>
-										                    	<option  <c:if test="${bussaccount.accType==10010006}"> selected="selected" </c:if> value="10010006" >抵押权人账户</option>
-										                    	<option  <c:if test="${bussaccount.accType==10011000}"> selected="selected" </c:if> value="10011000" >公司账户</option>
-										                    </select>
-                                                        </td> 
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -130,9 +115,23 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                       <%--  <col width="200" />
-                                        <col /> --%>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                        <col width="200" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="200"/>
+                                        <col width="100"/>
                                         <thead>
                                         <tr>
                                               <td>客户账号</td>
