@@ -90,6 +90,9 @@ public class FssTradeRecordEntity implements Serializable {
     @Column(name = "trade_type_child")
     private Integer tradeTypeChild    ;                    	
     
+    @Column(name = "channel_no")  //交易渠道
+    private String channelNo;   
+    
 	public Long getId() {
 		return id;
 	}
@@ -256,6 +259,14 @@ public class FssTradeRecordEntity implements Serializable {
 
 	public void setTradeTypeChild(Integer tradeTypeChild) {
 		this.tradeTypeChild = tradeTypeChild;
+	}
+
+	public String getChannelNo() {
+		return channelNo;
+	}
+
+	public void setChannelNo(String channelNo) {
+		this.channelNo = channelNo;
 	}
 	
 }
