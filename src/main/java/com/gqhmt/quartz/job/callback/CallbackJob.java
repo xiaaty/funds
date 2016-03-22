@@ -1,4 +1,4 @@
-package com.gqhmt.quartz.job.bid;
+package com.gqhmt.quartz.job.callback;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
