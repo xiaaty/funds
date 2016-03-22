@@ -4,9 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!-- <meta charset="UTF-8"> -->
     <title>资金清结算系统--银行列表--冠群驰骋投资管理(北京)有限公司</title>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../view/include/common_css_js.jsp"%>
     <style>
@@ -152,19 +152,18 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${page.list}" var="t">
+                                        <c:forEach items="${page.list}" var="bankinfo">
                                                 <tr>
-                                                  	<td>${t.id}</td>
-                                                    <td>${t.bankName}</td>
-                                                    <td>${t.sortName}</td>
-                                                    <td>${t.bankCode}</td>
-                                                    <td><img src="${contextPath}${t.bankIcon}"/></td>
-                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                  	<td>${bankinfo.id}</td>
+                                                    <td>${bankinfo.bankName}</td>
+                                                    <td>${bankinfo.sortName}</td>
+                                                    <td>${bankinfo.bankCode}</td>
+                                                    <td><img src="${contextPath}${bankinfo.bankIcon}"/></td>
+                                                    <td><fmt:formatDate value="${bankinfo.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${bankinfo.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                      <td>
                                                      	 <%-- <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a> --%>&nbsp;&nbsp;&nbsp;
-                                                      	 <a href="${contextPath}/fund/checkPageXe/${t.id}">查看页面限额</a>  
-                                                     	 <%-- <a href="${contextPath}${t.limitPage}">查看页面限额</a> --%>
+                                                     	  <a href="${contextPath}${bankinfo.limitPage}">查看页面限额</a> 
                                                      </td>
                                                 </tr>
                                         </c:forEach>
