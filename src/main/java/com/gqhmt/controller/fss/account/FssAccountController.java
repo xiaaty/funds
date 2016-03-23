@@ -38,27 +38,14 @@ public class FssAccountController {
 	private FssWaterService fssWaterService;
 
     /**
-     * 旧版账户列表
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "/fss/account/oldlist",method = RequestMethod.GET)
-	@AutoPage
-    public Object accountOldList(HttpServletRequest request,ModelMap model){
-//		List<FundAccountEntity> accountList = fundAccountService.queryFundsAccountList(entity);
-//		model.addAttribute("page", accountList);
-		return "fss/account/accountList";
-    }
-    /**
      * 
      * author:jhz
      * time:2016年1月26日
      * function：查看流水详情
      */
-    @RequestMapping(value = "/fss/account/waterDetail/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/accounts/{type}/list/{id}/water",method = {RequestMethod.GET,RequestMethod.POST})
  	@AutoPage
-     public Object waterDetail(HttpServletRequest request,ModelMap model,@PathVariable Long id,String startDate,String endDate){
+     public Object waterDetail(HttpServletRequest request,ModelMap model,@PathVariable Long id,@PathVariable Integer type,String startDate,String endDate){
     	List<FssWaterEntity> waterDetails = fssWaterService.queryWaterDetail(id,startDate,endDate);
  		model.addAttribute("startDate", startDate);
  		model.addAttribute("endDate", endDate);
@@ -73,11 +60,10 @@ public class FssAccountController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/fss/account/interaccountlist/{busiNo}",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/account/{type}/list",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-    public Object intenetAccountList(HttpServletRequest request,ModelMap model,BussAndAccountBean bussaccount,@PathVariable Long busiNo) throws FssException {
-    	
-    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(bussaccount,busiNo);
+    public Object intenetAccountList(HttpServletRequest request,ModelMap model,BussAndAccountBean bussaccount,@PathVariable String type) throws FssException {
+    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(bussaccount,type);
 		model.addAttribute("page", accountList);
 		model.addAttribute("bussaccount", bussaccount);
 		return "fss/account/internetAccountList";

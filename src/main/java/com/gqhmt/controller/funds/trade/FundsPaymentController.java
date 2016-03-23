@@ -3,7 +3,6 @@ package com.gqhmt.controller.funds.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import org.springframework.stereotype.Controller;
@@ -11,9 +10,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * <h1>代扣审核控制类</h1>
@@ -26,8 +26,7 @@ public class FundsPaymentController {
 	
 	@Resource
 	private FssRepaymentService fssRepaymentService;
-	@Resource
-    private FssTradeApplyService fssTradeApplyService;
+
 
 	
 	
@@ -64,24 +63,7 @@ public class FundsPaymentController {
 	 * author:柯禹来
 	 * function:抵押权人代扣
 	 */
-	@RequestMapping(value = "/repayment/mortgageelist",method = {RequestMethod.GET,RequestMethod.POST})
-	@AutoPage
-	public String queryMortgageeList(HttpServletRequest request,ModelMap model,FssTradeApplyEntity tradeapply) throws Exception {
-		if(tradeapply.getAccNo()!=null && !"".equals(tradeapply.getAccNo())){
-			tradeapply.setAccNo(tradeapply.getAccNo());
-		}else{
-			tradeapply.setAccNo(null);
-		}
-		if(tradeapply.getTradeState()!=null && !"".equals(tradeapply.getTradeState())){
-			tradeapply.setTradeState(tradeapply.getTradeState());
-		}else{
-			tradeapply.setTradeState(null);
-		}
-		List<FssTradeApplyEntity> tradeapplylist = fssTradeApplyService.queryFssTradeApplyList(tradeapply);
-		model.addAttribute("page", tradeapplylist);
-		model.addAttribute("tradeapply", tradeapply);
-		return "fss/trade/mortgaee_list";
-	}
+
 	
 	
 	

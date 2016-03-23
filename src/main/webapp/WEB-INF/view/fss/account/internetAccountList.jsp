@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>账户管理--客户账户--冠群驰骋投资管理(北京)有限公司</title>
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
    <%@include file="../../../view/include/common_css_js.jsp"%>
+    <title>账户管理--<fss:dictView key="${requestScope.type}" />--冠群驰骋投资管理(北京)有限公司</title>
     <style>
         .table-nobg-btn{
             font:15/29px;
@@ -39,7 +40,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>账户管理</li>
-            <li>客户账户</li>
+            <li><fss:dictView key="${requestScope.type}" /></li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -61,6 +62,8 @@
                                     <div class="widget-body no-padding">
                                         <div class="mt10 mb10">
                                             <table class="table lh32" style="min-width:600px;">
+                                                <col width="200" />
+                                                <col width="200" />
                                                 <col width="200" />
                                                 <col width="200" />
                                                 <col width="200" />
@@ -170,7 +173,7 @@
                                                     <td> <fss:dictView key="${bussaccount.isValid}" /></td>
                                                     <td><fmt:formatDate value="${bussaccount.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bussaccount.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><a href="${contextPath}/fss/account/waterDetail/${bussaccount.accNo}">查看流水</a></td>
+                                                    <td><a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

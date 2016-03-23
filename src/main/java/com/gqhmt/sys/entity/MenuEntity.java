@@ -168,6 +168,6 @@ public class MenuEntity implements Serializable{
 
     @Override
     public String toString() {
-        return "["+this.id+","+this.menuName+","+this.sort+"]";
+        return "["+this.id+","+this.menuName+","+this.menuUrl+"]";
     }
 }
