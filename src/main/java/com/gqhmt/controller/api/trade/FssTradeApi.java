@@ -83,6 +83,8 @@ public class FssTradeApi {
 	@Resource
 	private ISsdkTrade ssdkTradeImpl;
 	
+	@Resource
+	private IWithHoldApply withHoldApplyImpl;
     /**
      * 
      * author:jhz
@@ -319,6 +321,29 @@ public class FssTradeApi {
     	return response;
     }
     */
+	
+	/*
+	 * 冠E通后台--代扣申请接口
+	 */
+	@RequestMapping(value = "/careateWithholdApply",method = RequestMethod.POST)
+	public Object careateWithholdApply(GET_WithholdDto dto){
+		Response response=new Response();
+		try {
+			response = withHoldApplyImpl.excute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
