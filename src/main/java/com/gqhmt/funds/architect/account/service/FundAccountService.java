@@ -462,6 +462,12 @@ public class FundAccountService {
 	    	fssAccountEntity.setAccNo(accNo);
 	        return fssAccountReadMapper.selectOne(fssAccountEntity);
 	    }
+	
+	    public FssAccountEntity getFundsAccountByCustId(String custId) throws FssException{
+	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+	    	fssAccountEntity.setCustId(Integer.valueOf(custId));
+	    	return fssAccountReadMapper.selectOne(fssAccountEntity);
+	    }
 	    
 }
 
