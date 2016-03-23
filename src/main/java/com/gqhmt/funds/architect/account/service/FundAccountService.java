@@ -68,9 +68,6 @@ public class FundAccountService {
     @Resource
 	private FssTradeApplyService fssTradeApplyService;
     
-    
-    
-    
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
@@ -466,5 +463,11 @@ public class FundAccountService {
 	        return fssAccountReadMapper.selectOne(fssAccountEntity);
 	    }
 	
+	    public FssAccountEntity getFundsAccountByCustId(String custId) throws FssException{
+	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+	    	fssAccountEntity.setCustId(Integer.valueOf(custId));
+	    	return fssAccountReadMapper.selectOne(fssAccountEntity);
+	    }
+	    
 }
 

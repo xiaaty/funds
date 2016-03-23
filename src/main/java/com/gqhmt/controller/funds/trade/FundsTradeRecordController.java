@@ -1,8 +1,10 @@
 package com.gqhmt.controller.funds.trade;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +28,8 @@ public class FundsTradeRecordController {
 	
 	@Resource
 	private TradeRecordService tradeRecordService;
+	@Resource
+	private FundSequenceService fundSequenceService;
 	
 	/**
 	 * author:柯禹来
@@ -96,5 +100,25 @@ public class FundsTradeRecordController {
 		model.addAttribute("transrecord", transrecord);
 		return "fss/trade/trade_record/transfer_list";
 	}
+	
+	/**
+	 * author:柯禹来
+	 * function:资金流水
+	 */
+	@RequestMapping(value = "/trade/fundsflowlist",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String queryFundsFlowList(HttpServletRequest request,ModelMap model,FundFlowBean fundflow) throws Exception {
+		if(fundflow!=null && !"".equals(fundflow.getAccountNo())){
+			fundflow.setAccountNo(fundflow.getAccountNo());
+		}
+		List<FundFlowBean> fundflowlist = fundSequenceService.queryFundFlowBean(fundflow);
+		model.addAttribute("page", fundflowlist);
+		model.addAttribute("fundflow", fundflow);
+		return "fss/trade/trade_record/fundsflow_list";
+	}
+	
+	
+	
+	
 	
 }

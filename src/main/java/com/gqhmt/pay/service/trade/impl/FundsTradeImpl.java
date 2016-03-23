@@ -457,7 +457,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     /**
      * 实时提现
      */
-    @Override
+   /* @Override
     public boolean sstxBusiness(SstxDto sstx) throws FssException {
         this.withdrawApply(sstx.getCust_no().intValue(), sstx.getBusi_type().intValue(), "",sstx.getAmt(), sstx.getBusi_id(),sstx.getSettleType());
         return true;
@@ -468,7 +468,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.withholdingApply(ssdk.getCust_no().intValue(), ssdk.getBusi_type().intValue(),"", ssdk.getAmt(), ssdk.getBusi_id());
         return true;
     }
-
+*/
 
 
 

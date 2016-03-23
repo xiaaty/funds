@@ -83,6 +83,8 @@ public class FssTradeApi {
 	@Resource
 	private ISsdkTrade ssdkTradeImpl;
 	
+	@Resource
+	private IWithHoldApply withHoldApplyImpl;
     /**
      * 
      * author:jhz
@@ -290,7 +292,7 @@ public class FssTradeApi {
      * author:柯禹来
      * time:2016年3月1日
      * function：实时提现
-     */
+     
     @RequestMapping(value = "/withhold",method = RequestMethod.POST)
     public Object sstxBusiness(SstxDto sstxDto){
     	Response response=new Response();
@@ -302,11 +304,11 @@ public class FssTradeApi {
     	}
     	return response;
     }
-	
+	*/
     /**     * author:柯禹来
      * time:2016年3月1日
      * function：实时代扣
-     */
+     
     @RequestMapping(value = "/agentWithdraw ",method = RequestMethod.POST)
     public Object ssdkBusiness(SsdkDto ssdkDto){
     	Response response=new Response();
@@ -318,7 +320,30 @@ public class FssTradeApi {
     	}
     	return response;
     }
-    
+    */
+	
+	/*
+	 * 冠E通后台--代扣申请接口
+	 */
+	@RequestMapping(value = "/careateWithholdApply",method = RequestMethod.POST)
+	public Object careateWithholdApply(GET_WithholdDto dto){
+		Response response=new Response();
+		try {
+			response = withHoldApplyImpl.excute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();

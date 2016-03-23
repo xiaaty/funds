@@ -96,6 +96,9 @@ public class FssLoanEntity implements Serializable {
    @Column(name="result")
    private String result;              // 98060001成功98060002部分成功还是98060003失败
    
+   @Column(name="busi_no")
+   private String busiNo;             //业务类型
+   
 	public Long getId() {
 		return id;
 	}
@@ -266,6 +269,14 @@ public class FssLoanEntity implements Serializable {
 
 	public void setTradeTypeParent(String tradeTypeParent) {
 		this.tradeTypeParent = tradeTypeParent;
+	}
+
+	public String getBusiNo() {
+		return busiNo;
+	}
+
+	public void setBusiNo(String busiNo) {
+		this.busiNo = busiNo;
 	}
     
 	}

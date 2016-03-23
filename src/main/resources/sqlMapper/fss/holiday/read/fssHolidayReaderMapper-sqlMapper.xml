@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gqhmt.fss.architect.holiday.mapper.read.FssHolidayReaderMapper">
+
+	<sql id="querySql">
+		SELECT
+		id,
+		year,
+		holiday_date,
+		holiday_type,
+		remarks,
+		create_time,
+		create_user_id,
+		modify_time,
+		modify_user_id,
+		is_delete
+		FROM t_gq_holiday_manage h
+	</sql>
+
+
+	<select id="query" resultType="com.gqhmt.fss.architect.holiday.entity.FssHolidayEntity">
+		<include refid="querySql" />
+		WHERE is_delete = 1
+		<if test="date != null">
+			AND holiday_date = #{date}
+		</if>
+		<if test="order != null">
+			ORDER BY ${order}
+		</if>
+	</select>
+
+</mapper>
