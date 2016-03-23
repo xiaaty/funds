@@ -1,12 +1,13 @@
 package com.gqhmt.core.util;
 
 
+import com.gqhmt.sys.entity.MenuEntity;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.gqhmt.sys.entity.MenuEntity;
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -28,36 +29,88 @@ public class AuthMenu {
 	
 	private static AuthMenu authMenu = new AuthMenu();
 
+    private final Map<String,List<Map<String, String>>> menuMaps = new ConcurrentHashMap<>();
+
+    private final Map<String,Map<String,MenuEntity>> menuMap = new ConcurrentHashMap<>();
+    private final Map<String,List<MenuEntity>>  menus = new ConcurrentHashMap<>();
+
+
+
+
 	public static AuthMenu getInstance() {
 		// TODO Auto-generated method stub
 		return authMenu;
 	}
+
+
+    public void addUserMenu(String loginName,List<Map<String, String>> menuList){
+        if(this.menuMaps.containsKey(loginName) && this.menuMaps.get(loginName) != null){
+            this.menuMaps.remove(loginName);
+            this.menus.remove(loginName);
+            this.menuMap.remove(loginName);
+        }
+        this.menuMaps.put(loginName,menuList);
+
+        String authMenuId = ResourceUtil.getValue("config.appContext","authMenuId");
+
+        if(authMenuId == null && "".equals(authMenuId)){
+            return;
+        }
+
+        List<MenuEntity> menuEntities=new ArrayList<>();
+        Map<String,MenuEntity> maps = new HashMap<>();
+        for (int i = 0; i < menuList.size(); i++) {
+            //菜单系统自行处理
+            Map<String, String> map = menuList.get(i);
+            String  parentId = map.get("parentId");
+            MenuEntity menuEntity=new MenuEntity();
+            menuEntity.setMenuName(map.get("name"));
+            menuEntity.setMenuUrl(map.get("href"));
+            menuEntity.setId(map.get("id"));
+            menuEntity.setParentId(parentId);
+            menuEntity.setParma(map.get("isShow"));
+            if(parentId.equals(authMenuId)){
+                menuEntities.add(menuEntity);
+            }
+            maps.put(menuEntity.getId(),menuEntity);
+        }
+
+        for (int i = 0; i < menuList.size(); i++) {
+            Map<String, String> map = menuList.get(i);
+            String  parnetId = map.get("parentId");
+            String  id = map.get("id");
+            if(parnetId.equals(authMenuId)){
+                continue;
+            }
+            MenuEntity menu = maps.get(id);
+            MenuEntity menu1 = maps.get(parnetId);
+            if(menu1 != null){
+                menu1.addMenu(menu);
+            }
+        }
+
+        menus.put(loginName,menuEntities);
+        menuMap.put(loginName,maps);
+    }
+
+    public void remove(String loginName){
+        if(this.menuMaps.containsKey(loginName)) {
+            this.menuMaps.remove(loginName);
+            this.menus.remove(loginName);
+            this.menuMap.remove(loginName);
+        }
+    }
+
+
 	/**
 	 * 
 	 * author:jhz
 	 * time:2016年3月4日
 	 * function：得到菜单列表
 	 */
-    public String getMenu( List<MenuEntity> menus,String context,String url){
-    	Map<String,MenuEntity> menuMap = new ConcurrentHashMap<>();
-    	List<MenuEntity> menues=new ArrayList<MenuEntity>();
+    public String getMenu( String  loginName,String context,String url){
+    	List<MenuEntity> menues=this.menus.get(loginName);
     	 //循环菜单项，初始化菜单
-        for(MenuEntity menu:menus){
-            menuMap.put(menu.getId(),menu);
-            if(menu.getParentId().equals( "7bf96a0315834addaec5dab0befe6f75")){
-                menues.add(menu);
-            }
-        }
-        for(MenuEntity menu:menus){
-            if(menu.getParentId().equals( "7bf96a0315834addaec5dab0befe6f75")){
-                continue;
-            }
-            String parentId = menu.getParentId();
-            MenuEntity menu1 = menuMap.get(parentId);
-            if(menu1 != null){
-                menu1.addMenu(menu);
-            }
-        }
         return this.getHtml(menues,context,url).toString();
     }
 
@@ -69,7 +122,7 @@ public class AuthMenu {
         }
         sb.append("<ul>");
         for(MenuEntity menu : func){
-            com.gqhmt.util.LogUtil.debug(this.getClass(),"tag:"+url+"___"+menu.getMenuUrl());
+            LogUtil.debug(this.getClass(),"tag:"+url+"___"+menu.getMenuUrl());
             if(checkMenu(url,menu)){
                 sb.append(" <li class='active'>");
             }else{
@@ -116,33 +169,27 @@ public class AuthMenu {
         if(menu.getParma() == "0" || "0".equals(menu.getParma())){
             return url.equals(menu.getMenuUrl());
         }
-        String[] param = menu.getParma().split(",");
-        String[] menuUrlLength = menu.getMenuUrl().split("/");
-        String[] urlLength = url.split("/");
-        if (menuUrlLength.length != urlLength.length) return false;
-        boolean flag = true;
-        for(int i = 0;i<menuUrlLength.length;i++){
-            String tmp = menuUrlLength[i];
-            if(check(tmp,param))
-                continue;
+        boolean flag = false;
 
-            String urlTmp = urlLength[i];
-
-            if(!tmp.equals(urlTmp)){
-                flag  =false;
-                break;
-            }
-
+        if(menu.getMenuUrl() == null || "".equals(menu.getMenuUrl())){
+            return  false;
         }
+
+        if(check(url,menu.getMenuUrl())){
+            flag = true;
+        }
+
         return flag;
     }
 
-    private boolean check(String tmp, String[] param) {
+    private boolean check(String url, String menuUrl) {
 
-        for(String t:param){
-            if(t.equals(tmp)){
-                return true;
-            }
+        if(url.equals(menuUrl)){
+            return true;
+        }
+
+        if(url.contains(menuUrl)){
+            return true;
         }
 
         return false;

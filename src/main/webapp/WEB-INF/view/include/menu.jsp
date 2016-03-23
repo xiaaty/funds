@@ -54,7 +54,7 @@
         </div>
         <!-- end user info -->
         <nav>
-        ${sessionScope.menu}
+        ${menu}
         </nav>
         <span class="minifyme"> <i class="fa fa-arrow-circle-left hit"></i> </span>
         

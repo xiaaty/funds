@@ -83,12 +83,11 @@ public class FssAccountService {
      * @return
      * @throws FssException
      */
-    public List<BussAndAccountBean> queryAccountList(BussAndAccountBean bussaccount,Long busiNo)throws FssException {
+    public List<BussAndAccountBean> queryAccountList(BussAndAccountBean bussaccount,String accType)throws FssException {
     	List<BussAndAccountBean> bussaccountlist=null;
     	
     	Map map=new HashMap();
-    	String accType="";
-    	if(busiNo!=null && !"".equals(busiNo)){
+    	/*if(busiNo!=null && !"".equals(busiNo)){
     		if(busiNo==10000001){//客户账户（互联网账户，委托出借账户，借款账户）
     			accType="10010001,10010002,10010003";
     		}
@@ -98,7 +97,7 @@ public class FssAccountService {
     		if(busiNo==10011000){//公司账户
     			accType="10011000";
     		}
-    	}
+    	}*/
     	if(StringUtils.isNotEmptyString(bussaccount.getAccNo())){//业务编号
     		map.put("accNo",bussaccount.getAccNo());
     	}

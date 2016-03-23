@@ -199,7 +199,7 @@ public class UrlConnectUtil {
     }
 
     private  InputStream postDataByJson(String url,String param) throws IOException {
-        URLConnection conn = connectionMethodPost(url);
+        URLConnection conn = connectionMethodPostByJson(url);
         this.postData(conn,param);
         return conn.getInputStream();
     }
@@ -235,12 +235,15 @@ public class UrlConnectUtil {
         return conn;
     }
 
+
+
     private URLConnection connectionMethodPostByJson(String  url) throws IOException {
         URL realUrl = new URL(url);
         HttpURLConnection conn = (HttpURLConnection)realUrl.openConnection();
+        conn.setRequestMethod("POST");
         // 设置请求
         this.connectPropertyByJson(conn);
-        conn.setRequestMethod("POST");
+
         conn.setDoOutput(true);
         return conn;
     }
@@ -249,16 +252,17 @@ public class UrlConnectUtil {
     private void connectProperty(URLConnection conn){
         conn.setRequestProperty("connection", "Keep-Alive");
         conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0;Windows NT 5.1;SV1)");
+        conn.setRequestProperty("accept", "*/*");
         //                    conn.setReadTimeout(60*1000);
         conn.setDoInput(true);
     }
 
     private void connectPropertyAcceptAll(URLConnection conn){
-        conn.setRequestProperty("accept", "*/*");
+
         this.connectProperty(conn);
     }
     private void connectPropertyByJson(URLConnection conn){
-        conn.setRequestProperty("accept","application/json");
+        conn.setRequestProperty("Content-Type","application/json");
         this.connectProperty(conn);
     }
 

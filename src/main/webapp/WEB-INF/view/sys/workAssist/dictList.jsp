@@ -49,7 +49,7 @@
                             </header>
                             <div>
                            <%--  ${contextPath}/sys/workassist/dictionary --%>
-                                <form class="smart-form" action=""  method="post" id="dictForm">
+                                <form class="smart-form" action=""  method="get" id="dictForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -150,11 +150,11 @@
                                                    <td>
 
 
-                                                       <a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
+                                                       <a href="${contextPath}/sys/dictionary/${dict.dictId}/update">修改</a>
 
                                                        &nbsp;&nbsp;&nbsp;
                                                        <c:if test="${dict.isEnd == 98010002 }">
-                                                           <a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
+                                                           <a href="${contextPath}/sys/dictionary/${dict.dictId}">查看</a>
                                                        </c:if>
 
 
@@ -307,11 +307,11 @@
 	    
 	  //添加按钮按下
         $("#btn_add").button().click(function() {
-        	window.open("${contextPath}/sys/workassist/dictAdd/${parent_id}","_self");
+        	window.open("${contextPath}/sys/dictionary/${parent_id}/add","_self");
         });
      //添加按钮按下
      $("#btn_return").button().click(function() {
-         window.open("${contextPath}/sys/workassist/dictionary/${returnId}","_self");
+         window.open("${contextPath}/sys/dictionary/${returnId}","_self");
      });
 	    
 	  
@@ -327,7 +327,7 @@
   	                    if (data.code == '0000') {
   	                      jAlert("删除成功!", '确认信息');
   	                      //自动跳转
-  	                      parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
+  	                      parent.location.href="${contextPath}/sys/dictionary/${parent_id}";
   	                    } else {
   	                        return;
   	                    }
