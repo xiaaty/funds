@@ -3,6 +3,7 @@ package com.gqhmt.controller.fss.loan;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
@@ -169,7 +170,8 @@ public class FssLoanTradeController {
 			fssLoanEntityById.setStatus("10050002");
 			fssLoanService.update(fssLoanEntityById);
 		} catch (FssException e) {
-			e.printStackTrace();
+			LogUtil.info(this.getClass(), e.getMessage());
+			model.addAttribute("erroMsg", e.getMessage());
 		}
 
 		//todo 结果返回前台页面,消息提示

@@ -12,16 +12,12 @@ import com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.util.CommonUtil;
-import com.gqhmt.util.ToDateUtils;
-
-import freemarker.template.utility.DateUtil;
 
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -104,11 +100,13 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
 			fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
 			fssTradeApplyEntity.setSeqNo(wthDrawApplyDto.getSeq_no());
-			try {
-				fssTradeApplyEntity.setBespokedate(ToDateUtils.toDate(wthDrawApplyDto.getBespoke_date()));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+			Date date=new Date();
+	    	Date BespokeDate = CommonUtil.stringToDate(wthDrawApplyDto.getBespoke_date());
+	    	if(BespokeDate.before(date)){
+	    		fssTradeApplyEntity.setBespokedate(date);
+	    	}else{
+	    		fssTradeApplyEntity.setBespokedate(BespokeDate);
+	    	}
 			fssTradeApplyEntity.setContractId(wthDrawApplyDto.getContract_id());
 			
 		return fssTradeApplyEntity;
