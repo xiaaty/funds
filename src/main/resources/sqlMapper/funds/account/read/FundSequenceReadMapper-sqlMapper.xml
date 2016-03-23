@@ -71,6 +71,30 @@
 		
 	</select>
 	
+	<!-- 查询资金流水 -->
+	<select id="selectAllFundFlow" parameterType="com.gqhmt.fss.architect.trade.bean.FundFlowBean" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
+		SELECT 
+			a.cust_id custId,
+			a.amount amount,
+			a.freeze_amount freezeAmount,
+			a.account_type accountType,
+			a.busi_type busiType,
+			a.CREATE_TIME create_time,
+			a.MODIFY_TIME modifyTime,
+			a.account_no accountNo,
+			a.cust_name userName,
+			a.has_Third_Account hasThirdAccount,
+			a.city_id cityId,
+			a.bankNo bankNo,
+			s.fund_type fundType,
+			s.actionType actionType
+		From t_gq_fund_account a,t_gq_fund_sequence s 
+		WHERE a.id = s.account_id AND (a.busi_type=3 or a.busi_type=99)
+		<if test="accountNo != null and accountNo != ''">
+			AND a.account_no like CONCAT('%',#{accountNo},'%') 
+		</if>
+	</select>
+	
 <!-- 	
 	<select id="getSumByDay" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
 		SELECT a.ACCOUNT_ID,cus.MOBILE_PHONE,

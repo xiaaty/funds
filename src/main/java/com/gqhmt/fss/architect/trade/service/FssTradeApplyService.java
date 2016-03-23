@@ -2,7 +2,9 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
+import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
@@ -13,11 +15,7 @@ import com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.util.CommonUtil;
 import com.gqhmt.util.ToDateUtils;
-
-import freemarker.template.utility.DateUtil;
-
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -314,18 +312,40 @@ public class FssTradeApplyService {
 		return tradeapply;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * 冠E通后台发起代扣申请
+	 * 
+	 */
+	public Response careateWithholdApplyEntity(GET_WithholdDto dto) throws FssException{
+		Response respon=new Response();
+		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
+		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
+		fssTradeApplyEntity.setApplyType(Integer.valueOf(dto.getTrade_type()));
+		fssTradeApplyEntity.setCustNo("");
+		fssTradeApplyEntity.setUserNo("");
+		fssTradeApplyEntity.setBusinessNo("11091002");
+		fssTradeApplyEntity.setBusiType(Application.getInstance().getDictName("11091002"));
+		fssTradeApplyEntity.setAccNo("");
+		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
+		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
+		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
+		fssTradeApplyEntity.setTradeState("0");
+		fssTradeApplyEntity.setApplyState("0");
+		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+		fssTradeApplyEntity.setMchnChild(dto.getMchn());
+		fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
+		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
+		fssTradeApplyEntity.setBespokedate(new Date());
+		fssTradeApplyEntity.setContractId(dto.getContract_id());
+		try {
+			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
+			respon.setResp_code("00000000");
+		} catch (Exception e) {
+			respon.setResp_code("91009804");
+		}
+		return respon;
+	}
 	
 	
 	

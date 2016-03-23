@@ -63,5 +63,5 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	
 	public List<FundSequenceEntity> getSumByDay();
 	
-	
+	public  List<FundFlowBean> selectAllFundFlow(FundFlowBean fundflow);
 }
