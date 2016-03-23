@@ -232,10 +232,10 @@ public interface IFundsTrade {
      */
     public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException;
 
-    public boolean sstxBusiness(SstxDto sstx) throws FssException;
+   /* public boolean sstxBusiness(SstxDto sstx) throws FssException;
 
     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
-
+*/
 
 
 }
