@@ -36,13 +36,13 @@ public class SstxTradeImpl implements ISstxTrade {
     @Override
     public Response excute(SuperDto dto) {
     	Response response = new Response();
-    	try {
+    	/*try {
 			fundsTrade.sstxBusiness((SstxDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
-		}
+		}*/
         return response;
     }
 }

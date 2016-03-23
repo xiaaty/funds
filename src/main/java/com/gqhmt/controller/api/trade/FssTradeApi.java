@@ -290,7 +290,7 @@ public class FssTradeApi {
      * author:柯禹来
      * time:2016年3月1日
      * function：实时提现
-     */
+     
     @RequestMapping(value = "/withhold",method = RequestMethod.POST)
     public Object sstxBusiness(SstxDto sstxDto){
     	Response response=new Response();
@@ -302,11 +302,11 @@ public class FssTradeApi {
     	}
     	return response;
     }
-	
+	*/
     /**     * author:柯禹来
      * time:2016年3月1日
      * function：实时代扣
-     */
+     
     @RequestMapping(value = "/agentWithdraw ",method = RequestMethod.POST)
     public Object ssdkBusiness(SsdkDto ssdkDto){
     	Response response=new Response();
@@ -318,7 +318,7 @@ public class FssTradeApi {
     	}
     	return response;
     }
-    
+    */
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
