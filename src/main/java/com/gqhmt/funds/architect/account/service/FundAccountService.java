@@ -68,9 +68,6 @@ public class FundAccountService {
     @Resource
 	private FssTradeApplyService fssTradeApplyService;
     
-    
-    
-    
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}

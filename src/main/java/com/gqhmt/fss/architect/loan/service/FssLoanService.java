@@ -1,7 +1,11 @@
 package com.gqhmt.fss.architect.loan.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.*;
+import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
+import com.gqhmt.extServInter.dto.p2p.FullBidApplyDto;
+import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper;
@@ -271,8 +275,70 @@ public class FssLoanService {
 	public void update(FssLoanEntity fssLoanEntity) {
 		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntity);
 	}
-	
-
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：添加
+	 */
+	public void insert(FssLoanEntity fssLoanEntity) {
+		fssLoanWriteMapper.insert(fssLoanEntity);
+	}
+	/**
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：冠e通后台 满标
+	 */
+	public void insertFullBidApply(FullBidApplyDto fullBidApplyDto) throws FssException{
+		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		fssLoanEntity.setContractId(fullBidApplyDto.getBusi_bid_no());
+		fssLoanEntity.setMchnChild(fullBidApplyDto.getMchn());
+		String parentMchn = Application.getInstance().getParentMchn(fullBidApplyDto.getMchn());
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(fullBidApplyDto.getSeq_no());
+		fssLoanEntity.setTradeType(fullBidApplyDto.getTrade_type());
+		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setStatus("10050001");
+		fssLoanWriteMapper.insert(fssLoanEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：冠e通后台 回款
+	 */
+	public void insertRepaymentDto(RePaymentDto rePaymentDto) throws FssException {
+		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		fssLoanEntity.setContractId(rePaymentDto.getBusi_bid_no());
+		fssLoanEntity.setMchnChild(rePaymentDto.getMchn());
+		String parentMchn = Application.getInstance().getParentMchn(rePaymentDto.getMchn());
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(rePaymentDto.getSeq_no());
+		fssLoanEntity.setTradeType(rePaymentDto.getTrade_type());
+		fssLoanEntity.setBusiNo(rePaymentDto.getRepayment_no());
+		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setStatus("10050001");
+		fssLoanWriteMapper.insert(fssLoanEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：冠e通后台 流标
+	 * @throws FssException 
+	 */
+	public void insertBidRepayApply(BidRepayApplyDto bidRepayApplyDto) throws FssException {
+		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		fssLoanEntity.setContractId(bidRepayApplyDto.getBusi_bid_no());
+		fssLoanEntity.setMchnChild(bidRepayApplyDto.getMchn());
+		String parentMchn = Application.getInstance().getParentMchn(bidRepayApplyDto.getMchn());
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(bidRepayApplyDto.getSeq_no());
+		fssLoanEntity.setTradeType(bidRepayApplyDto.getTrade_type());
+		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setStatus("10050001");
+		fssLoanWriteMapper.insert(fssLoanEntity);
+	}
 
 	/**
 	 * 获取需要满标转账的数据列表(信用标,抵押权人提现,新增状态)
@@ -281,5 +347,6 @@ public class FssLoanService {
 	public List<FssLoanEntity> findLoanBySettle(){
 		return this.fssLoanReadMapper.findLoanBySettle();
 	}
+	
 
 }	
