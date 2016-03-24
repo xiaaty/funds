@@ -30,7 +30,11 @@ public class FailedBidDto extends SuperDto {
 	
 	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//contract_id
+	
+	@APIValidNull(errorCode = "90002022")
+	private String contract_no;			//合同编号
 
+	
 	@APIValidNull(errorCode = "90004022")
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
@@ -114,6 +118,14 @@ public class FailedBidDto extends SuperDto {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getContract_no() {
+		return contract_no;
+	}
+
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
 	}
 	
     

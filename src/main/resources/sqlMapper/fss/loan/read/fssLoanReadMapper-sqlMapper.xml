@@ -14,34 +14,36 @@
 	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.LendingResponse" >
 		SELECT 
 			t.id,
-		    t.contract_id contract_id,
-		    t.mortgagee_acc_no mortgagee_acc_no,
-		    t.seq_no seq_no,
 		    t.mchn_child mchn,
+		    t.seq_no seq_no,
+		    t.trade_type trade_type,
+		    t.contract_id contract_id,
+		    t.contract_no contract_no,
+		    t.mortgagee_acc_no mortgagee_acc_no,
 		    t.acc_no acc_no,
-		    t.rep_code resp_code,
-			t.rep_msg resp_msg,
 			t.contract_amt contract_amt,
 			t.pay_amt pay_amt,
+		    t.rep_code resp_code,
+			t.rep_msg resp_msg,
 			t.loan_platform loan_platform
 			FROM t_gq_fss_loan t
 			where 1=1
 			<include refid="whereSql" />
 	</select>
-	<!-- 通过loanId得到收费列表 -->
 	<!-- 抵押权人提现回盘 -->
 	<select id="getMortgageeWithDrawRespons"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons" >
 		SELECT 
 			t.id id,
-		    t.contract_id contract_id,
 		    t.seq_no seq_no,
 		    t.mchn_child mchn,
+		    t.trade_type trade_type,
+		    t.contract_id contract_id,
+		    t.contract_no contract_no,
 		    t.acc_no acc_no,
+			t.pay_amt pay_amt,
 			t.contract_amt contract_amt,
 			t.rep_code resp_code,
-			t.rep_msg resp_msg,
-			t.pay_amt pay_amt,
-			t.loan_platform loanPlatform  			
+			t.rep_msg resp_msg
 			FROM t_gq_fss_loan t 
 			where 1=1
 			<include refid="whereSql" />
@@ -50,15 +52,17 @@
 	<select id="getFailedBidResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.FailedBidResponse" >
 		SELECT 
 			t.id,
-		    t.contract_id contract_id,
-		    t.mortgagee_acc_no mortgagee_acc_no,
-		    t.acc_no acc_no,
 		    t.seq_no seq_no,
 		    t.mchn_child mchn,
-		    t.rep_code resp_code,
-			t.rep_msg resp_msg,
+		    t.trade_type trade_type,
+		    t.contract_id contract_id,
+		    t.contract_no contract_no,
+		    t.mortgagee_acc_no mortgagee_acc_no,
+		    t.acc_no acc_no,
 			t.contract_amt contract_amt,
 			t.pay_amt pay_amt,
+		    t.rep_code resp_code,
+			t.rep_msg resp_msg,
 			t.loan_platform loanPlatform
 			FROM t_gq_fss_loan t
 			where 1=1
@@ -69,6 +73,7 @@
 		SELECT 
 			t.id id,
 		    t.contract_id contractId,
+		    t.contract_no contract_no,
 		    t.acc_no accNo,
 			t.contract_amt contractAmt,
 			t.rep_code repCode,

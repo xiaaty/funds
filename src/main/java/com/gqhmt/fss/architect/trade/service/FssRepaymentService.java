@@ -6,6 +6,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
+import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
@@ -223,13 +224,29 @@ public class FssRepaymentService {
 	/**
 	 * 还款划扣通知
 	 */
-    public List<FssRepaymentEntity> rePaymentCallBack(String seqNo,String mchn) throws FssException{
-    	List<FssRepaymentEntity> repaymentlist=null;
-    	repaymentlist=this.searRepaymentByparam(seqNo,mchn);
+    public RepaymentResponse rePaymentCallBack(String seqNo,String mchn) throws FssException{
+    	RepaymentResponse repaymentResponse=new RepaymentResponse();
+    	List<FssRepaymentEntity> repaymentlist=this.searRepaymentByparam(seqNo,mchn);
     	if(repaymentlist==null){
     		throw new FssException("还款划扣失败");
     	}
-    	return repaymentlist;
+    	List<RepaymentChildDto>repaymentChilds=new ArrayList<>();
+    	RepaymentChildDto repaymentChild=null;
+    	for (FssRepaymentEntity fssRepaymentEntity : repaymentlist) {
+    		repaymentChild=new RepaymentChildDto();
+    		repaymentChild.setAcc_no(fssRepaymentEntity.getAccNo());
+    		repaymentChild.setAmt(fssRepaymentEntity.getAmt());
+    		repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
+    		repaymentChild.setContract_no(fssRepaymentEntity.getContractNo());
+    		repaymentChild.setRemark(fssRepaymentEntity.getRemark());
+    		repaymentChild.setSerial_number(fssRepaymentEntity.getSerialNumber());
+    		repaymentChilds.add(repaymentChild);
+		}
+    	repaymentResponse.setRepay_list(repaymentChilds);
+    	repaymentResponse.setMchn(mchn);
+    	repaymentResponse.setSeq_no(seqNo);
+    	repaymentResponse.setTrade_type(repaymentlist.get(0).getTradeType());
+    	return repaymentResponse;
     }
 	
 	/**

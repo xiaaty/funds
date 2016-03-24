@@ -66,10 +66,10 @@ public class FssCustomerEntity implements Serializable{
     @Column(name="modify_user_id")
     private Long modifyUserId;                                 // bigint(20) DEFAULT NULL,
 
-    @Column(name="modify_user_id")
+    @Column(name="mchn_parent")
     private String mchnParent;                             // varchar(45) DEFAULT NULL COMMENT '主商户号',
 
-    @Column(name="modify_user_id")
+    @Column(name="mchn_child")
     private String mchnChild;                                  // varchar(45) DEFAULT NULL COMMENT '子商户号',
 
 

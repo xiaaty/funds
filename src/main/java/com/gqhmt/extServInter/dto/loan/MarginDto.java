@@ -25,12 +25,16 @@ public class MarginDto extends SuperDto {
 	@APIValidNull(errorCode = "90002016")
     private String contract_id; //合同Id
 	
+	@APIValidNull(errorCode = "90002022")
+	private String contract_no;			//合同编号
+	
 	@APIValidNull(errorCode = "90004023")
     private String acc_no;       //资金平台账号
 	
 	@APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal refund_amt;   //退还保证金金额
+	
 	
 	public String getContract_id() {
 		return contract_id;
@@ -49,6 +53,12 @@ public class MarginDto extends SuperDto {
 	}
 	public void setRefund_amt(BigDecimal refund_amt) {
 		this.refund_amt = refund_amt;
+	}
+	public String getContract_no() {
+		return contract_no;
+	}
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
 	}
 	
 }

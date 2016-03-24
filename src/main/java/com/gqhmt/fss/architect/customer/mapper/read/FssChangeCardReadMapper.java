@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
  */
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -28,6 +29,6 @@ public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity>
     public List<FssChangeCardEntity> queryChangeCardList(FssChangeCardEntity fssBankcard);
     
     
-    public FssChangeCardEntity getChangeCardByParam(@Param("seq_no") String seq_no,@Param("mchn") String mchn);
+    public ChangeCardResponse getChangeCardByParam(@Param("seq_no") String seq_no,@Param("mchn") String mchn);
 
 }

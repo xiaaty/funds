@@ -22,6 +22,7 @@ public class FssCustomerService {
     @Resource
     private FssCustomerReadMapper customerReadMapper;
 
+    @Resource
     private FssCustomerWriteMapper customerWriteMapper;
    
     public List<FssCustomerEntity> findCustomerByParams(Map map){
@@ -38,9 +39,8 @@ public class FssCustomerService {
     public FssCustomerEntity create(CreateLoanAccountDto dto) throws FssException {
         //获取客户信息，通过certNo
         try {
-            FssCustomerEntity fssCustomerEntity =  GenerateBeanUtil.GenerateClassInstance(FssCustomerEntity.class,dto);
+            FssCustomerEntity fssCustomerEntity = GenerateBeanUtil.GenerateClassInstance(FssCustomerEntity.class,dto);
             fssCustomerEntity.setName(dto.getName());
-            fssCustomerEntity.setCertNo(dto.getCert_no());
             fssCustomerEntity.setMobile(dto.getMobile());
             fssCustomerEntity.setCertType(1);
             fssCustomerEntity.setCertNo(dto.getCert_no());
