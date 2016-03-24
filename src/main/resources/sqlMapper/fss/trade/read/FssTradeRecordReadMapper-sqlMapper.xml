@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper">
+	<!--根据申请单号查询 代扣详细信息列表 -->
+	<select id="queryFssTradeRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+		SELECT 
+			t.id id,
+			t.cust_no custNo,
+			t.user_no userNo,
+			t.acc_no accNo,
+			t.trade_type tradeType,
+			t.trade_type_child tradeTypeChild,
+			t.amount amount,
+			t.charge charge,
+			t.thirdparyt_charge thirdparytCharge,
+			t.trade_date tradeDate,
+			t.bespoke_date bespokeDate,
+			t.trade_time tradeTime,
+			t.apply_no applyNo,
+			t.settle_type settleType,
+			t.trade_state tradeState,
+			t.trade_result tradeResult,
+			t.sumary sumary,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.mchn_parent mchnParent,
+			t.mchn_child mchnChild,
+			t.order_no orderNo,
+			t.channel_no channelNo
+		FROM t_gq_fss_trade_record t 
+		<where>
+			<if test="applyNo != null and applyNo != ''">
+				AND t.apply_no=#{applyNo}
+			</if>
+			<if test="tradeState != null and tradeState != ''">
+				AND t.trade_state =#{tradeState}
+			</if>
+			<if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
+				AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			</if>
+		</where>
+	</select>
+	
+	
+</mapper>
