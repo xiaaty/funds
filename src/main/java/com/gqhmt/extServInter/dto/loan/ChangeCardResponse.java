@@ -1,6 +1,5 @@
 package com.gqhmt.extServInter.dto.loan;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 
 /**
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -19,12 +18,45 @@ import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
  * 16/1/12  柯禹来      1.0     1.0 Version
  */
 public class ChangeCardResponse  extends Response {
-	private FssChangeCardEntity fssChangeCardEntity;
+	
+	private String bank_id;
+	
+	private String city_id;
+	
+	private String bank_card;
+	
+	private String acc_no;
 
-	public FssChangeCardEntity getFssChangeCardEntity() {
-		return fssChangeCardEntity;
+	public String getBank_id() {
+		return bank_id;
 	}
-	public void setFssChangeCardEntity(FssChangeCardEntity fssChangeCardEntity) {
-		this.fssChangeCardEntity = fssChangeCardEntity;
+
+	public void setBank_id(String bank_id) {
+		this.bank_id = bank_id;
 	}
+
+	public String getCity_id() {
+		return city_id;
+	}
+
+	public void setCity_id(String city_id) {
+		this.city_id = city_id;
+	}
+
+	public String getBank_card() {
+		return bank_card;
+	}
+
+	public void setBank_card(String bank_card) {
+		this.bank_card = bank_card;
+	}
+
+	public String getAcc_no() {
+		return acc_no;
+	}
+
+	public void setAcc_no(String acc_no) {
+		this.acc_no = acc_no;
+	}
+
 }

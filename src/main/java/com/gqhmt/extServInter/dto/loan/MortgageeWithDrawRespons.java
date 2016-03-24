@@ -30,9 +30,6 @@ public class MortgageeWithDrawRespons extends Response {
 
     private BigDecimal pay_amt;			//放款金额
     
-    private String loanPlatform   ;                                //费用平台     YES             (NULL)                   select,insert,update,references  账户总资产
-
-
 	public String getContract_id() {
 		return contract_id;
 	}
@@ -63,14 +60,6 @@ public class MortgageeWithDrawRespons extends Response {
 
 	public void setPay_amt(BigDecimal pay_amt) {
 		this.pay_amt = pay_amt;
-	}
-
-	public String getLoanPlatform() {
-		return loanPlatform;
-	}
-
-	public void setLoanPlatform(String loanPlatform) {
-		this.loanPlatform = loanPlatform;
 	}
 
     

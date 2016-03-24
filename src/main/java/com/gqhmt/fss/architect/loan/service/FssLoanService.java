@@ -108,6 +108,7 @@ public class FssLoanService {
 		fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_acc_no());
 		fssLoanEntity.setTradeType(dto.getTrade_type());
 		fssLoanEntity.setContractId(dto.getContract_id());
+		fssLoanEntity.setContractNo(dto.getContract_no());
 		fssLoanEntity.setCreateTime(new Date());
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setLoanPlatform(dto.getLoan_platform());
@@ -164,6 +165,7 @@ public class FssLoanService {
     	fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_acc_no());
     	fssLoanEntity.setTradeType(dto.getTrade_type());
     	fssLoanEntity.setContractId(dto.getContract_id());
+    	fssLoanEntity.setContractNo(dto.getContract_no());
     	fssLoanEntity.setCreateTime(new Date());
     	fssLoanEntity.setMchnChild(dto.getMchn());
     	fssLoanEntity.setMchnParent(findMerchantByMchnNo.getParentNo());
@@ -192,6 +194,7 @@ public class FssLoanService {
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
     	MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(dto.getMchn());
     	fssLoanEntity.setContractId(dto.getContract_id());
+    	fssLoanEntity.setContractNo(dto.getContract_no());
     	fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_acc_no());
     	fssLoanEntity.setAccNo(dto.getAcc_no());
     	fssLoanEntity.setContractAmt(dto.getContract_amt());

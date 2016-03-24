@@ -6,6 +6,7 @@ import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
@@ -243,13 +244,12 @@ public class FundsAccountImpl implements IFundsAccount {
 		/**
 		 * 	银行卡变更完成，通知变更发起方（借款系统）
 		 */
-	    public FssChangeCardEntity bankCardChangeCallBack(String seq_no,String mchn) throws FssException{
-	    	FssChangeCardEntity changeCardEntity=null;
-	    	changeCardEntity=fssChangeCardService.queryChangeCardByParam(seq_no,mchn);
-	    	if(changeCardEntity==null){
+	    public ChangeCardResponse bankCardChangeCallBack(String seq_no,String mchn) throws FssException{
+	    	ChangeCardResponse changeCardResponse=fssChangeCardService.queryChangeCardByParam(seq_no,mchn);
+	    	if(changeCardResponse==null){
 	    		throw new FssException("90004001");
 	    	}
-	    	return changeCardEntity;
+	    	return changeCardResponse;
 	    }
 	    
 }

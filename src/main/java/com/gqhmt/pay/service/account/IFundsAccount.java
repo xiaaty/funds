@@ -4,8 +4,8 @@ package com.gqhmt.pay.service.account;
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
@@ -130,6 +130,6 @@ public interface IFundsAccount {
     /**
 	 * 	银行卡变更完成，通知变更发起方（借款系统）
 	 */
-    public FssChangeCardEntity bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
+    public ChangeCardResponse bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
 
 }

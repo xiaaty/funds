@@ -4,6 +4,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
+import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
 import com.gqhmt.extServInter.dto.trade.GET_PrePaymentDto;
 import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -109,6 +110,8 @@ public class FssTradeApplyService {
 	    		fssTradeApplyEntity.setBespokedate(BespokeDate);
 	    	}
 			fssTradeApplyEntity.setContractId(wthDrawApplyDto.getContract_id());
+			//todo	合同编号要不要放进申请表  businessNo已经被占用
+//			fssTradeApplyEntity.setContractNo(wthDrawApplyDto.getContract_no());
 			
 		return fssTradeApplyEntity;
 	}
@@ -126,13 +129,20 @@ public class FssTradeApplyService {
 	/**
 	 * 完成抵押标借款人提现后，通知借款系统
 	 */
-	public FssTradeApplyEntity withDrasApplyCallBack(String seqNo, String mchn) throws FssException {
-		FssTradeApplyEntity fssTradeApplyEntity=null;
-		fssTradeApplyEntity=this.getTradeApplyByParam(seqNo,mchn);
+	public WithDrawApplyResponse withDrasApplyCallBack(String seqNo, String mchn) throws FssException {
+		WithDrawApplyResponse withDrawApplyResponse=new WithDrawApplyResponse();
+		FssTradeApplyEntity fssTradeApplyEntity=this.getTradeApplyByParam(seqNo,mchn);
 		if(fssTradeApplyEntity==null){
 			throw new FssException("90004002");
 		}
-		return fssTradeApplyEntity;
+		withDrawApplyResponse.setMchn(fssTradeApplyEntity.getMchnChild());
+		withDrawApplyResponse.setSeq_no(fssTradeApplyEntity.getSeqNo());
+		withDrawApplyResponse.setTrade_type(fssTradeApplyEntity.getTradeState());
+		withDrawApplyResponse.setContract_id(fssTradeApplyEntity.getContractId());
+		withDrawApplyResponse.setContract_amt(fssTradeApplyEntity.getTradeAmount());
+		withDrawApplyResponse.setPay_amt(fssTradeApplyEntity.getRealTradeAmount());
+		withDrawApplyResponse.setBespoke_date(fssTradeApplyEntity.getBespokedate());
+		return withDrawApplyResponse;
 	}
 	/**
 	 * 
