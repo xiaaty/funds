@@ -80,7 +80,7 @@ public class UrlConnectUtil {
         String result = "";
         String line;
         try {
-            in = new BufferedReader(new InputStreamReader(is));
+            in = new BufferedReader(new InputStreamReader(is,"utf-8"));
             while ((line = in.readLine()) != null) {
                 result += line;
             }
@@ -253,12 +253,14 @@ public class UrlConnectUtil {
         conn.setRequestProperty("connection", "Keep-Alive");
         conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0;Windows NT 5.1;SV1)");
         conn.setRequestProperty("accept", "*/*");
+        conn.setRequestProperty("Accept-Charset", "UTF-8");
+        conn.setRequestProperty("Accept-Encoding", "gzip");
         //                    conn.setReadTimeout(60*1000);
+        
         conn.setDoInput(true);
     }
 
     private void connectPropertyAcceptAll(URLConnection conn){
-
         this.connectProperty(conn);
     }
     private void connectPropertyByJson(URLConnection conn){

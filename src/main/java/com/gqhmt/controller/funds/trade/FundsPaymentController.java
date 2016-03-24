@@ -59,18 +59,4 @@ public class FundsPaymentController {
 		return "fss/trade/repaymentdetaillist";
 	}
 	
-	/**
-	 * author:柯禹来
-	 * function:抵押权人代扣
-	 */
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
