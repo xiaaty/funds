@@ -222,7 +222,7 @@ public class FundsAccountImpl implements IFundsAccount {
 		 			if(bankCardInfoEntity!=null){
 		 				try {
 		 					//将变更银行卡信息插入到银行卡变更表
-		 					FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, bankCardInfoEntity.getBankNo(), cardChangeDto.getBank_id(), "", cardChangeDto.getCity_id(), cardChangeDto.getFileName(), 4, cardChangeDto.getSeq_no(),cardChangeDto.getMchn());
+		 					FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "", cardChangeDto.getCity_id(), cardChangeDto.getFileName(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
 							fssChangeCardService.insert(fssChangeCardEntity);
 							//银行卡变更记录插入成功之后，进入跑批处理
 		 				} catch (FssException e) {

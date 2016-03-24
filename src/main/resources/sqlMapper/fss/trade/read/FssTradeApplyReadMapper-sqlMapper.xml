@@ -50,6 +50,7 @@
 			t.apply_no applyNo,
 			t.apply_type applyType,
 			t.business_no businessNo,
+			t.busi_type busiType,
 		    t.contract_id contractId,
 			t.seq_no seqNo,
 			t.bespoke_date bespokeDate,
@@ -58,8 +59,12 @@
 			t.create_time createTime,
 			t.modify_time modifyTime,
 			t.mchn_child mchnChild,
+			t.apply_state applyState,
 			t.trade_state tradeState,
-			t.real_trade_amount realTradeAmount
+			t.count count,
+			t.success_count successCount,
+			t.real_trade_amount realTradeAmount,
+			t.channel_no channelNo
 			FROM t_gq_fss_trade_apply t 
 			where t.apply_type=#{applyType}  and t.busi_type=#{busiType}
 			<if test="accNo != null and accNo != ''">

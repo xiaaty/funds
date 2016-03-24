@@ -4,7 +4,6 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
-import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
