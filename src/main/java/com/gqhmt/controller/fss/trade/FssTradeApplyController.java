@@ -3,6 +3,8 @@ package com.gqhmt.controller.fss.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.controller.fss.trade.FssTradeApplyController
@@ -34,21 +41,49 @@ public class FssTradeApplyController {
 
     @Resource
     private FssTradeApplyService fssTradeApplyService;
-
-    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET})
+    /**
+	 * author:柯禹来
+	 * function:抵押权人代扣
+	 */
+    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-        if("".equals(tradeApply.getAccNo())){
-            tradeApply.setAccNo(null);
+//    	tradeApply.setApplyType(type);
+//        tradeApply.setBusiType(bus);
+    	Map map=new HashMap();
+    	String startime=request.getParameter("startime");
+		String endtime=request.getParameter("endtime");
+		map.put("applyType", type);
+		map.put("busiType", bus);
+		if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
+			map.put("startime", startime+" 00:00:00");
+			map.put("endtime", endtime+" 23:59:59");
+    	}
+    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
+    		map.put("startime", "1970-01-01 23:59:59");
+			map.put("endtime", endtime+" 23:59:59");
+    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
+    		Date sysday=new Date();
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    		String nowtime=sdf.format(sysday);
+			map.put("startime", startime+" 00:00:00");
+			map.put("endtime", nowtime);
+    	}else{
+    		map.put("startime", "");
+			map.put("endtime", "");
+    	}
+    	if(!"".equals(tradeApply.getAccNo())){
+    		map.put("accNo", tradeApply.getAccNo());
         }
-        if("".equals(tradeApply.getTradeState())){
-            tradeApply.setTradeState(null);
-        }
-        tradeApply.setApplyType(type);
-        tradeApply.setBusiType(bus);
-        List<FssTradeApplyEntity> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(tradeApply);
+    	if(!"".equals(tradeApply.getBusinessNo())){
+    		map.put("businessNo", tradeApply.getBusinessNo());
+    	}
+//      List<FssTradeApplyEntity> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(tradeApply);
+        List<FssTradeApplyEntity> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
+        model.addAttribute("startime",startime);
+    	model.addAttribute("endtime",endtime);
         return "fss/trade/mortgaee_list";
     }
 }
