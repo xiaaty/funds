@@ -4,7 +4,6 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -12,6 +11,8 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -19,14 +20,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.pay.service.cost.ICost;
-
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,33 +93,7 @@ public class FssLoanTradeController {
 			return "fss/trade/trade_audit/borrowerloan";
 	}
 
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月11日
-	 * function：借款人提现
-	 */
-	@RequestMapping(value = "/fss/loan/trade/borrowWithDraw", method = {RequestMethod.GET, RequestMethod.POST})
-	@AutoPage
-	public Object accountWater(HttpServletRequest request, ModelMap model,String mchnChild,
-			String seqNo ,String contractId, String creatTime, String modifyTime) {
-		Map<Object, Object> map = new HashMap<>();
-		if (creatTime != null && !creatTime.equals("")) {
-			creatTime = creatTime + " 00:00:00";
-		}
-		if (modifyTime != null && !modifyTime.equals("")) {
-			modifyTime = modifyTime + " 23:59:59";
-		}
-		map.put("contractId", contractId);
-		map.put("mchnChild", mchnChild);
-		map.put("creatTime", creatTime);
-		map.put("modifyTime", modifyTime);
-		map.put("seqNo", seqNo);
-		List<FssTradeApplyEntity> selectAccountSequenceList=fssTradeApplyService.getBorrowWithDraw(map);
-		model.addAttribute("map", map);
-		model.addAttribute("page", selectAccountSequenceList);
-		return "fss/trade/trade_audit/borrowWithDraw";
-	}
+
 
 	/**
 	 * 

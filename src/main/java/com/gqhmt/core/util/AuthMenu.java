@@ -62,6 +62,10 @@ public class AuthMenu {
         for (int i = 0; i < menuList.size(); i++) {
             //菜单系统自行处理
             Map<String, String> map = menuList.get(i);
+            if("0".equals(map.get("isShow"))){
+                continue;
+            }
+
             String  parentId = map.get("parentId");
             MenuEntity menuEntity=new MenuEntity();
             menuEntity.setMenuName(map.get("name"));
@@ -69,6 +73,7 @@ public class AuthMenu {
             menuEntity.setId(map.get("id"));
             menuEntity.setParentId(parentId);
             menuEntity.setParma(map.get("isShow"));
+            menuEntity.setShow("1".equals(map.get("isShow"))?true:false);
             if(parentId.equals(authMenuId)){
                 menuEntities.add(menuEntity);
             }
@@ -77,6 +82,9 @@ public class AuthMenu {
 
         for (int i = 0; i < menuList.size(); i++) {
             Map<String, String> map = menuList.get(i);
+            if("0".equals(map.get("isShow"))){
+                continue;
+            }
             String  parnetId = map.get("parentId");
             String  id = map.get("id");
             if(parnetId.equals(authMenuId)){
@@ -116,12 +124,16 @@ public class AuthMenu {
 
     public StringBuffer getHtml(List<MenuEntity> func, String context, String url){
 
+
         StringBuffer sb = new StringBuffer();
-        if(func.size()<=0){
+        if(func == null || func.size()<=0){
             return sb;
         }
         sb.append("<ul>");
         for(MenuEntity menu : func){
+            if(menu == null){
+                continue;
+            }
             LogUtil.debug(this.getClass(),"tag:"+url+"___"+menu.getMenuUrl());
             if(checkMenu(url,menu)){
                 sb.append(" <li class='active'>");
