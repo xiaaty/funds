@@ -1,12 +1,12 @@
 package com.gqhmt.extServInter.callback.loan;
 
-import java.util.List;
 
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
 /**
  * Filename:    com.gqhmt.extServInter.callback.loan.ChangeBankCallback
@@ -22,16 +22,16 @@ import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
  * -----------------------------------------------------------------
  * 2016/3/6  柯禹来      1.0     1.0 Version
  */
+@Service
 public class PaymentCallback{
 //	完成划扣流程后，通知借款系统 
 	@Resource
 	private FssRepaymentService fssRepaymentService;
     
-    public Response withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
+    public RepaymentResponse withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
     	RepaymentResponse response = new RepaymentResponse();
     	try {
-    		List<FssRepaymentEntity> repaymentlist = fssRepaymentService.rePaymentCallBack(seqNo,mchn);
-    		response.setRepaymentlist(repaymentlist);
+    		response = fssRepaymentService.rePaymentCallBack(seqNo,mchn);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			response.setResp_code(e.getMessage());

@@ -2,7 +2,6 @@ package com.gqhmt.extServInter.dto.loan;
 import java.util.List;
 
 import com.gqhmt.annotations.APIValidNull;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.loan.bean.SettleListBean;
 
 /**
@@ -22,11 +21,13 @@ import com.gqhmt.fss.architect.loan.bean.SettleListBean;
  * -----------------------------------------------------------------
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
-public class EnterAccount extends Response {
+public class EnterAccount {
 
 	private Long id;
 	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//合同ID
+	
+	private String contract_no;			//合同编号
 	
 	@APIValidNull(errorCode = "90002019")
 	private String serial_number;			//序列号
@@ -47,6 +48,7 @@ public class EnterAccount extends Response {
     
     private List<SettleListBean> settle_list;			//清算列表
     
+
 	public String getContract_id() {
 		return contract_id;
 	}
@@ -109,6 +111,14 @@ public class EnterAccount extends Response {
 
 	public void setLoan_platform(String loan_platform) {
 		this.loan_platform = loan_platform;
+	}
+
+	public String getContract_no() {
+		return contract_no;
+	}
+
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
 	}
 
 

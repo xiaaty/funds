@@ -1,5 +1,6 @@
 package com.gqhmt.core.util;
 
+import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -21,7 +22,7 @@ import org.junit.Test;
  * -----------------------------------------------------------------
  * 16/3/22  于泳      1.0     1.0 Version
  */
-public class UrlConnectionTest {
+public class UrlConnectionTest extends TestService  {
 
     @Test
     public void test() throws FssException {
@@ -37,7 +38,7 @@ public class UrlConnectionTest {
                 "    ]\n" +
                 "    \n" +
                 "}";
-        Response response = UrlConnectUtil.sendJsonDataReturnObject(Response.class,"findTest",json);
+        Response response = UrlConnectUtil.sendJsonDataReturnObject(Response.class,"getLendWithDraw",json);
 
         assert response.getResp_code().equals("0000");
 

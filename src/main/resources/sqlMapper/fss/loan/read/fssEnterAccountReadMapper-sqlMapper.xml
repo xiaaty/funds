@@ -11,17 +11,18 @@
 			</if>
 	</sql>
 	<!-- 入账回盘-->
-	<select id="getEnterAccount"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.EnterAccount" >
+	<select id="getEnterAccount"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
 		SELECT 
 			t.id,
-		    t.contract_id contract_id,
-		    t.serial_number serial_number,
-		    t.seq_no seq_no,
-		    t.mchn_child mchn,
-		    t.rep_code resp_code,
-		    t.accounting_no accounting_no,
-			t.mortgagee_acc_no mortgagee_acc_no,
-			t.acc_no acc_no
+		    t.mchn_child mchnChild,
+		    t.seq_no seqNo,
+		    t.trade_type tradeType,
+		    t.serial_number serialNumber,
+		    t.contract_id contractId,
+		    t.contract_no contractNo,
+		    t.accounting_no accountingNo,
+			t.acc_no accNo,
+			t.mortgagee_acc_no mortgageeAccNo
 			FROM t_gq_fss_enter_account t
 			where 1=1
 			<include refid="whereSql" />

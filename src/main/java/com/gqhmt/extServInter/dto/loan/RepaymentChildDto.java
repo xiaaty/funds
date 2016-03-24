@@ -24,6 +24,9 @@ public class RepaymentChildDto{
 	@APIValidNull(errorCode = "90002016")
     private String contract_id;   //合同Id
 	
+	@APIValidNull(errorCode = "90002022")
+	private String contract_no;			//合同编号
+	
 	@APIValidNull(errorCode = "90002018")
     private String acc_no;        //借款人资金平台账号
 	
@@ -38,6 +41,7 @@ public class RepaymentChildDto{
 	public void setSerial_number(String serial_number) {
 		this.serial_number = serial_number;
 	}
+		
 	public String getContract_id() {
 		return contract_id;
 	}
@@ -61,6 +65,12 @@ public class RepaymentChildDto{
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public String getContract_no() {
+		return contract_no;
+	}
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
 	}
     
 }

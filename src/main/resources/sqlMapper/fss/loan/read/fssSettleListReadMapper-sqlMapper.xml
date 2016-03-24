@@ -7,8 +7,6 @@
 		SELECT 
 			f.id,
 			f.account_type accountType,
-			f.rep_code repCode,
-			f.rep_msg repMsg,
 			f.settle_amt settleAmt
 			FROM t_gq_fss_settlelist f
 			where f.enter_id=#{id}

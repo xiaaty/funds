@@ -116,6 +116,7 @@ public class FssEnterAccountService {
 			fssEnterAccountEntity.setLoanPlatform(enterAccount.getLoan_platform());
 			fssEnterAccountEntity.setAccountingNo(enterAccount.getAccounting_no());
 			fssEnterAccountEntity.setContractId(enterAccount.getContract_id());
+			fssEnterAccountEntity.setContractNo(enterAccount.getContract_no());
 			fssEnterAccountEntity.setCreateTime(new Date());
 			fssEnterAccountEntity.setMchnChild(enterAccountDto.getMchn());
 			fssEnterAccountEntity.setMchnParent(findMerchantByMchnNo.getParentNo());
@@ -145,13 +146,25 @@ public class FssEnterAccountService {
 		Map<String, String> map = new HashMap<>();
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
-		List<EnterAccount> enterAccounts = null;
-		enterAccounts = enterAccountReadMapper.getEnterAccount(map);
-		for (EnterAccount enterAccount : enterAccounts) {
-			enterAccount.setSettle_list(this.getsettleListBean(enterAccount.getId()));
+		List<EnterAccount> enterAccounts=new ArrayList<>();
+		EnterAccount enterAccount=null;
+		List<FssEnterAccountEntity>  enterAccountEntities = enterAccountReadMapper.getEnterAccount(map);
+		for (FssEnterAccountEntity enterAccountEntity : enterAccountEntities) {
+			enterAccount=new EnterAccount();
+			enterAccount.setAcc_no(enterAccountEntity.getAccNo());
+			enterAccount.setSerial_number(enterAccountEntity.getSerialNumber());
+			enterAccount.setContract_id(enterAccountEntity.getContractId());
+			enterAccount.setContract_no(enterAccountEntity.getContractNo());
+			enterAccount.setAccounting_no(enterAccountEntity.getAccountingNo());
+			enterAccount.setMortgagee_acc_no(enterAccountEntity.getMortgageeAccNo());
+			enterAccount.setLoan_platform(enterAccountEntity.getLoanPlatform());
+			enterAccount.setSettle_list(this.getsettleListBean(enterAccountEntity.getId()));
 			enterAccounts.add(enterAccount);
 		}
 		enterAccountResponse.setEnterAccounts(enterAccounts);
+		enterAccountResponse.setMchn(enterAccountEntities.get(0).getMchnChild());
+		enterAccountResponse.setSeq_no(enterAccountEntities.get(0).getSeqNo());
+		enterAccountResponse.setTrade_type(enterAccountEntities.get(0).getTradeType());
 		return enterAccountResponse;
 	}
 	/**

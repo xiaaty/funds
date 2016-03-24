@@ -33,7 +33,7 @@ public interface FssEnterAccountReadMapper extends ReadMapper<FssEnterAccountEnt
 		 * time:2016年3月9日
 		 * function：入账回盘
 		 */
-		List<EnterAccount> getEnterAccount(Map<String, String> map)throws FssException;
+		List<FssEnterAccountEntity> getEnterAccount(Map<String, String> map)throws FssException;
 		/**
 		 * 
 		 * author:jhz

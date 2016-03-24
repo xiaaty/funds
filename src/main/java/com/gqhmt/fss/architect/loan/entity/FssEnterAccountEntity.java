@@ -42,6 +42,9 @@ public class FssEnterAccountEntity implements Serializable {
     @Column(name = "contract_id")
     private String contractId   ;  
     
+    @Column(name = "contract_no")
+    private String contractNo   ;  
+    
     @Column(name = "serial_number")
     private String serialNumber  ;                               //序列号    (NULL)           YES             (NULL)                   select,insert,update,references
    
@@ -211,6 +214,15 @@ public class FssEnterAccountEntity implements Serializable {
 	public void setLoanPlatform(String loanPlatform) {
 		this.loanPlatform = loanPlatform;
 	}
+
+	public String getContractNo() {
+		return contractNo;
+	}
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
+	}
+
 
 	
 

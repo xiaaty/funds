@@ -19,6 +19,7 @@ import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.ResourceUtil;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -379,10 +380,9 @@ public class FssChangeCardService {
      * @return
      * @throws FssException
      */
-   public FssChangeCardEntity queryChangeCardByParam(String seq_no,String mchn) throws FssException{
-	   FssChangeCardEntity fssChangeCardEntity=null;
-	   fssChangeCardEntity=changeCardReadMapper.getChangeCardByParam(seq_no,mchn);
-	   return fssChangeCardEntity;
+   public ChangeCardResponse queryChangeCardByParam(String seq_no,String mchn) throws FssException{
+	   ChangeCardResponse changeCardResponse=changeCardReadMapper.getChangeCardByParam(seq_no,mchn);
+	   return changeCardResponse;
     }
     
     
