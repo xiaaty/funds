@@ -144,7 +144,7 @@ public class SystemController{
      * @param dict
      * @return
      */
-    @RequestMapping(value = "/sys/dictionary/{dictId}/update/save",method = {RequestMethod.PUT})
+    @RequestMapping(value = "/sys/dictionary/{dictId}/update/save",method = {RequestMethod.POST})
     @ResponseBody
     public Object dictUpdate(HttpServletRequest request,@ModelAttribute(value="dict")DictEntity dict){
     	dict.setModifyUserId(2l);

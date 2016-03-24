@@ -48,7 +48,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="dictForm" action="${contextPath}/sys/workassist/dictSave" method="post">
+                    <form id="dictForm" action="/sys/dictionary/${parent_id}/add/save" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
@@ -153,7 +153,7 @@
     	                        jAlert("添加成功!", '信息提示');
     	                        //自动跳转
     	                        var parent_id=data.parentid;
-    	                        parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
+    	                        parent.location.href="${contextPath}/sys/dictionary/${parent_id}";
     	                    } else {
     	                    	jAlert("添加失败,该编号已经存在,请勿重复添加!", '消息提示');
     	                        return;
