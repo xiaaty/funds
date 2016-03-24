@@ -1,6 +1,6 @@
 package com.gqhmt.core.tag;
 
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;

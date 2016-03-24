@@ -76,22 +76,32 @@
                                                                 <input type="text" style="width:300px" name="accNo" value="${tradeapply.accNo}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">交易状态：</td>
+                                                        <td class="tr">业务编号：</td>
                                                         <td>
-                                                            <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
-										                    	<option value="">请选择</option>
-										                    	<option  <c:if test="${tradeapply.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option>
-										                    	<option  <c:if test="${tradeapply.tradeState==10030002}"> selected="selected" </c:if> value="10030002" >交易成功</option>
-										                    	<option  <c:if test="${tradeapply.tradeState==10030003}"> selected="selected" </c:if> value="10030003" >交易失败</option>
-										                    	<option  <c:if test="${tradeapply.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option>
-										                    </select>
+                                                             <label class="input">
+                                                                <input type="text" style="width:300px" name="businessNo" value="${tradeapply.businessNo}" />
+                                                            </label>
                                                         </td> 
+                                                        <td class="tr">创建日期：</td>
+			                                             <td colspan="5">
+			                                                <section class="fl">
+			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
+			                                                    </label>
+			                                                </section>
+			                                                <span class="fl">&nbsp;至&nbsp;</span>
+			                                                <section class="fl">
+			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
+			                                                    </label>
+			                                                </section>
+			                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <footer>
-                                          <button type="submit" class="btn btn-primary">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button type="submit" class="btn btn-primary" onclick="tijiao()">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -126,12 +136,10 @@
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="150" />
-                                        <col width="100" />
+                                        <col width="150" />
                                         <col width="100" />
                                         <col width="150" />
                                         <col width="150" />
-                                        <col width="100" />
-                                        <col width="100" />
                                         <thead>
                                         <tr>
                                              <td>申请编号</td>
@@ -141,16 +149,14 @@
                                              <td>账户编号</td>
                                              <td>交易金额</td>
                                              <td>实际交易金额</td>
-                                             <td>交易手续费</td>
                                              <td>交易状态</td>
                                              <td>申请状态</td>
-                                             <td>预约到账日期</td>
-                                             <td>合同号ID</td>
                                              <td>流水号</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
                                              <td>商户号</td>
                                              <td>交易渠道</td>
+                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
@@ -163,16 +169,15 @@
                                                     <td>${tradeapply.accNo}</td>
                                                     <td>${tradeapply.tradeAmount}</td>
                                                     <td>${tradeapply.realTradeAmount}</td>
-                                                    <td>${tradeapply.tradeChargeAmount}</td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
-                                                    <td><fss:fmtDate value="${tradeapply.bespokedate}"/></td>
-                                                    <td>${tradeapply.contractId}</td>
                                                     <td>${tradeapply.seqNo}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
                                                     <td><fss:fmtDate value="${tradeapply.modifyTime}"/></td>
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td>${tradeapply.transactionChannel}</td>
+                                                    <td><a href="#">查看详细</a></td>
+                                                    
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -193,7 +198,155 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortForm"));
-    });
+        
+        $('.selectdate').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            autoclose: 1,
+            format: 'yyyy-mm-dd',
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+	     
+	     dateCheck();
+	     
+	     
+        $('.selectdate_time').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            autoclose: 1,
+            format: 'hh:m:00',
+            todayHighlight: 1,
+            startView: 1,
+            minView: 1,
+            forceParse: 0
+        });
+	 }); 
+
+	 
+		//日期的合法性check
+	    function dateCheck() {
+	    	var $selectdate = $(".selectdate");
+	    	$selectdate.each(function() {
+	    		//$(this).off();
+	        	$(this).focus(function() {
+	        		//
+	        		this.select();
+	        	})
+	        	.blur(function() {
+		        	if($(this).val() != "") {
+			        	var val = $(this).val();
+			        	if (val.indexOf("\-") > 0 ) {
+			        	} else {
+			        		if (val.length == 8) {
+			        			val = val.substr(0,4) + "-" + val.substr(4,2) + "-" + val.substr(6,2);
+			        			$(this).val(val);
+			        		}
+			        	}
+			        	var msg= isDate($(this).val());
+			        	if (msg != "") {
+				        	alert(msg);
+				        	this.focus();
+			        	}
+
+	        		}
+	        	});
+	    	});
+	    }
+	 
+	    function isDate(strDate){
+	    	var strSeparator = "-"; //日期分隔符 
+	    	var strDateArray; 
+	    	var intYear; 
+	    	var intMonth; 
+	    	var intDay; 
+	    	var boolLeapYear; 
+	    	var ErrorMsg = ""; //出错信息 
+	    	strDateArray = strDate.split(strSeparator); 
+	    	//没有判断长度,其实2008-8-8也是合理的//strDate.length != 10 || 
+	    	if(strDateArray.length != 3) { 
+	        	ErrorMsg += "日期格式必须为: 年-月-日"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	intYear = parseInt(strDateArray[0],10); 
+	    	intMonth = parseInt(strDateArray[1],10); 
+	    	intDay = parseInt(strDateArray[2],10); 
+	    	if(isNaN(intYear)||isNaN(intMonth)||isNaN(intDay)) { 
+	    		ErrorMsg += "请输入有效的日期！"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	if(intMonth>12 || intMonth<1) { 
+	    		ErrorMsg += "请输入有效的日期！"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	if((intMonth==1||intMonth==3||intMonth==5||intMonth==7 
+	    		||intMonth==8||intMonth==10||intMonth==12) &&(intDay>31||intDay<1)) { 
+	    		ErrorMsg += "请输入有效的日期！"; 
+	        	return ErrorMsg; 
+	    	} 
+	    	if((intMonth==4||intMonth==6||intMonth==9||intMonth==11) 
+	    		&&(intDay>30||intDay<1)) { 
+	    		ErrorMsg += "请输入有效的日期！";  
+	        	return ErrorMsg; 
+	    	} 
+	    	if(intMonth==2){ 
+	        	if(intDay < 1) { 
+	        		ErrorMsg += "请输入有效的日期！";  
+		        	return ErrorMsg; 
+	    		} 
+	        	boolLeapYear = false; 
+	        	if((intYear%100) == 0){ 
+		        	if((intYear%400) == 0) 
+		        	boolLeapYear = true; 
+	    		} else { 
+		        	if((intYear % 4) == 0) 
+		        		boolLeapYear = true; 
+	        		} 
+	        		if(boolLeapYear){ 
+		        		if(intDay > 29) { 
+		        			ErrorMsg += "请输入有效的日期！"; 
+			        		return ErrorMsg; 
+	        			} 
+	    			} else { 
+			        	if(intDay > 28) { 
+				        	ErrorMsg += "请输入有效的日期！"; 
+				        	return ErrorMsg; 
+		        		} 
+	    			} 
+	    		} 
+	    	return ErrorMsg; 
+	    } 
+	 
+	    //验证输入的开户开始日期与结束日期 
+	    function tijiao(){
+	    	var startime=$("#startime").val();
+	    	var endtime=$("#endtime").val();
+	    	var d=new Date();
+	    	var nowday=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+	    	var d1 = new Date(startime.replace(/\-/g, "\/"));  
+   		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
+   		var d3 = new Date(nowday.replace(/\-/g, "\/"));  
+	    	
+	    	if(startime!="" && endtime.length==0){
+	    		if(d1>d3){
+	    			alert('查询开始时间不能早于当前时间！');
+	    			return false;
+	    		}
+	    	}else
+	    	if(startime!="" && endtime!=""){
+	    		if(d1>d3 && d1<=d2){
+	    			alert('您查询时间范围超前了！');
+	    			return false;
+	    		}else
+	    		if(d1>d2){
+	    			alert('查询开始时间不能早于结束时间！');
+	    			return false;
+	    		}
+	    	}
+	    }
+	 
 
 </script>
 
