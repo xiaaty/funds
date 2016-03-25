@@ -13,15 +13,15 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @since: JDK 1.7
  * Create at:   2016年3月23日
  * Description:
- * <p>	冠e通后台 流标
+ * <p>	冠e通后台 满标,流标
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016年3月23日  jhz      1.0     1.0 Version
  */
-public class BidRepayApplyDto extends SuperDto{
+public class BidApplyDto extends SuperDto{
 	
-	private String busi_bid_no;		//标的编号
+	private String busi_bid_no;	//标的编号
 
 	public String getBusi_bid_no() {
 		return busi_bid_no;
@@ -31,6 +31,5 @@ public class BidRepayApplyDto extends SuperDto{
 		this.busi_bid_no = busi_bid_no;
 	}
 
-	
 	
 }
