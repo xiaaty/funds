@@ -89,7 +89,7 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setApplyType(Integer.valueOf(wthDrawApplyDto.getTrade_type()));
 			fssTradeApplyEntity.setCustNo(fssAccountEntity.getCustNo());
 			fssTradeApplyEntity.setUserNo(fssAccountEntity.getUserNo());
-			fssTradeApplyEntity.setBusinessNo(fssAccountEntity.getBusiNo());
+			fssTradeApplyEntity.setBusinessNo(wthDrawApplyDto.getContract_no());
 			fssTradeApplyEntity.setBusiType("0");
 			fssTradeApplyEntity.setAccNo(wthDrawApplyDto.getAcc_no());
 			fssTradeApplyEntity.setTradeAmount(wthDrawApplyDto.getContract_amt());
@@ -110,8 +110,6 @@ public class FssTradeApplyService {
 	    		fssTradeApplyEntity.setBespokedate(BespokeDate);
 	    	}
 			fssTradeApplyEntity.setContractId(wthDrawApplyDto.getContract_id());
-			//todo	合同编号要不要放进申请表  businessNo已经被占用
-//			fssTradeApplyEntity.setContractNo(wthDrawApplyDto.getContract_no());
 			
 		return fssTradeApplyEntity;
 	}
