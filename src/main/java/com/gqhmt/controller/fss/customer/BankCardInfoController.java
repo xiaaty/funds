@@ -234,23 +234,12 @@ public class BankCardInfoController {
     	if(StringUtils.isNotEmptyString(bankcard.getBankSortName())){
     		map.put("bankSortName",bankcard.getBankSortName());
     	}
-		if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
+    	if(StringUtils.isNotEmptyString(startime)){
 			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", endtime+" 23:59:59");
     	}
-    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
-    		map.put("startime", "1970-01-01 23:59:59");
+		if(StringUtils.isNotEmptyString(endtime)){
 			map.put("endtime", endtime+" 23:59:59");
-    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
-    		Date sysday=new Date();
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    		String nowtime=sdf.format(sysday);
-			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", nowtime);
-    	}else{
-    		map.put("startime", "");
-			map.put("endtime", "");
-    	}
+		}
 		List<BankCardInfoEntity> bankCards = bankCardInfoService.findAllbankCards(map);
 		model.addAttribute("page", bankCards);
 		model.addAttribute("bankcard", bankcard);

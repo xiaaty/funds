@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,23 +66,12 @@ public class FssTradeApplyController {
 		String endtime=request.getParameter("endtime");
 		map.put("applyType", type);
 		map.put("busiType", bus);
-		if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
+		if(StringUtils.isNotEmptyString(startime)){
 			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", endtime+" 23:59:59");
     	}
-    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
-    		map.put("startime", "1970-01-01 23:59:59");
+		if(StringUtils.isNotEmptyString(endtime)){
 			map.put("endtime", endtime+" 23:59:59");
-    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
-    		Date sysday=new Date();
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    		String nowtime=sdf.format(sysday);
-			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", nowtime);
-    	}else{
-    		map.put("startime", "");
-			map.put("endtime", "");
-    	}
+		}
     	if(!"".equals(tradeApply.getAccNo())){
     		map.put("accNo", tradeApply.getAccNo());
         }
@@ -112,23 +99,12 @@ public class FssTradeApplyController {
         	String startime=request.getParameter("startime");
     		String endtime=request.getParameter("endtime");
     		map.put("applyNo", applyNo);
-    		if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
+    		if(StringUtils.isNotEmptyString(startime)){
     			map.put("startime", startime+" 00:00:00");
-    			map.put("endtime", endtime+" 23:59:59");
         	}
-        	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
-        		map.put("startime", "1970-01-01 23:59:59");
+    		if(StringUtils.isNotEmptyString(endtime)){
     			map.put("endtime", endtime+" 23:59:59");
-        	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
-        		Date sysday=new Date();
-        		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        		String nowtime=sdf.format(sysday);
-    			map.put("startime", startime+" 00:00:00");
-    			map.put("endtime", nowtime);
-        	}else{
-        		map.put("startime", "");
-    			map.put("endtime", "");
-        	}
+    		}
         	if(!"".equals(traderecord.getTradeState())){
         		map.put("tradeState", traderecord.getTradeState());
             }
@@ -152,15 +128,15 @@ public class FssTradeApplyController {
     	}
     }
   
-/**
- * 提现审核
- * @param request
- * @param model
- * @param applyType
- * @param busiType
- * @return
- * @throws FssException
- */
+	/**
+	 * 提现审核
+	 * @param request
+	 * @param model
+	 * @param applyType
+	 * @param busiType
+	 * @return
+	 * @throws FssException
+	 */
 //  审核不通过走回盘
 //	审核通过,先进行处理，处理完成后走回盘	
 	@RequestMapping("/trade/tradeApply/{applyType}/{busiType}/check")

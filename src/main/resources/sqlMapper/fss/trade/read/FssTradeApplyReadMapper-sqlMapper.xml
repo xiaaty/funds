@@ -24,15 +24,18 @@
 			t.real_trade_amount realTradeAmount,
 			t.channel_no channelNo
 			FROM t_gq_fss_trade_apply t 
-			where t.apply_type=#{applyType}  and t.busi_type=#{busiType}
+			WHERE t.apply_type=#{applyType}  and t.busi_type=#{busiType}
 			<if test="accNo != null and accNo != ''">
-				and t.acc_no like CONCAT('%',#{accNo},'%')
+				AND t.acc_no like CONCAT('%',#{accNo},'%')
 			</if>
 			<if test="businessNo != null and businessNo != ''">
-				and t.business_no like CONCAT('%',#{businessNo},'%')
+				AND t.business_no like CONCAT('%',#{businessNo},'%')
 			</if>
-			 <if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
-				AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			<if test="startime!=null and startime!=''"> 
+				AND t.create_time &gt;= DATE_FORMAT(#{startime},'%Y%m%d%H%i%s')
+			</if>
+			<if test="endtime!=null and endtime!='' "> 
+				AND t.create_time &lt;= DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
 			</if>
 	</select>
 </mapper>
