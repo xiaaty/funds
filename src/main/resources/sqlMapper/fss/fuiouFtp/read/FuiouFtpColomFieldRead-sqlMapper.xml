@@ -1,50 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpOrderReadMapper">
-	<sql id="field">
-			SELECT
-				t.id id,
-				t.order_no orderNo,
-				t.file_size fileSize,
-				t.file_status fileStatus,
-				t.upload_status uploadStatus,
-				t.download_status downloadStatus,
-				t.result_status resultStatus,
-				t.result result,
-				t.type type,
-				t.input_date inputDate,
-				t.return_result_status retrunResultStatus
-			FROM `t_fuiou_ftp_order` t
-		</sql>
+<mapper namespace="com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper">
 
-	<select id="listUpload"  parameterType="FuiouFtpOrder"  resultType="FuiouFtpOrder">
-		<include refid="field"/>
-		WHERE t.file_status = 2 AND  t.upload_status != 3 AND t.type != 3
-	</select>
-	
-	<select id="listDownload"  parameterType="FuiouFtpOrder"  resultType="FuiouFtpOrder">
-		<include refid="field"/> 
-		WHERE t.download_status != 4 AND t.upload_status = 3 AND  t.type != 3
-	</select>
-	
-	<select id="listResultStatus"  parameterType="FuiouFtpOrder"  resultType="FuiouFtpOrder">
-		<include refid="field"/>
-		WHERE t.result_status != 3 AND t.download_status = 4 
-	</select>
-	<select id="listResult"  parameterType="FuiouFtpOrder"  resultType="FuiouFtpOrder">
-		<include refid="field"/>
-		WHERE t.result = 3
-	</select>
-	<select id="listAbort"  parameterType="FuiouFtpOrder"  resultType="FuiouFtpOrder">
-		<include refid="field"/>
-		WHERE t.result = 0 AND t.type =3
-	</select>
-	<select id="listFile"  parameterType="FuiouFtpOrder"  resultType="FuiouFtpOrder">
-		<include refid="field"/>
-		WHERE t.file_status = 1 AND t.type != 3
-	</select>
-	<select id="listNoReturnResult"  parameterType="FuiouFtpOrder"  resultType="FuiouFtpOrder">
-		<include refid="field"/> 
-		WHERE t.result_status = 3 AND t.result != 0 AND t.return_result_status = 0 AND t.type != 3
-	</select>
  </mapper>

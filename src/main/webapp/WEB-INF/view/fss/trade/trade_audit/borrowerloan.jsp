@@ -61,7 +61,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/fss/loan/trade/borrow" method="post" >
+                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/loan/trade/${type}" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -93,35 +93,36 @@
                                                                 <input type="text" style="width:210px" name="mchnChild" value="${map.mchnChild}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">合同ID：</td>
+                                                        <td class="tr" nowrap="nowrap">合同编号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="contractId" value="${map.contractId}">
+                                                                <input type="text" name="map.contractNo" value="${contractNo}">
                                                             </label>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                     <td class="tr" nowrap="nowrap">交易状态：</td>
                                                         <td nowrap="nowrap">
-                                                    		<input type="hidden" id="tradeStatus" value="${map.status}">
+                                                            <label class="select">
 							                                <select class="select02" style="width:202px;" name="status" id="status">
                                                                 <option value="">所有</option>
 							                                   <fss:dictOrder var="order" dictOrder="tradeStatus">
                                                                             <option value="${order.key}">${order.value}</option>
                                                                         </fss:dictOrder>
 							                                </select>
+                                                                </label>
                                                         </td>
                                                          <td class="tr">交易日期：</td>
                                             <td colspan="3">
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly" name="creatTime" class="selectdate" placeholder="请选择时间" value="${map.creatTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.creatTime}">
                                                     </label>
                                                 </section>
                                                 <span class="fl">&nbsp;至&nbsp;</span>
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly"  name="modifyTime" class="selectdate" placeholder="请选择时间" value="${map.modifyTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.modifyTime}">
                                                     </label>
                                                 </section>
                                             </td>
