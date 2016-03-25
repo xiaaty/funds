@@ -2,9 +2,10 @@ package com.gqhmt.extServInter.callback.loan;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
@@ -22,16 +23,16 @@ import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
  * -----------------------------------------------------------------
  * 2016/3/6  于泳      1.0     1.0 Version
  */
+@Service
 public class WithDrawApplyCallback{
 //	完成抵押标借款人提现后，通知借款系统 
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
     
-    public Response withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
+    public WithDrawApplyResponse withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
     	WithDrawApplyResponse response = new WithDrawApplyResponse();
     	try {
-    		FssTradeApplyEntity fssTradeApplyEntity=fssTradeApplyService.withDrasApplyCallBack(seqNo,mchn);
-    		response.setFssTradeApplyEntity(fssTradeApplyEntity);
+    		response=fssTradeApplyService.withDrasApplyCallBack(seqNo,mchn);
     		response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

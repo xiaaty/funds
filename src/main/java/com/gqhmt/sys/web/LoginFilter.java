@@ -84,9 +84,12 @@ public class LoginFilter implements Filter {
 
         Map<String,String> param = new HashMap<>();
         param.put("loginName",loginName);
+
+        
+        
         param.put("systemName", "资金结算系统");
         try {
-            HashMap<String, Object> userInfo = UrlConnectUtil.sendDataReturnSingleObjcet(HashMap.class,"authUrl",param);
+            Map<String, Object> userInfo = UrlConnectUtil.sendDataReturnSingleObjcet(HashMap.class,"authUrl",param);
             session.setAttribute("userName", userInfo.get("name"));
             SysUsers sysUsers = new SysUsers();
             sysUsers.setId((String) userInfo.get("id"));
@@ -105,6 +108,7 @@ public class LoginFilter implements Filter {
         } catch (FssException e) {
             LogUtil.error(this.getClass(),e);
             chain.doFilter(servletRequest, servletResponse);
+            throw new ServletException("获取菜单失败",e);
         }
 
 

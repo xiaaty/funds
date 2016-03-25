@@ -195,7 +195,8 @@
                                                     <td><fss:fmtDate value="${t.createTime}"/></td>
                                                     <td><fss:fmtDate value="${t.modifyTime}"/></td>
                                                     <td><fss:fmtDate value="${t.bespokedate}"/></td>
-                                                    <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td>
+                                                    <%-- <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td> --%>
+                                                	<td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

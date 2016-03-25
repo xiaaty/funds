@@ -63,6 +63,9 @@ public class FssRepaymentEntity implements Serializable {
     @Column(name = "contract_id")
     private String contractId;//合同id
     
+    @Column(name = "contract_no")
+    private String contractNo;//合同id
+    
     @Column(name = "mchn_parent")
     private String mchnParent ; //父商户号       
 
@@ -213,5 +216,14 @@ public class FssRepaymentEntity implements Serializable {
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
+
+	public String getContractNo() {
+		return contractNo;
+	}
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
+	}
+	
 	
 }

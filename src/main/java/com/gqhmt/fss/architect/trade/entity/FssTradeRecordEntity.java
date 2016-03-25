@@ -93,6 +93,10 @@ public class FssTradeRecordEntity implements Serializable {
     @Column(name = "channel_no")  //交易渠道
     private String channelNo;   
     
+    @Column(name = "bespoke_date")//预约到账日期
+    private Date bespokeDate  ;  
+    
+    
 	public Long getId() {
 		return id;
 	}
@@ -267,6 +271,14 @@ public class FssTradeRecordEntity implements Serializable {
 
 	public void setChannelNo(String channelNo) {
 		this.channelNo = channelNo;
+	}
+
+	public Date getBespokeDate() {
+		return bespokeDate;
+	}
+
+	public void setBespokeDate(Date bespokeDate) {
+		this.bespokeDate = bespokeDate;
 	}
 	
 }
