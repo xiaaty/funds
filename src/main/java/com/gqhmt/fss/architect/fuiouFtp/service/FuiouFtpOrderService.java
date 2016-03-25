@@ -35,10 +35,9 @@ public class FuiouFtpOrderService {
     private FuiouFtpOrderReadMapper fuiouFtpOrderReadMapper;
     @Resource
     private FuiouFtpOrderWriteMapper fuiouFtpOrderWriteMapper;
-
     @Resource
     private FundOrderService fundOrderService;
-
+    @Resource
     private FuiouUploadFileService fuiouUploadFileService;
 
     public FuiouFtpOrder select(Long id) {

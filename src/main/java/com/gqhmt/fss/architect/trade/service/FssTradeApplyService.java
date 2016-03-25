@@ -329,9 +329,35 @@ public class FssTradeApplyService {
 	 */
 	public Response createPrePaymentApply(GET_PrePaymentDto dto) throws FssException{
 		Response respon=new Response();
-		
-		
-		
+		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
+		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
+		fssTradeApplyEntity.setApplyType(1104);
+		fssTradeApplyEntity.setCustNo("");
+		fssTradeApplyEntity.setUserNo("");
+		fssTradeApplyEntity.setBusinessNo(dto.getContract_no());
+		fssTradeApplyEntity.setBusiType(dto.getTrade_type());
+		fssTradeApplyEntity.setAccNo("");
+		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
+		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
+		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
+		fssTradeApplyEntity.setTradeState("10080001");
+		fssTradeApplyEntity.setApplyState("10100001");
+		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+		fssTradeApplyEntity.setMchnChild(dto.getMchn());
+		fssTradeApplyEntity.setCreateTime((new Date()));
+		fssTradeApplyEntity.setModifyTime((new Date()));
+		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
+		fssTradeApplyEntity.setBespokedate(new Date());
+		fssTradeApplyEntity.setContractId(dto.getContract_id());//合同Id
+		fssTradeApplyEntity.setChannelNo("97010001");//交易渠道
+		fssTradeApplyEntity.setCount(0);
+		fssTradeApplyEntity.setSuccessCount(0);
+		try {
+			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
+			respon.setResp_code("00000000");
+		} catch (Exception e) {
+			respon.setResp_code("91009804");
+		}
 		return respon;
 	}
 	
@@ -344,7 +370,7 @@ public class FssTradeApplyService {
 	public FssTradeApplyEntity CreateNewFssTradeApplyEntity(GET_WithholdDto dto) throws FssException{
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
-		fssTradeApplyEntity.setApplyType(Integer.valueOf(dto.getTrade_type()));
+		fssTradeApplyEntity.setApplyType(1103);
 		fssTradeApplyEntity.setCustNo("");
 		fssTradeApplyEntity.setUserNo("");
 		fssTradeApplyEntity.setBusinessNo(dto.getContract_no());
@@ -353,8 +379,8 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
 		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-		fssTradeApplyEntity.setTradeState("0");
-		fssTradeApplyEntity.setApplyState("0");
+		fssTradeApplyEntity.setTradeState("10080001");
+		fssTradeApplyEntity.setApplyState("10100001");
 		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
 		fssTradeApplyEntity.setMchnChild(dto.getMchn());
 		fssTradeApplyEntity.setCreateTime((new Date()));

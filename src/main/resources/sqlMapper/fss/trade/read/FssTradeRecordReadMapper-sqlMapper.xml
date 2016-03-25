@@ -35,8 +35,11 @@
 			<if test="tradeState != null and tradeState != ''">
 				AND t.trade_state =#{tradeState}
 			</if>
-			<if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
-				AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			<if test="startime!=null and startime!=''"> 
+				AND t.create_time &gt;= DATE_FORMAT(#{startime},'%Y%m%d%H%i%s')
+			</if>
+			<if test="endtime!=null and endtime!='' "> 
+				AND t.create_time &lt;= DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
 			</if>
 		</where>
 	</select>

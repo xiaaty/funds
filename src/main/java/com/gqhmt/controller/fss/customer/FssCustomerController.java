@@ -67,23 +67,12 @@ public class FssCustomerController {
     	if(StringUtils.isNotEmptyString(customer.getCertNo())){
     		map.put("certNo", customer.getCertNo());
     	}
-    	if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
+    	if(StringUtils.isNotEmptyString(startime)){
 			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", endtime+" 23:59:59");
     	}
-    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
-    		map.put("startime", "1970-01-01 23:59:59");
+		if(StringUtils.isNotEmptyString(endtime)){
 			map.put("endtime", endtime+" 23:59:59");
-    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
-    		Date sysday=new Date();
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    		String nowtime=sdf.format(sysday);
-			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", nowtime);
-    	}else{
-    		map.put("startime", "");
-			map.put("endtime", "");
-    	}
+		}
 		List<FssCustomerEntity> customers = customerService.findCustomerByParams(map);
     	model.addAttribute("page",customers);
     	model.addAttribute("customer",customer);
