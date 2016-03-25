@@ -348,12 +348,10 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setModifyTime((new Date()));
 		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
 		fssTradeApplyEntity.setBespokedate(new Date());
-//		fssTradeApplyEntity.;
-//		fssTradeApplyEntity.;
-//		fssTradeApplyEntity.;
-//		fssTradeApplyEntity.;
-//		fssTradeApplyEntity.;
-//		fssTradeApplyEntity.;
+//		fssTradeApplyEntity.setContractId();//合同Id
+		fssTradeApplyEntity.setChannelNo("97010001");//交易渠道
+		fssTradeApplyEntity.setCount(0);
+		fssTradeApplyEntity.setSuccessCount(0);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
 			respon.setResp_code("00000000");
