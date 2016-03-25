@@ -55,7 +55,7 @@
 			FROM t_gq_fss_enter_account t
 			where t.seq_no=#{seqNo} and t.result ='98060001' 
 	</select>
-		<!-- 根据流水号得到相应的每一批的交易成功数量 -->
+		<!-- 根据流水号得到相应的每一批的交易情况 -->
 	<select id="getDetail"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
 		SELECT 
 			t.id,

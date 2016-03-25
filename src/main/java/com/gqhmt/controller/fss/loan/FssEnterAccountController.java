@@ -50,8 +50,8 @@ public class FssEnterAccountController {
 	 * author:jhz
 	 * time:2016年3月15日
 	 * function：入账主表
-	 */
-	@RequestMapping(value = "/fss/loan/enterAccountList", method = {RequestMethod.GET, RequestMethod.POST})
+	 */						
+	@RequestMapping(value = "/loan/enterAccount/list", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
 	public Object enterAccountList(HttpServletRequest request, ModelMap model,String mchnChild,
 					String seqNo ,String tradeType) {
@@ -74,10 +74,10 @@ public class FssEnterAccountController {
 	 * 
 	 * author:jhz
 	 * time:2016年3月16日
-	 * function：查看该批流水详情
-	 */
-	@RequestMapping(value = "/fss/enterAccount/detail/{seqNo}", method = {RequestMethod.GET, RequestMethod.POST})
-	public Object accountWater(HttpServletRequest request, ModelMap model,@PathVariable String seqNo) {
+	 * function：查看该批流水详情*/
+//	 */						  /loan/enterAccount/{type}/{pid}/detail/{id}/settleList
+	@RequestMapping(value = "/loan/enterAccount/{type}/{seqNo}/detail", method = {RequestMethod.GET, RequestMethod.POST})
+	public Object accountWater(HttpServletRequest request, ModelMap model,@PathVariable String seqNo,@PathVariable String type) {
 		//通过流水好查询该批次的详情
 		List<FssEnterAccountEntity> detail = fssEnterAccountService.getDetail(seqNo);
 		model.addAttribute("detail", detail);
@@ -91,8 +91,8 @@ public class FssEnterAccountController {
 	 * function：查看收费列表
 	 * @throws FssException 
 	 */
-	@RequestMapping("/fss/enterAccount/settleList/{id}")
-	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long id,String seqNo) throws FssException {
+	@RequestMapping("/loan/enterAccount/{type}/{seqNo}/detail/{id}/settleList")
+	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long id,@PathVariable String seqNo,@PathVariable String type) throws FssException {
 		List<FssSettleListEntity> settleList = fssEnterAccountService.getsettleList(id);
 		model.addAttribute("settleList", settleList);
 		model.addAttribute("seqNo", seqNo);

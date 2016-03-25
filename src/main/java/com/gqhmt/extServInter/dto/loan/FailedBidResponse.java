@@ -2,9 +2,6 @@ package com.gqhmt.extServInter.dto.loan;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.gqhmt.annotations.APIValid;
-import com.gqhmt.annotations.APIValidNull;
-import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.Response;
 
 /**
