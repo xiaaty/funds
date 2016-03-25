@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
-import com.gqhmt.pay.fuiou.service.AbortBidService;
-import com.gqhmt.pay.fuiou.service.FtpDownloadFileService;
-import com.gqhmt.pay.fuiou.service.FtpResultService;
-import com.gqhmt.pay.fuiou.service.FtpUploadService;
+import com.gqhmt.quartz.service.AbortBidService;
+import com.gqhmt.quartz.service.FtpDownloadFileService;
+import com.gqhmt.quartz.service.FtpResultService;
+import com.gqhmt.quartz.service.FtpUploadService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.util.ServiceLoader;
 import java.util.ArrayList;
@@ -73,14 +73,14 @@ public class FuiouUploadFileJob extends AJob{
         if(isUploadRunning) return;
         isUploadRunning = true;
         FtpUploadService ftpUploadService = ServiceLoader.get(FtpUploadService.class);
-        try{
+        /*try{
             ftpUploadService.upload();
             ftpUploadService.uploadFileToFtp();
         }catch (Exception e){
             e.printStackTrace();
         }finally {
             isUploadRunning = false;
-        }
+        }*/
 
 
     }

@@ -1,4 +1,4 @@
-package com.gqhmt.pay.fuiou.service;
+package com.gqhmt.quartz.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
