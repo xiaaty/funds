@@ -10,7 +10,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
+import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
 import com.gqhmt.extServInter.service.p2p.IBidRepayApply;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 
@@ -44,7 +44,7 @@ public class BidRepayApplyImpl implements IBidRepayApply {
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		loanService.insertBidRepayApply((BidRepayApplyDto)dto);
+    		loanService.insertBidRepayApply((BidApplyDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

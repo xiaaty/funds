@@ -52,10 +52,8 @@ public class FuiouFtpOrderService {
     	fuiouFtpOrderWriteMapper.updateByPrimaryKeySelective(fuiouFtpOrder);
     }
     
-    public void update(List<FuiouFtpOrder> list){
-    	for (FuiouFtpOrder fuiouFtpOrder : list) {
-			update(fuiouFtpOrder);
-		}
+    public void insertlist(List<FuiouFtpOrder> list){
+    	fuiouFtpOrderWriteMapper.insertList(list);
     }
 
     public void addOrder(FundOrderEntity fundOrderEntity,int type){

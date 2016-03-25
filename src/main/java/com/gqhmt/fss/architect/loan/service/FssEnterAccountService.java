@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.loan.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,19 +12,27 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.EnterAccount;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
+import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
+import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.fss.architect.loan.bean.EnterAccountBean;
 import com.gqhmt.fss.architect.loan.bean.SettleListBean;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
+import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
+import com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountParentReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.read.FssSettleListReadMapper;
+import com.gqhmt.fss.architect.loan.mapper.write.FssEnterAccountParentWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssEnterAccountWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssSettleListWriteMapper;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 
 /**
  * 
@@ -46,10 +55,10 @@ import com.gqhmt.fss.architect.merchant.service.MerchantService;
 public class FssEnterAccountService {
 	@Resource
 	private MerchantService merchantService;
-	
+
 	@Resource
 	private FssSettleListReadMapper fssSettleListReadMapper;
-	
+
 	@Resource
 	private FssEnterAccountWriteMapper fssEnterAccountWriteMapper;
 
@@ -57,25 +66,40 @@ public class FssEnterAccountService {
 	private FssSettleListWriteMapper fssSettleListWriteMapper;
 
 	@Resource
-	private FssEnterAccountReadMapper enterAccountReadMapper;
+	private FssEnterAccountReadMapper fssEnterAccountReadMapper;
+
+	@Resource
+	private FssEnterAccountParentWriteMapper fssEnterAccountParentWriteMapper;
+
+	@Resource
+	private FssEnterAccountParentReadMapper fssEnterAccountParentReadMapper;
 
 	/**
 	 * 
 	 * author:jhz time:2016年3月7日 function：添加
 	 */
 	public void insertSettleListBean(SettleListBean settleListBean) throws FssException {
-		FssSettleListEntity fssSettleListEntity=new FssSettleListEntity();
+		FssSettleListEntity fssSettleListEntity = new FssSettleListEntity();
 		fssSettleListEntity.setEnterId(settleListBean.getEnterId());
 		fssSettleListEntity.setAccountType(settleListBean.getAccount_type());
 		fssSettleListEntity.setSettleAmt(settleListBean.getSettle_amt());
 		this.insert(fssSettleListEntity);
 	}
+
 	/**
 	 * 
-	 * author:jhz time:2016年3月7日 function：添加
+	 * author:jhz time:2016年3月7日 function：添加子表
 	 */
 	public void insert(FssSettleListEntity fssSettleListEntity) throws FssException {
 		fssSettleListWriteMapper.insert(fssSettleListEntity);
+	}
+
+	/**
+	 * 
+	 * author:jhz time:2016年3月7日 function：添加子表
+	 */
+	public void insert(List<FssEnterAccountEntity> enterAccountEntities) throws FssException {
+		fssEnterAccountWriteMapper.insertList(enterAccountEntities);
 	}
 
 	/**
@@ -85,21 +109,22 @@ public class FssEnterAccountService {
 	public List<FssSettleListEntity> getsettleList(Long id) throws FssException {
 		return fssSettleListReadMapper.getFssSettleList(id);
 	}
+
 	/**
 	 * 
 	 * author:jhz time:2016年3月7日 function：通过id得到费用列表
 	 */
 	public List<SettleListBean> getsettleListBean(Long id) throws FssException {
-		List<SettleListBean> settleListBeans=new ArrayList<>();
-		SettleListBean settleListBean=null;
-		 List<FssSettleListEntity> fssSettleList = fssSettleListReadMapper.getFssSettleList(id);
-		 for (FssSettleListEntity fssSettleListEntity : fssSettleList) {
-			 settleListBean=new SettleListBean();
-			 settleListBean.setAccount_type(fssSettleListEntity.getAccountType());
-			 settleListBean.setSettle_amt(fssSettleListEntity.getSettleAmt());
-			 settleListBeans.add(settleListBean);
+		List<SettleListBean> settleListBeans = new ArrayList<>();
+		SettleListBean settleListBean = null;
+		List<FssSettleListEntity> fssSettleList = fssSettleListReadMapper.getFssSettleList(id);
+		for (FssSettleListEntity fssSettleListEntity : fssSettleList) {
+			settleListBean = new SettleListBean();
+			settleListBean.setAccount_type(fssSettleListEntity.getAccountType());
+			settleListBean.setSettle_amt(fssSettleListEntity.getSettleAmt());
+			settleListBeans.add(settleListBean);
 		}
-		 return settleListBeans;
+		return settleListBeans;
 	}
 
 	/**
@@ -108,29 +133,18 @@ public class FssEnterAccountService {
 	 */
 	public void insertEnterAccount(EnterAccountDto enterAccountDto) throws FssException {
 		FssEnterAccountEntity fssEnterAccountEntity = null;
-		List<SettleListBean> settleListbeans= null;
-		for (EnterAccount enterAccount : enterAccountDto.getEnter_account()) {
-			MerchantEntity findMerchantByMchnNo = merchantService.findMerchantByMchnNo(enterAccountDto.getMchn());
-			fssEnterAccountEntity = new FssEnterAccountEntity();
-			fssEnterAccountEntity.setAccNo(enterAccount.getAcc_no());
-			fssEnterAccountEntity.setLoanPlatform(enterAccount.getLoan_platform());
-			fssEnterAccountEntity.setAccountingNo(enterAccount.getAccounting_no());
-			fssEnterAccountEntity.setContractId(enterAccount.getContract_id());
-			fssEnterAccountEntity.setContractNo(enterAccount.getContract_no());
-			fssEnterAccountEntity.setCreateTime(new Date());
-			fssEnterAccountEntity.setMchnChild(enterAccountDto.getMchn());
-			fssEnterAccountEntity.setMchnParent(findMerchantByMchnNo.getParentNo());
-			fssEnterAccountEntity.setMortgageeAccNo(enterAccount.getMortgagee_acc_no());
-			fssEnterAccountEntity.setSeqNo(enterAccountDto.getSeq_no());
-			fssEnterAccountEntity.setSerialNumber(enterAccount.getSerial_number());
-			fssEnterAccountEntity.setTradeType(enterAccountDto.getTrade_type());
-//			long insertEnterAccount = fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
-			long insertEnterAccount = fssEnterAccountWriteMapper.insertEnterAccount(fssEnterAccountEntity);
-
+		List<SettleListBean> settleListbeans = null;
+		List<EnterAccount> enter_account = enterAccountDto.getEnter_account();
+		//创建主表
+		FssEnterAccountParentEntity createEnterAccountParentEntity = this.createEnterAccountParentEntity(enterAccountDto);
+		for (EnterAccount enterAccount : enter_account) {
+			fssEnterAccountEntity=this.createFssEnterAccountEntity(enterAccount, enterAccountDto, createEnterAccountParentEntity);
+			// fssLoanWriteMapper.insertEnterAccount(fssEnterAccountEntity);
+			fssEnterAccountWriteMapper.insertSelective(fssEnterAccountEntity);
 			settleListbeans = enterAccount.getSettle_list();
 			if (settleListbeans != null) {
 				for (SettleListBean settleListBean : settleListbeans) {
-					settleListBean.setEnterId(insertEnterAccount);
+					settleListBean.setEnterId(fssEnterAccountEntity.getId());
 					this.insertSettleListBean(settleListBean);
 				}
 			}
@@ -146,11 +160,14 @@ public class FssEnterAccountService {
 		Map<String, String> map = new HashMap<>();
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
-		List<EnterAccount> enterAccounts=new ArrayList<>();
-		EnterAccount enterAccount=null;
-		List<FssEnterAccountEntity>  enterAccountEntities = enterAccountReadMapper.getEnterAccount(map);
+		List<EnterAccount> enterAccounts = new ArrayList<>();
+		EnterAccount enterAccount = null;
+		//得到主表对象
+		FssEnterAccountParentEntity enterAccountParent = fssEnterAccountParentReadMapper.getEnterAccountParent(map);
+		//根据主表id得到子表集合对象
+		List<FssEnterAccountEntity> enterAccountEntities = fssEnterAccountReadMapper.getEnterAccounts(enterAccountParent.getId());
 		for (FssEnterAccountEntity enterAccountEntity : enterAccountEntities) {
-			enterAccount=new EnterAccount();
+			enterAccount = new EnterAccount();
 			enterAccount.setAcc_no(enterAccountEntity.getAccNo());
 			enterAccount.setSerial_number(enterAccountEntity.getSerialNumber());
 			enterAccount.setContract_id(enterAccountEntity.getContractId());
@@ -167,33 +184,76 @@ public class FssEnterAccountService {
 		enterAccountResponse.setTrade_type(enterAccountEntities.get(0).getTradeType());
 		return enterAccountResponse;
 	}
+
 	/**
 	 * 
-	 * author:jhz
-	 * time:2016年3月15日
-	 * function：得到入账表
+	 * author:jhz time:2016年3月15日 function：得到入账表
 	 */
-	public List<EnterAccountBean> getEnterAccountEntities(Map map){
-		return enterAccountReadMapper.getEnterAccountEntities(map);
+	public List<EnterAccountBean> getEnterAccountEntities(Map map) {
+		return fssEnterAccountReadMapper.getEnterAccountEntities(map);
 	}
 
 	/**
 	 * 
-	 * author:jhz
-	 * time:2016年3月15日
-	 * function：根据流水号得到相应的每一批的交易成功数量
+	 * author:jhz time:2016年3月15日 function：根据流水号得到相应的每一批的交易成功数量
 	 */
 	public int getIsTrue(String seqNo) {
-		return enterAccountReadMapper.getIsTrue(seqNo);
+		return fssEnterAccountReadMapper.getIsTrue(seqNo);
+	}
+
+	/**
+	 * 
+	 * author:jhz time:2016年3月16日 function：根据parent_id查看该批流水详情
+	 */
+	public List<FssEnterAccountEntity> getDetail(Long id) {
+
+		return fssEnterAccountReadMapper.getDetail(id);
+	}
+
+	/**
+	 * 
+	 * author:jhz time:2016年3月25日 function：创建入账主表
+	 */
+	public FssEnterAccountParentEntity createEnterAccountParentEntity(EnterAccountDto enterAccountDto)
+			throws FssException {
+		FssEnterAccountParentEntity enterAccountParentEntity = new FssEnterAccountParentEntity();
+		enterAccountParentEntity.setSeqNo(enterAccountDto.getSeq_no());
+		enterAccountParentEntity.setTradeType(enterAccountDto.getTrade_type());
+		enterAccountParentEntity.setTradeCount(enterAccountDto.getEnter_account().size());
+		enterAccountParentEntity.setSuccessCount(0);
+		enterAccountParentEntity.setFiledCount(0);
+		enterAccountParentEntity.setState("10090001");
+		enterAccountParentEntity.setResultState("10080001");
+		enterAccountParentEntity.setCreateTime(new Date());
+		enterAccountParentEntity.setMotifyTime(new Date());
+		enterAccountParentEntity.setMchnChild(enterAccountDto.getMchn());
+		enterAccountParentEntity.setMchnParent(Application.getInstance().getParentMchn(enterAccountDto.getMchn()));
+		fssEnterAccountParentWriteMapper.insertSelective(enterAccountParentEntity);
+		return enterAccountParentEntity;
 	}
 	/**
 	 * 
 	 * author:jhz
-	 * time:2016年3月16日
-	 * function：根据流水号查看该批流水详情
+	 * time:2016年3月25日
+	 * function：创建子表对象
 	 */
-	public List<FssEnterAccountEntity> getDetail(String seqNo) {
-		
-		return enterAccountReadMapper.getDetail(seqNo);
+	public FssEnterAccountEntity createFssEnterAccountEntity(EnterAccount enterAccount,EnterAccountDto enterAccountDto,FssEnterAccountParentEntity enterAccountParentEntity) throws FssException{
+		FssEnterAccountEntity enterAccountEntity = new FssEnterAccountEntity();
+		enterAccountEntity.setParentId(enterAccountParentEntity.getId());
+		enterAccountEntity.setContractId(enterAccount.getContract_id());
+		enterAccountEntity.setAccNo(enterAccount.getAcc_no());
+		enterAccountEntity.setMortgageeAccNo(enterAccount.getMortgagee_acc_no());
+		enterAccountEntity.setTradeType(enterAccountDto.getTrade_type());
+		enterAccountEntity.setSeqNo(enterAccountDto.getSeq_no());
+		enterAccountEntity.setCreateTime(new Date());
+		enterAccountEntity.setModifyTime(new Date());
+		enterAccountEntity.setResult("10080001");
+		enterAccountEntity.setSerialNumber(enterAccount.getSerial_number());
+		enterAccountEntity.setAccountingNo(enterAccount.getAccounting_no());
+		enterAccountEntity.setMchnParent(Application.getInstance().getParentMchn(enterAccountDto.getMchn()));
+		enterAccountEntity.setMchnChild(enterAccountDto.getMchn());
+		enterAccountEntity.setLoanPlatform(enterAccount.getLoan_platform());
+		enterAccountEntity.setContractNo(enterAccount.getContract_no());
+		return enterAccountEntity;
 	}
 }
