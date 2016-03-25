@@ -77,4 +77,9 @@ public class FuiouUploadFileService {
         insert(file);
         return file;
     }
+    
+    public void saveOrUpdateAll(List<FuiouUploadFile> fuiouUploadFile){
+    	fuiouUploadFileWriteMapper.insertList(fuiouUploadFile);
+    }
+    
 }

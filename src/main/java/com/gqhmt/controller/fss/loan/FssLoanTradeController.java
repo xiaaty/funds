@@ -85,35 +85,6 @@ public class FssLoanTradeController {
 		model.addAttribute("map", map);
 			return "fss/trade/trade_audit/borrowerloan";
 	}
-
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月11日
-	 * function：借款人提现
-	 */
-	@RequestMapping(value = "/fss/loan/trade/borrowWithDraw", method = {RequestMethod.GET, RequestMethod.POST})
-	@AutoPage
-	public Object accountWater(HttpServletRequest request, ModelMap model,String mchnChild,
-			String seqNo ,String contractId, String creatTime, String modifyTime) {
-		Map<Object, Object> map = new HashMap<>();
-		if (creatTime != null && !creatTime.equals("")) {
-			creatTime = creatTime + " 00:00:00";
-		}
-		if (modifyTime != null && !modifyTime.equals("")) {
-			modifyTime = modifyTime + " 23:59:59";
-		}
-		map.put("contractId", contractId);
-		map.put("mchnChild", mchnChild);
-		map.put("creatTime", creatTime);
-		map.put("modifyTime", modifyTime);
-		map.put("seqNo", seqNo);
-		List<FssTradeApplyEntity> selectAccountSequenceList=fssTradeApplyService.getBorrowWithDraw(map);
-		model.addAttribute("map", map);
-		model.addAttribute("page", selectAccountSequenceList);
-		return "fss/trade/trade_audit/borrowWithDraw";
-	}
-
 	/**
 	 * 
 	 * author:jhz

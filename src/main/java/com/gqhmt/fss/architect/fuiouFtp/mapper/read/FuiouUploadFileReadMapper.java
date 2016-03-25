@@ -14,6 +14,7 @@ public interface FuiouUploadFileReadMapper extends ReadMapper<FuiouUploadFile> {
 
     public List<Integer> list(String order);
 
-    public List<FuiouUploadFile> listAll(String orderNo);
+    public List<FuiouUploadFile> listAll(String orderNo);//from FuiouUploadFile
+    
 
 }
