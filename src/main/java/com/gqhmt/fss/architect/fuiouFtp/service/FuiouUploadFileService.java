@@ -54,7 +54,9 @@ public class FuiouUploadFileService {
     }
 
     public List<FuiouUploadFile> list(int status){
-        return fuiouUploadFileReadMapper.list(status);
+    	FuiouUploadFile fuiouUploadFile=new FuiouUploadFile();
+    	fuiouUploadFile.setState(status);
+        return fuiouUploadFileReadMapper.select(fuiouUploadFile);
     }
 
     public List<Integer> list(String orderNo){
@@ -62,7 +64,9 @@ public class FuiouUploadFileService {
     }
 
     public List<FuiouUploadFile> listAll(String orderNo){
-        return fuiouUploadFileReadMapper.listAll(orderNo);
+    	FuiouUploadFile fuiouUploadFile=new FuiouUploadFile();
+    	fuiouUploadFile.setOrderNo(orderNo);
+        return fuiouUploadFileReadMapper.select(fuiouUploadFile);
     }
     public FuiouUploadFile add(String businessCode,String mCode,int size,String sysdate,String fileSeqNo,BigDecimal sum,String orderNo){
         FuiouUploadFile file = new FuiouUploadFile();
@@ -81,5 +85,10 @@ public class FuiouUploadFileService {
     public void saveOrUpdateAll(List<FuiouUploadFile> fuiouUploadFile){
     	fuiouUploadFileWriteMapper.insertList(fuiouUploadFile);
     }
+    
+    public void delete(FuiouUploadFile fuiouUploadFile){
+    	fuiouUploadFileWriteMapper.delete(fuiouUploadFile);
+    }
+    
     
 }
