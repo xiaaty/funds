@@ -9,7 +9,6 @@ import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
 import com.gqhmt.pay.exception.CommandParmException;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -40,7 +39,7 @@ public class FundOrderService  {
     private FundOrderReadMapper fundOrderReadMapper;
     @Resource
     private FundOrderWriteMapper fundOrderWriteMapper;
-
+    
     public void insert(FundOrderEntity entity) throws FssException{
         fundOrderWriteMapper.insertSelective(entity);
     }
@@ -147,5 +146,5 @@ public class FundOrderService  {
 
         return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type == null?0:type==1003?1:2,strTime,endTime);
     }
-    
+
 }

@@ -327,29 +327,7 @@ public class FssTradeApplyService {
 	 */
 	public Response careateWithholdApplyEntity(GET_WithholdDto dto) throws FssException{
 		Response respon=new Response();
-		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
-		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
-		fssTradeApplyEntity.setApplyType(Integer.valueOf(dto.getTrade_type()));
-		fssTradeApplyEntity.setCustNo("");
-		fssTradeApplyEntity.setUserNo("");
-		fssTradeApplyEntity.setBusinessNo(dto.getContract_id());
-		fssTradeApplyEntity.setBusiType(dto.getTrade_type());
-		fssTradeApplyEntity.setAccNo("");
-		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
-		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
-		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-		fssTradeApplyEntity.setTradeState("0");
-		fssTradeApplyEntity.setApplyState("0");
-		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-		fssTradeApplyEntity.setMchnChild(dto.getMchn());
-		fssTradeApplyEntity.setCreateTime((new Date()));
-		fssTradeApplyEntity.setModifyTime((new Date()));
-		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
-		fssTradeApplyEntity.setBespokedate(new Date());
-//		fssTradeApplyEntity.setContractId();//合同Id
-		fssTradeApplyEntity.setChannelNo("97010001");//交易渠道
-		fssTradeApplyEntity.setCount(0);
-		fssTradeApplyEntity.setSuccessCount(0);
+		FssTradeApplyEntity fssTradeApplyEntity=this.CreateNewFssTradeApplyEntity(dto);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
 			respon.setResp_code("00000000");
@@ -371,4 +349,36 @@ public class FssTradeApplyService {
 		return respon;
 	}
 	
+	/**
+	 * 创建FssTradeApplyEntity
+	 * @param dto
+	 * @return
+	 * @throws FssException
+	 */
+	public FssTradeApplyEntity CreateNewFssTradeApplyEntity(GET_WithholdDto dto) throws FssException{
+		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
+		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
+		fssTradeApplyEntity.setApplyType(Integer.valueOf(dto.getTrade_type()));
+		fssTradeApplyEntity.setCustNo("");
+		fssTradeApplyEntity.setUserNo("");
+		fssTradeApplyEntity.setBusinessNo(dto.getContract_no());
+		fssTradeApplyEntity.setBusiType(dto.getTrade_type());
+		fssTradeApplyEntity.setAccNo("");
+		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
+		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
+		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
+		fssTradeApplyEntity.setTradeState("0");
+		fssTradeApplyEntity.setApplyState("0");
+		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+		fssTradeApplyEntity.setMchnChild(dto.getMchn());
+		fssTradeApplyEntity.setCreateTime((new Date()));
+		fssTradeApplyEntity.setModifyTime((new Date()));
+		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
+		fssTradeApplyEntity.setBespokedate(new Date());
+		fssTradeApplyEntity.setContractId(dto.getContract_id());//合同Id
+		fssTradeApplyEntity.setChannelNo("97010001");//交易渠道
+		fssTradeApplyEntity.setCount(0);
+		fssTradeApplyEntity.setSuccessCount(0);
+		return fssTradeApplyEntity;
+	}
 }

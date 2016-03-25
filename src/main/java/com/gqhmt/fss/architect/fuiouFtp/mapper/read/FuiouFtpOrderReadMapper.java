@@ -1,10 +1,7 @@
 package com.gqhmt.fss.architect.fuiouFtp.mapper.read;
 
-import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
-import com.gqhmt.fss.architect.fuiouFtp.bean.FundOrder;
-
 import java.util.List;
 
 /**
@@ -41,5 +38,4 @@ public interface FuiouFtpOrderReadMapper extends ReadMapper<FuiouFtpOrder> {
 
     public List<FuiouFtpOrder> listNoReturnResult();
 
-    public Page listAll(FundOrder fundOrder);
 }

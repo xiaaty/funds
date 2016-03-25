@@ -24,6 +24,8 @@ public class WithDrawApplyResponse  extends Response {
 	
 	private String contract_id;//合同ID
 	
+	private String contract_no;//合同号
+	
 	private String acc_no;//借款人资金平台账号
 	
 	private BigDecimal contract_amt;//合同金额
@@ -83,5 +85,14 @@ public class WithDrawApplyResponse  extends Response {
 		this.bespoke_date = date;
 	}
 
+
+	public String getContract_no() {
+		return contract_no;
+	}
+
+
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
+	}
 	
 }
