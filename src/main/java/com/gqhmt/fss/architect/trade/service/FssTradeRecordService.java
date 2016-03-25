@@ -114,6 +114,7 @@ public class FssTradeRecordService {
 			tradeRecordEntity.setTradeTypeChild(0);
 			tradeRecordEntity.setTradeDate("0");
 			tradeRecordEntity.setTradeTime("0");
+			tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
 			tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 			tradeRecordEntity.setCreateTime(new Date());
 			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
