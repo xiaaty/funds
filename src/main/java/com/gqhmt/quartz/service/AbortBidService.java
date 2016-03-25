@@ -1,4 +1,4 @@
-package com.gqhmt.pay.fuiou.service;
+package com.gqhmt.quartz.service;
 
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;

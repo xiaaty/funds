@@ -7,19 +7,19 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.pay.service.cost.ICost;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +85,7 @@ public class FssLoanTradeController {
 		model.addAttribute("map", map);
 			return "fss/trade/trade_audit/borrowerloan";
 	}
+
 	/**
 	 * 
 	 * author:jhz

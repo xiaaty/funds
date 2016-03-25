@@ -26,15 +26,15 @@ public class UrlConnectionTest extends TestService  {
 
     @Test
     public void test() throws FssException {
-        String  json = "{\n" +
+        String  json ="{\n" +
                 "    \"mchn\":\"63488471YHBC\",\n" +
-                "    \"seq_no\":\"123111122322wwwww\",\n" +
+                "    \"seq_no\":\"123111122322wwwwww\",\n" +
                 "    \"trade_type\":\"11093001\",\n" +
                 "    \"signature\":\"22414214\",\n" +
                 "    \"repay_list\":[\n" +
-                "    {\"serial_number\":\"0001\",\"contract_id\":\"1000001\",\"acc_no\":\"1102688362697310\",\"amt\":\"10000.00\",\"remark\":\"\"},\n" +
-                "    {\"serial_number\":\"0002\",\"contract_id\":\"1000001\",\"acc_no\":\"1102688362697310\",\"amt\":\"10000.00\",\"remark\":\"\"},\n" +
-                "    {\"serial_number\":\"0003\",\"contract_id\":\"1000001\",\"acc_no\":\"1102688362697310\",\"amt\":\"10000.00\",\"remark\":\"\"}\n" +
+                "    {\"serial_number\":\"0001\",\"contract_id\":\"1000001\",\"accounting_no\":\"123456\",\"acc_no\":\"1102688362697310\",\"settle_list\":[{\"settle_amt\":\"\",\"account_type\":\"21011005\"}]},\n" +
+                "    {\"serial_number\":\"0002\",\"contract_id\":\"1000001\",\"accounting_no\":\"123456\",\"acc_no\":\"1102688362697310\",\"settle_list\":[{\"settle_amt\":\"\",\"account_type\":\"21011005\"}]},\n" +
+                "    {\"serial_number\":\"0003\",\"contract_id\":\"1000001\",\"accounting_no\":\"123456\",\"acc_no\":\"1102688362697310\",\"settle_list\":[{\"settle_amt\":\"\",\"account_type\":\"21011005\"}]}\n" +
                 "    ]\n" +
                 "    \n" +
                 "}";

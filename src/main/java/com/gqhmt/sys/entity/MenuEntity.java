@@ -61,6 +61,8 @@ public class MenuEntity implements Serializable{
     @Column(name="modify_time")
     private Date modifyTime;
 
+    private boolean isShow;
+
 
     @Transient
     private List<MenuEntity> list = new ArrayList<>();
@@ -169,5 +171,13 @@ public class MenuEntity implements Serializable{
     @Override
     public String toString() {
         return "["+this.id+","+this.menuName+","+this.menuUrl+"]";
+    }
+
+    public boolean isShow() {
+        return isShow;
+    }
+
+    public void setShow(boolean show) {
+        isShow = show;
     }
 }
