@@ -63,7 +63,7 @@ public class FssLoanTradeController {
 	 * time:2016年3月11日
 	 * function：借款人放款
 	 */
-	@RequestMapping(value = "/fss/loan/trade/borrow", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/loan/trade/{type}", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
 	public Object mortgagree(HttpServletRequest request, ModelMap model,String mchnChild,String status,
 					String seqNo ,String contractId, String creatTime, String modifyTime) {

@@ -154,21 +154,7 @@ public class FssTradeApplyService {
 		int selectCount = fssTradeApplyReadMapper.selectCount(record);
 		return selectCount==0;
 	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月18日
-	 * function：得到申请编号(唯一)
-	 */
-	public String getApplyNo(){
-		String applyNo = CommonUtil.getUUID();
-		if(uniqueByApplyNo(applyNo)){
-			return  applyNo;
-		}else{
-			applyNo = CommonUtil.getUUID();
-			return this.getApplyNo();
-		}
-	}
+
 	
 	/**
 	 * 
@@ -380,5 +366,22 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
 		return fssTradeApplyEntity;
+	}
+
+
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年3月18日
+	 * function：得到申请编号(唯一)
+	 */
+	public String getApplyNo(){
+		String applyNo = CommonUtil.getUUID();
+		if(uniqueByApplyNo(applyNo)){
+			return  applyNo;
+		}else{
+			applyNo = CommonUtil.getUUID();
+			return this.getApplyNo();
+		}
 	}
 }
