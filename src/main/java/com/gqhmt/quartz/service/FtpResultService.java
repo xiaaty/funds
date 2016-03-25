@@ -1,4 +1,4 @@
-package com.gqhmt.pay.fuiou.service;
+package com.gqhmt.quartz.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -74,7 +74,7 @@ public class FtpResultService {
 
             System.out.println("fuiouFtp:parseDownloadResult:"+((FuiouFtpOrder) fuiouFtpOrder).getOrderNo());
         }
-        fuiouFtpOrderService.saveOrUpdateAll(list);
+        fuiouFtpOrderService.saveAll(list);
     }
 
     /**
@@ -92,7 +92,7 @@ public class FtpResultService {
             parseResult(fuiouFtpOrder);
         }
 
-        fuiouFtpOrderService.saveOrUpdateAll(list);
+        fuiouFtpOrderService.saveAll(list);
     }
 
     /**

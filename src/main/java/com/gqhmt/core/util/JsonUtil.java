@@ -37,7 +37,9 @@ public class JsonUtil {
     private ObjectMapper objectMapper = new ObjectMapper();
 
 
-    private JsonUtil(){}
+    private JsonUtil(){
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     public static JsonUtil getInstance(){
         return instance;
@@ -66,7 +68,7 @@ public class JsonUtil {
 
     public <T> List<T> parseJsonToList(String json, Class<T> tClass){
         try {
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
             JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class,tClass);
             List<T> list = (List<T>) objectMapper.readValue(json, javaType);
             return list;

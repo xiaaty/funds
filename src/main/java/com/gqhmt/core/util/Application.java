@@ -42,7 +42,7 @@ public class Application {
 
     private final Map<String,MerchantEntity>   merchantEntityMap = new ConcurrentHashMap<>();
     
-    private final Map<String,BankDealamountLimitEntity>   bankDealamountLimitEntityMap = new ConcurrentHashMap<>();
+    private final Map<String,BankDealamountLimitEntity>   bankAmountLimitMap = new ConcurrentHashMap<>();
 
     private void init(){
         synchronized (this){
@@ -54,7 +54,7 @@ public class Application {
         LogUtil.debug(this.getClass(),dictEntityMap.toString());
         LogUtil.debug(this.getClass(),dictOrder.toString());
         LogUtil.debug(this.getClass(),merchantEntityMap.toString());
-        LogUtil.debug(this.getClass(),bankDealamountLimitEntityMap.toString());
+        LogUtil.debug(this.getClass(),bankAmountLimitMap.toString());
     }
 
     public void reload(){
@@ -64,7 +64,7 @@ public class Application {
             dict.clear();
             dictOrder.clear();
             merchantEntityMap.clear();
-            bankDealamountLimitEntityMap.clear();
+            bankAmountLimitMap.clear();
             update();
         }
     }
@@ -136,16 +136,16 @@ public class Application {
     	
     	List<BankDealamountLimitEntity> findAll = bankDealamountLimitService.findAll();  	
     	for(BankDealamountLimitEntity bankDealamountLimitEntity:findAll) {
-    		bankDealamountLimitEntityMap.put(bankDealamountLimitEntity.getBankCode(),bankDealamountLimitEntity);
+            bankAmountLimitMap.put(bankDealamountLimitEntity.getBankCode(),bankDealamountLimitEntity);
     	}
     }
     
     public boolean  existsBankDealamountLimit(String  bankCode){
-    	return bankDealamountLimitEntityMap.containsKey(bankCode);
+    	return bankAmountLimitMap.containsKey(bankCode);
     }
     
     public BigDecimal getBankDealamountLimit(String bankCode) throws FssException {
-    	BankDealamountLimitEntity bankDealamountLimitEntity = bankDealamountLimitEntityMap.get(bankCode);
+    	BankDealamountLimitEntity bankDealamountLimitEntity = bankAmountLimitMap.get(bankCode);
     	if(bankDealamountLimitEntity == null){
     		throw new FssException("90004024");
     	}

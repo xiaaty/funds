@@ -48,7 +48,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="updateDictForm" action="${contextPath}/sys/workassist/updateAndSave" method="post">
+                    <form id="updateDictForm" action="${contextPath}/sys/dictionary/${dictId}/update/save" method="post">
                        <input type="hidden" value="${dict.careateUserId}" name="careateUserId"  default="0"/> 
                        <input type="hidden" value="${dict.createTime}" name="createTime"  default="0"/> 
                        <input type="hidden" value="${dict.modifyUserId}" name="careateUserId"  default="0"/> 
@@ -149,7 +149,7 @@
     	                        jAlert("修改成功!", '确认信息');
     	                        var parent_id=$("#parentId").val();
     	                        //自动跳转
-    	                      parent.location.href="${contextPath}/sys/workassist/dictionary/${dict.parentId}";
+    	                      parent.location.href="${contextPath}/sys/dictionary/${dict.parentId}";
     	                      //  parent.location.href="${contextPath}/sys/workassist/dictionary/0";
     	                    } else {
     	                        return;
