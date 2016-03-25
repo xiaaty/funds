@@ -114,7 +114,7 @@ public class FssLoanTradeController {
 		fssLoanService.update(fssLoanEntity);
 		fssLoanEntity.setStatus("10090002");
 		fssTradeApplyService.insertLoanTradeApply(fssLoanEntity,"10100001");
-		fssTradeRecordService.insertTradeRecord();
+		fssTradeRecordService.insertTradeRecord(fssLoanEntity.getTradeType());
 		return "redirect:/fss/loan/trade/borrow";
 	}
 	/**

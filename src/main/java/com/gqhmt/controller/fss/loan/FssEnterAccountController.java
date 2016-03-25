@@ -74,12 +74,12 @@ public class FssEnterAccountController {
 	 * 
 	 * author:jhz
 	 * time:2016年3月16日
-	 * function：查看该批流水详情*/
-//	 */						  /loan/enterAccount/{type}/{pid}/detail/{id}/settleList
-	@RequestMapping(value = "/loan/enterAccount/{type}/{seqNo}/detail", method = {RequestMethod.GET, RequestMethod.POST})
-	public Object accountWater(HttpServletRequest request, ModelMap model,@PathVariable String seqNo,@PathVariable String type) {
+	 * function：查看该批流水详情
+	 */						  
+	@RequestMapping(value = "/loan/enterAccount/{type}/{parentId}/detail", method = {RequestMethod.GET, RequestMethod.POST})
+	public Object accountWater(HttpServletRequest request, ModelMap model,@PathVariable Long parentId,@PathVariable String type) {
 		//通过流水好查询该批次的详情
-		List<FssEnterAccountEntity> detail = fssEnterAccountService.getDetail(seqNo);
+		List<FssEnterAccountEntity> detail = fssEnterAccountService.getDetail(parentId);
 		model.addAttribute("detail", detail);
 		return "fss/trade/trade_record/enterAccount_detail";
 	}

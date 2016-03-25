@@ -78,9 +78,9 @@ public class FssTradeRecordService {
 	 * time:2016年3月18日
 	 * function：给交易记录表添加数据
 	 */
-	public void insertTradeRecord() throws FssException{
+	public void insertTradeRecord(String tradeType) throws FssException{
 		//查找处于划扣中的交易申请
-		List<FssTradeApplyEntity> tradeAppliesByTradeStatus = fssTradeApplyService.getTradeAppliesByTradeStatus("10090002");
+		List<FssTradeApplyEntity> tradeAppliesByTradeStatus = fssTradeApplyService.getTradeAppliesByTradeStatus(tradeType);
 		for (FssTradeApplyEntity fssTradeApplyEntity : tradeAppliesByTradeStatus) {
 			insertRecord(fssTradeApplyEntity);
 			fssTradeApplyEntity.setTradeState("10090004");

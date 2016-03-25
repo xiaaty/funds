@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountReadMapper">
+<mapper namespace="com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountParentReadMapper">
 
 	<sql id="whereSql">
 			<if test="mchnNo != null and mchnNo != ''">
@@ -11,18 +11,15 @@
 			</if>
 	</sql>
 	<!-- 入账回盘-->
-	<select id="getEnterAccounts"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
+	<select id="getEnterAccountParent"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
 		SELECT 
 			t.id,
-		    t.serial_number serialNumber,
-		    t.contract_id contractId,
-		    t.accounting_no accountingNo,
-		    t.contract_no contractNo,
-			t.acc_no accNo,
-			t.loan_platform loanPlatform,
-			t.mortgagee_acc_no mortgageeAccNo
-			FROM t_gq_fss_enter_account t
-			where t.parent_id=#{parentId}
+		    t.mchn_child mchnChild,
+		    t.seq_no seqNo,
+		    t.trade_type tradeType,
+			FROM t_gq_fss_enter_account_parent t
+			where 1=1
+			<include refid="whereSql" />
 	</select>
 		<!-- 得到入账表 -->
 	<select id="getEnterAccountEntities"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.bean.EnterAccountBean" >

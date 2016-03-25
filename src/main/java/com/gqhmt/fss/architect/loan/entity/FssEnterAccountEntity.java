@@ -1,41 +1,39 @@
 package com.gqhmt.fss.architect.loan.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
- * Copyright:   Copyright (c)2015
+ * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年3月7日
- * Description:	入账实体
+ * Create at:   2016年3月25日
+ * Description:入账子表
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年3月7日  jhz      1.0     1.0 Version
+ * 2016年3月25日  jhz      1.0     1.0 Version
  */
 @Entity
 @Table(name = "t_gq_fss_enter_account")
 public class FssEnterAccountEntity implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    @Id
+	@Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
-    
+    private Long id;  
+	
+	@Column(name = "parent_id") 
+	private Long  parentId ;    
+	    
     @Column(name = "trade_type")
     private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
   
@@ -75,15 +73,11 @@ public class FssEnterAccountEntity implements Serializable {
     @Column(name="result")
     private String result;              // 98060001成功98060002部分成功还是98060003失败
     
-    @Column(name="rep_code")
-    private String repCode;              // 返回码
     
     @Column(name="loan_platform")
     private String loanPlatform;              // 借款平台
-  
-    @Column(name="rep_msg")
-    private String repMsg;              // 返回码
     
+
 	public Long getId() {
 		return id;
 	}
@@ -92,6 +86,13 @@ public class FssEnterAccountEntity implements Serializable {
 		this.id = id;
 	}
 
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
 
 	public String getTradeType() {
 		return tradeType;
@@ -99,6 +100,14 @@ public class FssEnterAccountEntity implements Serializable {
 
 	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getContractId() {
@@ -109,6 +118,14 @@ public class FssEnterAccountEntity implements Serializable {
 		this.contractId = contractId;
 	}
 
+	public String getContractNo() {
+		return contractNo;
+	}
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
+	}
+
 	public String getSerialNumber() {
 		return serialNumber;
 	}
@@ -116,7 +133,6 @@ public class FssEnterAccountEntity implements Serializable {
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
 	}
-
 
 	public String getAccountingNo() {
 		return accountingNo;
@@ -132,14 +148,6 @@ public class FssEnterAccountEntity implements Serializable {
 
 	public void setSeqNo(String seqNo) {
 		this.seqNo = seqNo;
-	}
-
-	public String getAccNo() {
-		return accNo;
-	}
-
-	public void setAccNo(String accNo) {
-		this.accNo = accNo;
 	}
 
 	public String getMortgageeAccNo() {
@@ -182,29 +190,12 @@ public class FssEnterAccountEntity implements Serializable {
 		this.mchnChild = mchnChild;
 	}
 
-
 	public String getResult() {
 		return result;
 	}
 
 	public void setResult(String result) {
 		this.result = result;
-	}
-
-	public String getRepCode() {
-		return repCode;
-	}
-
-	public void setRepCode(String repCode) {
-		this.repCode = repCode;
-	}
-
-	public String getRepMsg() {
-		return repMsg;
-	}
-
-	public void setRepMsg(String repMsg) {
-		this.repMsg = repMsg;
 	}
 
 	public String getLoanPlatform() {
@@ -215,15 +206,9 @@ public class FssEnterAccountEntity implements Serializable {
 		this.loanPlatform = loanPlatform;
 	}
 
-	public String getContractNo() {
-		return contractNo;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
-
-	public void setContractNo(String contractNo) {
-		this.contractNo = contractNo;
-	}
-
-
 	
-
+	
 }
