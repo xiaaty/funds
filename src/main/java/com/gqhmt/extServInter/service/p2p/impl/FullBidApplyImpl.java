@@ -4,6 +4,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -36,6 +38,9 @@ public class FullBidApplyImpl implements IFullBidApply {
 	@Resource
 	private FssLoanService loanService;
 	
+	@Override
+	@APITradeTypeValid(value = "11099005")
+	@APISignature
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {

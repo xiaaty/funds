@@ -47,7 +47,7 @@
         </ol>
         <!-- end breadcrumb -->
     </div>
-    <div id="content">
+    <div >
                 <div class="row">
                     <!-- NEW WIDGET START -->
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -158,8 +158,8 @@
                                                     <td>${t.mchnParent}</td>
                                                     <td>${t.mchnChild}</td>
                                                     <td>该批交易共${t.count}批，${t.isSuccess}批成功，${t.isFailed}批失败</td>
-                                                    <td>
-                                                    <a href="${contextPath}/fss/enterAccount/detail/${t.seqNo}">查看详情</a>
+                                                    <td>					
+                                                    <a href="${contextPath}/loan/enterAccount/${t.tradeType}/${t.seqNo}/detail">查看详情</a>
                                                     </td>
                                                 </tr>
                                         </c:forEach>

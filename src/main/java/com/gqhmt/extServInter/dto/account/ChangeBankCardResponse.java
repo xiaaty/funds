@@ -1,7 +1,5 @@
 package com.gqhmt.extServInter.dto.account;
 
-import java.util.List;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 /**

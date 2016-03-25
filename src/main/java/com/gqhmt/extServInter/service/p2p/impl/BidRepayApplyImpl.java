@@ -4,12 +4,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
-import com.gqhmt.extServInter.dto.p2p.FullBidApplyDto;
 import com.gqhmt.extServInter.service.p2p.IBidRepayApply;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 
@@ -37,6 +38,9 @@ public class BidRepayApplyImpl implements IBidRepayApply {
 	@Resource
 	private FssLoanService loanService;
 	
+	@Override
+	@APITradeTypeValid(value = "11099004")
+	@APISignature
     public Response excute(SuperDto dto) {
     	Response response = new Response();
     	try {
