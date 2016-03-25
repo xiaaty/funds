@@ -3,13 +3,16 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouUploadFileWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,10 +44,8 @@ public class FuiouFtpColomFieldService {
     	fuiouFtpColomFieldWriteMapper.insertSelective(fuiouFtpColomField);
     }
 
-    public void update(List<FuiouFtpColomField> fuiouFtpColomFields){
-    	for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFields) {
-    		update(fuiouFtpColomField);
-		}
+    public void insertList(List<FuiouFtpColomField> fuiouFtpColomFields){
+    	fuiouFtpColomFieldWriteMapper.insertList(fuiouFtpColomFields);
     }
 
     public void update(FuiouFtpColomField fuiouFtpColomField){
@@ -52,19 +53,33 @@ public class FuiouFtpColomFieldService {
     }
 
     public List<FuiouFtpColomField> getFuiouFtpColunm(int state){
-        return fuiouFtpColomFieldReadMapper.list(state);
+    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
+    	fuiouFtpColomField.setState(state);
+        return fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
     }
 
     public List<FuiouFtpColomField> getFuiouFtpColunm(String orderNo){
-        return fuiouFtpColomFieldReadMapper.list(orderNo);
+    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
+    	fuiouFtpColomField.setOrderNo(orderNo);
+        return fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
     }
 
     public Map<String,FuiouFtpColomField> getFuiouFtpColunm(Long fileId){
-        return fuiouFtpColomFieldReadMapper.list(fileId);
+    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
+    	fuiouFtpColomField.setFileId(fileId);
+    	List<FuiouFtpColomField> list=fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
+    	 if(list == null){
+             return null;
+         }
+         Map<String,FuiouFtpColomField> map = new HashMap<>();
+         for(FuiouFtpColomField colomField:list){
+             map.put(colomField.getSeqNo(),colomField);
+         }
+        return map;
     }
 
     public List<Long> getOrder(){
-        return this.fuiouFtpColomFieldReadMapper.getOrder(4);
+        return this.fuiouFtpColomFieldReadMapper.getOrder();
     }
 
     public List<String > getReqCode(String orderNo){
@@ -121,11 +136,15 @@ public class FuiouFtpColomFieldService {
 
 
     public void updateByFileSeqId(String fileSeq,String reqCode,String msg){
-        fuiouFtpColomFieldWriteMapper.updateByFileSeqId(fileSeq,reqCode,msg);
+    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
+    	fuiouFtpColomField.setId(Long.valueOf(fileSeq));
+    	fuiouFtpColomField.setReturnCode(reqCode);
+    	fuiouFtpColomField.setReturnMsg(msg);
+    	fuiouFtpColomFieldWriteMapper.updateByFileSeqId(fuiouFtpColomField);
     }
 
     public List<FuiouFtpColomField> listAll(){
-        return fuiouFtpColomFieldReadMapper.listAll();
+        return fuiouFtpColomFieldReadMapper.selectAll();
     }
     
     /**
@@ -133,7 +152,7 @@ public class FuiouFtpColomFieldService {
      * @param list
      */
    public void saveOrUpdateAll(List<FuiouFtpColomField> fuiyoulist){
-	   fuiouFtpColomFieldWriteMapper.saveOrUpdateAll(fuiyoulist);
+	   fuiouFtpColomFieldWriteMapper.insertList(fuiyoulist);
    }
     
     
