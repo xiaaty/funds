@@ -49,7 +49,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="withdrawForm" action="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/check" method="post">
+                    <form id="withdrawForm" action="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/moneySplit" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
@@ -70,13 +70,14 @@
                                                     <col />
                                                     <tbody>
                                                     	<input type="hidden"  name="id" value="${tradeapply.id}"/>
+                                                    	<input type="hidden"  name="id" value="${tradeapply.applyNo}"/>
                                                     	<input type="hidden"  name="applyType" value="${tradeapply.applyType}"/>
                                                     	<input type="hidden"  name="busiType" value="${tradeapply.busiType}"/>
                                                         <tr>
-                                                            <td align="left">借款人账号：</td>
+                                                            <td align="left">客户姓名：</td>
                                                             <td>
                                                                 <label class="input">
-                                                               	 	<input type="text" maxlength="50" readonly="readonly" name="accNo" value="${tradeapply.accNo}" style="width:256px;" />
+                                                               	 	<input type="text" maxlength="50" readonly="readonly" name="custName" value="${custName}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -89,58 +90,10 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">交易流水：</td>
-                                                            <td>
-                                                                <label class="input">
-                                                                <input type="text" maxlength="50" readonly="readonly" name="seqNo" value="${tradeapply.seqNo}" style="width:256px;" />
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left">放款金额：</td>
+                                                            <td align="left">金额：</td>
                                                             <td>
                                                                 <label class="input">
                                                                 <input type="text" maxlength="50" readonly="readonly" name="tradeAmount" value="${tradeapply.tradeAmount}" style="width:256px;" />
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left">交易状态：</td>
-                                                            <td>
-                                                                <label class="input">
-                                                                <input type="text" maxlength="50" readonly="readonly" name="applyState" value="${tradeapply.applyState}" style="width:256px;" />
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left">交易结果：</td>
-                                                            <td>
-                                                                <label class="input">
-                                                                <input type="text" maxlength="50" readonly="readonly" name="tradeState" value="${tradeapply.tradeState}" style="width:256px;" />
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left">商户号：</td>
-                                                            <td>
-                                                                 <label class="input">
-                                                                  <input type="text" maxlength="50" readonly="readonly" name="mchnChild" value="${tradeapply.mchnChild}" style="width:256px;" />
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left">交易日期：</td>
-                                                              <td>
-                                                                 <label class="input">
-                                                                  <input type="text" maxlength="50" readonly="readonly" name="createTime" value="${createTime}" style="width:256px;" />
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="left">修改日期：</td>
-                                                            <td>
-                                                                 <label class="input">
-                                                                  <input type="text" maxlength="50" readonly="readonly" name="modifyTime" value="${modifyTime}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -191,12 +144,11 @@
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
     	                dataType: "json",
     	                success: function (data) {
-    	                	debugger;
     	                    if (data.code == '0000') {
-    	                       /// jAlert("审核完成!", '信息提示');
-    	                       alert("审核完成");
+    	                       jAlert("审核完成!", '信息提示');
     	                        //自动跳转
-    	                          window.history.back();
+    	                        //  window.history.back();
+    	                    	parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/records";
     	                    } else {
     	                    	jAlert("添加失败,该编号已经存在,请勿重复添加!", '消息提示');
     	                        return;

@@ -62,4 +62,15 @@ public class FssCustomerService {
         }
     }
     
+    
+    public FssCustomerEntity getCustomerNameById(Long id){
+    	return customerReadMapper.selectByPrimaryKey(id);
+    }
+    
+    public FssCustomerEntity getFssCustomerEntityByCertNo(String certNo){
+    	FssCustomerEntity fssCustomerEntity=new FssCustomerEntity();
+    	fssCustomerEntity.setCertNo(certNo);
+    	return customerReadMapper.selectOne(fssCustomerEntity);
+    }
+    
 }

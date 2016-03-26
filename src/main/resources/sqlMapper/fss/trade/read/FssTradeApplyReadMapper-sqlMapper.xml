@@ -5,6 +5,7 @@
 	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 		SELECT 
 			t.id id,
+			t.cust_id custId,
 			t.apply_no applyNo,
 			t.apply_type applyType,
 			t.business_no businessNo,

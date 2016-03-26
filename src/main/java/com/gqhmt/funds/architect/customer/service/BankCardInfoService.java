@@ -482,7 +482,7 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
 		bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
-//		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
 		bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
 		bankCardInfoEntity.setCreateUserId(1);
 		bankCardInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
@@ -491,6 +491,11 @@ public class BankCardInfoService {
 	}
 	
 	
+	 public BankCardInfoEntity getInvestmentByCustId(Integer custId){
+	    	BankCardInfoEntity queryEntity = new BankCardInfoEntity();
+		    queryEntity.setCustId(custId);
+			return bankCardinfoReadMapper.selectOne(queryEntity);
+	    }
 	
 	
 }

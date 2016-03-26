@@ -71,8 +71,10 @@ public class FssCustomerEntity implements Serializable{
 
     @Column(name="mchn_child")
     private String mchnChild;                                  // varchar(45) DEFAULT NULL COMMENT '子商户号',
-
-
+    
+    @Column(name="cust_id")
+    private Long custId;                                  // bigint DEFAULT NULL COMMENT '对应冠E通customer表中的id',
+    
 	public Long getId() {
 		return id;
 	}
@@ -192,4 +194,13 @@ public class FssCustomerEntity implements Serializable{
 	public void setMchnChild(String mchnChild) {
 		this.mchnChild = mchnChild;
 	}
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+	
 }

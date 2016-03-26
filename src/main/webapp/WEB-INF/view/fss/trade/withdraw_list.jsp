@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>交易管理--交易审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>交易管理--交易审核--代付审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
    <%@include file="../../../view/include/common_css_js.jsp"%>
@@ -41,7 +41,8 @@
     <div id="ribbon">
         <ol class="breadcrumb">
             <li>交易管理</li>
-            <li>代扣审核</li>
+            <li>交易审核</li>
+            <li>代付审核</li>
         </ol>
     </div>
 
@@ -144,13 +145,12 @@
                                         	 <td>序号</td>
                                              <td>申请编号</td>
                                              <td>申请类型</td>
+                                             <td>交易状态</td>
                                              <td>业务编号</td>
                                              <td>业务类型</td>
-                                             <td>交易状态</td>
                                              <td>账户编号</td>
                                              <td>交易金额</td>
                                              <td>实际交易金额</td>
-                                            
                                              <td>执行条数</td>
                                              <td>成功条数</td>
                                              <td>创建时间</td>
@@ -166,9 +166,9 @@
                                                 	<td>${tradeapply.id}</td>
                                                     <td>${tradeapply.applyNo}</td>
                                                     <td><fss:dictView key="${tradeapply.applyType}" /></td>
+                                                    <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.businessNo}</td>
                                                     <td><fss:dictView key="${tradeapply.busiType}" /></td>
-                                                    <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.accNo}</td>
                                                     <td>${tradeapply.tradeAmount}</td>
                                                     <td>${tradeapply.realTradeAmount}</td>
@@ -179,8 +179,8 @@
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
                                                     <td>
-                                                    	 <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/withdrawcheck">代扣审核</a> 
-                                                    	&nbsp;&nbsp;|&nbsp;&nbsp;<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/records">查看详细</a>
+                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/withdrawcheck">提现审核</a>
+                                                       |<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/records">查看详细</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

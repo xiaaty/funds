@@ -65,6 +65,4 @@ public class GET_PrePaymentDto extends SuperDto {
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
 	}
-
-	
 }

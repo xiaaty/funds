@@ -3,6 +3,8 @@ package com.gqhmt.controller.fss.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
+import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
@@ -47,16 +49,23 @@ public class FssTradeApplyController {
     private FssTradeRecordService fssTradeRecordService;
     @Resource
 	private FssFssBackplateService fssFssBackplateService;
+    @Resource
+    private FssCustomerService fssCustomerService;
     /**
 	 * author:柯禹来
-	 * function:交易管理---交易审核
-	 *  /trade/tradeApply/1103/11030005   冠E通还款
+	 * function:交易管理---交易审核--代扣审核
+	 *  /trade/tradeApply/1103/11030004 出借人委托代扣
+	    /trade/tradeApply/1103/11030005   冠E通还款
 		/trade/tradeApply/1103/11030006   冠E通抵押权人代扣
 		/trade/tradeApply/1103/11030007   代偿人代扣
 		/trade/tradeApply/1103/11093001   还款代扣
 		/trade/tradeApply/1103/11090001   抵押权人代扣
+	   function:交易管理---交易审核--代付审核
 		/trade/tradeApply/1104/11091001    借款人提现
 		/trade/tradeApply/1104/11040005    冠e通放款
+		/trade/tradeApply/1104/11040006   抵押权人提现
+		/trade/tradeApply/1104/11040007   代偿人提现
+		/trade/tradeApply/1104/11040004   委托出借人提现
 	 */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
@@ -83,53 +92,63 @@ public class FssTradeApplyController {
         model.addAttribute("tradeapply", tradeApply);
         model.addAttribute("startime",startime);
     	model.addAttribute("endtime",endtime);
-        return "fss/trade/mortgaee_list";
+    	if(type==1103){//充值
+    		 return "fss/trade/mortgaee_list";
+    	}else{//提现withdraw
+    		return "fss/trade/withdraw_list";
+    	}
     }
     
     /**
 	 * author:柯禹来
-	 * function:查看详细
+	 * function:查看金额拆分列表信息
 	 */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/{id}/records",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply,FssTradeRecordEntity traderecord, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo,@PathVariable Long id) throws Exception {
-    	//根据type 判断是充值 还是提现
-    	if(type==1103){//充值
-    		Map map=new HashMap();
-        	String startime=request.getParameter("startime");
-    		String endtime=request.getParameter("endtime");
-    		map.put("applyNo", applyNo);
-    		if(StringUtils.isNotEmptyString(startime)){
-    			map.put("startime", startime+" 00:00:00");
-        	}
-    		if(StringUtils.isNotEmptyString(endtime)){
-    			map.put("endtime", endtime+" 23:59:59");
-    		}
-        	if(!"".equals(traderecord.getTradeState())){
-        		map.put("tradeState", traderecord.getTradeState());
-            }
-        	
-            List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(map);
-            model.addAttribute("page", tradeRecordList);
-            model.addAttribute("traderecord", traderecord);
-            model.addAttribute("startime",startime);
-        	model.addAttribute("endtime",endtime);
-            return "fss/trade/trade_record/traderecord_list";
-    	}else{//提现
-    		FssTradeApplyEntity tradeapplyentity=fssTradeApplyService.getFssTradeApplyEntityById(id);
-    		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-    		model.addAttribute("tradeapply",tradeapplyentity);
-    		model.addAttribute("bespokedate",sdf.format(tradeapplyentity.getBespokedate()));
-    		model.addAttribute("createTime",sdf.format(tradeapplyentity.getCreateTime()));
-    		model.addAttribute("modifyTime",sdf.format(tradeapplyentity.getModifyTime()));
-    		model.addAttribute("applyType", tradeapplyentity.getApplyType());
-    		model.addAttribute("busiType", tradeapplyentity.getBusiType());
-    		return "fss/trade/trade_audit/borrower_withdraw_check";
+		Map map=new HashMap();
+    	String startime=request.getParameter("startime");
+		String endtime=request.getParameter("endtime");
+		map.put("applyNo", applyNo);
+		if(StringUtils.isNotEmptyString(startime)){
+			map.put("startime", startime+" 00:00:00");
     	}
+		if(StringUtils.isNotEmptyString(endtime)){
+			map.put("endtime", endtime+" 23:59:59");
+		}
+    	if(!"".equals(traderecord.getTradeState())){
+    		map.put("tradeState", traderecord.getTradeState());
+        }
+    	
+        List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(map);
+        model.addAttribute("page", tradeRecordList);
+        model.addAttribute("traderecord", traderecord);
+        model.addAttribute("startime",startime);
+    	model.addAttribute("endtime",endtime);
+        return "fss/trade/trade_record/traderecord_list";
     }
   
+    /**
+     * 提现审核
+     */
+    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/{id}/withdrawcheck",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo,@PathVariable Long id) throws Exception {
+		FssTradeApplyEntity tradeapplyentity=fssTradeApplyService.getFssTradeApplyEntityById(id);
+		FssCustomerEntity  fssCustomerEntity=fssCustomerService.getCustomerNameById(tradeapplyentity.getCustId());
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		model.addAttribute("tradeapply",tradeapplyentity);
+		model.addAttribute("bespokedate",sdf.format(tradeapplyentity.getBespokedate()));
+		if(null!=fssCustomerEntity && StringUtils.isNotEmptyString(fssCustomerEntity.getName())){
+			model.addAttribute("custName",fssCustomerEntity.getName());
+		}else{
+			model.addAttribute("custName","");
+		}
+		return "fss/trade/trade_audit/borrower_withdraw_check";
+    }
+    
 	/**
-	 * 提现审核
+	 * 提现审核(资金拆分)
 	 * @param request
 	 * @param model
 	 * @param applyType
@@ -139,7 +158,7 @@ public class FssTradeApplyController {
 	 */
 //  审核不通过走回盘
 //	审核通过,先进行处理，处理完成后走回盘	
-	@RequestMapping("/trade/tradeApply/{applyType}/{busiType}/check")
+	@RequestMapping("/trade/tradeApply/{applyType}/{busiType}/moneySplit")
 	@ResponseBody
 	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
@@ -155,6 +174,7 @@ public class FssTradeApplyController {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			fssTradeApplyService.updateTradeApply(tradeapply);//修改预约到账日期
 			fssTradeRecordService.insertRecord(tradeapply, 2);
 			map.put("code", "0000");
@@ -164,5 +184,5 @@ public class FssTradeApplyController {
 		}
 		return map;
 	}
-    
+	
 }

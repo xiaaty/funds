@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>代扣审核--抵押权人代扣详细--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>代扣审核--资金详细--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
    <%@include file="../../../../view/include/common_css_js.jsp"%>
@@ -41,8 +41,7 @@
     <div id="ribbon">
         <ol class="breadcrumb">
             <li>交易审核</li>
-            <li>代扣审核</li>
-            <li>抵押权人代扣详细</li>
+            <li>资金详细</li>
         </ol>
     </div>
 
@@ -111,7 +110,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>抵押权人代扣详细</h2>
+                            <h2>资金详细</h2>
                         </header>
                         <!-- widget div-->
                         <div>

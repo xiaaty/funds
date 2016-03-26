@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.account.bean.FssFuiouAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
 
 /**
@@ -21,4 +22,5 @@ import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
  */
 public interface FssFuiouAccountReadMapper extends ReadMapper<FssFuiouAccountEntity> {
 
+	public FssFuiouAccountBean getAccountByCentNo(String certNo);
 }
