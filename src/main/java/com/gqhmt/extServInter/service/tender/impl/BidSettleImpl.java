@@ -7,10 +7,9 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.FullBidDto;
 import com.gqhmt.extServInter.service.tender.IBidSettle;
 import com.gqhmt.pay.service.tender.IFundFullTender;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -34,7 +33,7 @@ public class BidSettleImpl implements IBidSettle {
 	@Resource
 	private IFundFullTender fundFullTenderImpl;
 	
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		fundFullTenderImpl.settle((FullBidDto)dto);

@@ -1,18 +1,20 @@
 package com.gqhmt.fss.architect.customer.service;
 
 
-import java.util.Date;
-import java.util.List;
-import javax.annotation.Resource;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
 import org.springframework.stereotype.Service;
-import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
-import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,7 +38,7 @@ public class FssCustomerService {
      * @return
      * @throws FssException
      */
-    public FssCustomerEntity create(CreateLoanAccountDto dto) throws FssException {
+    public FssCustomerEntity create(CreateLoanAccountDto dto,String userId) throws FssException {
         //获取客户信息，通过certNo
         try {
             FssCustomerEntity fssCustomerEntity = GenerateBeanUtil.GenerateClassInstance(FssCustomerEntity.class,dto);
@@ -44,10 +46,11 @@ public class FssCustomerService {
             fssCustomerEntity.setMobile(dto.getMobile());
             fssCustomerEntity.setCertType(1);
             fssCustomerEntity.setCertNo(dto.getCert_no());
-            fssCustomerEntity.setUserId("1");
+            fssCustomerEntity.setUserId(userId);
+            fssCustomerEntity.setUserNo(userId);
             fssCustomerEntity.setCreateTime(new Date());
             fssCustomerEntity.setModifyTime(new Date());
-            fssCustomerEntity.setCustNo("");
+            fssCustomerEntity.setCustNo(CommonUtil.getCustNo());
             fssCustomerEntity.setMchnChild(dto.getMchn());
             fssCustomerEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
             customerWriteMapper.insertSelective(fssCustomerEntity);

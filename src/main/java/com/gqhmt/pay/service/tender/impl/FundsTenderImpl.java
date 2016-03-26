@@ -75,7 +75,7 @@ public class FundsTenderImpl  implements IFundsTender {
         tender.setBidId(Long.parseLong(bidDto.getBusi_bid_no()));*/
 
 
-        FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(bidDto.getCust_no()), bidDto.getBusi_type() == 1 ? 3 : 2);
+        FundAccountEntity fromEntity = this.getFundAccount(Long.valueOf(bidDto.getCust_no()), bidDto.getBusi_type() == 1 ? 3 : 2);
         this.hasEnoughBanlance(fromEntity,bidDto.getReal_Amount());
 
         Bid bid = this.bidService.findById(Long.parseLong(bidDto.getBusi_bid_no()));
@@ -85,9 +85,9 @@ public class FundsTenderImpl  implements IFundsTender {
         }
 
         // 入账账户
-        FundAccountEntity toSFEntity = this.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+        FundAccountEntity toSFEntity = this.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         // 冻结账户
-        FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(bidDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        FundAccountEntity toEntity = this.getFundAccount(Long.valueOf(bidDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         BigDecimal amount = bidDto.getReal_Amount();//  bid.getRealAmount();
         BigDecimal boundsAmount = bidDto.getBonus_Amount();// tender.getBonusAmount();
         CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
@@ -110,7 +110,7 @@ public class FundsTenderImpl  implements IFundsTender {
         }
         //产品名称，如果产品名称为空，则去标的title
 //        String title = getProductName(bid);
-        FundAccountEntity toEntity = this.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);// .getFundAccount(cusId,
+        FundAccountEntity toEntity = this.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);// .getFundAccount(cusId,
         List<Tender> list = null;//tenderService.queryTenderByBidId(bid.getId());
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, bid.getBidAmount(), GlobalConstants.ORDER_SETTLE, bid.getId(), GlobalConstants.BUSINESS_SETTLE, thirdPartyType);
 //        Map<Integer, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
@@ -211,7 +211,7 @@ public class FundsTenderImpl  implements IFundsTender {
         }
     }
 
-    private FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException {
+    private FundAccountEntity getFundAccount(Long cusID, int type) throws CommandParmException {
         FundAccountEntity entity = null;
         if (cusID < 100) {
             entity = fundAccountService.getFundAccount(cusID, GlobalConstants.ACCOUNT_TYPE_PRIMARY);

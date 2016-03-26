@@ -27,7 +27,7 @@ public class CreateLoanImpl implements ICreateLoan{
 	@APITradeTypeValid(value = "11020010,11020007,11020009")
 	@APISignature
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	LoanAccountResponse response = new LoanAccountResponse();
     	try {
     		String accNo=loanImpl.createLoanAccount((CreateLoanAccountDto)dto);

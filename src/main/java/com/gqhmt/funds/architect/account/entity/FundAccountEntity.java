@@ -34,7 +34,16 @@ public class FundAccountEntity {
     private Long id;
     //客户id
 	@Column(name = "cust_id",updatable = false)
-    private Integer custId;
+    private Long custId ;
+
+    public Long getCustId() {
+        return custId;
+    }
+
+    public void setCustId(Long custId) {
+        this.custId = custId;
+    }
+
     //用户id
 	@Column(name = "user_id",updatable = false)
     private Integer userId;
@@ -93,13 +102,7 @@ public class FundAccountEntity {
     }
 
     
-    public Integer getCustId() {
-        return custId;
-    }
 
-    public void setCustId(Integer custId) {
-        this.custId = custId;
-    }
     
     public Integer getUserId() {
         return userId;

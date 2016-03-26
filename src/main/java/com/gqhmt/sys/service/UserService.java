@@ -71,7 +71,7 @@ public class UserService {
 		userEntity.setModifyTime((new Timestamp(new Date().getTime())));
 		userEntity.setIntegral(0);
 		userEntity.setCreditLevel(0);
-		userEntity.setCustId(customer.getId());
+		userEntity.setCustId(customer.getId().intValue());
 		userEntity.setUserFrom(0);
 		userEntity.setIsFirstDebt(0);
 		userEntity.setUserType(1);

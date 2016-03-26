@@ -9,5 +9,11 @@ import java.util.List;
  * Created by yuyonf on 15/4/6.
  */
 public interface FuiouUploadFileReadMapper extends ReadMapper<FuiouUploadFile> {
-    public List<Integer> list(String orderNo);
+
+    public List<FuiouUploadFile> list(int state);
+
+    public List<Integer> list(String order);
+
+    public List<FuiouUploadFile> listAll(String orderNo);//from FuiouUploadFile
+
 }

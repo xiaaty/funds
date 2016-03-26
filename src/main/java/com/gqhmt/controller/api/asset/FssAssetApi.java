@@ -57,9 +57,9 @@ public class FssAssetApi {
     public Object getAccountBanlance(AssetDto dto){
         Response response = new Response();
         try {
-           response =  accountBanlanceImpl.excute(dto);
+           response =  accountBanlanceImpl.execute(dto);
         } catch (APIExcuteErrorException e) {
-            excute(e);
+            execute(e);
         }
         return response;
     }
@@ -72,9 +72,9 @@ public class FssAssetApi {
     public Object getBankInfo(BankDto bank) throws APIExcuteErrorException{
     	Response response= new Response();
     	try {
-    		response= bankListImpl.excute(bank);
+    		response= bankListImpl.execute(bank);
     	} catch (FssException e) {
-            excute(e);
+            execute(e);
     	}
     	return response;
     }
@@ -87,9 +87,9 @@ public class FssAssetApi {
     public Object getBankCardInfo(BankCardDto bankcard){
     	Response response= new Response();
     	try {
-    		response = bankCardListImpl.excute(bankcard);
+    		response = bankCardListImpl.execute(bankcard);
     	} catch (Exception e) {
-            excute(e);
+            execute(e);
     	}
     	return response;
     }
@@ -102,9 +102,9 @@ public class FssAssetApi {
     public Object queryFundSequence(FundSequenceDto tradflowDto){
     	Response response= new Response();
     	try {
-    		response =fundSeqenceImpl.excute(tradflowDto);
+    		response =fundSeqenceImpl.execute(tradflowDto);
     	} catch (Exception e) {
-            excute(e);
+            execute(e);
     	}
     	return response;
     }
@@ -117,14 +117,14 @@ public class FssAssetApi {
     public Object queryFundTrade(FundTradeDto fundTradeDto){
     	Response response=null;
     	try {
-    		response = fundTradeImpl.excute(fundTradeDto);
+    		response = fundTradeImpl.execute(fundTradeDto);
     	} catch (Exception e) {
-            excute(e);
+            execute(e);
     	}
     	return response;
     }
 
-    private Response excute(Exception e){
+    private Response execute(Exception e){
         LogUtil.error(this.getClass(), e);
         Response response = new Response();
         response.setResp_code(e.getMessage());
@@ -143,9 +143,9 @@ public class FssAssetApi {
         Response response=null;
 
         try {
-            response = rechargeAndWithdrawOrder.excute(dto);
+            response = rechargeAndWithdrawOrder.execute(dto);
         } catch (APIExcuteErrorException e) {
-            excute(e);
+            execute(e);
         }
 
         return response;

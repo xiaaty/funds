@@ -1,5 +1,8 @@
 package com.gqhmt.extServInter.service.asset.impl;
 
+import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.BankCardDto;
@@ -7,12 +10,10 @@ import com.gqhmt.extServInter.dto.account.BankCardResponse;
 import com.gqhmt.extServInter.service.asset.IBankCardList;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.pay.service.account.IFundBankCard;
-import com.gqhmt.core.APIExcuteErrorException;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
-import java.util.List;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 银行卡信息
@@ -24,7 +25,7 @@ public class BankCardListImpl implements IBankCardList{
 	private IFundBankCard fundBankCardImpl;
 	
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	BankCardResponse response = new BankCardResponse();
     	try {
     		List<BankCardInfoEntity> bankcardlist=fundBankCardImpl.getBankCardInfo((BankCardDto)dto);

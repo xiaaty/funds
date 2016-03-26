@@ -1,20 +1,14 @@
 package com.gqhmt.quartz.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.gqhmt.business.architect.loan.service.BidRepaymentService;
 import com.gqhmt.business.architect.loan.service.TenderService;
-import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouUploadFileService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 
@@ -24,11 +18,6 @@ import java.util.List;
 /**
  * Created by chris on 2015/5/10.
  */
-@Transactional(propagation= Propagation.REQUIRED,
-        isolation= Isolation.READ_COMMITTED,
-        noRollbackFor={FssException.class},
-        readOnly=false)
-@Service
 public class FtpResultService {
 
     @Resource

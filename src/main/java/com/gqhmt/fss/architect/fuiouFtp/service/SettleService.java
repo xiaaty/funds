@@ -69,7 +69,7 @@ public class SettleService {
 
 
         FssAccountEntity fssAccountEntity = null;
-        Integer cusId = fssAccountEntity.getCustId();
+        Long cusId = fssAccountEntity.getCustId();
 
 
         //产品名称，如果产品名称为空，则去标的title
@@ -92,7 +92,7 @@ public class SettleService {
 
         List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
         for (Tender tender : list) {
-            FundAccountEntity fromEntity = fundAccountService.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+            FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getRealAmount(), 2, "", map.get(tender.getId())));
             if (tender.getBonusAmount() != null) {
                 bonusAmount = bonusAmount.add(tender.getBonusAmount());
@@ -101,7 +101,7 @@ public class SettleService {
         fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
 
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
-            FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+            FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
             fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null);
         }
         fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
