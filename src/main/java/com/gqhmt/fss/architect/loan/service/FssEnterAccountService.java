@@ -1,6 +1,5 @@
 package com.gqhmt.fss.architect.loan.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,9 +15,6 @@ import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.EnterAccount;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
-import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
-import com.gqhmt.extServInter.dto.loan.RepaymentDto;
-import com.gqhmt.fss.architect.loan.bean.EnterAccountBean;
 import com.gqhmt.fss.architect.loan.bean.SettleListBean;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
@@ -29,10 +25,7 @@ import com.gqhmt.fss.architect.loan.mapper.read.FssSettleListReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssEnterAccountParentWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssEnterAccountWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssSettleListWriteMapper;
-import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 
 /**
  * 
@@ -187,27 +180,11 @@ public class FssEnterAccountService {
 
 	/**
 	 * 
-	 * author:jhz time:2016年3月15日 function：得到入账表
-	 */
-	public List<EnterAccountBean> getEnterAccountEntities(Map map) {
-		return fssEnterAccountReadMapper.getEnterAccountEntities(map);
-	}
-
-	/**
-	 * 
-	 * author:jhz time:2016年3月15日 function：根据流水号得到相应的每一批的交易成功数量
-	 */
-	public int getIsTrue(String seqNo) {
-		return fssEnterAccountReadMapper.getIsTrue(seqNo);
-	}
-
-	/**
-	 * 
 	 * author:jhz time:2016年3月16日 function：根据parent_id查看该批流水详情
 	 */
-	public List<FssEnterAccountEntity> getDetail(Long id) {
+	public List<FssEnterAccountEntity> getEnterAccounts(Long id) {
 
-		return fssEnterAccountReadMapper.getDetail(id);
+		return fssEnterAccountReadMapper.getEnterAccounts(id);
 	}
 
 	/**
@@ -255,5 +232,15 @@ public class FssEnterAccountService {
 		enterAccountEntity.setLoanPlatform(enterAccount.getLoan_platform());
 		enterAccountEntity.setContractNo(enterAccount.getContract_no());
 		return enterAccountEntity;
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月26日
+	 * function：得到主表列表
+	 */
+	public List<FssEnterAccountParentEntity> getEnterAccountParentEntities(Map<Object, Object> map) {
+		// TODO Auto-generated method stub
+		return fssEnterAccountParentReadMapper.getEnterAccountParentList(map);
 	}
 }
