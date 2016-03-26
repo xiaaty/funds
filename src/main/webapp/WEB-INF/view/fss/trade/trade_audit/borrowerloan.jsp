@@ -181,6 +181,7 @@
                                         <thead>
                                         <tr>
                                             <td></td>
+                                            <td>操作</td>
                                             <td>抵押权人资金平台账号</td>
                                             <td>借款人资金平台账号</td>
                                             <td>交易流水号</td>
@@ -194,12 +195,38 @@
                                             <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
-                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t" varStatus="l">
                                                 <tr>
+                                                    <td >
+                                                    <c:if test="${t.tradeType != '11092001'}">
+                                                    <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
+                                                    </c:if>
+                                                    &nbsp; &nbsp;
+                                                      <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
+                                                      		<c:if test="${t.status== '10050001'}">
+																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
+																&nbsp; &nbsp;
+															</c:if>
+															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
+																<a href="${contextPath}/loan/trade/${type}/transfer${t.id}">转给借款人</a>
+																&nbsp; &nbsp;
+															</c:if>
+															<c:if test="${t.status == '10050005'}">
+																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
+																&nbsp; &nbsp;
+															</c:if>
+													  </c:if>
+                                                      <c:if test="${t.tradeType == '11090002'}">
+															<c:if test="${t.status == '10050005'}">
+																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
+																&nbsp; &nbsp;
+															</c:if>
+													  </c:if>
+                                                    
+                                                    </td>
                                                     <td>${l.index+1}</td>
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.accNo}</td>
@@ -230,33 +257,6 @@
                                                     <td>${t.mchnParent}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
                                                     <td> <fss:fmtDate value="${t.modifyTime}"/></td>
-                                                    <td >
-                                                    <c:if test="${t.tradeType != '11092001'}">
-                                                    <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
-                                                    </c:if>
-                                                    &nbsp; &nbsp;
-                                                      <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
-                                                      		<c:if test="${t.status== '10050001'}">
-																<a href="${contextPath}/fss/loan/trade/withHold/${t.id}">代扣</a>
-																&nbsp; &nbsp;
-															</c:if>
-															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
-																<a href="${contextPath}/fss/loan/trade/transfer/${t.id}">转给借款人</a>
-																&nbsp; &nbsp;
-															</c:if>
-															<c:if test="${t.status == '10050005'}">
-																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp;
-															</c:if>
-													  </c:if>
-                                                      <c:if test="${t.tradeType == '11090002'}">
-															<c:if test="${t.status == '10050005'}">
-																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp;
-															</c:if>
-													  </c:if>
-                                                    
-                                                    </td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -292,8 +292,8 @@
         forceParse: 0
     });
     function verify(){
-    	var a=document.getElementsByName("creatTime");
-    	var b=document.getElementsByName("modifyTime");
+    	var a=document.getElementsByName("startTime");
+    	var b=document.getElementsByName("endTime");
     	if(b[0].value!=null&&b[0].value!=''){
     		
     		if(a[0].value>b[0].value){

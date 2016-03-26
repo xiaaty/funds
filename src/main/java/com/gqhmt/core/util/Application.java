@@ -136,7 +136,7 @@ public class Application {
     	
     	List<BankDealamountLimitEntity> findAll = bankDealamountLimitService.findAll();  	
     	for(BankDealamountLimitEntity bankDealamountLimitEntity:findAll) {
-            bankAmountLimitMap.put(bankDealamountLimitEntity.getBankCode(),bankDealamountLimitEntity);
+            bankAmountLimitMap.put(bankDealamountLimitEntity.getBankCode()+bankDealamountLimitEntity.getTradeType(),bankDealamountLimitEntity);
     	}
     }
     

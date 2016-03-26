@@ -5,6 +5,8 @@ import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.*;
 import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
 import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper;
@@ -58,6 +60,8 @@ public class FssLoanService {
     private FssFeeListWriteMapper fssFeeListWriteMapper;
     @Resource
     private FssFeeListReadMapper fssFeeListReadMapper;
+    @Resource
+    private FssAccountService fssAccountService;
 	 /**
 	  * 
 	  * author:jhz
@@ -101,7 +105,10 @@ public class FssLoanService {
      * function：借款人放款接口
      */
     public void insertLending(LendingDto dto)throws FssException{
+    	FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
     	FssLoanEntity fssLoanEntity=new FssLoanEntity();
+    	fssLoanEntity.setCustNo(fssAccountByAccNo.getCustNo());
+    	fssLoanEntity.setUserNo(fssAccountByAccNo.getUserNo());
 		fssLoanEntity.setPayAmt(dto.getPay_amt());
 		fssLoanEntity.setAccNo(dto.getAcc_no());
 		fssLoanEntity.setContractAmt(dto.getContract_amt());
@@ -111,6 +118,7 @@ public class FssLoanService {
 		fssLoanEntity.setContractId(dto.getContract_id());
 		fssLoanEntity.setContractNo(dto.getContract_no());
 		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setModifyTime(new Date());
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setLoanPlatform(dto.getLoan_platform());
 		fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
