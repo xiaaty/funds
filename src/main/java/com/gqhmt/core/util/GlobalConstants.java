@@ -236,6 +236,8 @@ public class GlobalConstants {
 
     //开户交易类型,与交易渠道映射
     public static Map<String,String> TRADE_ACCOUNT_PAY_CHANNEL_MAPPING = new ConcurrentHashMap<>();
+
+    public static Map<String,String> TRADE_APPLY_NO__MAPPING = new ConcurrentHashMap<>();
     
     private static long getMenuId(Long fid) {
         if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
@@ -604,6 +606,20 @@ public class GlobalConstants {
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020007","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020011","97010001");
 
+
+        TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
+        TRADE_APPLY_NO__MAPPING.put("11030005","GTHK");
+        TRADE_APPLY_NO__MAPPING.put("11030006","GTDY");
+        TRADE_APPLY_NO__MAPPING.put("11030007","DCKK");
+        TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
+        TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+
+
+        TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
+        TRADE_APPLY_NO__MAPPING.put("11040005","GTFK");
+        TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
+        TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
+        TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
 
 
 
