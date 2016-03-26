@@ -22,17 +22,23 @@
 			<include refid="whereSql" />
 	</select>
 		<!-- 得到入账表 -->
-	<select id="getEnterAccountEntities"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.bean.EnterAccountBean" >
-		SELECT 
-			COUNT(*) count,
-		    t.seq_no seqNo,
+	<select id="getEnterAccountParentList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+			 SELECT 
+			t.id,
 		    t.mchn_child mchnChild,
-		    t.mchn_parent mchnParent,
-		    t.trade_type tradeType
-			FROM t_gq_fss_enter_account t
-			where 1=1 
-			<if test="seqNo != null and seqNo != ''">
-				and t.seq_no like concat('%',#{seqNo},'%')
+		    t.seq_no seqNo,
+		    t.trade_type tradeType,
+		    trade_count tradeCount,
+		    success_count successCount,
+		    filed_count filedCount,
+		    state state,
+		    result_state resultState,
+		    create_time createTime,
+		    motify_time motifyTime
+			FROM t_gq_fss_enter_account_parent t
+			where 1=1
+			<if test="state != null and state != ''">
+				and t.state like concat('%',#{state},'%')
 			</if>
 			<if test="tradeType != null and tradeType != ''">
 				and t.trade_type like concat('%',#{tradeType},'%')
@@ -40,28 +46,6 @@
 			<if test="mchnChild != null and mchnChild != ''">
 				and t.mchn_child like concat('%',#{mchnChild},'%')
 			</if>
-			group by t.seq_no
-	</select>
-		<!-- 根据流水号得到相应的每一批的交易成功数量 -->
-	<select id="getIsTrue"  parameterType="java.lang.String" resultType="java.lang.Integer" >
-		SELECT 
-			COUNT(*) 
-			FROM t_gq_fss_enter_account t
-			where t.seq_no=#{seqNo} and t.result ='98060001' 
-	</select>
-		<!-- 根据流水号得到相应的每一批的交易情况 -->
-	<select id="getDetail"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
-		SELECT 
-			t.id,
-		    t.contract_id contractId,
-		    t.serial_number serialNumber,
-		    t.accounting_no accountingNo,
-		    t.acc_no accNo,
-		    t.mortgagee_acc_no mortgageeAccNo,
-		    t.create_time createTime,
-		    t.modify_time modifyTime,
-		    t.result result
-			FROM t_gq_fss_enter_account t
-			where t.seq_no=#{seqNO}
+			group by t.create_time desc
 	</select>
 </mapper>

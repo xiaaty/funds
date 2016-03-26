@@ -58,7 +58,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/fss/loan/enterAccountList" method="post" >
+                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/loan/enterAccount/list" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -78,12 +78,6 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">交易流水号:</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
-                                                                <input type="text" name="seqNo" value="${map.seqNo}">
-                                                            </label>
-                                                        </td>
                                                         <td class="tr" nowrap="nowrap">商户号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
@@ -93,7 +87,13 @@
                                                         <td class="tr" nowrap="nowrap">交易类型：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="contractId" value="${map.tradeType}">
+                                                                <input type="text" name="tradeType" value="${map.tradeType}">
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr" nowrap="nowrap">执行状态:</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="input"  style="width:210px" >
+                                                                <input type="text" name="state" value="${map.state}">
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -134,32 +134,45 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="400" />
                                     	<col width="300" />
-                                    	<col width="400" />
-                                    	<col width="400" />
-                                    	<col width="400" />
-                                    	<col width="400" />
-                                    	<col width="400" />
+                                    	<col width="300" />
+                                    	<col width="300" />
                                         <thead>
                                         <tr>
+                                            <td>操作</td>
                                             <td>交易流水号</td>
                                             <td>交易类型</td>
-                                            <td>大商户号</td>
-                                            <td>子商户号 </td>
-                                            <td>交易结果</td>
-                                            <td>操作</td>
+                                            <td>商户号</td>
+                                            <td>执行状态</td>
+                                            <td>交易情况</td>
+                                            <td>执行结果</td>
+                                            <td>创建时间</td>
+                                            <td>修改时间</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
+                                                    <td>					
+                                                    <a href="${contextPath}/loan/enterAccount/${t.tradeType}/${t.id}/detail">查看详情</a>
+                                                    </td>
                                                     <td>${t.seqNo}</td>
                                                     <td>${t.tradeType}</td>
-                                                    <td>${t.mchnParent}</td>
                                                     <td>${t.mchnChild}</td>
-                                                    <td>该批交易共${t.count}批，${t.isSuccess}批成功，${t.isFailed}批失败</td>
-                                                    <td>					
-                                                    <a href="${contextPath}/loan/enterAccount/${t.tradeType}/${t.seqNo}/detail">查看详情</a>
+                                                    <td>${t.state}</td>
+                                                    <td>该批交易共${t.tradeCount}批，${t.successCount}批成功，${t.filedCount}批失败</td>
+                                                    <td>${t.resultState}</td>
+                                                      <td> <fss:fmtDate value="${t.createTime}"/>
+<%--                                                       <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/> --%>
+                                                      </td>
+                                                    <td> <fss:fmtDate value="${t.motifyTime}"/>
+<%--                                                     <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/> --%>
                                                     </td>
                                                 </tr>
                                         </c:forEach>
