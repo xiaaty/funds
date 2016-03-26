@@ -34,7 +34,7 @@ public class ICreateAccountTest extends TestService {
     public void createAccountTest() throws APIExcuteErrorException {
         CreateAccountDto dto = new CreateAccountDto();
         try {
-            Response response = createAccount.excute(dto);
+            Response response = createAccount.execute(dto);
             assert response.getResp_code().equals("90008101");
         }catch (Throwable t){
             t.printStackTrace();

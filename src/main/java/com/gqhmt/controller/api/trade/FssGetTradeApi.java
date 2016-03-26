@@ -55,7 +55,7 @@ public class FssGetTradeApi {
 	public Object careateWithholdApply(GET_WithholdDto dto){
 		Response response=new Response();
 		try {
-			response = withHoldApplyImpl.excute(dto);
+			response = withHoldApplyImpl.execute(dto);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
@@ -70,7 +70,7 @@ public class FssGetTradeApi {
 	public Object careateWithholdApply(GET_PrePaymentDto dto){
 		Response response=new Response();
 		try {
-			response = prePaymentApplyImpl.excute(dto);
+			response = prePaymentApplyImpl.execute(dto);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

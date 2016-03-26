@@ -49,7 +49,7 @@ public class FssTenderApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = bidImpl.excute(bidDto);
+    		response = bidImpl.execute(bidDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());

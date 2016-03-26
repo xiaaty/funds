@@ -41,7 +41,7 @@ public class EnterAccountImpl implements IEnterAccount {
 
 	@APITradeTypeValid(value = "11099001,11099002")
 	@APISignature
-	public Response excute(SuperDto dto) throws APIExcuteErrorException{
+	public Response execute(SuperDto dto) throws APIExcuteErrorException{
     	Response response = new Response();
     	try {
     		fssEnterAccountService.insertEnterAccount((EnterAccountDto) dto);

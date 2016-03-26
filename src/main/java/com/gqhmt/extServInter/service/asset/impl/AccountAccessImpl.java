@@ -12,10 +12,9 @@ import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Resource;
 
 /**
  * 账户资产接口--账户资产
@@ -30,7 +29,7 @@ public class AccountAccessImpl implements IAccountAccess{
 	 * 账户资产查询
 	 */
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
 		QueryListResponse response = new QueryListResponse();
     	List list=new ArrayList();
     	try {

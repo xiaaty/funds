@@ -67,7 +67,7 @@ public class FssTradeRecordService {
 	 */
 	public BigDecimal  getBankCode(String accNo) throws FssException{
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
-		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId());
+		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId().intValue());
 		Application instance = Application.getInstance();
 		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getParentBankId());
 		return bankDealamountLimit;

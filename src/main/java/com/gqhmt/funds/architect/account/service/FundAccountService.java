@@ -185,7 +185,7 @@ public class FundAccountService {
     * time:2016年2月22日
     * function：通过custId,BUSI_TYPE得到账户
     */
-    public FundAccountEntity getFundAccount(Integer cusID, Integer type){
+    public FundAccountEntity getFundAccount(Long cusID, Integer type){
         return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
     }
 
@@ -406,7 +406,7 @@ public class FundAccountService {
 	 * @param type
 	 * @return
 	 */
-	public FundAccountEntity getFundsAccount(Integer cusID, int type) throws FssException {
+	public FundAccountEntity getFundsAccount(Long cusID, int type) throws FssException {
 		FundAccountEntity fundaccount = null;
 		if (cusID < 100) {
 			fundaccount = fundsAccountReadMapper.queryFundAccountByCutId(cusID, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
@@ -425,7 +425,7 @@ public class FundAccountService {
 	    * time:2016年2月22日
 	    * function 查询账户余额
 	    */
-	    public FundAccountEntity getAccountBanlance(int cust_no, int busi_type){
+	    public FundAccountEntity getAccountBanlance(Long cust_no, int busi_type){
 	        return this.fundsAccountReadMapper.getAccountBanlance(cust_no,busi_type);
 	    }
 	    
@@ -465,7 +465,7 @@ public class FundAccountService {
 	
 	    public FssAccountEntity getFundsAccountByCustId(String custId) throws FssException{
 	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
-	    	fssAccountEntity.setCustId(Integer.valueOf(custId));
+	    	fssAccountEntity.setCustId(Long.valueOf(custId));
 	    	return fssAccountReadMapper.selectOne(fssAccountEntity);
 	    }
 	    

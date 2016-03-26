@@ -37,7 +37,7 @@ public class MortgageeWithDrawImpl implements IMortgageeWithDraw {
 
 	@APITradeTypeValid(value = "11092001")
 	@APISignature
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		loanService.insertmortgageeWithDraw((MortgageeWithDrawDto)dto);

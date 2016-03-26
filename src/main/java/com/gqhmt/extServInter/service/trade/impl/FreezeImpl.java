@@ -35,7 +35,7 @@ public class FreezeImpl implements IFreeze {
     @Resource
     private IFundsTrade fundsTrade;
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
         try {
             fundsTrade.froze((FreezeDto) dto);

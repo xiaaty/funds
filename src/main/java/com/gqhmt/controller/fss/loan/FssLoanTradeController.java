@@ -17,6 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -63,27 +64,24 @@ public class FssLoanTradeController {
 	 * time:2016年3月11日
 	 * function：借款人放款
 	 */
-	@RequestMapping(value = "/fss/loan/trade/borrow", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/loan/trade/{type}", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
-	public Object mortgagree(HttpServletRequest request, ModelMap model,String mchnChild,String status,
-					String seqNo ,String contractId, String creatTime, String modifyTime) {
-		Map<Object, Object> map = new HashMap<>();
-		if (creatTime != null && !creatTime.equals("")) {
-			creatTime = creatTime + " 00:00:00";
+	public Object loanList(HttpServletRequest request, ModelMap model, @RequestParam  Map<String,String> map, @PathVariable String type) {
+		if(map != null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map.put("startTime",startTime != null ?startTime.replace("-",""):null);
+			map.put("endTime",endTime != null ? endTime.replace("-",""): null);
+
+		}else{
+			map = new HashMap<>();
+
 		}
-		if (modifyTime != null && !modifyTime.equals("")) {
-			modifyTime = modifyTime + " 23:59:59";
-		}
-		map.put("creatTime", creatTime);
-		map.put("modifyTime", modifyTime);
-		map.put("contractId", contractId);
-		map.put("mchnChild", mchnChild);
-		map.put("seqNo", seqNo);
-		map.put("status", status);
-		List<FssLoanEntity> findMortgrageePayment = fssLoanService.findBorrowerLoan(map);
-		model.addAttribute("page", findMortgrageePayment);
-		model.addAttribute("map", map);
-			return "fss/trade/trade_audit/borrowerloan";
+		map.put("type",type);
+		List<FssLoanEntity> list = fssLoanService.findBorrowerLoan(map);
+		model.addAttribute("page", list);
+		model.put("map",map);
+		return "fss/trade/trade_audit/borrowerloan";
 	}
 
 	/**

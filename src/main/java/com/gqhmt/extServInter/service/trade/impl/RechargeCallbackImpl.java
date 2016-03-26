@@ -34,7 +34,7 @@ public class RechargeCallbackImpl implements IRechargeCallback {
 	private IFundsTrade iFundsTrade;
 	
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
 			iFundsTrade.recharge((RechargeSuccessDto)dto);

@@ -1,8 +1,5 @@
 package com.gqhmt.pay.service.tender.impl;
 
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
-import com.gqhmt.util.ThirdPartyType;
 import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.BidRepayment;
@@ -12,6 +9,8 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.tender.RepayDto;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -21,11 +20,13 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.service.tender.IRepayBid;
-import javax.annotation.Resource;
+import com.gqhmt.util.ThirdPartyType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -112,7 +113,7 @@ public class RepayBidImpl  implements IRepayBid{
 		}
 		// 获取主账户信息
 		// 实际出账账户
-		FundAccountEntity fromEntity = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+		FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		sequenceService.hasEnoughBanlance(fromEntity, sumRepay);
 
 		FundOrderEntity fundOrderEntity2=null;
@@ -122,7 +123,7 @@ public class RepayBidImpl  implements IRepayBid{
 			throw new FssException(e.getMessage());
 		}
 		for (RepaymentBean bean : list) {
-			FundAccountEntity toEntity = fundAccountService.getFundAccount(bean.getCustomerId(), bean.getInvestType());
+			FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType());
 			if (bean.getRepaymentAmount().multiply(new BigDecimal("100")).longValue() <= 0) {
 				continue;
 			}
@@ -153,7 +154,7 @@ public class RepayBidImpl  implements IRepayBid{
 		}
 		List<RepaymentBean> list = bidRepaymentService.queryReceivedPaymentByRepaymentIdAndPeriod(Integer.valueOf(id.intValue()));
 		// 批量冻结
-		FundAccountEntity fromEntity = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+		FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		this.repaySeq(bid, list, fromEntity, fundOrderEntity, bidRepayment, sumRepay);
 	}
 	/**
@@ -170,7 +171,7 @@ public class RepayBidImpl  implements IRepayBid{
 		String title  = bidService.getProductName(bid.getId());
 		ThirdPartyType thirdPartyType = ThirdPartyType.FUIOU;
 		for (RepaymentBean bean : list) {
-			FundAccountEntity toEntity = fundAccountService.getFundAccount(bean.getCustomerId(), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
+			FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
 			Map<Integer, Long> mapping = new HashMap<>();
 			mapping.put(GlobalConstants.BUSINESS_MAPPINF_CUSTOMER, Long.valueOf(bid.getId()));
 			mapping.put(GlobalConstants.BUSINESS_MAPPINF_BID, Long.valueOf(bid.getId()));
@@ -213,7 +214,7 @@ public class RepayBidImpl  implements IRepayBid{
 			// 转到应付账户
 			BigDecimal amount = bean.getPayableAmount();
 			if (amount.compareTo(BigDecimal.ZERO) > 0) {
-				FundAccountEntity toA0Account = fundAccountService.getFundAccount(bean.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
+				FundAccountEntity toA0Account = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
 				try {
 					sequenceService.transfer(toEntity, toA0Account, amount, 7, 1005,null,thirdPartyType, fundOrderEntity);
 				} catch (FssException e) {
