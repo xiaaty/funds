@@ -160,7 +160,7 @@ public class FssAccountService {
             FssCustomerEntity fssCustomerEntity=this.createAccount(dto,customerEntity.getId());
     	try {
             FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
-            fssAccountEntity.setAccNo(CommonUtil.getAccountNo(dto.getTrade_type()));
+
             fssAccountEntity.setCustNo(String.valueOf(fssCustomerEntity.getId()));
             fssAccountEntity.setAccBalance(BigDecimal.ZERO);
             fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
@@ -169,6 +169,7 @@ public class FssAccountService {
             fssAccountEntity.setCustNo(fssCustomerEntity.getCustNo());
             fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
             String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(dto.getTrade_type());//设置账户类型
+            fssAccountEntity.setAccNo(CommonUtil.getAccountNo(accType));
             String channelNo=GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type());//渠道编号
             fssAccountEntity.setAccType(Integer.parseInt(accType));
             fssAccountEntity.setState(10020001);//默认为有效账户

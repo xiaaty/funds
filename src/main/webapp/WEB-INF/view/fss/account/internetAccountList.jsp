@@ -137,7 +137,7 @@
                                         <col width="100"/>
                                         <thead>
                                         <tr>
-                                              <td>客户账号</td>
+                                              <td>资金账号</td>
                                               <td>客户姓名</td>
                                               <td>账户类型</td>
                                               <td>证件号码</td>
@@ -158,7 +158,7 @@
                                         <tbody>
                                              <c:forEach items="${page.list}" var="bussaccount">
                                                 <tr>
-                                                    <td><fss:fmtData value="${bussaccount.accNo}"/></td>
+                                                    <td>${bussaccount.accNo}</td>
                                                     <td>${bussaccount.custName}</td>
                                                     <td> <fss:dictView key="${bussaccount.accType}" /></td>
                                                     <td><fss:fmtData value="${bussaccount.certNo}"/></td>
