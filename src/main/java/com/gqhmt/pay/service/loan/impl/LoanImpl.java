@@ -6,7 +6,6 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
-import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;

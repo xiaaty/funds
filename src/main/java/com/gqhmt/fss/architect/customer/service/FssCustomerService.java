@@ -68,6 +68,11 @@ public class FssCustomerService {
     }
     
     
+    public FssCustomerEntity getCustomerNameByCentNo(String certNo){
+    	FssCustomerEntity fssCustomerEntity = new FssCustomerEntity();
+    	fssCustomerEntity.setCertNo(certNo);
+    	return customerReadMapper.selectOne(fssCustomerEntity);
+    }
     
     
 }
