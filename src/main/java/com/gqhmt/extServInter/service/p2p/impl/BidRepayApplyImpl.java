@@ -1,9 +1,5 @@
 package com.gqhmt.extServInter.service.p2p.impl;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gqhmt.annotations.APISignature;
 import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
@@ -13,6 +9,9 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
 import com.gqhmt.extServInter.service.p2p.IBidRepayApply;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
@@ -41,7 +40,7 @@ public class BidRepayApplyImpl implements IBidRepayApply {
 	@Override
 	@APITradeTypeValid(value = "11099004")
 	@APISignature
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		loanService.insertBidRepayApply((BidApplyDto)dto);

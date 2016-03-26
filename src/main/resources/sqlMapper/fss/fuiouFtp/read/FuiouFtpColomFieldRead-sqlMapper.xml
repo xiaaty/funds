@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper">
 
+
 	<select id="getOrder"  resultType="java.util.List">
 		SELECT  t.order_id orderId FROM t_fuiou_ftp_field t WHERE t.state = 4 GROUP BY t.order_id
 	</select>
@@ -10,6 +11,5 @@
 		SELECT t.return_Code returnCode FROM t_fuiou_ftp_field t WHERE t.order_no = ${orderNo} GROUP BY t.return_Code
 	</select>
 	
-	
-	
+
  </mapper>

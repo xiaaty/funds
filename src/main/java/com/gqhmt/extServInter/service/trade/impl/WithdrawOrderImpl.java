@@ -1,18 +1,17 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WebOrderResponse;
 import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
 import com.gqhmt.extServInter.service.trade.IWithdrawOrder;
 import com.gqhmt.pay.service.trade.IFundsTrade;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -37,7 +36,7 @@ public class WithdrawOrderImpl implements IWithdrawOrder {
 	private IFundsTrade fundsTradeImpl;
 	
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
 		WebOrderResponse response = null;
 		try {
 			response = GenerateBeanUtil.GenerateClassInstance(WebOrderResponse.class,dto);

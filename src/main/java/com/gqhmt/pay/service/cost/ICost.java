@@ -32,7 +32,7 @@ public interface ICost {
      * @param bustType
      * @param decimal
      */
-    public void cost(String loanType,String  fundsType, Integer  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
+    public void cost(String loanType,String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
 
 
     /**
@@ -52,10 +52,10 @@ public interface ICost {
      * @param bustType
      * @param decimal
      */
-    public void cost(String  fundsType, Integer  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
+    public void cost(String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
 
 
-    public void costReturn(String loanType,String  fundsType, Integer  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
+    public void costReturn(String loanType,String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
 
     public void costReturn(String loanType,String  fundsType,String accNo, BigDecimal decimal,Long busiId,Integer busiType);
 

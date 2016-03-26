@@ -63,7 +63,7 @@ public class FssBankEndApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = fullBidApplyImpl.excute(fullBidApplyDto);
+    		response = fullBidApplyImpl.execute(fullBidApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -83,7 +83,7 @@ public class FssBankEndApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = bidRepayApplyImpl.excute(bidApplyDto);
+    		response = bidRepayApplyImpl.execute(bidApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -103,7 +103,7 @@ public class FssBankEndApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = rePaymentsImpl.excute(rePaymentDto);
+    		response = rePaymentsImpl.execute(rePaymentDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());

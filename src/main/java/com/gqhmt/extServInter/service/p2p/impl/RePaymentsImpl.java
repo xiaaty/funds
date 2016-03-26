@@ -1,9 +1,5 @@
 package com.gqhmt.extServInter.service.p2p.impl;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gqhmt.annotations.APISignature;
 import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
@@ -13,6 +9,9 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.extServInter.service.p2p.IRePayments;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
@@ -41,7 +40,7 @@ public class RePaymentsImpl implements IRePayments {
 	@Override
 	@APITradeTypeValid(value = "11100001,11100002,11100003")
 	@APISignature
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		loanService.insertRepaymentDto((RePaymentDto)dto);

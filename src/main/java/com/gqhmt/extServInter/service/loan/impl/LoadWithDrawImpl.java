@@ -27,7 +27,7 @@ public class LoadWithDrawImpl implements ILoadWithDraw{
 	@APITradeTypeValid(value = "11091001")
 	@APISignature
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	WithDrawApplyResponse response = new WithDrawApplyResponse();
     	try {
     		fundAccountService.createWithDrawApply((LoanWithDrawApplyDto)dto);

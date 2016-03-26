@@ -31,7 +31,7 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	
 	/**
 	 * 获取所有账户列表
-	 * @param fundsAcctBean
+	 * @param fundAccountEntity
 	 * @return
 	 * @throws FssException
 	 */
@@ -53,9 +53,9 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
      */
     public Page queryLoanFundsAccountList(FundsAccountBean fundsAcctBean);
 
-    public FundAccountEntity queryFundAccountByCutId(@Param("cusID") Integer cusID, @Param("type")int type);
+    public FundAccountEntity queryFundAccountByCutId(@Param("cusID") Long cusID, @Param("type")int type);
     
-    public FundAccountEntity getAccountBanlance(@Param("cust_no") int cust_no, @Param("busi_type")int busi_type);
+    public FundAccountEntity getAccountBanlance(@Param("cust_no") Long cust_no, @Param("busi_type")int busi_type);
     
     public FundAccountEntity queryFundAccountByUserName(String userName,int type);
 

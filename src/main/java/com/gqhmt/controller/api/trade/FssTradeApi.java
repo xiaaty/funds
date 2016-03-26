@@ -95,7 +95,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = withdrawOrderImpl.excute(withdrawOrderDto);
+    		response = withdrawOrderImpl.execute(withdrawOrderDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -114,7 +114,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = rechargeOrderImpl.excute(rechargeOrderDto);
+    		response = rechargeOrderImpl.execute(rechargeOrderDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -133,7 +133,7 @@ public class FssTradeApi {
 	public Object rechargeSuccess(RechargeSuccessDto rechargeSuccessDto){
 		Response response=new Response();
 		try {
-			response = rechargeCallback.excute(rechargeSuccessDto);
+			response = rechargeCallback.execute(rechargeSuccessDto);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
@@ -150,7 +150,7 @@ public class FssTradeApi {
 	public Object freeze(WithdrawSuccessDto withdrawSuccessDto){
 		Response response=new Response();
 		try {
-			response = withdrawCallback.excute(withdrawSuccessDto);
+			response = withdrawCallback.execute(withdrawSuccessDto);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
@@ -169,7 +169,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = withdrawImpl.excute(withdrawDto);
+    		response = withdrawImpl.execute(withdrawDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -188,7 +188,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = rechargeImpl.excute(withholdDto);
+    		response = rechargeImpl.execute(withholdDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -207,7 +207,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = rechargeApplyImpl.excute(rechargeApplyDto);
+    		response = rechargeApplyImpl.execute(rechargeApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -226,7 +226,7 @@ public class FssTradeApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = withdrawApplyImpl.excute(withdrawApplyDto);
+    		response = withdrawApplyImpl.execute(withdrawApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -245,7 +245,7 @@ public class FssTradeApi {
 	public Object freeze(FreezeDto freezeDto){
 		Response response=new Response();
 		try {
-			response = freezeImpl.excute(freezeDto);
+			response = freezeImpl.execute(freezeDto);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
@@ -263,9 +263,9 @@ public class FssTradeApi {
 	public Object unFreeze(UnFreezeDto unFreezeDto){
 		Response response= null;
 		try {
-			response = unFreezeImpl.excute(unFreezeDto);
+			response = unFreezeImpl.execute(unFreezeDto);
 		} catch (Exception e) {
-			response = excute(e);
+			response = execute(e);
 		}
 		return response;
 	}
@@ -279,9 +279,9 @@ public class FssTradeApi {
 	public Object transfer(TransferDto dto){
 		Response response= null;
 		try {
-			response = transeferImpl.excute(dto);
+			response = transeferImpl.execute(dto);
 		} catch (Exception e) {
-			response = excute(e);
+			response = execute(e);
 		}
 		return response;
 	}
@@ -319,7 +319,7 @@ public class FssTradeApi {
     	return response;
     }
     */
-	private Response excute(Exception e){
+	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
 		response.setResp_code(e.getMessage());

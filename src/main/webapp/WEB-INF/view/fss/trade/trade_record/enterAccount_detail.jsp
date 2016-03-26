@@ -96,17 +96,17 @@
                                         <tbody>
                                         <c:forEach items="${detail}" var="t">
                                                 <tr>
+                                                    <td>					
+                                                    <a href="${contextPath}/loan/enterAccount/${type}/${parentId}/detail/${t.id}/settleList">查看费用</a>
+                                                    </td>
                                                     <td>${t.serialNumber}</td>
                                                     <td>${t.accountingNo}</td>
                                                     <td>${t.contractId}</td>
                                                     <td>${t.accNo}</td>
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.result=='98060001'?'成功':'失败'}</td>
-                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td>					
-                                                    <a href="${contextPath}/loan/enterAccount/${type}/${seqNo}/detail/${t.id}/settleList">查看费用</a>
-                                                    </td>
+                                                     <td> <fss:fmtDate value="${t.createTime}" /></td>
+                                                    <td> <fss:fmtDate value="${t.modifyTime}" /></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

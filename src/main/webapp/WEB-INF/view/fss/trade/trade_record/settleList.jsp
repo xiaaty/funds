@@ -71,23 +71,22 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                 <div class="mb20" id="wid-id-713">
-                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/loan/enterAccount/${type}/${seqNo}/detail'" ><i class="fa fa-minus"></i>返回</button>
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/loan/enterAccount/${type}/${parentId}/detail'" ><i class="fa fa-minus"></i>返回</button>
                                       </div>
                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="800" />
+                                    	<col width="800" />
                                     	<col width="300" />
-                                    	<col width="400" />
-                                    	<col width="400" />
-                                    	<col width="400" />
-                                    	<col width="400" />
-                                    	<col width="400" />
                                         <thead>
                                         <tr>
                                             <td>账务科目 </td>
                                             <td>清算金额  </td>
                                             <td>交易状态</td>
                                             <td>最终结果</td>
-                                            <td>返回码</td>
-                                            <td>返回消息</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -97,8 +96,8 @@
                                                     <td>${t.settleAmt}</td>
                                                     <td>${t.tradeStatus}</td>
                                                     <td>${t.result=='98060001'?'成功':'失败'}</td>
-                                                    <td>${t.repCode}</td>
-                                                    <td>${t.repMsg}</td>
+<%--                                                     <td>${t.repCode}</td> --%>
+<%--                                                     <td>${t.repMsg}</td> --%>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

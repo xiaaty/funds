@@ -6,7 +6,6 @@ import com.gqhmt.util.Pager;
 import com.gqhmt.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -226,6 +225,17 @@ public class GlobalConstants {
     public static Map<Integer,String> thirdpartyType=new ConcurrentHashMap<Integer,String>();
     public static Map<Integer,String> thirdpartyTypeEN=new ConcurrentHashMap<Integer,String>();
     public static Map<Integer,String> pointType=new ConcurrentHashMap<Integer,String>();
+
+
+
+    //开户账户账号规则匹配(前四位,随意生成,无任何含义,未来改为通过配置表生成)
+    public static Map<String,String> ACCOUNT_TYPE_MAPPING = new ConcurrentHashMap<>();
+
+    //开户交易类型,与账户类型匹配规则
+    public static Map<String,String> TRADE_ACCOUNT_TYPE_MAPPING = new ConcurrentHashMap<>();
+
+    //开户交易类型,与交易渠道映射
+    public static Map<String,String> TRADE_ACCOUNT_PAY_CHANNEL_MAPPING = new ConcurrentHashMap<>();
     
     private static long getMenuId(Long fid) {
         if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
@@ -525,6 +535,114 @@ public class GlobalConstants {
         pointType.put(2001,"投标返现冻结");
         pointType.put(2002,"解冻结");
         pointType.put(3001,"满标返现出账");
+
+
+
+        ACCOUNT_TYPE_MAPPING.put("10010001","1306");            //互联网账户
+        ACCOUNT_TYPE_MAPPING.put("10010002","1308");            //委托出借账户
+        ACCOUNT_TYPE_MAPPING.put("10010003","1302");            //借款账户
+        ACCOUNT_TYPE_MAPPING.put("10010004","1304");            //保理业务账户
+        ACCOUNT_TYPE_MAPPING.put("10010005","1300");            //借款账户（冠e通）
+        ACCOUNT_TYPE_MAPPING.put("10011000","9180");            //公司收费账户
+        ACCOUNT_TYPE_MAPPING.put("10011001","8246");            //保证金账户
+        ACCOUNT_TYPE_MAPPING.put("10011002","8248");            //逆服务费账户
+        ACCOUNT_TYPE_MAPPING.put("10012001","6601");            //代偿人账户
+        ACCOUNT_TYPE_MAPPING.put("10012002","6635");            //抵押权人账户
+        ACCOUNT_TYPE_MAPPING.put("10012003","6663");            //借款代还账户
+
+
+        //线上开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020001","10010001");//web开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020002","10010001");//wap开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//app开户
+        //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//ios开户
+        //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//andriod开户
+        //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//微信开户
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
+//        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
+//        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
+//        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
+
+        //冠e通
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020004","10010002");//委托出借开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020005","10010005");//借款账户（冠e通）
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020004","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020005","97010001");
+
+
+        //保理
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020008","10010004");//保理账户
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020008","97010001");
+
+
+        //借款系统开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020010","10010003");//借款人开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020009","10019002");//纯线下借款账户
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020010","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020009","97010000");//纯线下
+
+
+        //中间人账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020006","10012001");//代偿人账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020007","10012002");//抵押权人开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020011","10012003");//借款代还账户
+
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020006","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020007","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020011","97010001");
+
+
+
+
+
+        /*switch (dto.getTrade_type()){
+
+            case "11020006"://代偿人开户
+                accType="10010005";//代偿人账户
+                channelNo="97010001";//富友开户
+                break;
+            case "11020007"://抵押权人开户
+                accType="10010006";//抵押权人账户
+                channelNo="97010001";//富友开户
+                break;
+            case "11020008"://保理合同开户
+                accType="10010004";//保理业务账户
+                channelNo="97010001";//富友开户
+                break;
+            case "11020009"://借款人（纯线下）开户
+                accType="10010003";
+                channelNo="97010000";//本地账户
+                break;
+            case "11020010"://借款人开户（借款系统）
+                accType="10010003";
+                channelNo="97010001";//富友开户
+                break;
+            case "11029001"://借款人（出借系统）银行卡变更
+                accType="10010003";
+                channelNo="97010001";//富友开户
+                break;
+            case "11029002"://线下出借人（借款系统）银行卡变更
+                accType="10011000";
+                channelNo="97010001";//富友开户
+                break;
+            case "11029003"://互联网客户银行卡变更
+                accType="10010001";
+                channelNo="";//富友开户
+                break;
+            case "11029004"://银行号变更（纯线下）
+                accType="10011000";//公司账户
+                channelNo="97010000";//本地账户
+                break;
+            default:
+                throw new FssException("90008403");//交易类型错误
+        }*/
 
 	}
 }

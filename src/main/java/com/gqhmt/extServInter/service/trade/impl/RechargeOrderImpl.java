@@ -36,7 +36,7 @@ public class RechargeOrderImpl implements IRechargeOrder {
 	private IFundsTrade fundsTradeImpl;
 	
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
 		WebOrderResponse response = null;
 		try {
 			response = GenerateBeanUtil.GenerateClassInstance(WebOrderResponse.class,dto);

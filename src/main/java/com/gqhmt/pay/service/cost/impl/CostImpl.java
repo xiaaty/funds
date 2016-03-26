@@ -14,9 +14,6 @@ import com.gqhmt.pay.service.cost.ICost;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,40 +49,40 @@ public class CostImpl  implements ICost{
     @Resource
     private FssAccountService fssAccountService;
 
-    private  final Map<String,Integer> map = new ConcurrentHashMap<>();
+    private  final Map<String,Long> map = new ConcurrentHashMap<>();
 
     private CostImpl(){
-        map.put("21992101_10040001",5); //服务费(咨询费)   北京
-        map.put("21992101_10040002",8); //               天津
-        map.put("21992101_10040003",11); //              上海
+        map.put("21992101_10040001",5l); //服务费(咨询费)   北京
+        map.put("21992101_10040002",8l); //               天津
+        map.put("21992101_10040003",11l); //              上海
 
-        map.put("21992102_10040001",1);//管理费
-        map.put("21992102_10040002",6);
-        map.put("21992102_10040003",9);
+        map.put("21992102_10040001",1l);//管理费
+        map.put("21992102_10040002",6l);
+        map.put("21992102_10040003",9l);
 
-        map.put("21992104_10040001",2); //保证金(增信金)
-        map.put("21992104_10040002",2);//天津 7 ,共用北京增信金账户
-        map.put("21992104_10040003",2);//上海 10,共用北京增信金账户
+        map.put("21992104_10040001",2l); //保证金(增信金)
+        map.put("21992104_10040002",2l);//天津 7 ,共用北京增信金账户
+        map.put("21992104_10040003",2l);//上海 10,共用北京增信金账户
 
-        map.put("21992103_10040001",3);  //逆服务费
-        map.put("21992103_10040002",3);
-        map.put("21992103_10040003",3);
+        map.put("21992103_10040001",3l);  //逆服务费
+        map.put("21992103_10040002",3l);
+        map.put("21992103_10040003",3l);
 
 
 
-        map.put("21992105_10040001",12);//风险备用金
-        map.put("21992105_10040002",12);
-        map.put("21992105_10040003",12);
+        map.put("21992105_10040001",12l);//风险备用金
+        map.put("21992105_10040002",12l);
+        map.put("21992105_10040003",12l);
 
-        map.put("21992105_10040001",4);//红包账户
-        map.put("21992105_10040002",4);
-        map.put("21992105_10040003",4);
+        map.put("21992105_10040001",4l);//红包账户
+        map.put("21992105_10040002",4l);
+        map.put("21992105_10040003",4l);
 
 
     }
 
     @Override
-    public void cost(String loanType, String fundsType, Integer custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
+    public void cost(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
 
         this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,1);
@@ -111,12 +108,12 @@ public class CostImpl  implements ICost{
     }
 
     @Override
-    public void cost(String fundsType, Integer custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
+    public void cost(String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         this.cost("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
     }
 
     @Override
-    public void costReturn(String loanType, String fundsType, Integer custId, Integer bustType, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
+    public void costReturn(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
 
         this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,2);
@@ -130,7 +127,7 @@ public class CostImpl  implements ICost{
 
     private FundOrderEntity cost(FundAccountEntity fromAccountEntity,BigDecimal decimal,String fundsType,Long busiId,Integer busiType,String loanType,int type) throws FssException {
 
-        Integer toCustId = this.map.get(fundsType+"_"+loanType);
+        Long toCustId = this.map.get(fundsType+"_"+loanType);
         if (toCustId == null) throw new FssException("");
 
         FundAccountEntity  toAccountEntity= fundAccountService.getFundAccount(toCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);

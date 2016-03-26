@@ -1009,7 +1009,7 @@ public class CustomerInfoService {
 	 * time:2016年2月15日
 	 * function：根据id查询客户信息
 	 */
-	public CustomerInfoEntity queryCustomeById(Integer id) {
+	public CustomerInfoEntity queryCustomeById(Long id) {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
 	}
 	

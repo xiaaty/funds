@@ -77,9 +77,9 @@ public class FssAccountApi {
         try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-             response = createAccountImpl.excute(createAccountByFuiou);
+             response = createAccountImpl.execute(createAccountByFuiou);
         } catch (Exception e) {
-            response = this.excute(e);
+            response = this.execute(e);
         }
         return response;
     }
@@ -93,14 +93,14 @@ public class FssAccountApi {
     public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
     	Response response= null;
     	try {
-    		response = changeBankCardAccountImpl.excute(changeBankCardDto);
+    		response = changeBankCardAccountImpl.execute(changeBankCardDto);
     	} catch (Exception e) {
-            response = this.excute(e);
+            response = this.execute(e);
     	}
     	return response;
     }
 
-    private Response excute(Exception e){
+    private Response execute(Exception e){
         LogUtil.error(this.getClass(), e);
         Response response = new Response();
         response.setResp_code(e.getMessage());

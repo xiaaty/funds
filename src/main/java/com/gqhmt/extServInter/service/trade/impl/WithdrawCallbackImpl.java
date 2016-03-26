@@ -34,7 +34,7 @@ public class WithdrawCallbackImpl implements IWithdrawCallback {
 	private IFundsTrade iFundsTrade;
 	
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
 			iFundsTrade.withdraw((WithdrawSuccessDto)dto);

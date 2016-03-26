@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.account.entity;
 
+import com.gqhmt.annotations.AutoDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -45,9 +47,11 @@ public class FssFuiouAccountEntity implements Serializable {
     private String bankCardNo;            // varchar(45) DEFAULT NULL COMMENT '绑定银行卡 编号',
 
     @Column(name="create_time")
+    @AutoDate
     private Date createTime;               // datetime NOT NULL,
 
     @Column(name="modify_time")
+    @AutoDate
     private Date modifyTime;               // datetime NOT NULL,
 
     @Column(name="mchn_parent")

@@ -35,13 +35,13 @@ public class CustomerInfoServiceTest extends TestService {
     @Before
     public void setUp() throws FssException {
     	entity = new CustomerInfoEntity();
-    	entity.setId(44861);
+    	entity.setId(44861l);
     }
     
     @Test
     public void testUpdate() throws Exception {
     	
-    	CustomerInfoEntity entity1 = customerInfoService.queryCustomerById(entity.getId());
+    	CustomerInfoEntity entity1 = customerInfoService.queryCustomerById(entity.getId().intValue());
     	Assert.assertEquals("赵先", entity1.getCustomerName());
     	
     	entity1.setCustomerName("赵先01");

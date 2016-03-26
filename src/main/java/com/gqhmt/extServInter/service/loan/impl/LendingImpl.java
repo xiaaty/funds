@@ -37,7 +37,7 @@ public class LendingImpl implements ILending {
 
 	@APITradeTypeValid(value = "11090001,11090002,11090003")
 	@APISignature
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		loanService.insertLending((LendingDto)dto);

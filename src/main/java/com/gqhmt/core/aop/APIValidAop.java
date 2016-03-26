@@ -55,7 +55,7 @@ public class APIValidAop {
     public APIValidAop() {
     }
 
-    @Pointcut("execution(* com.gqhmt.extServInter.service.*.impl.*.excute(..))")
+    @Pointcut("execution(* com.gqhmt.extServInter.service.*.impl.*.execute(..))")
     public void point(){
 
     }
