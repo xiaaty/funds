@@ -67,12 +67,10 @@ public class FssCustomerService {
     	return customerReadMapper.selectByPrimaryKey(id);
     }
     
-    
-    public FssCustomerEntity getCustomerNameByCentNo(String certNo){
-    	FssCustomerEntity fssCustomerEntity = new FssCustomerEntity();
+    public FssCustomerEntity getFssCustomerEntityByCertNo(String certNo){
+    	FssCustomerEntity fssCustomerEntity=new FssCustomerEntity();
     	fssCustomerEntity.setCertNo(certNo);
     	return customerReadMapper.selectOne(fssCustomerEntity);
     }
-    
     
 }

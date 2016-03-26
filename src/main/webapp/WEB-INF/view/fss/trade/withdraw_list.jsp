@@ -145,16 +145,14 @@
                                         	 <td>序号</td>
                                              <td>申请编号</td>
                                              <td>申请类型</td>
+                                             <td>交易状态</td>
                                              <td>业务编号</td>
                                              <td>业务类型</td>
                                              <td>账户编号</td>
                                              <td>交易金额</td>
                                              <td>实际交易金额</td>
-                                             <td>申请状态</td>
-                                             <td>交易状态</td>
                                              <td>执行条数</td>
                                              <td>成功条数</td>
-                                             <td>流水号</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
                                              <td>商户号</td>
@@ -168,16 +166,14 @@
                                                 	<td>${tradeapply.id}</td>
                                                     <td>${tradeapply.applyNo}</td>
                                                     <td><fss:dictView key="${tradeapply.applyType}" /></td>
+                                                    <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.businessNo}</td>
                                                     <td><fss:dictView key="${tradeapply.busiType}" /></td>
                                                     <td>${tradeapply.accNo}</td>
                                                     <td>${tradeapply.tradeAmount}</td>
                                                     <td>${tradeapply.realTradeAmount}</td>
-                                                    <td><fss:dictView key="${tradeapply.applyState}" /></td>
-                                                    <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
-                                                    <td>${tradeapply.seqNo}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
                                                     <td><fss:fmtDate value="${tradeapply.modifyTime}"/></td>
                                                     <td>${tradeapply.mchnChild}</td>

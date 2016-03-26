@@ -341,9 +341,11 @@ public class FssTradeRecordService {
 	 * @throws FssException
 	 */
 	public BigDecimal  getBankLimit(String custId) throws FssException{
-		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(Integer.valueOf(custId));
-		Application instance = Application.getInstance();
-		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getParentBankId());
+		BankCardInfoEntity bankCardInfo = bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId));
+		if(bankCardInfo==null){
+			throw new FssException("90004027");
+		}
+		BigDecimal bankDealamountLimit = Application.getInstance().getBankDealamountLimit(bankCardInfo.getParentBankId());
 		return bankDealamountLimit;
 	}
 	

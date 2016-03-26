@@ -139,7 +139,7 @@ public class FssTradeApplyController {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		model.addAttribute("tradeapply",tradeapplyentity);
 		model.addAttribute("bespokedate",sdf.format(tradeapplyentity.getBespokedate()));
-		if(fssCustomerEntity.getName()!=null && !"".equals(fssCustomerEntity.getName())){
+		if(null!=fssCustomerEntity && StringUtils.isNotEmptyString(fssCustomerEntity.getName())){
 			model.addAttribute("custName",fssCustomerEntity.getName());
 		}else{
 			model.addAttribute("custName","");
@@ -175,7 +175,6 @@ public class FssTradeApplyController {
 				e.printStackTrace();
 			}
 			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
-			
 			map.put("code", "0000");
 	        map.put("message", "success");
 		}else{//不通过，添加回盘记录

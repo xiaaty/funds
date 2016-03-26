@@ -392,6 +392,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setChannelNo("97010001");//交易渠道
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
+		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_id()));
 		return fssTradeApplyEntity;
 	}
 
