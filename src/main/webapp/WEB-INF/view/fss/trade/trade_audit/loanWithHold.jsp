@@ -51,7 +51,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="dictForm" action="${contextPath}/fss/loan/tradeApply/withHold" method="post">
+                    <form id="dictForm" action="${contextPath}/loan/trade/${type}/withHold" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
