@@ -80,7 +80,7 @@ public class FssAccountEntity implements Serializable {
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
     
     @Column(name="cust_id")
-    private Integer custId;              // 跟t_gq_custinfo_info表中的id对应
+    private Long custId;              // 跟t_gq_custinfo_info表中的id对应
     
 	public Long getId() {
 		return id;
@@ -210,12 +210,12 @@ public class FssAccountEntity implements Serializable {
 		this.mchnChild = mchnChild;
 	}
 
-	public Integer getCustId() {
+
+	public Long getCustId() {
 		return custId;
 	}
 
-	public void setCustId(Integer custId) {
+	public void setCustId(Long custId) {
 		this.custId = custId;
 	}
-    
 }

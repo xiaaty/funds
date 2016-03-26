@@ -1,10 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.trade.SsdkDto;
 import com.gqhmt.extServInter.service.trade.ISsdkTrade;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
@@ -34,7 +31,7 @@ public class SsdkTradeImpl implements ISsdkTrade {
 	private IFundsTrade fundsTrade;
 	
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	/*try {
 			fundsTrade.ssdkBusiness((SsdkDto)dto);

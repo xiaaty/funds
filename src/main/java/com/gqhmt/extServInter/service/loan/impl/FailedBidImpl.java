@@ -39,7 +39,7 @@ public class FailedBidImpl implements IFailedBid {
 
 	@APITradeTypeValid(value = "11090010,11090011")
 	@APISignature
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		loanService.insertfailedBidDto((FailedBidDto)dto);

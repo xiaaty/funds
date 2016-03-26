@@ -36,7 +36,7 @@ public class FundAccountServiceTest extends TestService {
     @Before
     public void setUp() throws FssException {
     	entity = new FundAccountEntity();
-        entity.setCustId(1);
+        entity.setCustId(1l);
         entity.setUserName("name");
         entity.setAmount(BigDecimal.ZERO);
         entity.setFreezeAmount(BigDecimal.ZERO);

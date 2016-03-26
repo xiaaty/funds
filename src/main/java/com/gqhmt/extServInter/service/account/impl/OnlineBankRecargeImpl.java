@@ -19,7 +19,7 @@ public class OnlineBankRecargeImpl  implements IOnlineBankRecarge{
 	private ITradeRecord tradeRecordImpl;
 	
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	/*try {
     		traderecord.getTradingRecord((TradeRecordDto)dto);

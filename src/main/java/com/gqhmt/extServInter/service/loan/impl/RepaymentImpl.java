@@ -25,7 +25,7 @@ public class RepaymentImpl implements IRepayment{
     @Override
 	@APITradeTypeValid(value = "11093001,11093002")
 	@APISignature
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
     		response=fssRepaymentService.createRefundDraw((RepaymentDto)dto);

@@ -34,7 +34,7 @@ public class TranseferImpl implements ITransefer{
 	@Resource
 	private IFundsTrade fundsTrade;
 	
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
 			fundsTrade.transfer((TransferDto)dto);

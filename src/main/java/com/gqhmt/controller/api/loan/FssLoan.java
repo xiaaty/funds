@@ -61,7 +61,7 @@ public class FssLoan {
     	Response response= null;
         try {
         	
-             response = failedBidImpl.excute(failedBidDto);
+             response = failedBidImpl.execute(failedBidDto);
         } catch (Exception e) {
             response = this.excute(e);
         }
@@ -77,7 +77,7 @@ public class FssLoan {
     public Object lending(@RequestBody LendingDto lendingDto){
     	Response response= null;
     	try {
-    		response = lendingImpl.excute(lendingDto);
+    		response = lendingImpl.execute(lendingDto);
     	} catch (Exception e) {
             response = this.excute(e);
     	}
@@ -93,7 +93,7 @@ public class FssLoan {
     public Object MortgageeWithDraw(@RequestBody MortgageeWithDrawDto mortgageeWithDrawDto){
     	Response response= null;
     	try {
-    		response = mortgageeWithDrawImpl.excute(mortgageeWithDrawDto);
+    		response = mortgageeWithDrawImpl.execute(mortgageeWithDrawDto);
     	} catch (Exception e) {
     		response = this.excute(e);
     	}
@@ -109,7 +109,7 @@ public class FssLoan {
     public Object EnterAccount(@RequestBody EnterAccountDto enterAccountDto){
     	Response response= null;
     	try {
-    		response = enterAccountImpl.excute(enterAccountDto);
+    		response = enterAccountImpl.execute(enterAccountDto);
     	} catch (Exception e) {
     		response = this.excute(e);
     	}

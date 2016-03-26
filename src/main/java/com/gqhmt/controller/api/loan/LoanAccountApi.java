@@ -61,7 +61,7 @@ public class LoanAccountApi {
     public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
     	Response response=new Response();
     	try {
-    		response = createLoanImpl.excute(loanAccountDto);
+    		response = createLoanImpl.execute(loanAccountDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -78,7 +78,7 @@ public class LoanAccountApi {
     public Object bankCardChange(@RequestBody CardChangeDto changeCardDto){
     	Response response=new Response();
     	try {
-    		response = changeCardImpl.excute(changeCardDto);
+    		response = changeCardImpl.execute(changeCardDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -95,7 +95,7 @@ public class LoanAccountApi {
     public Object createWithDrawApply(@RequestBody LoanWithDrawApplyDto loanWithDrawApplyDto){
     	Response response=new Response();
     	try {
-    		response = loadWithDrawImpl.excute(loanWithDrawApplyDto);
+    		response = loadWithDrawImpl.execute(loanWithDrawApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -113,7 +113,7 @@ public class LoanAccountApi {
     public Object marginSendBack(@RequestBody MarginDto dto){
     	Response response=new Response();
     	try {
-    		response = marginSendBackImpl.excute(dto);
+    		response = marginSendBackImpl.execute(dto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -131,7 +131,7 @@ public class LoanAccountApi {
     public Object createRefundDraw(@RequestBody RepaymentDto dto){
     	Response response=new Response();
     	try {
-    		response = repaymentImpl.excute(dto);
+    		response = repaymentImpl.execute(dto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -139,7 +139,7 @@ public class LoanAccountApi {
     	return response;
     }
 
-	private Response excute(Exception e){
+	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
 		response.setResp_code(e.getMessage());

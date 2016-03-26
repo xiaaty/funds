@@ -265,7 +265,7 @@ public class FssChangeCardService {
 	            changeCardEntity.setState(2);
 	            changeCardEntity.setEffectTime(new Date());
 	            changeCardEntity.setTradeState(99);
-	            FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(changeCardEntity.getCustId().intValue(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	            FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(changeCardEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 	            fundAccountEntity.setIshangeBankCard(0);
 	            fundAccountService.update(fundAccountEntity);
 	            this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUCESS, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),tmCardNo(changeCardEntity.getCardNo()));
@@ -318,7 +318,7 @@ public class FssChangeCardService {
 	            }
 	            changeCardEntity.setState(3);
 	            changeCardEntity.setTradeState(99);
-	            FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(changeCardEntity.getCustId().intValue(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+	            FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(changeCardEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 	            fundAccountEntity.setIshangeBankCard(0);
 	            fundAccountService.update(fundAccountEntity);
 	
@@ -375,7 +375,7 @@ public class FssChangeCardService {
     }
     /**
      * 根据流水号和商户号查询返回银行卡变更信息
-     * @param seqNo
+     * @param seq_no
      * @param mchn
      * @return
      * @throws FssException
@@ -491,12 +491,10 @@ public class FssChangeCardService {
    /**
     * 创建银行卡变更实体类型
     * @param cus
-    * @param bankNo
     * @param bankId
     * @param bankAddr
     * @param bankCity
     * @param filePath
-    * @param type
     * @param seqNo
     * @return
     */

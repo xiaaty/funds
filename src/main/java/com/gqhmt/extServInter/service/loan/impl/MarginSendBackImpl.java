@@ -26,7 +26,7 @@ public class MarginSendBackImpl implements IMarginSendBack{
     @Override
 	@APITradeTypeValid(value = "11099003")
 	@APISignature
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	MarginResponse response = new MarginResponse();
     	try {
     		loanImpl.marginSendBack((MarginDto)dto);

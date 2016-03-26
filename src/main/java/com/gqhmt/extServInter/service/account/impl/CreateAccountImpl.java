@@ -33,7 +33,7 @@ public class CreateAccountImpl implements ICreateAccount{
 	private IFundsAccount fundsAccountImpl;
 	
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		fundsAccountImpl.createAccount((CreateAccountDto)dto);

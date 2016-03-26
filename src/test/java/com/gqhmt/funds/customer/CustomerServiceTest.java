@@ -31,7 +31,7 @@ public class CustomerServiceTest extends TestService {
 
     @Test
     public void findCustomerById(){
-    	CustomerInfoEntity queryCustomeById = customerInfoService.queryCustomeById(1);
+    	CustomerInfoEntity queryCustomeById = customerInfoService.queryCustomeById(1l);
 
     	assert queryCustomeById.getId().intValue() == 2;
     }

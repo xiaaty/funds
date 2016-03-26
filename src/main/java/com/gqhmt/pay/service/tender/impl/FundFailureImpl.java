@@ -1,7 +1,5 @@
 package com.gqhmt.pay.service.tender.impl;
 
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
@@ -11,6 +9,8 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.tender.FailureBidDto;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -19,14 +19,14 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.core.PayCommondConstants;
-import com.gqhmt.pay.service.tender.IFundFailure;
 import com.gqhmt.pay.service.PaySuperByFuiou;
-
-import javax.annotation.Resource;
+import com.gqhmt.pay.service.tender.IFundFailure;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -84,13 +84,14 @@ public class FundFailureImpl  implements IFundFailure{
     private final String thirdPartyType = PayCommondConstants.PAY_CHANNEL_FUIOU;
     /**
 	 * 流标
-	 * @param objects
+	 * @param failurebid
 	 */
 	@Override
 	public void abort(FailureBidDto failurebid) throws FssException {
 		Bid bid = bidService.findById(failurebid.getBusi_id());
 		List<Tender> list = tenderService.queryTenderByBidId(Long.valueOf(bid.getId()));
-		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(bid.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_LOAN);
+		int cusId = bid.getCustomerId();
+		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		Map<Integer, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
 		FundOrderEntity fundOrderEntity=null;
 		try {
@@ -121,7 +122,7 @@ public class FundFailureImpl  implements IFundFailure{
     public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity,BigDecimal amount, Integer orderType, Long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
         return fundOrderService.createOrder(primaryAccount,toAccountEntity,amount,BigDecimal.ZERO,orderType,sourceID,sourceType,thirdPartyType);
     }
-    
+
     /**
      * 修改订单信息
      * @param fundOrderEntity
@@ -144,11 +145,11 @@ public class FundFailureImpl  implements IFundFailure{
 
 
 
-    
-    
-    
-    
-    
+
+
+
+
+
     
     
     

@@ -1,10 +1,7 @@
 package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -22,14 +19,11 @@ import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.util.StringUtils;
-
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +73,6 @@ public class FssAccountService {
 
     /**
      * 查询账户信息
-     * @param map
      * @return
      * @throws FssException
      */
@@ -126,30 +119,26 @@ public class FssAccountService {
      * @param dto
      * @throws FssException
      */
-    public FssFuiouAccountEntity createAccount(CreateLoanAccountDto dto) throws FssException {
+    public FssCustomerEntity createAccount(CreateLoanAccountDto dto,Long userId) throws FssException {
         //生成客户信息
-        FssCustomerEntity fssCustomerEntity = fssCustomerService.create(dto);
+        FssCustomerEntity fssCustomerEntity = fssCustomerService.create(dto,String.valueOf(userId));
         //生成银行卡信息
         FssCustBankCardEntity fssCustBankCardEntity=fssCustBankCardService.createFssBankCardInfo(dto,fssCustomerEntity);
-        //生成第三方开户账户信息
-        FssFuiouAccountEntity fssFuiouAccountEntity = this.createFuiouAccount(dto,fssCustomerEntity);
-        
-        return fssFuiouAccountEntity;
+        //生成第三方开户账户信息,纯线下,次开户,不开,线上需要开户.
+        this.createFuiouAccount(dto,fssCustomerEntity,fssCustBankCardEntity);
+        return fssCustomerEntity;
     }
 
-    private FssFuiouAccountEntity createFuiouAccount(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity) throws FssException {
+    private FssFuiouAccountEntity createFuiouAccount(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity,FssCustBankCardEntity fssCustBankCardEntity) throws FssException {
         try {
             FssFuiouAccountEntity fssFuiouAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssFuiouAccountEntity.class,dto);
-            fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getId()));
+            fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
             fssFuiouAccountEntity.setUserNo(fssCustomerEntity.getUserId());
-            fssFuiouAccountEntity.setAccNo(getAccno(dto.getTrade_type()));
+            fssFuiouAccountEntity.setAccNo(fssCustomerEntity.getMobile());
             fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
-            fssFuiouAccountEntity.setBankCardNo(dto.getBank_card());
-            fssFuiouAccountEntity.setCreateTime(new Date());
-            fssFuiouAccountEntity.setModifyTime(new Date());
-            fssFuiouAccountEntity.setMchnChild(dto.getMchn());
+            fssFuiouAccountEntity.setBankCardNo(fssCustBankCardEntity.getBankCardNo());
             fssFuiouAccountEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-            fssFuiouAccountEntity.setHasOpenAccFuiou(0);
+            fssFuiouAccountEntity.setHasOpenAccFuiou(1);
             fssFuiouAccountWriteMapper.insertSelective(fssFuiouAccountEntity);
             return fssFuiouAccountEntity;
         } catch (Exception e) {
@@ -159,160 +148,32 @@ public class FssAccountService {
     }
 
 
-    private FssAccountEntity createLocalAccount(SuperDto dto,FssCustomerEntity fssCustomerEntity) throws FssException {
-        try {
-            FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
-            fssAccountEntity.setCustNo(fssCustomerEntity.getCustNo());
-            fssAccountEntity.setAccBalance(BigDecimal.ZERO);
-            fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
-            fssAccountEntity.setAccAvai(BigDecimal.ZERO);
-            fssAccountEntity.setAccNo(getAccno(dto.getTrade_type()));
-            //设置账户类型
-            //设置开户来源
-            //设置渠道id
-            fssAccountWriteMapper.insertSelective(fssAccountEntity);
-            return fssAccountEntity;
-        } catch (Exception e) {
-            LogUtil.error(this.getClass(),e);
-            throw new FssException("");
-        }
-    }
 
-    /**
-     *
-     * @param trade_type
-     * @return
-     */
-	/*	账务账号共16位 0000-0000000000-1-1，账务账号与业务编号一一对应。
-		账务账号分为三部分，第一部分 4位数字 为业务编号定义，
-		，中间10位为账户账号，生成规则，随机 or 顺序（根据实现），倒数第二位，为账户类型标志，
-		偶数（0，2，4，6，8）表示冻结账户，单数（1，3，5，7，9）表示正常账户每个账户随机使用某个数值，最后一位为校验位，校验规则待定。
-	*/
-    private String getAccno(String trade_type) {
-    	String acc_no="";
-    	StringBuffer busi_no=new StringBuffer(trade_type.substring(0,4));
-    	StringBuffer str=this.getRedom();
-    	acc_no=busi_no.append(str).append(this.getSecond()).toString();
-        return acc_no;
-    }
-
-    /**
-     * 新增账户信息
-     * @param dto
-     * @param fssCustomerEntity
-     * @return
-     * @throws FssException
-     */
-    public FssAccountEntity createFssAccount(CreateLoanAccountDto dto,CustomerInfoEntity fssCustomerEntity) throws FssException {
-        try {
-            FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
-            fssAccountEntity.setCustNo(dto.getFssSeqOrderEntity().getCustNo());
-            fssAccountEntity.setAccBalance(BigDecimal.ZERO);
-            fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
-            fssAccountEntity.setAccAvai(BigDecimal.ZERO);
-            fssAccountEntity.setAccNo(getAccno(dto.getTrade_type()));
-            //设置账户类型
-            //设置开户来源
-            //设置渠道id
-            fssAccountWriteMapper.insertSelective(fssAccountEntity);
-            return fssAccountEntity;
-        } catch (Exception e) {
-            LogUtil.error(this.getClass(),e);
-            throw new FssException("");
-        }
-    }
-    
     /**
      * 创建资金账户
      * @param dto
-     * @param fssCustomerEntity
+     * @param customerEntity
      * @return
      * @throws FssException
      */
-    public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,CustomerInfoEntity fssCustomerEntity) throws FssException {
-    		FssFuiouAccountEntity fssFuiouAccountEntity=null;
-    		fssFuiouAccountEntity=this.createAccount(dto);	
+    public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,CustomerInfoEntity customerEntity) throws FssException {
+            FssCustomerEntity fssCustomerEntity=this.createAccount(dto,customerEntity.getId());
     	try {
             FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
-            fssAccountEntity.setAccNo(fssFuiouAccountEntity.getAccNo());
+            fssAccountEntity.setAccNo(CommonUtil.getAccountNo(dto.getTrade_type()));
             fssAccountEntity.setCustNo(String.valueOf(fssCustomerEntity.getId()));
             fssAccountEntity.setAccBalance(BigDecimal.ZERO);
             fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
             fssAccountEntity.setAccAvai(BigDecimal.ZERO);
             fssAccountEntity.setAccNotran(BigDecimal.ZERO);
-            fssAccountEntity.setCustNo("");
+            fssAccountEntity.setCustNo(fssCustomerEntity.getCustNo());
             fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
-            String accType="";//设置账户类型
-            String channelNo="";//渠道编号
-            switch (dto.getTrade_type()){
-            case "11020001"://web开户
-            	accType="10010001"; //互联网账户
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020002"://wep开户
-            	accType="10010001";
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020003"://app开户
-            	accType="10010001";
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020004"://委托出借开户
-            	accType="10010002";//委托出借账户
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020005"://借款人开户（冠e通）
-            	accType="10010003";//借款账户
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020006"://代偿人开户
-            	accType="10010005";//代偿人账户
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020007"://抵押权人开户
-            	accType="10010006";//抵押权人账户
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020008"://保理合同开户
-            	accType="10010004";//保理业务账户
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11020009"://借款人（纯线下）开户
-            	accType="10010003";
-            	channelNo="97010000";//本地账户
-            	break;
-            case "11020010"://借款人开户（借款系统）
-            	accType="10010003";
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11029001"://借款人（出借系统）银行卡变更
-            	accType="10010003";
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11029002"://线下出借人（借款系统）银行卡变更
-            	accType="10011000";
-            	channelNo="97010001";//富友开户
-            	break;
-            case "11029003"://互联网客户银行卡变更
-            	accType="10010001";
-            	channelNo="";//富友开户
-            	break;
-            case "11029004"://银行号变更（纯线下）
-            	accType="10011000";//公司账户
-            	channelNo="97010000";//本地账户
-            	break;
-            default:
-            	throw new FssException("90008403");//交易类型错误
-            }
-           /* 
-            97010000  本地账户
-            97010001  上海富友
-            97010002  银联商务（第二方）
-            */
+            String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(dto.getTrade_type());//设置账户类型
+            String channelNo=GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type());//渠道编号
             fssAccountEntity.setAccType(Integer.parseInt(accType));
             fssAccountEntity.setState(10020001);//默认为有效账户
             fssAccountEntity.setBusiNo(dto.getContract_id());
-            fssAccountEntity.setCustId(fssCustomerEntity.getId());
+            fssAccountEntity.setCustId(customerEntity.getId());
             //设置开户来源
             //设置渠道id
             fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
@@ -331,17 +192,7 @@ public class FssAccountService {
         }
     }
     
-    /**
-     * 根据cust_id查询账户
-     * @return
-     */
-    public FssAccountEntity getFssAccountByCustId(Integer custId){
-    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
-    	fssAccountEntity.setCustId(custId);
-    	accountReadMapper.selectOne(fssAccountEntity);
-    	return fssAccountEntity;
-    	
-    }
+
     /**
      * 
      * author:jhz
@@ -352,34 +203,7 @@ public class FssAccountService {
     	return this.accountReadMapper.findAccountByAccNo(accNo);
     }
     
-    /**
-     * 生成10位随机数
-     * @return
-     */
-	public StringBuffer getRedom(){
-		StringBuffer sb=new StringBuffer();
-		int a[] = new int[10];
-	      for(int i=0;i<a.length;i++ ) {
-	          a[i] = (int)(10*(Math.random()));
-	          System.out.print(a[i]);
-	          sb.append(a[i]+"");
-	      }
-	      return sb;
-	}
-	/**
-	 * 生成2位随机数
-	 * @return
-	 */
-	public StringBuffer getSecond(){
-		StringBuffer sb=new StringBuffer();
-		int a[] = new int[2];
-		for(int i=0;i<a.length;i++ ) {
-			a[i] = (int)(2*(Math.random()));
-			System.out.print(a[i]);
-			sb.append(a[i]+"");
-		}
-		return sb;
-	}
+
 
 
 }

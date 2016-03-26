@@ -116,13 +116,13 @@
                                             <td colspan="3">
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.creatTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
                                                     </label>
                                                 </section>
                                                 <span class="fl">&nbsp;至&nbsp;</span>
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.modifyTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
                                                     </label>
                                                 </section>
                                             </td>
@@ -175,13 +175,12 @@
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
+                                        <col width="300" />
+                                        <col width="300" />
                                         <col width="300"/>
                                         <thead>
                                         <tr>
-                                            <td>ID</td>
+                                            <td></td>
                                             <td>抵押权人资金平台账号</td>
                                             <td>借款人资金平台账号</td>
                                             <td>交易流水号</td>
@@ -192,17 +191,16 @@
                                             <td>交易状态 </td>
                                             <td>交易结果</td>
                                             <td>交易类型</td>
-                                            <td>大商户号</td>
-                                            <td>子商户号 </td>
+                                            <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${page.list}" var="t">
+                                        <c:forEach items="${page.list}" var="t" varStatus="l">
                                                 <tr>
-                                                    <td>${t.id}</td>
+                                                    <td>${l.index+1}</td>
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.accNo}</td>
                                                     <td>${t.seqNo}</td>
@@ -230,7 +228,6 @@
                                                    	 </fss:dictOrder>
                                                     </td>
                                                     <td>${t.mchnParent}</td>
-                                                    <td>${t.mchnChild}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
                                                     <td> <fss:fmtDate value="${t.modifyTime}"/></td>
                                                     <td >

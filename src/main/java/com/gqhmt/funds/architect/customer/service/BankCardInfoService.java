@@ -473,7 +473,7 @@ public class BankCardInfoService {
 	public BankCardInfoEntity createBankCardInfoEntity(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity) throws FssException{
 		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
 //		bankCardInfoEntity.setId(customer.getBankId());
-		bankCardInfoEntity.setCustId(customer.getId());
+		bankCardInfoEntity.setCustId(customer.getId().intValue());
 		bankCardInfoEntity.setBankLongName("");
 		bankCardInfoEntity.setBankSortName("");
 		bankCardInfoEntity.setBankNo(loanAccountDto.getBank_card());

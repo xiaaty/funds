@@ -27,7 +27,7 @@ public class AccountBanlanceImpl implements IAccountBanlance{
 	 * 账户余额查询
 	 */
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
 		BalanceResponse response = new BalanceResponse();
     	try {
     		FundAccountEntity fundAccountEntity = fundsAccountImpl.getAccountBanlance((AssetDto) dto);
