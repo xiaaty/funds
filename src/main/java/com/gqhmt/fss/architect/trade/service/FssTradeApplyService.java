@@ -235,7 +235,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setBusiType(fssLoanEntity.getTradeType());
 			tradeApplyEntity.setApplyType(1103);
 			tradeApplyEntity.setApplyState(applyStatus);
-			tradeApplyEntity.setTradeState(fssLoanEntity.getStatus());
+			tradeApplyEntity.setTradeState("10090002");
 			tradeApplyEntity.setApplyNo(this.getApplyNo());
 			fssTradeApplyWriteMapper.insert(tradeApplyEntity);
 	}

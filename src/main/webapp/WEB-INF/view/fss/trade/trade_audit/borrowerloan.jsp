@@ -115,13 +115,13 @@
                                             <td colspan="3">
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly" name="creatTime" class="selectdate" placeholder="请选择时间" value="${map.creatTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly" name="startime" class="selectdate" placeholder="请选择时间" value="${map.startime}">
                                                     </label>
                                                 </section>
                                                 <span class="fl">&nbsp;至&nbsp;</span>
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly"  name="modifyTime" class="selectdate" placeholder="请选择时间" value="${map.modifyTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
                                                     </label>
                                                 </section>
                                             </td>
@@ -294,8 +294,8 @@
         forceParse: 0
     });
     function verify(){
-    	var a=document.getElementsByName("creatTime");
-    	var b=document.getElementsByName("modifyTime");
+    	var a=document.getElementsByName("startTime");
+    	var b=document.getElementsByName("endTime");
     	if(b[0].value!=null&&b[0].value!=''){
     		
     		if(a[0].value>b[0].value){

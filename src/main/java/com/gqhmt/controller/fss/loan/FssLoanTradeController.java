@@ -69,10 +69,10 @@ public class FssLoanTradeController {
 					String seqNo ,String contractId, String creatTime, String modifyTime) {
 		Map<Object, Object> map = new HashMap<>();
 		if (creatTime != null && !creatTime.equals("")) {
-			creatTime = creatTime + " 00:00:00";
+		creatTime = creatTime + " 00:00:00";
 		}
 		if (modifyTime != null && !modifyTime.equals("")) {
-			modifyTime = modifyTime + " 23:59:59";
+		modifyTime = modifyTime + " 23:59:59";
 		}
 		map.put("creatTime", creatTime);
 		map.put("modifyTime", modifyTime);
@@ -83,7 +83,7 @@ public class FssLoanTradeController {
 		List<FssLoanEntity> findMortgrageePayment = fssLoanService.findBorrowerLoan(map);
 		model.addAttribute("page", findMortgrageePayment);
 		model.addAttribute("map", map);
-			return "fss/trade/trade_audit/borrowerloan";
+		return "fss/trade/trade_audit/borrowerloan";
 	}
 
 	/**
@@ -112,7 +112,6 @@ public class FssLoanTradeController {
 	public String withholdApply( HttpServletRequest request, ModelMap model,FssLoanEntity fssLoanEntity) throws FssException {
 		fssLoanEntity.setStatus("10050002");
 		fssLoanService.update(fssLoanEntity);
-		fssLoanEntity.setStatus("10090002");
 		fssTradeApplyService.insertLoanTradeApply(fssLoanEntity,"10100001");
 		fssTradeRecordService.insertTradeRecord(fssLoanEntity.getTradeType());
 		return "redirect:/fss/loan/trade/borrow";
