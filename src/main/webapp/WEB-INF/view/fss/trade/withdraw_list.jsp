@@ -5,10 +5,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>代扣审核--资金详细--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>交易管理--交易审核--代付审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-   <%@include file="../../../../view/include/common_css_js.jsp"%>
+   <%@include file="../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -32,7 +32,7 @@
 </head>
 
 <body>
-<%@include file="../../../../view/include/menu.jsp"%>
+<%@include file="../../../view/include/menu.jsp"%>
 
 
 <div id="main" role="main">
@@ -40,8 +40,9 @@
     <!-- RIBBON -->
     <div id="ribbon">
         <ol class="breadcrumb">
+            <li>交易管理</li>
             <li>交易审核</li>
-            <li>资金详细</li>
+            <li>代付审核</li>
         </ol>
     </div>
 
@@ -67,8 +68,20 @@
                                                 <col width="100" />
                                                 <col />
                                                 <tbody>
+                                                    <tr></tr>
                                                     <tr>
-                                                    	<td></td>
+                                                       <td class="tr">客户账号：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:300px" name="accNo" value="${tradeapply.accNo}" />
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">业务编号：</td>
+                                                        <td>
+                                                             <label class="input">
+                                                                <input type="text" style="width:300px" name="businessNo" value="${tradeapply.businessNo}" />
+                                                            </label>
+                                                        </td> 
                                                         <td class="tr">创建日期：</td>
 			                                             <td colspan="5">
 			                                                <section class="fl">
@@ -83,16 +96,6 @@
 			                                                    </label>
 			                                                </section>
 			                                            </td>
-			                                            <td class="tr">交易状态：</td>
-                                                        <td>
-                                                            <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
-										                    	<option value="">请选择</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030002}"> selected="selected" </c:if> value="10030002" >交易成功</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030003}"> selected="selected" </c:if> value="10030003" >交易失败</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option>
-										                    </select>
-                                                        </td> 
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -110,7 +113,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>资金详细</h2>
+                            <h2>数据列表信息</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -139,31 +142,50 @@
                                         <col width="150" />
                                         <thead>
                                         <tr>
-                                             <td>申请单号</td>
-                                             <td>客户编号</td>
-                                             <td>交易类型</td>
+                                        	 <td>序号</td>
+                                             <td>申请编号</td>
+                                             <td>申请类型</td>
+                                             <td>业务编号</td>
+                                             <td>业务类型</td>
+                                             <td>账户编号</td>
                                              <td>交易金额</td>
+                                             <td>实际交易金额</td>
+                                             <td>申请状态</td>
                                              <td>交易状态</td>
-                                             <td>交易结果</td>
+                                             <td>执行条数</td>
+                                             <td>成功条数</td>
+                                             <td>流水号</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
-                                             <td>子商户号</td>
+                                             <td>商户号</td>
                                              <td>交易渠道</td>
+                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
-                                             <c:forEach items="${page.list}" var="traderecord">
+                                             <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
-                                                    <td>${traderecord.applyNo}</td>
-                                                    <td>${traderecord.accNo}</td>
-                                                    <td><fss:dictView key="${traderecord.tradeType}" /></td>
-                                                    <td>${traderecord.amount}</td>
-                                                    <td><fss:dictView key="${traderecord.tradeState}" /></td>
-                                                    <td><fss:dictView key="${traderecord.tradeResult}" /></td>
-                                                    <td><fss:fmtDate value="${traderecord.createTime}"/></td>
-                                                    <td><fss:fmtDate value="${traderecord.modifyTime}"/></td>
-                                                    <td>${traderecord.mchnChild}</td>
-                                                    <td><fss:dictView key="${traderecord.channelNo}" /></td>
+                                                	<td>${tradeapply.id}</td>
+                                                    <td>${tradeapply.applyNo}</td>
+                                                    <td><fss:dictView key="${tradeapply.applyType}" /></td>
+                                                    <td>${tradeapply.businessNo}</td>
+                                                    <td><fss:dictView key="${tradeapply.busiType}" /></td>
+                                                    <td>${tradeapply.accNo}</td>
+                                                    <td>${tradeapply.tradeAmount}</td>
+                                                    <td>${tradeapply.realTradeAmount}</td>
+                                                    <td><fss:dictView key="${tradeapply.applyState}" /></td>
+                                                    <td><fss:dictView key="${tradeapply.tradeState}" /></td>
+                                                    <td>${tradeapply.count}</td>
+                                                    <td>${tradeapply.successCount}</td>
+                                                    <td>${tradeapply.seqNo}</td>
+                                                    <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
+                                                    <td><fss:fmtDate value="${tradeapply.modifyTime}"/></td>
+                                                    <td>${tradeapply.mchnChild}</td>
+                                                    <td><fss:dictView key="${tradeapply.channelNo}" /></td>
+                                                    <td>
+                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/withdrawcheck">提现审核</a>
+                                                       |<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/records">查看详细</a>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -178,7 +200,7 @@
         </section>
     </div>
     </div>
-<%@include file="../../../../view/include/common_footer_css_js.jsp"%>
+<%@include file="../../../view/include/common_footer_css_js.jsp"%>
 </div>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
@@ -336,7 +358,7 @@
 
 </script>
 
-<%@include file= "../../../../view/include/foot.jsp"%>
+<%@include file= "../../../view/include/foot.jsp"%>
 </body>
 
 </html>

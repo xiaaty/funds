@@ -78,13 +78,6 @@ public class FssGetTradeApi {
 		return response;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();

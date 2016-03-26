@@ -59,4 +59,12 @@ public class FssCustomerService {
         }
     }
     
+    
+    public FssCustomerEntity getCustomerNameById(Long id){
+    	return customerReadMapper.selectByPrimaryKey(id);
+    }
+    
+    
+    
+    
 }

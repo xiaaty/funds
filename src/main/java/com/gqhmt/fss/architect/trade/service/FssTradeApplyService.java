@@ -345,7 +345,8 @@ public class FssTradeApplyService {
 		Response respon=new Response();
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
-		fssTradeApplyEntity.setApplyType(1104);
+		fssTradeApplyEntity.setApplyType(1104);//提现
+		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_id()));
 		fssTradeApplyEntity.setCustNo("");
 		fssTradeApplyEntity.setUserNo("");
 		fssTradeApplyEntity.setBusinessNo(dto.getContract_no());
@@ -354,7 +355,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
 		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-		fssTradeApplyEntity.setTradeState("10080001");
+		fssTradeApplyEntity.setTradeState("");
 		fssTradeApplyEntity.setApplyState("10100001");
 		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
 		fssTradeApplyEntity.setMchnChild(dto.getMchn());

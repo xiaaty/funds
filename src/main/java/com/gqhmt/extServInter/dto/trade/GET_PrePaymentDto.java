@@ -35,6 +35,7 @@ public class GET_PrePaymentDto extends SuperDto {
 	@APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;	//代扣金额
+	private String busi_no; //业务编号
 	public String getCust_id() {
 		return cust_id;
 	}
@@ -65,6 +66,11 @@ public class GET_PrePaymentDto extends SuperDto {
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
 	}
-
+	public String getBusi_no() {
+		return busi_no;
+	}
+	public void setBusi_no(String busi_no) {
+		this.busi_no = busi_no;
+	}
 	
 }

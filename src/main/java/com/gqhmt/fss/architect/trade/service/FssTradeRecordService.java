@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
@@ -144,6 +145,7 @@ public class FssTradeRecordService {
 						tradeRecordEntity.setTradeTime("0");
 						tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 						tradeRecordEntity.setCreateTime(new Date());
+						tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
 						fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 					}else{
 						tradeRecordEntity.setId(null);
@@ -158,6 +160,7 @@ public class FssTradeRecordService {
 						tradeRecordEntity.setTradeTime("0");
 						tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 						tradeRecordEntity.setCreateTime(new Date());
+						tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
 						fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 					}
 				}
@@ -268,4 +271,84 @@ public class FssTradeRecordService {
 		List<FssTradeRecordEntity> tradeRecordList=fssTradeRecordReadMapper.queryFssTradeRecordList(map);
 		return tradeRecordList;
 	}
+	
+	/**
+	 * 提现金额拆分
+	 * @param fssTradeApplyEntity
+	 * @throws FssException
+	 * 柯禹来
+	 */
+	public void  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+			//限额
+			BigDecimal limitAmount =this.getBankLimit(String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
+			//金额是否超过银行代付单笔上限
+			if(fssTradeApplyEntity.getTradeAmount().compareTo(limitAmount)<=0){//否
+				this.createFssTradeRecordEntity(fssTradeApplyEntity,fssTradeApplyEntity.getTradeAmount());
+			}else {
+				//金额超过银行代付单笔上限
+				BigDecimal bg[] = fssTradeApplyEntity.getTradeAmount().divideAndRemainder(limitAmount);
+				int splitCount = bg[0].intValue();
+				BigDecimal lastamount = bg[1];
+				//判断是否除尽
+				if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
+					splitCount = splitCount + 1;
+				} else if(lastamount.compareTo(BigDecimal.ZERO) ==0){
+					lastamount=limitAmount;
+				}
+				//拆分处理
+				for (int j=0 ; j < splitCount; j++) {
+					if (j != (splitCount-1) ) {
+						this.createFssTradeRecordEntity(fssTradeApplyEntity,limitAmount);
+					}else{
+						this.createFssTradeRecordEntity(fssTradeApplyEntity,lastamount);
+					}
+				}
+			}
+		}
+	
+	
+	/**
+	 * 创建交易记录
+	 * @param fssTradeApplyEntity
+	 * @return
+	 */
+	public void createFssTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity,BigDecimal amount) throws FssException{
+		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
+		tradeRecordEntity.setAmount(amount);
+		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
+		tradeRecordEntity.setTradeType(Integer.parseInt(fssTradeApplyEntity.getBusiType()));
+		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
+		tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
+		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
+		tradeRecordEntity.setTradeTypeChild(0);
+		tradeRecordEntity.setTradeDate("0");
+		tradeRecordEntity.setTradeTime("0");
+		tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
+		tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
+		tradeRecordEntity.setCreateTime(new Date());
+		try {
+			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			throw new FssException("91009804");
+		}
+	}
+	
+	/**
+	 * 根据cust_id查询银行限额
+	 * @param accNo
+	 * @return
+	 * @throws FssException
+	 */
+	public BigDecimal  getBankLimit(String custId) throws FssException{
+		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(Integer.valueOf(custId));
+		Application instance = Application.getInstance();
+		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getParentBankId());
+		return bankDealamountLimit;
+	}
+	
+	
+	
+	
+	
 }
