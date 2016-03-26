@@ -156,7 +156,7 @@ public class FssTradeApplyController {
 				e.printStackTrace();
 			}
 			fssTradeApplyService.updateTradeApply(tradeapply);//修改预约到账日期
-			fssTradeRecordService.insertRecord(tradeapply);
+			fssTradeRecordService.insertRecord(tradeapply, 2);
 			map.put("code", "0000");
 	        map.put("message", "success");
 		}else{//不通过，添加回盘记录

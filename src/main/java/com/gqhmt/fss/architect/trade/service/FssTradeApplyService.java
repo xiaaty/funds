@@ -82,7 +82,7 @@ public class FssTradeApplyService {
 	}
 	
 	
-	public FssTradeApplyEntity createTreadeApplyEntity(FssAccountEntity fssAccountEntity,LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
+	public FssTradeApplyEntity createTradeApplyEntity(FssAccountEntity fssAccountEntity,LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		//创建提现申请信息
 			fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
@@ -193,7 +193,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setRealTradeAmount(fssRepaymentEntity.getAmt());
 			tradeApplyEntity.setBusiType(fssRepaymentEntity.getTradeType());
 			tradeApplyEntity.setTradeState("10090002");
-			tradeApplyEntity.setApplyNo(this.getApplyNo());
+			tradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());
 			fssTradeApplyWriteMapper.insert(tradeApplyEntity);
 		}
 	}
@@ -222,7 +222,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setApplyType(1103);
 			tradeApplyEntity.setApplyState(applyStatus);
 			tradeApplyEntity.setTradeState("10090002");
-			tradeApplyEntity.setApplyNo(this.getApplyNo());
+			tradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());
 			fssTradeApplyWriteMapper.insert(tradeApplyEntity);
 	}
 	
@@ -395,19 +395,4 @@ public class FssTradeApplyService {
 	}
 
 
-	/**
-	 *
-	 * author:jhz
-	 * time:2016年3月18日
-	 * function：得到申请编号(唯一)
-	 */
-	public String getApplyNo(){
-		String applyNo = CommonUtil.getUUID();
-		if(uniqueByApplyNo(applyNo)){
-			return  applyNo;
-		}else{
-			applyNo = CommonUtil.getUUID();
-			return this.getApplyNo();
-		}
-	}
 }

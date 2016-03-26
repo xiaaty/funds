@@ -62,14 +62,14 @@ public class FssTradeRecordService {
 	 * 
 	 * author:jhz
 	 * time:2016年3月17日
-	 * function：通过账户号得到客户绑定的银行限额
+	 * function：通过账户号和交易类型（充值1，提现2）得到客户绑定的银行限额
 	 * @throws FssException 
 	 */
-	public BigDecimal  getBankCode(String accNo) throws FssException{
+	public BigDecimal  getBankCode(String accNo,int type) throws FssException{
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
 		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId().intValue());
 		Application instance = Application.getInstance();
-		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getParentBankId());
+		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(queryInvestmentByCustId.get(0).getParentBankId()+type);
 		return bankDealamountLimit;
 	}
 	/**
@@ -78,11 +78,11 @@ public class FssTradeRecordService {
 	 * time:2016年3月18日
 	 * function：给交易记录表添加数据
 	 */
-	public void insertTradeRecord(String tradeType) throws FssException{
-		//查找处于划扣中的交易申请
-		List<FssTradeApplyEntity> tradeAppliesByTradeStatus = fssTradeApplyService.getTradeAppliesByTradeStatus(tradeType);
+	public void insertTradeRecord(String tradeType,int type) throws FssException{
+		//查找处于未交易的交易申请"10090002"
+		List<FssTradeApplyEntity> tradeAppliesByTradeStatus = fssTradeApplyService.getTradeAppliesByTradeStatus("10090002");
 		for (FssTradeApplyEntity fssTradeApplyEntity : tradeAppliesByTradeStatus) {
-			insertRecord(fssTradeApplyEntity);
+			insertRecord(fssTradeApplyEntity,type);
 			fssTradeApplyEntity.setTradeState("10090004");
 			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 		}
@@ -94,14 +94,14 @@ public class FssTradeRecordService {
 	 * function：添加进交易记录,并进行金额拆分
 	 * @throws FssException 
 	 */
-	public void  insertRecord(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+	public void  insertRecord(FssTradeApplyEntity fssTradeApplyEntity,int type) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=null;
 			tradeRecordEntity=new FssTradeRecordEntity();
 			String accNo = fssTradeApplyEntity.getAccNo();
 			//交易额
 			BigDecimal realTradeAmount = fssTradeApplyEntity.getRealTradeAmount();
 			//限额
-			BigDecimal limitAmount =this.getBankCode(accNo);
+			BigDecimal limitAmount =this.getBankCode(accNo,type);
 			//金额是否超过银行代付单笔上限
 			//否
 			if(realTradeAmount .compareTo(limitAmount)<=0){

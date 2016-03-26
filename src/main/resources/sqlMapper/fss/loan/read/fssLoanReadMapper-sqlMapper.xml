@@ -112,21 +112,6 @@
 			<if test="type !=null and type != '' ">
 				AND t.trade_type = #{type}
 			</if>
-
-			<!--<choose>
-				<when test="creatTime == null or creatTime == '' and modifyTime==null or modifyTime=='' ">
-					AND 1=1
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
-					AND t.create_time BETWEEN #{creatTime} AND SYSDATE()
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time BETWEEN #{creatTime} AND #{modifyTime}
-				</when>
-				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time &lt; #{modifyTime} 
-				</when>
-			</choose>-->
 	</select>
 
 	<select id="findLoanBySettle" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">

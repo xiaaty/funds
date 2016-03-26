@@ -441,7 +441,7 @@ public class FundAccountService {
 		 	}else{//账户余额小于提现金额
 	 			//创建提现申请信息
 	 			try {
-	 			    fssTradeApplyEntity = fssTradeApplyService.createTreadeApplyEntity(fssAccountEntity,wthDrawApplyDto);
+	 			    fssTradeApplyEntity = fssTradeApplyService.createTradeApplyEntity(fssAccountEntity,wthDrawApplyDto);
 					fssTradeApplyService.createTradeApply(fssTradeApplyEntity);
 				} catch (FssException e) {
 					LogUtil.info(this.getClass(), e.getMessage());
