@@ -253,10 +253,11 @@ public class FssTradeApplyService {
 	/**
 	 * 修改执行条数
 	 * @param applyNo
-	 * 根据申请编号修改成功条数
+	 * 根据申请编号修改成功条数,实际交易金额，修改日期
      */
 	public void updateExecuteCount(String applyNo){
 		fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(applyNo);
+		this.checkExecuteCount(applyNo);
 	}
 
 	/**
@@ -269,15 +270,13 @@ public class FssTradeApplyService {
 	public void checkExecuteCount(String applyNo){
 		FssTradeApplyEntity applyEntity =new FssTradeApplyEntity();
 		applyEntity.setApplyNo(applyNo);
-		 List<FssTradeApplyEntity> select = this.fssTradeApplyReadMapper.select(applyEntity);
-		 applyEntity=select.get(0);
+		 applyEntity = fssTradeApplyReadMapper.selectOne(applyEntity);
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
 		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
 			 applyEntity.setTradeState("10090003");
 			 applyEntity.setModifyTime(new Date());
 			fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 			//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
-			//todo
 			fssRepaymentService.changeTradeStatus(Long.parseLong(applyEntity.getCustNo()));
 		 }
 	}
