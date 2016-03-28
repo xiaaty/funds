@@ -3,7 +3,11 @@ package com.gqhmt.fss.architect.trade.mapper.read;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 
 /**
@@ -36,5 +40,11 @@ public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity>
 	 * @param map
 	 * @return
 	 */
-	public List<FssTradeApplyEntity> queryFssTradeApplyList(Map map);
+	public List<FssTradeApplyBean> queryFssTradeApplyList(Map map);
+	/**
+	 * 抵押权人代扣
+	 * @param map
+	 * @return
+	 */
+	public FssTradeApplyBean queryFssTradeApply(@Param("applyNo")String applyNo);
 }

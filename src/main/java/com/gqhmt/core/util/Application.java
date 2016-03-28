@@ -111,7 +111,7 @@ public class Application {
     }
 
     public String getDictName(String key){
-        if(key == null){
+        if(key == null || "".equals(key) || "null".equals(key)){
             return "无";
         }
         if("00000000".equals(key)){

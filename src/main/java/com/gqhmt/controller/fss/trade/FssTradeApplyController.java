@@ -5,6 +5,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
@@ -69,7 +70,7 @@ public class FssTradeApplyController {
 	 */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryMortgageeList(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
+    public String queryMortgageeList(HttpServletRequest request, ModelMap model, FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
     	Map map=new HashMap();
     	String startime=request.getParameter("startime");
 		String endtime=request.getParameter("endtime");
@@ -87,7 +88,7 @@ public class FssTradeApplyController {
     	if(!"".equals(tradeApply.getBusinessNo())){
     		map.put("businessNo", tradeApply.getBusinessNo());
     	}
-        List<FssTradeApplyEntity> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
+        List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
         model.addAttribute("startime",startime);
@@ -103,9 +104,9 @@ public class FssTradeApplyController {
 	 * author:柯禹来
 	 * function:查看金额拆分列表信息
 	 */
-    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/{id}/records",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/records",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply,FssTradeRecordEntity traderecord, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo,@PathVariable Long id) throws Exception {
+    public String queryTradeRecord(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply,FssTradeRecordEntity traderecord, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo) throws Exception {
 		Map map=new HashMap();
     	String startime=request.getParameter("startime");
 		String endtime=request.getParameter("endtime");
@@ -131,19 +132,32 @@ public class FssTradeApplyController {
     /**
      * 审核数据查看
      */
-    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/{id}/withdrawcheck",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/withdrawcheck",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo,@PathVariable Long id) throws Exception {
-		FssTradeApplyEntity tradeapplyentity=fssTradeApplyService.getFssTradeApplyEntityById(id);
+    public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo) throws Exception {
+    	FssTradeApplyEntity tradeapplyentity=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
+    	if(tradeapplyentity==null){
+    		throw new FssException("未查到交易申请记录！");
+    	}
 		FssCustomerEntity  fssCustomerEntity=fssCustomerService.getCustomerNameById(tradeapplyentity.getCustId());
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		model.addAttribute("tradeapply",tradeapplyentity);
-		model.addAttribute("bespokedate",sdf.format(tradeapplyentity.getBespokedate()));
+		if(tradeapplyentity.getBespokedate()!=null){
+			model.addAttribute("bespokedate",sdf.format(tradeapplyentity.getBespokedate()));
+		}else{
+			model.addAttribute("bespokedate",null);
+		}
 		if(null!=fssCustomerEntity && StringUtils.isNotEmptyString(fssCustomerEntity.getName())){
 			model.addAttribute("custName",fssCustomerEntity.getName());
 		}else{
 			model.addAttribute("custName","");
 		}
+		if(null!=fssCustomerEntity && StringUtils.isNotEmptyString(fssCustomerEntity.getMobile())){
+			model.addAttribute("custMobile",fssCustomerEntity.getMobile());
+		}else{
+			model.addAttribute("custMobile","");
+		}
+		
 		if(type==1103){
 			return "fss/trade/trade_audit/borrower_withhold_check";
 		}else{
@@ -163,16 +177,16 @@ public class FssTradeApplyController {
 	 */
 //  审核不通过走回盘
 //	审核通过,先进行处理，处理完成后走回盘	
-	@RequestMapping("/trade/tradeApply/{applyType}/{busiType}/moneySplit")
+	@RequestMapping(value = "/trade/tradeApply/{applyType}/{busiType}/{applyNo}/moneySplit")
 	@ResponseBody
-	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType) throws FssException {
+	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
 		FssTradeApplyEntity tradeapply=null;
+		int splitCount=0;//资金拆分条数
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		Long id=Long.valueOf(request.getParameter("id"));
 		String applyStatus=request.getParameter("applyStatus");
 		String bespokedate=request.getParameter("bespokedate");
-		tradeapply=fssTradeApplyService.getFssTradeApplyEntityById(id);
+		tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
@@ -183,13 +197,15 @@ public class FssTradeApplyController {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-		    fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+			splitCount = fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+			tradeapply.setCount(splitCount);
+			fssTradeApplyService.updateTradeApply(tradeapply);
 			fssFssBackplateService.createFssBackplateEntity(tradeapply);
-			map.put("code", "0000");
-	        map.put("message", "success");
 		}else{//不通过，添加回盘记录
 			fssFssBackplateService.createFssBackplateEntity(tradeapply);
 		}
+		map.put("code", "0000");
+        map.put("message", "success");
 		return map;
 	}
 	
