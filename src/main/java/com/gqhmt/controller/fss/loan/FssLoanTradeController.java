@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,19 +126,23 @@ public class FssLoanTradeController {
 	/**
 	 * 
 	 * author:jhz time:2016年3月18日 function：添加到抵押权人代扣
+	 * @throws InterruptedException 
 	 * 
 	 * @throws FssException
 	 *             "10100001"代扣充值
 	 */
 	@RequestMapping("/loan/trade/{type}/withHold/{id}")
 	@ResponseBody
-	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, FssLoanEntity fssLoanEntity,String token){
+	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt,String token) throws InterruptedException{
 		Map<String, String> map = new HashMap<String, String>();
+		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
 		fssLoanEntity.setStatus("10050002");
-		String server_token  = request.getSession().getAttribute("token").toString();
-//		if(server_token.equals(token)){
+		String server_token  = (String) request.getSession().getAttribute("token");
+		request.getSession().removeAttribute("token");
+		if(token.equals(server_token)){
 		try {
 			fssLoanService.update(fssLoanEntity);
+			fssLoanEntity.setPayAmt(payAmt);
 			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001",type);
 			//1 代扣，2 提现
 			fssTradeRecordService.insertTradeRecord(1);
@@ -145,15 +150,11 @@ public class FssLoanTradeController {
 	        map.put("message", "success");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-			if(e.getMessage().equals("90004011")){
-			map.put("code", "0001");
-	        map.put("message", "请勿重复提交");
-	        }
 		}
-//		}else{
-//			map.put("code", "0001");
-//	        map.put("message", "请勿重复提交");
-//		}
+		}else{
+			map.put("code", "0001");
+	        map.put("message", "请勿重复提交!");
+		}
 		return map;
 	}
 

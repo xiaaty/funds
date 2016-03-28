@@ -252,14 +252,10 @@ public class FssTradeApplyService {
 	/**
 	 * 修改执行条数
 	 * @param applyNo
+	 * 根据申请编号修改成功条数
      */
 	public void updateExecuteCount(String applyNo){
-		FssTradeApplyEntity applyEntity =new FssTradeApplyEntity();
-		applyEntity.setApplyNo(applyNo);
-		 List<FssTradeApplyEntity> select = this.fssTradeApplyReadMapper.select(applyEntity);
-		 applyEntity=select.get(0);
-		 applyEntity.setSuccessCount(applyEntity.getSuccessCount()+1);
-		 this.updateTradeApply(applyEntity);
+		fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(applyNo);
 	}
 
 	/**
