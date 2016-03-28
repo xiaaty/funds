@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
@@ -9,6 +10,7 @@ import com.gqhmt.extServInter.dto.trade.GET_PrePaymentDto;
 import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
@@ -21,9 +23,9 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -85,7 +87,7 @@ public class FssTradeApplyService {
 	public FssTradeApplyEntity createTradeApplyEntity(FssAccountEntity fssAccountEntity,LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		//创建提现申请信息
-			fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
+			fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(wthDrawApplyDto.getTrade_type()));
 			fssTradeApplyEntity.setApplyType(Integer.valueOf(wthDrawApplyDto.getTrade_type()));
 			fssTradeApplyEntity.setCustNo(fssAccountEntity.getCustNo());
 			fssTradeApplyEntity.setUserNo(fssAccountEntity.getUserNo());
@@ -276,7 +278,6 @@ public class FssTradeApplyService {
 			//todo
 			fssRepaymentService.changeTradeStatus(Long.parseLong(applyEntity.getCustNo()));
 		 }
-
 	}
 	/**
 	 * 
@@ -292,8 +293,8 @@ public class FssTradeApplyService {
 	 * @param tradeapply
 	 * @return
 	 */
-	public List<FssTradeApplyEntity> queryFssTradeApplyList(Map map){
-		List<FssTradeApplyEntity> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map);
+	public List<FssTradeApplyBean> queryFssTradeApplyList(Map map){
+		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map);
 		return tradeapplylist;
 	}
 	
@@ -330,7 +331,7 @@ public class FssTradeApplyService {
 	public Response createPrePaymentApply(GET_PrePaymentDto dto) throws FssException{
 		Response respon=new Response();
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
-		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
+		fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(dto.getTrade_type()));
 		fssTradeApplyEntity.setApplyType(1104);//提现
 		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_id()));
 		fssTradeApplyEntity.setCustNo("");
@@ -350,7 +351,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
 		fssTradeApplyEntity.setBespokedate(new Date());
 		fssTradeApplyEntity.setContractId(dto.getContract_id());//合同Id
-		fssTradeApplyEntity.setChannelNo("97010001");//交易渠道
+		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type()));//交易渠道
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
 		try {
@@ -370,7 +371,7 @@ public class FssTradeApplyService {
 	 */
 	public FssTradeApplyEntity CreateNewFssTradeApplyEntity(GET_WithholdDto dto) throws FssException{
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
-		fssTradeApplyEntity.setApplyNo(fundAccountService.getAccountNo());//时间+随机数
+		fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(dto.getTrade_type()));
 		fssTradeApplyEntity.setApplyType(1103);
 		fssTradeApplyEntity.setCustNo("");
 		fssTradeApplyEntity.setUserNo("");
@@ -389,7 +390,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
 		fssTradeApplyEntity.setBespokedate(new Date());
 		fssTradeApplyEntity.setContractId(dto.getContract_id());//合同Id
-		fssTradeApplyEntity.setChannelNo("97010001");//交易渠道
+		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type()));//交易渠道
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
 		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_id()));
@@ -397,4 +398,16 @@ public class FssTradeApplyService {
 	}
 
 
+	public FssTradeApplyEntity getFssTradeApplyEntityByApplyNo(String applyNo) throws FssException{
+		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
+		fssTradeApplyEntity.setApplyNo(applyNo);
+		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectOne(fssTradeApplyEntity);
+		return tradeapply;
+	}
+	
+	public FssTradeApplyBean getFssTradeApply(String applyNo){
+		FssTradeApplyBean fssTradeApplyBean=fssTradeApplyReadMapper.queryFssTradeApply(applyNo);
+		return fssTradeApplyBean;
+	}
+	
 }

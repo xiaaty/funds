@@ -54,7 +54,7 @@
 		   c.bank_id bankId,
 		   a.create_time createTime,
 		   a.modify_time modifyTime
-	   FROM `t_gq_fss_account` a,`t_gq_customer_info` c
+	   FROM `t_gq_fss_account` a,`t_gq_fss_customer` c
 	   WHERE a.cust_id=c.id
 	   <if test="accNo!= null and accNo!= '' ">
        	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')

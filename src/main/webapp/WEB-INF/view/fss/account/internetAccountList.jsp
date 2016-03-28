@@ -149,7 +149,6 @@
                                               <td>业务编号</td>
                                               <td>子商户号</td>
                                               <td>父商户号</td>
-                                              <td>是否有效</td> 
                                               <td>创建日期</td>
                                               <td>修改日期</td> 
                                               <td>操作</td> 
@@ -170,7 +169,6 @@
                                                     <td>${bussaccount.busiNo}</td>
                                                     <td>${bussaccount.mchnChild}</td>
                                                     <td>${bussaccount.mchnParent}</td>
-                                                    <td> <fss:dictView key="${bussaccount.isValid}" /></td>
                                                     <td><fmt:formatDate value="${bussaccount.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bussaccount.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a></td>

@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
@@ -334,7 +335,8 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
 		tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 		tradeRecordEntity.setCreateTime(new Date());
-		tradeRecordEntity.setChannelNo("97010001");
+		tradeRecordEntity.setModifyTime(new Date());
+		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
 		try {
 			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 		} catch (Exception e) {
