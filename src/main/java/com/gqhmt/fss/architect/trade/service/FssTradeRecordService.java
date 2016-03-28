@@ -151,13 +151,13 @@ public class FssTradeRecordService {
 	/**
 	 * 修改执行状态
 	 * @param fssTradeRecordEntity		实体备案
-	 * @param state						98060001交易成功,98060003交易失败
+	 * @param state	
+	 * TradeResult: 98060001交易成功,98060003交易失败					
      */
 	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String errCode){
-	fssTradeRecordEntity.setTradeResult(98060001);//(state == 1?"":"")
-	fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
-        fssTradeRecordEntity.setSumary(errCode);
-
+		fssTradeRecordEntity.setTradeResult((state == 1?98060001:98060003));//(state == 1?"":"")
+		fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
+		fssTradeRecordEntity.setSumary(errCode);
 		//Apply 执行数量更新
 		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
 		
@@ -315,9 +315,11 @@ public class FssTradeRecordService {
 			//拆分处理
 			for (int j=0 ; j < splitCount; j++) {
 				if (j != (splitCount-1) ) {
+					tradeRecordEntity.setId(null);
 					tradeRecordEntity.setAmount(limitAmount);
 					fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 				}else{
+					tradeRecordEntity.setId(null);
 					tradeRecordEntity.setAmount(lastamount);
 					fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 				}

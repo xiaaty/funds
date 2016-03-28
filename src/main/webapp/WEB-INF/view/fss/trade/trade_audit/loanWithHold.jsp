@@ -76,6 +76,7 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
+                                                        	<input type="hidden" name="token" value="${token}"/> 
                                                             <input type="text" name="contractNo" readonly="readonly" value="${loan.contractNo }">
                                                         </label>
                                                     </section>
@@ -171,7 +172,7 @@
 	                        jAlert("代扣已提交!", '确认信息');
 	                        return;
 	                    } else if(data.code == '0001'){
-	                    	Alert(data.message, '确认信息');
+	                    	jAlert(data.message, '确认信息');
 	                        return;
 	                    }
 	                }
