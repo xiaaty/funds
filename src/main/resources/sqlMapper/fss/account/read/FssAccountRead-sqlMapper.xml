@@ -83,6 +83,8 @@
 		account.acc_avai accAvai,
 		account.create_time accCreateTime,
 		account.modify_time accModifyTime,
+		account.channel_no channelNo,
+		
 		account.cust_id custId
 
 		FROM t_gq_fss_account account

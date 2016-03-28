@@ -94,9 +94,6 @@
 			<if test="contractNo != null and contractNo != ''">
 				and t.contract_no like concat('%',#{contractNo},'%')
 			</if>
-			<if test="seqNo != null and seqNo != ''">
-				and t.seq_no like concat('%',#{seqNo},'%')
-			</if>
 			<if test="status != null and status != ''">
 				and t.status like concat('%',#{status},'%')
 			</if>
@@ -112,6 +109,7 @@
 			<if test="type !=null and type != '' ">
 				AND t.trade_type = #{type}
 			</if>
+			
 	</select>
 
 	<select id="findLoanBySettle" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">

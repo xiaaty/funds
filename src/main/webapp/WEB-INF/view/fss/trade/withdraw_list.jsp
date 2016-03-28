@@ -155,6 +155,7 @@
                                              <td>成功条数</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
+                                             <td>预约到账日期</td>
                                              <td>商户号</td>
                                              <td>交易渠道</td>
                                              <td>操作</td>
@@ -176,6 +177,7 @@
                                                     <td>${tradeapply.successCount}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
                                                     <td><fss:fmtDate value="${tradeapply.modifyTime}"/></td>
+                                                    <td><fss:fmtDate value="${tradeapply.bespokedate}"/></td>
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
                                                     <td>
