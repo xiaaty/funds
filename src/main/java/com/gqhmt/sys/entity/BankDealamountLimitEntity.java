@@ -42,7 +42,7 @@ public class BankDealamountLimitEntity implements java.io.Serializable{
     @Column(name="limit_amount")
     private BigDecimal limitAmount;                           // decimal(16,2) DEFAULT NULL COMMENT 限制额度,
 
-    @Column(name="create_time")
+    @Column(name="creat_time")
     private Date createTime;                           // datetime DEFAULT NULL COMMENT '创建时间',
 
     @Column(name="create_user")
