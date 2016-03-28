@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>代付审核--借款人提现--冠群驰骋投资管理(北京)有限公司</title>
+    <title>代扣审核--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -40,7 +40,7 @@
             <ol class="breadcrumb">
                 <li>交易管理</li>
                 <li>交易审核</li>
-                <li>提现审核</li>
+                <li>代扣审核</li>
             </ol>
             <!-- end breadcrumb -->
         </div>
@@ -53,7 +53,7 @@
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
-                                    <h2><i class="fa fa-edit pr10"></i>借款人提现审核信息<font class="pl10 f12 color07"></font></h2>
+                                    <h2><i class="fa fa-edit pr10"></i>审核信息<font class="pl10 f12 color07"></font></h2>
                                 </header>
                                 <div>
                                     <div class="smart-form">
@@ -94,16 +94,6 @@
                                                                 <input type="text" maxlength="50" readonly="readonly" name="tradeAmount" value="${tradeapply.tradeAmount}" style="width:256px;" />
                                                                 </label>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                        <td align="left">预约到账日期：</td>
-			                                            <td>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:200px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="bespokedate" name="bespokedate" value="${bespokedate}" class="selectdate" placeholder="请选择预约到账日期">
-			                                                    </label>
-			                                                </section>
-			                                            </td>
                                                         </tr>
                                                         <tr>
                                                         <td align="left">审批状态：</td>
@@ -219,69 +209,6 @@
     	        	});
     	    	});
     	    }
-    	 
-    	    function isDate(strDate){
-    	    	var strSeparator = "-"; //日期分隔符 
-    	    	var strDateArray; 
-    	    	var intYear; 
-    	    	var intMonth; 
-    	    	var intDay; 
-    	    	var boolLeapYear; 
-    	    	var ErrorMsg = ""; //出错信息 
-    	    	strDateArray = strDate.split(strSeparator); 
-    	    	//没有判断长度,其实2008-8-8也是合理的//strDate.length != 10 || 
-    	    	if(strDateArray.length != 3) { 
-    	        	ErrorMsg += "日期格式必须为: 年-月-日"; 
-    	        	return ErrorMsg; 
-    	    	} 
-    	    	intYear = parseInt(strDateArray[0],10); 
-    	    	intMonth = parseInt(strDateArray[1],10); 
-    	    	intDay = parseInt(strDateArray[2],10); 
-    	    	if(isNaN(intYear)||isNaN(intMonth)||isNaN(intDay)) { 
-    	    		ErrorMsg += "请输入有效的日期！"; 
-    	        	return ErrorMsg; 
-    	    	} 
-    	    	if(intMonth>12 || intMonth<1) { 
-    	    		ErrorMsg += "请输入有效的日期！"; 
-    	        	return ErrorMsg; 
-    	    	} 
-    	    	if((intMonth==1||intMonth==3||intMonth==5||intMonth==7 
-    	    		||intMonth==8||intMonth==10||intMonth==12) &&(intDay>31||intDay<1)) { 
-    	    		ErrorMsg += "请输入有效的日期！"; 
-    	        	return ErrorMsg; 
-    	    	} 
-    	    	if((intMonth==4||intMonth==6||intMonth==9||intMonth==11) 
-    	    		&&(intDay>30||intDay<1)) { 
-    	    		ErrorMsg += "请输入有效的日期！";  
-    	        	return ErrorMsg; 
-    	    	} 
-    	    	if(intMonth==2){ 
-    	        	if(intDay < 1) { 
-    	        		ErrorMsg += "请输入有效的日期！";  
-    		        	return ErrorMsg; 
-    	    		} 
-    	        	boolLeapYear = false; 
-    	        	if((intYear%100) == 0){ 
-    		        	if((intYear%400) == 0) 
-    		        	boolLeapYear = true; 
-    	    		} else { 
-    		        	if((intYear % 4) == 0) 
-    		        		boolLeapYear = true; 
-    	        		} 
-    	        		if(boolLeapYear){ 
-    		        		if(intDay > 29) { 
-    		        			ErrorMsg += "请输入有效的日期！"; 
-    			        		return ErrorMsg; 
-    	        			} 
-    	    			} else { 
-    			        	if(intDay > 28) { 
-    				        	ErrorMsg += "请输入有效的日期！"; 
-    				        	return ErrorMsg; 
-    		        		} 
-    	    			} 
-    	    		} 
-    	    	return ErrorMsg; 
-    	    } 
     	 
     	    $("#btn_cancel").button().click(function() {
             	window.history.back();

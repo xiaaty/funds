@@ -129,7 +129,7 @@ public class FssTradeApplyController {
     }
   
     /**
-     * 提现审核
+     * 审核数据查看
      */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/{id}/withdrawcheck",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
@@ -144,7 +144,12 @@ public class FssTradeApplyController {
 		}else{
 			model.addAttribute("custName","");
 		}
-		return "fss/trade/trade_audit/borrower_withdraw_check";
+		if(type==1103){
+			return "fss/trade/trade_audit/borrower_withhold_check";
+		}else{
+			return "fss/trade/trade_audit/borrower_withdraw_check";
+		}
+		
     }
     
 	/**
@@ -170,13 +175,16 @@ public class FssTradeApplyController {
 		tradeapply=fssTradeApplyService.getFssTradeApplyEntityById(id);
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
-				tradeapply.setBespokedate(sdf.parse(bespokedate));
+				if(applyType==1104){//提现
+					tradeapply.setBespokedate(sdf.parse(bespokedate));
+				}else{//充值
+					tradeapply.setBespokedate(null);
+				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
-			fssTradeApplyService.updateTradeApply(tradeapply);//修改预约到账日期
-			fssTradeRecordService.insertRecord(tradeapply, 2);
+		    fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+			fssFssBackplateService.createFssBackplateEntity(tradeapply);
 			map.put("code", "0000");
 	        map.put("message", "success");
 		}else{//不通过，添加回盘记录
