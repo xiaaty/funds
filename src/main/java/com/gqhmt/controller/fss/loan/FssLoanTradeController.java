@@ -7,6 +7,8 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.TokenProccessor;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
@@ -67,7 +69,7 @@ public class FssLoanTradeController {
 	@Resource
 	private ICost cost;
 	@Resource
-    private UserService userService;
+    private FssCustomerService fssCustomerService;
 
 	/**
 	 * 
@@ -94,8 +96,8 @@ public class FssLoanTradeController {
 			String userNo = fssLoanEntity.getUserNo();
 			if(userNo!=null&&!"".equals(userNo)){
 				
-			User userById = userService.getUserById(Long.parseLong(userNo));
-			fssLoanEntity.setUserNo(userById.getUserName());
+			FssCustomerEntity customerNameByCustNo = fssCustomerService.getCustomerNameByCustNo(fssLoanEntity.getCustNo());
+			fssLoanEntity.setUserNo(customerNameByCustNo.getName());
 			}
 			list2.add(fssLoanEntity);
 		}
@@ -115,11 +117,11 @@ public class FssLoanTradeController {
 		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
-		//通过userNo查询用户对象
-//		 User userById = userService.getUserById(Long.parseLong(fssLoanEntityById.getUserNo()));
+		//通过custNo查询用户对象
+		FssCustomerEntity customerNameByCustNo = fssCustomerService.getCustomerNameByCustNo(fssLoanEntityById.getCustNo());
 		// 把交易状态 修改为‘代扣中’
 		model.addAttribute("loan", fssLoanEntityById);
-//		model.addAttribute("user", userById);
+		model.addAttribute("user", customerNameByCustNo);
 		return "fss/trade/trade_audit/loanWithHold";
 	}
 
