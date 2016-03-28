@@ -20,4 +20,11 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
  * 2016/1/10  于泳      1.0     1.0 Version
  */
 public interface FssTradeApplyWriteMapper extends ReadAndWriteMapper<FssTradeApplyEntity> {
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月28日
+	 * function：根据申请编号修改成功条数
+	 */
+	void updateTradeApplyByApplyNo(String applyNo);
 }
