@@ -95,4 +95,8 @@ public class LoanApiTest extends SupperAPI {
             e.printStackTrace();
         }
     }
+
+    public void dyWithdraw(){
+
+    }
 }
