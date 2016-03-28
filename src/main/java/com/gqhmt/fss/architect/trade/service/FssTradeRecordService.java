@@ -142,7 +142,7 @@ public class FssTradeRecordService {
 	public List<FssTradeRecordEntity> findNotExecuteRecodes(){
 		//查询出处于划扣中的申请
 			FssTradeRecordEntity record=new FssTradeRecordEntity();
-			record.setTradeType(10030001);
+			record.setTradeState(10030001);
 			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.select(record);
 			return tradeRecordList;
 	}
@@ -245,7 +245,7 @@ public class FssTradeRecordService {
 	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
 		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
-		tradeRecordEntity.setTradeType(Integer.parseInt(fssTradeApplyEntity.getBusiType()));
+		tradeRecordEntity.setTradeType(fssTradeApplyEntity.getApplyType());
 		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
 		tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
 		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
