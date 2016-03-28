@@ -44,7 +44,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
 
         try {
 
-            if(entity.getTradeType() !=1103 || entity.getTradeType() != 1104){
+            if(entity.getTradeType() != 1103 && entity.getTradeType() != 1104){
                 this.recordService.updateTradeRecordExecuteState(entity,2,"90099011");//
                 return;
             }
