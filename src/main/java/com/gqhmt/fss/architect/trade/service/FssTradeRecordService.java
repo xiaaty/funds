@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
@@ -12,9 +13,7 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.sys.service.BankDealamountLimitService;
-
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -245,7 +244,7 @@ public class FssTradeRecordService {
 	 * time:2016年3月28日
 	 * function：根据交易申请创建交易记录对象
 	 */
-	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity){
+	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
 		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
 		tradeRecordEntity.setTradeType(fssTradeApplyEntity.getApplyType());
@@ -261,6 +260,13 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
 		tradeRecordEntity.setCreateTime(new Date());
 		tradeRecordEntity.setModifyTime(new Date());
+		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
+		try {
+			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			throw new FssException("91009804");
+		}
 		return tradeRecordEntity;
 	}
 	

@@ -3,13 +3,10 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
-import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper;
-import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouUploadFileWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;

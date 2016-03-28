@@ -49,7 +49,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="withdrawForm" action="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/moneySplit" method="post">
+                    <form id="withdrawForm" action="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/moneySplit" method="post">
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
@@ -67,8 +67,6 @@
                                                     <col width="112" />
                                                     <col />
                                                     <tbody>
-                                                    	<input type="hidden"  name="id" value="${tradeapply.id}"/>
-                                                    	<input type="hidden"  name="id" value="${tradeapply.applyNo}"/>
                                                     	<input type="hidden"  name="applyType" value="${tradeapply.applyType}"/>
                                                     	<input type="hidden"  name="busiType" value="${tradeapply.busiType}"/>
                                                         <tr>
@@ -76,6 +74,14 @@
                                                             <td>
                                                                 <label class="input">
                                                                	 	<input type="text" maxlength="50" readonly="readonly" name="custName" value="${custName}" style="width:256px;" />
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left">手机号码：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                               	 	<input type="text" maxlength="50" readonly="readonly" name="custMobile" value="${custMobile}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
