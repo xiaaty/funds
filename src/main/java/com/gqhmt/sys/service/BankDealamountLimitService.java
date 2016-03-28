@@ -35,5 +35,4 @@ public class BankDealamountLimitService {
         return  this.bankDealamountLimitReadMapper.selectAll();
     }
 
-
 }

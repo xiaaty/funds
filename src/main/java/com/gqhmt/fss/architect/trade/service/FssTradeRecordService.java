@@ -12,6 +12,10 @@ import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.sys.entity.BankDealamountLimitEntity;
+import com.gqhmt.sys.mapper.read.BankDealamountLimitReadMapper;
+import com.gqhmt.sys.service.BankDealamountLimitService;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -45,6 +49,8 @@ public class FssTradeRecordService {
 	private FssTradeRecordWriteMapper fssTradeRecordWriteMapper;
 	@Resource
 	private FssTradeRecordReadMapper fssTradeRecordReadMapper;
+	@Resource
+	private BankDealamountLimitService bankDealamountLimitService;
 	
 	@Resource
 	private FundAccountService fundAccountService;
@@ -285,16 +291,17 @@ public class FssTradeRecordService {
 	 * @throws FssException
 	 * 柯禹来
 	 */
-	public void  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+	public int  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+		int splitCount=0;
 			//限额
-			BigDecimal limitAmount =this.getBankLimit(String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
+			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
 			//金额是否超过银行代付单笔上限
 			if(fssTradeApplyEntity.getTradeAmount().compareTo(limitAmount)<=0){//否
 				this.createFssTradeRecordEntity(fssTradeApplyEntity,fssTradeApplyEntity.getTradeAmount());
 			}else {
 				//金额超过银行代付单笔上限
 				BigDecimal bg[] = fssTradeApplyEntity.getTradeAmount().divideAndRemainder(limitAmount);
-				int splitCount = bg[0].intValue();
+				splitCount = bg[0].intValue();
 				BigDecimal lastamount = bg[1];
 				//判断是否除尽
 				if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
@@ -311,6 +318,7 @@ public class FssTradeRecordService {
 					}
 				}
 			}
+			return splitCount;
 		}
 	
 	
@@ -333,6 +341,7 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
 		tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
 		tradeRecordEntity.setCreateTime(new Date());
+		tradeRecordEntity.setChannelNo("97010001");
 		try {
 			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 		} catch (Exception e) {
@@ -347,12 +356,19 @@ public class FssTradeRecordService {
 	 * @return
 	 * @throws FssException
 	 */
-	public BigDecimal  getBankLimit(String custId) throws FssException{
+	public BigDecimal  getBankLimit(Integer applyType,String custId) throws FssException{
 		BankCardInfoEntity bankCardInfo = bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId));
 		if(bankCardInfo==null){
 			throw new FssException("90004027");
 		}
-		BigDecimal bankDealamountLimit = Application.getInstance().getBankDealamountLimit(bankCardInfo.getParentBankId());
+		int type=0;
+		if(applyType==1103){//充值
+			 type=1;
+		}else{   //提现
+			 type=2;
+		}
+		Application instance = Application.getInstance();
+		BigDecimal bankDealamountLimit = instance.getBankDealamountLimit(bankCardInfo.getParentBankId()+type);
 		return bankDealamountLimit;
 	}
 	
