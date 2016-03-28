@@ -139,7 +139,8 @@ public class FssLoanTradeController {
 		try {
 			fssLoanService.update(fssLoanEntity);
 			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001",type);
-			fssTradeRecordService.insertTradeRecord(type,1);
+			//1 代扣，2 提现
+			fssTradeRecordService.insertTradeRecord(1);
 			map.put("code", "0000");
 	        map.put("message", "success");
 		} catch (FssException e) {

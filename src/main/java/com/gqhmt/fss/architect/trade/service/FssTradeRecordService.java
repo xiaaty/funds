@@ -70,7 +70,7 @@ public class FssTradeRecordService {
 	 * function：通过账户号和交易类型（充值1，提现2）得到客户绑定的银行限额
 	 * @throws FssException 
 	 */
-	public BigDecimal  getBankCode(String accNo,int type) throws FssException{
+	public BigDecimal  getLimit(String accNo,int type) throws FssException{
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
 		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId().intValue());
 		return getLimitAmount(queryInvestmentByCustId.get(0).getParentBankId(),type);
@@ -92,7 +92,7 @@ public class FssTradeRecordService {
 	 * time:2016年3月18日
 	 * function：给交易记录表添加数据
 	 */
-	public void insertTradeRecord(String tradeType,int type) throws FssException{
+	public void insertTradeRecord(int type) throws FssException{
 		//查找处于未交易的交易申请"10090002"
 		List<FssTradeApplyEntity> tradeAppliesByTradeStatus = fssTradeApplyService.getTradeAppliesByTradeStatus("10090002");
 		for (FssTradeApplyEntity fssTradeApplyEntity : tradeAppliesByTradeStatus) {
@@ -227,11 +227,15 @@ public class FssTradeRecordService {
 	public void  insertRecord(FssTradeApplyEntity fssTradeApplyEntity,int type) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=null;
 		tradeRecordEntity=this.creatTradeRecordEntity(fssTradeApplyEntity);
-			//交易额
-			BigDecimal realTradeAmount = fssTradeApplyEntity.getRealTradeAmount();
-			//限额
-			BigDecimal limitAmount =this.getBankCode(fssTradeApplyEntity.getAccNo(),type);
-			this.moneySplit(tradeRecordEntity, limitAmount, realTradeAmount);
+		//交易额
+		BigDecimal realTradeAmount = fssTradeApplyEntity.getRealTradeAmount();
+		//限额
+		BigDecimal limitAmount =this.getLimit(fssTradeApplyEntity.getAccNo(),type);
+		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, realTradeAmount);
+		//更新申请表该条数据拆分总条数
+		fssTradeApplyEntity.setCount(moneySplit);
+		fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
+		
 	}
 	/**
 	 * 
