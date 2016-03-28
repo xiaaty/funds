@@ -157,6 +157,8 @@ public class FssTradeRecordService {
 		fssTradeRecordEntity.setTradeResult((state == 1?98060001:98060003));//(state == 1?"":"")
 		fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
 		fssTradeRecordEntity.setSumary(errCode);
+		fssTradeRecordEntity.setModifyTime(new Date());
+		fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
 		//Apply 执行数量更新
 		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
 	}

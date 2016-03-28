@@ -256,6 +256,13 @@ public class FssTradeApplyService {
 	 * 根据申请编号修改成功条数,实际交易金额，修改日期
      */
 	public void updateExecuteCount(String applyNo){
+
+		/*FssTradeApplyEntity applyEntity =new FssTradeApplyEntity();
+		applyEntity.setApplyNo(applyNo);
+		List<FssTradeApplyEntity> select = this.fssTradeApplyReadMapper.select(applyEntity);
+		applyEntity=select.get(0);
+		applyEntity.setSuccessCount(applyEntity.getSuccessCount()+1);*/
+//		this.updateTradeApply(applyEntity);
 		fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(applyNo);
 		this.checkExecuteCount(applyNo);
 	}
@@ -291,7 +298,7 @@ public class FssTradeApplyService {
 	}
 	/**
 	 * 查询抵押权人代扣信息
-	 * @param tradeapply
+	 * @param map
 	 * @return
 	 */
 	public List<FssTradeApplyBean> queryFssTradeApplyList(Map map){
@@ -301,7 +308,7 @@ public class FssTradeApplyService {
 	
 	/**
 	 * 根据id查询借款人体现信息
-	 * @param tradeapply
+	 * @param id
 	 * @return
 	 */
 	public FssTradeApplyEntity getFssTradeApplyEntityById(Long id) throws FssException{
