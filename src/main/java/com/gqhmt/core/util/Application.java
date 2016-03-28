@@ -112,11 +112,14 @@ public class Application {
 
     public String getDictName(String key){
         if(key == null){
-            return "未知错误";
+            return "无";
+        }
+        if("00000000".equals(key)){
+            return "成功";
         }
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
-            value = "未知错误";
+            value = "数据字典未配置";
         }
         return value;
     }

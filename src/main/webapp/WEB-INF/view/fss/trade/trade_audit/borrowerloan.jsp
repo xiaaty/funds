@@ -81,12 +81,6 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">交易流水号:</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
-                                                                <input type="text" name="seqNo" value="${map.seqNo}">
-                                                            </label>
-                                                        </td>
                                                         <td class="tr" nowrap="nowrap">商户号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
@@ -163,29 +157,28 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                        <col width="60" />
-                                        <col width="220" />
-                                        <col width="220" />
+                                        <col width="50" />
+                                        <col width="100" />
+                                        <col width="200" />
                                         <col width="150" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
-                                        <col width="" />
                                         <col width="200" />
                                         <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="300" />
-                                        <col width="300" />
+                                        <col width="200"/>
                                         <col width="300"/>
                                         <thead>
                                         <tr>
                                             <td></td>
-                                            <td>操作</td>
                                             <td>抵押权人资金平台账号</td>
                                             <td>借款人资金平台账号</td>
-                                            <td>交易流水号</td>
-                                            <td>合同ID</td>
+                                            <td>客户姓名</td>
+                                            <td>合同编号</td>
                                             <td>合同金额  </td>
                                             <td>放款金额   </td>
                                             <td>借款平台</td>
@@ -195,43 +188,18 @@
                                             <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t" varStatus="l">
                                                 <tr>
-                                                    <td >
-                                                    <c:if test="${t.tradeType != '11092001'}">
-                                                    <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
-                                                    </c:if>
-                                                    &nbsp; &nbsp;
-                                                      <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
-                                                      		<c:if test="${t.status== '10050001'}">
-																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
-																&nbsp; &nbsp;
-															</c:if>
-															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
-																<a href="${contextPath}/loan/trade/${type}/transfer${t.id}">转给借款人</a>
-																&nbsp; &nbsp;
-															</c:if>
-															<c:if test="${t.status == '10050005'}">
-																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp;
-															</c:if>
-													  </c:if>
-                                                      <c:if test="${t.tradeType == '11090002'}">
-															<c:if test="${t.status == '10050005'}">
-																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp;
-															</c:if>
-													  </c:if>
-                                                    
-                                                    </td>
                                                     <td>${l.index+1}</td>
+                                                    
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.accNo}</td>
-                                                    <td>${t.seqNo}</td>
-                                                    <td>${t.contractId}</td>
+                                                    <td>${t.userNo}</td>
+                                                    <td>${t.contractNo}</td>
                                                     <td>
                                                         <fss:money money="${t.contractAmt}"/>
                                                     </td>
@@ -257,6 +225,32 @@
                                                     <td>${t.mchnParent}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
                                                     <td> <fss:fmtDate value="${t.modifyTime}"/></td>
+                                                <td >
+                                                    <c:if test="${t.tradeType != '11092001'}">
+                                                    <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
+                                                    </c:if>
+                                                    &nbsp; &nbsp;
+                                                      <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
+                                                      		<c:if test="${t.status== '10050001'}">
+																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
+																&nbsp; &nbsp;
+															</c:if>
+															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
+																<a href="${contextPath}/loan/trade/${type}/transfer${t.id}">转给借款人</a>
+																&nbsp; &nbsp;
+															</c:if>
+															<c:if test="${t.status == '10050005'}">
+																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
+																&nbsp; &nbsp;
+															</c:if>
+													  </c:if>
+                                                      <c:if test="${t.tradeType == '11090002'}">
+															<c:if test="${t.status == '10050005'}">
+																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
+																&nbsp; &nbsp;
+															</c:if>
+													  </c:if>
+                                                    </td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

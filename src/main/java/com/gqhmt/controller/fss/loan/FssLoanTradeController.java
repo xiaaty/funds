@@ -4,6 +4,9 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.TokenProccessor;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
@@ -12,15 +15,22 @@ import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+import com.gqhmt.sys.entity.User;
+import com.gqhmt.sys.service.UserService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +66,8 @@ public class FssLoanTradeController {
 	private FssTradeRecordService fssTradeRecordService;
 	@Resource
 	private ICost cost;
+	@Resource
+    private UserService userService;
 
 	/**
 	 * 
@@ -77,7 +89,17 @@ public class FssLoanTradeController {
 		}
 		map.put("type", type);
 		List<FssLoanEntity> list = fssLoanService.findBorrowerLoan(map);
-		model.addAttribute("page", list);
+		List<FssLoanEntity> list2 =new ArrayList<>();
+		for (FssLoanEntity fssLoanEntity : list) {
+			String userNo = fssLoanEntity.getUserNo();
+			if(userNo!=null&&!"".equals(userNo)){
+				
+			User userById = userService.getUserById(Long.parseLong(userNo));
+			fssLoanEntity.setUserNo(userById.getUserName());
+			}
+			list2.add(fssLoanEntity);
+		}
+		model.addAttribute("page", list2);
 		model.put("map", map);
 		return "fss/trade/trade_audit/borrowerloan";
 	}
@@ -88,32 +110,52 @@ public class FssLoanTradeController {
 	 */
 	@RequestMapping("/loan/trade/{type}/toWithHold/{id}")
 	public String withhold(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
+		String token = TokenProccessor.getInstance().makeToken();//创建令牌
+//		System.out.println("在FormServlet中生成的token："+token);
+		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		//通过userNo查询用户对象
+//		 User userById = userService.getUserById(Long.parseLong(fssLoanEntityById.getUserNo()));
 		// 把交易状态 修改为‘代扣中’
 		model.addAttribute("loan", fssLoanEntityById);
+//		model.addAttribute("user", userById);
 		return "fss/trade/trade_audit/loanWithHold";
 	}
 
 	/**
 	 * 
 	 * author:jhz time:2016年3月18日 function：添加到抵押权人代扣
+	 * @throws InterruptedException 
 	 * 
 	 * @throws FssException
 	 *             "10100001"代扣充值
 	 */
-	@RequestMapping("/loan/trade/{type}/withHold")
-	public String withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, FssLoanEntity fssLoanEntity){
+	@RequestMapping("/loan/trade/{type}/withHold/{id}")
+	@ResponseBody
+	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt,String token) throws InterruptedException{
+		Map<String, String> map = new HashMap<String, String>();
+		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
 		fssLoanEntity.setStatus("10050002");
+		String server_token  = (String) request.getSession().getAttribute("token");
+		request.getSession().removeAttribute("token");
+		if(token.equals(server_token)){
 		try {
 			fssLoanService.update(fssLoanEntity);
-			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001");
-			fssTradeRecordService.insertTradeRecord(type,1);
+			fssLoanEntity.setPayAmt(payAmt);
+			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001",type);
+			//1 代扣，2 提现
+			fssTradeRecordService.insertTradeRecord(1);
+			map.put("code", "0000");
+	        map.put("message", "success");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
 		}
-		
-		return "redirect:/loan/trade/"+type;
+		}else{
+			map.put("code", "0001");
+	        map.put("message", "请勿重复提交!");
+		}
+		return map;
 	}
 
 	/**

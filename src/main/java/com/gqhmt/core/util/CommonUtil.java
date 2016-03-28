@@ -42,6 +42,10 @@ public class CommonUtil {
     	return commonUtil.executeTradeApplyNo(tradeType);
     }
 
+    public static String getApplyNo(String tradeType){
+        return commonUtil.executeTradeApplyNo(tradeType);
+    }
+
     public  String  executeAcconutNo(String tradeType){
         StringBuffer acc_no= new StringBuffer();
         acc_no.append(GlobalConstants.ACCOUNT_TYPE_MAPPING.get(tradeType));
@@ -60,8 +64,10 @@ public class CommonUtil {
     }
 
     public String executeTradeApplyNo(String tradeType){
-        StringBuffer applyNo= new StringBuffer(getRandom(15));
-
+        StringBuffer applyNo= new StringBuffer();
+        applyNo.append(GlobalConstants.TRADE_APPLY_NO__MAPPING.get(tradeType));
+        applyNo.append(this.getDate());
+        applyNo.append(this.getRandom(8));
         return  applyNo.toString();
     }
 

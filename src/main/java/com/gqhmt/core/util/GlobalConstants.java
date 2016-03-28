@@ -236,6 +236,8 @@ public class GlobalConstants {
 
     //开户交易类型,与交易渠道映射
     public static Map<String,String> TRADE_ACCOUNT_PAY_CHANNEL_MAPPING = new ConcurrentHashMap<>();
+
+    public static Map<String,String> TRADE_APPLY_NO__MAPPING = new ConcurrentHashMap<>();
     
     private static long getMenuId(Long fid) {
         if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
@@ -542,7 +544,13 @@ public class GlobalConstants {
         ACCOUNT_TYPE_MAPPING.put("10010002","1308");            //委托出借账户
         ACCOUNT_TYPE_MAPPING.put("10010003","1302");            //借款账户
         ACCOUNT_TYPE_MAPPING.put("10010004","1304");            //保理业务账户
-        ACCOUNT_TYPE_MAPPING.put("10010005","1300");            //借款账户（冠e通）
+
+        ACCOUNT_TYPE_MAPPING.put("10010005","2481");            //借款账户（冠e通）
+
+        /*//借款系统开户
+        ACCOUNT_TYPE_MAPPING.put("11020010","2346");//借款人开户
+        ACCOUNT_TYPE_MAPPING.put("11020009","5231");//纯线下借款账户*/
+
         ACCOUNT_TYPE_MAPPING.put("10011000","9180");            //公司收费账户
         ACCOUNT_TYPE_MAPPING.put("10011001","8246");            //保证金账户
         ACCOUNT_TYPE_MAPPING.put("10011002","8248");            //逆服务费账户
@@ -599,50 +607,22 @@ public class GlobalConstants {
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020011","97010001");
 
 
+        TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
+        TRADE_APPLY_NO__MAPPING.put("11030005","GTHK");
+        TRADE_APPLY_NO__MAPPING.put("11030006","GTDY");
+        TRADE_APPLY_NO__MAPPING.put("11030007","DCKK");
+        TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
+        TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+
+
+        TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
+        TRADE_APPLY_NO__MAPPING.put("11040005","GTFK");
+        TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
+        TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
+        TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
 
 
 
-        /*switch (dto.getTrade_type()){
-
-            case "11020006"://代偿人开户
-                accType="10010005";//代偿人账户
-                channelNo="97010001";//富友开户
-                break;
-            case "11020007"://抵押权人开户
-                accType="10010006";//抵押权人账户
-                channelNo="97010001";//富友开户
-                break;
-            case "11020008"://保理合同开户
-                accType="10010004";//保理业务账户
-                channelNo="97010001";//富友开户
-                break;
-            case "11020009"://借款人（纯线下）开户
-                accType="10010003";
-                channelNo="97010000";//本地账户
-                break;
-            case "11020010"://借款人开户（借款系统）
-                accType="10010003";
-                channelNo="97010001";//富友开户
-                break;
-            case "11029001"://借款人（出借系统）银行卡变更
-                accType="10010003";
-                channelNo="97010001";//富友开户
-                break;
-            case "11029002"://线下出借人（借款系统）银行卡变更
-                accType="10011000";
-                channelNo="97010001";//富友开户
-                break;
-            case "11029003"://互联网客户银行卡变更
-                accType="10010001";
-                channelNo="";//富友开户
-                break;
-            case "11029004"://银行号变更（纯线下）
-                accType="10011000";//公司账户
-                channelNo="97010000";//本地账户
-                break;
-            default:
-                throw new FssException("90008403");//交易类型错误
-        }*/
 
 	}
 }
