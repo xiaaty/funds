@@ -143,7 +143,7 @@ public class FssTradeRecordService {
 	public List<FssTradeRecordEntity> findNotExecuteRecodes(){
 		//查询出处于划扣中的申请
 			FssTradeRecordEntity record=new FssTradeRecordEntity();
-			record.setTradeState(10030001);
+			record.setTradeState(98070001);
 			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.select(record);
 			return tradeRecordList;
 	}
@@ -160,7 +160,6 @@ public class FssTradeRecordService {
 		fssTradeRecordEntity.setSumary(errCode);
 		//Apply 执行数量更新
 		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
-		
 	}
 	/**
 	 * 
@@ -255,7 +254,7 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setTradeTime("0");
 		tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
 		tradeRecordEntity.setApplyNo(fssTradeApplyEntity.getApplyNo());
-		tradeRecordEntity.setTradeState(10030001);
+		tradeRecordEntity.setTradeState(98070001);
 		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
 		tradeRecordEntity.setCreateTime(new Date());
 		tradeRecordEntity.setModifyTime(new Date());
