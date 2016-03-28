@@ -22,6 +22,13 @@ import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
  * 2016年3月17日  jhz      1.0     1.0 Version
  */
 public interface FssRepaymentParentWriteMapper extends ReadAndWriteMapper<FssRepaymentParentEntity> {
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月28日
+	 * function：修改主表执行条数
+	 */
+	void updateRepaymentParentSuccessCount(Long parentId);
 
 	
 }

@@ -72,5 +72,15 @@ public class FssCustomerService {
     	fssCustomerEntity.setCertNo(certNo);
     	return customerReadMapper.selectOne(fssCustomerEntity);
     }
-    
+    /**
+     * 
+     * author:jhz
+     * time:2016年3月28日
+     * function：根据custNo得到用户对象
+     */
+    public FssCustomerEntity getCustomerNameByCustNo(String custNo){
+    	FssCustomerEntity record=new FssCustomerEntity();
+    	record.setCustNo(custNo);
+		return customerReadMapper.selectOne(record);
+    }
 }

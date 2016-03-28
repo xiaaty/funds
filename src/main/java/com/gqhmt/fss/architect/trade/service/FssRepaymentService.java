@@ -275,10 +275,9 @@ public class FssRepaymentService {
 	 * function：修改主表执行条数
 	 */
 	public void updateSuccessCount(Long parentId){
-		FssRepaymentParentEntity queryRepaymentParentById = this.queryRepaymentParentById(parentId);
-		queryRepaymentParentById.setSuccessCount(queryRepaymentParentById.getSuccessCount()+1);
-		 this.updateRepaymentParent(queryRepaymentParentById);
+		fssRepaymentParentWriteMapper.updateRepaymentParentSuccessCount(parentId);
 	}
+
 	/**
 	 * 
 	 * author:jhz

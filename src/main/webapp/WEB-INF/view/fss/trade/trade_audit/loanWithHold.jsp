@@ -43,7 +43,7 @@
         <ol class="breadcrumb">
             <li>交易审核</li>
             <li>代付审核</li>
-            <li>代扣</li>
+            <li>抵押权人代扣</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -57,7 +57,7 @@
 
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
-                                    <h2><i class="fa fa-edit pr10"></i>代扣<font class="pl10 f12 color07"></font></h2>
+                                    <h2><i class="fa fa-edit pr10"></i>抵押权人代扣<font class="pl10 f12 color07"></font></h2>
                                 </header>
                                 <div>
                                     <div class="smart-form">
@@ -100,14 +100,6 @@
 <%-- 												             <input type="text" name="" readonly="readonly" value="${userName }"> --%>
 												            </label>
 												</td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td align="left">合同金额：</td>
-                                                <td>
-												            <label class="input" style="width:210px">
-												             <input type="text" name="contractAmt" readonly="readonly" value="${loan.contractAmt }">
-												            </label>
-												        </td>
                                             </tr>
                                             <tr class="lh32">
                                                 <td align="left">放款金额(<span style="color:blue">可修改</span>)：</td>
