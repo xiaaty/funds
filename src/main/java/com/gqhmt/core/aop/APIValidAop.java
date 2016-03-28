@@ -105,8 +105,15 @@ public class APIValidAop {
             LogUtil.error(this.getClass(),e);
         }
 
+        String resCode = response.getResp_code();
+        if(resCode != null && Integer.parseInt(resCode) == 0){
+            resCode = "00000000";
+        }
+        String resMsg = Application.getInstance().getDictName(response.getResp_code());
         //处理成功返回值
-        response.setResp_msg(Integer.parseInt(response.getResp_code())==0 ? "成功": Application.getInstance().getDictName(response.getResp_code()));
+        response.setResp_code(resCode);
+        response.setResp_msg(resMsg);
+
 
         generateAutoPage(targetClass,methodName,response);
         //更改订单结果

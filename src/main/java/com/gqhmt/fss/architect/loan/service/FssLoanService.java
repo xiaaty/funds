@@ -13,7 +13,6 @@ import com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssFeeListWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
-import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import org.springframework.stereotype.Service;
 
