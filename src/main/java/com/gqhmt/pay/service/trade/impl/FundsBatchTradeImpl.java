@@ -44,14 +44,14 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
 
         try {
 
-            if(entity.getTradeType() !=1003 || entity.getTradeType() != 1004){
+            if(entity.getTradeType() !=1103 || entity.getTradeType() != 1104){
                 this.recordService.updateTradeRecordExecuteState(entity,2,"90099011");//
                 return;
             }
 
-            if(entity.getTradeType() == 1003){
+            if(entity.getTradeType() == 1103){
                 orderEntity = this.batchWithholding(entity);
-            }else if(entity.getTradeType() == 1004){
+            }else if(entity.getTradeType() == 1104){
                 orderEntity = this.batchWithdraw(entity);
             }
 
