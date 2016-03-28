@@ -249,10 +249,10 @@ public class FssTradeApplyService {
 	public void updateExecuteCount(String applyNo){
 		FssTradeApplyEntity applyEntity =new FssTradeApplyEntity();
 		applyEntity.setApplyNo(applyNo);
-		 List<FssTradeApplyEntity> select = this.fssTradeApplyReadMapper.select(applyEntity);
-		 applyEntity=select.get(0);
-		 applyEntity.setSuccessCount(applyEntity.getSuccessCount()+1);
-		 this.updateTradeApply(applyEntity);
+		List<FssTradeApplyEntity> select = this.fssTradeApplyReadMapper.select(applyEntity);
+		applyEntity=select.get(0);
+		applyEntity.setSuccessCount(applyEntity.getSuccessCount()+1);
+		this.updateTradeApply(applyEntity);
 	}
 
 	/**
