@@ -38,6 +38,9 @@ public class CommonUtil {
     public static String getSeqNo(){
         return commonUtil.executeSeqNo();
     }
+    public static String getTradeApplyNo(String tradeType){
+    	return commonUtil.executeTradeApplyNo(tradeType);
+    }
 
     public static String getApplyNo(String tradeType){
         return commonUtil.executeTradeApplyNo(tradeType);
