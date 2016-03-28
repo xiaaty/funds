@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper
@@ -26,5 +27,5 @@ public interface FssTradeApplyWriteMapper extends ReadAndWriteMapper<FssTradeApp
 	 * time:2016年3月28日
 	 * function：根据申请编号修改成功条数
 	 */
-	void updateTradeApplyByApplyNo(String applyNo);
+	void updateTradeApplyByApplyNo(FssTradeRecordEntity fssTradeRecordEntity);
 }

@@ -11,6 +11,7 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -254,9 +255,12 @@ public class FssTradeApplyService {
 	 * @param applyNo
 	 * 根据申请编号修改成功条数,实际交易金额，修改日期
      */
-	public void updateExecuteCount(String applyNo){
-		fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(applyNo);
-		this.checkExecuteCount(applyNo);
+	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity){
+		if(fssTradeRecordEntity.getTradeState()==98060001){
+			fssTradeRecordEntity.setModifyTime(new Date());
+		fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(fssTradeRecordEntity);
+		}
+		this.checkExecuteCount(fssTradeRecordEntity.getApplyNo());
 	}
 
 	/**
@@ -272,6 +276,12 @@ public class FssTradeApplyService {
 		 applyEntity = fssTradeApplyReadMapper.selectOne(applyEntity);
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
 		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
+			 applyEntity.setTradeState("10090003");
+			 applyEntity.setModifyTime(new Date());
+			fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+			//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
+			fssRepaymentService.changeTradeStatus(Long.parseLong(applyEntity.getCustNo()));
+		 }else{
 			 applyEntity.setTradeState("10090003");
 			 applyEntity.setModifyTime(new Date());
 			fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);

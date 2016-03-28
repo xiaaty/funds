@@ -159,7 +159,7 @@ public class FssTradeRecordService {
 		fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
 		fssTradeRecordEntity.setSumary(errCode);
 		//Apply 执行数量更新
-		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
+		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
 	}
 	/**
 	 * 
