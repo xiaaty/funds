@@ -75,7 +75,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         if(accNo != null) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
-//                Integer custId = entity.getCustNo();
+//                Integer custId = entity.getCustId();
 //                orderEntity = this.fundsTrade.withholdingApply("");
         }
 
@@ -84,7 +84,16 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     }
 
     public FundOrderEntity batchWithdraw(FssTradeRecordEntity entity){
+        String  accNo = entity.getAccNo();
+        FundOrderEntity orderEntity = null;
+        if(accNo != null) {
+//            orderEntity = this.fundsTrade.withdraw()
+        }else{
+//                Integer custId = entity.getCustId();
+//                orderEntity = this.fundsTrade.withholdingApply("");
+        }
 
+        return  orderEntity;
 
         return  null;
     }
