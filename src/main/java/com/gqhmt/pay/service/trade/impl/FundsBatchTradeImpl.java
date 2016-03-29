@@ -95,9 +95,12 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
      */
     public FundOrderEntity batchWithdraw(FssTradeRecordEntity entity) throws FssException{
     	String  accNo = entity.getAccNo();//旧版通过账户号获取
-    	String custId = String.valueOf(entity.getCustId());//新版通过custId获取
+    	String custId=null;
+    	if(entity.getCustId()!=null){
+    		custId = String.valueOf(entity.getCustId());//新版通过custId获取
+    	}
     	int	selletType=0;//获取结算类型
-    	Integer businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeType());//获取业务类型
+    	Integer businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
         FundOrderEntity orderEntity = null;
         if(entity.getBespokeDate()!=null){
     		selletType=this.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
