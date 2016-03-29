@@ -184,12 +184,20 @@ public class FssTradeApplyService {
 		fssRepaymentService.updateRepaymentParent(repaymentParent);
 		for (FssRepaymentEntity fssRepaymentEntity : fssRepaymentlist) {
 			tradeApplyEntity=new FssTradeApplyEntity();
+			FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssRepaymentEntity.getAccNo());
 			//修改状态
 			fssRepaymentEntity.setState("10090002");
 			fssRepaymentEntity.setMotifyTime(new Date());
 			fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
 			//添加代扣申请
 			tradeApplyEntity.setAccNo(fssRepaymentEntity.getAccNo());
+			tradeApplyEntity.setCustNo(fssAccountByAccNo.getCustNo());
+			tradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
+			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
+			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
+			tradeApplyEntity.setApplyType(1103);
+			tradeApplyEntity.setTradeAmount(BigDecimal.ZERO);
+			tradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setContractId(fssRepaymentEntity.getContractId());
 			tradeApplyEntity.setMchnChild(fssRepaymentEntity.getMchnChild());
 			tradeApplyEntity.setMchnParent(fssRepaymentEntity.getMchnParent());
@@ -199,6 +207,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setModifyTime(new Date());
 			tradeApplyEntity.setRealTradeAmount(fssRepaymentEntity.getAmt());
 			tradeApplyEntity.setBusiType(fssRepaymentEntity.getTradeType());
+			tradeApplyEntity.setApplyState("1103");
 			tradeApplyEntity.setTradeState("10090002");
 			tradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getApplyNo(repaymentParent.getTradeType()));
 			try {
