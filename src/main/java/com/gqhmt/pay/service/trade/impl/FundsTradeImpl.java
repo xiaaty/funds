@@ -383,7 +383,6 @@ public class FundsTradeImpl  implements IFundsTrade {
         fundAccountService.update(primaryAccount);
     }
 
-
     /**
      *
      * author:jhz
@@ -469,7 +468,52 @@ public class FundsTradeImpl  implements IFundsTrade {
         return true;
     }
 */
+/*
+    @Override
+	public FundOrderEntity withholdingApplyNew(Long custId, String busiNo, BigDecimal amount, Long busiId)throws FssException {
+        FssAccountEntity fssAccountEntity  = this.fssAccountService.getAccountEntityByCustid(custId);
+        if (fssAccountEntity == null){
+            throw new CommandParmException("90004006");
+        }
+        int accType = fssAccountEntity.getAccType();
+        int businessType = this.tradeRecordService.parseBusinessType(accType);
 
-
-
+        FundOrderEntity fundOrderEntity = this.withholdingApply(custId.intValue(),businessType,busiNo,amount,busiId,GlobalConstants.NEW_BUSINESS_WITHHOLDING);
+        return  fundOrderEntity;
+    	
+	}
+*/
+    /**
+     * 批量代付
+     */
+    @Override
+    public FundOrderEntity withdrawApplyNew(String accNo,String custID, int businessType, String contractNo, BigDecimal amount, Long busiId,int selletType) throws FssException {
+    	FundOrderEntity fundOrderEntity=null;
+    	if(accNo!=null &&!"".equals(accNo)){//账号不为空
+    		FssAccountEntity fssAccountEntity  = this.fssAccountService.getFssAccountByAccNo(accNo);
+    	      if (fssAccountEntity == null){
+    	           throw new CommandParmException("90004006");
+    	       }
+    	      int accType = fssAccountEntity.getAccType();
+    	      businessType = this.tradeRecordService.parseBusinessType(accType);
+    	      custID=String.valueOf(fssAccountEntity.getCustId());
+    	}
+    	FundAccountEntity entity = this.getFundAccount(Integer.valueOf(custID).intValue(), businessType);
+        this.hasEnoughBanlance(entity,amount);
+        checkwithholdingOrWithDraw(entity,2,businessType);
+        this.cashWithSetReq(entity.getCustId(),selletType);
+        fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
+        //资金处理
+        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
+        return fundOrderEntity;
+    }  
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

@@ -184,9 +184,9 @@ public class FssTradeApplyController {
 			splitCount = fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setCount(splitCount);
 			fssTradeApplyService.updateTradeApply(tradeapply);
-			fssFssBackplateService.createFssBackplateEntity(tradeapply);
+			fssFssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());
 		}else{//不通过，添加回盘记录
-			fssFssBackplateService.createFssBackplateEntity(tradeapply);
+			fssFssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());
 		}
 		map.put("code", "0000");
         map.put("message", "success");

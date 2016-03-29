@@ -72,14 +72,15 @@ public class FssFssBackplateService {
      * 创建回盘信息
      * @return
      */
-    public void createFssBackplateEntity(FssTradeApplyEntity tradeapply) throws FssException {
+//    public void createFssBackplateEntity(FssTradeApplyEntity tradeapply) throws FssException {
+    public void createFssBackplateEntity(String seqNo,String mchnChild,String applyType) throws FssException {
     	FssBackplateEntity backplateEntity=new FssBackplateEntity();
-		backplateEntity.setSeqNo(tradeapply.getSeqNo());
-		backplateEntity.setMchn(tradeapply.getMchnChild());
-		backplateEntity.setTradeType(String.valueOf(tradeapply.getApplyType()));
+		backplateEntity.setSeqNo(seqNo);
+		backplateEntity.setMchn(mchnChild);
+		backplateEntity.setTradeType(applyType);
 		backplateEntity.setCreateTime(new Date());
 		backplateEntity.setModifyTime(new Date());
-		backplateEntity.setRepayCount(1);//回盘次数
+		backplateEntity.setRepayCount(0);//回盘次数
 		backplateEntity.setRepay_result("");//回盘结果
 		try {
 			this.insert(backplateEntity);
