@@ -7,7 +7,7 @@
 		SELECT  t.order_id orderId FROM t_fuiou_ftp_field t WHERE t.state = 4 GROUP BY t.order_id
 	</select>
 	
-	<select id="getReqCode" parameterType="java.lang.String" resultType="java.util.List">
+	<select id="getReqCode" resultType="java.util.List">
 		SELECT t.return_Code returnCode FROM t_fuiou_ftp_field t WHERE t.order_no = ${orderNo} GROUP BY t.return_Code
 	</select>
 	

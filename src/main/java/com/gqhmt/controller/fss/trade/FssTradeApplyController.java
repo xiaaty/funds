@@ -104,28 +104,12 @@ public class FssTradeApplyController {
 	 * author:柯禹来
 	 * function:查看金额拆分列表信息
 	 */
-    @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/records",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/trade/tradeApply/{applyNo}/records",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryTradeRecord(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply,FssTradeRecordEntity traderecord, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo) throws Exception {
-		Map map=new HashMap();
-    	String startime=request.getParameter("startime");
-		String endtime=request.getParameter("endtime");
-		map.put("applyNo", applyNo);
-		if(StringUtils.isNotEmptyString(startime)){
-			map.put("startime", startime+" 00:00:00");
-    	}
-		if(StringUtils.isNotEmptyString(endtime)){
-			map.put("endtime", endtime+" 23:59:59");
-		}
-    	if(!"".equals(traderecord.getTradeState())){
-    		map.put("tradeState", traderecord.getTradeState());
-        }
-    	
-        List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(map);
+    public String queryTradeRecord(HttpServletRequest request, ModelMap model,FssTradeRecordEntity traderecord,@PathVariable String applyNo) throws Exception {
+    	List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(applyNo,traderecord.getTradeState());
         model.addAttribute("page", tradeRecordList);
         model.addAttribute("traderecord", traderecord);
-        model.addAttribute("startime",startime);
-    	model.addAttribute("endtime",endtime);
         return "fss/trade/trade_record/traderecord_list";
     }
   

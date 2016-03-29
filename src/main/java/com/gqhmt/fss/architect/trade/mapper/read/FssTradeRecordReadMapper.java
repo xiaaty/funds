@@ -1,8 +1,5 @@
 package com.gqhmt.fss.architect.trade.mapper.read;
 
-import java.util.List;
-import java.util.Map;
-
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 
@@ -24,6 +21,6 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
  */
 public interface FssTradeRecordReadMapper extends ReadMapper<FssTradeRecordEntity> {
 	
-	public  List<FssTradeRecordEntity> queryFssTradeRecordList(Map map);
+//	public  List<FssTradeRecordEntity> queryFssTradeRecordList(@Param("applyNo")String applyNo);
 	
 }
