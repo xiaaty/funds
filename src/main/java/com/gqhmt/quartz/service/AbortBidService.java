@@ -1,21 +1,18 @@
 package com.gqhmt.quartz.service;
 
+import com.gqhmt.business.architect.loan.entity.Bid;
+import com.gqhmt.business.architect.loan.entity.Tender;
+import com.gqhmt.business.architect.loan.service.BidService;
+import com.gqhmt.business.architect.loan.service.TenderService;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
-import com.gqhmt.business.architect.loan.entity.Bid;
-import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.business.architect.loan.service.BidService;
-import com.gqhmt.business.architect.loan.service.TenderService;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.GlobalConstants;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +21,6 @@ import java.util.Map;
  * Created by chris on 2015/5/10.
  */
 @Service
-@Transactional(propagation= Propagation.REQUIRED,
-        isolation= Isolation.READ_COMMITTED,
-        noRollbackFor={FssException.class},
-        readOnly=false)
 public class AbortBidService {
 
     @Resource

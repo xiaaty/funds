@@ -1,8 +1,13 @@
 package com.gqhmt.quartz.job.bid;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.quartz.job.SupperJob;
+import com.gqhmt.quartz.service.FtpDownloadFileService;
+import com.gqhmt.quartz.service.FtpResultService;
 import org.quartz.JobExecutionException;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.bid.DownloadFileJob
@@ -20,12 +25,35 @@ import org.quartz.JobExecutionException;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
-public class DownloadFileJob implements Job {
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        //下载数据文件
+@Component
+public class DownloadFileJob extends SupperJob{
 
-        //解析文件,更新处理状态
+
+    @Resource
+    private FtpDownloadFileService ftpDownloadFileService;
+
+    @Resource
+    private FtpResultService ftpResultService;
+
+    public void execute() throws JobExecutionException {
+        if(isRunning) return;
+
+        isRunning = true;
+        try{
+            //下载文件
+            //结果分析
+
+            ftpDownloadFileService.downFile();
+            ftpResultService.parseDownloadResult();
+            ftpResultService.parseResult();
+            ftpResultService.notReturnResult();
+
+        }catch (Exception e){
+            e.getMessage();
+            LogUtil.error(this.getClass(),e.getMessage(),e);
+        }finally {
+            isRunning = false;
+        }
 
     }
 }

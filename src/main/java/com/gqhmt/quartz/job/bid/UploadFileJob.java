@@ -43,7 +43,7 @@ public class UploadFileJob extends SupperJob implements Job{
         }catch (Exception e){
             LogUtil.error(getClass(),e);
         }finally {
-            isRunning = false;
+            super.isRunning = false;
         }
         //生成数据文件
 

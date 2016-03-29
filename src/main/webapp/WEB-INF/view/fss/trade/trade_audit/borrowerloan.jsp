@@ -90,7 +90,7 @@
                                                         <td class="tr" nowrap="nowrap">合同编号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="map.contractNo" value="${contractNo}">
+                                                                <input type="text" name="contractNo" value="${map.contractNo}">
                                                             </label>
                                                         </td>
                                                     </tr>
