@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
+import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
@@ -7,10 +8,10 @@ import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
@@ -56,38 +57,45 @@ public class SettleService {
     @Resource
     private FuiouFtpOrderService fuiouFtpOrderService;
 
+
     @Resource
-    private FundOrderService fundOrderService;
+    private FssLoanService fssLoanService;
 
     @Resource
     private PaySuperByFuiou paySuperByFuiou;
 
 
     public void settle(FssLoanEntity loanEntity) throws FssException {
-        Integer bid = fetchDataService.featchDataSingle(Integer.class,"tenderList","offlineId",loanEntity.getContractId());
+
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id",loanEntity.getContractId());
+        if("11090004".equals(loanEntity.getTradeType())){
+            paramMap.put("type","2");
+        }else{
+            paramMap.put("type","1");
+        }
+        Bid bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
        // List<FundOrderEntity> listFundOrder = fundOrderService.queryFundOrder(GlobalConstants.ORDER_SETTLE, GlobalConstants.BUSINESS_SETTLE, bid);
 
 
         FssAccountEntity fssAccountEntity = null;
-        Long cusId = fssAccountEntity.getCustId();
+        Integer cusId = bid.getCustomerId();
 
 
         //产品名称，如果产品名称为空，则去标的title
-//        String title  = bidService.getProductName(bid.getId());
-        Map<String,String > map = new HashMap<>();
-        map.put("id","46");
-        map.put("type","1");
+        String title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+
         List<Tender> list  = null;
         try {
-            list = fetchDataService.featchData(Tender.class,"tenderList",map);
+            list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
         } catch (FssException e) {
             e.printStackTrace();
         }
-        FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+        FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_SETTLE, bid, GlobalConstants.BUSINESS_SETTLE, "2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_SETTLE_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_SETTLE, "2");
 
-//        Map<Integer, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
+        Map<Integer, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
         BigDecimal bonusAmount = BigDecimal.ZERO;
 
         List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
@@ -98,15 +106,18 @@ public class SettleService {
                 bonusAmount = bonusAmount.add(tender.getBonusAmount());
             }
         }
-        fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
-
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null);
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null));
         }
+        fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
         fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
-        throw new FssException("异步处理，等待回调通知");
+        loanEntity.setStatus("10050008");
+    }
+
+
+    public void settleCallback(String orderNo){
 
 
     }
