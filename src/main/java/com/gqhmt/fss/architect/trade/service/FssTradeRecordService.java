@@ -160,7 +160,7 @@ public class FssTradeRecordService {
 		fssTradeRecordEntity.setModifyTime(new Date());
 		fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
 		//Apply 执行数量更新
-		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity.getApplyNo());
+		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
 	}
 	/**
 	 * 
