@@ -70,7 +70,7 @@ public class RepayBidImpl  implements IRepayBid{
     @Resource
     private FundTradeService fundTradeService;
     
-    @Resource
+    @Resource(name = "oldBidRepaymentService")
     private BidRepaymentService bidRepaymentService;
     
     @Resource
