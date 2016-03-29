@@ -146,7 +146,7 @@ public class FuiouFtpColomFieldService {
     
     /**
      * 批量插入
-     * @param list
+     * @param fuiyoulist
      */
    public void saveOrUpdateAll(List<FuiouFtpColomField> fuiyoulist){
 	   fuiouFtpColomFieldWriteMapper.insertList(fuiyoulist);

@@ -3,6 +3,7 @@ package com.gqhmt.quartz.job.trade;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.fss.event.trade.WithholdingEvent;
+import com.gqhmt.quartz.job.SupperJob;
 import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,7 +29,7 @@ import java.util.List;
  * 16/3/14  于泳      1.0     1.0 Version
  */
 @Component
-public class BatchWithholdingJob{
+public class BatchWithholdingJob extends SupperJob{
 
     @Resource
     private ApplicationContext context;
@@ -39,12 +40,12 @@ public class BatchWithholdingJob{
 
     @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws JobExecutionException {
-        //
+        super.isRunning = true;
         List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
 
         for(FssTradeRecordEntity entity:recordEntities){
             context.publishEvent(new WithholdingEvent(entity));
         }
-
+        super.isRunning = false;
     }
 }
