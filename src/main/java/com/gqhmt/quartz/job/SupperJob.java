@@ -1,7 +1,5 @@
 package com.gqhmt.quartz.job;
 
-import org.quartz.Job;
-
 /**
  * Filename:    com.gqhmt.quartz.job.SupperJob
  * Copyright:   Copyright (c)2015
@@ -18,7 +16,7 @@ import org.quartz.Job;
  * -----------------------------------------------------------------
  * 16/3/25  于泳      1.0     1.0 Version
  */
-public abstract class SupperJob implements Job {
+public abstract class SupperJob{
 
     protected boolean isRunning ;
 
