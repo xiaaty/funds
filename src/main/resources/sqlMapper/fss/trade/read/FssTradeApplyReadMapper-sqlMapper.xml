@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper">
-	<!-- 根据申请类型和业务类型查询申请数据 -->
-	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
+	
+	<sql id="field">
 		SELECT 
 			t.id id,
 			t.cust_id custId,
@@ -27,7 +27,12 @@
 			c.`name` custName,
 			c.mobile custMobile
 			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
-			ON t.cust_id=c.cust_id 
+			ON t.cust_id=c.cust_id
+	</sql>
+	
+	<!-- 根据申请类型和业务类型查询申请数据 -->
+	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
+			<include refid="field"/>
 			WHERE t.apply_type=#{applyType}  and t.busi_type=#{busiType}
 			<if test="accNo != null and accNo != ''">
 				AND t.acc_no like CONCAT('%',#{accNo},'%')
@@ -45,6 +50,11 @@
 	
 	<!-- 根据applyNo查询对象 -->
 	<select id="queryFssTradeApply" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
+		<include refid="field"/>
+		WHERE t.apply_no=#{applyNo}
+	</select>
+	
+	<select id="selectFssTradeApplyEntityByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 		SELECT 
 			t.id id,
 			t.cust_id custId,
@@ -65,12 +75,11 @@
 			t.count count,
 			t.success_count successCount,
 			t.real_trade_amount realTradeAmount,
-			t.channel_no channelNo,
-			c.`name` custName,
-			c.mobile custMobile
-			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
-			ON t.cust_id=c.cust_id WHERE t.apply_no=#{applyNo}
+			t.channel_no channelNo
+			FROM t_gq_fss_trade_apply t 
+			WHERE t.apply_no=#{applyNo}
 	</select>
+
 	<!-- 根据applyNo查询对象 -->
 	<select id="selectByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 		SELECT 

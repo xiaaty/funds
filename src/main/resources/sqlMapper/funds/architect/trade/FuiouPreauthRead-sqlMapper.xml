@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.funds.architect.trade.mapper.read.FuiouPreauthReadMapper">
+	<sql id="field">
+	  		select t.id,
+		 	account_id accountId,
+		 	t.contract_no contractNo,
+		 	t.source_id sourceId,
+		 	t.amount,
+		 	t.state,
+		 	t.use_amount useAmount,
+		 	t.toUserName,
+		 	t.userName,
+		 	t.type,
+		 	t.bid,
+		 	t.tenderid,
+		 	t.orderNo
+		 	from t_fuiou_preauth t
+	 </sql>
+
+	 <select id="getContractNo" resultType="com.gqhmt.funds.architect.trade.entity.FuiouPreauth">
+		 <include refid="field" />
+		 	where t.source_id = ${bid}
+		 	and t.userName = ${userName}
+		 	and t.toUserName = ${toUserName}
+		 	<if test="amt>0">
+	    		and t.amount=${amt}
+	    	</if>
+	 </select>
+	 
+	 <select id="getContractNos" resultType="com.gqhmt.funds.architect.trade.entity.FuiouPreauth">
+	 	<include refid="field" />
+	 	where t.source_id = ${bid}
+	 </select>
+	 
+	 <select id="bidFaild" resultType="com.gqhmt.funds.architect.trade.entity.FuiouPreauth">
+	 	SELECT t.id,
+		 	account_id accountId,
+		 	t.contract_no contractNo,
+		 	t.source_id sourceId,
+		 	t.amount,
+		 	t.state,
+		 	t.use_amount useAmount,
+		 	t.toUserName,
+		 	t.userName,
+		 	t.type,
+		 	t.bid,
+		 	t.tenderid,
+		 	t.orderNo
+	 	 FROM t_fuiou_preauth t LEFT JOIN t_gq_tender tender ON t.tenderid = tender.id 
+	 	WHERE tender.id IS NULL AND t.state = 1 AND t.input_time &lt; DATE_SUB(SYSDATE(), INTERVAL '5' MINUTE)
+	 </select>
+
+</mapper>

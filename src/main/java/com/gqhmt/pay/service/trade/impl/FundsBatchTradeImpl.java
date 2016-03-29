@@ -1,14 +1,17 @@
 package com.gqhmt.pay.service.trade.impl;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.trade.IFundsBatchTrade;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.annotation.Resource;
 
 /**
@@ -33,6 +36,8 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
 
     @Resource
     private FssTradeRecordService recordService;
+    @Resource
+    private FssTradeApplyService fssTradeApplyService;
 
     @Resource
     private IFundsTrade fundsTrade;
@@ -62,39 +67,62 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
             LogUtil.error(this.getClass(),e);
             this.recordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
         }
-
-
-
-
     }
 
-
+    /**
+     * 批量代扣
+     * @param entity
+     * @return
+     * @throws FssException
+     */
     public FundOrderEntity batchWithholding(FssTradeRecordEntity entity) throws FssException {
         String  accNo = entity.getAccNo();
         FundOrderEntity orderEntity = null;
+        Integer businessType;
         if(accNo != null) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
-                Long custId = entity.getCustId();
-
-//                orderEntity = this.fundsTrade.withholdingApply(custId.intValue());
+            int custId = entity.getCustId().intValue();
+            businessType= GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeType());//获取业务类型
+            orderEntity = this.fundsTrade.withholdingApplyNew(custId,businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
         }
-
         return  orderEntity;
-
     }
-
-    public FundOrderEntity batchWithdraw(FssTradeRecordEntity entity){
-        String  accNo = entity.getAccNo();
+    /**
+     * 批量代付
+     * @param entity
+     * @return
+     */
+    public FundOrderEntity batchWithdraw(FssTradeRecordEntity entity) throws FssException{
+    	String  accNo = entity.getAccNo();//旧版通过账户号获取
+    	String custId = String.valueOf(entity.getCustId());//新版通过custId获取
+    	int	selletType=0;//获取结算类型
+    	Integer businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeType());//获取业务类型
         FundOrderEntity orderEntity = null;
-        if(accNo != null) {
-//            orderEntity = this.fundsTrade.withdraw()
-        }else{
-//                Integer custId = entity.getCustId();
-//                orderEntity = this.fundsTrade.withholdingApply("");
-        }
-
+        if(entity.getBespokeDate()!=null){
+    		selletType=this.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
+    	}
+    	if(accNo != null){
+    		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+    	}else{
+    		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+    	}
         return  orderEntity;
-
     }
+    
+    /**
+     * 判断预约到账日期是否为今天
+     */
+    public int compare_date(Date BespokeDate) {
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+    	Date date=new Date();
+    	String nowdate=sdf.format(date);
+    	String bespokeDate=sdf.format(BespokeDate);
+    	if(bespokeDate.equals(nowdate)){
+    		return 0;
+    	}else{
+    		return 1;
+    	}
+    }
+    
 }

@@ -92,4 +92,14 @@
 		where account.acc_no = #{accNo}
 
 	</select>
+	
+	<select id="findAccountByCustId" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+		SELECT
+		t.id id,
+		t.acc_type accType,
+		t.busi_no busiNo
+		FROM t_gq_fss_account t
+		where t.cust_id = #{custId}
+	</select>
+	
 </mapper>
