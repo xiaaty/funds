@@ -2,7 +2,6 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
@@ -260,12 +259,6 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setCreateTime(new Date());
 		tradeRecordEntity.setModifyTime(new Date());
 		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
-		try {
-			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			throw new FssException("91009804");
-		}
 		return tradeRecordEntity;
 	}
 	

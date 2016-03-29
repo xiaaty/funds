@@ -71,4 +71,33 @@
 			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
 			ON t.cust_id=c.cust_id WHERE t.apply_no=#{applyNo}
 	</select>
+	<!-- 根据applyNo查询对象 -->
+	<select id="selectByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+		SELECT 
+			t.id id,
+			t.apply_no applyNo,
+			t.apply_type applyType,
+			t.cust_id custId,
+			t.cust_no custNo	,
+			t.user_no userNo	,
+			t.business_no businessNo,
+			t.busi_type busiType,
+		    t.acc_no accNo,
+		    t.contract_id contractId,
+			t.trade_amount tradeAmount,
+			t.real_trade_amount realTradeAmount,
+			t.trade_charge_amount tradeChargeAmount,
+			t.apply_state applyState,
+			t.trade_state tradeState,
+			t.bespoke_date bespokeDate,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.seq_no seqNo,
+			t.mchn_child mchnChild,
+			t.mchn_parent mchnParent,
+			t.count count,
+			t.success_count successCount,
+			t.channel_no channelNo
+			FROM t_gq_fss_trade_apply t  WHERE t.apply_no=#{applyNo}
+	</select>
 </mapper>

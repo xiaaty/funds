@@ -6,7 +6,6 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper;
 import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.util.LogUtil;
 
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ import javax.annotation.Resource;
  * 2016年3月19日  jhz      1.0     1.0 Version
  */
 @Service
-public class FssFssBackplateService {
+public class FssBackplateService {
 
     @Resource
     private FssFssBackplateWriteMapper fssBackplateWriteMapper;
@@ -72,14 +71,14 @@ public class FssFssBackplateService {
      * 创建回盘信息
      * @return
      */
-    public void createFssBackplateEntity(FssTradeApplyEntity tradeapply) throws FssException {
+    public void createFssBackplateEntity(String seqNo,String mchn,String applyType) throws FssException {
     	FssBackplateEntity backplateEntity=new FssBackplateEntity();
-		backplateEntity.setSeqNo(tradeapply.getSeqNo());
-		backplateEntity.setMchn(tradeapply.getMchnChild());
-		backplateEntity.setTradeType(String.valueOf(tradeapply.getApplyType()));
+		backplateEntity.setSeqNo(seqNo);
+		backplateEntity.setMchn(mchn);
+		backplateEntity.setTradeType(applyType);
 		backplateEntity.setCreateTime(new Date());
 		backplateEntity.setModifyTime(new Date());
-		backplateEntity.setRepayCount(1);//回盘次数
+		backplateEntity.setRepayCount(0);//回盘次数
 		backplateEntity.setRepay_result("");//回盘结果
 		try {
 			this.insert(backplateEntity);
@@ -88,8 +87,6 @@ public class FssFssBackplateService {
 			throw new FssException("91009804");
 		}
     }
-    
-    
     
     
 

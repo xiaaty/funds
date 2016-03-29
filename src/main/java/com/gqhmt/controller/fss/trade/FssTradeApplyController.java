@@ -2,7 +2,7 @@ package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
@@ -49,7 +49,7 @@ public class FssTradeApplyController {
     @Resource
     private FssTradeRecordService fssTradeRecordService;
     @Resource
-	private FssFssBackplateService fssFssBackplateService;
+	private FssBackplateService fssBackplateService;
     @Resource
     private FssCustomerService fssCustomerService;
     /**
@@ -200,9 +200,9 @@ public class FssTradeApplyController {
 			splitCount = fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setCount(splitCount);
 			fssTradeApplyService.updateTradeApply(tradeapply);
-			fssFssBackplateService.createFssBackplateEntity(tradeapply);
+			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());
 		}else{//不通过，添加回盘记录
-			fssFssBackplateService.createFssBackplateEntity(tradeapply);
+			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());
 		}
 		map.put("code", "0000");
         map.put("message", "success");

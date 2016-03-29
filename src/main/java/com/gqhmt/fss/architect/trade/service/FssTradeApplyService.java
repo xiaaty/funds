@@ -10,8 +10,11 @@ import com.gqhmt.extServInter.dto.trade.GET_PrePaymentDto;
 import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper;
@@ -59,6 +62,10 @@ public class FssTradeApplyService {
 	
 	@Resource
 	private FssAccountService fssAccountService;
+	@Resource
+	private FssBackplateService fssBackplateService;
+	@Resource
+	private FssTradeRecordService fssTradeRecordService;
 	
 	
 	/**
@@ -169,38 +176,40 @@ public class FssTradeApplyService {
 	 * '10090003'代扣成功
 	 * @throws FssException 
 	 */
-//	public void insertTradeApply(Long id,String tradeType) throws FssException {
-//		FssTradeApplyEntity tradeApplyEntity=null;
-//		//修改状态
-//		FssRepaymentParentEntity queryRepaymentParentById = fssRepaymentService.queryRepaymentParentById(id);
-//		queryRepaymentParentById.setState("10090002");
-//		queryRepaymentParentById.setMotifyTime(new Date());
-//		fssRepaymentService.updateRepaymentParent(queryRepaymentParentById);
-//		//根据对象查找借款代扣集合
-//		FssRepaymentEntity repayment=new FssRepaymentEntity();
-//		repayment.setId(id);
-//		List<FssRepaymentEntity> queryFssRepaymentEntity = fssRepaymentService.queryFssRepaymentEntity(repayment);
-//		for (FssRepaymentEntity fssRepaymentEntity : queryFssRepaymentEntity) {
-//			tradeApplyEntity=new FssTradeApplyEntity();
-//			//修改状态
-//			fssRepaymentEntity.setState("10090002");
-//			fssRepaymentEntity.setMotifyTime(new Date());
-//			fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
-//			//添加代扣申请
-//			tradeApplyEntity.setAccNo(fssRepaymentEntity.getAccNo());
-//			tradeApplyEntity.setContractId(fssRepaymentEntity.getContractId());
-//			tradeApplyEntity.setMchnChild(fssRepaymentEntity.getMchnChild());
-//			tradeApplyEntity.setMchnParent(fssRepaymentEntity.getMchnParent());
-//			tradeApplyEntity.setSeqNo(fssRepaymentEntity.getSeqNo());
-//			tradeApplyEntity.setCustNo(fssRepaymentEntity.getId().toString());
-//			tradeApplyEntity.setCreateTime(new Date());
-//			tradeApplyEntity.setRealTradeAmount(fssRepaymentEntity.getAmt());
-//			tradeApplyEntity.setBusiType(fssRepaymentEntity.getTradeType());
-//			tradeApplyEntity.setTradeState("10090002");
-//			tradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getApplyNo(tradeType));
-//			fssTradeApplyWriteMapper.insert(tradeApplyEntity);
-//		}
-//	}
+	public void insertTradeApply(FssRepaymentParentEntity repaymentParent,List<FssRepaymentEntity> fssRepaymentlist) throws FssException {
+		FssTradeApplyEntity tradeApplyEntity=null;
+		//修改状态
+		repaymentParent.setState("10090002");
+		repaymentParent.setMotifyTime(new Date());
+		fssRepaymentService.updateRepaymentParent(repaymentParent);
+		for (FssRepaymentEntity fssRepaymentEntity : fssRepaymentlist) {
+			tradeApplyEntity=new FssTradeApplyEntity();
+			//修改状态
+			fssRepaymentEntity.setState("10090002");
+			fssRepaymentEntity.setMotifyTime(new Date());
+			fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
+			//添加代扣申请
+			tradeApplyEntity.setAccNo(fssRepaymentEntity.getAccNo());
+			tradeApplyEntity.setContractId(fssRepaymentEntity.getContractId());
+			tradeApplyEntity.setMchnChild(fssRepaymentEntity.getMchnChild());
+			tradeApplyEntity.setMchnParent(fssRepaymentEntity.getMchnParent());
+			tradeApplyEntity.setSeqNo(fssRepaymentEntity.getSeqNo());
+			tradeApplyEntity.setFormId(fssRepaymentEntity.getId());
+			tradeApplyEntity.setCreateTime(new Date());
+			tradeApplyEntity.setModifyTime(new Date());
+			tradeApplyEntity.setRealTradeAmount(fssRepaymentEntity.getAmt());
+			tradeApplyEntity.setBusiType(fssRepaymentEntity.getTradeType());
+			tradeApplyEntity.setTradeState("10090002");
+			tradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getApplyNo(repaymentParent.getTradeType()));
+			try {
+				fssTradeApplyWriteMapper.insert(tradeApplyEntity);
+				fssTradeRecordService.insertTradeRecord(1);
+			} catch (FssException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	/**
 	 * 
 	 * author:jhz
@@ -257,7 +266,7 @@ public class FssTradeApplyService {
 	 * 根据申请编号修改成功条数,实际交易金额，修改日期
      */
 	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity){
-		if(fssTradeRecordEntity.getTradeState()==98060001){
+		if(fssTradeRecordEntity.getTradeResult()==98060001){
 			fssTradeRecordEntity.setModifyTime(new Date());
 			fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(fssTradeRecordEntity);
 		}
@@ -272,22 +281,23 @@ public class FssTradeApplyService {
 	 * 
 	 */
 	public void checkExecuteCount(String applyNo){
-		FssTradeApplyEntity applyEntity =new FssTradeApplyEntity();
-		applyEntity.setApplyNo(applyNo);
-		 applyEntity = fssTradeApplyReadMapper.selectOne(applyEntity);
+		FssTradeApplyEntity applyEntity = fssTradeApplyReadMapper.selectByApplyNo(applyNo);
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
 		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
 			 applyEntity.setTradeState("10090003");
 			 applyEntity.setModifyTime(new Date());
-			fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+			try {
+				fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+				if(!"".equals(applyEntity.getFormId())){
+					fssRepaymentService.changeTradeStatus(applyEntity.getFormId());
+				}
+				//创建回盘信息
+				fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getApplyType().toString());
+			} catch (FssException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
-			fssRepaymentService.changeTradeStatus(Long.parseLong(applyEntity.getCustNo()));
-		 }else{
-			 applyEntity.setTradeState("10090003");
-			 applyEntity.setModifyTime(new Date());
-			fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
-			//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
-			fssRepaymentService.changeTradeStatus(Long.parseLong(applyEntity.getCustNo()));
 		 }
 	}
 	/**
