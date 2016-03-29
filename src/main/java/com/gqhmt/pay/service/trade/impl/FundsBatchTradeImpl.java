@@ -75,8 +75,9 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         if(accNo != null) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
-//                Integer custId = entity.getCustId();
-//                orderEntity = this.fundsTrade.withholdingApply("");
+                Long custId = entity.getCustId();
+
+//                orderEntity = this.fundsTrade.withholdingApply(custId.intValue());
         }
 
         return  orderEntity;
@@ -95,6 +96,5 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
 
         return  orderEntity;
 
-        return  null;
     }
 }
