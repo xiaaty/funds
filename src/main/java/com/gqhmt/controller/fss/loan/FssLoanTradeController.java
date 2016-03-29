@@ -93,10 +93,10 @@ public class FssLoanTradeController {
 		List<FssLoanEntity> list = fssLoanService.findBorrowerLoan(map);
 		List<FssLoanEntity> list2 =new ArrayList<>();
 		for (FssLoanEntity fssLoanEntity : list) {
-			String userNo = fssLoanEntity.getUserNo();
-			if(userNo!=null&&!"".equals(userNo)){
+			String custNo = fssLoanEntity.getCustNo();
+			if(custNo!=null&&!"".equals(custNo)){
 				
-			FssCustomerEntity customerNameByCustNo = fssCustomerService.getCustomerNameByCustNo(fssLoanEntity.getCustNo());
+			FssCustomerEntity customerNameByCustNo = fssCustomerService.getCustomerNameByCustNo(custNo);
 			fssLoanEntity.setUserNo(customerNameByCustNo.getName());
 			}
 			list2.add(fssLoanEntity);

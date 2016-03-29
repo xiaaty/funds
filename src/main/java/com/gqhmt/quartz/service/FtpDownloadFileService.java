@@ -1,22 +1,19 @@
 package com.gqhmt.quartz.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouUploadFileService;
 import com.gqhmt.pay.core.PayCommondConstants;
+import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
-import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
-import java.io.*;
+import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,10 +37,6 @@ import java.util.Map;
  */
 
 @Service
-@Transactional(propagation= Propagation.REQUIRED,
-        isolation= Isolation.READ_COMMITTED,
-        noRollbackFor={FssException.class},
-        readOnly=false)
 public class FtpDownloadFileService {
 
     @Resource

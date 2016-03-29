@@ -7,8 +7,11 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper;
 import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper;
 import com.gqhmt.util.LogUtil;
+
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
+
 import javax.annotation.Resource;
 
 /**
@@ -29,7 +32,7 @@ import javax.annotation.Resource;
  * 2016年3月19日  jhz      1.0     1.0 Version
  */
 @Service
-public class FssFssBackplateService {
+public class FssBackplateService {
 
     @Resource
     private FssFssBackplateWriteMapper fssBackplateWriteMapper;
@@ -68,10 +71,10 @@ public class FssFssBackplateService {
      * 创建回盘信息
      * @return
      */
-    public void createFssBackplateEntity(String seqNo,String mchnChild,String applyType) throws FssException {
+    public void createFssBackplateEntity(String seqNo,String mchn,String applyType) throws FssException {
     	FssBackplateEntity backplateEntity=new FssBackplateEntity();
 		backplateEntity.setSeqNo(seqNo);
-		backplateEntity.setMchn(mchnChild);
+		backplateEntity.setMchn(mchn);
 		backplateEntity.setTradeType(applyType);
 		backplateEntity.setCreateTime(new Date());
 		backplateEntity.setModifyTime(new Date());
@@ -84,8 +87,6 @@ public class FssFssBackplateService {
 			throw new FssException("91009804");
 		}
     }
-    
-    
     
     
 

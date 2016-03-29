@@ -107,6 +107,10 @@ public class GlobalConstants {
 
     public static final int ORDER_SETTLE_NEW = 11990048;
 
+    public static final int ORDER_REPAYMENT_NEW = 11990049;
+
+    public static final int ORDER_ABORT_NEW = 11990050;
+
 
     public static final int ORDER_MORTGAGEE_TRANS_ACC = 1001;  //抵押权人转给借款人
 

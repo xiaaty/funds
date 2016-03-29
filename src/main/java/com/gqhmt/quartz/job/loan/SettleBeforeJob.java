@@ -2,7 +2,7 @@ package com.gqhmt.quartz.job.loan;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.fuiouFtp.service.SettleService;
+import com.gqhmt.fss.architect.fuiouFtp.service.BidSettleService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.quartz.job.SupperJob;
@@ -32,10 +32,13 @@ public class SettleBeforeJob extends SupperJob {
     @Resource
     private FssLoanService fssLoanService;
     @Resource
-    private SettleService settleService;
+    private BidSettleService settleService;
 
     public void execute(){
         //获取需满标转账功能列表 抵押权人提现\信用标放款
+
+        if(isRunning) return;
+        super.isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();
 
@@ -47,6 +50,11 @@ public class SettleBeforeJob extends SupperJob {
                 continue;
             }
         }
+
+
+
+        super.isRunning = false;
+
 
     }
 
