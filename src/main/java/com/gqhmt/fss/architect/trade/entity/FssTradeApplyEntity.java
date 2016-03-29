@@ -95,6 +95,9 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "count")		//总条数
     private int count;
     
+    @Column(name = "form_id")		//相关联表的主键
+    private Long formId;
+    
     @Column(name = "success_count")	//成功条数
     private int successCount;
     
@@ -291,6 +294,14 @@ public class FssTradeApplyEntity implements Serializable {
 
 	public void setCustId(Long custId) {
 		this.custId = custId;
+	}
+
+	public Long getFormId() {
+		return formId;
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
 	}
 	
 }

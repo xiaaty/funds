@@ -7,8 +7,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
-import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
-import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper;
@@ -53,7 +52,9 @@ public class FssRepaymentService {
 	@Resource
 	private FssRepaymentParentWriteMapper fssRepaymentParentWriteMapper;
 	@Resource
-	private FssFssBackplateService fssBackplateService;
+	private FssBackplateService fssBackplateService;
+	@Resource
+	private FssTradeApplyService fssTradeApplyService;
 	
 	
 	/**
@@ -165,6 +166,7 @@ public class FssRepaymentService {
 				LogUtil.info(this.getClass(), e.getMessage());
 				throw new FssException("还款划扣失败！");
 			}
+	    	fssTradeApplyService.insertTradeApply(repaymentParent, fssRepaymentlist);
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
 			throw new FssException("还款划扣主表创建失败！");
@@ -274,8 +276,8 @@ public class FssRepaymentService {
 	 * time:2016年3月19日
 	 * function：修改主表执行条数
 	 */
-	public void updateSuccessCount(Long parentId){
-		fssRepaymentParentWriteMapper.updateRepaymentParentSuccessCount(parentId);
+	public void updateSuccessCount(FssRepaymentEntity queryRepayment){
+		fssRepaymentParentWriteMapper.updateRepaymentParentSuccessCount(queryRepayment);
 	}
 
 	/**
@@ -290,7 +292,7 @@ public class FssRepaymentService {
 		queryRepayment.setMotifyTime(new Date());
 		this.updateRepaymentEntity(queryRepayment);
 		//更新主表执行成功条数
-		this.updateSuccessCount(queryRepayment.getParentId());
+		this.updateSuccessCount(queryRepayment);
 		return queryRepayment;
 	}
 	/**
@@ -316,20 +318,5 @@ public class FssRepaymentService {
 				this.updateRepaymentParent(queryRepaymentParentById);
 		}
 	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月19日
-	 * function：数据回盘
-	 */
-	public void insertBackplate(FssRepaymentParentEntity repaymentParent){
-		FssBackplateEntity backplateEntity=new FssBackplateEntity();
-		backplateEntity.setCreateTime(new Date());
-		backplateEntity.setMchn(repaymentParent.getMchnChild());
-		backplateEntity.setRepay_result(repaymentParent.getResultState());
-		backplateEntity.setRepayCount(repaymentParent.getTradeCount());
-		backplateEntity.setSeqNo(repaymentParent.getSeqNo());
-		backplateEntity.setTradeType(repaymentParent.getTradeType());
-		fssBackplateService.insert(backplateEntity);
-	}
+	
 }

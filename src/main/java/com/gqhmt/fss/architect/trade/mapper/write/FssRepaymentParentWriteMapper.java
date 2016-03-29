@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.mapper.write;
 
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 
 /**
@@ -28,7 +29,7 @@ public interface FssRepaymentParentWriteMapper extends ReadAndWriteMapper<FssRep
 	 * time:2016年3月28日
 	 * function：修改主表执行条数
 	 */
-	void updateRepaymentParentSuccessCount(Long parentId);
+	void updateRepaymentParentSuccessCount(FssRepaymentEntity queryRepayment);
 
 	
 }

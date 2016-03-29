@@ -47,4 +47,11 @@ public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity>
 	 * @return
 	 */
 	public FssTradeApplyBean queryFssTradeApply(@Param("applyNo")String applyNo);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月29日
+	 * function：根据申请编号查询申请对象信息
+	 */
+	public FssTradeApplyEntity selectByApplyNo(String applyNo);
 }
