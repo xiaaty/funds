@@ -177,7 +177,7 @@
                                                     <td><fss:dictView key="${tradeapply.channelNo}"/></td>
                                                     <td>
                                                     	 <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
-                                                    	&nbsp;&nbsp;&nbsp;&nbsp;<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/records">查看详细</a>
+                                                    	&nbsp;&nbsp;&nbsp;&nbsp;<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

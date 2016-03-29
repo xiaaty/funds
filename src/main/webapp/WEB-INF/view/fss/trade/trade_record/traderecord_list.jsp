@@ -68,29 +68,14 @@
                                                 <col />
                                                 <tbody>
                                                     <tr>
-                                                    	<td></td>
-                                                        <td class="tr">创建日期：</td>
-			                                             <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
-			                                                    </label>
-			                                                </section>
-			                                            </td>
 			                                            <td class="tr">交易状态：</td>
                                                         <td>
-                                                            <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
+                                                            <select id = "tradeState" name = "tradeState" style="width:250px;height: 30px;">
 										                    	<option value="">请选择</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option>
+										                    	<%-- <option  <c:if test="${traderecord.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option> --%>
 										                    	<option  <c:if test="${traderecord.tradeState==10030002}"> selected="selected" </c:if> value="10030002" >交易成功</option>
 										                    	<option  <c:if test="${traderecord.tradeState==10030003}"> selected="selected" </c:if> value="10030003" >交易失败</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option>
+										                    	<%-- <option  <c:if test="${traderecord.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option> --%>
 										                    </select>
                                                         </td> 
                                                     </tr>
@@ -141,13 +126,13 @@
                                         <tr>
                                              <td>申请单号</td>
                                              <td>客户编号</td>
-                                             <td>交易类型</td>
                                              <td>交易金额</td>
                                              <td>交易状态</td>
                                              <td>交易结果</td>
+                                             <td>交易描述</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
-                                             <td>子商户号</td>
+                                             <td>商户号</td>
                                              <td>交易渠道</td>
                                         </tr>
                                         </thead>
@@ -156,10 +141,10 @@
                                                 <tr>
                                                     <td>${traderecord.applyNo}</td>
                                                     <td>${traderecord.accNo}</td>
-                                                    <td><fss:dictView key="${traderecord.tradeType}" /></td>
-                                                    <td>${traderecord.amount}</td>
-                                                    <td><fss:dictView key="${traderecord.tradeState}" /></td>
+                                                    <td><fss:money money="${traderecord.amount}"/></td>
+                                                    <td><fss:dictView key="${traderecord.tradeState}"/></td>
                                                     <td><fss:dictView key="${traderecord.tradeResult}" /></td>
+                                                    <td><fss:dictView key="${traderecord.respCode}" /></td>
                                                     <td><fss:fmtDate value="${traderecord.createTime}"/></td>
                                                     <td><fss:fmtDate value="${traderecord.modifyTime}"/></td>
                                                     <td>${traderecord.mchnChild}</td>

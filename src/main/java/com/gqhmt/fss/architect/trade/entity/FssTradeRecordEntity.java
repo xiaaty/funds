@@ -97,7 +97,7 @@ public class FssTradeRecordEntity implements Serializable {
     private Date bespokeDate  ;  
     
     @Column(name = "cust_id")
-    private String custId;
+    private Long custId;
     
     @Column(name = "resp_code")
     private String respCode;
@@ -286,11 +286,11 @@ public class FssTradeRecordEntity implements Serializable {
 		this.bespokeDate = bespokeDate;
 	}
 
-	public String getCustId() {
+	public Long getCustId() {
 		return custId;
 	}
 
-	public void setCustId(String custId) {
+	public void setCustId(Long custId) {
 		this.custId = custId;
 	}
 

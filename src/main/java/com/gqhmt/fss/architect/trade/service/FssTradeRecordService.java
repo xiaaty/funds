@@ -198,8 +198,11 @@ public class FssTradeRecordService {
 	 * @param map
 	 * @return
 	 */
-	public  List<FssTradeRecordEntity> queryFssTradeRecordList(Map map){
-		List<FssTradeRecordEntity> tradeRecordList=fssTradeRecordReadMapper.queryFssTradeRecordList(map);
+	public  List<FssTradeRecordEntity> queryFssTradeRecordList(String applyNo,Integer tradeState){
+		FssTradeRecordEntity fssTradeRecordEntity=new FssTradeRecordEntity();
+		fssTradeRecordEntity.setApplyNo(applyNo);
+		fssTradeRecordEntity.setTradeState(tradeState);
+		List<FssTradeRecordEntity> tradeRecordList=fssTradeRecordReadMapper.select(fssTradeRecordEntity);
 		return tradeRecordList;
 	}
 	
