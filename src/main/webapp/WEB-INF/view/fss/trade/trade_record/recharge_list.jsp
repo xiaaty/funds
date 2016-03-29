@@ -146,8 +146,6 @@
                                               <td>客户账号</td>
                                               <td>交易类型</td>
                                               <td>交易金额</td>
-                                              <td>手续费</td>
-                                              <td>第三方收费</td>
                                               <td>申请编号</td>
                                               <td>交易状态</td>
                                               <td>交易结果</td>
@@ -166,8 +164,6 @@
                                                     <td>${traderecorder.accNo}</td>
                                                     <td><fss:dictView key="${traderecorder.tradeTypeChild}" /></td>
                                                     <td>${traderecorder.amount}</td>
-                                                    <td>${traderecorder.charge}</td>
-                                                    <td>${traderecorder.thirdparytCharge}</td>
                                                     <td>${traderecorder.applyNo}</td>
                                                     <td><fss:dictView key="${traderecorder.tradeState}" /></td>
                                                     <td><fss:dictView key="${traderecorder.tradeResult}" /></td>
