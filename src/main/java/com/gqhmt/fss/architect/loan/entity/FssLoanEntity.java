@@ -43,7 +43,10 @@ public class FssLoanEntity implements Serializable {
     private String contractId   ;                                //合同ID
    
     @Column(name = "contract_no",updatable = false)
-    private String contractNo ;                                //合同ID
+    private String contractNo ;                                //合同编号
+    
+    @Column(name = "contract_interest",updatable = false)
+    private BigDecimal contractInterest ;                                //合同利息
 
     @Column(name = "contract_amt",updatable = false)
     private BigDecimal contractAmt   ;                                //合同金额        YES             (NULL)                   select,insert,update,references  账户总资产
@@ -288,6 +291,14 @@ public class FssLoanEntity implements Serializable {
 
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
+	}
+
+	public BigDecimal getContractInterest() {
+		return contractInterest;
+	}
+
+	public void setContractInterest(BigDecimal contractInterest) {
+		this.contractInterest = contractInterest;
 	}
     
 	}

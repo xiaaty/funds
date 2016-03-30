@@ -37,7 +37,7 @@ public class LendingDto extends SuperDto {
 	private String contract_no;			//合同编号
 	
 	@APIValidNull(errorCode = "90002023")
-    private String contract_interest;		//合同利息
+    private BigDecimal contract_interest;		//合同利息
 	
 	
 	@APIValidNull(errorCode = "90004022")
@@ -125,11 +125,11 @@ public class LendingDto extends SuperDto {
 		this.contract_no = contract_no;
 	}
 
-	public String getContract_interest() {
+	public BigDecimal getContract_interest() {
 		return contract_interest;
 	}
 
-	public void setContract_interest(String contract_interest) {
+	public void setContract_interest(BigDecimal contract_interest) {
 		this.contract_interest = contract_interest;
 	}
 	
