@@ -11,6 +11,7 @@ import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
 import com.gqhmt.sys.service.BankDealamountLimitService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -61,6 +62,7 @@ public class FssTradeRecordService {
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
+	
 	/**
 	 * 
 	 * author:jhz
@@ -211,13 +213,17 @@ public class FssTradeRecordService {
 	 * @throws FssException
 	 * 柯禹来
 	 */
-	public int  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+	public void  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+			FssTradeRecordEntity tradeRecordEntity=null;
 			//限额
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
-			
-			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
-			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getRealTradeAmount());
-			return moneySplit;
+			tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
+			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
+			//更新申请表该条数据拆分总条数
+			fssTradeApplyEntity.setCount(moneySplit);
+			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
+			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 	}
 	/**
 	 * 
@@ -247,12 +253,17 @@ public class FssTradeRecordService {
 	 */
 	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
+		int settleType=0;
+		if(fssTradeApplyEntity.getBespokedate()!=null){//结算类型0：T+0,1：T+1
+			settleType=fssTradeApplyService.compare_date(fssTradeApplyEntity.getBespokedate());
+			tradeRecordEntity.setSettleType(settleType);
+		}
 		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
 		tradeRecordEntity.setTradeType(fssTradeApplyEntity.getApplyType());
+		tradeRecordEntity.setTradeTypeChild(Integer.valueOf(fssTradeApplyEntity.getBusiType()));
 		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
-		tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
+		tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
 		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
-		tradeRecordEntity.setTradeTypeChild(0);
 		tradeRecordEntity.setTradeDate("0");
 		tradeRecordEntity.setTradeTime("0");
 		tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
@@ -262,6 +273,7 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setCreateTime(new Date());
 		tradeRecordEntity.setModifyTime(new Date());
 		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
+		tradeRecordEntity.setCustId(fssTradeApplyEntity.getCustId());
 		return tradeRecordEntity;
 	}
 	
@@ -327,7 +339,6 @@ public class FssTradeRecordService {
 					fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 				}
 			}
-			
 		}
 		return count;
 	}

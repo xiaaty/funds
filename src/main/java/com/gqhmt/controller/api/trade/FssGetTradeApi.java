@@ -57,10 +57,6 @@ public class FssGetTradeApi {
 	@Resource
 	private FundsBatchTradeImpl fundsBatchTradeImpl;
 	
-	
-	
-	
-	
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
@@ -92,7 +88,6 @@ public class FssGetTradeApi {
 	}
 	
 	
-	
 	/**
 	 * 测试批量代扣
 	 * @param dto
@@ -103,12 +98,12 @@ public class FssGetTradeApi {
 		Response response=new Response();
 		try {
 			FssTradeRecordEntity entity=new FssTradeRecordEntity();
-			entity.setId(new Long(5889));
-			entity.setCustNo("KH13530460983113");
-			entity.setAccNo("6635634325057878");
+			entity.setId(new Long(5921));
+			entity.setCustNo("KH67630213492541");
+			entity.setAccNo("1302692985004666");
 			entity.setTradeType(1103);
-			entity.setAmount(new BigDecimal("30000.00"));
-			entity.setApplyNo("DYKK2016032992974433");
+			entity.setAmount(new BigDecimal("555.00"));
+			entity.setApplyNo("JKHK2016032919913063");
 			entity.setTradeState(98070002);
 			entity.setChannelNo("97010001");
 			fundsBatchTradeImpl.batchTrade(entity);

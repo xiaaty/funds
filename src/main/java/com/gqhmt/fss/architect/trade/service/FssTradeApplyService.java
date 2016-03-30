@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -418,7 +419,6 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setCreateTime((new Date()));
 		fssTradeApplyEntity.setModifyTime((new Date()));
 		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
-		fssTradeApplyEntity.setBespokedate(new Date());
 		fssTradeApplyEntity.setContractId(dto.getContract_id());//合同Id
 		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type()));//交易渠道
 		fssTradeApplyEntity.setCount(0);
@@ -437,4 +437,21 @@ public class FssTradeApplyService {
 		FssTradeApplyBean fssTradeApplyBean=fssTradeApplyReadMapper.queryFssTradeApply(applyNo);
 		return fssTradeApplyBean;
 	}
+	
+	 /**
+     * 判断预约到账日期是否为今天
+     */
+    public int compare_date(Date BespokeDate) {
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+    	Date date=new Date();
+    	String nowdate=sdf.format(date);
+    	String bespokeDate=sdf.format(BespokeDate);
+    	if(bespokeDate.equals(nowdate)){
+    		return 0;
+    	}else{
+    		return 1;
+    	}
+    }
+	
+	
 }

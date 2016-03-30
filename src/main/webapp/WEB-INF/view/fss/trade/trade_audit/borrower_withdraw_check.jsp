@@ -151,8 +151,7 @@
     	                    if (data.code == '0000') {
     	                       jAlert("审核完成!", '信息提示');
     	                        //自动跳转
-    	                        //  window.history.back();
-    	                    	parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/records";
+    	                    	parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records";
     	                    } else {
     	                    	jAlert("添加失败,该编号已经存在,请勿重复添加!", '消息提示');
     	                        return;

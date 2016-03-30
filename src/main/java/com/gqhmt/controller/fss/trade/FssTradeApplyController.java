@@ -175,15 +175,11 @@ public class FssTradeApplyController {
 			try {
 				if(applyType==1104){//提现
 					tradeapply.setBespokedate(sdf.parse(bespokedate));
-				}else{//充值
-					tradeapply.setBespokedate(null);
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			splitCount = fssTradeRecordService.moneySplit(tradeapply);//金额拆分
-			tradeapply.setCount(splitCount);
-			fssTradeApplyService.updateTradeApply(tradeapply);
+			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());
 		}else{//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());

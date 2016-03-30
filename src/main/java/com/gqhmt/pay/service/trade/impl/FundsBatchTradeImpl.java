@@ -103,7 +103,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     	Integer businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
         FundOrderEntity orderEntity = null;
         if(entity.getBespokeDate()!=null){
-    		selletType=this.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
+    		selletType=fssTradeApplyService.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
     	}
     	if(accNo != null){
     		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
@@ -112,20 +112,4 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     	}
         return  orderEntity;
     }
-    
-    /**
-     * 判断预约到账日期是否为今天
-     */
-    public int compare_date(Date BespokeDate) {
-    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-    	Date date=new Date();
-    	String nowdate=sdf.format(date);
-    	String bespokeDate=sdf.format(BespokeDate);
-    	if(bespokeDate.equals(nowdate)){
-    		return 0;
-    	}else{
-    		return 1;
-    	}
-    }
-    
 }
