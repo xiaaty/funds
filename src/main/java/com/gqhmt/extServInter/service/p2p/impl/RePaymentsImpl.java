@@ -38,7 +38,7 @@ public class RePaymentsImpl implements IRePayments {
 	private FssLoanService loanService;
 	
 	@Override
-	@APITradeTypeValid(value = "11100001,11100002,11100003")
+	@APITradeTypeValid(value = "11101001,11101002")
 	@APISignature
     public Response execute(SuperDto dto) {
     	Response response = new Response();

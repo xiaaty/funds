@@ -213,7 +213,7 @@ public class FssRepaymentService {
 		repaymentParent.setState("10090001");
 		repaymentParent.setResultState("10080001");
 		repaymentParent.setAmt(amtSum);
-		repaymentParent.setPayAmt(amtSum);
+		repaymentParent.setPayAmt(BigDecimal.ZERO);
 		repaymentParent.setCreateTime(new Date());
 		repaymentParent.setMotifyTime(new Date());
 		repaymentParent.setMchnChild(repaymentDto.getMchn());
@@ -288,7 +288,8 @@ public class FssRepaymentService {
 	 */
 	public FssRepaymentEntity changeTradeStatus(Long id){
 		FssRepaymentEntity queryRepayment= this.queryRepaymentById(id);
-		queryRepayment.setState("10090003");
+		queryRepayment.setState("10090003");	//10090003划扣完成
+		queryRepayment.setResultState("10080002");	//10080002 成功
 		queryRepayment.setMotifyTime(new Date());
 		this.updateRepaymentEntity(queryRepayment);
 		//更新主表执行成功条数
