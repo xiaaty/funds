@@ -4,10 +4,16 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.extServInter.service.trade.*;
+import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+
 import javax.annotation.Resource;
 
 /**
@@ -48,6 +54,13 @@ public class FssGetTradeApi {
 	@Resource
 	private IPrePaymentApply prePaymentApplyImpl;
 	
+	@Resource
+	private FundsBatchTradeImpl fundsBatchTradeImpl;
+	
+	
+	
+	
+	
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
@@ -77,6 +90,65 @@ public class FssGetTradeApi {
 		}
 		return response;
 	}
+	
+	
+	
+	/**
+	 * 测试批量代扣
+	 * @param dto
+	 * @return
+	 */
+	@RequestMapping(value = "/batchTrade",method = RequestMethod.POST)
+	public Object batchTrade(){
+		Response response=new Response();
+		try {
+			FssTradeRecordEntity entity=new FssTradeRecordEntity();
+			entity.setId(new Long(5889));
+			entity.setCustNo("KH13530460983113");
+			entity.setAccNo("6635634325057878");
+			entity.setTradeType(1103);
+			entity.setAmount(new BigDecimal("30000.00"));
+			entity.setApplyNo("DYKK2016032992974433");
+			entity.setTradeState(98070002);
+			entity.setChannelNo("97010001");
+			fundsBatchTradeImpl.batchTrade(entity);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+	
+	/**
+	 * 测试批量代付
+	 * @param dto
+	 * @return
+	 */
+	@RequestMapping(value = "/batchWithdraw",method = RequestMethod.POST)
+	public Object batchWithdraw(){
+		Response response=new Response();
+		try {
+			FssTradeRecordEntity entity=new FssTradeRecordEntity();
+			entity.setId(new Long(55555));
+			entity.setCustNo("KH13530460983113");
+//			entity.setAccNo("6635634325057878");
+			entity.setCustId(new Long(611437));
+			entity.setTradeType(1104);
+			entity.setTradeTypeChild(11030004);
+			entity.setAmount(new BigDecimal("555.00"));
+			entity.setApplyNo("DYKK2016032992974433");
+			entity.setTradeState(98070002);
+			entity.setChannelNo("97010001");
+			fundsBatchTradeImpl.batchTrade(entity);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+	
+	
+	
 	
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);

@@ -80,7 +80,7 @@ public class FundOrderService  {
         fundOrderEntity.setOrderState(GlobalConstants.ORDER_STATUS_SUBMIT);
         try {
         	this.insert(fundOrderEntity);
-        	this.update(fundOrderEntity);
+//        	this.update(fundOrderEntity);
         } catch (Exception e) {
             throw new FssException(e.getMessage());
         }
