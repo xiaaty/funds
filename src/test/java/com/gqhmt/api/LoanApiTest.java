@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class LoanApiTest extends SupperAPI {
 
-    @Test
+//    @Test
     public  void createAccount() {
         try {
             CreateLoanAccountDto dto = super.getSuperDto(CreateLoanAccountDto.class,"11020009","63488471YHBC");
@@ -122,7 +122,7 @@ public class LoanApiTest extends SupperAPI {
     		repaymentChildDto.setContract_no("JK2016032600031");
     		repaymentChildDto.setSerial_number("00000000000");
     		repaymentChildDto.setAcc_no("1302692985004666");
-    		repaymentChildDto.setAmt(new BigDecimal("20000.00"));
+    		repaymentChildDto.setAmt(new BigDecimal("600000.00"));
     		repaymentChildDto.setRemark("jax");
     		repay_list.add(repaymentChildDto);
     		
@@ -131,7 +131,7 @@ public class LoanApiTest extends SupperAPI {
     		repaymentChildDto1.setContract_no("JK2016032600031");
     		repaymentChildDto1.setSerial_number("66666666");
     		repaymentChildDto1.setAcc_no("1302692985004666");
-    		repaymentChildDto1.setAmt(new BigDecimal("30000.00"));
+    		repaymentChildDto1.setAmt(new BigDecimal("1000000.00"));
     		repaymentChildDto1.setRemark("jax");
     		repay_list.add(repaymentChildDto1);
     		

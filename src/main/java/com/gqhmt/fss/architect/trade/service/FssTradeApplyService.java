@@ -196,7 +196,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
 			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
 			tradeApplyEntity.setApplyType(1103);
-			tradeApplyEntity.setTradeAmount(BigDecimal.ZERO);
+			tradeApplyEntity.setTradeAmount(fssRepaymentEntity.getAmt());
 			tradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setContractId(fssRepaymentEntity.getContractId());
 			tradeApplyEntity.setMchnChild(fssRepaymentEntity.getMchnChild());
@@ -205,14 +205,14 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setFormId(fssRepaymentEntity.getId());
 			tradeApplyEntity.setCreateTime(new Date());
 			tradeApplyEntity.setModifyTime(new Date());
-			tradeApplyEntity.setRealTradeAmount(fssRepaymentEntity.getAmt());
+			tradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setBusiType(fssRepaymentEntity.getTradeType());
 			tradeApplyEntity.setApplyState("1103");
 			tradeApplyEntity.setTradeState("10090002");
 			tradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getApplyNo(repaymentParent.getTradeType()));
 			try {
 				fssTradeApplyWriteMapper.insert(tradeApplyEntity);
-				fssTradeRecordService.insertTradeRecord(1);
+				fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
 			} catch (FssException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -243,8 +243,8 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setCreateTime(new Date());
 			tradeApplyEntity.setModifyTime(new Date());
 			tradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-			tradeApplyEntity.setTradeAmount(fssLoanEntity.getContractAmt());
-			tradeApplyEntity.setRealTradeAmount(fssLoanEntity.getPayAmt());
+			tradeApplyEntity.setTradeAmount(fssLoanEntity.getPayAmt());
+			tradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setBusiType(fssLoanEntity.getTradeType());
 			tradeApplyEntity.setApplyType(1103);
 			tradeApplyEntity.setApplyState(applyStatus);
@@ -261,11 +261,8 @@ public class FssTradeApplyService {
 	 */
 	public List<FssTradeApplyEntity> getTradeAppliesByTradeStatus(String tradeStatus){
 		//查询所有处于划扣中状态的交易申请
-		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
-		fssTradeApplyEntity.setTradeState(tradeStatus);
-		List<FssTradeApplyEntity> select = fssTradeApplyReadMapper.select(fssTradeApplyEntity);
+		List<FssTradeApplyEntity> select = fssTradeApplyReadMapper.selectByTradeState(tradeStatus);
 		return select;
-		
 	}
 
 
@@ -296,9 +293,12 @@ public class FssTradeApplyService {
 			 applyEntity.setTradeState("10090003");
 			 applyEntity.setModifyTime(new Date());
 			try {
-				fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				if(!"".equals(applyEntity.getFormId())){
 					fssRepaymentService.changeTradeStatus(applyEntity.getFormId());
+					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+				}else{
+					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+					
 				}
 				//创建回盘信息
 				fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getApplyType().toString());

@@ -36,6 +36,10 @@ public class LendingDto extends SuperDto {
 	@APIValidNull(errorCode = "90002022")
 	private String contract_no;			//合同编号
 	
+	@APIValidNull(errorCode = "90002023")
+    private String contract_interest;		//合同利息
+	
+	
 	@APIValidNull(errorCode = "90004022")
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
@@ -54,7 +58,8 @@ public class LendingDto extends SuperDto {
     
     @APIValidNull(errorCode = "90004025")
     private String loan_platform;			//借款平台
-
+    
+    
 	public String getContract_id() {
 		return contract_id;
 	}
@@ -120,6 +125,15 @@ public class LendingDto extends SuperDto {
 		this.contract_no = contract_no;
 	}
 
+	public String getContract_interest() {
+		return contract_interest;
+	}
+
+	public void setContract_interest(String contract_interest) {
+		this.contract_interest = contract_interest;
+	}
+	
+	
 
 
 }

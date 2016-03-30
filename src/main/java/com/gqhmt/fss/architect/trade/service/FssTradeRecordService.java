@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -140,9 +139,7 @@ public class FssTradeRecordService {
 	 */
 	public List<FssTradeRecordEntity> findNotExecuteRecodes(){
 		//查询出处于划扣中的申请
-			FssTradeRecordEntity record=new FssTradeRecordEntity();
-			record.setTradeState(98070001);
-			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.select(record);
+			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.selectByTradeState(98070001);
 			return tradeRecordList;
 	}
 
@@ -216,7 +213,7 @@ public class FssTradeRecordService {
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
 			
 			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
-			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getRealTradeAmount());
+			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
 			return moneySplit;
 	}
 	/**
@@ -230,10 +227,10 @@ public class FssTradeRecordService {
 		FssTradeRecordEntity tradeRecordEntity=null;
 		tradeRecordEntity=this.creatTradeRecordEntity(fssTradeApplyEntity);
 		//交易额
-		BigDecimal realTradeAmount = fssTradeApplyEntity.getRealTradeAmount();
+		BigDecimal tradeAmount = fssTradeApplyEntity.getTradeAmount();
 		//限额
 		BigDecimal limitAmount =this.getLimit(fssTradeApplyEntity.getAccNo(),type);
-		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, realTradeAmount);
+		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, tradeAmount);
 		//更新申请表该条数据拆分总条数
 		fssTradeApplyEntity.setCount(moneySplit);
 		fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
@@ -295,17 +292,17 @@ public class FssTradeRecordService {
 	 * limitAmount:限额
 	 * realTradeAmount:实际交易额
 	 */
-	public  int moneySplit(FssTradeRecordEntity tradeRecordEntity,BigDecimal limitAmount,BigDecimal realTradeAmount) throws FssException{
+	public  int moneySplit(FssTradeRecordEntity tradeRecordEntity,BigDecimal limitAmount,BigDecimal tradeAmount) throws FssException{
 		int count=0;
 		//金额是否超过银行代付单笔上限
 		//否
-		if(realTradeAmount .compareTo(limitAmount)<=0){
-		tradeRecordEntity.setAmount(realTradeAmount);
+		if(tradeAmount.compareTo(limitAmount)<=0){
+		tradeRecordEntity.setAmount(tradeAmount);
 		fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 		count=1;
 		}else {
 			//金额超过银行代付单笔上限
-			BigDecimal bg[] = realTradeAmount.divideAndRemainder(limitAmount);
+			BigDecimal bg[] = tradeAmount.divideAndRemainder(limitAmount);
 			int splitCount = bg[0].intValue();
 			BigDecimal lastamount = bg[1];
 			//判断是否除尽

@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月7日
- * Description:	放款
+ * Description:	满标放款
  * <p>
  * Modification History:
  * Date    Author      Version     Description
