@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -70,29 +71,21 @@ public class FssTradeApplyController {
 	 */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryMortgageeList(HttpServletRequest request, ModelMap model, FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-    	Map map=new HashMap();
-    	String startime=request.getParameter("startime");
-		String endtime=request.getParameter("endtime");
-		map.put("applyType", type);
+    public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
+	    if(map!=null){
+	    	String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+	    }else{
+	    	map = new HashMap<>();
+	    }
+	    map.put("applyType",type.toString());
 		map.put("busiType", bus);
-		if(StringUtils.isNotEmptyString(startime)){
-			map.put("startime", startime+" 00:00:00");
-    	}
-		if(StringUtils.isNotEmptyString(endtime)){
-			map.put("endtime", endtime+" 23:59:59");
-		}
-    	if(!"".equals(tradeApply.getAccNo())){
-    		map.put("accNo", tradeApply.getAccNo());
-        }
-    	if(!"".equals(tradeApply.getBusinessNo())){
-    		map.put("businessNo", tradeApply.getBusinessNo());
-    	}
         List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
-        model.addAttribute("startime",startime);
-    	model.addAttribute("endtime",endtime);
+        model.put("map", map);
     	if(type==1103){//充值
     		 return "fss/trade/mortgaee_list";
     	}else{//提现withdraw

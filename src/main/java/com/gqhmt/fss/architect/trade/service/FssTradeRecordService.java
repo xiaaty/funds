@@ -8,11 +8,17 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.sys.service.BankDealamountLimitService;
+import com.gqhmt.util.ThirdPartyType;
+
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -62,6 +68,8 @@ public class FssTradeRecordService {
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
+	@Resource
+	private FundsTradeImpl fundsTradeImpl;
 	
 	/**
 	 * 
@@ -224,6 +232,11 @@ public class FssTradeRecordService {
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
 			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
+			if(fssTradeApplyEntity.getApplyType()==1104){//	提现申请处理完成后冻结金额
+				fundsTradeImpl.froze(fssTradeApplyEntity.getCustId(),Integer.valueOf(fssTradeApplyEntity.getBusiType()),fssTradeApplyEntity.getTradeAmount());
+			}
+			
+			
 	}
 	/**
 	 * 

@@ -281,7 +281,19 @@ public class FundsTradeImpl  implements IFundsTrade {
         return fundOrderEntity;
     }
 
-
+	/**
+	 * 资金冻结
+	 */
+    @Override
+    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException {
+        FundAccountEntity fromEntity = this.getFundAccount(Integer.valueOf(custId.toString()), Integer.valueOf(busiType));
+        this.hasEnoughBanlance(fromEntity,amt);
+        FundAccountEntity toEntity = this.getFundAccount(Integer.valueOf(custId.toString()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);
+        return true;
+    }
+    
+    
     @Override
     public boolean froze(FreezeDto dto) throws FssException {
         FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(dto.getCust_no()), dto.getBusi_type());
