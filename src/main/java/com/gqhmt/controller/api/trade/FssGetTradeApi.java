@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.annotation.Resource;
 
@@ -57,10 +58,6 @@ public class FssGetTradeApi {
 	@Resource
 	private FundsBatchTradeImpl fundsBatchTradeImpl;
 	
-	
-	
-	
-	
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
@@ -92,7 +89,6 @@ public class FssGetTradeApi {
 	}
 	
 	
-	
 	/**
 	 * 测试批量代扣
 	 * @param dto
@@ -103,14 +99,27 @@ public class FssGetTradeApi {
 		Response response=new Response();
 		try {
 			FssTradeRecordEntity entity=new FssTradeRecordEntity();
-			entity.setId(new Long(5889));
-			entity.setCustNo("KH13530460983113");
-			entity.setAccNo("6635634325057878");
+	/*		entity.setId(new Long(5921));
+			entity.setCustNo("KH67630213492541");
+			entity.setAccNo("1302692985004666");
 			entity.setTradeType(1103);
-			entity.setAmount(new BigDecimal("30000.00"));
-			entity.setApplyNo("DYKK2016032992974433");
+			entity.setAmount(new BigDecimal("555.00"));
+			entity.setApplyNo("JKHK2016032919913063");
 			entity.setTradeState(98070002);
+			entity.setChannelNo("97010001");*/
+			entity.setId(new Long(5988));
+			entity.setCustId(new Long(10));
+			entity.setCustNo("");
+			entity.setAccNo("");
+			entity.setTradeType(1103);
+			entity.setTradeTypeChild(11090001);
+			entity.setAmount(new BigDecimal("500000.00"));
+			entity.setApplyNo("DYKK2016033060681753");
+			entity.setTradeState(98070001);
 			entity.setChannelNo("97010001");
+			
+			
+			
 			fundsBatchTradeImpl.batchTrade(entity);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
@@ -129,7 +138,7 @@ public class FssGetTradeApi {
 		Response response=new Response();
 		try {
 			FssTradeRecordEntity entity=new FssTradeRecordEntity();
-			entity.setId(new Long(55555));
+			/*entity.setId(new Long(55555));
 			entity.setCustNo("KH13530460983113");
 //			entity.setAccNo("6635634325057878");
 			entity.setCustId(new Long(611437));
@@ -138,6 +147,16 @@ public class FssGetTradeApi {
 			entity.setAmount(new BigDecimal("555.00"));
 			entity.setApplyNo("DYKK2016032992974433");
 			entity.setTradeState(98070002);
+			entity.setChannelNo("97010001");*/
+			entity.setId(new Long(5990));
+			entity.setCustNo("");
+			entity.setBespokeDate(new Date());;
+			entity.setCustId(new Long(10));
+			entity.setTradeType(1104);
+			entity.setTradeTypeChild(11091001);
+			entity.setAmount(new BigDecimal("555.00"));
+			entity.setApplyNo("JKTX2016033070224778");
+			entity.setTradeState(98070001);
 			entity.setChannelNo("97010001");
 			fundsBatchTradeImpl.batchTrade(entity);
 		} catch (Exception e) {

@@ -240,4 +240,8 @@ public interface IFundsTrade {
 
     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
 */
+   public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
+    
+    
+    
 }

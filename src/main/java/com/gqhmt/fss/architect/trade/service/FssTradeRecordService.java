@@ -8,10 +8,17 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.sys.service.BankDealamountLimitService;
+import com.gqhmt.util.ThirdPartyType;
+
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -60,6 +67,9 @@ public class FssTradeRecordService {
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
+	@Resource
+	private FundsTradeImpl fundsTradeImpl;
+	
 	/**
 	 * 
 	 * author:jhz
@@ -208,13 +218,21 @@ public class FssTradeRecordService {
 	 * @throws FssException
 	 * 柯禹来
 	 */
-	public int  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+	public void  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+			FssTradeRecordEntity tradeRecordEntity=null;
 			//限额
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
-			
-			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
+			tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
 			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
-			return moneySplit;
+			//更新申请表该条数据拆分总条数
+			fssTradeApplyEntity.setCount(moneySplit);
+			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
+			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
+			if(fssTradeApplyEntity.getApplyType()==1104){//	提现申请处理完成后冻结金额
+				fundsTradeImpl.froze(fssTradeApplyEntity.getCustId(),Integer.valueOf(fssTradeApplyEntity.getBusiType()),fssTradeApplyEntity.getTradeAmount());
+			}
+
 	}
 	/**
 	 * 
@@ -244,12 +262,17 @@ public class FssTradeRecordService {
 	 */
 	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
+		int settleType=0;
+		if(fssTradeApplyEntity.getBespokedate()!=null){//结算类型0：T+0,1：T+1
+			settleType=fssTradeApplyService.compare_date(fssTradeApplyEntity.getBespokedate());
+			tradeRecordEntity.setSettleType(settleType);
+		}
 		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
 		tradeRecordEntity.setTradeType(fssTradeApplyEntity.getApplyType());
+		tradeRecordEntity.setTradeTypeChild(Integer.valueOf(fssTradeApplyEntity.getBusiType()));
 		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
-		tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
+		tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
 		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
-		tradeRecordEntity.setTradeTypeChild(0);
 		tradeRecordEntity.setTradeDate("0");
 		tradeRecordEntity.setTradeTime("0");
 		tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
@@ -259,6 +282,7 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setCreateTime(new Date());
 		tradeRecordEntity.setModifyTime(new Date());
 		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
+		tradeRecordEntity.setCustId(fssTradeApplyEntity.getCustId());
 		return tradeRecordEntity;
 	}
 	
@@ -324,7 +348,6 @@ public class FssTradeRecordService {
 					fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 				}
 			}
-			
 		}
 		return count;
 	}

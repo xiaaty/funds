@@ -79,11 +79,11 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         String  accNo = entity.getAccNo();
         FundOrderEntity orderEntity = null;
         Integer businessType;
-        if(accNo != null) {
+        if(accNo != null && !"".equals(accNo)) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
             int custId = entity.getCustId().intValue();
-            businessType= GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeType());//获取业务类型
+            businessType= GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
             orderEntity = this.fundsTrade.withholdingApplyNew(custId,businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
         }
         return  orderEntity;
@@ -103,29 +103,13 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     	Integer businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
         FundOrderEntity orderEntity = null;
         if(entity.getBespokeDate()!=null){
-    		selletType=this.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
+    		selletType=fssTradeApplyService.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
     	}
-    	if(accNo != null){
+    	if(accNo != null && !"".equals(accNo)){
     		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
     	}else{
     		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
     	}
         return  orderEntity;
     }
-    
-    /**
-     * 判断预约到账日期是否为今天
-     */
-    public int compare_date(Date BespokeDate) {
-    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-    	Date date=new Date();
-    	String nowdate=sdf.format(date);
-    	String bespokeDate=sdf.format(BespokeDate);
-    	if(bespokeDate.equals(nowdate)){
-    		return 0;
-    	}else{
-    		return 1;
-    	}
-    }
-    
 }

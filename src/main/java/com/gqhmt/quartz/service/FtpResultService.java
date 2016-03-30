@@ -9,7 +9,6 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -50,19 +49,19 @@ public class FtpResultService {
             return;
         }
 
-        for(Object fuiouFtpOrder:list){
-            List<Integer> state = fuiouUploadFileService.list(((FuiouFtpOrder)fuiouFtpOrder).getOrderNo());
+        for(FuiouFtpOrder fuiouFtpOrder:list){
+            List<Integer> state = fuiouUploadFileService.list(fuiouFtpOrder.getOrderNo());
             if(state == null || state.size() == 0){
                 continue;
             }
             if(state.size() == 1 && (state.get(0) == 3 || state.get(0) == 5)){
-                ((FuiouFtpOrder)fuiouFtpOrder).setDownloadStatus(4);
+                fuiouFtpOrder.setDownloadStatus(4);
                 continue;
             }
 
             System.out.println("fuiouFtp:parseDownloadResult:"+((FuiouFtpOrder) fuiouFtpOrder).getOrderNo());
+            fuiouFtpOrderService.update(fuiouFtpOrder);
         }
-        fuiouFtpOrderService.saveAll(list);
     }
 
     /**
@@ -74,13 +73,11 @@ public class FtpResultService {
         if(list == null || list.size() == 0){
             return;
         }
-
-        for(Object object:list){
-            FuiouFtpOrder fuiouFtpOrder = (FuiouFtpOrder)object;
-            parseResult(fuiouFtpOrder);
+        for(FuiouFtpOrder fuiouFtpOrder:list){
+        	parseResult(fuiouFtpOrder);
+        	fuiouFtpOrderService.update(fuiouFtpOrder);
         }
 
-        fuiouFtpOrderService.saveAll(list);
     }
 
     /**
@@ -129,7 +126,25 @@ public class FtpResultService {
 
     }
 
-
+    //资金流水入账
+/*    private void  callback(FundOrderEntity orderEntity,int result){
+        int type = 0;
+        int orderType = orderEntity.getOrderType();
+        if(orderType == GlobalConstants.ORDER_SETTLE_UNFORZEN){
+            type = 1;
+        }else if(orderType == GlobalConstants.ORDER_SETTLE){
+            type = 2;
+        }else if(orderType == GlobalConstants.ORDER_REPAYMENT){
+            type = 3;
+        }else if(orderType == GlobalConstants.ORDER_POINT_GQ_RETURN_FEE){
+            type = 4;
+        }
+        if(result == 1) {
+            AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_CALLBACK, ThirdPartyType.FUIOU, type, orderEntity.getOrderNo());
+        }else{
+            orderEntity.setOrderState(3);
+        }
+    }*/
 
 
     /**
@@ -145,7 +160,7 @@ public class FtpResultService {
             orderEntity.setRetCode("9999");
             orderEntity.setRetMessage("处理失败");
             try {
-                fundOrderService.insert(orderEntity);
+                fundOrderService.update(orderEntity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -155,7 +170,7 @@ public class FtpResultService {
             orderEntity.setRetCode("0009");
             orderEntity.setRetMessage("需手动处理");
             try {
-                fundOrderService.insert(orderEntity);
+                fundOrderService.update(orderEntity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -182,7 +197,7 @@ public class FtpResultService {
         } catch (FssException e) {
             fuiouFtpOrder.setRetrunResultStatus(0);
         }
-        fuiouFtpOrderService.insert(fuiouFtpOrder);
+        fuiouFtpOrderService.update(fuiouFtpOrder);
     }
 
     public  void notReturnResult(){

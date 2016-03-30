@@ -70,11 +70,11 @@
 			<if test="businessNo != null and businessNo != ''">
 				AND t.business_no like CONCAT('%',#{businessNo},'%')
 			</if>
-			<if test="startime!=null and startime!=''"> 
-				AND t.create_time &gt;= DATE_FORMAT(#{startime},'%Y%m%d%H%i%s')
+			<if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>
-			<if test="endtime!=null and endtime!='' "> 
-				AND t.create_time &lt;= DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
 	</select>
 	
