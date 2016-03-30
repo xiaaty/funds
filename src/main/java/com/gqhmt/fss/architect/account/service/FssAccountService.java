@@ -216,6 +216,8 @@ public class FssAccountService {
     }
     
 
-
+  /*  public FssAccountEntity getAccountEntityByCustid(Long custId){
+    	return this.accountReadMapper.findAccountByCustId(custId);
+    }*/
 
 }

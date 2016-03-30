@@ -429,9 +429,7 @@ public class FssTradeApplyService {
 
 
 	public FssTradeApplyEntity getFssTradeApplyEntityByApplyNo(String applyNo) throws FssException{
-		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
-		fssTradeApplyEntity.setApplyNo(applyNo);
-		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectOne(fssTradeApplyEntity);
+		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectFssTradeApplyEntityByApplyNo(applyNo);
 		return tradeapply;
 	}
 	
@@ -439,5 +437,4 @@ public class FssTradeApplyService {
 		FssTradeApplyBean fssTradeApplyBean=fssTradeApplyReadMapper.queryFssTradeApply(applyNo);
 		return fssTradeApplyBean;
 	}
-	
 }

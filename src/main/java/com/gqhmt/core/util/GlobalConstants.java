@@ -107,6 +107,10 @@ public class GlobalConstants {
 
     public static final int ORDER_SETTLE_NEW = 11990048;
 
+    public static final int ORDER_REPAYMENT_NEW = 11990049;
+
+    public static final int ORDER_ABORT_NEW = 11990050;
+
 
     public static final int ORDER_MORTGAGEE_TRANS_ACC = 1001;  //抵押权人转给借款人
 
@@ -242,6 +246,9 @@ public class GlobalConstants {
     public static Map<String,String> TRADE_ACCOUNT_PAY_CHANNEL_MAPPING = new ConcurrentHashMap<>();
 
     public static Map<String,String> TRADE_APPLY_NO__MAPPING = new ConcurrentHashMap<>();
+    
+    //业务类型与交易类型匹配
+    public static Map<Integer,Integer> TRADE_BUSINESS_TYPE__MAPPING = new ConcurrentHashMap<>();
     
     private static long getMenuId(Long fid) {
         if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
@@ -624,8 +631,18 @@ public class GlobalConstants {
         TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
         TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
         TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
-
-
+        
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030004,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030005,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030006,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030007,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11093001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11090001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11091001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040005,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040006,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040007,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040004,2);//出借 2
 
 
 	}

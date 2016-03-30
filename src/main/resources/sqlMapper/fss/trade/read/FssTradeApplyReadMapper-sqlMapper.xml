@@ -31,7 +31,8 @@
 			FROM t_gq_fss_trade_apply t
 	</sql>
 	<!-- 根据申请类型和业务类型查询申请数据 -->
-	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
+	
+	<sql id="field">
 		SELECT 
 			t.id id,
 			t.cust_id custId,
@@ -56,7 +57,12 @@
 			c.`name` custName,
 			c.mobile custMobile
 			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
-			ON t.cust_id=c.cust_id 
+			ON t.cust_id=c.cust_id
+	</sql>
+	
+	<!-- 根据申请类型和业务类型查询申请数据 -->
+	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
+			<include refid="field"/>
 			WHERE t.apply_type=#{applyType}  and t.busi_type=#{busiType}
 			<if test="accNo != null and accNo != ''">
 				AND t.acc_no like CONCAT('%',#{accNo},'%')
@@ -74,33 +80,15 @@
 	
 	<!-- 根据applyNo查询对象 -->
 	<select id="queryFssTradeApply" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
-		SELECT 
-			t.id id,
-			t.cust_id custId,
-			t.apply_no applyNo,
-			t.apply_type applyType,
-			t.business_no businessNo,
-			t.busi_type busiType,
-		    t.contract_id contractId,
-			t.seq_no seqNo,
-			t.bespoke_date bespokeDate,
-		    t.acc_no accNo,
-			t.trade_amount tradeAmount,
-			t.create_time createTime,
-			t.modify_time modifyTime,
-			t.mchn_child mchnChild,
-			t.apply_state applyState,
-			t.trade_state tradeState,
-			t.count count,
-			t.form_id formId,
-			t.success_count successCount,
-			t.real_trade_amount realTradeAmount,
-			t.channel_no channelNo,
-			c.`name` custName,
-			c.mobile custMobile
-			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
-			ON t.cust_id=c.cust_id WHERE t.apply_no=#{applyNo}
+		<include refid="field"/>
+		WHERE t.apply_no=#{applyNo}
 	</select>
+	
+	<select id="selectFssTradeApplyEntityByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+		 <include refid="selectSql" />
+			WHERE t.apply_no=#{applyNo}
+	</select>
+
 	<!-- 根据applyNo查询对象 -->
 	<select id="selectByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 	 <include refid="selectSql" />

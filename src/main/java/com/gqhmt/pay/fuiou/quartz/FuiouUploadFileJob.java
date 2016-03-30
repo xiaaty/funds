@@ -1,16 +1,14 @@
 package com.gqhmt.pay.fuiou.quartz;
 
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
-import com.gqhmt.quartz.service.AbortBidService;
-import com.gqhmt.quartz.service.FtpDownloadFileService;
-import com.gqhmt.quartz.service.FtpResultService;
-import com.gqhmt.quartz.service.FtpUploadService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
+import com.gqhmt.quartz.service.AbortBidService;
+import com.gqhmt.quartz.service.FtpUploadService;
 import com.gqhmt.util.ServiceLoader;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +41,7 @@ public class FuiouUploadFileJob extends AJob{
         if(!isIp("download")){
             return;
         }
-        if(isRunning) return;
+        /*if(isRunning) return;
 
         isRunning = true;
         try{
@@ -62,7 +60,7 @@ public class FuiouUploadFileJob extends AJob{
             LogUtil.error(this.getClass(),e.getMessage(),e);
         }finally {
             isRunning = false;
-        }
+        }*/
     }
 
     @Scheduled(cron="0/11 * 7-23  * * * ")

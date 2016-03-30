@@ -2,9 +2,8 @@ package com.gqhmt.funds.architect.trade.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
-
 import java.util.List;
-import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Filename:    com.gq.p2p.account.dao
@@ -24,11 +23,11 @@ import java.util.Map;
  */
 public interface FuiouPreauthReadMapper extends ReadMapper<FuiouPreauth> {
 
-    public List<FuiouPreauth> getContractNo(Long bid,String userName ,String toUserName,Long amt);
+    public List<FuiouPreauth> getContractNo(@Param("bid") Long bid,@Param("userName") String userName ,@Param("toUserName") String toUserName,@Param("amt") Long amt);
 
-    public Map<Integer,String> getContractNo(Long bid);
+    public List<FuiouPreauth> getContractNos(@Param("bid") Long bid);
 
-    public Map<Integer, FuiouPreauth> getFuiouPreauth(Long bid);
+//   public Map<Integer, FuiouPreauth> getFuiouPreauth(Long bid);
 
     public List<FuiouPreauth> bidFaild();
 

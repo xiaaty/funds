@@ -1,16 +1,14 @@
 package com.gqhmt.quartz.service;
 
-import com.gqhmt.business.architect.loan.service.BidRepaymentService;
-import com.gqhmt.business.architect.loan.service.TenderService;
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouUploadFileService;
+import com.gqhmt.fss.architect.fuiouFtp.service.*;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,6 +16,7 @@ import java.util.List;
 /**
  * Created by chris on 2015/5/10.
  */
+@Service
 public class FtpResultService {
 
     @Resource
@@ -32,15 +31,15 @@ public class FtpResultService {
     @Resource
     private FundOrderService fundOrderService;
 
-    @Resource
-    private TenderService tenderService;
-
-    @Resource
-    private BidRepaymentService bidRepaymentService;
-
 
     @Resource
     private FundSequenceService fundSequenceService;
+
+    @Resource
+    private BidSettleService settleService;
+
+    @Resource
+    private BidRepaymentService bidRepaymentService;
 
     /**
      * 解析下载文件状态
@@ -131,25 +130,7 @@ public class FtpResultService {
     }
 
 
-    //资金流水入账
-    private void  callback(FundOrderEntity orderEntity,int result){
-        int type = 0;
-        int orderType = orderEntity.getOrderType();
-        if(orderType == GlobalConstants.ORDER_SETTLE_UNFORZEN){
-            type = 1;
-        }else if(orderType == GlobalConstants.ORDER_SETTLE){
-            type = 2;
-        }else if(orderType == GlobalConstants.ORDER_REPAYMENT){
-            type = 3;
-        }else if(orderType == GlobalConstants.ORDER_POINT_GQ_RETURN_FEE){
-            type = 4;
-        }
-       /* if(result == 1) {
-            AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_CALLBACK, ThirdPartyType.FUIOU, type, orderEntity.getOrderNo());
-        }else{
-            orderEntity.setOrderState(3);
-        }*/
-    }
+
 
     /**
      * 结果回调
@@ -182,25 +163,23 @@ public class FtpResultService {
         }
         Long sourceId = orderEntity.getOrderFrormId();
         int size = fundSequenceService.getSizeByOrderNo(orderEntity.getOrderNo());
-        if(size == 0){
-            callback(orderEntity,result);
-            size = fundSequenceService.getSizeByOrderNo(orderEntity.getOrderNo());
-        }
-        if(size<=0){
+        if(size>0){
             return;
         }
         int type = orderEntity.getOrderType();
         try {
-          /*  if (type == GlobalConstants.ORDER_SETTLE_UNFORZEN) {
-                tenderService.updateCallbackFullBidStatus(sourceId.intValue(), result == 1 ? true : false, 0);
-            } else if (type == GlobalConstants.ORDER_SETTLE) {
-                tenderService.updateCallbackFullBidStatus(sourceId.intValue(), result == 1 ? true : false, 0);
-            } else if (type == GlobalConstants.ORDER_REPAYMENT) {
-                bidRepaymentService.updateCallbackBidRepaymentStatus(sourceId.intValue(), result == 1 ? true : false, 0);
-            }*/
+           if (type == GlobalConstants.ORDER_SETTLE_NEW) {
+                settleService.settleCallback(orderEntity);
+            } else if (type == GlobalConstants.ORDER_REPAYMENT_NEW) {
+               bidRepaymentService.BidRepaymentCallback(orderEntity);
+            }else if (type == GlobalConstants.ORDER_ABORT_NEW) {
+//                bidRepaymentService.updateCallbackBidRepaymentStatus(sourceId.intValue(), result == 1 ? true : false, 0);
+           }
             fuiouFtpOrder.setRetrunResultStatus(1);
         }catch (RuntimeException e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
+            fuiouFtpOrder.setRetrunResultStatus(0);
+        } catch (FssException e) {
             fuiouFtpOrder.setRetrunResultStatus(0);
         }
         fuiouFtpOrderService.insert(fuiouFtpOrder);
