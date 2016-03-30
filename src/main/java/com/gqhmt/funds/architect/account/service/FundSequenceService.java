@@ -1,6 +1,7 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
+import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -459,6 +460,66 @@ public class FundSequenceService {
       }
 
   }
+
+
+    public void repaymentSequence(List<RepaymentBean> list,String title,FundAccountEntity fromEntity,FundOrderEntity fundOrderEntity,BigDecimal sumRepay){
+        //产品名称，如果产品名称为空，则去标的title
+        ThirdPartyType thirdPartyType = ThirdPartyType.FUIOU;
+        for (RepaymentBean bean : list) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
+
+            if (bean.getCustomerId() < GlobalConstants.RESERVED_CUSTOMERID_LIMIT) {
+                if (bean.getRepaymentAmount().compareTo(BigDecimal.ZERO) > 0) {
+                    try {
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,null,thirdPartyType.FUIOU, fundOrderEntity);
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                }
+            } else {
+                if (bean.getRepaymentPrincipal().compareTo(BigDecimal.ZERO) > 0) {
+                    try {
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentPrincipal(), 7, 3003,null,thirdPartyType, fundOrderEntity);
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                    try {
+                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentPrincipal(), BigDecimal.ZERO, 3005, title + " 收到还款本金 " + bean.getRepaymentPrincipal() + "元");
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                }
+                if (bean.getRepaymentInterest().compareTo(BigDecimal.ZERO) > 0) {
+                    try {
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentInterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                    try {
+                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentInterest(), BigDecimal.ZERO, 3006, title + " 收到还款利息 " + bean.getRepaymentInterest() + "元");
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                }
+            }
+
+            // 转到应付账户
+            BigDecimal amount = bean.getPayableAmount();
+            if (amount.compareTo(BigDecimal.ZERO) > 0) {
+                FundAccountEntity toA0Account = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
+                try {
+                    this.transfer(toEntity, toA0Account, amount, 7, 1005,null,thirdPartyType, fundOrderEntity);
+                } catch (FssException e) {
+                    LogUtil.error(this.getClass(), e);
+                }
+            }
+        }
+        try {
+            fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, sumRepay, 3003, title + " 还款成功，扣除还款金额 " + sumRepay + "元");
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(), e);
+        }
+    }
    
    
 }
