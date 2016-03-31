@@ -165,8 +165,11 @@ public class FssLoanService {
 	 * @return 
 	 */
 	public long insertmortgageeWithDraw(MortgageeWithDrawDto dto) throws FssException {
+		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getMortgagee_acc_no());
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
-    	fssLoanEntity.setPayAmt(dto.getPay_amt());
+		fssLoanEntity.setCustNo(fssAccountByAccNo.getCustNo());
+    	fssLoanEntity.setUserNo(fssAccountByAccNo.getUserNo());
+		fssLoanEntity.setPayAmt(dto.getPay_amt());
     	fssLoanEntity.setContractAmt(dto.getContract_amt());
     	fssLoanEntity.setSeqNo(dto.getSeq_no());
     	fssLoanEntity.setAccNo(dto.getAcc_no());
@@ -199,7 +202,10 @@ public class FssLoanService {
 	 * function：流标申请
 	 */
 	public void insertfailedBidDto(FailedBidDto dto) throws FssException{
+		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		fssLoanEntity.setCustNo(fssAccountByAccNo.getCustNo());
+    	fssLoanEntity.setUserNo(fssAccountByAccNo.getUserNo());
     	fssLoanEntity.setContractId(dto.getContract_id());
     	fssLoanEntity.setContractNo(dto.getContract_no());
     	fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_acc_no());

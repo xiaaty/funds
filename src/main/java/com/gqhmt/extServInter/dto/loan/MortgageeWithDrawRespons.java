@@ -23,6 +23,8 @@ public class MortgageeWithDrawRespons extends Response {
 
 
 	private String contract_id;			//contract_id
+	
+	private String contract_no;			//contract_no
 
     private String acc_no;			//借款人资金平台账号
 
@@ -60,6 +62,14 @@ public class MortgageeWithDrawRespons extends Response {
 
 	public void setPay_amt(BigDecimal pay_amt) {
 		this.pay_amt = pay_amt;
+	}
+
+	public String getContract_no() {
+		return contract_no;
+	}
+
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
 	}
 
     
