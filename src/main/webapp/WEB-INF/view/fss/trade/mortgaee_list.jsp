@@ -49,7 +49,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-201"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -69,10 +69,10 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                       <td class="tr">客户账号：</td>
+                                                       <td class="tr">申请编号：</td>
                                                          <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="accNo" value="${map.accNo}" />
+                                                                <input type="text" style="width:300px" name="applyNo" value="${map.applyNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">业务编号：</td>
@@ -109,7 +109,7 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-202"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>数据列表信息</h2>
@@ -149,8 +149,8 @@
                                              <td>账户编号</td>
                                              <td>交易金额</td>
                                              <td>实际交易金额</td>
+                                             <td>总条数</td>
                                              <td>执行条数</td>
-                                             <td>成功条数</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
                                              <td>商户号</td>

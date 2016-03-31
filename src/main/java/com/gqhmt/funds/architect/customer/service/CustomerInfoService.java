@@ -48,7 +48,7 @@ public class CustomerInfoService {
 	@Resource
 	private FundsAccountImpl fundsAccountImpl;
 	@Resource
-    private UserService userService;
+    private GqUserService gqUserService;
 	@Resource
 	private BankCardInfoService bankCardinfoService;
 /*
@@ -1043,7 +1043,7 @@ public class CustomerInfoService {
 			//2.创建用户         t_gq_user	
 			UserEntity userEntity;
 			try {
-				userEntity = userService.createUser(loanAccountDto,customerInfoEntity);
+				userEntity = gqUserService.createUser(loanAccountDto,customerInfoEntity);
 				gqUserWriteMapper.insertSelective(userEntity);
 			} catch (Exception e) {
 				LogUtil.info(this.getClass(), e.getMessage());

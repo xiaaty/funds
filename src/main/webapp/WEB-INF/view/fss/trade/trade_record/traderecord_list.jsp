@@ -49,7 +49,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-99"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -92,7 +92,7 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-100"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>资金详细</h2>
@@ -106,7 +106,10 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                               		 <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="javascript:history.back(-1);"><i class="fa fa-minus"></i>返回</button>
+                                      </div>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1100px;">
                                     	<col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -117,11 +120,6 @@
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
                                         <thead>
                                         <tr>
                                              <td>申请单号</td>

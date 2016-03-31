@@ -99,25 +99,17 @@ public class FssGetTradeApi {
 		Response response=new Response();
 		try {
 			FssTradeRecordEntity entity=new FssTradeRecordEntity();
-	/*		entity.setId(new Long(5921));
-			entity.setCustNo("KH67630213492541");
-			entity.setAccNo("1302692985004666");
-			entity.setTradeType(1103);
-			entity.setAmount(new BigDecimal("555.00"));
-			entity.setApplyNo("JKHK2016032919913063");
-			entity.setTradeState(98070002);
-			entity.setChannelNo("97010001");*/
-			entity.setId(new Long(5988));
-			entity.setCustId(new Long(10));
-			entity.setCustNo("");
-			entity.setAccNo("");
+			entity.setId(new Long(5991));
 			entity.setTradeType(1103);
 			entity.setTradeTypeChild(11090001);
-			entity.setAmount(new BigDecimal("500000.00"));
-			entity.setApplyNo("DYKK2016033060681753");
-			entity.setTradeState(98070001);
+			entity.setAmount(new BigDecimal("100000.00"));
+			entity.setApplyNo("DYKK2016033128137975");
+			entity.setTradeState(10080001);
+			entity.setCreateTime(new Date());
+			entity.setMchnParent("42592543ZVNC");
+			entity.setMchnChild("88721657SUKQ");
 			entity.setChannelNo("97010001");
-			
+			entity.setCustId(new Long(10));
 			
 			
 			fundsBatchTradeImpl.batchTrade(entity);
