@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -324,8 +325,19 @@ public class FssTradeApplyService {
 	 * @param map
 	 * @return
 	 */
-	public List<FssTradeApplyBean> queryFssTradeApplyList(Map map){
-		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map);
+		public List<FssTradeApplyBean> queryFssTradeApplyList(Map<String,String> map){
+		Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("applyType",map.get("applyType"));
+			map2.put("busiType", map.get("busiType"));
+			map2.put("applyNo", map.get("applyNo"));
+			map2.put("businessNo", map.get("businessNo"));
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map2);
 		return tradeapplylist;
 	}
 	

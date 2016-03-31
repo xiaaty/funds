@@ -50,7 +50,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-110"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -90,7 +90,7 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-111"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>转账交易记录</h2>
@@ -104,18 +104,17 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="100" />
-                                        <col width="275" />
-                                        <col width="275" />
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1550px;">
+                                    	<col width="150" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
+                                        <col width="150" />
                                         <thead>
                                         <tr>
                                               <td>申请编号</td>
@@ -127,8 +126,7 @@
                                               <td>转账编号</td>
                                               <td>创建时间</td>
                                               <td>修改时间</td>
-                                              <td>父商户号</td>
-                                              <td>子商户号</td>
+                                              <td>商户号</td>
                                         </tr>
                                         </thead>
                                          <tbody>
@@ -143,7 +141,6 @@
                                                     <td>${transrecord.transNo}</td>
                                                     <td><fss:fmtDate value="${transrecord.createTime}"/></td>
                                                     <td><fss:fmtDate value="${transrecord.modifyTime}"/></td>
-                                                    <td>${transrecord.mchnParent}</td>
                                                     <td>${transrecord.mchnChild}</td>
                                                 </tr>
                                             </c:forEach>

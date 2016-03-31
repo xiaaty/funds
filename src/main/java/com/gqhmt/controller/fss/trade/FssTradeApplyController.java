@@ -72,14 +72,6 @@ public class FssTradeApplyController {
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-	    if(map!=null){
-	    	String startTime = map.get("startTime");
-			String endTime = map.get("endTime");
-			map.put("startTime", startTime != null ? startTime.replace("-", "") : null);
-			map.put("endTime", endTime != null ? endTime.replace("-", "") : null);
-	    }else{
-	    	map = new HashMap<>();
-	    }
 	    map.put("applyType",type.toString());
 		map.put("busiType", bus);
         List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
@@ -135,7 +127,7 @@ public class FssTradeApplyController {
 			model.addAttribute("custMobile","");
 		}
 		
-		if(type==1103){
+		if(type==1103){//充值
 			return "fss/trade/trade_audit/borrower_withhold_check";
 		}else{
 			return "fss/trade/trade_audit/borrower_withdraw_check";
