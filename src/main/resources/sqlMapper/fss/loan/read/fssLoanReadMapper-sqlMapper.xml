@@ -87,7 +87,7 @@
 			t.pay_amt pay_amt,
 		    t.rep_code resp_code,
 			t.rep_msg resp_msg,
-			t.loan_platform loanPlatform
+			t.loan_platform loan_platform
 			FROM t_gq_fss_loan t
 			where 1=1
 			<include refid="whereSql" />

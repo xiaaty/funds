@@ -26,6 +26,8 @@ public class LendingResponse extends Response {
 	private Long id;
 	
 	private String contract_id;			//contract_id
+	
+	private String contract_no;			//contract_no
 
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
@@ -104,6 +106,14 @@ public class LendingResponse extends Response {
 
 	public void setFee_list(List<LendingFeeListDto> fee_list) {
 		this.fee_list = fee_list;
+	}
+
+	public String getContract_no() {
+		return contract_no;
+	}
+
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
 	}
 
 
