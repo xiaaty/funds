@@ -8,7 +8,6 @@
 		t_gq_fss_trade_apply t
 		SET
 		t.success_count= t.success_count+1,
-		t.real_trade_amount=t.real_trade_amount+#{amount},
 		t.modify_time=#{modifyTime}
 		WHERE t.apply_no=#{applyNo}
 	</update>

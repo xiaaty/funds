@@ -211,7 +211,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setModifyTime(new Date());
 			tradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setBusiType(fssRepaymentEntity.getTradeType());
-			tradeApplyEntity.setApplyState("1103");
+			tradeApplyEntity.setApplyState("10100001");
 			tradeApplyEntity.setTradeState("10090002");
 			tradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getApplyNo(repaymentParent.getTradeType()));
 			try {
@@ -251,6 +251,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setBusiType(fssLoanEntity.getTradeType());
 			tradeApplyEntity.setApplyType(1103);
+			tradeApplyEntity.setFormId(fssLoanEntity.getId());
 //			tradeApplyEntity.setFormId(fssLoanEntity.getId());
 			tradeApplyEntity.setApplyState(applyStatus);
 			tradeApplyEntity.setTradeState("10090002");
@@ -274,13 +275,12 @@ public class FssTradeApplyService {
 	/**
 	 * 修改执行条数
 	 * @param applyNo
-	 * 根据申请编号修改成功条数,实际交易金额，修改日期
+	 * 根据申请编号修改执行条数,实际交易金额，修改日期
+	 * @throws FssException 
      */
-	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity){
-		if(fssTradeRecordEntity.getTradeResult()==98060001){
+	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity) throws FssException{
 			fssTradeRecordEntity.setModifyTime(new Date());
 			fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(fssTradeRecordEntity);
-		}
 		this.checkExecuteCount(fssTradeRecordEntity.getApplyNo());
 	}
 
@@ -289,34 +289,77 @@ public class FssTradeApplyService {
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
+	 * @throws FssException 
 	 * 
 	 */
-	public void checkExecuteCount(String applyNo){
+	public void checkExecuteCount(String applyNo) {
 		FssTradeApplyEntity applyEntity = fssTradeApplyReadMapper.selectByApplyNo(applyNo);
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
 		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
+			try {
+			 int successCount = fssTradeRecordService.getSuccessCount(applyNo);
+			 BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
 			 applyEntity.setTradeState("10090003");
 			 applyEntity.setModifyTime(new Date());
-			try {
-				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-					if(applyEntity.getBusiType()=="11090001"){
-						FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-						fssLoanEntityById.setRepCode("98060001");
-						fssLoanService.update(fssLoanEntityById);
-					}else{
-						fssRepaymentService.changeTradeStatus(applyEntity.getFormId());
-					}
-					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
-				}else{
-					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+			 applyEntity.setRealTradeAmount(realTradeAmt);
+			 if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
+				 //划扣成功
+			 if(successCount==applyEntity.getCount()){
+					 if("11090001".equals(applyEntity.getBusiType())){
+						 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+						 fssLoanEntityById.setResult("98060001");
+						 fssLoanService.update(fssLoanEntityById);
+					 }else{
+						 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
+						 queryRepayment.setState("10090003");	//10090003划扣完成
+							queryRepayment.setResultState("10080002");	//10080002 成功
+							queryRepayment.setMotifyTime(new Date());
+							fssRepaymentService.updateRepaymentEntity(queryRepayment);
+							queryRepayment.setAmt(realTradeAmt);
+							//更新主表执行成功条数
+							fssRepaymentService.updateSuccessCount(queryRepayment);
+					 }
+			 //划扣失败
+			 }else if(successCount==0){
+				 if("11090001".equals(applyEntity.getBusiType())){
+					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+					 fssLoanEntityById.setResult("98060003");
+					 fssLoanService.update(fssLoanEntityById);
+				 }else{
+					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
+					 queryRepayment.setState("10090003");	//10090003划扣完成
+					 queryRepayment.setResultState("10080010");	//失败
+					 queryRepayment.setMotifyTime(new Date());
+					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
+				 }
+			 //部分成功
+			 }else{
+				 if("11090001".equals(applyEntity.getBusiType())){
+					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+					 fssLoanEntityById.setResult("98060002");
+					 fssLoanService.update(fssLoanEntityById);
+				 }else{
+					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
+					 queryRepayment.setState("10090003");	//10090003划扣完成
+					 queryRepayment.setResultState("10080010");	//部分成功
+					 queryRepayment.setMotifyTime(new Date());
+					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
+					 queryRepayment.setAmt(realTradeAmt);
+					 //更新主表执行成功条数
+					 fssRepaymentService.updateSuccessCount(queryRepayment);
+				 }
+			   }
+			 }
 					
-				}
+			 fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				//创建回盘信息
-				fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getApplyType().toString());
-			} catch (FssException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				
+					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getApplyType().toString());
+					
+				} catch (FssException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
 		 }
 	}

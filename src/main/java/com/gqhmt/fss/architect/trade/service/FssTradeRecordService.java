@@ -8,16 +8,11 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.sys.service.BankDealamountLimitService;
-import com.gqhmt.util.ThirdPartyType;
 
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -166,7 +161,12 @@ public class FssTradeRecordService {
 		fssTradeRecordEntity.setModifyTime(new Date());
 		fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
 		//Apply 执行数量更新
-		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
+		try {
+			fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
+		} catch (FssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * 
@@ -351,8 +351,27 @@ public class FssTradeRecordService {
 		}
 		return count;
 	}
-	
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月1日
+	 * function：根据申请编号得到该批次成功条数
+	 */
+	public int getSuccessCount(String applyNo){
+		
+		return fssTradeRecordReadMapper.getSuccessCount(applyNo);
+		
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月1日
+	 * function：根据申请编号得到该批次实际交易总金额
+	 */
+	public BigDecimal getSuccessAmt(String applyNo) {
+		// TODO Auto-generated method stub
+		return fssTradeRecordReadMapper.getSuccessAmt(applyNo);
+	}
 	
 	
 }
