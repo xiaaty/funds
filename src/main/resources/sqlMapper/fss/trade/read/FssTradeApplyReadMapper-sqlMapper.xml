@@ -64,8 +64,8 @@
 	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
 			<include refid="field"/>
 			WHERE t.apply_type=#{applyType}  and t.busi_type=#{busiType}
-			<if test="accNo != null and accNo != ''">
-				AND t.acc_no like CONCAT('%',#{accNo},'%')
+			<if test="applyNo != null and applyNo != ''">
+				AND t.apply_no like CONCAT('%',#{applyNo},'%')
 			</if>
 			<if test="businessNo != null and businessNo != ''">
 				AND t.business_no like CONCAT('%',#{businessNo},'%')

@@ -3,7 +3,6 @@ package com.gqhmt.sys.controller;
 
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.ResourceUtil;
-import com.gqhmt.sys.beans.MenuFunc;
 import com.gqhmt.sys.service.UserService;
 import com.octo.captcha.service.image.ImageCaptchaService;
 import org.springframework.stereotype.Controller;
@@ -50,12 +49,6 @@ public class LoginController {
 			
 		}
 
-        public String getUrl(MenuFunc func){
-            if(func.getIsChild() == false){
-                return func.getFuncUrl();
-            }
-            return getUrl(func.getChild().get(0));
-        }
 
 	@RequestMapping(value="/main")
 	public String menu(HttpServletRequest request, HttpServletResponse response){

@@ -10,13 +10,10 @@ import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.sys.service.BankDealamountLimitService;
-import com.gqhmt.sys.service.MenuService;
 import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.ServiceLoader;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,8 +32,6 @@ public class Application {
 		return application;
 	}
 
-	private final Map<Long,MenuEntity> menuMap = new ConcurrentHashMap<>();
-    private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<MenuEntity>());
 
     private final Map<String,String> dict = new ConcurrentHashMap<>();
     private final Map<String,DictEntity> dictEntityMap = new ConcurrentHashMap<>();
@@ -54,8 +49,6 @@ public class Application {
         synchronized (this){
             update();
         }
-        LogUtil.debug(this.getClass(),menus.toString());
-        LogUtil.debug(this.getClass(),menuMap.toString());
         LogUtil.debug(this.getClass(),dict.toString());
         LogUtil.debug(this.getClass(),dictEntityMap.toString());
         LogUtil.debug(this.getClass(),dictOrder.toString());
@@ -68,8 +61,6 @@ public class Application {
 
     public void reload(){
         synchronized (this){
-            menuMap.clear();
-            menus.clear();
             dict.clear();
             dictOrder.clear();
             merchantEntityMap.clear();
@@ -82,7 +73,6 @@ public class Application {
     }
 
     private void update(){
-        initMenu();
         initDict();
         initMerchant();
         initBankDealamountLimit();
@@ -241,32 +231,7 @@ public class Application {
     }
     /*======================================菜单初始化及应用========================================================*/
 
-    private void initMenu(){
-        MenuService menuService = com.gqhmt.util.ServiceLoader.get(MenuService.class);
-        List<MenuEntity> menus = menuService.findMenuAll();
-        LogUtil.debug(this.getClass(),menus.toString());
-        //循环菜单项，初始化菜单
-        for(MenuEntity menu:menus){
-            menuMap.put(Long.parseLong(menu.getId()),menu);
-            if(Integer.parseInt(menu.getParentId() )== 0){
-                this.menus.add(menu);
-            }
-        }
-        for(MenuEntity menu:menus){
-            if(Integer.parseInt(menu.getParentId() ) == 0){
-                continue;
-            }
-            Long parentId = Long.parseLong(menu.getParentId());
-            MenuEntity menu1 = menuMap.get(parentId);
-            if(menu1 != null){
-                menu1.addMenu(menu);
-            }
-        }
-    }
 
-    public String getMenu(String context,String url){
-        return this.getHtml(menus,context,url).toString();
-    }
 
     public StringBuffer getHtml(List<MenuEntity> func, String context, String url){
 

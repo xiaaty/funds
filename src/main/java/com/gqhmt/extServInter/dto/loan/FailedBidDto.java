@@ -1,11 +1,11 @@
 package com.gqhmt.extServInter.dto.loan;
-import java.math.BigDecimal;
-import java.util.List;
-
 import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 
@@ -49,7 +49,6 @@ public class FailedBidDto extends SuperDto {
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal pay_amt;			//放款金额
 
-    
     private List<LendingFeeListDto> fee_list;			//收费列表
     
     @APIValidNull(errorCode = "90004025")

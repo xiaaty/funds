@@ -50,7 +50,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-105"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -86,16 +86,6 @@
 										                    	<option  <c:if test="${traderecorder.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option>
 										                    </select>
                                                         </td> 
-                                                       <%--  <td class="tr">交易结果：</td>
-                                                        <td>
-                                                           <select id = "tradeResult" name = "tradeResult" style="width:150px;height: 30px;" >
-										                    	<option value="">请选择</option>
-										                    	<option  <c:if test="${traderecorder.tradeResult==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
-										                    	<option  <c:if test="${traderecorder.tradeResult==10080002}"> selected="selected" </c:if> value="10080002" >成功</option>
-										                    	<option  <c:if test="${traderecorder.tradeResult==10080003}"> selected="selected" </c:if> value="10080003" >部分成功</option>
-										                    	<option  <c:if test="${traderecorder.tradeResult==10080010}"> selected="selected" </c:if> value="10080010" >失败</option>
-										                    </select>
-                                                        </td> --%>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -110,7 +100,7 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-106"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>提现记录</h2>
@@ -125,37 +115,37 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="60" />
-                                        <col width="220" />
-                                        <col width="220" />
+                                    	<col width="100" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
                                         <col width="150" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="300"/>
+                                        <col width="150" />
+                                        <col width="150" />
                                         <thead>
                                         <tr>
                                               <td>编号</td>
+                                              <td>申请编号</td>
                                               <td>客户账号</td>
                                               <td>交易类型</td>
                                               <td>交易金额</td>
                                               <td>手续费</td>
                                               <td>第三方收费</td>
-                                              <td>申请编号</td>
                                               <td>交易状态</td>
                                               <td>交易结果</td>
                                               <td>交易描述</td>
                                               <td>创建时间</td>
                                               <td>修改时间</td>
-                                              <td>父商户号</td>
-                                              <td>子商户号</td>
+                                              <td>预约到账日期</td>
+                                              <td>商户号</td>
                                               <td>订单号</td>
                                         </tr>
                                         </thead>
@@ -163,18 +153,18 @@
                                              <c:forEach items="${page.list}" var="traderecorder">
                                                 <tr>
                                                     <td>${traderecorder.id}</td>
+                                                    <td>${traderecorder.applyNo}</td>
                                                     <td>${traderecorder.accNo}</td>
                                                     <td><fss:dictView key="${traderecorder.tradeTypeChild}" /></td>
                                                     <td>${traderecorder.amount}</td>
                                                     <td>${traderecorder.charge}</td>
                                                     <td>${traderecorder.thirdparytCharge}</td>
-                                                    <td>${traderecorder.applyNo}</td>
                                                     <td><fss:dictView key="${traderecorder.tradeState}" /></td>
                                                     <td><fss:dictView key="${traderecorder.tradeResult}" /></td>
                                                     <td>${traderecorder.sumary}</td>
                                                     <td><fss:fmtDate value="${traderecorder.createTime}"/></td>
                                                     <td><fss:fmtDate value="${traderecorder.modifyTime}"/></td>
-                                                    <td>${traderecorder.mchnParent}</td>
+                                                    <td><fss:fmtDate value="${traderecorder.bespokeDate}"/></td>
                                                     <td>${traderecorder.mchnChild}</td>
                                                     <td>${traderecorder.orderNo}</td>
                                                 </tr>

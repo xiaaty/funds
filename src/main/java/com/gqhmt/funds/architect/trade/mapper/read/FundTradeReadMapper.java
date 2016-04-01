@@ -32,4 +32,10 @@ public interface FundTradeReadMapper extends ReadMapper<FundTradeEntity> {
     public BigDecimal getSumBigDecimalByCus(Integer cusID);
 
     public List<FundTradeBean> queryFundTradeList(Map map);
+
+
+
+
+
+
 }

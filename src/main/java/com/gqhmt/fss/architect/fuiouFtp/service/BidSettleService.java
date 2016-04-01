@@ -74,16 +74,9 @@ public class BidSettleService {
 
     public void settle(FssLoanEntity loanEntity) throws FssException {
 
-
-
-
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
-            paramMap.put("type","2");
-        }else{
-            paramMap.put("type","1");
-        }
+
 
         Bid bid = null;
         List<Tender> list  = null;
@@ -97,6 +90,10 @@ public class BidSettleService {
 
        // List<FundOrderEntity> listFundOrder = fundOrderService.queryFundOrder(GlobalConstants.ORDER_SETTLE, GlobalConstants.BUSINESS_SETTLE, bid);
 
+
+        //验证标的金额与满标金额是否相等  todo
+
+        //抵押标抵押权人判断   todo
         Integer cusId = bid.getCustomerId();
 
         FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
@@ -157,9 +154,9 @@ public class BidSettleService {
            throw  e;
         }
 
-        //验证标的金额与满标金额是否相等  todo
 
 
+        //抵押标抵押权人判断   todo
         Integer cusId = bid.getCustomerId();
         FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         try {

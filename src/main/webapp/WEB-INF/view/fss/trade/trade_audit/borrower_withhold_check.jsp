@@ -67,8 +67,6 @@
                                                     <col width="112" />
                                                     <col />
                                                     <tbody>
-                                                    	<input type="hidden"  name="applyType" value="${tradeapply.applyType}"/>
-                                                    	<input type="hidden"  name="busiType" value="${tradeapply.busiType}"/>
                                                         <tr>
                                                             <td align="left">客户姓名：</td>
                                                             <td>
