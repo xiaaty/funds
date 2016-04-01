@@ -295,7 +295,7 @@ public class FssTradeApplyService {
 			 applyEntity.setTradeState("10090003");
 			 applyEntity.setModifyTime(new Date());
 			try {
-				if(!"".equals(applyEntity.getFormId())){
+				if(applyEntity.getFormId()!=null && !"".equals(applyEntity.getFormId())){
 					fssRepaymentService.changeTradeStatus(applyEntity.getFormId());
 					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				}else{
