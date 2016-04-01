@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -33,7 +34,10 @@ public class FssBeanUtilTest {
 
         for(PropertyDescriptor propertyDescriptor:list1){
             System.out.println(propertyDescriptor);
-            //System.out.println(propertyDescriptor.getReadMethod().getName()+propertyDescriptor.getWriteMethod().getName());
+            Method getMethod = propertyDescriptor.getReadMethod();
+            Method setMethod = propertyDescriptor.getWriteMethod();
+            System.out.println(getMethod != null ?getMethod.getName():"无");
+            System.out.println(setMethod != null ?setMethod.getName():"无");
         }
 
         assert list.size()>0 && list1.size()>0;
