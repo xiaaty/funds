@@ -242,6 +242,10 @@ public class GlobalConstants {
     public static Map<String,String> TRADE_APPLY_NO__MAPPING = new ConcurrentHashMap<>();
     
 
+    //业务类型与交易类型匹配
+    public static Map<Integer,Integer> TRADE_BUSINESS_TYPE__MAPPING = new ConcurrentHashMap<>();
+
+
 	
 	public static Object getSession(HttpServletRequest request,String name){
 		return request.getSession(true).getAttribute(name);
@@ -603,8 +607,18 @@ public class GlobalConstants {
         TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
         TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
         TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
-
-
+        
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030004,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030005,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030006,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030007,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11093001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11090001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11091001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040005,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040006,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040007,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040004,2);//2出借
 
 
 	}

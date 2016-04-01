@@ -39,5 +39,7 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	public List<BussAndAccountBean> getBussinessAccountList(Map map);
 
 	public FssAccountEntity findAccountByAccNo(@Param("accNo") String accNo);
+	
+//	public FssAccountEntity findAccountByCustId(@Param("custId") Long custId);
 
 }

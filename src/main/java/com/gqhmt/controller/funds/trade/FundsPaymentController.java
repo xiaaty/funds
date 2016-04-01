@@ -41,7 +41,7 @@ public class FundsPaymentController {
 		model.addAttribute("repayment", repayment);
 		return "fss/trade/repaymentlist";
 	}
-   
+    
 	/**
 	 * author:柯禹来
 	 * function:借款代扣明细

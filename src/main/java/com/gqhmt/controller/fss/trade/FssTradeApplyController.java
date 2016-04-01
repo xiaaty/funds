@@ -2,7 +2,7 @@ package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.backplate.service.FssFssBackplateService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class FssTradeApplyController {
     @Resource
     private FssTradeRecordService fssTradeRecordService;
     @Resource
-	private FssFssBackplateService fssFssBackplateService;
+	private FssBackplateService fssBackplateService;
     @Resource
     private FssCustomerService fssCustomerService;
     /**
@@ -70,29 +71,13 @@ public class FssTradeApplyController {
 	 */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryMortgageeList(HttpServletRequest request, ModelMap model, FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-    	Map map=new HashMap();
-    	String startime=request.getParameter("startime");
-		String endtime=request.getParameter("endtime");
-		map.put("applyType", type);
+    public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
+	    map.put("applyType",type.toString());
 		map.put("busiType", bus);
-		if(StringUtils.isNotEmptyString(startime)){
-			map.put("startime", startime+" 00:00:00");
-    	}
-		if(StringUtils.isNotEmptyString(endtime)){
-			map.put("endtime", endtime+" 23:59:59");
-		}
-    	if(!"".equals(tradeApply.getAccNo())){
-    		map.put("accNo", tradeApply.getAccNo());
-        }
-    	if(!"".equals(tradeApply.getBusinessNo())){
-    		map.put("businessNo", tradeApply.getBusinessNo());
-    	}
         List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
-        model.addAttribute("startime",startime);
-    	model.addAttribute("endtime",endtime);
+        model.put("map", map);
     	if(type==1103){//充值
     		 return "fss/trade/mortgaee_list";
     	}else{//提现withdraw
@@ -142,7 +127,7 @@ public class FssTradeApplyController {
 			model.addAttribute("custMobile","");
 		}
 		
-		if(type==1103){
+		if(type==1103){//充值
 			return "fss/trade/trade_audit/borrower_withhold_check";
 		}else{
 			return "fss/trade/trade_audit/borrower_withdraw_check";
@@ -175,18 +160,14 @@ public class FssTradeApplyController {
 			try {
 				if(applyType==1104){//提现
 					tradeapply.setBespokedate(sdf.parse(bespokedate));
-				}else{//充值
-					tradeapply.setBespokedate(null);
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			splitCount = fssTradeRecordService.moneySplit(tradeapply);//金额拆分
-			tradeapply.setCount(splitCount);
-			fssTradeApplyService.updateTradeApply(tradeapply);
-			fssFssBackplateService.createFssBackplateEntity(tradeapply);
+			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());
 		}else{//不通过，添加回盘记录
-			fssFssBackplateService.createFssBackplateEntity(tradeapply);
+			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getApplyType().toString());
 		}
 		map.put("code", "0000");
         map.put("message", "success");

@@ -1,6 +1,8 @@
 package com.gqhmt.extServInter.dto.loan;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 import com.gqhmt.annotations.APIValidNull;
 /**
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -34,6 +36,10 @@ public class RepaymentChildDto{
     private BigDecimal amt;       //还款金额
     
     private String remark;    //还款备注
+    
+    private Date complete_time;		//完成时间
+    
+    private String accounting_no;	//账务流水号
     
 	public String getSerial_number() {
 		return serial_number;
@@ -71,6 +77,18 @@ public class RepaymentChildDto{
 	}
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
+	}
+	public Date getComplete_time() {
+		return complete_time;
+	}
+	public void setComplete_time(Date complete_time) {
+		this.complete_time = complete_time;
+	}
+	public String getAccounting_no() {
+		return accounting_no;
+	}
+	public void setAccounting_no(String accounting_no) {
+		this.accounting_no = accounting_no;
 	}
     
 }

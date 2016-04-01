@@ -2,23 +2,30 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.sys.service.BankDealamountLimitService;
+import com.gqhmt.util.ThirdPartyType;
+
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -62,6 +69,9 @@ public class FssTradeRecordService {
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
+	@Resource
+	private FundsTradeImpl fundsTradeImpl;
+	
 	/**
 	 * 
 	 * author:jhz
@@ -141,9 +151,7 @@ public class FssTradeRecordService {
 	 */
 	public List<FssTradeRecordEntity> findNotExecuteRecodes(){
 		//查询出处于划扣中的申请
-			FssTradeRecordEntity record=new FssTradeRecordEntity();
-			record.setTradeState(98070001);
-			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.select(record);
+			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.selectByTradeState(98070001);
 			return tradeRecordList;
 	}
 
@@ -153,11 +161,17 @@ public class FssTradeRecordService {
 	 * @param state	
 	 * TradeResult: 98060001交易成功,98060003交易失败					
      */
-	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String errCode){
+	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String errCode) {
+		Date date=new Date();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		DateFormat df3 = DateFormat.getTimeInstance();//只显示出时分秒
+	    String time=df3.format(date);
 		fssTradeRecordEntity.setTradeResult((state == 1?98060001:98060003));//(state == 1?"":"")
 		fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
 		fssTradeRecordEntity.setSumary(errCode);
 		fssTradeRecordEntity.setModifyTime(new Date());
+		fssTradeRecordEntity.setTradeDate(sdf.format(new Date()));
+		fssTradeRecordEntity.setTradeTime(time.replace(":",""));
 		fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
 		//Apply 执行数量更新
 		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
@@ -212,13 +226,21 @@ public class FssTradeRecordService {
 	 * @throws FssException
 	 * 柯禹来
 	 */
-	public int  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+	public void  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+			FssTradeRecordEntity tradeRecordEntity=null;
 			//限额
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
-			
-			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
-			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getRealTradeAmount());
-			return moneySplit;
+			tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
+			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
+			//更新申请表该条数据拆分总条数
+			fssTradeApplyEntity.setCount(moneySplit);
+			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
+			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
+			if(fssTradeApplyEntity.getApplyType()==1104){//	提现申请处理完成后冻结金额
+				fundsTradeImpl.froze(fssTradeApplyEntity.getCustId(),Integer.valueOf(fssTradeApplyEntity.getBusiType()),fssTradeApplyEntity.getTradeAmount());
+			}
+
 	}
 	/**
 	 * 
@@ -231,10 +253,10 @@ public class FssTradeRecordService {
 		FssTradeRecordEntity tradeRecordEntity=null;
 		tradeRecordEntity=this.creatTradeRecordEntity(fssTradeApplyEntity);
 		//交易额
-		BigDecimal realTradeAmount = fssTradeApplyEntity.getRealTradeAmount();
+		BigDecimal tradeAmount = fssTradeApplyEntity.getTradeAmount();
 		//限额
 		BigDecimal limitAmount =this.getLimit(fssTradeApplyEntity.getAccNo(),type);
-		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, realTradeAmount);
+		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, tradeAmount);
 		//更新申请表该条数据拆分总条数
 		fssTradeApplyEntity.setCount(moneySplit);
 		fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
@@ -248,12 +270,17 @@ public class FssTradeRecordService {
 	 */
 	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
+		int settleType=0;
+		if(fssTradeApplyEntity.getBespokedate()!=null){//结算类型0：T+0,1：T+1
+			settleType=fssTradeApplyService.compare_date(fssTradeApplyEntity.getBespokedate());
+			tradeRecordEntity.setSettleType(settleType);
+		}
 		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
 		tradeRecordEntity.setTradeType(fssTradeApplyEntity.getApplyType());
+		tradeRecordEntity.setTradeTypeChild(Integer.valueOf(fssTradeApplyEntity.getBusiType()));
 		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
-		tradeRecordEntity.setMchnParent(fssTradeApplyEntity.getMchnParent());
+		tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
 		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
-		tradeRecordEntity.setTradeTypeChild(0);
 		tradeRecordEntity.setTradeDate("0");
 		tradeRecordEntity.setTradeTime("0");
 		tradeRecordEntity.setBespokeDate(fssTradeApplyEntity.getBespokedate());
@@ -263,12 +290,7 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setCreateTime(new Date());
 		tradeRecordEntity.setModifyTime(new Date());
 		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
-		try {
-			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			throw new FssException("91009804");
-		}
+		tradeRecordEntity.setCustId(fssTradeApplyEntity.getCustId());
 		return tradeRecordEntity;
 	}
 	
@@ -302,17 +324,17 @@ public class FssTradeRecordService {
 	 * limitAmount:限额
 	 * realTradeAmount:实际交易额
 	 */
-	public  int moneySplit(FssTradeRecordEntity tradeRecordEntity,BigDecimal limitAmount,BigDecimal realTradeAmount) throws FssException{
+	public  int moneySplit(FssTradeRecordEntity tradeRecordEntity,BigDecimal limitAmount,BigDecimal tradeAmount) throws FssException{
 		int count=0;
 		//金额是否超过银行代付单笔上限
 		//否
-		if(realTradeAmount .compareTo(limitAmount)<=0){
-		tradeRecordEntity.setAmount(realTradeAmount);
+		if(tradeAmount.compareTo(limitAmount)<=0){
+		tradeRecordEntity.setAmount(tradeAmount);
 		fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 		count=1;
 		}else {
 			//金额超过银行代付单笔上限
-			BigDecimal bg[] = realTradeAmount.divideAndRemainder(limitAmount);
+			BigDecimal bg[] = tradeAmount.divideAndRemainder(limitAmount);
 			int splitCount = bg[0].intValue();
 			BigDecimal lastamount = bg[1];
 			//判断是否除尽
@@ -334,7 +356,6 @@ public class FssTradeRecordService {
 					fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 				}
 			}
-			
 		}
 		return count;
 	}

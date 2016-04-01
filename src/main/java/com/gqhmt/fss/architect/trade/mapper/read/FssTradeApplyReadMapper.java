@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
@@ -47,4 +46,24 @@ public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity>
 	 * @return
 	 */
 	public FssTradeApplyBean queryFssTradeApply(@Param("applyNo")String applyNo);
+	
+	/**
+	 * 根据申请单号获取FssTradeApplyEntity
+	 */
+	public FssTradeApplyEntity selectFssTradeApplyEntityByApplyNo(@Param("applyNo")String applyNo);
+	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月29日
+	 * function：根据申请编号查询申请对象信息
+	 */
+	public FssTradeApplyEntity selectByApplyNo(@Param("applyNo")String applyNo);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月29日
+	 * function：根据申请编号查询申请对象信息
+	 */
+	public List<FssTradeApplyEntity> selectByTradeState(@Param("tradeState")String tradeState);
 }

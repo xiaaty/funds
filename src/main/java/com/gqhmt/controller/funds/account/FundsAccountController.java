@@ -177,7 +177,7 @@ public class FundsAccountController {
 //                }
 		try {
 			fundsTradeImpl.withholdingApply(custId, businessType, null, amount, null);
-			map.put("tips", "提现成功!!");
+			map.put("tips", "代扣成功!!");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e.getMessage(), e);
 			map.put("tips", "代扣失败!!" + e.getMessage());
