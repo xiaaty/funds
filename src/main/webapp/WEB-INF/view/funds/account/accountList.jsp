@@ -130,17 +130,17 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1250px;">
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
                                         <thead>
                                         <tr>
                                               <td>客户姓名</td>

@@ -237,9 +237,9 @@ public class FssTradeRecordService {
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
 			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
-			if(fssTradeApplyEntity.getApplyType()==1104){//	提现申请处理完成后冻结金额
+			/*if(fssTradeApplyEntity.getApplyType()==1104){//	提现申请处理完成后冻结金额
 				fundsTradeImpl.froze(fssTradeApplyEntity.getCustId(),Integer.valueOf(fssTradeApplyEntity.getBusiType()),fssTradeApplyEntity.getTradeAmount());
-			}
+			}*/
 
 	}
 	/**

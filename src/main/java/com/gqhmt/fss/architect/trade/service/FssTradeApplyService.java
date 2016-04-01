@@ -310,7 +310,6 @@ public class FssTradeApplyService {
 					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				}else{
 					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
-					
 				}
 				//创建回盘信息
 				fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getApplyType().toString());
