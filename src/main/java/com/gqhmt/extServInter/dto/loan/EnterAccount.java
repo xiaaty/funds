@@ -1,8 +1,8 @@
 package com.gqhmt.extServInter.dto.loan;
-import java.util.List;
-
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.fss.architect.loan.bean.SettleListBean;
+
+import java.util.List;
 
 /**
  * 
@@ -46,7 +46,8 @@ public class EnterAccount {
 	 @APIValidNull(errorCode = "90004025")
     private String loan_platform;			//借款平台
 
-    
+
+	@APIValidNull(errorCode = "90004028")
     private List<SettleListBean> settle_list;			//清算列表
     
 

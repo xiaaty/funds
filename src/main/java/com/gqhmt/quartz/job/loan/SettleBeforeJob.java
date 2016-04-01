@@ -34,6 +34,7 @@ public class SettleBeforeJob extends SupperJob {
     @Resource
     private BidSettleService settleService;
 
+
     public void execute(){
         //获取需满标转账功能列表 抵押权人提现\信用标放款
 

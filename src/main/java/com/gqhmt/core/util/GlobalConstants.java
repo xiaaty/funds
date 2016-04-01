@@ -1,15 +1,11 @@
 package com.gqhmt.core.util;
 
-import com.gqhmt.sys.beans.SysAuthFunc;
 import com.gqhmt.sys.beans.SysUsers;
 import com.gqhmt.util.Pager;
-import com.gqhmt.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -198,10 +194,8 @@ public class GlobalConstants {
 	
 	public static Map<Long,String> bankAccountMap = new LinkedHashMap<>();
     public static Map<Long,String> thirdAccountMap = new LinkedHashMap<>();
-	public static Map<Long,SysAuthFunc> funcMap=new LinkedHashMap<Long,SysAuthFunc>();
 	public static Map<Long,SysUsers> usersMap=new ConcurrentHashMap<Long,SysUsers>();
 	public static Map<Long,String> roleMap=new ConcurrentHashMap<Long,String>();
-    public static List<SysAuthFunc> allMenu = new LinkedList<>();
 
 
     public static Map<Integer,Integer> iconMap=new ConcurrentHashMap<Integer,Integer>();
@@ -247,28 +241,10 @@ public class GlobalConstants {
 
     public static Map<String,String> TRADE_APPLY_NO__MAPPING = new ConcurrentHashMap<>();
     
+
     //业务类型与交易类型匹配
     public static Map<Integer,Integer> TRADE_BUSINESS_TYPE__MAPPING = new ConcurrentHashMap<>();
-    
-    private static long getMenuId(Long fid) {
-        if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
-            return fid;
-        return getMenuId(GlobalConstants.funcMap.get(fid).getParentId());
 
-    }
-
-    public static long getMenuParentId(String url) {
-        if (StringUtils.isEmpty(url))
-            return 0;
-        for (SysAuthFunc func1 : GlobalConstants.funcMap.values()) {
-            if (url.equalsIgnoreCase(func1.getFuncUrl())) {
-                if (func1.getIsMenu() == 1)
-                    return func1.getFuncId();
-                return getMenuId(func1.getParentId());
-            }
-        }
-        return 0;
-    }
 
 	
 	public static Object getSession(HttpServletRequest request,String name){
@@ -642,7 +618,7 @@ public class GlobalConstants {
         TRADE_BUSINESS_TYPE__MAPPING.put(11040005,1);//借款 1
         TRADE_BUSINESS_TYPE__MAPPING.put(11040006,1);//借款 1
         TRADE_BUSINESS_TYPE__MAPPING.put(11040007,1);//借款 1
-        TRADE_BUSINESS_TYPE__MAPPING.put(11040004,2);//出借 2
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040004,2);//2出借
 
 
 	}

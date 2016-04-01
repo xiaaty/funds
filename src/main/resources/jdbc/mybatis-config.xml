@@ -8,12 +8,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
     </settings>
 	<typeAliases >
 	    <!-- 系统相关 -->
-		<typeAlias type="com.gqhmt.sys.beans.SysUsers" alias="SysUsers"/>
-		<typeAlias type="com.gqhmt.sys.beans.SysAuth" alias="SysAuth"/>
-		<typeAlias type="com.gqhmt.sys.beans.Roles" alias="Roles"/>
-		<typeAlias type="com.gqhmt.sys.beans.FuncList" alias="FuncList"/>
-		<typeAlias type="com.gqhmt.sys.beans.SysAuthFunc" alias="SysAuthFunc"/>
-		<typeAlias type="com.gqhmt.sys.beans.SysLog" alias="SysLog"/>
 		<typeAlias type="com.gqhmt.sys.entity.DictEntity" alias="DictMain"/>
 		<typeAlias type="com.gqhmt.sys.entity.DictOrderEntity" alias="DictOrder"/>
 		

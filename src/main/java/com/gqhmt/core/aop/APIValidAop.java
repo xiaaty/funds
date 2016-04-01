@@ -108,10 +108,10 @@ public class APIValidAop {
         String resCode = response.getResp_code();
         if(resCode != null && Integer.parseInt(resCode) == 0){
             resCode = "00000000";
+            response.setResp_code(resCode);
         }
         String resMsg = Application.getInstance().getDictName(response.getResp_code());
         //处理成功返回值
-        response.setResp_code(resCode);
         response.setResp_msg(resMsg);
 
 
@@ -126,9 +126,9 @@ public class APIValidAop {
      * 数据校验
      * @param dto
      */
-    private void validData(SuperDto dto) throws FssException {
-        Class<SuperDto> dtoClass = (Class<SuperDto>) dto.getClass();
-        Class<SuperDto> superDtoClass = (Class<SuperDto>) dtoClass.getSuperclass();
+    private void validData(Object dto) throws FssException {
+        Class dtoClass =  dto.getClass();
+        Class superDtoClass = dtoClass.getSuperclass();
         Field[] fields  = dtoClass.getDeclaredFields();
         Field[] superFields= superDtoClass.getDeclaredFields();
         for(Field field:superFields){
