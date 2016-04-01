@@ -1,7 +1,8 @@
 package com.gqhmt.extServInter.dto.loan;
-import java.util.List;
-
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
+
+import java.util.List;
 
 /**
  * 
@@ -22,6 +23,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class EnterAccountDto extends SuperDto {
 
+	@APIValidNull(errorCode = "90004029")
 	private List<EnterAccount> enter_account;
 
 	public List<EnterAccount> getEnter_account() {
