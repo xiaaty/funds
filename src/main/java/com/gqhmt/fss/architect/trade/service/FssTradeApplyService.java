@@ -12,6 +12,7 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
@@ -68,6 +69,8 @@ public class FssTradeApplyService {
 	private FssBackplateService fssBackplateService;
 	@Resource
 	private FssTradeRecordService fssTradeRecordService;
+	@Resource
+	private FssLoanService fssLoanService;
 	
 	
 	/**
@@ -249,6 +252,7 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setBusiType(fssLoanEntity.getTradeType());
 			tradeApplyEntity.setApplyType(1103);
+//			tradeApplyEntity.setFormId(fssLoanEntity.getId());
 			tradeApplyEntity.setApplyState(applyStatus);
 			tradeApplyEntity.setTradeState("10090002");
 			tradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getApplyNo(tradeType));
@@ -295,12 +299,17 @@ public class FssTradeApplyService {
 			 applyEntity.setTradeState("10090003");
 			 applyEntity.setModifyTime(new Date());
 			try {
-				if(applyEntity.getFormId()!=null && !"".equals(applyEntity.getFormId())){
-					fssRepaymentService.changeTradeStatus(applyEntity.getFormId());
+				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
+					if(applyEntity.getBusiType()=="11090001"){
+						FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+						fssLoanEntityById.setRepCode("98060001");
+						fssLoanService.update(fssLoanEntityById);
+					}else{
+						fssRepaymentService.changeTradeStatus(applyEntity.getFormId());
+					}
 					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				}else{
 					fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
-					
 				}
 				//创建回盘信息
 				fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getApplyType().toString());

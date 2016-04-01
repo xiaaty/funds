@@ -10,10 +10,13 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,9 +30,18 @@ public class FssCustomerService {
     @Resource
     private FssCustomerWriteMapper customerWriteMapper;
    
-    public List<FssCustomerEntity> findCustomerByParams(Map map){
-    	
-        return this.customerReadMapper.findCustomerByParams(map);
+    public List<FssCustomerEntity> findCustomerByParams(Map<String,String> map){
+    	Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("name",map.get("name")!=null ? map.get("name") : null);
+			map2.put("certNo", map.get("certNo")!=null ? map.get("certNo") : null);
+			map2.put("mobile", map.get("mobile")!=null ? map.get("mobile") : null);
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+        return this.customerReadMapper.findCustomerByParams(map2);
     }
 
     /**

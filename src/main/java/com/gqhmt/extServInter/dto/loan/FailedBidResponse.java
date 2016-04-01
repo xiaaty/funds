@@ -38,15 +38,14 @@ public class FailedBidResponse extends Response {
     
     private List<LendingFeeListDto> fee_list;			//收费列表
     
-    private String loanPlatform   ;                                //费用平台     YES             (NULL)                   select,insert,update,references  账户总资产
+    private String loan_platform   ;                                //费用平台     YES             (NULL)                   select,insert,update,references  账户总资产
 
-
-	public String getLoanPlatform() {
-		return loanPlatform;
+	public String getLoan_platform() {
+		return loan_platform;
 	}
 
-	public void setLoanPlatform(String loanPlatform) {
-		this.loanPlatform = loanPlatform;
+	public void setLoan_platform(String loan_platform) {
+		this.loan_platform = loan_platform;
 	}
 
 	public String getContract_id() {

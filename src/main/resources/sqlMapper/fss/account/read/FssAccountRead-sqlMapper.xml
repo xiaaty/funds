@@ -4,7 +4,7 @@
 
 
 
-	<select id="findCustomerAccountByParams" parameterType="java.util.Map" resultType="fssAccountEntity">
+	<select id="findCustomerAccountByParams" parameterType="fssAccountEntity" resultType="fssAccountEntity">
 		SELECT 
 			id,
 			acc_no accNo,
@@ -17,14 +17,6 @@
 		FROM 
 			t_gq_fss_account t
 		WHERE t.cust_no = #{custNo}
-		
-		<if test="accNo != null and accNo != '' ">
-        AND t.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
-        </if>
-       <if test="startDate != null and startDate != '' and endDate!=null and endDate!=''">
-        AND t.create_time BETWEEN DATE_FORMAT(#{startDate},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endDate},'%Y%m%d%H%i%s')
-       </if>
-		
 	</select>
 	
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">

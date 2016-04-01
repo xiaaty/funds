@@ -27,6 +27,7 @@ public class EnterAccount {
 	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//合同ID
 	
+	@APIValidNull(errorCode = "90002022")
 	private String contract_no;			//合同编号
 	
 	@APIValidNull(errorCode = "90002019")
