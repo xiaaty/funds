@@ -2,7 +2,6 @@ package com.gqhmt.extServInter.dto.loan;
 
 import java.math.BigDecimal;
 
-import com.gqhmt.annotations.APIValidNull;
 
 /**
  * Filename:    com.gqhmt.extServInter.dto.loan.LendingFeeListDto

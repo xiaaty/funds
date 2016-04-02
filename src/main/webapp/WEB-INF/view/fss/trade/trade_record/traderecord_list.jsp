@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>代扣审核--抵押权人代扣详细--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>代扣审核--资金详细--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
    <%@include file="../../../../view/include/common_css_js.jsp"%>
@@ -41,8 +41,7 @@
     <div id="ribbon">
         <ol class="breadcrumb">
             <li>交易审核</li>
-            <li>代扣审核</li>
-            <li>抵押权人代扣详细</li>
+            <li>资金详细</li>
         </ol>
     </div>
 
@@ -50,7 +49,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-99"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -69,29 +68,14 @@
                                                 <col />
                                                 <tbody>
                                                     <tr>
-                                                    	<td></td>
-                                                        <td class="tr">创建日期：</td>
-			                                             <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
-			                                                    </label>
-			                                                </section>
-			                                            </td>
 			                                            <td class="tr">交易状态：</td>
                                                         <td>
-                                                            <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
+                                                            <select id = "tradeState" name = "tradeState" style="width:250px;height: 30px;">
 										                    	<option value="">请选择</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option>
+										                    	<%-- <option  <c:if test="${traderecord.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option> --%>
 										                    	<option  <c:if test="${traderecord.tradeState==10030002}"> selected="selected" </c:if> value="10030002" >交易成功</option>
 										                    	<option  <c:if test="${traderecord.tradeState==10030003}"> selected="selected" </c:if> value="10030003" >交易失败</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option>
+										                    	<%-- <option  <c:if test="${traderecord.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option> --%>
 										                    </select>
                                                         </td> 
                                                     </tr>
@@ -108,10 +92,10 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-100"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>抵押权人代扣详细</h2>
+                            <h2>资金详细</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -122,7 +106,10 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                               		 <div class="mb20" id="wid-id-713">
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="javascript:history.back(-1);"><i class="fa fa-minus"></i>返回</button>
+                                      </div>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1100px;">
                                     	<col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -133,22 +120,17 @@
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
                                         <thead>
                                         <tr>
                                              <td>申请单号</td>
-                                             <td>客户编号</td>
-                                             <td>交易类型</td>
+                                             <td>资金编号</td>
                                              <td>交易金额</td>
                                              <td>交易状态</td>
                                              <td>交易结果</td>
+                                             <td>交易描述</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
-                                             <td>子商户号</td>
+                                             <td>商户号</td>
                                              <td>交易渠道</td>
                                         </tr>
                                         </thead>
@@ -157,10 +139,10 @@
                                                 <tr>
                                                     <td>${traderecord.applyNo}</td>
                                                     <td>${traderecord.accNo}</td>
-                                                    <td><fss:dictView key="${traderecord.tradeType}" /></td>
-                                                    <td>${traderecord.amount}</td>
-                                                    <td><fss:dictView key="${traderecord.tradeState}" /></td>
+                                                    <td><fss:money money="${traderecord.amount}"/></td>
+                                                    <td><fss:dictView key="${traderecord.tradeState}"/></td>
                                                     <td><fss:dictView key="${traderecord.tradeResult}" /></td>
+                                                    <td><fss:dictView key="${traderecord.respCode}" /></td>
                                                     <td><fss:fmtDate value="${traderecord.createTime}"/></td>
                                                     <td><fss:fmtDate value="${traderecord.modifyTime}"/></td>
                                                     <td>${traderecord.mchnChild}</td>

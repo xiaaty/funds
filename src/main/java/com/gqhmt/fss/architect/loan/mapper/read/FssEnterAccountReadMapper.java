@@ -19,7 +19,7 @@ import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月15日
- * Description:	入账mapper
+ * Description:	入账子表mapper
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -33,27 +33,6 @@ public interface FssEnterAccountReadMapper extends ReadMapper<FssEnterAccountEnt
 		 * time:2016年3月9日
 		 * function：入账回盘
 		 */
-		List<FssEnterAccountEntity> getEnterAccount(Map<String, String> map)throws FssException;
-		/**
-		 * 
-		 * author:jhz
-		 * time:2016年3月15日
-		 * function：得到入账表
-		 */
-		List<EnterAccountBean> getEnterAccountEntities(Map map);
-		/**
-		 * 
-		 * author:jhz
-		 * time:2016年3月15日
-		 * function：根据流水号得到相应的每一批的交易成功数量
-		 */
-		int getIsTrue(String seqNo);
-		/**
-		 * 
-		 * author:jhz
-		 * time:2016年3月16日
-		 * function：根据流水号查看该批流水详情
-		 */
-		List<FssEnterAccountEntity> getDetail(String seqNo);
+		List<FssEnterAccountEntity> getEnterAccounts(Long parentId);
 	
 }

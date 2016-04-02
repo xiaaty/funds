@@ -1,16 +1,17 @@
 package com.gqhmt.extServInter.service.p2p.impl;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.p2p.FullBidApplyDto;
+import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
 import com.gqhmt.extServInter.service.p2p.IFullBidApply;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 
@@ -36,10 +37,13 @@ public class FullBidApplyImpl implements IFullBidApply {
 	@Resource
 	private FssLoanService loanService;
 	
-    public Response excute(SuperDto dto) {
+	@Override
+	@APITradeTypeValid(value = "11099005")
+	@APISignature
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		loanService.insertFullBidApply((FullBidApplyDto)dto);
+    		loanService.insertFullBidApply((BidApplyDto)dto);
 			 response.setResp_code("00000000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

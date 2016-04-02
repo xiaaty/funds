@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper">
 	<!--根据申请单号查询 代扣详细信息列表 -->
-	<select id="queryFssTradeRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
-		SELECT 
+	<sql id="selectSql">
+	SELECT 
 			t.id id,
 			t.cust_no custNo,
 			t.user_no userNo,
@@ -28,6 +28,10 @@
 			t.order_no orderNo,
 			t.channel_no channelNo
 		FROM t_gq_fss_trade_record t 
+	</sql>
+	
+	<select id="queryFssTradeRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+		<include refid="selectSql"/>
 		<where>
 			<if test="applyNo != null and applyNo != ''">
 				AND t.apply_no=#{applyNo}
@@ -35,10 +39,11 @@
 			<if test="tradeState != null and tradeState != ''">
 				AND t.trade_state =#{tradeState}
 			</if>
-			<if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
-				AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
-			</if>
 		</where>
+	</select>
+	<select id="selectByTradeState"   resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+		<include refid="selectSql"/>
+		where t.trade_state =#{tradeState}
 	</select>
 	
 	

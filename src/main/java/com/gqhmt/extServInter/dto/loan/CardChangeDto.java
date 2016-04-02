@@ -32,7 +32,8 @@ public class CardChangeDto extends SuperDto {
     @APIValidNull(errorCode = "90004023")
     private String acc_no;          //借款人资金平台账号
     
-    private String fileName;        //文件名
+    private String file_path;        //文件名
+    
 	public String getBank_id() {
 		return bank_id;
 	}
@@ -57,11 +58,11 @@ public class CardChangeDto extends SuperDto {
 	public void setAcc_no(String acc_no) {
 		this.acc_no = acc_no;
 	}
-	public String getFileName() {
-		return fileName;
+	public String getFile_path() {
+		return file_path;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFile_path(String file_path) {
+		this.file_path = file_path;
 	}
 	
 }

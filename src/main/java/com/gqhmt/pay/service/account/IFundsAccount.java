@@ -71,7 +71,7 @@ public interface IFundsAccount {
      * @param custID         客户id
      * @throws FssException
      */
-    public boolean dropAccount(String thirdPartyType, int custID) throws FssException;
+    public boolean dropAccount(String thirdPartyType, Long custID) throws FssException;
 
 
     /**
@@ -81,7 +81,7 @@ public interface IFundsAccount {
      * @param custID         客户id
      * @throws FssException
      */
-    public boolean checkDropAccount(String thirdPartyType, int custID) throws FssException;
+    public boolean checkDropAccount(String thirdPartyType, Long custID) throws FssException;
 
 
 
@@ -103,7 +103,7 @@ public interface IFundsAccount {
      * @param hz                        汇总
      * @throws FssException
      */
-    public boolean setMms(String thirdPartyType,Integer cusId,String cztx,String cz ,String rz,String hz) throws FssException;
+    public boolean setMms(String thirdPartyType,Long cusId,String cztx,String cz ,String rz,String hz) throws FssException;
     
     /**
      * 查询用户账户余额

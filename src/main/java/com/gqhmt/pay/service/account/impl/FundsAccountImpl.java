@@ -80,7 +80,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	public boolean createAccount(CustomerInfoEntity customerInfoEntity,
 						String pwd, String taradPwd) throws FssException {
 
-		Integer cusId = customerInfoEntity.getId();
+		Long cusId = customerInfoEntity.getId();
 
 		Integer userId = customerInfoEntity.getUserId();
 
@@ -110,7 +110,7 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param custID         客户id
      * @throws FssException
      */
-	public boolean dropAccount(String thirdPartyType, int custID) throws FssException {
+	public boolean dropAccount(String thirdPartyType, Long custID) throws FssException {
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(custID);
 		paySuperByFuiou.dropAccount(primaryAccount,"1");
 		return true;
@@ -123,7 +123,7 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param custID         客户id
      * @throws FssException
      */
-	public boolean checkDropAccount(String thirdPartyType, int custID)
+	public boolean checkDropAccount(String thirdPartyType, Long custID)
 			throws FssException {
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(custID);
 		paySuperByFuiou.dropAccount(primaryAccount,"2");
@@ -136,7 +136,7 @@ public class FundsAccountImpl implements IFundsAccount {
      * @throws FssException
      */
 	public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException {
-		Integer cusId = Integer.parseInt(changeBankCardDto.getCust_no());
+		Long cusId = Long.valueOf(changeBankCardDto.getCust_no());
 		String cardNo = changeBankCardDto.getBank_card();
 		String bankCd = changeBankCardDto.getBank_id();
 		String cityId = changeBankCardDto.getCity_id();
@@ -157,7 +157,7 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param hz                        汇总
      * @throws FssException
      */
-	public boolean setMms(String thirdPartyType, Integer cusId,
+	public boolean setMms(String thirdPartyType, Long cusId,
 			String cztx, String cz, String rz, String hz) throws FssException {
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
 		paySuperByFuiou.setMms(primaryAccount,cztx,cz,rz,hz);
@@ -172,7 +172,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	}
 
 
-	private FundAccountEntity getPrimaryAccount(Integer cusId){
+	private FundAccountEntity getPrimaryAccount(Long cusId){
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 		return primaryAccount;
 	}
@@ -183,7 +183,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	 public FundAccountEntity getAccountBanlance(AssetDto accessdto) throws FssException{
 //		 FundAccountEntity primaryAccount = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 //		 FundAccountEntity account = fundAccountService.getFundAccount(Integer.parseInt(accessdto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-		 int cust_no=Integer.parseInt(accessdto.getCust_no());
+		 Long cust_no=Long.valueOf(accessdto.getCust_no());
 		 int busi_type=accessdto.getBusi_type();
 		 FundAccountEntity account = fundAccountService.getAccountBanlance(cust_no,busi_type);
 		 if(account==null){
@@ -223,7 +223,7 @@ public class FundsAccountImpl implements IFundsAccount {
 		 			if(bankCardInfoEntity!=null){
 		 				try {
 		 					//将变更银行卡信息插入到银行卡变更表
-		 					FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "", cardChangeDto.getCity_id(), cardChangeDto.getFileName(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
+		 					FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "", cardChangeDto.getCity_id(), cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
 							fssChangeCardService.insert(fssChangeCardEntity);
 							//银行卡变更记录插入成功之后，进入跑批处理
 		 				} catch (FssException e) {

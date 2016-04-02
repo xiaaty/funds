@@ -72,6 +72,12 @@ public class UrlConnectUtil {
         return JsonUtil.getInstance().parseJson(result,tClass);
     }
 
+    public static <T> T sendJsonDataReturnObjectUrl(Class<T> tClass, String url, String param) throws FssException {
+        InputStream inputStream = urlConnectUtil.sendJsonData(url,param);
+        String result = urlConnectUtil.parseResponse(inputStream);
+        return JsonUtil.getInstance().parseJson(result,tClass);
+    }
+
     private String  parseResponse(InputStream is) throws FssException {
         if(is == null){
             throw new FssException("90099009");

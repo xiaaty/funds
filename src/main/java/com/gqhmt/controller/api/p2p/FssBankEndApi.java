@@ -2,8 +2,7 @@ package com.gqhmt.controller.api.p2p;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
-import com.gqhmt.extServInter.dto.p2p.FullBidApplyDto;
+import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
 import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.extServInter.service.p2p.IBidRepayApply;
 import com.gqhmt.extServInter.service.p2p.IFullBidApply;
@@ -59,12 +58,12 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/fullBidApply",method = RequestMethod.POST)
     @ResponseBody
-    public Object fullBidApply(FullBidApplyDto fullBidApplyDto){
+    public Object fullBidApply(BidApplyDto fullBidApplyDto){
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = fullBidApplyImpl.excute(fullBidApplyDto);
+    		response = fullBidApplyImpl.execute(fullBidApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -79,12 +78,12 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/bidRepayApply",method = RequestMethod.POST)
     @ResponseBody
-    public Object bidRepayApply(BidRepayApplyDto bidRepayApplyDto){
+    public Object bidRepayApply(BidApplyDto bidApplyDto){
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = bidRepayApplyImpl.excute(bidRepayApplyDto);
+    		response = bidRepayApplyImpl.execute(bidApplyDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());
@@ -104,7 +103,7 @@ public class FssBankEndApi {
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-    		response = rePaymentsImpl.excute(rePaymentDto);
+    		response = rePaymentsImpl.execute(rePaymentDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
     		response.setResp_code(e.getMessage());

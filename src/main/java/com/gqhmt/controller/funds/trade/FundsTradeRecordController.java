@@ -8,6 +8,7 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
@@ -33,12 +34,12 @@ public class FundsTradeRecordController {
 	
 	/**
 	 * author:柯禹来
-	 * function:充值记录
+	 * function:交易记录
 	 */
-	@RequestMapping(value = "/trade/rechargelist",method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/trade/record/{type}",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-	public String queryRechargeList(HttpServletRequest request,ModelMap model,FssTradeRecordEntity traderecorder) throws Exception {
-		traderecorder.setTradeType(1103);//充值
+	public String queryWithdrawList(HttpServletRequest request,ModelMap model,FssTradeRecordEntity traderecorder,@PathVariable Integer  type) throws Exception {
+		traderecorder.setTradeType(type);//充值(1103),提现(1104)
 		if(traderecorder.getAccNo()!=null && !"".equals(traderecorder.getAccNo())){
 			traderecorder.setAccNo(traderecorder.getAccNo());
 		}else{
@@ -53,34 +54,11 @@ public class FundsTradeRecordController {
 		List<FssTradeRecordEntity> traderecorderlist = tradeRecordService.queryRechargeList(traderecorder);
 		model.addAttribute("page", traderecorderlist);
 		model.addAttribute("traderecorder", traderecorder);
-		return "fss/trade/trade_record/recharge_list";
-	}
-   
-	/**
-	 * author:柯禹来
-	 * function:提现记录
-	 */
-	@RequestMapping(value = "/trade/withdrawlist",method = {RequestMethod.GET,RequestMethod.POST})
-	@AutoPage
-	public String queryWithdrawList(HttpServletRequest request,ModelMap model,FssTradeRecordEntity traderecorder) throws Exception {
-		traderecorder.setTradeType(1104);//提现
-		if(traderecorder.getAccNo()!=null && !"".equals(traderecorder.getAccNo())){
-			traderecorder.setAccNo(traderecorder.getAccNo());
-		}else{
-			traderecorder.setAccNo(null);
+		if(type==1103){//充值
+			return "fss/trade/trade_record/recharge_list";
+		}else{//提现
+			return "fss/trade/trade_record/withdraw_list";
 		}
-		if(traderecorder.getTradeState()!=null && !"".equals(traderecorder.getTradeState())){
-			traderecorder.setTradeState(traderecorder.getTradeState());
-		}else{
-			traderecorder.setTradeState(null);
-		}
-		if(traderecorder.getTradeResult()!=null && !"".equals(traderecorder.getTradeResult())){
-			traderecorder.setTradeState(traderecorder.getTradeResult());
-		}
-		List<FssTradeRecordEntity> traderecorderlist = tradeRecordService.queryRechargeList(traderecorder);
-		model.addAttribute("page", traderecorderlist);
-		model.addAttribute("traderecorder", traderecorder);
-		return "fss/trade/trade_record/withdraw_list";
 	}
 	
 	/**

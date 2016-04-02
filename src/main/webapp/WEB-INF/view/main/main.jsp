@@ -38,8 +38,8 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>系统管理</li>
-            <li>登录日志</li>
+            <li>资金结算</li>
+            <li>主页</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -49,13 +49,12 @@
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget" id="main_001"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
-                            <h2>快速搜索</h2>
+                            <h2>数据统计</h2>
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="logListForm" action="${contextPath}/sys/log" method="post">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -65,45 +64,22 @@
                                 <div class="widget-body no-padding">
                                     <div class="mt10 mb10">
                                         <table class="table">
-                                            <col width="100" />
-                                            <col width="220" />
-                                            <col width="100" />
                                             <col />
                                             <tbody>
                                             <tr class="lh32">
-                                                <td class="tr">登录名：</td>
-                                                <td>
-                                                    <section style="width:210px">
-                                                        <label class="input">
-                                                            <input type="text" name="loginName" value="">
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                                <td class="tr">登录时间：</td>
-                                                <td >
-                                                    <section class="fl">
-                                                        <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                            <input type="text" name="map[importStart]" class="selectdate" placeholder="请选择时间" value="">
-                                                        </label>
-                                                    </section>
-                                                    <span class="fl">&nbsp;至&nbsp;</span>
-                                                    <section class="fl">
-                                                        <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                            <input type="text" name="map[importEnd]" class="selectdate" placeholder="请选择时间" value="">
-                                                        </label>
-                                                    </section>
+                                                <td class="tr">
+
                                                 </td>
                                             </tr>
 
                                             </tbody>
                                         </table>
                                     </div>
-                                    <footer>
+                                   <%-- <footer>
                                         <button class="btn btn-primary" onclick="javascript:void(0);">确认</button>
-                                    </footer>
+                                    </footer>--%>
                                 </div>
                                 <!-- end widget content -->
-                            </form>
                         </div>
 
 
@@ -112,41 +88,7 @@
                          -->
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="wid-id-642"  data-widget-deletebutton="false" data-widget-editbutton="false">
-                        <header>
-                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>登录日志列表</h2>
-                        </header>
-                        <!-- widget div-->
-                        <div>
-                            <form class="smart-form">
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <!-- This area used as dropdown edit box -->
-                                </div>
-                                <!-- end widget edit box -->
-                                <!-- widget content -->
-                                <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                        <col width="200" />
-                                        <col />
-                                        <thead>
-                                        <tr>
-                                            <td>登录名</td>
-                                            <td>所属部门</td>
-                                            <td>登录时间</td>
-                                            <td>登录IP</td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- end widget content -->
-                            </form>
-                        </div>
-                    </div>
                     <!--/article>
                         </div>
                         <div class="row"-->

@@ -1,52 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper">
-	<!-- 借款人提现列表 -->
-	<select id="getBorrowWithDraw"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+	<sql id="selectSql">
 		SELECT 
 			t.id id,
-		    t.contract_id contractId,
-			t.seq_no seqNo,
-			t.bespoke_date bespokeDate,
+			t.apply_no applyNo,
+			t.apply_type applyType,
+			t.cust_id custId,
+			t.cust_no custNo	,
+			t.user_no userNo	,
+			t.form_id formId,
+			t.business_no businessNo,
+			t.busi_type busiType,
 		    t.acc_no accNo,
+		    t.contract_id contractId,
 			t.trade_amount tradeAmount,
+			t.real_trade_amount realTradeAmount,
+			t.trade_charge_amount tradeChargeAmount,
+			t.apply_state applyState,
+			t.trade_state tradeState,
+			t.bespoke_date bespokeDate,
 			t.create_time createTime,
 			t.modify_time modifyTime,
+			t.seq_no seqNo,
 			t.mchn_child mchnChild,
-			t.bespoke_date bespokedate,
-			t.trade_state tradeState,
-			t.real_trade_amount realTradeAmount
-			FROM t_gq_fss_trade_apply t 
-			where t.apply_type=11091001
-			<if test="contractId != null and contractId != ''">
-				and t.contract_id like concat('%',#{contractId},'%')
-			</if>
-			<if test="seqNo != null and seqNo != ''">
-				and t.seq_no like concat('%',#{seqNo},'%')
-			</if>
-			<if test="mchnChild != null and mchnChild != ''">
-				and t.mchn_child like concat('%',#{mchnChild},'%')
-			</if>
-			<choose>
-				<when test="creatTime == null or creatTime == '' and modifyTime==null ">
-					AND 1=1
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
-					AND t.create_time BETWEEN #{creatTime} AND SYSDATE()
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time BETWEEN #{creatTime} AND #{modifyTime}
-				</when>
-				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time &lt; #{modifyTime} 
-				</when>
-			</choose>
-	</select>
+			t.mchn_parent mchnParent,
+			t.count count,
+			t.success_count successCount,
+			t.channel_no channelNo
+			FROM t_gq_fss_trade_apply t
+	</sql>
+	<!-- 根据申请类型和业务类型查询申请数据 -->
 	
-	<!-- 抵押权人代扣信息 -->
-	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+	<sql id="field">
 		SELECT 
 			t.id id,
+			t.cust_id custId,
 			t.apply_no applyNo,
 			t.apply_type applyType,
 			t.business_no businessNo,
@@ -64,17 +53,50 @@
 			t.count count,
 			t.success_count successCount,
 			t.real_trade_amount realTradeAmount,
-			t.channel_no channelNo
-			FROM t_gq_fss_trade_apply t 
-			where t.apply_type=#{applyType}  and t.busi_type=#{busiType}
-			<if test="accNo != null and accNo != ''">
-				and t.acc_no like concat('%',#{accNo},'%')
+			t.channel_no channelNo,
+			c.`name` custName,
+			c.mobile custMobile
+			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
+			ON t.cust_id=c.cust_id
+	</sql>
+	
+	<!-- 根据申请类型和业务类型查询申请数据 -->
+	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
+			<include refid="field"/>
+			WHERE t.apply_type=#{applyType}  and t.busi_type=#{busiType}
+			<if test="applyNo != null and applyNo != ''">
+				AND t.apply_no like CONCAT('%',#{applyNo},'%')
 			</if>
 			<if test="businessNo != null and businessNo != ''">
-				and t.business_no like concat('%',#{businessNo},'%')
+				AND t.business_no like CONCAT('%',#{businessNo},'%')
 			</if>
-			 <if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
-				AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			<if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
+	</select>
+	
+	<!-- 根据applyNo查询对象 -->
+	<select id="queryFssTradeApply" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
+		<include refid="field"/>
+		WHERE t.apply_no=#{applyNo}
+	</select>
+	
+	<select id="selectFssTradeApplyEntityByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+		 <include refid="selectSql" />
+			WHERE t.apply_no=#{applyNo}
+	</select>
+
+	<!-- 根据applyNo查询对象 -->
+	<select id="selectByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+	 <include refid="selectSql" />
+	  WHERE t.apply_no=#{applyNo}
+	</select>
+	<!-- 根据tradeSates查询对象 -->
+	<select id="selectByTradeState" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+	 <include refid="selectSql" />
+	  WHERE t.trade_state=#{tradeState}
 	</select>
 </mapper>

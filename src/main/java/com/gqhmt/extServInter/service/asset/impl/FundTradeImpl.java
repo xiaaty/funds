@@ -29,7 +29,7 @@ public class FundTradeImpl implements IFundTrade{
 
 	@AutoPage
 	@Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
 		QueryListResponse response = new QueryListResponse();
     	try {
     		List list = fundsTradeImpl.queryFundTrade((FundTradeDto)dto);

@@ -36,7 +36,7 @@ public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
 	private IFundsAccount fundsAccountImpl;
 	
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
 

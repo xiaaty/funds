@@ -48,7 +48,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="dictForm" action="/sys/dictionary/${parent_id}/add/save" method="post">
+                    <form id="dictForm" action="${contextPath}/sys/dictionary/${parent_id}/add/save" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 

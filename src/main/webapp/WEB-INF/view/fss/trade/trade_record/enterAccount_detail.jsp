@@ -67,10 +67,10 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                  <div class="mb20" id="wid-id-713">
-                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/loan/enterAccountList'" ><i class="fa fa-minus"></i>返回</button>
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/loan/enterAccount/list'" ><i class="fa fa-minus"></i>返回</button>
                                       </div>
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px">
                                     	<col width="200" />
                                     	<col width="300" />
                                     	<col width="200" />
@@ -96,17 +96,17 @@
                                         <tbody>
                                         <c:forEach items="${detail}" var="t">
                                                 <tr>
+                                                    <td>					
+                                                    <a href="${contextPath}/loan/enterAccount/${type}/${parentId}/detail/${t.id}/settleList">查看费用</a>
+                                                    </td>
                                                     <td>${t.serialNumber}</td>
                                                     <td>${t.accountingNo}</td>
                                                     <td>${t.contractId}</td>
                                                     <td>${t.accNo}</td>
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.result=='98060001'?'成功':'失败'}</td>
-                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
-                                                    <td>
-                                                    <a href="${contextPath}/fss/enterAccount/settleList/${t.id}?seqNo=${seqNo}">查看费用</a>
-                                                    </td>
+                                                     <td> <fss:fmtDate value="${t.createTime}" /></td>
+                                                    <td> <fss:fmtDate value="${t.modifyTime}" /></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

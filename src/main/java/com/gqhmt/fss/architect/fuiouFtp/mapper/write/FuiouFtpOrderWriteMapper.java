@@ -1,9 +1,5 @@
 package com.gqhmt.fss.architect.fuiouFtp.mapper.write;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 
@@ -24,6 +20,5 @@ import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
  * 2015/5/10  于泳      1.0     1.0 Version
  */
 public interface FuiouFtpOrderWriteMapper extends ReadAndWriteMapper<FuiouFtpOrder> {
-	public void saveOrUpdateAll(@Param("fuiouFtpOrderCollection") List<FuiouFtpOrder> fuiyouftplist);
 	
 }

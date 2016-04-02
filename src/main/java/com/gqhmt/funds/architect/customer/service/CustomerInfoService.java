@@ -48,7 +48,7 @@ public class CustomerInfoService {
 	@Resource
 	private FundsAccountImpl fundsAccountImpl;
 	@Resource
-    private UserService userService;
+    private GqUserService gqUserService;
 	@Resource
 	private BankCardInfoService bankCardinfoService;
 /*
@@ -1009,7 +1009,7 @@ public class CustomerInfoService {
 	 * time:2016年2月15日
 	 * function：根据id查询客户信息
 	 */
-	public CustomerInfoEntity queryCustomeById(Integer id) {
+	public CustomerInfoEntity queryCustomeById(Long id) {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
 	}
 	
@@ -1043,7 +1043,7 @@ public class CustomerInfoService {
 			//2.创建用户         t_gq_user	
 			UserEntity userEntity;
 			try {
-				userEntity = userService.createUser(loanAccountDto,customerInfoEntity);
+				userEntity = gqUserService.createUser(loanAccountDto,customerInfoEntity);
 				gqUserWriteMapper.insertSelective(userEntity);
 			} catch (Exception e) {
 				LogUtil.info(this.getClass(), e.getMessage());

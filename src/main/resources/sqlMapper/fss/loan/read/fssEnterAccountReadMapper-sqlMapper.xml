@@ -1,73 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountReadMapper">
-
-	<sql id="whereSql">
-			<if test="mchnNo != null and mchnNo != ''">
-				and t.mchn_child = #{mchnNo}
-			</if>
-			<if test="seqNo != null and seqNo != '' ">
-				and t.seq_no = #{seqNo}
-			</if>
-	</sql>
 	<!-- 入账回盘-->
-	<select id="getEnterAccount"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
+	<select id="getEnterAccounts"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
 		SELECT 
 			t.id,
-		    t.mchn_child mchnChild,
-		    t.seq_no seqNo,
-		    t.trade_type tradeType,
-		    t.serial_number serialNumber,
 		    t.contract_id contractId,
 		    t.contract_no contractNo,
-		    t.accounting_no accountingNo,
 			t.acc_no accNo,
-			t.mortgagee_acc_no mortgageeAccNo
-			FROM t_gq_fss_enter_account t
-			where 1=1
-			<include refid="whereSql" />
-	</select>
-		<!-- 得到入账表 -->
-	<select id="getEnterAccountEntities"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.bean.EnterAccountBean" >
-		SELECT 
-			COUNT(*) count,
-		    t.seq_no seqNo,
-		    t.mchn_child mchnChild,
-		    t.mchn_parent mchnParent,
-		    t.trade_type tradeType
-			FROM t_gq_fss_enter_account t
-			where 1=1 
-			<if test="seqNo != null and seqNo != ''">
-				and t.seq_no like concat('%',#{seqNo},'%')
-			</if>
-			<if test="tradeType != null and tradeType != ''">
-				and t.trade_type like concat('%',#{tradeType},'%')
-			</if>
-			<if test="mchnChild != null and mchnChild != ''">
-				and t.mchn_child like concat('%',#{mchnChild},'%')
-			</if>
-			group by t.seq_no
-	</select>
-		<!-- 根据流水号得到相应的每一批的交易成功数量 -->
-	<select id="getIsTrue"  parameterType="java.lang.String" resultType="java.lang.Integer" >
-		SELECT 
-			COUNT(*) 
-			FROM t_gq_fss_enter_account t
-			where t.seq_no=#{seqNo} and t.result ='98060001' 
-	</select>
-		<!-- 根据流水号得到相应的每一批的交易成功数量 -->
-	<select id="getDetail"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity" >
-		SELECT 
-			t.id,
-		    t.contract_id contractId,
+			t.mortgagee_acc_no mortgageeAccNo,
+			 t.create_time createTime,
+		    t.modify_time modifyTime,
 		    t.serial_number serialNumber,
 		    t.accounting_no accountingNo,
-		    t.acc_no accNo,
-		    t.mortgagee_acc_no mortgageeAccNo,
-		    t.create_time createTime,
-		    t.modify_time modifyTime,
-		    t.result result
+		    t.contract_no contractNo,
+			t.loan_platform loanPlatform,
+			 t.result result
 			FROM t_gq_fss_enter_account t
-			where t.seq_no=#{seqNO}
+			where t.parent_id=#{parentId}
 	</select>
 </mapper>

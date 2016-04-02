@@ -55,7 +55,7 @@ public class FssCustomerEntity implements Serializable{
     private String custNo;                                      // varchar(45) DEFAULT NULL COMMENT '客户编号唯一',
 
     @Column(name="user_no")
-    private String userUo;                                      // varchar(45) DEFAULT NULL COMMENT '用户编号 唯一',
+    private String userNo;                                      // varchar(45) DEFAULT NULL COMMENT '用户编号 唯一',
 
     @Column(name="is_auth_real_name")
     private Integer isAuthRealName;                               // varchar(45) DEFAULT NULL COMMENT '是否实名验证，0未验证，1富友方式验证，2接入身份证验证系统验证，4面对面验证，8图片上传验证',
@@ -71,8 +71,10 @@ public class FssCustomerEntity implements Serializable{
 
     @Column(name="mchn_child")
     private String mchnChild;                                  // varchar(45) DEFAULT NULL COMMENT '子商户号',
-
-
+    
+    @Column(name="cust_id")
+    private Long custId;                                  // bigint DEFAULT NULL COMMENT '对应冠E通customer表中的id',
+    
 	public Long getId() {
 		return id;
 	}
@@ -145,12 +147,12 @@ public class FssCustomerEntity implements Serializable{
 		this.custNo = custNo;
 	}
 
-	public String getUserUo() {
-		return userUo;
+	public String getUserNo() {
+		return userNo;
 	}
 
-	public void setUserUo(String userUo) {
-		this.userUo = userUo;
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
 	}
 
 	public Integer getIsAuthRealName() {
@@ -192,4 +194,13 @@ public class FssCustomerEntity implements Serializable{
 	public void setMchnChild(String mchnChild) {
 		this.mchnChild = mchnChild;
 	}
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+	
 }

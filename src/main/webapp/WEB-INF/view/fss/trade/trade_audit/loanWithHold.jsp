@@ -43,7 +43,7 @@
         <ol class="breadcrumb">
             <li>交易审核</li>
             <li>代付审核</li>
-            <li>借款人放款</li>
+            <li>抵押权人代扣</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -51,13 +51,13 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="dictForm" action="${contextPath}/fss/loan/tradeApply/withHold" method="post">
+                    <form id="withHoldForm" action="${contextPath}/loan/trade/${type}/withHold/${id}" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
                             <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
-                                    <h2><i class="fa fa-edit pr10"></i>借款人放款<font class="pl10 f12 color07"></font></h2>
+                                    <h2><i class="fa fa-edit pr10"></i>抵押权人代扣<font class="pl10 f12 color07"></font></h2>
                                 </header>
                                 <div>
                                     <div class="smart-form">
@@ -76,9 +76,8 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                            <input type="hidden" name="id"  value="${loan.id}">
-                                                            <input type="hidden" name="seqNo"  value="${loan.seqNo}">
-                                                            <input type="text" name="contractId" readonly="readonly" value="${loan.contractId }">
+                                                        	<input type="hidden" name="token" value="${token}"/> 
+                                                            <input type="text" name="contractNo" readonly="readonly" value="${loan.contractNo }">
                                                         </label>
                                                     </section>
                                                 </td>
@@ -94,20 +93,13 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td align="left">借款人资金平台账号：</td>
+                                                <td align="left">客户姓名：</td>
                                                 <td>
 												            <label class="input" style="width:210px">
-												             <input type="text" name="accNo" readonly="readonly" value="${loan.accNo }">
+												            <input type="hidden" name="userNo" value="${loan.userNo }">
+<%-- 												             <input type="text" name="" readonly="readonly" value="${userName }"> --%>
 												            </label>
 												</td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td align="left">合同金额：</td>
-                                                <td>
-												            <label class="input" style="width:210px">
-												             <input type="text" name="contractAmt" readonly="readonly" value="${loan.contractAmt }">
-												            </label>
-												        </td>
                                             </tr>
                                             <tr class="lh32">
                                                 <td align="left">放款金额(<span style="color:blue">可修改</span>)：</td>
@@ -117,27 +109,6 @@
 												            </label>
 												        </td>
                                             </tr>
-                                            <tr class="lh32">
-                                                <td align="left">借款平台：</td>
-                                                <td>
-                                                <label class="input" style="width:210px">
-												    <input type="text" name="payAmt" readonly="readonly" value="<fss:dictView key='${loan.loanPlatform}' />">
-												</label>
-                                                    
-                                                </td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td align="left">商户号：</td>
-                                                <td>
-                                                    <section style="width:210px">
-                                                        <label class="input" >
-                                                            <input type="hidden" name="mchnParent" readonly="readonly" value="${loan.mchnParent }">
-                                                            <input type="text" name="mchnChild" readonly="readonly" value="${loan.mchnChild }">
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                            </tr>
-                                            
                                             <tr class="lh32">
                                                 <td align="left">交易类型：</td>
                                                 <td>
@@ -154,38 +125,10 @@
                                                 </td>
                                             </tr>
 
-                                           <tr class="lh32">
-                                                <td align="left">交易状态：</td>
-                                                <td>
-                                                 <section style="width:210px">
-                                                        <label class="input">
-                                                            <input type="text" readonly="readonly" name="status" value="${loan.status }">
-                                                        </label>
-                                                    </section>
-                                                </td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td align="left">交易时间：</td>
-                                                 <td><section style="width:210px">
-                                                        <label class="input">
-                                                            <input type="text" name="status" readonly="readonly" value="<fss:fmtDate value='${loan.createTime}'/>">
-                                                        </label>
-                                                    </section></td>
-                                            </tr>
-                                            <tr class="lh32">
-                                                <td align="left">修改时间：</td>
-                                                <td> 
-                                                <section style="width:210px">
-                                                        <label class="input">
-                                                            <input type="text" name="status" readonly="readonly" value="<fss:fmtDate value='${loan.modifyTime}'/>">
-                                                        </label>
-                                                    </section></td>
-                                            </tr>
-
                                             </tbody>
                                         </table>
                                          <div class="mb20" id="wid-id-713">
- 													<button id="btn-success" class="btn btn-primary table-nobg-btn" type="submit">保存</button>
+ 													<button id="btn-success" class="btn btn-primary table-nobg-btn" type="button">保存</button>
                                                     <button class="btn btn-default table-nobg-btn" onclick="loaction.href='${contextPath}/fss/loan/trade/borrowWithDraw'" type="button" >取消</button>
                                                 </div>
                                             </div>
@@ -213,14 +156,15 @@
 	            /*if (!confirm("确认 修改商户信息吗?")) {
 	               return false;
 	            }*/
-	            $("#busiUpdateForm").ajaxSubmit({
+	            $("#withHoldForm").ajaxSubmit({
 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
-	                        jAlert("修改成功!", '确认信息');
+	                        jAlert("代扣已提交!", '确认信息');
 	                        return;
-	                    } else {
+	                    } else if(data.code == '0001'){
+	                    	jAlert(data.message, '确认信息');
 	                        return;
 	                    }
 	                }
@@ -232,6 +176,7 @@
 	function validateCheck() {
 		return true;
 	}
+	
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>

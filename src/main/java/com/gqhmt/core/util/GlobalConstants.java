@@ -1,16 +1,11 @@
 package com.gqhmt.core.util;
 
-import com.gqhmt.sys.beans.SysAuthFunc;
 import com.gqhmt.sys.beans.SysUsers;
 import com.gqhmt.util.Pager;
-import com.gqhmt.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -103,6 +98,15 @@ public class GlobalConstants {
 	public static final int ORDER_POINT_GQ_RETURN_FEE = 37;  //冠钱返现
 	public static final int ORDER_MOBILE_CHECK_CARD = 38;  //手机签约
 
+    public static final int ORDER_DROP_USER = 39;
+    public static final int ORDER_UPDATE_CARD_QUERY = 40;
+
+    public static final int ORDER_SETTLE_NEW = 11990048;
+
+    public static final int ORDER_REPAYMENT_NEW = 11990049;
+
+    public static final int ORDER_ABORT_NEW = 11990050;
+
 
     public static final int ORDER_MORTGAGEE_TRANS_ACC = 1001;  //抵押权人转给借款人
 
@@ -110,8 +114,7 @@ public class GlobalConstants {
     public static final int ORDER_COST = 2198;  //收费
     public static final int ORDER_COST_RETURN = 2199;  //退费
 
-	public static final int ORDER_DROP_USER = 39;
-	public static final int ORDER_UPDATE_CARD_QUERY = 40;
+
 
 	public static final int ORDER_STATUS_SUBMIT = 1;        //新增
 	public static final int ORDER_STATUS_SUCCESS = 2;      //成功
@@ -191,10 +194,8 @@ public class GlobalConstants {
 	
 	public static Map<Long,String> bankAccountMap = new LinkedHashMap<>();
     public static Map<Long,String> thirdAccountMap = new LinkedHashMap<>();
-	public static Map<Long,SysAuthFunc> funcMap=new LinkedHashMap<Long,SysAuthFunc>();
 	public static Map<Long,SysUsers> usersMap=new ConcurrentHashMap<Long,SysUsers>();
 	public static Map<Long,String> roleMap=new ConcurrentHashMap<Long,String>();
-    public static List<SysAuthFunc> allMenu = new LinkedList<>();
 
 
     public static Map<Integer,Integer> iconMap=new ConcurrentHashMap<Integer,Integer>();
@@ -226,26 +227,24 @@ public class GlobalConstants {
     public static Map<Integer,String> thirdpartyType=new ConcurrentHashMap<Integer,String>();
     public static Map<Integer,String> thirdpartyTypeEN=new ConcurrentHashMap<Integer,String>();
     public static Map<Integer,String> pointType=new ConcurrentHashMap<Integer,String>();
+
+
+
+    //开户账户账号规则匹配(前四位,随意生成,无任何含义,未来改为通过配置表生成)
+    public static Map<String,String> ACCOUNT_TYPE_MAPPING = new ConcurrentHashMap<>();
+
+    //开户交易类型,与账户类型匹配规则
+    public static Map<String,String> TRADE_ACCOUNT_TYPE_MAPPING = new ConcurrentHashMap<>();
+
+    //开户交易类型,与交易渠道映射
+    public static Map<String,String> TRADE_ACCOUNT_PAY_CHANNEL_MAPPING = new ConcurrentHashMap<>();
+
+    public static Map<String,String> TRADE_APPLY_NO__MAPPING = new ConcurrentHashMap<>();
     
-    private static long getMenuId(Long fid) {
-        if (GlobalConstants.funcMap.get(fid).getIsMenu() == 1)
-            return fid;
-        return getMenuId(GlobalConstants.funcMap.get(fid).getParentId());
 
-    }
+    //业务类型与交易类型匹配
+    public static Map<Integer,Integer> TRADE_BUSINESS_TYPE__MAPPING = new ConcurrentHashMap<>();
 
-    public static long getMenuParentId(String url) {
-        if (StringUtils.isEmpty(url))
-            return 0;
-        for (SysAuthFunc func1 : GlobalConstants.funcMap.values()) {
-            if (url.equalsIgnoreCase(func1.getFuncUrl())) {
-                if (func1.getIsMenu() == 1)
-                    return func1.getFuncId();
-                return getMenuId(func1.getParentId());
-            }
-        }
-        return 0;
-    }
 
 	
 	public static Object getSession(HttpServletRequest request,String name){
@@ -525,6 +524,102 @@ public class GlobalConstants {
         pointType.put(2001,"投标返现冻结");
         pointType.put(2002,"解冻结");
         pointType.put(3001,"满标返现出账");
+
+
+
+        ACCOUNT_TYPE_MAPPING.put("10010001","1306");            //互联网账户
+        ACCOUNT_TYPE_MAPPING.put("10010002","1308");            //委托出借账户
+        ACCOUNT_TYPE_MAPPING.put("10010003","1302");            //借款账户
+        ACCOUNT_TYPE_MAPPING.put("10010004","1304");            //保理业务账户
+
+        ACCOUNT_TYPE_MAPPING.put("10010005","2481");            //借款账户（冠e通）
+
+        /*//借款系统开户
+        ACCOUNT_TYPE_MAPPING.put("11020010","2346");//借款人开户
+        ACCOUNT_TYPE_MAPPING.put("11020009","5231");//纯线下借款账户*/
+
+        ACCOUNT_TYPE_MAPPING.put("10011000","9180");            //公司收费账户
+        ACCOUNT_TYPE_MAPPING.put("10011001","8246");            //保证金账户
+        ACCOUNT_TYPE_MAPPING.put("10011002","8248");            //逆服务费账户
+        ACCOUNT_TYPE_MAPPING.put("10012001","6601");            //代偿人账户
+        ACCOUNT_TYPE_MAPPING.put("10012002","6635");            //抵押权人账户
+        ACCOUNT_TYPE_MAPPING.put("10012003","6663");            //借款代还账户
+
+
+        //线上开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020001","10010001");//web开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020002","10010001");//wap开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//app开户
+        //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//ios开户
+        //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//andriod开户
+        //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//微信开户
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
+//        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
+//        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
+//        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
+
+        //冠e通
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020004","10010002");//委托出借开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020005","10010005");//借款账户（冠e通）
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020004","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020005","97010001");
+
+
+        //保理
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020008","10010004");//保理账户
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020008","97010001");
+
+
+        //借款系统开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020010","10010003");//借款人开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020009","10019002");//纯线下借款账户
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020010","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020009","97010000");//纯线下
+
+
+        //中间人账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020006","10012001");//代偿人账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020007","10012002");//抵押权人开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020011","10012003");//借款代还账户
+
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020006","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020007","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020011","97010001");
+
+
+        TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
+        TRADE_APPLY_NO__MAPPING.put("11030005","GTHK");
+        TRADE_APPLY_NO__MAPPING.put("11030006","GTDY");
+        TRADE_APPLY_NO__MAPPING.put("11030007","DCKK");
+        TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
+        TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+
+
+        TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
+        TRADE_APPLY_NO__MAPPING.put("11040005","GTFK");
+        TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
+        TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
+        TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
+        
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030004,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030005,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030006,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030007,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11093001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11090001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11091001,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040005,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040006,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040007,1);//借款 1
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040004,2);//2出借
+
 
 	}
 }

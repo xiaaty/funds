@@ -10,6 +10,30 @@
 				and t.seq_no = #{seqNo}
 			</if>
 	</sql>
+	<sql id="selectSql">
+	SELECT 
+			t.id id,
+		    t.contract_id contractId,
+		    t.contract_no contractNo,
+		    t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.rep_code repCode,
+			t.seq_no seqNo,
+			t.user_no userNo,
+			t.cust_no custNo,
+			t.mortgagee_acc_no mortgageeAccNo,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.mchn_parent mchnParent,
+			t.mchn_child mchnChild,
+			t.result result,
+			t.trade_type tradeType,
+			t.status status,
+			t.rep_msg repMsg,
+			t.pay_amt payAmt,
+			t.loan_platform loanPlatform  	
+			FROM t_gq_fss_loan t 
+	</sql>
 	<!-- 得到借款人放款回调对象 -->
 	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.LendingResponse" >
 		SELECT 
@@ -63,39 +87,17 @@
 			t.pay_amt pay_amt,
 		    t.rep_code resp_code,
 			t.rep_msg resp_msg,
-			t.loan_platform loanPlatform
+			t.loan_platform loan_platform
 			FROM t_gq_fss_loan t
 			where 1=1
 			<include refid="whereSql" />
 	</select>
 		<!-- 借款人放款列表 -->
 	<select id="findBorrowerLoan"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
-		SELECT 
-			t.id id,
-		    t.contract_id contractId,
-		    t.contract_no contract_no,
-		    t.acc_no accNo,
-			t.contract_amt contractAmt,
-			t.rep_code repCode,
-			t.seq_no seqNo,
-			t.mortgagee_acc_no mortgageeAccNo,
-			t.create_time createTime,
-			t.modify_time modifyTime,
-			t.mchn_parent mchnParent,
-			t.mchn_child mchnChild,
-			t.result result,
-			t.trade_type tradeType,
-			t.status status,
-			t.rep_msg repMsg,
-			t.pay_amt payAmt,
-			t.loan_platform loanPlatform  	
-			FROM t_gq_fss_loan t 
+		<include refid="selectSql" />
 			where 1=1
-			<if test="contractId != null and contractId != ''">
-				and t.contract_id like concat('%',#{contractId},'%')
-			</if>
-			<if test="seqNo != null and seqNo != ''">
-				and t.seq_no like concat('%',#{seqNo},'%')
+			<if test="contractNo != null and contractNo != ''">
+				and t.contract_no like concat('%',#{contractNo},'%')
 			</if>
 			<if test="status != null and status != ''">
 				and t.status like concat('%',#{status},'%')
@@ -103,34 +105,33 @@
 			<if test="mchnChild != null and mchnChild != ''">
 				and t.mchn_child like concat('%',#{mchnChild},'%')
 			</if>
-			<choose>
-				<when test="creatTime == null or creatTime == '' and modifyTime==null or modifyTime=='' ">
-					AND 1=1
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
-					AND t.create_time BETWEEN #{creatTime} AND SYSDATE()
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time BETWEEN #{creatTime} AND #{modifyTime}
-				</when>
-				<when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
-					AND t.create_time &lt; #{modifyTime} 
-				</when>
-			</choose>
+			<if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
+			<if test="type !=null and type != '' ">
+				AND t.trade_type = #{type}
+			</if>
+			
 	</select>
-
+<!-- 	满标放款  11090002 ，信用标放款      11092001， 抵押权人提现     11090004，冠e通满标-->
 	<select id="findLoanBySettle" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
-		SELECT
-			t.id,
-		    t.contract_id contract_id,
-		    t.mortgagee_acc_no mortgagee_acc_no,
-		    t.acc_no acc_no,
-		    t.rep_code resp_code,
-			t.rep_msg resp_msg,
-			t.contract_amt contract_amt,
-			t.pay_amt pay_amt,
-			t.loan_platform loan_platform
+		<include refid="selectSql" />
 		FROM t_gq_fss_loan t
-		WHERE t.trade_type = 11090002 OR t.trade_type = 11092001) AND t.status = 10050001
+		WHERE (t.trade_type = 11090002 OR t.trade_type = 11092001 OR t.trade_type = 11090004) AND t.status = 10050001
+	</select>
+<!-- 	回款  11094002 ，提前回款     11094003， 正常回款    11094004，逾期回款-->
+	<select id="findLoanMortgage" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
+		<include refid="selectSql" />
+		FROM t_gq_fss_loan t
+		WHERE (t.trade_type = 11094002 OR t.trade_type = 11094003 OR t.trade_type = 11094004) AND t.status = 10050001
+	</select>
+<!-- 	流标  11090011 ，信用标流标           11090012，冠e通流标-->
+	<select id="findFailureBid" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
+		<include refid="selectSql" />
+		FROM t_gq_fss_loan t
+		WHERE (t.trade_type = 11090011 OR t.trade_type = 11090012 ) AND t.status = 10050001
 	</select>
 </mapper>

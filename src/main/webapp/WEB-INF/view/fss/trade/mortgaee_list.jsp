@@ -49,12 +49,12 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-201"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="mortForm">
+                                <form class="smart-form" id="mortForm" action="${contextPath}/trade/tradeApply/${type}/${bus}"  method="post" >
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -69,38 +69,38 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                       <td class="tr">客户账号：</td>
+                                                       <td class="tr">申请编号：</td>
                                                          <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="accNo" value="${tradeapply.accNo}" />
+                                                                <input type="text" style="width:300px" name="applyNo" value="${map.applyNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">业务编号：</td>
                                                         <td>
                                                              <label class="input">
-                                                                <input type="text" style="width:300px" name="businessNo" value="${tradeapply.businessNo}" />
+                                                                <input type="text" style="width:300px" name="businessNo" value="${map.businessNo}" />
                                                             </label>
                                                         </td> 
                                                         <td class="tr">创建日期：</td>
-			                                             <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
-			                                                    </label>
-			                                                </section>
-			                                            </td>
+			                                             <td colspan="3">
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
+				                                                    </label>
+				                                                </section>
+				                                                <span class="fl">&nbsp;至&nbsp;</span>
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
+				                                                    </label>
+				                                                </section>
+				                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <footer>
-                                          <button type="submit" class="btn btn-primary" onclick="tijiao()">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -109,7 +109,7 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-202"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>数据列表信息</h2>
@@ -126,34 +126,31 @@
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
                                     	<col width="100" />
                                         <col width="100" />
-                                        <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
+                                        <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
+                                        <col width="200" />
+                                        <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
+                                        <col width="250" />
+                                        <col width="250" />
                                         <col width="100" />
                                         <col width="150" />
                                         <col width="150" />
                                         <thead>
                                         <tr>
-                                        	 <td>序号</td>
+                                        	 <td>客户姓名</td>
+                                        	 <td>客户电话</td>
                                              <td>申请编号</td>
-                                             <td>申请类型</td>
                                              <td>业务编号</td>
-                                             <td>业务类型</td>
+                                             <td>交易状态</td>
                                              <td>账户编号</td>
                                              <td>交易金额</td>
                                              <td>实际交易金额</td>
-                                             <td>申请状态</td>
-                                             <td>交易状态</td>
+                                             <td>总条数</td>
                                              <td>执行条数</td>
-                                             <td>成功条数</td>
-                                             <td>流水号</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
                                              <td>商户号</td>
@@ -164,24 +161,24 @@
                                          <tbody>
                                              <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
-                                                	<td>${tradeapply.id}</td>
+                                                	<td>${tradeapply.custName}</td>
+                                                	<td>${tradeapply.custMobile}</td>
                                                     <td>${tradeapply.applyNo}</td>
-                                                    <td><fss:dictView key="${tradeapply.applyType}" /></td>
                                                     <td>${tradeapply.businessNo}</td>
-                                                    <td><fss:dictView key="${tradeapply.busiType}" /></td>
+                                                    <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.accNo}</td>
                                                     <td>${tradeapply.tradeAmount}</td>
                                                     <td>${tradeapply.realTradeAmount}</td>
-                                                    <td><fss:dictView key="${tradeapply.applyState}" /></td>
-                                                    <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
-                                                    <td>${tradeapply.seqNo}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
                                                     <td><fss:fmtDate value="${tradeapply.modifyTime}"/></td>
                                                     <td>${tradeapply.mchnChild}</td>
-                                                    <td><fss:dictView key="${tradeapply.channelNo}" /></td>
-                                                    <td><a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/${tradeapply.id}/records">查看详细</a></td>
+                                                    <td><fss:dictView key="${tradeapply.channelNo}"/></td>
+                                                    <td>
+                                                    	 <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
+                                                    	&nbsp;&nbsp;&nbsp;&nbsp;<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -202,156 +199,37 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortForm"));
-        
-        $('.selectdate').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            autoclose: 1,
-            format: 'yyyy-mm-dd',
-            todayHighlight: 1,
-            startView: 2,
-            minView: 2,
-            forceParse: 0
-        });
-	     
-	     dateCheck();
-	     
-	     
-        $('.selectdate_time').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            autoclose: 1,
-            format: 'hh:m:00',
-            todayHighlight: 1,
-            startView: 1,
-            minView: 1,
-            forceParse: 0
-        });
-	 }); 
-
-	 
-		//日期的合法性check
-	    function dateCheck() {
-	    	var $selectdate = $(".selectdate");
-	    	$selectdate.each(function() {
-	    		//$(this).off();
-	        	$(this).focus(function() {
-	        		//
-	        		this.select();
-	        	})
-	        	.blur(function() {
-		        	if($(this).val() != "") {
-			        	var val = $(this).val();
-			        	if (val.indexOf("\-") > 0 ) {
-			        	} else {
-			        		if (val.length == 8) {
-			        			val = val.substr(0,4) + "-" + val.substr(4,2) + "-" + val.substr(6,2);
-			        			$(this).val(val);
-			        		}
-			        	}
-			        	var msg= isDate($(this).val());
-			        	if (msg != "") {
-				        	alert(msg);
-				        	this.focus();
-			        	}
-
-	        		}
-	        	});
-	    	});
-	    }
-	 
-	    function isDate(strDate){
-	    	var strSeparator = "-"; //日期分隔符 
-	    	var strDateArray; 
-	    	var intYear; 
-	    	var intMonth; 
-	    	var intDay; 
-	    	var boolLeapYear; 
-	    	var ErrorMsg = ""; //出错信息 
-	    	strDateArray = strDate.split(strSeparator); 
-	    	//没有判断长度,其实2008-8-8也是合理的//strDate.length != 10 || 
-	    	if(strDateArray.length != 3) { 
-	        	ErrorMsg += "日期格式必须为: 年-月-日"; 
-	        	return ErrorMsg; 
-	    	} 
-	    	intYear = parseInt(strDateArray[0],10); 
-	    	intMonth = parseInt(strDateArray[1],10); 
-	    	intDay = parseInt(strDateArray[2],10); 
-	    	if(isNaN(intYear)||isNaN(intMonth)||isNaN(intDay)) { 
-	    		ErrorMsg += "请输入有效的日期！"; 
-	        	return ErrorMsg; 
-	    	} 
-	    	if(intMonth>12 || intMonth<1) { 
-	    		ErrorMsg += "请输入有效的日期！"; 
-	        	return ErrorMsg; 
-	    	} 
-	    	if((intMonth==1||intMonth==3||intMonth==5||intMonth==7 
-	    		||intMonth==8||intMonth==10||intMonth==12) &&(intDay>31||intDay<1)) { 
-	    		ErrorMsg += "请输入有效的日期！"; 
-	        	return ErrorMsg; 
-	    	} 
-	    	if((intMonth==4||intMonth==6||intMonth==9||intMonth==11) 
-	    		&&(intDay>30||intDay<1)) { 
-	    		ErrorMsg += "请输入有效的日期！";  
-	        	return ErrorMsg; 
-	    	} 
-	    	if(intMonth==2){ 
-	        	if(intDay < 1) { 
-	        		ErrorMsg += "请输入有效的日期！";  
-		        	return ErrorMsg; 
-	    		} 
-	        	boolLeapYear = false; 
-	        	if((intYear%100) == 0){ 
-		        	if((intYear%400) == 0) 
-		        	boolLeapYear = true; 
-	    		} else { 
-		        	if((intYear % 4) == 0) 
-		        		boolLeapYear = true; 
-	        		} 
-	        		if(boolLeapYear){ 
-		        		if(intDay > 29) { 
-		        			ErrorMsg += "请输入有效的日期！"; 
-			        		return ErrorMsg; 
-	        			} 
-	    			} else { 
-			        	if(intDay > 28) { 
-				        	ErrorMsg += "请输入有效的日期！"; 
-				        	return ErrorMsg; 
-		        		} 
-	    			} 
-	    		} 
-	    	return ErrorMsg; 
-	    } 
-	 
-	    //验证输入的开户开始日期与结束日期 
-	    function tijiao(){
-	    	var startime=$("#startime").val();
-	    	var endtime=$("#endtime").val();
-	    	var d=new Date();
-	    	var nowday=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-	    	var d1 = new Date(startime.replace(/\-/g, "\/"));  
-   		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
-   		var d3 = new Date(nowday.replace(/\-/g, "\/"));  
-	    	
-	    	if(startime!="" && endtime.length==0){
-	    		if(d1>d3){
-	    			alert('查询开始时间不能早于当前时间！');
-	    			return false;
-	    		}
-	    	}else
-	    	if(startime!="" && endtime!=""){
-	    		if(d1>d3 && d1<=d2){
-	    			alert('您查询时间范围超前了！');
-	    			return false;
-	    		}else
-	    		if(d1>d2){
-	    			alert('查询开始时间不能早于结束时间！');
-	    			return false;
-	    		}
-	    	}
-	    }
-	 
-
+    });
+    $('.selectdate').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        autoclose: 1,
+        format:'yyyy-mm-dd',
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    function verify(){
+    	var a=document.getElementsByName("startTime");
+    	var b=document.getElementsByName("endTime");
+    	if(b[0].value!=null&&b[0].value!=''){
+    		
+    		if(a[0].value>b[0].value){
+    			JAlert("请检查您输入的日期","提示消息");
+    		}else{
+    			$("#mortForm").submit();
+    		}
+    	}else{
+    		var d = new Date();
+    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+    		if(a[0].value>str){
+    			JAlert("请检查您输入的日期","提示消息");
+    		}else{
+    			$("#mortForm").submit();
+    		}
+    	}
+    }
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

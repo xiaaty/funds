@@ -1,8 +1,14 @@
 package com.gqhmt.quartz.job.bid;
 
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.quartz.job.SupperJob;
+import com.gqhmt.quartz.service.FtpUploadService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.bid.UploadFileJob
@@ -20,10 +26,25 @@ import org.quartz.JobExecutionException;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
-public class UploadFileJob implements Job{
+@Component
+public class UploadFileJob extends SupperJob implements Job{
+
+    @Resource
+    private FtpUploadService ftpUploadService;
+
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        if(isRunning) return;
+        super.isRunning = true;
 
+        try{
+            ftpUploadService.upload();
+            ftpUploadService.uploadFileToFtp();
+        }catch (Exception e){
+            LogUtil.error(getClass(),e);
+        }finally {
+            super.isRunning = false;
+        }
         //生成数据文件
 
         //上传数据文件

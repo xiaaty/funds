@@ -81,6 +81,7 @@ public interface IFundsTrade {
 
     public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
 
+//    public FundOrderEntity withholdingApplyNew(Long custId, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
     /**
          *
          * 代付申请
@@ -88,7 +89,10 @@ public interface IFundsTrade {
          * @throws FssException
          */
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
-
+    
+    public FundOrderEntity withdrawApplyNew(String accNo,String custId,int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
+    
+//    public FundOrderEntity withdrawApplyNew(int custID, int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
 
     /**
      * 转账接口
@@ -236,6 +240,8 @@ public interface IFundsTrade {
 
     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
 */
-
-
+   public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
+    
+    
+    
 }

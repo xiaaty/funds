@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年3月7日
- * Description:	放款
+ * Description:	满标放款
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -37,7 +37,7 @@ public class LendingImpl implements ILending {
 
 	@APITradeTypeValid(value = "11090001,11090002,11090003")
 	@APISignature
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		loanService.insertLending((LendingDto)dto);

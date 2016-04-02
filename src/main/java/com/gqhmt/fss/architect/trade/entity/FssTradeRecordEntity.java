@@ -96,6 +96,11 @@ public class FssTradeRecordEntity implements Serializable {
     @Column(name = "bespoke_date")//预约到账日期
     private Date bespokeDate  ;  
     
+    @Column(name = "cust_id")
+    private Long custId;
+    
+    @Column(name = "resp_code")
+    private String respCode;
     
 	public Long getId() {
 		return id;
@@ -279,6 +284,22 @@ public class FssTradeRecordEntity implements Serializable {
 
 	public void setBespokeDate(Date bespokeDate) {
 		this.bespokeDate = bespokeDate;
+	}
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public String getRespCode() {
+		return respCode;
+	}
+
+	public void setRespCode(String respCode) {
+		this.respCode = respCode;
 	}
 	
 }

@@ -71,7 +71,7 @@ public class UserService {
 		userEntity.setModifyTime((new Timestamp(new Date().getTime())));
 		userEntity.setIntegral(0);
 		userEntity.setCreditLevel(0);
-		userEntity.setCustId(customer.getId());
+		userEntity.setCustId(customer.getId().intValue());
 		userEntity.setUserFrom(0);
 		userEntity.setIsFirstDebt(0);
 		userEntity.setUserType(1);
@@ -88,8 +88,16 @@ public class UserService {
 	      String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);  
 	      return temp;  
 	    } 
-	
-    
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月28日
+	 * function：根据id查询user对象信息
+	 */
+    public User getUserById(Long id){
+		return readMapper.selectByPrimaryKey(id);
+    	
+    }
     
     
 }

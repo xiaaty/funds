@@ -1,10 +1,11 @@
 package com.gqhmt.quartz.job.loan;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.fuiouFtp.service.BidSettleService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import com.gqhmt.quartz.job.SupperJob;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -27,18 +28,34 @@ import java.util.List;
  * 16/3/15  于泳      1.0     1.0 Version
  */
 @Component
-public class SettleBeforeJob implements Job {
+public class SettleBeforeJob extends SupperJob {
     @Resource
     private FssLoanService fssLoanService;
+    @Resource
+    private BidSettleService settleService;
 
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+
+    public void execute(){
         //获取需满标转账功能列表 抵押权人提现\信用标放款
+
+        if(isRunning) return;
+        super.isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();
 
         for (FssLoanEntity loanEntity:loanEntities){
+            try {
+                settleService.settle(loanEntity);
+            } catch (FssException e) {
+                LogUtil.error(getClass(),e);
+                continue;
+            }
         }
+
+
+
+        super.isRunning = false;
+
 
     }
 

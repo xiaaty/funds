@@ -1,7 +1,5 @@
 package com.gqhmt.pay.fuiou.quartz;
 
-import com.gqhmt.pay.fuiou.util.FtpClient;
-import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
@@ -11,12 +9,14 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.AccountCommandResponse;
 import com.gqhmt.pay.core.command.CommandResponse;
-import com.gqhmt.pay.core.command.ThirdpartyCommand;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
+import com.gqhmt.pay.fuiou.util.FtpClient;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.Calendar;
@@ -114,7 +114,7 @@ public class ChangeCardJob extends AJob{
         }
         System.out.println("轮询结果");
         try {
-        	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccount(Integer.parseInt(changeCardEntity.getCustId().toString()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+        	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccount(Long.valueOf(changeCardEntity.getCustId().toString()), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         	AccountCommandResponse response = paySuperByFuiou.changeCardResult(fundAccountEntity,changeCardEntity.getOrderNo(),Long.valueOf(fundAccountEntity.getBusiType()));
             if( response != null ){
             	CommandResponse r  = (CommandResponse) response;

@@ -35,6 +35,9 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "apply_type")
     private Integer applyType;                                  //int(11)        (NULL)           NO              (NULL)           select,insert,update,references  1，充值，2，提现
 
+    @Column(name = "cust_id")
+    private Long custId;  
+    
     @Column(name = "cust_no")
     private String custNo;                                     // varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  客户编号
 
@@ -91,6 +94,9 @@ public class FssTradeApplyEntity implements Serializable {
     
     @Column(name = "count")		//总条数
     private int count;
+    
+    @Column(name = "form_id")		//相关联表的主键
+    private Long formId;
     
     @Column(name = "success_count")	//成功条数
     private int successCount;
@@ -280,6 +286,22 @@ public class FssTradeApplyEntity implements Serializable {
 
 	public void setSuccessCount(int successCount) {
 		this.successCount = successCount;
+	}
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public Long getFormId() {
+		return formId;
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
 	}
 	
 }

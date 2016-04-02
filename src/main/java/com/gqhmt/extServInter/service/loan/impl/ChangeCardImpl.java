@@ -25,9 +25,9 @@ public class ChangeCardImpl implements IChangeCard{
 	private IFundsAccount fundsAccountImpl;
 	
     @Override
-	@APITradeTypeValid(value = "11029001,11093002")
+	@APITradeTypeValid(value = "11029001,11029002")
 	@APISignature
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	ChangeCardResponse response = new ChangeCardResponse();
     	try {
     		fundsAccountImpl.bankCardChange((CardChangeDto)dto);

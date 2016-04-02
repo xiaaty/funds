@@ -20,7 +20,7 @@ public class CostImpl implements ICost{
 	private ITradeRecord tradeRecordImpl;//交易记录接口
 	
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
     		tradeRecordImpl.saveCostTrade((CostDto)dto);

@@ -22,16 +22,12 @@ import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.tender.IFundFullTender;
-import com.gqhmt.util.ThirdPartyType;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.pay.service.impl.FundsTenderImpl
@@ -178,81 +174,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 	
  // 满标清算回调
  	private void settleTranserCallback(String orderNo)  throws FssException{
- 		FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
- 		if (fundOrderEntity.getOrderState() != 6 && fundOrderEntity.getOrderState() != 1001) {
- 			return;
- 		}
 
- 		Bid bid = bidService.findById(fundOrderEntity.getOrderFrormId());
- 		Integer cusId = bid.getCustomerId();
- 		if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
- 			cusId = bid.getHypothecarius();
- 		}
- 		//产品名称，如果产品名称为空，则去标的title
- 		String title  = bidService.getProductName(bid.getId());
- 		List<Tender> list = tenderService.queryTenderByBidId(Long.valueOf(bid.getId()));
- 		FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);
- 		try {
-			this.updateOrder(fundOrderEntity, 1001, "0000", "第三方已完成，本地账务流水处理");
-		} catch (FssException e) {
-			LogUtil.error(this.getClass(), e);
-		}
- 		BigDecimal bonusAmount = BigDecimal.ZERO;
- 		List<Tender> tenders = new ArrayList<>();		//返现tender集合
- 		for (Tender tender : list) {
- 			Map<Integer, Long> mapping = new HashMap<>();
- 			mapping.put(GlobalConstants.BUSINESS_MAPPINF_CUSTOMER, Long.valueOf(cusId));
- 			mapping.put(GlobalConstants.BUSINESS_MAPPINF_BID, Long.valueOf(bid.getId()));
- 			mapping.put(GlobalConstants.BUSINESS_MAPPINF_TENDER, Long.valueOf(tender.getId()));
- 			FundAccountEntity fromEntity = fundAccountService.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
- 			try {
-				sequenceService.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null,ThirdPartyType.FUIOU, fundOrderEntity);
-			} catch (FssException e) {
-				LogUtil.error(this.getClass(), e.getMessage());
-			}
- 			
- 			this.createFundTrade(fromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2006, "你出借的产品" + title + " 已满标，转给借款人 " + tender.getRealAmount() + "元" + (tender.getBonusAmount().intValue() > 0 ? ",红包抵扣 " + tender.getBonusAmount() + "元" : ""));
- 			
- 			//红包使用金额汇总2015.07.31 于泳
- 			if(tender.getBonusAmount() != null) {
- 				bonusAmount = bonusAmount.add(tender.getBonusAmount());
- 				if (tender.getBonusIds() != null && StringUtils.isNotBlank(tender.getBonusIds())) {
- 					String bonusIds = tender.getBonusIds();
- 					if (bonusIds != null) {
- 						String[] bonusIdsTmp = bonusIds.split(",");
- 						if(bonusIdsTmp.length == 1 && bonusIdsTmp[0].length() != 0){
- 							bonusService.updateStatusAndAmount(Integer.parseInt(bonusIdsTmp[0]), 3,new BigDecimal(String.valueOf(tender.getBonusAmount())), 0);
- 						}else{
- 							
- 							Object[] bonusIdsIntArray = new Object[bonusIdsTmp.length];
- 							for (int i = 0; i < bonusIdsTmp.length; i++) {
- 								bonusIdsIntArray[i] = Integer.parseInt(bonusIdsTmp[i]);
- 							}
- 							bonusService.updateStatus(bonusIdsIntArray, 3, 0);
- 						}
- 					}
-
- 				}
- 			}
- 			//如果有冠钱返现，则放到集合中2015.07.31 于泳
- 			if(tender.getGuanqianAmount() != null && tender.getGuanqianAmount().intValue()>0){
- 				tenders.add(tender);
- 			}
- 		}
-
- 		//红包账户出账，使用红包汇总 2015.07.31 于泳
- 		if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
- 			FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
- 			sequenceService.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,null,ThirdPartyType.FUIOU, fundOrderEntity);
- 			this.createFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
- 		}
- 		//生成返现job 2015.07.31 于泳
- 		this.pointDecode(tenders,bid);
- 		this.createFundTrade(toEntity, bid.getBidAmount(), BigDecimal.ZERO, 3002, title + " 审核通过,转入借款金额 " + bid.getBidAmount() + "元");
-
- 		//去掉满标冻结资金
- 		//AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_SETTLE_FREEZE, ThirdPartyType.FUIOU, orderNo);
- 		this.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
  	}
  	
  	 //添加到交易记录信息 
@@ -276,7 +198,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 		}
 		///产品名称，如果产品名称为空，则去标的title
 		String title  = bidService.getProductName(bid.getId());
-		FundAccountEntity fromEntity = fundAccountService.getFundAccount(4, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+		FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
 		FundOrderEntity fundOrderEntity=null;
 		try {
 			fundOrderEntity = this.createOrder(fromEntity, bid.getBidAmount(), GlobalConstants.ORDER_POINT_GQ_RETURN_FEE, bid.getId(), GlobalConstants.BUSINESS_SETTLE,thirdPartyType);
@@ -285,7 +207,7 @@ public class FundFullTenderImpl  implements IFundFullTender {
 		}
 		List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
 		for (Tender tender : tenders) {
-			FundAccountEntity toEntity = fundAccountService.getFundAccount(tender.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+			FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
 			fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getGuanqianAmount(), 5, title, null));
 		}
 

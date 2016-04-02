@@ -2,8 +2,8 @@ package com.gqhmt.controller.fss.loan;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.loan.bean.EnterAccountBean;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
+import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
@@ -50,21 +50,16 @@ public class FssEnterAccountController {
 	 * author:jhz
 	 * time:2016年3月15日
 	 * function：入账主表
-	 */
-	@RequestMapping(value = "/fss/loan/enterAccountList", method = {RequestMethod.GET, RequestMethod.POST})
+	 */						
+	@RequestMapping(value = "/loan/enterAccount/list", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
 	public Object enterAccountList(HttpServletRequest request, ModelMap model,String mchnChild,
-					String seqNo ,String tradeType) {
+					String state ,String tradeType) {
 		Map<Object, Object> map = new HashMap<>();
 		map.put("tradeType", tradeType);
 		map.put("mchnChild", mchnChild);
-		map.put("seqNo", seqNo);
-		List<EnterAccountBean> enterAccountEntities = fssEnterAccountService.getEnterAccountEntities(map);
-		for (EnterAccountBean enterAccountBean : enterAccountEntities) {
-			int isTrue = fssEnterAccountService.getIsTrue(enterAccountBean.getSeqNo());
-			enterAccountBean.setIsSuccess(isTrue);
-			enterAccountBean.setIsFailed(enterAccountBean.getCount()-isTrue);
-		}
+		map.put("state", state);
+		List<FssEnterAccountParentEntity> enterAccountEntities = fssEnterAccountService.getEnterAccountParentEntities(map);
 		model.addAttribute("page", enterAccountEntities);
 		model.addAttribute("map", map);
 		return "fss/trade/trade_record/enterAccount_list";
@@ -75,11 +70,11 @@ public class FssEnterAccountController {
 	 * author:jhz
 	 * time:2016年3月16日
 	 * function：查看该批流水详情
-	 */
-	@RequestMapping(value = "/fss/enterAccount/detail/{seqNo}", method = {RequestMethod.GET, RequestMethod.POST})
-	public Object accountWater(HttpServletRequest request, ModelMap model,@PathVariable String seqNo) {
+	 */						  
+	@RequestMapping(value = "/loan/enterAccount/{type}/{parentId}/detail", method = {RequestMethod.GET, RequestMethod.POST})
+	public Object accountWater(HttpServletRequest request, ModelMap model,@PathVariable Long parentId,@PathVariable String type) {
 		//通过流水好查询该批次的详情
-		List<FssEnterAccountEntity> detail = fssEnterAccountService.getDetail(seqNo);
+		List<FssEnterAccountEntity> detail = fssEnterAccountService.getEnterAccounts(parentId);
 		model.addAttribute("detail", detail);
 		return "fss/trade/trade_record/enterAccount_detail";
 	}
@@ -91,11 +86,10 @@ public class FssEnterAccountController {
 	 * function：查看收费列表
 	 * @throws FssException 
 	 */
-	@RequestMapping("/fss/enterAccount/settleList/{id}")
-	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long id,String seqNo) throws FssException {
+	@RequestMapping("/loan/enterAccount/{type}/{parentId}/detail/{id}/settleList")
+	public String accountRecharge(HttpServletRequest request, ModelMap model, @PathVariable Long id,@PathVariable Long parentId,@PathVariable String type) throws FssException {
 		List<FssSettleListEntity> settleList = fssEnterAccountService.getsettleList(id);
 		model.addAttribute("settleList", settleList);
-		model.addAttribute("seqNo", seqNo);
 		return "fss/trade/trade_record/settleList";
 	}
 

@@ -54,7 +54,7 @@
 		   c.bank_id bankId,
 		   a.create_time createTime,
 		   a.modify_time modifyTime
-	   FROM `t_gq_fss_account` a,`t_gq_customer_info` c
+	   FROM `t_gq_fss_account` a,`t_gq_fss_customer` c
 	   WHERE a.cust_id=c.id
 	   <if test="accNo!= null and accNo!= '' ">
        	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
@@ -77,16 +77,29 @@
 		account.id id,
 		account.busi_no busiNo,
 		account.acc_no accNo,
+		account.acc_type accType,
 		account.cust_no custNo,
 		account.acc_balance accBalance,
 		account.acc_freeze accFreeze,
 		account.acc_avai accAvai,
 		account.create_time accCreateTime,
 		account.modify_time accModifyTime,
+		account.channel_no channelNo,
+		
 		account.cust_id custId
 
 		FROM t_gq_fss_account account
 		where account.acc_no = #{accNo}
 
 	</select>
+	
+	<select id="findAccountByCustId" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+		SELECT
+		t.id id,
+		t.acc_type accType,
+		t.busi_no busiNo
+		FROM t_gq_fss_account t
+		where t.cust_id = #{custId}
+	</select>
+	
 </mapper>

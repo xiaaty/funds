@@ -1,9 +1,15 @@
 package com.gqhmt.fss.listener.trade;
 
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.event.trade.WithholdingEvent;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.SmartApplicationListener;
+import com.gqhmt.pay.service.trade.IFundsBatchTrade;
+import org.springframework.context.ApplicationListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Calendar;
 
 /**
  * Filename:    com.gqhmt.fss.listener.trade.AccountingWithholdingListener
@@ -22,24 +28,19 @@ import org.springframework.stereotype.Component;
  * 15/12/31  于泳      1.0     1.0 Version
  */
 @Component
-public class AccountingWithholdingListener  implements SmartApplicationListener {
-    @Override
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
-        System.err.println(this.getClass().toString());
-    }
+public class AccountingWithholdingListener  implements ApplicationListener<WithholdingEvent> {
+
+    @Resource
+    private IFundsBatchTrade fundsBatchTrade;
 
     @Override
-    public boolean supportsEventType(Class<? extends ApplicationEvent> aClass) {
-        return aClass == WithholdingEvent.class;
-    }
+    @Async
+    public void onApplicationEvent(WithholdingEvent withholdingEvent) {
+        long startTime = Calendar.getInstance().getTimeInMillis();
+        FssTradeRecordEntity entity = (FssTradeRecordEntity) withholdingEvent.getSource();
+        fundsBatchTrade.batchTrade(entity);
+        long endTime = Calendar.getInstance().getTimeInMillis();
+        LogUtil.info(getClass(),"代扣执行完成,共耗时:"+(endTime-startTime));
 
-    @Override
-    public boolean supportsSourceType(Class<?> aClass) {
-        return false;
-    }
-
-    @Override
-    public int getOrder() {
-        return 0;
     }
 }

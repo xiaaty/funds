@@ -61,7 +61,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/fss/loan/trade/borrow" method="post" >
+                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/loan/trade/${type}" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -81,47 +81,42 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">交易流水号:</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
-                                                                <input type="text" name="seqNo" value="${map.seqNo}">
-                                                            </label>
-                                                        </td>
                                                         <td class="tr" nowrap="nowrap">商户号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
                                                                 <input type="text" style="width:210px" name="mchnChild" value="${map.mchnChild}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">合同ID：</td>
+                                                        <td class="tr" nowrap="nowrap">合同编号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="contractId" value="${map.contractId}">
+                                                                <input type="text" name="contractNo" value="${map.contractNo}">
                                                             </label>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                     <td class="tr" nowrap="nowrap">交易状态：</td>
                                                         <td nowrap="nowrap">
-                                                    		<input type="hidden" id="tradeStatus" value="${map.status}">
+                                                            <label class="select">
 							                                <select class="select02" style="width:202px;" name="status" id="status">
                                                                 <option value="">所有</option>
 							                                   <fss:dictOrder var="order" dictOrder="tradeStatus">
                                                                             <option value="${order.key}">${order.value}</option>
                                                                         </fss:dictOrder>
 							                                </select>
+                                                                </label>
                                                         </td>
                                                          <td class="tr">交易日期：</td>
                                             <td colspan="3">
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly" name="creatTime" class="selectdate" placeholder="请选择时间" value="${map.creatTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
                                                     </label>
                                                 </section>
                                                 <span class="fl">&nbsp;至&nbsp;</span>
                                                 <section class="fl">
                                                     <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly"  name="modifyTime" class="selectdate" placeholder="请选择时间" value="${map.modifyTime}">
+                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
                                                     </label>
                                                 </section>
                                             </td>
@@ -162,50 +157,49 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                        <col width="60" />
-                                        <col width="220" />
-                                        <col width="220" />
+                                        <col width="50" />
+                                        <col width="100" />
+                                        <col width="200" />
                                         <col width="150" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
+                                        <col width="200"/>
                                         <col width="300"/>
                                         <thead>
                                         <tr>
-                                            <td>ID</td>
+                                            <td></td>
                                             <td>抵押权人资金平台账号</td>
                                             <td>借款人资金平台账号</td>
-                                            <td>交易流水号</td>
-                                            <td>合同ID</td>
+                                            <td>客户姓名</td>
+                                            <td>合同编号</td>
                                             <td>合同金额  </td>
                                             <td>放款金额   </td>
                                             <td>借款平台</td>
                                             <td>交易状态 </td>
                                             <td>交易结果</td>
                                             <td>交易类型</td>
-                                            <td>大商户号</td>
-                                            <td>子商户号 </td>
+                                            <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${page.list}" var="t">
+                                        <c:forEach items="${page.list}" var="t" varStatus="l">
                                                 <tr>
-                                                    <td>${t.id}</td>
+                                                    <td>${l.index+1}</td>
+                                                    
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.accNo}</td>
-                                                    <td>${t.seqNo}</td>
-                                                    <td>${t.contractId}</td>
+                                                    <td>${t.userNo}</td>
+                                                    <td>${t.contractNo}</td>
                                                     <td>
                                                         <fss:money money="${t.contractAmt}"/>
                                                     </td>
@@ -229,35 +223,33 @@
                                                    	 </fss:dictOrder>
                                                     </td>
                                                     <td>${t.mchnParent}</td>
-                                                    <td>${t.mchnChild}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
                                                     <td> <fss:fmtDate value="${t.modifyTime}"/></td>
-                                                    <td >
+                                                <td >
                                                     <c:if test="${t.tradeType != '11092001'}">
-                                                    <a href="${contextPath}/fss/loan/trade/feeList/${t.id}">查看</a>
+                                                    <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
                                                     </c:if>
                                                     &nbsp; &nbsp;
                                                       <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
                                                       		<c:if test="${t.status== '10050001'}">
-																<a href="${contextPath}/fss/loan/trade/withHold/${t.id}">代扣</a>
+																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
 																&nbsp; &nbsp;
 															</c:if>
 															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
-																<a href="${contextPath}/fss/loan/trade/transfer/${t.id}">转给借款人</a>
+																<a href="${contextPath}/loan/trade/${type}/transfer${t.id}">转给借款人</a>
 																&nbsp; &nbsp;
 															</c:if>
 															<c:if test="${t.status == '10050005'}">
-																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
+																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
                                                       <c:if test="${t.tradeType == '11090002'}">
 															<c:if test="${t.status == '10050005'}">
-																<a href="${contextPath}/fss/loan/trade/charge/${t.id}">收费 </a>
+																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
-                                                    
                                                     </td>
                                                 </tr>
                                         </c:forEach>
@@ -294,8 +286,8 @@
         forceParse: 0
     });
     function verify(){
-    	var a=document.getElementsByName("creatTime");
-    	var b=document.getElementsByName("modifyTime");
+    	var a=document.getElementsByName("startTime");
+    	var b=document.getElementsByName("endTime");
     	if(b[0].value!=null&&b[0].value!=''){
     		
     		if(a[0].value>b[0].value){

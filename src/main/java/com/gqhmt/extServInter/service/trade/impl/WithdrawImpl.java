@@ -1,16 +1,15 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
 import com.gqhmt.extServInter.service.trade.IWithdraw;
 import com.gqhmt.pay.service.trade.IFundsTrade;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -35,7 +34,7 @@ public class WithdrawImpl implements IWithdraw{
 	private IFundsTrade fundsTradeImpl;
 	
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		fundsTradeImpl.withdraw((WithdrawDto)dto);
