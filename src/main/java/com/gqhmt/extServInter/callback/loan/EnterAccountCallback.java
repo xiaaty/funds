@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 
 /**
@@ -38,17 +38,17 @@ public class EnterAccountCallback {
 	 * time:2016年3月7日
 	 * function：得到入账回调对象
 	 */
-	public Response getResponse(String mchnNo,String seqNo){
+	public EnterAccountResponse getResponse(String mchnNo,String seqNo){
 
-		Response response = null;
+		EnterAccountResponse enterAccountResponse = null;
 		 try {
-			 response = fssEnterAccountService.getResponse(mchnNo,seqNo);
-			response.setResp_code("0000");
+			 enterAccountResponse = fssEnterAccountService.getResponse(mchnNo,seqNo);
+			 enterAccountResponse.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
-		    	response.setResp_code(e.getMessage());
+				enterAccountResponse.setResp_code(e.getMessage());
 			}
-		 return response;
+		 return enterAccountResponse;
 	}
 	
 }

@@ -202,12 +202,7 @@
                                                     <td>${t.custNo}</td>
                                                     <td>${t.userNo}</td>
                                                     <td>${t.accNo}</td>
-                                                    <td>
-                                                    ${t.tradeType}
-<%--                                                       <c:forEach items="${banks}" var="banks"> --%>
-<%--                                                       <c:if test="${t.bankId==banks.custId}">${banks.bankLongName}</c:if> --%>
-<%--                                                     </c:forEach> --%>
-                                                    </td>
+                                                    <td> ${t.tradeType}</td>
                                                     <td>${t.amount}</td>
                                                     <td>${t.charge}</td>
                                                     <td>${t.thirdparytCharge}</td>

@@ -2,7 +2,6 @@ package com.gqhmt.extServInter.dto.loan;
 import java.util.List;
 
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 
 /**
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -21,14 +20,16 @@ import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
  * 16/1/12  柯禹来      1.0     1.0 Version
  */
 public class RepaymentResponse  extends Response {
-	private List<FssRepaymentEntity> repaymentlist;
+	
+	private List<RepaymentChildDto> repay_list;
 
-	public List<FssRepaymentEntity> getRepaymentlist() {
-		return repaymentlist;
+	public List<RepaymentChildDto> getRepay_list() {
+		return repay_list;
 	}
 
-	public void setRepaymentlist(List<FssRepaymentEntity> repaymentlist) {
-		this.repaymentlist = repaymentlist;
+	public void setRepay_list(List<RepaymentChildDto> repay_list) {
+		this.repay_list = repay_list;
 	}
+
 	
 }

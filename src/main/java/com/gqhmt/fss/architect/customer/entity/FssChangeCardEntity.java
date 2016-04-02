@@ -54,7 +54,9 @@ public class FssChangeCardEntity implements java.io.Serializable{
 
     @Column(name = "cust_name",updatable = false)
     private String custName;                           // varchar(45) DEFAULT NULL COMMENT '客户姓名',
-
+    
+    @Column(name = "acc_no",updatable = false)         //账号
+    private String accNo; 
 
     @Column(name = "state")
     private int state;                                  // int(11) DEFAULT NULL COMMENT '状态，1变更中，2成功，3失败',
@@ -337,6 +339,14 @@ public class FssChangeCardEntity implements java.io.Serializable{
 
 	public void setMchn(String mchn) {
 		this.mchn = mchn;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
 	}
     
 }

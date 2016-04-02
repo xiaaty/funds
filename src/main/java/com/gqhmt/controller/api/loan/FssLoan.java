@@ -57,7 +57,7 @@ public class FssLoan {
     * function：流标
     */
     @RequestMapping(value = "/loan/failedBid",method = RequestMethod.POST)
-    public Object ceeateAccount(FailedBidDto failedBidDto){
+    public Object ceeateAccount(@RequestBody FailedBidDto failedBidDto){
     	Response response= null;
         try {
         	
@@ -90,7 +90,7 @@ public class FssLoan {
      * function：抵押权人放款
      */
     @RequestMapping(value = "/loan/mortgageeWithDraw",method = RequestMethod.POST)
-    public Object MortgageeWithDraw(MortgageeWithDrawDto mortgageeWithDrawDto){
+    public Object MortgageeWithDraw(@RequestBody MortgageeWithDrawDto mortgageeWithDrawDto){
     	Response response= null;
     	try {
     		response = mortgageeWithDrawImpl.excute(mortgageeWithDrawDto);

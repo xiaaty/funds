@@ -4,6 +4,8 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
+import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
+import com.gqhmt.extServInter.dto.trade.GET_PrePaymentDto;
 import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -108,6 +110,8 @@ public class FssTradeApplyService {
 	    		fssTradeApplyEntity.setBespokedate(BespokeDate);
 	    	}
 			fssTradeApplyEntity.setContractId(wthDrawApplyDto.getContract_id());
+			//todo	合同编号要不要放进申请表  businessNo已经被占用
+//			fssTradeApplyEntity.setContractNo(wthDrawApplyDto.getContract_no());
 			
 		return fssTradeApplyEntity;
 	}
@@ -125,13 +129,20 @@ public class FssTradeApplyService {
 	/**
 	 * 完成抵押标借款人提现后，通知借款系统
 	 */
-	public FssTradeApplyEntity withDrasApplyCallBack(String seqNo, String mchn) throws FssException {
-		FssTradeApplyEntity fssTradeApplyEntity=null;
-		fssTradeApplyEntity=this.getTradeApplyByParam(seqNo,mchn);
+	public WithDrawApplyResponse withDrasApplyCallBack(String seqNo, String mchn) throws FssException {
+		WithDrawApplyResponse withDrawApplyResponse=new WithDrawApplyResponse();
+		FssTradeApplyEntity fssTradeApplyEntity=this.getTradeApplyByParam(seqNo,mchn);
 		if(fssTradeApplyEntity==null){
 			throw new FssException("90004002");
 		}
-		return fssTradeApplyEntity;
+		withDrawApplyResponse.setMchn(fssTradeApplyEntity.getMchnChild());
+		withDrawApplyResponse.setSeq_no(fssTradeApplyEntity.getSeqNo());
+		withDrawApplyResponse.setTrade_type(fssTradeApplyEntity.getTradeState());
+		withDrawApplyResponse.setContract_id(fssTradeApplyEntity.getContractId());
+		withDrawApplyResponse.setContract_amt(fssTradeApplyEntity.getTradeAmount());
+		withDrawApplyResponse.setPay_amt(fssTradeApplyEntity.getRealTradeAmount());
+		withDrawApplyResponse.setBespoke_date(fssTradeApplyEntity.getBespokedate());
+		return withDrawApplyResponse;
 	}
 	/**
 	 * 
@@ -297,8 +308,8 @@ public class FssTradeApplyService {
 	 * @param tradeapply
 	 * @return
 	 */
-	public List<FssTradeApplyEntity> queryFssTradeApplyList(FssTradeApplyEntity tradeapply){
-		List<FssTradeApplyEntity> tradeapplylist=fssTradeApplyReadMapper.select(tradeapply);
+	public List<FssTradeApplyEntity> queryFssTradeApplyList(Map map){
+		List<FssTradeApplyEntity> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map);
 		return tradeapplylist;
 	}
 	
@@ -323,8 +334,8 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setApplyType(Integer.valueOf(dto.getTrade_type()));
 		fssTradeApplyEntity.setCustNo("");
 		fssTradeApplyEntity.setUserNo("");
-		fssTradeApplyEntity.setBusinessNo("11091002");
-		fssTradeApplyEntity.setBusiType(Application.getInstance().getDictName("11091002"));
+		fssTradeApplyEntity.setBusinessNo(dto.getContract_id());
+		fssTradeApplyEntity.setBusiType(dto.getTrade_type());
 		fssTradeApplyEntity.setAccNo("");
 		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
 		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
@@ -333,11 +344,16 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setApplyState("0");
 		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
 		fssTradeApplyEntity.setMchnChild(dto.getMchn());
-		fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
-		fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
+		fssTradeApplyEntity.setCreateTime((new Date()));
+		fssTradeApplyEntity.setModifyTime((new Date()));
 		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
 		fssTradeApplyEntity.setBespokedate(new Date());
-		fssTradeApplyEntity.setContractId(dto.getContract_id());
+//		fssTradeApplyEntity.;
+//		fssTradeApplyEntity.;
+//		fssTradeApplyEntity.;
+//		fssTradeApplyEntity.;
+//		fssTradeApplyEntity.;
+//		fssTradeApplyEntity.;
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
 			respon.setResp_code("00000000");
@@ -347,6 +363,16 @@ public class FssTradeApplyService {
 		return respon;
 	}
 	
-	
+	/**
+	 * 冠E通后台发起代付申请
+	 * @return
+	 */
+	public Response createPrePaymentApply(GET_PrePaymentDto dto) throws FssException{
+		Response respon=new Response();
+		
+		
+		
+		return respon;
+	}
 	
 }

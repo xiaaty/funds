@@ -49,7 +49,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="withdrawForm" action="${contextPath}/fss/loan/trade/borrowWithDrawCheck" method="post">
+                    <form id="withdrawForm" action="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/check" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
@@ -70,6 +70,8 @@
                                                     <col />
                                                     <tbody>
                                                     	<input type="hidden"  name="id" value="${tradeapply.id}"/>
+                                                    	<input type="hidden"  name="applyType" value="${tradeapply.applyType}"/>
+                                                    	<input type="hidden"  name="busiType" value="${tradeapply.busiType}"/>
                                                         <tr>
                                                             <td align="left">借款人账号：</td>
                                                             <td>
@@ -189,11 +191,12 @@
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
     	                dataType: "json",
     	                success: function (data) {
+    	                	debugger;
     	                    if (data.code == '0000') {
-    	                        jAlert("添加成功!", '信息提示');
+    	                       /// jAlert("审核完成!", '信息提示');
+    	                       alert("审核完成");
     	                        //自动跳转
-    	                     //   var parent_id=data.parentid;
-    	                     //   parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
+    	                          window.history.back();
     	                    } else {
     	                    	jAlert("添加失败,该编号已经存在,请勿重复添加!", '消息提示');
     	                        return;

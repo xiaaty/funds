@@ -58,7 +58,7 @@ public class LoanAccountApi {
      * function：开户
      */
     @RequestMapping(value = "/createLoanAccount",method = RequestMethod.POST)
-    public Object createLoanAccount(CreateLoanAccountDto loanAccountDto){
+    public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
     	Response response=new Response();
     	try {
     		response = createLoanImpl.excute(loanAccountDto);
@@ -75,7 +75,7 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/bankCardChange",method = RequestMethod.POST)
-    public Object bankCardChange(CardChangeDto changeCardDto){
+    public Object bankCardChange(@RequestBody CardChangeDto changeCardDto){
     	Response response=new Response();
     	try {
     		response = changeCardImpl.excute(changeCardDto);
@@ -92,7 +92,7 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/createWithDrawApply",method = RequestMethod.POST)
-    public Object createWithDrawApply(LoanWithDrawApplyDto loanWithDrawApplyDto){
+    public Object createWithDrawApply(@RequestBody LoanWithDrawApplyDto loanWithDrawApplyDto){
     	Response response=new Response();
     	try {
     		response = loadWithDrawImpl.excute(loanWithDrawApplyDto);
@@ -110,7 +110,7 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/marginSendBack",method = RequestMethod.POST)
-    public Object marginSendBack(MarginDto dto){
+    public Object marginSendBack(@RequestBody MarginDto dto){
     	Response response=new Response();
     	try {
     		response = marginSendBackImpl.excute(dto);

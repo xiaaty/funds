@@ -14,9 +14,8 @@
 			t.modify_time modifyTime,
 			t.mchn_child mchnChild,
 			t.bespoke_date bespokedate,
-			t.trade_state tradetate,
+			t.trade_state tradeState,
 			t.real_trade_amount realTradeAmount
-<!-- 			t.loan_platform loanPlatform  	 -->
 			FROM t_gq_fss_trade_apply t 
 			where t.apply_type=11091001
 			<if test="contractId != null and contractId != ''">
@@ -42,5 +41,40 @@
 					AND t.create_time &lt; #{modifyTime} 
 				</when>
 			</choose>
+	</select>
+	
+	<!-- 抵押权人代扣信息 -->
+	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+		SELECT 
+			t.id id,
+			t.apply_no applyNo,
+			t.apply_type applyType,
+			t.business_no businessNo,
+			t.busi_type busiType,
+		    t.contract_id contractId,
+			t.seq_no seqNo,
+			t.bespoke_date bespokeDate,
+		    t.acc_no accNo,
+			t.trade_amount tradeAmount,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.mchn_child mchnChild,
+			t.apply_state applyState,
+			t.trade_state tradeState,
+			t.count count,
+			t.success_count successCount,
+			t.real_trade_amount realTradeAmount,
+			t.channel_no channelNo
+			FROM t_gq_fss_trade_apply t 
+			where t.apply_type=#{applyType}  and t.busi_type=#{busiType}
+			<if test="accNo != null and accNo != ''">
+				and t.acc_no like concat('%',#{accNo},'%')
+			</if>
+			<if test="businessNo != null and businessNo != ''">
+				and t.business_no like concat('%',#{businessNo},'%')
+			</if>
+			 <if test="startime!=null and startime!='' and endtime!=null and endtime!='' "> 
+				AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			</if>
 	</select>
 </mapper>

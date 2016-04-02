@@ -19,6 +19,7 @@ import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.ResourceUtil;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -379,10 +380,9 @@ public class FssChangeCardService {
      * @return
      * @throws FssException
      */
-   public FssChangeCardEntity queryChangeCardByParam(String seq_no,String mchn) throws FssException{
-	   FssChangeCardEntity fssChangeCardEntity=null;
-	   fssChangeCardEntity=changeCardReadMapper.getChangeCardByParam(seq_no,mchn);
-	   return fssChangeCardEntity;
+   public ChangeCardResponse queryChangeCardByParam(String seq_no,String mchn) throws FssException{
+	   ChangeCardResponse changeCardResponse=changeCardReadMapper.getChangeCardByParam(seq_no,mchn);
+	   return changeCardResponse;
     }
     
     
@@ -500,15 +500,15 @@ public class FssChangeCardService {
     * @param seqNo
     * @return
     */
-   public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn){
+   public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String cardNo, String bankId, String bankAddr, String bankCity, String filePath, String tradeType, String seqNo,String mchn,String accNo){
        FssChangeCardEntity entity = new FssChangeCardEntity();
        entity.setCustId(cus.getId().longValue());
-       entity.setCardNo(bankNo);
+       entity.setCardNo(cardNo);
        entity.setBankType(bankId);
        entity.setBankAdd(bankAddr);
        entity.setBankCity(bankCity);
        entity.setFilePath(filePath);
-
+       entity.setAccNo(accNo);
        entity.setbBankInfoId(cus.getBankId().longValue());
        entity.setCertNo(cus.getCertNo());
        entity.setCustName(cus.getCustomerName());
@@ -519,7 +519,7 @@ public class FssChangeCardService {
        entity.setTradeState(1);
        entity.setCertType(cus.getCertType());
        entity.setMobile(cus.getMobilePhone());
-       entity.setType(type);
+       entity.setType(Integer.parseInt(tradeType));
        if(seqNo != null){
            entity.setSeqNo(seqNo);
        }

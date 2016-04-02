@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -257,4 +258,13 @@ public class FssTradeRecordService {
 //		}
 	}
 	
+	/**
+	 * 根据申请单好查询抵押权人详细列表
+	 * @param map
+	 * @return
+	 */
+	public  List<FssTradeRecordEntity> queryFssTradeRecordList(Map map){
+		List<FssTradeRecordEntity> tradeRecordList=fssTradeRecordReadMapper.queryFssTradeRecordList(map);
+		return tradeRecordList;
+	}
 }

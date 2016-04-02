@@ -256,11 +256,11 @@ public class UrlConnectUtil {
         conn.setRequestProperty("Accept-Charset", "UTF-8");
         conn.setRequestProperty("Accept-Encoding", "gzip");
         //                    conn.setReadTimeout(60*1000);
+        
         conn.setDoInput(true);
     }
 
     private void connectPropertyAcceptAll(URLConnection conn){
-
         this.connectProperty(conn);
     }
     private void connectPropertyByJson(URLConnection conn){
