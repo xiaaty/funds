@@ -1,8 +1,13 @@
 package com.gqhmt.quartz.job.callback;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
+import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.quartz.job.SupperJob;
 import org.quartz.JobExecutionException;
+
+import javax.annotation.Resource;
+
+import java.util.*;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.bid.CallbackJob
@@ -20,9 +25,17 @@ import org.quartz.JobExecutionException;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
-public class CallbackJob implements Job {
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+public class CallbackJob extends SupperJob {
+
+    @Resource
+    private FssBackplateService fssBackplateService;
+
+
+    public void execute() throws JobExecutionException {
+        List<FssBackplateEntity> backplateEntities = fssBackplateService.findBackAll();
+        for(FssBackplateEntity entity:backplateEntities){
+
+        }
 
     }
 }

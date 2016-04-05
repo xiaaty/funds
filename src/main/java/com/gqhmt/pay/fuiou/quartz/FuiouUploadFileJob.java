@@ -6,8 +6,6 @@ import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.quartz.service.AbortBidService;
 import com.gqhmt.quartz.service.FtpUploadService;
 import com.gqhmt.util.ServiceLoader;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +28,12 @@ import java.util.Map;
  * -----------------------------------------------------------------
  * 2015/4/14  于泳      1.0     1.0 Version
  */
-@Component
 public class FuiouUploadFileJob extends AJob{
     private static boolean isRunning = false;
     private static boolean isUploadRunning = false;
     private static boolean isAbortRunning = false;
     private static boolean isSumDayRunning = false;
-    @Scheduled(cron="0/27 * 7-23  * * * ")
+//    @Scheduled(cron="0/27 * 7-23  * * * ")
     protected void execute() throws PayChannelNotSupports {
         if(!isIp("download")){
             return;
@@ -63,7 +60,7 @@ public class FuiouUploadFileJob extends AJob{
         }*/
     }
 
-    @Scheduled(cron="0/11 * 7-23  * * * ")
+//    @Scheduled(cron="0/11 * 7-23  * * * ")
     protected void upload() throws PayChannelNotSupports{
         if(!isIp("upload")){
             return;
@@ -83,7 +80,7 @@ public class FuiouUploadFileJob extends AJob{
 
     }
 
-    @Scheduled(cron="0  0/5 7-23  * * * ")
+//    @Scheduled(cron="0  0/5 7-23  * * * ")
     public void abort() throws PayChannelNotSupports{
         if(!isIp("abort")){
             return;

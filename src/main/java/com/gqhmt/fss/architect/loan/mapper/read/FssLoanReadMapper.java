@@ -63,5 +63,17 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * @return
      */
 	public List<FssLoanEntity> findLoanBySettle();
-	
+
+	/**
+	 * 获取回款列表
+	 * @return
+     */
+	public List<FssLoanEntity> findLoanRepayment();
+
+
+	/**
+	 * 获取回款列表
+	 * @return
+	 */
+	public List<FssLoanEntity> findAbortBid();
 }

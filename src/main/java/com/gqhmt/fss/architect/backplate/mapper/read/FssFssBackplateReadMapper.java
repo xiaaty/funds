@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.backplate.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
+import java.util.List;
 
 /**
  * 
@@ -22,5 +23,10 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
  * 2016年3月19日  jhz      1.0     1.0 Version
  */
 public interface FssFssBackplateReadMapper extends ReadMapper<FssBackplateEntity>{
+
+    public List<FssBackplateEntity> findBackAll();
+
+
+    public List<FssBackplateEntity> findBackAllByTime(int count,int timeType);
 	
 }
