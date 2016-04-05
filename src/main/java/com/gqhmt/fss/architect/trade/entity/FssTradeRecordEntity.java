@@ -102,6 +102,9 @@ public class FssTradeRecordEntity implements Serializable {
     @Column(name = "resp_code")
     private String respCode;
     
+    @Column(name = "cust_type")
+    private Integer custType;
+    
 	public Long getId() {
 		return id;
 	}
@@ -300,6 +303,14 @@ public class FssTradeRecordEntity implements Serializable {
 
 	public void setRespCode(String respCode) {
 		this.respCode = respCode;
+	}
+
+	public Integer getCustType() {
+		return custType;
+	}
+
+	public void setCustType(Integer custType) {
+		this.custType = custType;
 	}
 	
 }
