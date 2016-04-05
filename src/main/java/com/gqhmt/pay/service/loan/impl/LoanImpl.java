@@ -46,7 +46,7 @@ public class LoanImpl implements ILoan {
 	private FssAccountService fssAccountService;
 	
 	/**
-	 * 开户
+	 * 借款系统开户
 	 */
     @Override
     public String createLoanAccount(CreateLoanAccountDto dto) throws FssException {
@@ -55,7 +55,7 @@ public class LoanImpl implements ILoan {
     	CustomerInfoEntity customerInfoEntity=null;
     	String accNo=null;
     	//1.根据借款系统传入的手机号码，查询资金平台有没有此客户信息
-    	customerInfoEntity=customerInfoService.searchCustomerInfoByMobile(dto);
+    	customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
     	if(customerInfoEntity!=null){
     		if(dto.getTrade_type().equals("11020009")){ //线下开户不走富友
     			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);

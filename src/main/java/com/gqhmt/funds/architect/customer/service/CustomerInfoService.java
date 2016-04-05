@@ -62,7 +62,7 @@ public class CustomerInfoService {
 	*/
 	
 	public CustomerInfoEntity searchCustomerInfoByMobile(CreateLoanAccountDto loanAccountDto) throws FssException {
-		CustomerInfoEntity customerInfoEntity = queryCustomerInfoByMobile(loanAccountDto.getMobile());
+		CustomerInfoEntity customerInfoEntity = searchCustomerInfoByCertNo(loanAccountDto.getCert_no());
 		return customerInfoEntity;
 	}
 	
@@ -338,9 +338,9 @@ public class CustomerInfoService {
 	 * @param mobile
 	 * @return
 	 */
-	public CustomerInfoEntity queryCustomerInfoByMobile(String mobile) {
+	public CustomerInfoEntity searchCustomerInfoByCertNo(String certNo) {
 		CustomerInfoEntity entity = new CustomerInfoEntity();
-		entity.setMobilePhone(mobile);
+		entity.setCertNo(certNo);
 		return customerInfoReadMapper.selectOne(entity);
 	}
 
