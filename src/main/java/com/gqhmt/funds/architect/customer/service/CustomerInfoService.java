@@ -319,6 +319,9 @@ public class CustomerInfoService {
 	public CustomerInfoEntity queryCustomerById(int id) {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
 	}
+	public CustomerInfoEntity getCustomerById(Long id) {
+		return customerInfoReadMapper.selectByPrimaryKey(id);
+	}
 
 	/**//**
 	 * 根据身份证号查询客户信息

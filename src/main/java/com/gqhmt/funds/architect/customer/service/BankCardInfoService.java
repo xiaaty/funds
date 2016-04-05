@@ -6,6 +6,7 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
@@ -509,4 +510,35 @@ public class BankCardInfoService {
 	    }
 	
 	
+	 	/**
+	 	 * 创建银行卡信息
+	 	 * @param loanAccountDto
+	 	 * @param customer
+	 	 * @param userEntity
+	 	 * @return
+	 	 * @throws FssException
+	 	 */
+		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity,FundAccountEntity primaryAccount) throws FssException{
+			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+			bankCardInfoEntity.setCustId(Integer.valueOf(primaryAccount.getCustId().toString()));
+			bankCardInfoEntity.setBankLongName("");
+			bankCardInfoEntity.setBankSortName("");
+			bankCardInfoEntity.setBankNo(primaryAccount.getBankNo());
+			bankCardInfoEntity.setIsPersonalCard(1);
+			bankCardInfoEntity.setCertNo(customerInfoEntity.getCertNo());
+			bankCardInfoEntity.setMobile(customerInfoEntity.getMobilePhone());
+			bankCardInfoEntity.setCertName(customerInfoEntity.getCustomerName());
+			bankCardInfoEntity.setCityId(primaryAccount.getCityId());
+			bankCardInfoEntity.setParentBankId(primaryAccount.getParentBankId());
+			bankCardInfoEntity.setCreateTime(new Date());
+			bankCardInfoEntity.setCreateUserId(1);
+			bankCardInfoEntity.setModifyTime(new Date());
+			bankCardInfoEntity.setModifyUserId(1);
+			bankCardinfoWriteMapper.insertSelective(bankCardInfoEntity);
+			return bankCardInfoEntity;
+		}
+	 
+	 
+	 
+	 
 }
