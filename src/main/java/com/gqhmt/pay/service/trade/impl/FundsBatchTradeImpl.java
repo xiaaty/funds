@@ -80,7 +80,8 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         if(accNo != null && !"".equals(accNo)) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
-            int custId = entity.getCustId().intValue();
+        	int custId=0;
+        	custId = entity.getCustId().intValue();
             businessType= GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
             orderEntity = this.fundsTrade.withholdingApplyNew(custId,businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
         }
@@ -92,21 +93,23 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
      * @return
      */
     public FundOrderEntity batchWithdraw(FssTradeRecordEntity entity) throws FssException{
+    	FundOrderEntity orderEntity = null;
     	String  accNo = entity.getAccNo();//旧版通过账户号获取
-    	String custId=null;
-    	if(entity.getCustId()!=null){
-    		custId = String.valueOf(entity.getCustId());//新版通过custId获取
-    	}
     	int	selletType=0;//获取结算类型
     	Integer businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
-        FundOrderEntity orderEntity = null;
         if(entity.getBespokeDate()!=null){
     		selletType=fssTradeApplyService.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
     	}
     	if(accNo != null && !"".equals(accNo)){
     		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
     	}else{
-    		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+    		String custId=null;
+        	if(entity.getCustId()!=null && !"".equals(entity.getCustId())){
+        		custId = String.valueOf(entity.getCustId());//新版通过custId获取
+        		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+        	}else{
+        		throw new FssException("未得到CustId");
+        	}
     	}
         return  orderEntity;
     }

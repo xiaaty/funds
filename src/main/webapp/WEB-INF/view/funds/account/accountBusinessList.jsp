@@ -117,22 +117,22 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1300px;">
+                                    	<col width="200" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
                                         <thead>
                                         <tr>
-                                              <td width="100">客户姓名</td>
+                                              <td>客户姓名</td>
                                               <td>手机号码</td>
-                                              <td>账户编号</td>
+                                              <td>资金帐号</td>
                                               <td>账户类型</td>
                                               <td>业务类型</td>
                                               <td>账户余额</td>
@@ -154,8 +154,8 @@
                                                     <c:if test="${acc.accountType==3}">AX</c:if>
                                                    </td>
                                                      <td>${acc.busiType==0?"主账户":"其他账户"}</td>
-                                                    <td align="right"><fss:money money="${acc.amount}"/></td>
-                                                    <td align="right"><fss:money money="${acc.freezeAmount}" /></td>
+                                                    <td><fss:money money="${acc.amount}"/></td>
+                                                    <td><fss:money money="${acc.freezeAmount}" /></td>
                                                     <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>

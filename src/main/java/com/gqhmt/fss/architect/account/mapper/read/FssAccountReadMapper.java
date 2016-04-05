@@ -32,7 +32,7 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	 * @param map
 	 * @return
 	 */
-	public List<FssAccountEntity> findCustomerAccountByParams(Map map);
+	public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity);
 
 	
 	

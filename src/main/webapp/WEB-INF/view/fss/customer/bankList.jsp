@@ -77,19 +77,21 @@
                                                     <tr>
                                                         <td class="tr" nowrap="nowrap">银行代码:</td>
                                                         <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="bankCode" value="${bankinfo.bankCode}">
                                                             </label>
                                                         </td>
+                                                        
                                                         <td class="tr" nowrap="nowrap">银行名称:</td>
                                                         <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="bankName" value="${bankinfo.bankName}">
                                                             </label>
                                                         </td>
+                                                        
                                                         <td class="tr" nowrap="nowrap">银行短名称:</td>
                                                         <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="sortName" value="${bankinfo.sortName}">
                                                             </label>
                                                         </td>
@@ -111,7 +113,6 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
@@ -130,15 +131,15 @@
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
                                 </div> 
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="150" />
-                                    	<col width="350" />
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1150px;">
+                                    	<col width="50" />
                                     	<col width="200" />
                                     	<col width="200" />
+                                    	<col width="100" />
+                                    	<col width="100" />
                                     	<col width="200" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="" />
+                                    	<col width="200" />
+                                    	<col width="100" />
                                     	<thead>
                                         <tr>
                                             <td>编号</td>
@@ -174,7 +175,6 @@
                             </form>
                         </div>
                     </div>
-                </article>
             </div>
 
         </section>

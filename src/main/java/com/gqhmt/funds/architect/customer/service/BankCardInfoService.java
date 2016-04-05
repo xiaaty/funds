@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -433,8 +434,18 @@ public class BankCardInfoService {
 	 * @param bankcard
 	 * @return
 	 */
-	public List<BankCardInfoEntity> findAllbankCards(Map map){
-		return this.bankCardinfoReadMapper.selectBankCardList(map);
+	public List<BankCardInfoEntity> findAllbankCards(Map<String,String> map){
+		Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("certName",map.get("certName")!=null ? map.get("certName") : null);
+			map2.put("bankNo", map.get("bankNo")!=null ? map.get("bankNo") : null);
+			map2.put("bankSortName", map.get("bankSortName")!=null ? map.get("bankSortName") : null);
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+		return this.bankCardinfoReadMapper.selectBankCardList(map2);
 	}
     
 	

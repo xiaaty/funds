@@ -40,6 +40,7 @@
               <if test="bankSortName != null and bankSortName != ''">
                 and  bank.sort_name like concat('%',${bankSortName},'%') 
               </if>
+              order by customer.create_time desc
 	</select>
 <!-- 	查询要申请变更银行卡用户信息 -->
 	<select id="findCustomerAndUser" parameterType="java.lang.Long" resultType="CustomerAndUser">
@@ -56,13 +57,13 @@
 		customer.create_time createTime,
 		customer.modify_time modifyTime
 		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id and customer.id=${id}
-		
+		order by customer.create_time desc
 	</select>
 	<select id="quaryBankCardInfoList" parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity">
 		
 	</select>
 	
-	<select resultType="customer" parameterType="java.util.Map" id="findCustomerByParams">
+	<select id="findCustomerByParams"  parameterType="java.util.Map" resultType="customer">
 		SELECT 
 			t.id id,
 			t.cust_no custNo,
@@ -82,14 +83,15 @@
 			 </if>    
 			<if test="name!=null and name!=''"> 
 				AND  t.name Like CONCAT(CONCAT('%',#{name}),'%')
-			 </if>    
-			 <if test="startime!=null and startime!=''"> 
-				AND t.create_time &gt;= DATE_FORMAT(#{startime},'%Y%m%d%H%i%s')
+			</if>    
+			<if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>
-			<if test="endtime!=null and endtime!='' "> 
-				AND t.create_time &lt;= DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
 		</where>
+		order by t.create_time desc
 </select>
 	
 	
