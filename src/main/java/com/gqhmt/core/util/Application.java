@@ -1,6 +1,8 @@
 package com.gqhmt.core.util;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
+import com.gqhmt.fss.architect.customer.service.FssAreaMappingService;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.sys.entity.BankDealamountLimitEntity;
@@ -38,6 +40,10 @@ public class Application {
     private final Map<String,MerchantEntity>   merchantEntityMap = new ConcurrentHashMap<>();
     
     private final Map<String,BankDealamountLimitEntity>   bankAmountLimitMap = new ConcurrentHashMap<>();
+    
+    private final Map<String,String>   fourCodemap = new ConcurrentHashMap<>();
+    private final Map<String,String>   sixCodemap = new ConcurrentHashMap<>();
+    private final Map<String,String>   eightCodemap = new ConcurrentHashMap<>();
 
     private void init(){
         synchronized (this){
@@ -48,6 +54,9 @@ public class Application {
         LogUtil.debug(this.getClass(),dictOrder.toString());
         LogUtil.debug(this.getClass(),merchantEntityMap.toString());
         LogUtil.debug(this.getClass(),bankAmountLimitMap.toString());
+        LogUtil.debug(this.getClass(),eightCodemap.toString());
+        LogUtil.debug(this.getClass(),sixCodemap.toString());
+        LogUtil.debug(this.getClass(),fourCodemap.toString());
     }
 
     public void reload(){
@@ -56,6 +65,9 @@ public class Application {
             dictOrder.clear();
             merchantEntityMap.clear();
             bankAmountLimitMap.clear();
+            fourCodemap.clear();
+            sixCodemap.clear();
+            eightCodemap.clear();
             update();
         }
     }
@@ -64,6 +76,7 @@ public class Application {
         initDict();
         initMerchant();
         initBankDealamountLimit();
+        iniBankArea();
     }
 
     /*======================================数据字典初始化及应用========================================================*/
@@ -133,9 +146,9 @@ public class Application {
     	}
     }
     
-    public boolean  existsBankDealamountLimit(String  bankCode){
-    	return bankAmountLimitMap.containsKey(bankCode);
-    }
+//    public boolean  existsBankDealamountLimit(String  bankCode){
+//    	return bankAmountLimitMap.containsKey(bankCode);
+//    }
     
     public BigDecimal getBankDealamountLimit(String bankCode) throws FssException {
     	BankDealamountLimitEntity bankDealamountLimitEntity = bankAmountLimitMap.get(bankCode);
@@ -170,6 +183,52 @@ public class Application {
         return merchantEntity.getParentNo();
     }
 
+    /*======================================银行交易限额初始化及应用结束========================================================*/
+   
+    /**
+     * 地区码内存加载
+     */
+    private  void iniBankArea(){
+    	FssAreaMappingService bankAreaMappingService = ServiceLoader.get(FssAreaMappingService.class);
+    	
+    	 List<FssAreaMappingEntity> bankAreas = bankAreaMappingService.findAll();
+    	
+    	for(FssAreaMappingEntity bankArea:bankAreas) {
+    		sixCodemap.put(bankArea.getFourCode(),bankArea.getSixCode());
+    		fourCodemap.put(bankArea.getSixCode(),bankArea.getSixCode());
+    		eightCodemap.put(bankArea.getFourCode(),bankArea.getEightCode());
+    	}
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月1日
+     * function：根据四位码返回六位码
+     */
+    public String getSixCode(String fourCode) throws FssException {
+    	String string = sixCodemap.get(fourCode);
+    	return string;
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月1日
+     * function：根据四位码返回八位码
+     */
+    public String getEightCode(String fourCode) throws FssException {
+    	String string = eightCodemap.get(fourCode);
+    	return string;
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月1日
+     * function：根据六位码返回四位码
+     */
+    public String getFourCode(String sixCode) throws FssException {
+    	String string = fourCodemap.get(sixCode);
+    	return string;
+    }
     /*======================================菜单初始化及应用========================================================*/
 
 

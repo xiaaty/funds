@@ -73,6 +73,7 @@ public class LoanApiTest extends SupperAPI {
             dto.setContract_no("JK2016032600031");
             dto.setMortgagee_acc_no("6635634325057878");
             dto.setAcc_no("1302692985004666");
+            dto.setContract_interest(new BigDecimal("100000.00"));
             dto.setContract_amt(new BigDecimal("1000000.00"));
             dto.setPay_amt(new BigDecimal("20000.00"));
             dto.setLoan_platform("10040001");
