@@ -236,7 +236,7 @@
 																&nbsp; &nbsp;
 															</c:if>
 															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
-																<a href="${contextPath}/loan/trade/${type}/transfer${t.id}">转给借款人</a>
+																<a href="${contextPath}/loan/trade/${type}/transfer/${t.id}">转给借款人</a>
 																&nbsp; &nbsp;
 															</c:if>
 															<c:if test="${t.status == '10050005'}">
@@ -247,6 +247,7 @@
                                                       <c:if test="${t.tradeType == '11090002'}">
 															<c:if test="${t.status == '10050005'}">
 																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
+<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
@@ -304,6 +305,27 @@
     			$("#mortgageePayment").submit();
     		}
     	}
+    }
+    function recharg(type,id){
+    	$.ajax({
+        	url : "${contextPath}/loan/trade/"+type+"/charge/"+id,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.msg == '0000') {
+                  jAlert("收费成功!", '确认信息');
+                } else if(data.msg == '0001'){
+                	jAlert("该条信息不存在!", '确认信息');
+                    return;
+                }else if(data.msg == '0002'){
+                  jAlert("没有收费信息!", '确认信息');
+                    return;
+                }else if(data.msg == '0003'){
+                  jAlert("请重新收取费用!", '确认信息');
+                    return;
+                }
+            }
+        });
     }
 </script>
 

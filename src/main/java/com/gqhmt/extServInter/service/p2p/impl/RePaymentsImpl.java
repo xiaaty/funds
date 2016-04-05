@@ -24,7 +24,7 @@ import javax.annotation.Resource;
  * @since: JDK 1.7
  * Create at:   2016年3月23日
  * Description:
- * <p>	冠e通对接 满标
+ * <p>	冠e通对接 回款
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------

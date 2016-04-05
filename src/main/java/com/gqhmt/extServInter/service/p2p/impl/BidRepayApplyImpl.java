@@ -38,7 +38,7 @@ public class BidRepayApplyImpl implements IBidRepayApply {
 	private FssLoanService loanService;
 	
 	@Override
-	@APITradeTypeValid(value = "11099004")
+	@APITradeTypeValid(value = "11090012")
 	@APISignature
     public Response execute(SuperDto dto) {
     	Response response = new Response();

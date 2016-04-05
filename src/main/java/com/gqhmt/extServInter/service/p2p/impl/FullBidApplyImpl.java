@@ -38,7 +38,7 @@ public class FullBidApplyImpl implements IFullBidApply {
 	private FssLoanService loanService;
 	
 	@Override
-	@APITradeTypeValid(value = "11099005")
+	@APITradeTypeValid(value = "11090004")
 	@APISignature
     public Response execute(SuperDto dto) {
     	Response response = new Response();

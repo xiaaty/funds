@@ -8,7 +8,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
-import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class LoadWithDrawImpl implements ILoadWithDraw{
 	@APISignature
     @Override
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
-    	WithDrawApplyResponse response = new WithDrawApplyResponse();
+    	Response response = new Response();
     	try {
     		fundAccountService.createWithDrawApply((LoanWithDrawApplyDto)dto);
 			response.setResp_code("0000");
