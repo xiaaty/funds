@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
@@ -493,7 +494,7 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
-		bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
+		bankCardInfoEntity.setCityId(Application.getInstance().getFourCode(loanAccountDto.getCity_id()));
 		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
 		bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
 		bankCardInfoEntity.setCreateUserId(1);

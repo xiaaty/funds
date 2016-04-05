@@ -1,6 +1,7 @@
 package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
@@ -66,7 +67,7 @@ public class LoanImpl implements ILoan {
     	}else{
     		try {
     			customerInfoEntity=customerInfoService.createLoanAccount(dto);
-    			customerInfoEntity.setCityCode(dto.getCity_id());
+    			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
     	    	customerInfoEntity.setParentBankCode(dto.getBank_id());
     			customerInfoEntity.setBankLongName("");
     			customerInfoEntity.setBankNo(dto.getBank_card());

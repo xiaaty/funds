@@ -377,6 +377,14 @@ public class FssLoanService {
 	public List<FssLoanEntity> findLoanBySettle(){
 		return this.fssLoanReadMapper.findLoanBySettle();
 	}
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月5日
+	 * function：修改费用状态
+	 */
+	public void updateFeeList(FssFeeList feeList) throws FssException{
+		fssFeeListWriteMapper.updateByPrimaryKey(feeList);
+	}
 
 }	

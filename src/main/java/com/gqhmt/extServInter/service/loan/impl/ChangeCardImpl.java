@@ -8,7 +8,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
-import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.extServInter.service.loan.IChangeCard;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class ChangeCardImpl implements IChangeCard{
 	@APITradeTypeValid(value = "11029001,11029002")
 	@APISignature
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
-    	ChangeCardResponse response = new ChangeCardResponse();
+    	Response response = new Response();
     	try {
     		fundsAccountImpl.bankCardChange((CardChangeDto)dto);
 			response.setResp_code("0000");

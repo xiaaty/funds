@@ -355,7 +355,7 @@ public class FssTradeApplyService {
 			 fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				//创建回盘信息
 				
-					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getApplyType().toString());
+					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
 					
 				} catch (FssException e) {
 					// TODO Auto-generated catch block
