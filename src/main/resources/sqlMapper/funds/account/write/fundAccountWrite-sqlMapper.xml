@@ -12,4 +12,9 @@
 	<update id="updateAndSaveAccount"  parameterType="java.util.Map">
 		update t_gq_fund_account t set t.amount=${totalAmaount} where t.id=${id}
 	</update>
+	
+	<update id="updateCustNameByCustId"  parameterType="java.util.Map">
+		update t_gq_fund_account t set t.cust_name=#{custName} where t.cust_id=#{custId}
+	</update>
+	
 </mapper>

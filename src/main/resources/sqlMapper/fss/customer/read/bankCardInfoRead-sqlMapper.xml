@@ -64,5 +64,6 @@
 				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
 		</where>
+		order by t.create_time desc
 	</select>
 </mapper>

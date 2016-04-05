@@ -450,6 +450,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type()));//交易渠道
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
+		fssTradeApplyEntity.setCustType(Integer.valueOf(dto.getCust_type()));
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
 			respon.setResp_code("00000000");
@@ -489,6 +490,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
 		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_id()));
+		fssTradeApplyEntity.setCustType(Integer.valueOf(dto.getCust_type()));
 		return fssTradeApplyEntity;
 	}
 

@@ -39,7 +39,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>资金管理</li>
-            <li>对公账号列表</li>
+            <li>账户列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -106,7 +106,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>对公账号列表</h2>
+                            <h2>账户列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -153,7 +153,7 @@
                                                     <c:if test="${acc.accountType==2}">A0 </c:if>
                                                     <c:if test="${acc.accountType==3}">AX</c:if>
                                                    </td>
-                                                     <td>${acc.busiType==0?"主账户":"其他账户"}</td>
+                                                    <td>${acc.busiType==0?"主账户":"其他账户"}</td>
                                                     <td><fss:money money="${acc.amount}"/></td>
                                                     <td><fss:money money="${acc.freezeAmount}" /></td>
                                                     <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>

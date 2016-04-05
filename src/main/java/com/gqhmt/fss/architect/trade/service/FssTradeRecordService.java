@@ -291,6 +291,7 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setModifyTime(new Date());
 		tradeRecordEntity.setChannelNo(fssTradeApplyEntity.getChannelNo());
 		tradeRecordEntity.setCustId(fssTradeApplyEntity.getCustId());
+		tradeRecordEntity.setCustType(fssTradeApplyEntity.getCustType());
 		return tradeRecordEntity;
 	}
 	

@@ -6,7 +6,10 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsBatchTrade;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
@@ -36,10 +39,13 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     private FssTradeRecordService recordService;
     @Resource
     private FssTradeApplyService fssTradeApplyService;
-
     @Resource
     private IFundsTrade fundsTrade;
-
+    @Resource
+    private FundAccountService fundAccountService;
+    @Resource
+    private TradeRecordService tradeRecordService;
+    
     @Override
     public void batchTrade(FssTradeRecordEntity entity){
         FundOrderEntity orderEntity = null;
@@ -80,10 +86,9 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         if(accNo != null && !"".equals(accNo)) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
-        	int custId=0;
-        	custId = entity.getCustId().intValue();
-            businessType= GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
-            orderEntity = this.fundsTrade.withholdingApplyNew(custId,businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
+        	FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(entity.getCustId(), Integer.valueOf(GlobalConstants.ACCOUNT_TYPE_PRIMARY));
+        	businessType=tradeRecordService.parseBusinessType(fundAccountEntity.getAccountType());
+            orderEntity = this.fundsTrade.withholdingApplyNew(Integer.valueOf(entity.getCustId().toString()).intValue(),businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
         }
         return  orderEntity;
     }
