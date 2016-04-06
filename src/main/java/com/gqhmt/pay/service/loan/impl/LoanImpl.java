@@ -57,31 +57,23 @@ public class LoanImpl implements ILoan {
     	String accNo=null;
     	//1.根据借款系统传入的手机号码，查询资金平台有没有此客户信息
     	customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
-    	if(customerInfoEntity!=null){
-    		if(dto.getTrade_type().equals("11020009")){ //线下开户不走富友
-    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    		}else{
+    	if(customerInfoEntity==null){//客户信息为空，就创建客户信息
+    		customerInfoEntity=customerInfoService.createLoanAccount(dto);
+    		customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
+	    	customerInfoEntity.setParentBankCode(dto.getBank_id());
+			customerInfoEntity.setBankLongName("");
+			customerInfoEntity.setBankNo(dto.getBank_card());
+    	}
+    	//判断账户类型是线上还是线下，线下不走富友（怎么判断线上用户还是线下用户？）
+    	if(!dto.getTrade_type().equals("11020011")){
+			try {
 				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    		}
-    	}else{
-    		try {
-    			customerInfoEntity=customerInfoService.createLoanAccount(dto);
-    			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
-    	    	customerInfoEntity.setParentBankCode(dto.getBank_id());
-    			customerInfoEntity.setBankLongName("");
-    			customerInfoEntity.setBankNo(dto.getBank_card());
-    			if(dto.getTrade_type().equals("11020009")){ //线下开户不走富友
-    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    			}else{
-    				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    			}
 			} catch (FssException e) {
-				LogUtil.info(this.getClass(), e.getMessage());
+				LogUtil.error(this.getClass(), e);
 				throw new FssException("91004013");
 			}
-    	}
+		}
+    	fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
     	accNo=fssAccount.getAccNo();
     	return accNo;
     }

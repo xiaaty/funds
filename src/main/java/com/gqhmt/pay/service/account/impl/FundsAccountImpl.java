@@ -79,29 +79,24 @@ public class FundsAccountImpl implements IFundsAccount {
      * @param taradPwd           支付渠道交易密码
      * @throws FssException
      */
-	public boolean createAccount(CustomerInfoEntity customerInfoEntity,
-						String pwd, String taradPwd) throws FssException {Long cusId = customerInfoEntity.getId();
-
-						Integer userId = customerInfoEntity.getUserId();
-
-						FundAccountEntity primaryAccount = this.getPrimaryAccount(cusId);
-					        if(primaryAccount == null){
-								try {
-									primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
-								} catch (FssException e) {
-								}
-							}
-
-						primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-						//富友
-						if (primaryAccount.getHasThirdAccount() ==1){
-							paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-							primaryAccount.setHasThirdAccount(2);
-							fundAccountService.update(primaryAccount);
-						}
-
-						return true;
-					}
+	public boolean createAccount(CustomerInfoEntity customerInfoEntity,String pwd, String taradPwd) throws FssException {
+		Long cusId = customerInfoEntity.getId();
+		Integer userId = customerInfoEntity.getUserId();
+		FundAccountEntity primaryAccount = this.getPrimaryAccount(cusId);
+        if(primaryAccount == null){
+			try {
+				primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
+			} catch (FssException e) {
+			}
+		}
+		primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+		if (primaryAccount.getHasThirdAccount() ==1){//富友
+				paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+				primaryAccount.setHasThirdAccount(2);
+				fundAccountService.update(primaryAccount);
+		}
+			return true;
+	}
 
 	/**
      * 销户申请
