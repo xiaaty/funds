@@ -9,11 +9,15 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.quartz.job.SupperJob;
+import com.gqhmt.util.ServiceLoader;
+
 import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -62,25 +66,31 @@ public class CallbackJob extends SupperJob {
 
         //验证是否配置回盘参数
         if(classMethodName == null){
-//                entity.set
+        	entity.setRepayResult(2);//无需回盘
+        	fssBackplateService.update(entity);
+        }else{
+        	try {
+        		int num = classMethodName.lastIndexOf(".");
+        		String className = classMethodName.substring(0,num);
+        		Class class1 = Class.forName(className);
+        		Object obj = context.getBean(class1);
+        		String methodName = classMethodName.substring(classMethodName.lastIndexOf(".")+1);
+        		Method method = FssBeanUtil.findMethod(class1,methodName,String.class,String.class);
+        		Object value = method.invoke(obj,entity.getMchn(),entity.getSeqNo());
+        		Response response  = UrlConnectUtil.sendDataReturnAutoSingleObject(Response.class,entity.getMchn()+"_"+entity.getTradeType(),value);
+        		//修改完成状态;
+        		if("00000000".equals(response.getResp_code()) || "0000".equals(response.getResp_code())){//返回代码为00000000或0000表示回盘成功
+        			entity.setRepayResult(0);//回盘成功
+        		}else{
+        			entity.setRepayResult(1);//回盘失败
+        		}
+        		fssBackplateService.update(entity);
+        	} catch (Exception e) {
+        		LogUtil.error(getClass(),e);
+        		throw new FssException("",e);
+        	}
         }
-        try {
-            int num = classMethodName.lastIndexOf(".");
-            String className = classMethodName.substring(0,num);
-            Class class1 = Class.forName(className);
-            Object obj = context.getBean(class1);
-            String methodName = classMethodName.substring(classMethodName.lastIndexOf(".")+1);
-            Method method = FssBeanUtil.findMethod(class1,methodName,String.class,String.class);
-            Object value = method.invoke(obj,entity.getMchn(),entity.getSeqNo());
-            Response response  = UrlConnectUtil.sendDataReturnAutoSingleObject(Response.class,entity.getMchn()+"_"+entity.getTradeType(),value);
-
-            //修改完成状态;
-
-
-        } catch (Exception e) {
-            LogUtil.error(getClass(),e);
-            throw new FssException("",e);
-        }
+       
     }
 }
 
