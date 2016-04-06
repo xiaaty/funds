@@ -1,5 +1,6 @@
 package com.gqhmt.quartz.job.callback;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.FssBeanUtil;
 import com.gqhmt.core.util.LogUtil;
@@ -8,8 +9,9 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.quartz.job.SupperJob;
-import com.gqhmt.util.ServiceLoader;
 import org.quartz.JobExecutionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
@@ -31,40 +33,53 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
+@Component
 public class CallbackJob extends SupperJob {
 
     @Resource
     private FssBackplateService fssBackplateService;
 
+    @Resource
+    private ApplicationContext context;
+
 
     public void execute() throws JobExecutionException {
         List<FssBackplateEntity> backplateEntities = fssBackplateService.findBackAll();
         for(FssBackplateEntity entity:backplateEntities){
-            this.callback(entity);
+            try {
+                this.callback(entity);
+            } catch (FssException e) {
+                LogUtil.error(getClass(),e);
+                continue;
+            }
         }
 
     }
 
 
-    public void callback(FssBackplateEntity entity){
-        String  className = ResourceUtil.getValue("config.appContext",entity.getMchn()+"_"+entity.getTradeType()+"_className");
+    public void callback(FssBackplateEntity entity) throws FssException {
+        String  classMethodName = ResourceUtil.getValue("config.appContext",entity.getMchn()+"_"+entity.getTradeType()+"_className");
 
         //验证是否配置回盘参数
-        if(className == null){
+        if(classMethodName == null){
 //                entity.set
         }
         try {
-            Class class1 = Class.forName(className.substring(className.lastIndexOf("\\.")));
-            Object obj = ServiceLoader.get(class1);
-            String methodName = className.substring(className.lastIndexOf("\\.")+1);
+            int num = classMethodName.lastIndexOf(".");
+            String className = classMethodName.substring(0,num);
+            Class class1 = Class.forName(className);
+            Object obj = context.getBean(class1);
+            String methodName = classMethodName.substring(classMethodName.lastIndexOf(".")+1);
             Method method = FssBeanUtil.findMethod(class1,methodName,String.class,String.class);
             Object value = method.invoke(obj,entity.getMchn(),entity.getSeqNo());
             Response response  = UrlConnectUtil.sendDataReturnAutoSingleObject(Response.class,entity.getMchn()+"_"+entity.getTradeType(),value);
+
             //修改完成状态;
 
 
         } catch (Exception e) {
             LogUtil.error(getClass(),e);
+            throw new FssException("",e);
         }
     }
 }
