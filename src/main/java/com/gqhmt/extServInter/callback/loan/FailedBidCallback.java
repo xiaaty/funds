@@ -27,7 +27,7 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
  * 2016年3月8日  jhz      1.0     1.0 Version
  */
 @Service
-public class FailedBidCallback {
+public class FailedBidCallback implements GetCallBack{
 	@Resource
 	private FssLoanService fssLoanService;
 	/**
@@ -36,7 +36,7 @@ public class FailedBidCallback {
 	 * time:2016年3月7日
 	 * function：得到流标回调对象
 	 */
-	public FailedBidResponse getResponse(String mchnNo,String seqNo){
+	public FailedBidResponse getCallBack(String mchnNo,String seqNo){
 		
 		 FailedBidResponse failedBidResponse =null;
 			 try {

@@ -25,12 +25,12 @@ import com.gqhmt.pay.service.account.IFundsAccount;
  * 2016/3/6  于泳      1.0     1.0 Version
  */
 @Service
-public class ChangeBankCallback{
+public class ChangeBankCallback implements GetCallBack{
 //	银行卡变更完成，通知变更发起方（借款系统）返回 seqNo 流水号 和 mchn  商户号 
 	@Resource
 	private IFundsAccount fundsAccountImpl;
     
-    public ChangeCardResponse bankCardChangeCallBack(String seqNo,String mchn) throws FssException{
+    public ChangeCardResponse getCallBack(String seqNo,String mchn) throws FssException{
     	ChangeCardResponse response = new ChangeCardResponse();
     	try {
     		response = fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);

@@ -27,7 +27,7 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
 @Service
-public class MortgageeWithDrawCallback {
+public class MortgageeWithDrawCallback implements GetCallBack{
 	
 	@Resource
 	private FssLoanService fssLoanService;
@@ -37,7 +37,7 @@ public class MortgageeWithDrawCallback {
 	 * time:2016年3月7日
 	 * function：得到抵押权人提现回盘对象
 	 */
-	public MortgageeWithDrawRespons getResponse(String mchnNo,String seqNo){
+	public MortgageeWithDrawRespons getCallBack(String mchnNo,String seqNo){
 		
 		 MortgageeWithDrawRespons response=null;
 		try {
