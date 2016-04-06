@@ -57,32 +57,11 @@ public interface IFundsTender {
 
     /**
      * 投标，根据tender获取标的信息
-     * @param thirdPartyType                支付渠道
-     * @param tenderId
+     * @param bidDto                支付渠道
      * @return
      * @throws FssException
      */
     public boolean bid(BidDto bidDto) throws FssException;
-
-
-    /**
-     * 满标清算，根据Bid获取投标信息，并进行满标结算
-     * @param thirdPartyType                支付渠道
-     * @param bid
-     * @return
-     * @throws FssException
-     */
-    public boolean sellte(String thirdPartyType,long bid) throws FssException;
-
-    /**
-     * 还款
-     * @param thirdPartyType                支付渠道
-     * @param bid                           标id
-     * @param bidRepaymentId                还款表id
-     * @return
-     * @throws FssException
-     */
-    public boolean repayment(String thirdPartyType,long bid,long bidRepaymentId) throws FssException;
 
 
     /**

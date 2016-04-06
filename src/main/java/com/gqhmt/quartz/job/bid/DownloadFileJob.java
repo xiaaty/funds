@@ -4,7 +4,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpDownloadFileService;
 import com.gqhmt.quartz.service.FtpResultService;
-import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -35,7 +34,7 @@ public class DownloadFileJob extends SupperJob{
     @Resource
     private FtpResultService ftpResultService;
 
-    public void execute() throws JobExecutionException {
+    public void execute() {
         if(isRunning) return;
 
         isRunning = true;

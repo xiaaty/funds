@@ -377,6 +377,25 @@ public class FssLoanService {
 	public List<FssLoanEntity> findLoanBySettle(){
 		return this.fssLoanReadMapper.findLoanBySettle();
 	}
+
+
+	/**
+	 * 获取回款列表
+	 * @return
+	 */
+	public List<FssLoanEntity> findLoanRepayment(){
+		return this.fssLoanReadMapper.findLoanRepayment();
+	}
+
+
+	/**
+	 * 获取回款列表
+	 * @return
+	 */
+	public List<FssLoanEntity> findAbortBid() {
+		return this.fssLoanReadMapper.findAbortBid();
+	}
+
 	/**
 	 * 
 	 * author:jhz

@@ -1,7 +1,6 @@
 package com.gqhmt.quartz.job.accounting;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
+import com.gqhmt.quartz.job.SupperJob;
 import org.quartz.JobExecutionException;
 
 /**
@@ -20,9 +19,9 @@ import org.quartz.JobExecutionException;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
-public class EnterAccountingJob implements Job {
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+public class EnterAccountingJob extends SupperJob {
+
+    public void execute( ) throws JobExecutionException {
 
     }
 }

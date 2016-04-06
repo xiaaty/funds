@@ -6,6 +6,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
@@ -13,8 +14,6 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.funds.architect.order.service.FundOrderService;
-import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +50,6 @@ public class BidRepaymentService {
     @Resource
     private FundAccountService fundAccountService;
 
-    @Resource
-    private FuiouPreauthService fuiouPreauthService;
 
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
@@ -66,11 +63,12 @@ public class BidRepaymentService {
     @Resource
     private PaySuperByFuiou paySuperByFuiou;
 
-    @Resource
-    private FundOrderService fundOrderService;
 
     @Resource
     private FundSequenceService fundSequenceService;
+
+    @Resource
+    private FssBackplateService fssBackplateService;
 
     public void BidRepayment(FssLoanEntity loanEntity) throws FssException {
 
@@ -97,16 +95,18 @@ public class BidRepaymentService {
 
         Integer cusId = bid.getCustomerId();
         //抵押标, 处理custId为抵押权人id
-        //还款总额获取   todo
+        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+            cusId = bid.getHypothecarius();
+        }
+        //还款总额获取
         BigDecimal sumRepay  = BigDecimal.ZERO;
 
-        //账户资金余额验证
+        //账户资金余额验证   todo
 
-        //利差补偿
+        //利差补偿  todo
 
         //抵押标 还款资金转账
 
-        //完成
 
         // 实际出账账户
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
@@ -161,6 +161,9 @@ public class BidRepaymentService {
 
         Integer cusId = bid.getCustomerId();
         //抵押标, 处理custId为抵押权人id
+        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+            cusId = bid.getHypothecarius();
+        }
         //还款总额获取   todo
         BigDecimal sumRepay  = BigDecimal.ZERO;
         /*if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
@@ -169,6 +172,12 @@ public class BidRepaymentService {
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay);
+
+
+        //回盘处理
+        fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+
+
     }
 
 

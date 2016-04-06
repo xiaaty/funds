@@ -7,12 +7,11 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper;
 import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper;
 import com.gqhmt.util.LogUtil;
-
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -86,6 +85,16 @@ public class FssBackplateService {
 			LogUtil.info(this.getClass(), e.getMessage());
 			throw new FssException("91009804");
 		}
+    }
+
+
+    public List<FssBackplateEntity> findBackAll(){
+        return this.fssBackplateReadMapper.findBackAll();
+    }
+
+
+    public List<FssBackplateEntity> findBackAllByTime(int count,int timeType){
+        return this.fssBackplateReadMapper.findBackAllByTime(count,timeType);
     }
     
     

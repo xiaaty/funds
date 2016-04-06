@@ -4,9 +4,14 @@ import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.business.architect.loan.service.TenderService;
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
@@ -14,6 +19,7 @@ import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +44,12 @@ public class AbortBidService {
     @Resource
     private FuiouFtpOrderService fuiouFtpOrderService;
 
+    @Resource
+    private FetchDataService fetchDataService;
+
+    @Resource
+    private FssLoanService fssLoanService;
+
     public void abortBid(){
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listAbort();
         for(FuiouFtpOrder fuiouFtpOrder:list){
@@ -51,13 +63,35 @@ public class AbortBidService {
         if(fundOrderEntity.getOrderType() != GlobalConstants.ORDER_ABORT_BID){
             return ;
         }
-        Bid bid = bidService.findById(fundOrderEntity.getOrderFrormId());
+
+//        Bid bid = bidService.findById(fundOrderEntity.getOrderFrormId());
+        FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id",loanEntity.getContractId());
+        if("11090004".equals(loanEntity.getTradeType())){
+            paramMap.put("type","2");
+        }else{
+            paramMap.put("type","1");
+        }
+
+        Bid bid = null;
+        List<Tender> list  = null;
+        try {
+            //获取bid信息
+            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
+            //获取投标列表
+            list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+            return;
+        }
+
+
         Integer cusId = bid.getCustomerId();
         Map<Integer,FuiouPreauth> map = fuiouPreauthService.getFuiouPreauth(bid.getId().longValue());
         if(bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() >0){
             cusId = bid.getHypothecarius();
         }
-        List<Tender> list = tenderService.queryTenderByBidId(Long.valueOf(bid.getId()));
 
         int falidSize =  0;
 
@@ -68,6 +102,7 @@ public class AbortBidService {
             }
             try {
 //                AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_ABORT_ASYN, ThirdPartyType.FUIOU, tender,fuiouPreauth.getContractNo());
+
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.insert(fuiouPreauth);
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
@@ -87,14 +122,14 @@ public class AbortBidService {
             fuiouFtpOrder.setResult(1);
             fuiouFtpOrder.setRetrunResultStatus(1);
         }
-//        else if(falidSize == list.size()){
-//            tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),false,0);
-//            fuiouFtpOrder.setUploadStatus(3);
-//            fuiouFtpOrder.setDownloadStatus(4);
-//            fuiouFtpOrder.setResultStatus(3);
-//            fuiouFtpOrder.setResult(2);
-//            fuiouFtpOrder.setRetrunResultStatus(1);
-//        }
+        else if(falidSize == list.size()){
+            //tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),false,0);
+            fuiouFtpOrder.setUploadStatus(3);
+            fuiouFtpOrder.setDownloadStatus(4);
+            fuiouFtpOrder.setResultStatus(3);
+            fuiouFtpOrder.setResult(2);
+            fuiouFtpOrder.setRetrunResultStatus(1);
+        }
 
         fuiouFtpOrderService.insert(fuiouFtpOrder);
 
