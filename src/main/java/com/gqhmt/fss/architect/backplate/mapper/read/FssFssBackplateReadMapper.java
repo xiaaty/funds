@@ -5,6 +5,8 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -27,6 +29,6 @@ public interface FssFssBackplateReadMapper extends ReadMapper<FssBackplateEntity
     public List<FssBackplateEntity> findBackAll();
 
 
-    public List<FssBackplateEntity> findBackAllByTime(int count,int timeType);
+    public List<FssBackplateEntity> findBackAllByTime(@Param("repayCount") int repayCount,@Param("timeType") int timeType);
 	
 }

@@ -7,11 +7,17 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper;
 import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper;
 import com.gqhmt.util.LogUtil;
+import com.gqhmt.util.StringUtils;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -78,7 +84,7 @@ public class FssBackplateService {
 		backplateEntity.setCreateTime(new Date());
 		backplateEntity.setModifyTime(new Date());
 		backplateEntity.setRepayCount(0);//回盘次数
-		backplateEntity.setRepay_result("");//回盘结果
+		backplateEntity.setRepayResult(0);//回盘结果
 		try {
 			this.insert(backplateEntity);
 		} catch (Exception e) {
@@ -89,12 +95,17 @@ public class FssBackplateService {
 
 
     public List<FssBackplateEntity> findBackAll(){
-        return this.fssBackplateReadMapper.findBackAll();
+    	List<FssBackplateEntity> list= this.fssBackplateReadMapper.findBackAll();
+    	if(list==null && list.size()==0){
+    		list=new ArrayList<FssBackplateEntity>();
+    	}
+    	list.addAll(this.findBackAllByTime(1, 2));
+    	list.addAll(this.findBackAllByTime(2, 6));
+        return list;
     }
 
-
-    public List<FssBackplateEntity> findBackAllByTime(int count,int timeType){
-        return this.fssBackplateReadMapper.findBackAllByTime(count,timeType);
+    public List<FssBackplateEntity> findBackAllByTime(int repayCount,int timeType){
+        return this.fssBackplateReadMapper.findBackAllByTime(repayCount,timeType);
     }
     
     
