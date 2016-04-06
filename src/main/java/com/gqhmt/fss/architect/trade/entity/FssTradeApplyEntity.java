@@ -101,7 +101,8 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "success_count")	//成功条数
     private int successCount;
     
-    
+    @Column(name = "cust_type")	//客户类型
+    private Integer custType;
     
 	public Long getId() {
 		return id;
@@ -302,6 +303,14 @@ public class FssTradeApplyEntity implements Serializable {
 
 	public void setFormId(Long formId) {
 		this.formId = formId;
+	}
+
+	public Integer getCustType() {
+		return custType;
+	}
+
+	public void setCustType(Integer custType) {
+		this.custType = custType;
 	}
 	
 }

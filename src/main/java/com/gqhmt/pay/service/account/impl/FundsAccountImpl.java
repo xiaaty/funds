@@ -5,6 +5,7 @@ import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
@@ -59,7 +60,7 @@ public class FundsAccountImpl implements IFundsAccount {
      * @throws FssException
      */
 	public boolean createAccount(CreateAccountDto createAccountDto) throws FssException {
-		CustomerInfoEntity customerInfoEntity =  customerInfoService.queryCustomerById(Integer.parseInt(createAccountDto.getCust_no()));
+		CustomerInfoEntity customerInfoEntity =  customerInfoService.getCustomerById(Long.valueOf(createAccountDto.getCust_no()));
 		if(customerInfoEntity == null) throw new FssException("90002007");
 		customerInfoEntity.setParentBankCode(createAccountDto.getBank_id());
 		customerInfoEntity.setBankNo(createAccountDto.getBank_card());
@@ -79,30 +80,28 @@ public class FundsAccountImpl implements IFundsAccount {
      * @throws FssException
      */
 	public boolean createAccount(CustomerInfoEntity customerInfoEntity,
-						String pwd, String taradPwd) throws FssException {
+						String pwd, String taradPwd) throws FssException {Long cusId = customerInfoEntity.getId();
 
-		Long cusId = customerInfoEntity.getId();
+						Integer userId = customerInfoEntity.getUserId();
 
-		Integer userId = customerInfoEntity.getUserId();
+						FundAccountEntity primaryAccount = this.getPrimaryAccount(cusId);
+					        if(primaryAccount == null){
+								try {
+									primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
+								} catch (FssException e) {
+								}
+							}
 
-		FundAccountEntity primaryAccount = this.getPrimaryAccount(cusId);
-	        if(primaryAccount == null){
-				try {
-					primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
-				} catch (FssException e) {
-				}
-			}
+						primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+						//富友
+						if (primaryAccount.getHasThirdAccount() ==1){
+							paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+							primaryAccount.setHasThirdAccount(2);
+							fundAccountService.update(primaryAccount);
+						}
 
-		primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-		//富友
-		if (primaryAccount.getHasThirdAccount() ==1){
-			paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-			primaryAccount.setHasThirdAccount(2);
-			fundAccountService.update(primaryAccount);
-		}
-
-		return true;
-	}
+						return true;
+					}
 
 	/**
      * 销户申请
@@ -255,4 +254,64 @@ public class FundsAccountImpl implements IFundsAccount {
 	    	return changeCardResponse;
 	    }
 	    
+	    /**
+	     * 开户
+	     */
+		@Override
+		public CreateAccountResponse createFundAccount(CreateAccountDto createAccountDto) throws FssException {
+			CustomerInfoEntity customerInfoEntity =  customerInfoService.getCustomerById(Long.valueOf(createAccountDto.getCust_no()));
+			if(customerInfoEntity == null) throw new FssException("90002007");
+			customerInfoEntity.setParentBankCode(createAccountDto.getBank_id());
+			customerInfoEntity.setBankNo(createAccountDto.getBank_card());
+			customerInfoEntity.setCityCode(createAccountDto.getCity_id());
+			customerInfoEntity.setCertNo(createAccountDto.getCert_no());
+			customerInfoEntity.setMobilePhone(createAccountDto.getMobile());
+			customerInfoEntity.setCustomerName(createAccountDto.getName());
+			return this.createFundAccount(customerInfoEntity,"","",createAccountDto);
+		}
+	    
+		public CreateAccountResponse createFundAccount(CustomerInfoEntity customerInfoEntity,
+				String pwd, String taradPwd,CreateAccountDto createAccountDto) throws FssException {
+			CreateAccountResponse response=new CreateAccountResponse();
+			Long cusId = customerInfoEntity.getId();
+			
+			Integer userId = customerInfoEntity.getUserId();
+			BankCardInfoEntity bankCardInfoEntity=null;
+			FundAccountEntity primaryAccount = this.getPrimaryAccount(cusId);
+			    if(primaryAccount == null){
+					try {
+						primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
+					} catch (FssException e) {
+					}
+				}
+			
+			primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+			
+			//富友
+			if (primaryAccount.getHasThirdAccount() ==1){
+				paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+				primaryAccount.setHasThirdAccount(2);
+				fundAccountService.update(primaryAccount);
+				//跟新所有与该cust_id相同的账户名称
+				fundAccountService.updateCustomerName(cusId,primaryAccount.getCustName());
+				//创建银行卡信息
+				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
+				if(bankCardInfoEntity==null){
+					bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
+				}
+				response.setResp_code("00000000");
+				response.setResp_msg("成功！");
+			}else{
+				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
+				response.setResp_code("90002017");
+				response.setResp_msg("已开户，请不要重复开户！");
+			}
+			//返回银行卡id
+			response.setId(bankCardInfoEntity.getId());
+			response.setMchn(createAccountDto.getMchn());
+			response.setSeq_no(createAccountDto.getSeq_no());
+			response.setSignature(createAccountDto.getSignature());
+			response.setTrade_type(createAccountDto.getTrade_type());
+			return response;
+	}
 }

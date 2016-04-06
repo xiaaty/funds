@@ -469,5 +469,24 @@ public class FundAccountService {
 	    	return fssAccountReadMapper.selectOne(fssAccountEntity);
 	    }
 	    
+	    /**
+	     * 根据custId更新账户信息
+	     */
+	    public void  updateCustomerName(Long custId,String custName){
+	    	Map map=new HashMap();
+	    	map.put("cusId", custId);
+	    	map.put("custName", custName);
+	    	fundAccountWriteMapper.updateCustNameByCustId(map);
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 }
 

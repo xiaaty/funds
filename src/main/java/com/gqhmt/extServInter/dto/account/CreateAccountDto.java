@@ -28,11 +28,11 @@ public class CreateAccountDto extends SuperDto {
 	
 	private String busi_no;			//业务编号
 
-
+	@APIValidNull(errorCode = "90002009")
     private String mobile;			//手机号
-
+	@APIValidNull(errorCode = "90002010")
     private String cert_no;			//身份证号
-
+	@APIValidNull(errorCode = "90002011")
     private String name;			//客户姓名
 
     @APIValidNull(errorCode = "90002012")
