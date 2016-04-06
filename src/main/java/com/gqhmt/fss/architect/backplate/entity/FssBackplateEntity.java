@@ -50,7 +50,7 @@ public class FssBackplateEntity implements Serializable {
     private int repayCount   ;         	//int(11) DEFAULT NULL COMMENT '回盘次数',
     
     @Column(name = "repay_result")
-    private String repay_result   ;         	//varchar(45) DEFAULT NULL COMMENT '回盘结果',
+    private Integer repayResult   ;         //回盘结果（ 回盘成功：0，回盘失败：1，无需回盘：2）
 
 	public Long getId() {
 		return id;
@@ -108,13 +108,12 @@ public class FssBackplateEntity implements Serializable {
 		this.repayCount = repayCount;
 	}
 
-	public String getRepay_result() {
-		return repay_result;
+	public Integer getRepayResult() {
+		return repayResult;
 	}
 
-	public void setRepay_result(String repay_result) {
-		this.repay_result = repay_result;
+	public void setRepayResult(Integer repayResult) {
+		this.repayResult = repayResult;
 	}
-    
     
 }

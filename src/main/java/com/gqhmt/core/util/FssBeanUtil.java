@@ -68,7 +68,7 @@ public class FssBeanUtil extends BeanUtils {
 
 
     public static Method findMethod(Class class1,String methodName,Class... paramTypes){
-        return findDeclaredMethod(class1,methodName,paramTypes);
+        return findMethod(class1,methodName,paramTypes);
     }
 
 

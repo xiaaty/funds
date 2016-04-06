@@ -282,6 +282,7 @@ public class FundsAccountImpl implements IFundsAccount {
 					try {
 						primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
 					} catch (FssException e) {
+				            throw new FssException("90002002");
 					}
 				}
 			
