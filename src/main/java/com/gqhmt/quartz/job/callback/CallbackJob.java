@@ -44,28 +44,31 @@ public class CallbackJob extends SupperJob {
             String  className = ResourceUtil.getValue("config.appContext",entity.getMchn()+"_"+entity.getTradeType()+"_className");
 
             if(className == null){
-//                entity.set
-            }
-            try {
-                Class class1 = Class.forName(className.substring(className.lastIndexOf("\\.")));
-                Object obj = ServiceLoader.get(class1);
-                String methodName = className.substring(className.lastIndexOf("\\.")+1);
-                Method method = FssBeanUtil.findMethod(class1,methodName,String.class,String.class);
-                Object value = method.invoke(obj,entity.getMchn(),entity.getSeqNo());
-                Response response  = UrlConnectUtil.sendDataReturnAutoSingleObject(Response.class,entity.getMchn()+"_"+entity.getTradeType(),value);
-
-
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (FssException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
-
+                entity.setRepayResult(2);//无需回盘
+            }else{
+	            try {
+	                Class class1 = Class.forName(className.substring(className.lastIndexOf("\\.")));
+	                Object obj = ServiceLoader.get(class1);
+	                String methodName = className.substring(className.lastIndexOf("\\.")+1);
+	                Method method = FssBeanUtil.findMethod(class1,methodName,String.class,String.class);
+	                Object value = method.invoke(obj,entity.getMchn(),entity.getSeqNo());
+	                Response response  = UrlConnectUtil.sendDataReturnAutoSingleObject(Response.class,entity.getMchn()+"_"+entity.getTradeType(),value);
+	                if("00000000".equals(response.getResp_code()) || "0000".equals(response.getResp_code())){//返回代码为00000000或0000表示回盘成功
+	                	entity.setRepayResult(0);//回盘成功
+	                }else{
+	                	entity.setRepayResult(1);//回盘失败
+	                }
+	            } catch (ClassNotFoundException e) {
+	                e.printStackTrace();
+	            } catch (FssException e) {
+	                e.printStackTrace();
+	            } catch (IllegalAccessException e) {
+	                e.printStackTrace();
+	            } catch (InvocationTargetException e) {
+	                e.printStackTrace();
+	            }
+	         }
+            fssBackplateService.update(entity);
         }
 
     }
