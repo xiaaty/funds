@@ -123,13 +123,13 @@
 		WHERE (t.trade_type = 11090002 OR t.trade_type = 11092001 OR t.trade_type = 11090004) AND t.status = 10050001
 	</select>
 <!-- 	回款  11094002 ，提前回款     11094003， 正常回款    11094004，逾期回款-->
-	<select id="findLoanMortgage" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
+	<select id="findLoanRepayment" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
 		FROM t_gq_fss_loan t
 		WHERE (t.trade_type = 11094002 OR t.trade_type = 11094003 OR t.trade_type = 11094004) AND t.status = 10050001
 	</select>
 <!-- 	流标  11090011 ，信用标流标           11090012，冠e通流标-->
-	<select id="findFailureBid" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
+	<select id="findAbortBid" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
 		FROM t_gq_fss_loan t
 		WHERE (t.trade_type = 11090011 OR t.trade_type = 11090012 ) AND t.status = 10050001

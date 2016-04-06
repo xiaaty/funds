@@ -3,9 +3,6 @@ package com.gqhmt.quartz.job.bid;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpUploadService;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -27,13 +24,12 @@ import javax.annotation.Resource;
  * 16/3/14  于泳      1.0     1.0 Version
  */
 @Component
-public class UploadFileJob extends SupperJob implements Job{
+public class UploadFileJob extends SupperJob{
 
     @Resource
     private FtpUploadService ftpUploadService;
 
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute()  {
         if(isRunning) return;
         super.isRunning = true;
 

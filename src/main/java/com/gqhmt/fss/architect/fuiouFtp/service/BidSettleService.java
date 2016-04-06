@@ -6,6 +6,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
@@ -20,10 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gqhmt.fss.architect.fuiouFtp.service.SettleService
@@ -71,12 +69,19 @@ public class BidSettleService {
     @Resource
     private FundSequenceService fundSequenceService;
 
+    @Resource
+    private FssBackplateService fssBackplateService;
+
 
     public void settle(FssLoanEntity loanEntity) throws FssException {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-
+        if("11090004".equals(loanEntity.getTradeType())){
+            paramMap.put("type","2");
+        }else{
+            paramMap.put("type","1");
+        }
 
         Bid bid = null;
         List<Tender> list  = null;
@@ -93,8 +98,11 @@ public class BidSettleService {
 
         //验证标的金额与满标金额是否相等  todo
 
-        //抵押标抵押权人判断   todo
+        //抵押标抵押权人判断
         Integer cusId = bid.getCustomerId();
+        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+            cusId = bid.getHypothecarius();
+        }
 
         FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 
@@ -158,6 +166,10 @@ public class BidSettleService {
 
         //抵押标抵押权人判断   todo
         Integer cusId = bid.getCustomerId();
+        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+            cusId = bid.getHypothecarius();
+        }
+
         FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         try {
             fundOrderService.updateOrder(fundOrderEntity, 1001, "0000", "第三方已完成，本地账务流水处理");
@@ -167,7 +179,15 @@ public class BidSettleService {
         fundSequenceService.selletSequence(list,toEntity,fundOrderEntity,title);
         fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
 
-        //回盘处理  todo
+        //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
+
+        if("11090002".equals(loanEntity.getTradeType())) {
+            loanEntity.setStatus("");
+            loanEntity.setModifyTime(new Date());
+            fssLoanService.update(loanEntity);
+        }else{
+            fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+        }
 
 
 
