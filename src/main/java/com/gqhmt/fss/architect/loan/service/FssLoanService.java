@@ -216,6 +216,7 @@ public class FssLoanService {
 		fssLoanEntity.setTradeType(dto.getTrade_type());
 		fssLoanEntity.setLoanPlatform(dto.getLoan_platform());
 		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setModifyTime(new Date());
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
 		//添加数据并返回ID
@@ -238,6 +239,7 @@ public class FssLoanService {
 				fssFeeList.setFeeType(feeListEntity.getFee_type());
 				fssFeeLists.add(fssFeeList);
 			}
+			this.fssFeeListWriteMapper.insertList(fssFeeLists);
 	}
 	/**
 	 * 

@@ -111,7 +111,6 @@ public class CostImpl  implements ICost{
     public void cost(String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         this.cost("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
     }
-
     @Override
     public void costReturn(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);

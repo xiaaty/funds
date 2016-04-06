@@ -46,13 +46,14 @@ import java.util.Map;
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7 Create at: 2016年3月11日 Description: 代付审核
- *         <p>
  *         借款人放款
- *         <p>
  *         借款人提现
- *         <p>
  *         代偿人付款
- *         <p>
+ *         代扣
+ *         转账
+ *         收费
+ *         退费
+ *         退款
  *         出借赎回 Modification History: Date Author Version Description
  *         -----------------------------------------------------------------
  *         2016年3月11日 jhz 1.0 1.0 Version
@@ -176,7 +177,7 @@ public class FssLoanTradeController {
 			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
-			fssLoanEntityById.setStatus("10050002");
+			fssLoanEntityById.setStatus("10050100");
 			fssLoanService.update(fssLoanEntityById);
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
@@ -184,7 +185,32 @@ public class FssLoanTradeController {
 		}
 
 		// todo 结果返回前台页面,消息提示
-		return "redirect:/fss/loan/trade/borrow";
+		return "redirect:/loan/trade/"+type;
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月6日
+	 * function：退款
+	 */
+	@RequestMapping("/loan/trade/{type}/retransfer/{id}")
+	public String retransfer(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
+		// 通过id查询交易对象
+		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		
+		try {
+			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(), fssLoanEntityById.getMortgageeAccNo(),
+					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
+					GlobalConstants.NEW_BUSINESS_MT);
+			fssLoanEntityById.setStatus("10050005");
+			fssLoanService.update(fssLoanEntityById);
+		} catch (FssException e) {
+			LogUtil.info(this.getClass(), e.getMessage());
+			model.addAttribute("erroMsg", e.getMessage());
+		}
+		
+		// todo 结果返回前台页面,消息提示
+		return "redirect:/loan/trade/"+type;
 	}
 
 	/**
@@ -242,6 +268,64 @@ public class FssLoanTradeController {
 			}
 		}
 
+		return "redirect:/loan/trade/"+type;
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月6日
+	 * function：退费
+	 */
+	@RequestMapping("/loan/trade/{type}/recharge/{id}")
+//	@ResponseBody
+	public Object recharge(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) throws FssException {
+		int i=0;
+		Map<String,String> map=new HashMap<>();
+		// 通过id查询交易对象
+		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		
+		if (fssLoanEntityById == null) {
+			// 处理前台页面消息提示内容
+			map.put("msg", "0001");
+		}
+		
+		List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(id);
+		if (fssFeeLists == null || fssFeeLists.size() == 0) {
+			// 处理前台页面消息提示内容
+			map.put("msg", "0002");
+		} else {
+			
+			for (FssFeeList fssFeeList : fssFeeLists) {
+				try {
+					if(!"10050099".equals(fssFeeList.getTradeStatus())){
+						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
+								fssFeeList.getFeeType(),fssLoanEntityById.getMortgageeAccNo(), fssFeeList.getFeeAmt(),
+								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+						// 修改费用状态	退费成功
+						fssFeeList.setTradeStatus("10050099");
+						fssLoanService.updateFeeList(fssFeeList);
+					}
+				} catch (FssException e) {
+					e.printStackTrace();
+					map.put("msg", "0003");
+					
+				}
+			}
+			// 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
+			for (FssFeeList fssFeeList : fssFeeLists) {
+				if("10050099".equals(fssFeeList.getTradeStatus())){
+					i++;
+				}
+			}
+			if(i==fssFeeLists.size()){
+				fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
+				map.put("msg", "0000");
+				//todo 成功之后取消收费按钮
+			}else{
+				map.put("msg", "0003");
+			}
+		}
+		
 		return "redirect:/loan/trade/"+type;
 	}
 

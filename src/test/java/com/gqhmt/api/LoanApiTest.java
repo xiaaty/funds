@@ -5,6 +5,7 @@ import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.extServInter.dto.loan.FailedBidDto;
 import com.gqhmt.extServInter.dto.loan.LendingDto;
 import com.gqhmt.extServInter.dto.loan.LendingFeeListDto;
 import com.gqhmt.extServInter.dto.loan.LoanAccountResponse;
@@ -104,6 +105,52 @@ public class LoanApiTest extends SupperAPI {
         } catch (FssException e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月6日
+     * function：流标
+     */
+    @Test
+    public  void failedBid(){
+    	try {
+    		FailedBidDto dto = super.getSuperDto(FailedBidDto.class,"11090010","63488471YHBC");
+    		dto.setContract_id("1000010002");
+    		dto.setContract_no("JK2016032600031");
+    		dto.setMortgagee_acc_no("6635634325057878");
+    		dto.setAcc_no("1302692985004666");
+    		dto.setMortgagee_acc_no("6635634325057878");
+    		dto.setContract_amt(new BigDecimal("10000.00"));
+    		dto.setPay_amt(new BigDecimal("2000.00"));
+    		dto.setLoan_platform("10040002");
+    		
+    		List<LendingFeeListDto> feeList  = new ArrayList<>();
+    		LendingFeeListDto dto1 = new LendingFeeListDto();
+    		dto1.setFee_amt(new BigDecimal("3000.00"));
+    		dto1.setFee_type("10990003");
+    		feeList.add(dto1);
+    		
+    		LendingFeeListDto dto2 = new LendingFeeListDto();
+    		dto2.setFee_amt(new BigDecimal("3000.00"));
+    		dto2.setFee_type("10990006");
+    		feeList.add(dto2);
+    		
+    		dto.setFee_list(feeList);
+    		System.out.println(JsonUtil.getInstance().getJson(dto)+"*********");
+    		Response response = UrlConnectUtil.sendJsonDataReturnObjectUrl(Response.class,"http://localhost:8080/funds/api/loan/failedBid", JsonUtil.getInstance().getJson(dto))  ;
+    		System.out.println(response.getResp_code()+":"+response.getResp_msg());
+    		
+//            dto.setFee_list(feeList);
+    		
+    		
+    	} catch (IllegalAccessException e) {
+    		assert false;
+    	} catch (InstantiationException e) {
+    		assert false;
+    	} catch (FssException e) {
+    		e.printStackTrace();
+    	}
     }
     /**
      * 
