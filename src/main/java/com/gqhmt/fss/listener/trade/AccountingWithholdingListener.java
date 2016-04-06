@@ -5,7 +5,6 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.event.trade.WithholdingEvent;
 import com.gqhmt.pay.service.trade.IFundsBatchTrade;
 import org.springframework.context.ApplicationListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -34,7 +33,6 @@ public class AccountingWithholdingListener  implements ApplicationListener<Withh
     private IFundsBatchTrade fundsBatchTrade;
 
     @Override
-    @Async
     public void onApplicationEvent(WithholdingEvent withholdingEvent) {
         long startTime = Calendar.getInstance().getTimeInMillis();
         FssTradeRecordEntity entity = (FssTradeRecordEntity) withholdingEvent.getSource();
