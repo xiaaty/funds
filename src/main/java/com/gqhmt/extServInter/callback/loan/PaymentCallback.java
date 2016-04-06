@@ -23,12 +23,12 @@ import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
  * 2016/3/6  柯禹来      1.0     1.0 Version
  */
 @Service
-public class PaymentCallback{
+public class PaymentCallback implements GetCallBack{
 //	完成划扣流程后，通知借款系统 
 	@Resource
 	private FssRepaymentService fssRepaymentService;
     
-    public RepaymentResponse withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
+    public RepaymentResponse getCallBack(String seqNo,String mchn) throws FssException{
     	RepaymentResponse response = new RepaymentResponse();
     	try {
     		response = fssRepaymentService.rePaymentCallBack(seqNo,mchn);

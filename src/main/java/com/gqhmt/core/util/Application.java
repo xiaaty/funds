@@ -227,6 +227,14 @@ public class Application {
      */
     public String getFourCode(String sixCode) throws FssException {
     	String string = fourCodemap.get(sixCode);
+    	try{
+    		if(string==null||"".equals(string)){
+    			String dictParentKey = this.getDictParentKey("95"+sixCode);
+    			string = getFourCode(dictParentKey);
+    		}
+    	}catch(FssException e){
+    		 throw new FssException("90004031");
+    	}
     	return string;
     }
     /*======================================菜单初始化及应用========================================================*/

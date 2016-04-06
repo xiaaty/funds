@@ -61,7 +61,7 @@ public class FssCallback {
     	Response response= null;
         try {
         	
-             response = failedBidCallback.getResponse(mchnNo, seqNo);
+             response = failedBidCallback.getCallBack(mchnNo, seqNo);
         } catch (Exception e) {
             response = this.excute(e);
         }
@@ -78,7 +78,7 @@ public class FssCallback {
     public Object changeBankCard(String mchnNo,String seqNo){
     	Response response= null;
     	try {
-    		response = lendingCallback.getResponse(mchnNo, seqNo);
+    		response = lendingCallback.getCallBack(mchnNo, seqNo);
     	} catch (Exception e) {
             response = this.excute(e);
     	}
@@ -95,7 +95,7 @@ public class FssCallback {
     public Object MortgageeWithDraw(String mchnNo,String seqNo){
     	Response response= null;
     	try {
-    		response = mortgageeWithDrawCallback.getResponse(mchnNo, seqNo);
+    		response = mortgageeWithDrawCallback.getCallBack(mchnNo, seqNo);
     	} catch (Exception e) {
     		response = this.excute(e);
     	}
@@ -112,7 +112,7 @@ public class FssCallback {
     public Object EnterAccount(String mchnNo,String seqNo){
 		Response response=null;
     	try {
-    		 response = enterAccountCallback.getResponse(mchnNo, seqNo);
+    		 response = enterAccountCallback.getCallBack(mchnNo, seqNo);
     	} catch (Exception e) {
     		response = (EnterAccountResponse) this.excute(e);
     	}

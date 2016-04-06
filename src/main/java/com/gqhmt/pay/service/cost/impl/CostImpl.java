@@ -56,9 +56,49 @@ public class CostImpl  implements ICost{
         map.put("10990003_10040002",8l); //               天津
         map.put("10990003_10040003",11l); //              上海
 
-        map.put("10990004_10040001",1l);//管理费
+        map.put("10990004_10040001",1l);//账户管理费
         map.put("10990004_10040002",6l);
         map.put("10990004_10040003",9l);
+        
+        map.put("10990005_10040001",1l);//特殊服务费
+        map.put("10990005_10040002",6l);
+        map.put("10990005_10040003",9l);
+        
+        map.put("10990006_10040001",1l);//准时还款保证金
+        map.put("10990006_10040002",6l);
+        map.put("10990006_10040003",9l);
+        
+        map.put("10990007_10040001",1l);//实收罚息滞纳金
+        map.put("10990007_10040002",6l);
+        map.put("10990007_10040003",9l);
+        
+        map.put("10990008_10040001",1l);//实收逾期还款违约金
+        map.put("10990008_10040002",6l);
+        map.put("10990008_10040003",9l);
+        
+        map.put("10990010_10040001",1l);//营业外收入
+        map.put("10990010_10040002",6l);
+        map.put("10990010_10040003",9l);
+        
+        map.put("10990011_10040001",1l);//上门费
+        map.put("10990011_10040002",6l);
+        map.put("10990011_10040003",9l);
+        
+        map.put("10990012_10040001",1l);//展期费
+        map.put("10990012_10040002",6l);
+        map.put("10990012_10040003",9l);
+
+        map.put("10990013_10040001",1l);//减免金
+        map.put("10990013_10040002",6l);
+        map.put("10990013_10040003",9l);
+
+        map.put("10999001_10040001",1l);//应收罚息滞纳金
+        map.put("10999001_10040002",6l);
+        map.put("10999001_10040003",9l);
+
+        map.put("10999002_10040001",1l);//应收逾期还款违约金
+        map.put("10999002_10040002",6l);
+        map.put("10999002_10040003",9l);
 
         map.put("10990006_10040001",2l); //保证金(增信金)
         map.put("10990006_10040002",2l);//天津 7 ,共用北京增信金账户
@@ -111,7 +151,6 @@ public class CostImpl  implements ICost{
     public void cost(String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         this.cost("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
     }
-
     @Override
     public void costReturn(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
