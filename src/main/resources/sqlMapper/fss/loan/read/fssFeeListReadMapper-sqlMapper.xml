@@ -11,6 +11,7 @@
 			f.rep_msg repMsg,
 			f.trade_status tradeStatus,
 			f.result result,
+			f.loan_id loanId,
 			f.loan_platform loanPlatform,
 			f.fee_amt feeAmt
 			FROM t_gq_fss_feeList f

@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.trade.mapper.read;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import com.gqhmt.core.mybatis.ReadMapper;
@@ -31,5 +32,18 @@ public interface FssTradeRecordReadMapper extends ReadMapper<FssTradeRecordEntit
 	List<FssTradeRecordEntity> selectByTradeState(@Param("tradeState")int tradeState);
 	
 //	public  List<FssTradeRecordEntity> queryFssTradeRecordList(@Param("applyNo")String applyNo);
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月1日
+	 * function：根据申请编号得到该批次成功条数
+	 */
+	int getSuccessCount(@Param("applyNo")String applyNo);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月1日
+	 * function：根据申请编号得到该批次实际交易总金额
+	 */
+	BigDecimal getSuccessAmt(@Param("applyNo")String applyNo);
 }

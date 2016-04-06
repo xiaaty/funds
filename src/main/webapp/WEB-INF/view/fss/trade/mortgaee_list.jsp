@@ -176,8 +176,17 @@
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}"/></td>
                                                     <td>
-                                                    	 <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
-                                                    	&nbsp;&nbsp;&nbsp;&nbsp;<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
+                                                    	<c:choose>
+                                                    		<c:when test="${tradeapply.busiType==11030004}">
+	                                                    	 	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
+		                                                    	&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    		</c:when>
+                                                    		<c:otherwise>
+	                                                    	 	<a style="display: none;" href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
+		                                                    	&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    		</c:otherwise>
+                                                    	</c:choose>
+	                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -194,7 +203,6 @@
     </div>
     </div>
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
-</div>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();

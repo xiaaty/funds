@@ -49,20 +49,21 @@
 		FROM t_gq_bank_info t
 		<where>
 	 	  	 <if test="certName != null and certName != ''">
-               and t.cert_name like  CONCAT('%',${certName},'%') 
+               and t.cert_name like  CONCAT('%',#{certName},'%') 
              </if>
              <if test="bankNo != null and bankNo != ''">
-               and t.bank_no like CONCAT('%',${bankNo},'%') 
+               and t.bank_no like CONCAT('%',#{bankNo},'%') 
              </if>
              <if test="bankSortName != null and bankSortName != ''">
-               and t.bank_sort_name like CONCAT('%',${bankSortName},'%') 
+               and t.bank_sort_name like CONCAT('%',#{bankSortName},'%') 
              </if>
-             <if test="startime!=null and startime!=''"> 
-				AND t.create_time &gt;= DATE_FORMAT(#{startime},'%Y%m%d%H%i%s')
+             <if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>
-			<if test="endtime!=null and endtime!='' "> 
-				AND t.create_time &lt;= DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
 		</where>
+		order by t.create_time desc
 	</select>
 </mapper>

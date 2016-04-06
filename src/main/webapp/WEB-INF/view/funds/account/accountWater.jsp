@@ -188,15 +188,15 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="200" />
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:950px;">
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="100" />
                                         <thead>
                                         <tr>
                                             <td>账户编号 </td>
@@ -230,12 +230,12 @@
                                                     <td>
                                                      <c:if test="${t.actionType==1}">充值</c:if> 
 									                 <c:if test="${t.actionType==2}">提现</c:if> 
-									                   <c:if test="${t.actionType==3}">转账</c:if> 
-									                    <c:if test="${t.actionType==4}">冻结</c:if> 
-									                    <c:if test="${t.actionType==5}">解冻 </c:if> 
-									                     <c:if test="${t.actionType==6}">投标成功 </c:if>
-									                     <c:if test="${t.actionType==7}">还款 </c:if>
-									                     <c:if test="${t.actionType==8}">债权转让 </c:if>
+									                 <c:if test="${t.actionType==3}">转账</c:if> 
+									                 <c:if test="${t.actionType==4}">冻结</c:if> 
+									                 <c:if test="${t.actionType==5}">解冻 </c:if> 
+									                 <c:if test="${t.actionType==6}">投标成功 </c:if>
+									                 <c:if test="${t.actionType==7}">还款 </c:if>
+									                 <c:if test="${t.actionType==8}">债权转让 </c:if>
 												               
                                                     </td>
                                                     <td>${t.amount}</td>

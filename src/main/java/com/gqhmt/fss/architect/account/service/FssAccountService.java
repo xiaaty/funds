@@ -71,8 +71,8 @@ public class FssAccountService {
     private FssCustBankCardService fssCustBankCardService;
     
     
-    public List<FssAccountEntity> findCustomerAccountByParams(Map map){
-        return this.accountReadMapper.findCustomerAccountByParams(map);
+    public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity){
+        return this.accountReadMapper.findCustomerAccountByParams(fssAccountEntity);
     }
 
     /**

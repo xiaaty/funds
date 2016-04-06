@@ -43,6 +43,7 @@
 			AND t.state=#{state}
 		</if>
 	</where>
+	order by t.create_time desc
 	</select>
 	
 	<select id="getChangeCardByParam" resultType="com.gqhmt.extServInter.dto.loan.ChangeCardResponse">

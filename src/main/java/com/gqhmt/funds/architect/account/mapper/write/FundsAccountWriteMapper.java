@@ -31,4 +31,5 @@ public interface FundsAccountWriteMapper extends ReadAndWriteMapper<FundAccountE
 
 	public void updateAndSaveAccount(Map map);
 	
+	public void updateCustNameByCustId(Map map) ;
 }

@@ -378,6 +378,7 @@ public class FssLoanService {
 		return this.fssLoanReadMapper.findLoanBySettle();
 	}
 
+
 	/**
 	 * 获取回款列表
 	 * @return
@@ -391,8 +392,18 @@ public class FssLoanService {
 	 * 获取回款列表
 	 * @return
 	 */
-	public List<FssLoanEntity> findAbortBid(){
+	public List<FssLoanEntity> findAbortBid() {
 		return this.fssLoanReadMapper.findAbortBid();
+	}
+
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月5日
+	 * function：修改费用状态
+	 */
+	public void updateFeeList(FssFeeList feeList) throws FssException{
+		fssFeeListWriteMapper.updateByPrimaryKey(feeList);
 	}
 
 }	

@@ -39,7 +39,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>资金管理</li>
-            <li>对公账号列表</li>
+            <li>账户列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -106,7 +106,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>对公账号列表</h2>
+                            <h2>账户列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -117,22 +117,22 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
-                                    	<col width="230" />
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1300px;">
+                                    	<col width="200" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
                                         <thead>
                                         <tr>
-                                              <td width="100">客户姓名</td>
+                                              <td>客户姓名</td>
                                               <td>手机号码</td>
-                                              <td>账户编号</td>
+                                              <td>资金帐号</td>
                                               <td>账户类型</td>
                                               <td>业务类型</td>
                                               <td>账户余额</td>
@@ -153,9 +153,9 @@
                                                     <c:if test="${acc.accountType==2}">A0 </c:if>
                                                     <c:if test="${acc.accountType==3}">AX</c:if>
                                                    </td>
-                                                     <td>${acc.busiType==0?"主账户":"其他账户"}</td>
-                                                    <td align="right"><fss:money money="${acc.amount}"/></td>
-                                                    <td align="right"><fss:money money="${acc.freezeAmount}" /></td>
+                                                    <td>${acc.busiType==0?"主账户":"其他账户"}</td>
+                                                    <td><fss:money money="${acc.amount}"/></td>
+                                                    <td><fss:money money="${acc.freezeAmount}" /></td>
                                                     <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>

@@ -18,17 +18,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -221,30 +220,11 @@ public class BankCardInfoController {
 	@RequestMapping(value = "/fund/bankCardsManage", method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public Object bankCardList(HttpServletRequest request, ModelMap model,
-			@ModelAttribute(value = "bankcard") BankCardInfoEntity  bankcard) {
-		String startime=request.getParameter("startime");
-		String endtime=request.getParameter("endtime");
-		Map map=new HashMap();
-		if(StringUtils.isNotEmptyString(bankcard.getCertName())){
-    		map.put("certName",bankcard.getCertName());
-    	}
-    	if(StringUtils.isNotEmptyString(bankcard.getBankNo())){
-    		map.put("bankNo",bankcard.getBankNo());
-    	}
-    	if(StringUtils.isNotEmptyString(bankcard.getBankSortName())){
-    		map.put("bankSortName",bankcard.getBankSortName());
-    	}
-    	if(StringUtils.isNotEmptyString(startime)){
-			map.put("startime", startime+" 00:00:00");
-    	}
-		if(StringUtils.isNotEmptyString(endtime)){
-			map.put("endtime", endtime+" 23:59:59");
-		}
+			@ModelAttribute(value = "bankcard") BankCardInfoEntity  bankcard,@RequestParam Map<String, String> map) {
 		List<BankCardInfoEntity> bankCards = bankCardInfoService.findAllbankCards(map);
 		model.addAttribute("page", bankCards);
 		model.addAttribute("bankcard", bankcard);
-		model.addAttribute("startime",startime);
-    	model.addAttribute("endtime",endtime);
+		model.put("map", map);
 		return "fss/customer/bankCardList";
 	}
 	

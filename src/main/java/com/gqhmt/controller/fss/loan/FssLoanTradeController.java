@@ -5,6 +5,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.TokenProccessor;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * 
@@ -60,6 +62,8 @@ public class FssLoanTradeController {
 	private ICost cost;
 	@Resource
     private FssCustomerService fssCustomerService;
+	@Resource
+	private FssBackplateService fssBackplateService;
 
 	/**
 	 * 
@@ -177,39 +181,59 @@ public class FssLoanTradeController {
 	/**
 	 * 
 	 * author:jhz time:2016年3月16日 function：收费
+	 * @throws FssException 
 	 */
 	@RequestMapping("/loan/trade/{type}/charge/{id}")
-	public String charge(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
+//	@ResponseBody
+	public Object charge(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) throws FssException {
+		int i=0;
+		Map<String,String> map=new HashMap<>();
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 
 		if (fssLoanEntityById == null) {
-			// todo 处理前台页面消息提示内容
+			// 处理前台页面消息提示内容
+			map.put("msg", "0001");
 		}
 
 		List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(id);
 		if (fssFeeLists == null || fssFeeLists.size() == 0) {
-			// todo 处理前台页面消息提示内容
+			// 处理前台页面消息提示内容
+			map.put("msg", "0002");
 		} else {
 
 			for (FssFeeList fssFeeList : fssFeeLists) {
 				try {
-					FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
-							fssLoanEntityById.getAccNo(), fssFeeList.getFeeType(), fssFeeList.getFeeAmt(),
-							fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
-					// todo 修改费用状态.
+					if(!"10050007".equals(fssFeeList.getTradeStatus())){
+						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
+								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
+								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+						// 修改费用状态	收取成功
+						fssFeeList.setTradeStatus("10050007");
+						fssLoanService.updateFeeList(fssFeeList);
+					}
 				} catch (FssException e) {
 					e.printStackTrace();
+					map.put("msg", "0003");
 
 				}
 			}
-
-			// todo 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
-			// fssLoanEntityById.setStatus("10050002");
-			// fssLoanService.update(fssLoanEntityById);
+			// 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
+			for (FssFeeList fssFeeList : fssFeeLists) {
+				if("10050007".equals(fssFeeList.getTradeStatus())){
+					i++;
+				}
+			}
+			if(i==fssFeeLists.size()){
+				fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
+				map.put("msg", "0000");
+				//todo 成功之后取消收费按钮
+			}else{
+				map.put("msg", "0003");
+			}
 		}
 
-		return "redirect:/fss/loan/trade/borrow";
+		return "redirect:/loan/trade/"+type;
 	}
 
 	/**

@@ -2,10 +2,12 @@ package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
@@ -25,6 +27,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -433,8 +436,18 @@ public class BankCardInfoService {
 	 * @param bankcard
 	 * @return
 	 */
-	public List<BankCardInfoEntity> findAllbankCards(Map map){
-		return this.bankCardinfoReadMapper.selectBankCardList(map);
+	public List<BankCardInfoEntity> findAllbankCards(Map<String,String> map){
+		Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("certName",map.get("certName")!=null ? map.get("certName") : null);
+			map2.put("bankNo", map.get("bankNo")!=null ? map.get("bankNo") : null);
+			map2.put("bankSortName", map.get("bankSortName")!=null ? map.get("bankSortName") : null);
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+		return this.bankCardinfoReadMapper.selectBankCardList(map2);
 	}
     
 	
@@ -481,7 +494,7 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
-		bankCardInfoEntity.setCityId(loanAccountDto.getCity_id());
+		bankCardInfoEntity.setCityId(Application.getInstance().getFourCode(loanAccountDto.getCity_id()));
 		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
 		bankCardInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
 		bankCardInfoEntity.setCreateUserId(1);
@@ -498,4 +511,35 @@ public class BankCardInfoService {
 	    }
 	
 	
+	 	/**
+	 	 * 创建银行卡信息
+	 	 * @param loanAccountDto
+	 	 * @param customer
+	 	 * @param userEntity
+	 	 * @return
+	 	 * @throws FssException
+	 	 */
+		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity,FundAccountEntity primaryAccount) throws FssException{
+			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+			bankCardInfoEntity.setCustId(Integer.valueOf(primaryAccount.getCustId().toString()));
+			bankCardInfoEntity.setBankLongName("");
+			bankCardInfoEntity.setBankSortName("");
+			bankCardInfoEntity.setBankNo(primaryAccount.getBankNo());
+			bankCardInfoEntity.setIsPersonalCard(1);
+			bankCardInfoEntity.setCertNo(customerInfoEntity.getCertNo());
+			bankCardInfoEntity.setMobile(customerInfoEntity.getMobilePhone());
+			bankCardInfoEntity.setCertName(customerInfoEntity.getCustomerName());
+			bankCardInfoEntity.setCityId(primaryAccount.getCityId());
+			bankCardInfoEntity.setParentBankId(primaryAccount.getParentBankId());
+			bankCardInfoEntity.setCreateTime(new Date());
+			bankCardInfoEntity.setCreateUserId(1);
+			bankCardInfoEntity.setModifyTime(new Date());
+			bankCardInfoEntity.setModifyUserId(1);
+			bankCardinfoWriteMapper.insertSelective(bankCardInfoEntity);
+			return bankCardInfoEntity;
+		}
+	 
+	 
+	 
+	 
 }
