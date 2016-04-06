@@ -2,11 +2,13 @@ package com.gqhmt.fss.architect.loan.service;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.*;
 import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
 import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper;
@@ -14,9 +16,16 @@ import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssFeeListWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -61,6 +70,12 @@ public class FssLoanService {
     private FssFeeListReadMapper fssFeeListReadMapper;
     @Resource
     private FssAccountService fssAccountService;
+    @Resource
+    private FuiouFtpOrderService fuiouFtpOrderService;
+    @Resource
+    private FundOrderService fundOrderService;
+    @Resource
+    private FundAccountService fundAccountService;
 	 /**
 	  * 
 	  * author:jhz
@@ -406,6 +421,19 @@ public class FssLoanService {
 	 */
 	public void updateFeeList(FssFeeList feeList) throws FssException{
 		fssFeeListWriteMapper.updateByPrimaryKey(feeList);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月6日
+	 * function：信用标退款
+	 */
+	public void abort(FssLoanEntity fssLoanEntity) throws FssException {
+		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(Long.parseLong(fssLoanEntity.getCustNo()), GlobalConstants.ACCOUNT_TYPE_LOAN);
+		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID,"2");
+		fuiouFtpOrderService.addOrder(fundOrderEntity, 3);
+		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
+		throw new FssException("异步处理，等待回调通知");
 	}
 
 }	

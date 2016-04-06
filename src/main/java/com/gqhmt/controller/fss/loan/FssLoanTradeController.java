@@ -5,6 +5,8 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.TokenProccessor;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
@@ -65,6 +67,8 @@ public class FssLoanTradeController {
     private FssCustomerService fssCustomerService;
 	@Resource
 	private FssBackplateService fssBackplateService;
+	@Resource
+	private FssAccountService fssAccountService;
 
 	/**
 	 * 
@@ -182,7 +186,7 @@ public class FssLoanTradeController {
 	 * 
 	 * author:jhz
 	 * time:2016年4月6日
-	 * function：退款
+	 * function：抵押标流标转账
 	 */
 	@RequestMapping("/loan/trade/{type}/retransfer/{id}")
 	public String retransfer(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
@@ -201,6 +205,31 @@ public class FssLoanTradeController {
 		}
 		
 		// todo 结果返回前台页面,消息提示
+		return "redirect:/loan/trade/"+type;
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月6日
+	 * function：信用流标退款
+	 */
+	@RequestMapping("/loan/trade/{type}/abort/{id}")
+	public String abort(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
+		// 通过id查询交易对象
+		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		if(type=="11090011"){
+			FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssLoanEntityById.getAccNo());
+			fssLoanEntityById.setCustNo(fssAccountByAccNo.getCustId().toString());
+		}
+		try {
+			fssLoanService.abort(fssLoanEntityById);
+			fssLoanEntityById.setStatus("11050011");
+			fssLoanService.update(fssLoanEntityById);
+		} catch (FssException e) {
+			LogUtil.info(this.getClass(), e.getMessage());
+			model.addAttribute("erroMsg", e.getMessage());
+		}
+		
 		return "redirect:/loan/trade/"+type;
 	}
 
@@ -330,5 +359,6 @@ public class FssLoanTradeController {
 		model.addAttribute("feeList", findFeeList);
 		return "fss/trade/trade_audit/feeList";
 	}
+	
 
 }
