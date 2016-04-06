@@ -6,6 +6,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
@@ -13,8 +14,6 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.funds.architect.order.service.FundOrderService;
-import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +50,6 @@ public class BidRepaymentService {
     @Resource
     private FundAccountService fundAccountService;
 
-    @Resource
-    private FuiouPreauthService fuiouPreauthService;
 
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
@@ -66,11 +63,12 @@ public class BidRepaymentService {
     @Resource
     private PaySuperByFuiou paySuperByFuiou;
 
-    @Resource
-    private FundOrderService fundOrderService;
 
     @Resource
     private FundSequenceService fundSequenceService;
+
+    @Resource
+    private FssBackplateService fssBackplateService;
 
     public void BidRepayment(FssLoanEntity loanEntity) throws FssException {
 
@@ -177,6 +175,9 @@ public class BidRepaymentService {
 
 
         //回盘处理
+        fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+
+
     }
 
 

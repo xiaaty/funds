@@ -33,6 +33,28 @@ public class UrlConnectUtil {
 
     private UrlConnectUtil(){}
 
+    public static <T> T sendDataReturnAutoSingleObject(Class<T> tClass, String urlType, Object object) throws FssException {
+        String url = urlConnectUtil.parseUrl(urlType);
+        boolean isParam = false;
+        if(url.contains("{")){
+            isParam = true;
+        }
+
+        if(isParam){
+
+            if(object != null &&  object instanceof Map) return  sendDataReturnSingleObjcet(tClass,urlType,(Map<String, String>) object);
+
+            throw new FssException("90099008");
+        }else{
+            if(object == null && object instanceof  Map)  return sendDataReturnSingleObjcet(tClass,urlType,(Map<String, String>) object);
+
+            if(object instanceof  String) return  sendJsonDataReturnObject(tClass,urlType,(String)object);
+
+            return sendJsonDataReturnObject(tClass,urlType,JsonUtil.getInstance().getJson(object));
+
+        }
+    }
+
 
     public static <T> T sendDataReturnSingleObjcet(Class<T> tClass, String urlType, Map<String, String> map) throws FssException {
         String url = urlConnectUtil.parseUrl(urlType,map);
@@ -65,12 +87,21 @@ public class UrlConnectUtil {
     }
 
 
+    public static <T> T sendJsonDataReturnObject(Class<T> tClass, String urlType, Map<String,String> param) throws FssException {
+        String url = urlConnectUtil.parseUrl(urlType);
+        InputStream inputStream = urlConnectUtil.sendJsonData(url,JsonUtil.getInstance().getJson(param));
+        String result = urlConnectUtil.parseResponse(inputStream);
+        return JsonUtil.getInstance().parseJson(result,tClass);
+    }
+
     public static <T> T sendJsonDataReturnObject(Class<T> tClass, String urlType, String param) throws FssException {
         String url = urlConnectUtil.parseUrl(urlType);
         InputStream inputStream = urlConnectUtil.sendJsonData(url,param);
         String result = urlConnectUtil.parseResponse(inputStream);
         return JsonUtil.getInstance().parseJson(result,tClass);
     }
+
+
 
     public static <T> T sendJsonDataReturnObjectUrl(Class<T> tClass, String url, String param) throws FssException {
         InputStream inputStream = urlConnectUtil.sendJsonData(url,param);
@@ -124,6 +155,7 @@ public class UrlConnectUtil {
 
         return t;
     }
+
 
 
     private String parseUrl(String urlType,Map<String, String> map) throws FssException {
