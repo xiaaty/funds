@@ -19,4 +19,12 @@
 			FROM t_gq_fss_enter_account t
 			where t.parent_id=#{parentId}
 	</select>
+	<select id="getSuccessCount"  parameterType="java.lang.Long" resultType="java.lang.Integer" >
+		SELECT 
+			count(*)
+			FROM t_gq_fss_enter_account t
+			where t,result='10080002' t.parent_id=#{parentId} 
+	</select>
+	
+	
 </mapper>
