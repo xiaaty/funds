@@ -1,6 +1,7 @@
 package com.gqhmt.quartz.job.bid;
 
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpDownloadFileService;
 import com.gqhmt.quartz.service.FtpResultService;
@@ -34,8 +35,12 @@ public class DownloadFileJob extends SupperJob{
     @Resource
     private FtpResultService ftpResultService;
 
-
-    public void execute() {
+    //    @Scheduled(cron="0/27 * 7-23  * * * ")
+    public void execute() throws PayChannelNotSupports {
+        System.out.println("富友ftp批量处理 下载回盘结果及结果处理 跑批");
+        if(!isIp("upload")){
+            return;
+        }
         if(isRunning) return;
 
         isRunning = true;
