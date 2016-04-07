@@ -66,12 +66,6 @@ public class FssBeanUtil extends BeanUtils {
         }
     }
 
-
-    public static Method findMethod(Class class1,String methodName,Class... paramTypes){
-        return findMethod(class1,methodName,paramTypes);
-    }
-
-
     public static Field findField(Class class1,String name){
         Field field = fieldMap.get(class1.getName()+"."+name);
         if(field == null){
