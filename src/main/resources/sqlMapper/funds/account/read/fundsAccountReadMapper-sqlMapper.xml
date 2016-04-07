@@ -58,20 +58,12 @@
 			<if test="customerName != null and customerName != ''">
 				and a.CUSTOMER_NAME like concat('%',#{customerName},'%')
 			</if>
-			<choose>
-				<when test="creatTime == null or creatTime == '' and modifyTime==null ">
-					AND 1=1
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
-					AND b.create_time BETWEEN #{creatTime} AND SYSDATE()
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
-					AND b.create_time BETWEEN #{creatTime} AND #{modifyTime}
-				</when>
-				<!-- <when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
-					AND b.create_time &lt; #{modifyTime}
-				</when> -->
-			</choose>
+			<if test="startTime != null and startTime != '' ">
+				and date_format(b.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(b.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
 		</where>
 	</select>
 <!-- 	找到指定的客户 -->

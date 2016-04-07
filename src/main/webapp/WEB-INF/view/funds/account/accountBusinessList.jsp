@@ -77,13 +77,26 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                     <td class="tr" nowrap="nowrap">客户姓名:</td>
+                                                     	<td class="tr" nowrap="nowrap">客户姓名:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
                                                                 <input type="text" name="customerName" value="${accMap.customerName}">
                                                             </label>
                                                         </td>
-                                                    
+                                                     	<td class="tr">创建日期：</td>
+			                                             <td colspan="3">
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${accMap.startTime}">
+				                                                    </label>
+				                                                </section>
+				                                                <span class="fl">&nbsp;至&nbsp;</span>
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${accMap.endTime}">
+				                                                    </label>
+				                                                </section>
+				                                         </td>
                                                     </tr>
                                                    
                                                 </tbody>
@@ -154,8 +167,8 @@
                                                     <c:if test="${acc.accountType==3}">AX</c:if>
                                                    </td>
                                                     <td>${acc.busiType==0?"主账户":"其他账户"}</td>
-                                                    <td><fss:money money="${acc.amount}"/></td>
-                                                    <td><fss:money money="${acc.freezeAmount}" /></td>
+                                                    <td align="right"><fss:money money="${acc.amount}"/></td>
+                                                    <td align="right"><fss:money money="${acc.freezeAmount}" /></td>
                                                     <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
@@ -196,7 +209,7 @@
 	    });
 	    function verify(){
 	    	var a=document.getElementsByName("creatTime");
-	    	var b=document.getElementsByName("modifyTime");
+	    	var b=document.getElementsByName("endTime");
 	    	if(b[0].value!=null&&b[0].value!=''){
 	    		if(a[0].value>b[0].value){
 	    			alert("请检查您输入的日期");

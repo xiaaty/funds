@@ -351,9 +351,17 @@ public class FundAccountService {
     * time:2016年2月16日
     * function：funds账号管理
     */
-   	public List<FundAccountCustomerBean> findAcountList(Map accMap) {
+   	public List<FundAccountCustomerBean> findAcountList(Map<String,String> map) {
 	   // TODO Auto-generated method stub
-	   return fundsAccountReadMapper.findAcountList(accMap);
+   		Map<String, String> map2=new HashMap<String, String>();
+   		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("customerName",map.get("customerName"));
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+	   return fundsAccountReadMapper.findAcountList(map2);
    	}
    	
     /**

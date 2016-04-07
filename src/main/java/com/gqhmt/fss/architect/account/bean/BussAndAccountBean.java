@@ -20,8 +20,10 @@ public class BussAndAccountBean implements Serializable{
     private String customerType;
     private String certType;                                    // varchar(45) DEFAULT NULL COMMENT '证件类型，1身份证',
     private String certNo;                                      // varchar(45) DEFAULT NULL COMMENT '证件号码',
-    private String sex;
-    private Date birthday;
+    private String userNo;
+    private String channelNo;                                  //交易渠道
+    private Integer custId;
+    private Integer tradeType;                               //来源
     private String mobile;                                       //` varchar(45) DEFAULT NULL COMMENT '客户手机号',
     private String state;                              // int(11) DEFAULT NULL COMMENT '账户状态：1，有效账户，2，账户锁定，3账户注销申请，4账户注销',
     private String accType;                           // int(11) DEFAULT NULL COMMENT '账户类型，1借款账户；2线下出借账户；3线上账户；4抵押权人账户；5代偿人账户；99，冻结账户100公司账户',
@@ -32,14 +34,13 @@ public class BussAndAccountBean implements Serializable{
     private String thirdAccNo;
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
     private String mchnParent;             // varchar(45) NOT NULL COMMENT '大商户号',
-    private String education;
-    private String maritalStatus;
-    private String address;
-    private String industry;
-    private String isValid;
-    private String bankId;
+    private Integer userId ;
+    private String isAuthRealName;   //是否实名验证
+    private String createUserId;
+    private String modifyUserId;
 	private Date createTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
 	private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
+	
 	public String getAccNo() {
 		return accNo;
 	}
@@ -75,18 +76,6 @@ public class BussAndAccountBean implements Serializable{
 	}
 	public void setCertNo(String certNo) {
 		this.certNo = certNo;
-	}
-	public String getSex() {
-		return sex;
-	}
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
-	public Date getBirthday() {
-		return birthday;
-	}
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
 	}
 	public String getMobile() {
 		return mobile;
@@ -148,42 +137,6 @@ public class BussAndAccountBean implements Serializable{
 	public void setMchnParent(String mchnParent) {
 		this.mchnParent = mchnParent;
 	}
-	public String getEducation() {
-		return education;
-	}
-	public void setEducation(String education) {
-		this.education = education;
-	}
-	public String getMaritalStatus() {
-		return maritalStatus;
-	}
-	public void setMaritalStatus(String maritalStatus) {
-		this.maritalStatus = maritalStatus;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getIndustry() {
-		return industry;
-	}
-	public void setIndustry(String industry) {
-		this.industry = industry;
-	}
-	public String getIsValid() {
-		return isValid;
-	}
-	public void setIsValid(String isValid) {
-		this.isValid = isValid;
-	}
-	public String getBankId() {
-		return bankId;
-	}
-	public void setBankId(String bankId) {
-		this.bankId = bankId;
-	}
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -195,6 +148,54 @@ public class BussAndAccountBean implements Serializable{
 	}
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+	public String getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+	public String getChannelNo() {
+		return channelNo;
+	}
+	public void setChannelNo(String channelNo) {
+		this.channelNo = channelNo;
+	}
+	public Integer getCustId() {
+		return custId;
+	}
+	public void setCustId(Integer custId) {
+		this.custId = custId;
+	}
+	public Integer getTradeType() {
+		return tradeType;
+	}
+	public void setTradeType(Integer tradeType) {
+		this.tradeType = tradeType;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public String getIsAuthRealName() {
+		return isAuthRealName;
+	}
+	public void setIsAuthRealName(String isAuthRealName) {
+		this.isAuthRealName = isAuthRealName;
+	}
+	public String getCreateUserId() {
+		return createUserId;
+	}
+	public void setCreateUserId(String createUserId) {
+		this.createUserId = createUserId;
+	}
+	public String getModifyUserId() {
+		return modifyUserId;
+	}
+	public void setModifyUserId(String modifyUserId) {
+		this.modifyUserId = modifyUserId;
 	}
 	
 }
