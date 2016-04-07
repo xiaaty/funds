@@ -75,7 +75,7 @@ public class CallbackJob extends SupperJob {
         		Class class1 = Class.forName(className);
         		Object obj = context.getBean(class1);
         		String methodName = classMethodName.substring(classMethodName.lastIndexOf(".")+1);
-        		Method method = FssBeanUtil.findMethod(class1,methodName,String.class,String.class);
+        		Method method = FssBeanUtil.findMethodNew(class1,methodName,String.class,String.class);
         		Object value = method.invoke(obj,entity.getMchn(),entity.getSeqNo());
         		Response response  = UrlConnectUtil.sendDataReturnAutoSingleObject(Response.class,entity.getMchn()+"_"+entity.getTradeType(),value);
         		//修改完成状态;

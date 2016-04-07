@@ -77,6 +77,7 @@ public class FssTradeRecordService {
 	public BigDecimal  getLimit(String accNo,int type) throws FssException{
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
 		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId().intValue());
+		if(queryInvestmentByCustId==null) throw new FssException("90002001");
 		return getLimitAmount(queryInvestmentByCustId.get(0).getParentBankId(),type);
 	}
 	/**

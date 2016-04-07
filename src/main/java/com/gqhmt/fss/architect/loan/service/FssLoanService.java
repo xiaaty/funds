@@ -103,6 +103,7 @@ public class FssLoanService {
 	public List<LendingFeeListDto> getFeeListDto(List<FssFeeList> feeList){
 			List<LendingFeeListDto> feeListDtos=new ArrayList<>();
 			LendingFeeListDto feeListDto=null;
+			if(feeList.size()!=0){
 			for (FssFeeList fee : feeList) {
 				feeListDto=new LendingFeeListDto();
 				feeListDto.setFee_amt(fee.getFeeAmt());
@@ -110,6 +111,9 @@ public class FssLoanService {
 				feeListDtos.add(feeListDto);
 			}
 			return feeListDtos;
+			}else{
+				return null;
+			}
 	}
     
     /**
@@ -169,7 +173,10 @@ public class FssLoanService {
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
 		LendingResponse response = fssLoanReadMapper.getResponse(map);
-		response.setFee_list(getFeeListDto(this.getFeeList(response.getId())));
+		List<LendingFeeListDto> feeListDto = getFeeListDto(this.getFeeList(response.getId()));
+		if(feeListDto!=null){
+			response.setFee_list(feeListDto);
+		}
 		return response;
 	}
 	/**
