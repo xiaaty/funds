@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 /**
  * Filename:    com.gqhmt.extServInter.callback.loan.ChangeBankCallback
@@ -24,12 +23,12 @@ import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
  * 2016/3/6  于泳      1.0     1.0 Version
  */
 @Service
-public class WithDrawApplyCallback{
+public class WithDrawApplyCallback implements GetCallBack{
 //	完成抵押标借款人提现后，通知借款系统 
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
     
-    public WithDrawApplyResponse withDrasApplyCallBack(String seqNo,String mchn) throws FssException{
+    public WithDrawApplyResponse getCallBack(String seqNo,String mchn) throws FssException{
     	WithDrawApplyResponse response = new WithDrawApplyResponse();
     	try {
     		response=fssTradeApplyService.withDrasApplyCallBack(seqNo,mchn);

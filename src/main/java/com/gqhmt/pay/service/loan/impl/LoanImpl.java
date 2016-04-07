@@ -8,6 +8,8 @@ import com.gqhmt.extServInter.dto.loan.MarginDto;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
@@ -45,6 +47,8 @@ public class LoanImpl implements ILoan {
 	private FundsAccountImpl fundsAccountImpl;
 	@Resource
 	private FssAccountService fssAccountService;
+	@Resource
+	private FssCustomerService fssCustomerService;
 	
 	/**
 	 * 借款系统开户
@@ -53,35 +57,35 @@ public class LoanImpl implements ILoan {
     public String createLoanAccount(CreateLoanAccountDto dto) throws FssException {
         //富友
     	FssAccountEntity  fssAccount=null; //新版账户体系
-    	CustomerInfoEntity customerInfoEntity=null;
+    	CustomerInfoEntity customerInfoEntity=null;//旧版客户信息
+    	FssCustomerEntity fssCustomerEntity=null;//新版客户信息
     	String accNo=null;
-    	//1.根据借款系统传入的手机号码，查询资金平台有没有此客户信息
-    	customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
-    	if(customerInfoEntity!=null){
-    		if(dto.getTrade_type().equals("11020009")){ //线下开户不走富友
-    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    		}else{
-				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    			fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    		}
-    	}else{
-    		try {
+    	Long custId=null;
+    	if(!dto.getTrade_type().equals("11020009")){//线上
+    		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
+    		if(customerInfoEntity==null){//不存在就创建旧版客户信息
     			customerInfoEntity=customerInfoService.createLoanAccount(dto);
     			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
-    	    	customerInfoEntity.setParentBankCode(dto.getBank_id());
+    			customerInfoEntity.setParentBankCode(dto.getBank_id());
     			customerInfoEntity.setBankLongName("");
     			customerInfoEntity.setBankNo(dto.getBank_card());
-    			if(dto.getTrade_type().equals("11020009")){ //线下开户不走富友
-    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    			}else{
-    				fundsAccountImpl.createAccount(customerInfoEntity, "", "");
-    				fssAccount=fssAccountService.createFssAccountEntity(dto, customerInfoEntity);
-    			}
+    		}
+    		try {
+				fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
 			} catch (FssException e) {
-				LogUtil.info(this.getClass(), e.getMessage());
+				LogUtil.error(this.getClass(), e);
 				throw new FssException("91004013");
 			}
-    	}
+    		custId=customerInfoEntity.getId();
+		}else{//纯线下的就不在旧版里创建客户信息、用户信息和银行卡信息，而在新版账户创建这些信息
+			fssCustomerEntity=fssCustomerService.getFssCustomerEntityByCertNo(dto.getCert_no());
+			if(fssCustomerEntity==null){
+				fssCustomerEntity=fssCustomerService.createFssAccountInfo(dto);
+				custId=fssCustomerEntity.getId();
+			}
+		}
+//    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
+    	fssAccount=fssAccountService.createFssAccountEntity(dto, custId);
     	accNo=fssAccount.getAccNo();
     	return accNo;
     }

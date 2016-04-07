@@ -67,7 +67,7 @@ public class FssCustBankCardService {
 	 * 创建本地账户银行卡信息
 	 * @return fssbankcardInfo
 	 */
-	public FssCustBankCardEntity createFssBankCardInfo(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity) throws FssException{
+/*	public FssCustBankCardEntity createFssBankCardInfo(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity) throws FssException{
 		FssCustBankCardEntity  fssbankcardInfo;
 		try {
 			fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class,dto);
@@ -88,5 +88,23 @@ public class FssCustBankCardService {
 		}
 		return fssbankcardInfo;
 	}
+	*/
+	
+	public FssCustBankCardEntity createFssBankCardEntity(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity) throws Exception{
+			FssCustBankCardEntity  fssbankcardInfo=null;
+			fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class,dto);
+			fssbankcardInfo.setCust_no(String.valueOf(fssCustomerEntity.getId()));
+			fssbankcardInfo.setCertType(fssCustomerEntity.getCertType());
+			fssbankcardInfo.setCertNo(dto.getCert_no());
+			fssbankcardInfo.setBankId(Integer.valueOf(dto.getBank_id()));
+			fssbankcardInfo.setCardNo(dto.getBank_card());
+			fssbankcardInfo.setArea(Integer.valueOf(Application.getInstance().getFourCode(dto.getCity_id())));
+			fssbankcardInfo.setBankCardNo(dto.getBank_card());
+			fssbankcardInfo.setMchnChild(dto.getMchn());
+			fssbankcardInfo.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+		return fssbankcardInfo;
+	}
+	
+	
 	
 }

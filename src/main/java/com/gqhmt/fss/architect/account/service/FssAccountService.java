@@ -13,6 +13,8 @@ import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssFuiouAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
+import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
 import com.gqhmt.fss.architect.customer.service.FssCustBankCardService;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -69,7 +71,10 @@ public class FssAccountService {
 	private FundAccountService fundAccountService;
     @Resource
     private FssCustBankCardService fssCustBankCardService;
-    
+    @Resource
+    private FssCustomerWriteMapper customerWriteMapper;
+    @Resource
+	private FssBankCardInfoWriteMapper fssBankCardInfoWriteMapper;
     
     public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity){
         return this.accountReadMapper.findCustomerAccountByParams(fssAccountEntity);
@@ -125,12 +130,23 @@ public class FssAccountService {
      */
     public FssCustomerEntity createAccount(CreateLoanAccountDto dto,Long userId) throws FssException {
     	FssCustomerEntity fssCustomerinfo=null;
-    	
+    	FssCustBankCardEntity fssCustBankCardEntity=null;
     	FssFuiouAccountBean fssFuiouAccountBean=fssFuiouAccountReadMapper.getAccountByCentNo(dto.getCert_no());
     	if(fssFuiouAccountBean==null){//不存在
-			fssCustomerinfo = fssCustomerService.create(dto,String.valueOf(userId));//生成客户信息
-	        FssCustBankCardEntity fssCustBankCardEntity=fssCustBankCardService.createFssBankCardInfo(dto,fssCustomerinfo);//生成银行卡信息
-	        if(!dto.getTrade_type().equals("11020009")){ //线下开户不走富友
+			try {
+				fssCustomerinfo = fssCustomerService.createFssCustomerEntity(dto);//生成客户信息
+				customerWriteMapper.insertSelective(fssCustomerinfo);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(dto,fssCustomerinfo);
+				fssBankCardInfoWriteMapper.insertSelective(fssCustBankCardEntity);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        if(!dto.getTrade_type().equals("11020009")){//线下开户不走富友
 	        	//生成第三方开户账户信息,纯线下,次开户,不开,线上需要开户.
 	        	this.createFuiouAccount(dto,fssCustomerinfo,fssCustBankCardEntity);
 	        }
@@ -167,8 +183,8 @@ public class FssAccountService {
      * @return
      * @throws FssException
      */
-    public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,CustomerInfoEntity customerEntity) throws FssException {
-            FssCustomerEntity fssCustomerEntity=this.createAccount(dto,customerEntity.getId());
+    public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,Long custId) throws FssException {
+            FssCustomerEntity fssCustomerEntity=this.createAccount(dto,custId);
     	try {
             FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
 
@@ -185,7 +201,7 @@ public class FssAccountService {
             fssAccountEntity.setAccType(Integer.parseInt(accType));
             fssAccountEntity.setState(10020001);//默认为有效账户
             fssAccountEntity.setBusiNo(dto.getContract_id());
-            fssAccountEntity.setCustId(customerEntity.getId());
+            fssAccountEntity.setCustId(custId);
             //设置开户来源
             //设置渠道id
             fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配

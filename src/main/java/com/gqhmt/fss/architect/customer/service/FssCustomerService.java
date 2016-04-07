@@ -7,9 +7,14 @@ import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
+import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.util.StringUtils;
 
 import org.springframework.stereotype.Service;
@@ -29,6 +34,12 @@ public class FssCustomerService {
 
     @Resource
     private FssCustomerWriteMapper customerWriteMapper;
+    
+    @Resource
+    private FssCustBankCardService fssCustBankCardService;
+    
+    @Resource
+    private FssBankCardInfoWriteMapper fssBankCardInfoWriteMapper;
    
     public List<FssCustomerEntity> findCustomerByParams(Map<String,String> map){
     	Map<String, String> map2=new HashMap<String, String>();
@@ -95,4 +106,63 @@ public class FssCustomerService {
     	record.setCustNo(custNo);
 		return customerReadMapper.selectOne(record);
     }
+    
+    
+    /**
+	 * 借款系统线下开户只创建新版账户信息
+	 * @param loanAccountDto
+	 * @throws FssException
+	 */
+	public FssCustomerEntity createFssAccountInfo(CreateLoanAccountDto dto) throws FssException {
+//			1.创建账户 
+		FssCustomerEntity fssCustomerEntity;
+			try {
+				fssCustomerEntity = this.createFssCustomerEntity(dto);
+				customerWriteMapper.insertSelective(fssCustomerEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+			/*//2.创建用户
+			UserEntity userEntity;
+			try {
+				userEntity = gqUserService.createUser(loanAccountDto,customerInfoEntity);
+				gqUserWriteMapper.insertSelective(userEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}*/
+			//3.创建银行卡信息     t_gq_bank_info
+			FssCustBankCardEntity fssBankCardInfoEntity;
+			try {
+				fssBankCardInfoEntity = fssCustBankCardService.createFssBankCardEntity(dto, fssCustomerEntity);
+				fssBankCardInfoWriteMapper.insertSelective(fssBankCardInfoEntity);
+			} catch (Exception e) {
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("91009804");
+			}
+		return fssCustomerEntity;
+	}
+    
+    
+    
+	   public FssCustomerEntity createFssCustomerEntity(CreateLoanAccountDto dto) throws Exception {
+	            FssCustomerEntity fssCustomerEntity = GenerateBeanUtil.GenerateClassInstance(FssCustomerEntity.class,dto);
+	            fssCustomerEntity.setName(dto.getName());
+	            fssCustomerEntity.setMobile(dto.getMobile());
+	            fssCustomerEntity.setCertType(1);
+	            fssCustomerEntity.setCertNo(dto.getCert_no());
+	            fssCustomerEntity.setCreateTime(new Date());
+	            fssCustomerEntity.setModifyTime(new Date());
+	            fssCustomerEntity.setCustNo(CommonUtil.getCustNo());
+	            fssCustomerEntity.setMchnChild(dto.getMchn());
+	            fssCustomerEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+	            return fssCustomerEntity;
+	        
+	  }
+    
+    
+    
+    
+    
 }

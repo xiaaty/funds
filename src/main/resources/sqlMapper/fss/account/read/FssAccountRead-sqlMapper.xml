@@ -21,14 +21,15 @@
 	
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">
 		SELECT 
-		   a.acc_no accNo,
-		   c.CUSTOMER_NAME custName,
-		   c.CUSTOMER_TYPE customerType,
-		   c.CERT_TYPE certType,
-		   c.CERT_NO certNo,
+			*
+		 <!--   a.acc_no accNo,
+		   c.name custName,
+		   c.mobile mobile,
+		   c.user_id customerType,
+		   c.cert_type certType,
+		   c.cert_no certNo,
 		   c.sex sex,
 		   c.BIRTHDATE birthday,
-		   c.MOBILE_PHONE mobile,
 		   a.state state,
 		   a.acc_type accType,
 		   a.acc_balance accBalance,
@@ -45,9 +46,9 @@
 		   c.isvalid isValid,
 		   c.bank_id bankId,
 		   a.create_time createTime,
-		   a.modify_time modifyTime
+		   a.modify_time modifyTime -->
 	   FROM `t_gq_fss_account` a,`t_gq_fss_customer` c
-	   WHERE a.cust_id=c.id
+	   WHERE a.cust_no=c.cust_no
 	   <if test="accNo!= null and accNo!= '' ">
        	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
        </if>

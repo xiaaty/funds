@@ -308,7 +308,8 @@ public class FssTradeApplyService {
 			 if(successCount==applyEntity.getCount()){
 					 if("11090001".equals(applyEntity.getBusiType())){
 						 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-						 fssLoanEntityById.setResult("98060001");
+						 fssLoanEntityById.setResult("98060001");	//成功
+						 fssLoanEntityById.setStatus("10050003");//划扣成功
 						 fssLoanService.update(fssLoanEntityById);
 					 }else{
 						 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
@@ -325,6 +326,7 @@ public class FssTradeApplyService {
 				 if("11090001".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 fssLoanEntityById.setResult("98060003");
+					 fssLoanEntityById.setStatus("10050004");
 					 fssLoanService.update(fssLoanEntityById);
 				 }else{
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());

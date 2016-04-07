@@ -28,7 +28,7 @@ import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
 @Service
-public class EnterAccountCallback {
+public class EnterAccountCallback implements GetCallBack{
 	@Resource
 	private FssEnterAccountService fssEnterAccountService;
 	
@@ -38,7 +38,7 @@ public class EnterAccountCallback {
 	 * time:2016年3月7日
 	 * function：得到入账回调对象
 	 */
-	public EnterAccountResponse getResponse(String mchnNo,String seqNo){
+	public EnterAccountResponse getCallBack(String mchnNo,String seqNo){
 
 		EnterAccountResponse enterAccountResponse = null;
 		 try {

@@ -27,7 +27,7 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
  * 2016年3月7日  jhz      1.0     1.0 Version
  */
 @Service
-public class LendingCallback {
+public class LendingCallback implements GetCallBack{
 	@Resource
 	private FssLoanService fssLoanService;
 	/**
@@ -36,7 +36,7 @@ public class LendingCallback {
 	 * time:2016年3月7日
 	 * function：得到借款人放款回调对象
 	 */
-	public LendingResponse getResponse(String mchnNo,String seqNo){
+	public LendingResponse getCallBack(String mchnNo,String seqNo){
 		
 		 LendingResponse response = null;
 		 try {
