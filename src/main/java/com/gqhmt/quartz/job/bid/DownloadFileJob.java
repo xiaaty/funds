@@ -34,6 +34,7 @@ public class DownloadFileJob extends SupperJob{
     @Resource
     private FtpResultService ftpResultService;
 
+
     public void execute() {
         if(isRunning) return;
 
