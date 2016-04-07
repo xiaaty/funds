@@ -8,16 +8,13 @@ import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
-import com.gqhmt.util.ServiceLoader;
-
 import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -47,7 +44,12 @@ public class CallbackJob extends SupperJob {
     private ApplicationContext context;
 
 
-    public void execute() throws JobExecutionException {
+    public void execute() throws JobExecutionException, PayChannelNotSupports {
+        System.out.println("业务执行完成回盘跑批");
+        if(!isIp("upload")){
+            return;
+        }
+
         List<FssBackplateEntity> backplateEntities = fssBackplateService.findBackAll();
         for(FssBackplateEntity entity:backplateEntities){
             try {

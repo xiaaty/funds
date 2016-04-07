@@ -1,8 +1,11 @@
 package com.gqhmt.quartz.job.bid;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
+import com.gqhmt.quartz.job.SupperJob;
+import com.gqhmt.quartz.service.AbortBidService;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.bid.AbortBid
@@ -20,13 +23,25 @@ import org.quartz.JobExecutionException;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
-public class AbortBidJob implements Job{
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+@Component
+public class AbortBidJob extends SupperJob{
 
-        //获取流标信息
+    @Resource
+    private AbortBidService abortBidService;
 
+    //    @Scheduled(cron="0  5 18 * * * ")
+    public void execute() throws PayChannelNotSupports {
+        System.out.println("流标退款跑批");
+        if(!isIp("upload")){
+            return;
+        }
+
+        if(isRunning) return;
+        super.isRunning = true;
         //执行流标操作
+        abortBidService.abortBid();
+
+
 
     }
 }

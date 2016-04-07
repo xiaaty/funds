@@ -1,4 +1,4 @@
-package com.gqhmt.pay.fuiou.quartz;
+package com.gqhmt.quartz.job.account;
 
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -14,7 +14,7 @@ import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.service.PaySuperByFuiou;
-import org.springframework.scheduling.annotation.Scheduled;
+import com.gqhmt.quartz.job.SupperJob;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -40,7 +40,7 @@ import java.util.List;
  * 15/12/4  于泳      1.0     1.0 Version
  */
 @Component
-public class ChangeCardJob extends AJob{
+public class ChangeCardJob extends SupperJob {
 
     @Resource
     public FssChangeCardService changeCardService;
@@ -54,9 +54,9 @@ public class ChangeCardJob extends AJob{
     
     private static boolean isRunning = false;
 
-    @Scheduled(cron="0 0/10 8-21  * * * ")
+    /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
     public void changeCard() throws PayChannelNotSupports{
-        System.out.println("Change bank card fuiouFtp");
+        System.out.println("变更银行卡跑批");
         if(!isIp("upload")){
             return;
         }
