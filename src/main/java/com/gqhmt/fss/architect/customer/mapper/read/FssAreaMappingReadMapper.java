@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
  * Created by yuyonf on 15/11/30.
  */
 
+import java.util.List;
+
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
 
@@ -23,5 +25,12 @@ import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
  * 2016年4月1日  jhz      1.0     1.0 Version
  */
 public interface FssAreaMappingReadMapper extends ReadMapper<FssAreaMappingEntity> {
+	 /**
+     * 
+     * author:jhz
+     * time:2016年4月7日
+     * function：查询所有的地区映射数据
+     */
+	List<FssAreaMappingEntity> findAllAreaMapping();
 
 }

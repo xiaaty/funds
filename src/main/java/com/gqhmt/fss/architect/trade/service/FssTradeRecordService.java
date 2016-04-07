@@ -259,6 +259,7 @@ public class FssTradeRecordService {
 		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, tradeAmount);
 		//更新申请表该条数据拆分总条数
 		fssTradeApplyEntity.setCount(moneySplit);
+		fssTradeApplyEntity.setSuccessCount(0);
 		fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 		
 	}

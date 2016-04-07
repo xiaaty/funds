@@ -191,7 +191,7 @@ public class Application {
     private  void iniBankArea(){
     	FssAreaMappingService bankAreaMappingService = ServiceLoader.get(FssAreaMappingService.class);
     	
-    	 List<FssAreaMappingEntity> bankAreas = bankAreaMappingService.findAll();
+    	 List<FssAreaMappingEntity> bankAreas = bankAreaMappingService.findAllAreaMapping();
     	
     	for(FssAreaMappingEntity bankArea:bankAreas) {
     		sixCodemap.put(bankArea.getFourCode(),bankArea.getSixCode());
