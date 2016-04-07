@@ -115,6 +115,18 @@
 									                            <div id="dict_div_uploadDivLimit" class="identitycard clearfix "></div>
 									                        </td>
                                                         </tr>
+                                                        <tr class="lh32">
+			                                                <td class="tr">是否有效：</td>
+			                                                <td>
+			                                                    <section style="width:210px">
+			                                                        <label class="text">
+			                                                            <input type="radio" name="isvalid" value="0" <c:if test="${bank.isvalid=='0'}"> checked </c:if>/>有效
+			                                                            <input type="radio" name="isvalid" value="1" <c:if test="${bank.isvalid=='1'} "> checked </c:if>/>无效
+			                                                        </label>
+			                                                    </section>
+			                                                </td>
+			                                            </tr>
+                                                        
                                                     </tbody>
                                                 </table>
                                                 <div class="mb20" id="wid-id-713">

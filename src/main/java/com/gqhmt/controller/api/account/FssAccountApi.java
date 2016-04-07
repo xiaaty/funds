@@ -4,11 +4,9 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,20 +77,18 @@ public class FssAccountApi {
     * time:2016年2月22日
     * function：创建账户
     */
-/*    @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
+    @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
     public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
-    	Response response= null;
+    	Response response= new Response();
         try {
-//            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
-//            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
              response = createAccountImpl.execute(createAccountByFuiou);
         } catch (Exception e) {
             response = this.execute(e);
         }
         return response;
-    }*/
+    }
     
-        @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
+/*    @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
     public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
     	CreateAccountResponse response= null;
         try {
@@ -101,7 +97,7 @@ public class FssAccountApi {
             response = this.execute2(e);
         }
         return response;
-    }
+    }*/
     
     /**
      * 
@@ -128,11 +124,11 @@ public class FssAccountApi {
     }
     
     
-    private CreateAccountResponse execute2(Exception e){
+  /*  private CreateAccountResponse execute2(Exception e){
     	LogUtil.error(this.getClass(), e);
     	CreateAccountResponse response = new CreateAccountResponse();
     	response.setResp_code(e.getMessage());
     	return response;
-    }
+    }*/
 
 }

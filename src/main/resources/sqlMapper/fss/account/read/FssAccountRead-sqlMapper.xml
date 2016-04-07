@@ -20,16 +20,8 @@
 	</select>
 	
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">
-		SELECT 
-			*
-		 <!--   a.acc_no accNo,
-		   c.name custName,
-		   c.mobile mobile,
-		   c.user_id customerType,
-		   c.cert_type certType,
-		   c.cert_no certNo,
-		   c.sex sex,
-		   c.BIRTHDATE birthday,
+	   SELECT 
+		   a.acc_no accNo,
 		   a.state state,
 		   a.acc_type accType,
 		   a.acc_balance accBalance,
@@ -39,16 +31,28 @@
 		   a.third_acc_no thirdAccNo,
 		   a.mchn_child mchnChild,
 		   a.mchn_parent mchnParent,
-		   c.EDUCATION education,
-		   c.MARITAL_STATUS maritalStatus,
-		   c.ADDRESS address,
-		   c.industry industry,
-		   c.isvalid isValid,
-		   c.bank_id bankId,
 		   a.create_time createTime,
-		   a.modify_time modifyTime -->
+		   a.modify_time modifyTime,
+		   a.cust_no custNo,
+		   a.user_no userNo,
+		   a.channel_no channelNo,
+		   a.cust_id custId,
+	       a.trade_type tradeType,
+		   c.name custName,
+		   c.mobile mobile,
+		   c.cert_type certType,
+		   c.cert_no certNo,
+		   c.user_id userId,
+		   c.create_time createTime,
+		   c.modify_time modifyTime,
+		   c.is_auth_real_name isAuthRealName,
+		   c.create_user_id,
+		   c.modify_user_id
 	   FROM `t_gq_fss_account` a,`t_gq_fss_customer` c
 	   WHERE a.cust_no=c.cust_no
+	   <if test="accType!= null and accType!= '' ">
+       	  AND a.acc_type = #{accType}
+       </if>
 	   <if test="accNo!= null and accNo!= '' ">
        	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
        </if>
@@ -58,11 +62,7 @@
 	   <if test="certNo != null and certNo != '' ">
 	      AND c.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
 	   </if> 
-	      AND a.acc_type IN
-	   <foreach collection="list" item="accType" index="index"
-				 open="(" close=")" separator=",">
-			#{accType}
-		</foreach>
+	   order by c.create_time desc
 	</select>
 
 	<select id="findAccountByAccNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
