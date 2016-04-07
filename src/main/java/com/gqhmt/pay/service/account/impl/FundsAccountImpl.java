@@ -3,6 +3,7 @@ package com.gqhmt.pay.service.account.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
@@ -203,38 +204,28 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
 	 * 银行卡变更
 	 */
-	 public boolean bankCardChange(CardChangeDto cardChangeDto)throws FssException{
+	 public Response bankCardChange(CardChangeDto cardChangeDto)throws FssException{
+		 Response response=new Response();
 			BankCardInfoEntity bankCardInfoEntity=null;
 			CustomerInfoEntity  customerInfoEntity=null;
 			//1.根据账号查询该客户账户信息
 		 	FssAccountEntity fssAccountEntity= fundAccountService.getFssFundAccountInfo(cardChangeDto.getAcc_no());
-		 	if(null!=fssAccountEntity){
-		 		//查询该账户客户信息
-		 		customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());
-		 		if(null!=customerInfoEntity){
-		 			//通过客户表中的bankid查询该客户要变更的银行卡信息
-		 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());
-		 			if(bankCardInfoEntity!=null){
-		 				try {
-		 					//将变更银行卡信息插入到银行卡变更表
-		 					FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "",Application.getInstance().getFourCode(cardChangeDto.getCity_id()) , cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
-							fssChangeCardService.insert(fssChangeCardEntity);
-							//银行卡变更记录插入成功之后，进入跑批处理
-		 				} catch (FssException e) {
-							throw new FssException("银行卡变更记录插入失败");
-						}
-		 			}else{
-		 				throw new FssException("未查到得到该客户银行卡信息");
-		 			}
-		 		}else{
-		 			throw new FssException("未查到得到该户信息");
-		 		}
-		 	}else{
-		 		throw new FssException("资金平台未查到该账户信息");
-		 	}
-		 return true;
+		 	if(fssAccountEntity==null) throw new FssException("90002001");
+		    customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());//查询该账户客户信息
+		 	if(customerInfoEntity==null) throw new FssException("90002007");
+ 			//通过客户表中的bankid查询该客户要变更的银行卡信息
+ 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());
+ 			if(bankCardInfoEntity==null) throw new FssException("90004027");
+			try {//将变更银行卡信息插入到银行卡变更表
+			FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "",Application.getInstance().getFourCode(cardChangeDto.getCity_id()) , cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
+			fssChangeCardService.insert(fssChangeCardEntity);
+			//银行卡变更记录插入成功之后，进入跑批处理(后续处理)
+			} catch (FssException e) {
+			throw new FssException("90004001");
+		}
+		 return response;
 	 }
-	
+	 
 		/**
 		 * 	银行卡变更完成，通知变更发起方（借款系统）
 		 */

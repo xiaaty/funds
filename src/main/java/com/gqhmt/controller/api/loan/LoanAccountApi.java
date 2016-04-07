@@ -66,8 +66,6 @@ public class LoanAccountApi {
     	try {
     		response = createLoanImpl.execute(loanAccountDto);
     	} catch (Exception e) {
-//    		LogUtil.error(this.getClass(), e);
-//    		response.setResp_code(e.getMessage());
     		response=this.execute(e);
     	}
     	return response;
@@ -79,13 +77,14 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/bankCardChange",method = RequestMethod.POST)
-    public Object bankCardChange(@RequestBody CardChangeDto changeCardDto){
+    public Object bankCardChange(CardChangeDto changeCardDto){
     	Response response=new Response();
     	try {
     		response = changeCardImpl.execute(changeCardDto);
     	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
+//    		LogUtil.error(this.getClass(), e);
+//    		response.setResp_code(e.getMessage());
+    		response=this.execute(e);
     	}
     	return response;
     }
