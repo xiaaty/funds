@@ -98,7 +98,7 @@ public class FssCustBankCardService {
 			fssbankcardInfo.setCertNo(dto.getCert_no());
 			fssbankcardInfo.setBankId(Integer.valueOf(dto.getBank_id()));
 			fssbankcardInfo.setCardNo(dto.getBank_card());
-			fssbankcardInfo.setArea(Integer.valueOf(Application.getInstance().getFourCode(dto.getCity_id())));
+			fssbankcardInfo.setArea(Integer.valueOf(dto.getCity_id()));
 			fssbankcardInfo.setBankCardNo(dto.getBank_card());
 			fssbankcardInfo.setMchnChild(dto.getMchn());
 			fssbankcardInfo.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));

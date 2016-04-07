@@ -142,7 +142,7 @@ public class FssAccountService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        if(!dto.getTrade_type().equals("11020009")){//线下开户不走富友
+	        if(!dto.getTrade_type().equals("11020011")){//线下开户不走富友
 	        	//生成第三方开户账户信息,纯线下,次开户,不开,线上需要开户.
 	        	this.createFuiouAccount(dto,fssCustomerinfo,fssCustBankCardEntity);
 	        }

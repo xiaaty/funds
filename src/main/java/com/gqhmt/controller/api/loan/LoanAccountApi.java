@@ -12,6 +12,8 @@ import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
 import com.gqhmt.extServInter.service.loan.IMarginSendBack;
 import com.gqhmt.extServInter.service.loan.IRepayment;
 import com.gqhmt.pay.service.account.IFundsAccount;
+
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,7 +40,8 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping(value = "/api")
 public class LoanAccountApi {
-
+	@Resource
+	private ApplicationContext applicationContext;
     @Resource
     private ICreateLoan createLoanImpl;
     @Resource
@@ -58,17 +61,18 @@ public class LoanAccountApi {
      * function：开户
      */
     @RequestMapping(value = "/createLoanAccount",method = RequestMethod.POST)
-    public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
+    public Object createLoanAccount(CreateLoanAccountDto loanAccountDto){
     	Response response=new Response();
     	try {
     		response = createLoanImpl.execute(loanAccountDto);
     	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
+//    		LogUtil.error(this.getClass(), e);
+//    		response.setResp_code(e.getMessage());
+    		response=this.execute(e);
     	}
     	return response;
     }
-
+    
     /**
      * 银行卡变更
      * @param

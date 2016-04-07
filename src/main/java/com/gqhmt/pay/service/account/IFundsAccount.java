@@ -9,7 +9,6 @@ import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
 /**
@@ -134,6 +133,6 @@ public interface IFundsAccount {
     public ChangeCardResponse bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
     
     
-    public CreateAccountResponse createFundAccount(CreateAccountDto createAccountDto) throws FssException;
+    public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException;
     
 }
