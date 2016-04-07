@@ -101,20 +101,6 @@ public class FssAccountService {
     	if(StringUtils.isNotEmptyString(bussaccount.getCertNo())){
     		map.put("certNo",bussaccount.getCertNo());
     	}
-    	
-    	
-    	
-    	
-    /*	List list=new ArrayList();
- 	   	if(StringUtils.isNotEmptyString(accType)){
- 		   String str[]=accType.split(",");
- 		   for (int i = 0; i < str.length; i++){
- 			   list.add(str[i]);
- 		   }
- 	   }
-	    if(list!=null && list.size()>0){
-    		map.put("list", list);
-    	}*/
 	    bussaccountlist=this.accountReadMapper.getBussinessAccountList(map);
         return bussaccountlist;
     }
