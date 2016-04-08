@@ -31,9 +31,14 @@ public class FssAreaMappingService {
 
     @Resource
     private FssAreaMappingReadMapper fssBankAreaMappingReadMapper;
-    
-    public List<FssAreaMappingEntity> findAll(){
-        return  this.fssBankAreaMappingReadMapper.selectAll();
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月7日
+     * function：查询所有的地区映射数据
+     */
+    public List<FssAreaMappingEntity> findAllAreaMapping(){
+        return  this.fssBankAreaMappingReadMapper.findAllAreaMapping();
     }
 
 }

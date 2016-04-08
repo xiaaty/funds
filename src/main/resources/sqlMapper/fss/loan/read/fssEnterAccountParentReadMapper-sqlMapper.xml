@@ -10,31 +10,35 @@
 				and t.seq_no = #{seqNo}
 			</if>
 	</sql>
-	<!-- 入账回盘-->
-	<select id="getEnterAccountParent"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
-		SELECT 
-			t.id,
-		    t.mchn_child mchnChild,
-		    t.seq_no seqNo,
-		    t.trade_type tradeType,
-			FROM t_gq_fss_enter_account_parent t
-			where 1=1
-			<include refid="whereSql" />
-	</select>
-		<!-- 得到入账表 -->
-	<select id="getEnterAccountParentList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+	<sql id="fileSql">
 			 SELECT 
 			t.id,
 		    t.mchn_child mchnChild,
 		    t.seq_no seqNo,
 		    t.trade_type tradeType,
-		    trade_count tradeCount,
-		    success_count successCount,
-		    filed_count filedCount,
-		    state state,
-		    result_state resultState,
-		    create_time createTime,
-		    motify_time motifyTime
+		    t.trade_count tradeCount,
+		    t.success_count successCount,
+		    t.filed_count filedCount,
+		    t.state state,
+		    t.result_state resultState,
+		    t.create_time createTime,
+		    t.motify_time motifyTime
+			FROM t_gq_fss_enter_account_parent t
+	</sql>
+	<!-- 入账回盘-->
+	<select id="getEnterAccountParent"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+			<include refid="fileSql" />
+			where 1=1
+			<include refid="whereSql" />
+	</select>
+<!-- 	根据交易状态查询主表列表 -->
+	<select id="getEnterAccountParentByState"   resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+			<include refid="fileSql" />
+			where t.state=10090001
+	</select>
+		<!-- 得到入账表 -->
+	<select id="getEnterAccountParentList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+			<include refid="fileSql" />
 			FROM t_gq_fss_enter_account_parent t
 			where 1=1
 			<if test="state != null and state != ''">

@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.customer.entity;
 import javax.persistence.*;
 
-import java.util.Date;
 
 /**
  * 
@@ -41,6 +40,8 @@ public class FssAreaMappingEntity implements java.io.Serializable{
     @Column(name="eight_code")
     private String eightCode;				//地区所对应的八位码
     
+    @Column(name="type")
+    private String type;				//类型
 
 	public Integer getId() {
 		return id;
@@ -81,6 +82,14 @@ public class FssAreaMappingEntity implements java.io.Serializable{
 
 	public void setEightCode(String eightCode) {
 		this.eightCode = eightCode;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
     

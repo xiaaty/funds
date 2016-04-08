@@ -5,10 +5,10 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 
 /**
@@ -34,14 +34,15 @@ public class CreateAccountImpl implements ICreateAccount{
 	
     @Override
     public Response execute(SuperDto dto) {
-    	Response response = new Response();
-//    	try {
-//    		fundsAccountImpl.createAccount((CreateAccountDto)dto);
-//			response.setResp_code("00000000");
-//		} catch (FssException e) {
-//			LogUtil.debug(this.getClass(), e);
-//			response.setResp_code(e.getMessage());
-//		}
+    	CreateAccountResponse response = new CreateAccountResponse();
+    	try {
+    		Integer id=fundsAccountImpl.createFundAccount((CreateAccountDto)dto);
+    		response.setId(id);
+			response.setResp_code("00000000");
+		} catch (FssException e) {
+			LogUtil.debug(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
         return response;
     }
 }

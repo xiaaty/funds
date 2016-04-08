@@ -9,6 +9,7 @@ import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper;
@@ -103,6 +104,7 @@ public class FssLoanService {
 	public List<LendingFeeListDto> getFeeListDto(List<FssFeeList> feeList){
 			List<LendingFeeListDto> feeListDtos=new ArrayList<>();
 			LendingFeeListDto feeListDto=null;
+			if(feeList.size()!=0){
 			for (FssFeeList fee : feeList) {
 				feeListDto=new LendingFeeListDto();
 				feeListDto.setFee_amt(fee.getFeeAmt());
@@ -110,6 +112,9 @@ public class FssLoanService {
 				feeListDtos.add(feeListDto);
 			}
 			return feeListDtos;
+			}else{
+				return null;
+			}
 	}
     
     /**
@@ -169,7 +174,10 @@ public class FssLoanService {
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
 		LendingResponse response = fssLoanReadMapper.getResponse(map);
-		response.setFee_list(getFeeListDto(this.getFeeList(response.getId())));
+		List<LendingFeeListDto> feeListDto = getFeeListDto(this.getFeeList(response.getId()));
+		if(feeListDto!=null){
+			response.setFee_list(feeListDto);
+		}
 		return response;
 	}
 	/**
@@ -435,5 +443,15 @@ public class FssLoanService {
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 		throw new FssException("异步处理，等待回调通知");
 	}
-
+	
+	//线下代扣
+	public List<FssLoanBean> findLoanOffilne(String type) {
+		return fssLoanReadMapper.findBorrowerLoanOffline(type);
+	}
+	
+	
+	
+	
+	
+	
 }	

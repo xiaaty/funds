@@ -61,7 +61,13 @@ public class LoanImpl implements ILoan {
     	FssCustomerEntity fssCustomerEntity=null;//新版客户信息
     	String accNo=null;
     	Long custId=null;
-    	if(!dto.getTrade_type().equals("11020009")){//线上
+    	/**
+    	 * 借款人（纯线下）开户  ：11020011
+    	 * 放款(纯线下) ：11090003
+    	 * 还款代扣（纯线下）：11093002
+    	 * 入账清结算（纯线下）：11099002
+    	 */    	
+    	if(!dto.getTrade_type().equals("11020011")){//根据交易类型判断是否为线上或线下
     		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
     		if(customerInfoEntity==null){//不存在就创建旧版客户信息
     			customerInfoEntity=customerInfoService.createLoanAccount(dto);

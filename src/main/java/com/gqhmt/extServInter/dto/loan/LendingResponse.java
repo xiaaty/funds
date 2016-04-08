@@ -32,7 +32,9 @@ public class LendingResponse extends Response {
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
     private String acc_no;			//借款人资金平台账号
-
+    
+    private BigDecimal contract_interest;
+    
     private BigDecimal contract_amt;			//合同金额
 
     private BigDecimal pay_amt;			//放款金额
@@ -114,6 +116,14 @@ public class LendingResponse extends Response {
 
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
+	}
+
+	public BigDecimal getContract_interest() {
+		return contract_interest;
+	}
+
+	public void setContract_interest(BigDecimal contract_interest) {
+		this.contract_interest = contract_interest;
 	}
 
 

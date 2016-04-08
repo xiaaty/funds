@@ -15,6 +15,7 @@ import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.EnterAccount;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
 import com.gqhmt.extServInter.dto.loan.EnterAccountResponse;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.loan.bean.SettleListBean;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
@@ -66,6 +67,8 @@ public class FssEnterAccountService {
 
 	@Resource
 	private FssEnterAccountParentReadMapper fssEnterAccountParentReadMapper;
+	@Resource
+	private FssBackplateService fssBackplateService;
 
 	/**
 	 * 
@@ -243,4 +246,89 @@ public class FssEnterAccountService {
 		// TODO Auto-generated method stub
 		return fssEnterAccountParentReadMapper.getEnterAccountParentList(map);
 	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月7日
+	 * function：根据交易状态查询所有处于新增状态的主表列表
+	 */
+	public List<FssEnterAccountParentEntity> getEnterAccountParentByState() {
+		// TODO Auto-generated method stub
+		return fssEnterAccountParentReadMapper.getEnterAccountParentByState();
+	}
+	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月7日
+	 * function：修改主表执行条数，修改时间
+	 * @throws FssException 
+	 */
+	public void updateExecuteCount(FssEnterAccountEntity fssEnterAccountEntity) throws FssException{
+		fssEnterAccountEntity.setModifyTime(new Date());
+		fssEnterAccountParentWriteMapper.updateEnterParent(fssEnterAccountEntity);
+		this.checkExecuteCount(fssEnterAccountEntity.getParentId());
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月7日
+	 * function：修改主表状态
+	 * @throws FssException 
+	 */
+	public void checkExecuteCount(Long parentId) throws FssException{
+		FssEnterAccountParentEntity enterParent = this.getEnterParent(parentId);
+		int successCount = this.getSuccessCount(parentId);
+		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
+		if(enterParent.getTradeCount()<=enterParent.getSuccessCount()){
+			if(enterParent.getTradeCount()==successCount){
+			enterParent.setState("10080002");
+			fssEnterAccountParentWriteMapper.updateByPrimaryKey(enterParent);
+			}else if(successCount==0){
+				enterParent.setState("10080010");
+				fssEnterAccountParentWriteMapper.updateByPrimaryKey(enterParent);
+			}else{
+				enterParent.setState("10080003");
+				fssEnterAccountParentWriteMapper.updateByPrimaryKey(enterParent);
+			}
+			fssBackplateService.createFssBackplateEntity(enterParent.getSeqNo(), enterParent.getMchnChild(), enterParent.getTradeType());
+		}
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月7日
+	 * function：通过id查询主表对象
+	 */
+	public FssEnterAccountParentEntity getEnterParent(Long id){
+		return fssEnterAccountParentReadMapper.selectByPrimaryKey(id);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月7日
+	 * function：通过父id得到该批次成功条数
+	 */
+	public int getSuccessCount(Long parentId){
+		return fssEnterAccountReadMapper.getSuccessCount(parentId);
+		
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月7日
+	 * function：跑批要运行的入账方法
+	 */
+	public void updateEnterAccount() throws FssException{
+		List<FssEnterAccountParentEntity> enterAccountParentByState = this.getEnterAccountParentByState();
+		for (FssEnterAccountParentEntity EnterAccountParent : enterAccountParentByState) {
+			List<FssEnterAccountEntity> enterAccounts = this.getEnterAccounts(EnterAccountParent.getId());
+				for (FssEnterAccountEntity fssEnterAccountEntity : enterAccounts) {
+					fssEnterAccountEntity.setResult("10080002");
+					fssEnterAccountWriteMapper.updateByPrimaryKey(fssEnterAccountEntity);
+					this.updateExecuteCount(fssEnterAccountEntity);
+				}
+		}
+	}
+	
 }

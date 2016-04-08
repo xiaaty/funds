@@ -143,7 +143,7 @@ public class BankCardInfoController {
     	bank.setModifyTime(date);//修改日期
     	bank.setCreateUserId(1l);//创建人
     	bank.setModifyUserId(1l);//修改人
-    	
+    	bank.setIsvalid(0);
     	if(StringUtils.isNotEmptyString(bank.getTmplatePage())){
     		bank.setTmplatePage(bank.getTmplatePage());
     	}else{

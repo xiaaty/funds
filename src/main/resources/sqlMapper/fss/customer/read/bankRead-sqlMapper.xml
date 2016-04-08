@@ -14,7 +14,8 @@
 			t.modify_time modifyTime,
 			t.is_set_limit_page isSetLimitPage,
 			t.limit_page limitPage,
-			t.bank_code bankCode
+			t.bank_code bankCode,
+			t.isvalid isvalid
 		FROM t_gq_fss_bank_list t
 		<where>
 			<if test="bankCode != null and bankCode != ''">
