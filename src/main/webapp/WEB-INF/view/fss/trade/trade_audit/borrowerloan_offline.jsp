@@ -331,6 +331,23 @@
             }
         });
     }
+    
+    //导出
+    $("#btn_exp").button().click(function() {
+    	  parent.location.href="${contextPath}/loan/trade/{11090003}/export";
+    });
+ //导入
+/*  $("#btn_return").button().click(function() {
+     window.open("${contextPath}/sys/dictionary/${returnId}","_self");
+ }); */
+    
+    
+    
+    
+    
+    
+    
+    
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>

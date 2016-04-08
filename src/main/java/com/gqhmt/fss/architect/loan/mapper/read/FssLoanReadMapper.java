@@ -5,10 +5,13 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
+import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -69,11 +72,12 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * @return
      */
 	public List<FssLoanEntity> findLoanRepayment();
-
-
 	/**
 	 * 获取回款列表
 	 * @return
 	 */
 	public List<FssLoanEntity> findAbortBid();
+	
+    public List<FssLoanBean> findBorrowerLoanOffline(@Param("type") String type);	
+	
 }

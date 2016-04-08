@@ -9,6 +9,7 @@ import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper;
@@ -435,5 +436,15 @@ public class FssLoanService {
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 		throw new FssException("异步处理，等待回调通知");
 	}
-
+	
+	//线下代扣
+	public List<FssLoanBean> findLoanOffilne(String type) {
+		return fssLoanReadMapper.findBorrowerLoanOffline(type);
+	}
+	
+	
+	
+	
+	
+	
 }	
