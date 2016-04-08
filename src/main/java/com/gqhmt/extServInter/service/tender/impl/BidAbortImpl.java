@@ -9,8 +9,6 @@ import com.gqhmt.extServInter.service.tender.IBidAbort;
 import com.gqhmt.pay.service.tender.IFundFailure;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -30,7 +28,7 @@ import javax.annotation.Resource;
 @Service
 public class BidAbortImpl implements IBidAbort {
 	
-	@Resource
+//	@Resource
 	private IFundFailure fundFailureImpl;
 	
     public Response execute(SuperDto dto) {

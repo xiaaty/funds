@@ -103,7 +103,7 @@ public class FundsTenderImpl  implements IFundsTender {
 
     @Override
     public boolean abortByBid(String thirdPartyType, long bidId) throws FssException {
-        Bid bid = this.bidService.findById(bidId);
+//        Bid bid = this.bidService.findById(bidId);
 //        List<Tender> list = tenderService.queryTenderByBidId(bid.getId());
 //        FundAccountEntity toSFEntity = super.getFundAccount(bid.getCustomerId(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 //        Map<Integer, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());

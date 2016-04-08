@@ -9,8 +9,6 @@ import com.gqhmt.extServInter.service.tender.IBidRepay;
 import com.gqhmt.pay.service.tender.IRepayBid;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -30,7 +28,7 @@ import javax.annotation.Resource;
 @Service
 public class BidRepayImpl implements IBidRepay {
 	
-	@Resource
+//	@Resource
 	private IRepayBid repayBidImpl;
 	
     public Response execute(SuperDto dto) {
