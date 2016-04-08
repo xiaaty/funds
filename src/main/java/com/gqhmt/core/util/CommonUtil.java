@@ -91,7 +91,7 @@ public class CommonUtil {
 
 
     /**
-     * 生成10位随机数
+     * 生成位随机数
      * @return
      */
     public String getRandom(int length) {

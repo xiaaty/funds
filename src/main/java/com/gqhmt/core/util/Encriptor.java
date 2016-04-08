@@ -1,17 +1,10 @@
-package com.gqhmt.util;
+package com.gqhmt.core.util;
 
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import org.apache.log4j.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
+
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.*;
 
 
 public  class Encriptor {	
@@ -37,7 +30,7 @@ public  class Encriptor {
 		} catch (NoSuchAlgorithmException e) {
 			logger.error(e);
 		}
-		return md5;
+		return md5.toUpperCase();
 	}
 
 	/**

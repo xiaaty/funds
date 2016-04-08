@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gqhmt.TestService;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
-import com.gqhmt.util.Encriptor;
+import com.gqhmt.core.util.Encriptor;
 import com.gqhmt.util.LogUtil;
 import org.junit.Before;
 import org.junit.Test;

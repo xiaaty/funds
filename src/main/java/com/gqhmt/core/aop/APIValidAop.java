@@ -4,10 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.gqhmt.annotations.*;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.GqPageInfo;
-import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.core.util.JsonUtil;
-import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.PageSuperDto;
 import com.gqhmt.extServInter.dto.QueryListResponse;
 import com.gqhmt.extServInter.dto.Response;
@@ -74,7 +71,9 @@ public class APIValidAop {
             targetClass = joinPoint.getTarget();
             methodName = joinPoint.getSignature().getName();
             //校验商户
-            this.validMch(targetClass,methodName,dto);
+            this.validMch(dto);
+            //签名校验
+            validSignature(targetClass,methodName,dto);
             //交易类型校验
             this.validTradeType(targetClass,methodName,dto);
             //数据校验
@@ -147,13 +146,11 @@ public class APIValidAop {
 
     /**
      * 商户校验
-     * @param obj
-     * @param method
      * @param dto
      * @return
      * @throws FssException
      */
-    private String validMch(Object obj ,String method,SuperDto dto) throws FssException {
+    private String validMch(SuperDto dto) throws FssException {
         String  result = "90099999";
         try {
             Class superDtoClass = getEntityClass(dto,SuperDto.class);
@@ -166,10 +163,32 @@ public class APIValidAop {
             //校验权限 使用dubbo,此功能暂时不做
             //校验ip白名单,黑名单 使用dubbo,此功能暂时不做
             //签名校验,使用dubbo ,此处暂时不做
+
         } catch (NoSuchFieldException e) {
             throw  new FssException("90099998",e);
         }
         return result;
+    }
+
+    private void validSignature(Object obj ,String methodName,SuperDto dto) throws FssException {
+        Method method = FssBeanUtil.findMethod(obj.getClass(),methodName,SuperDto.class);
+        APISignature signatureAno = method.getDeclaredAnnotation(APISignature.class);
+        if(signatureAno == null){
+            return;
+        }
+        String mchn = dto.getMchn();
+        String seqNo = dto.getSeq_no();
+        String tradeType = dto.getTrade_type();
+        String key = Application.getInstance().getMechKey(mchn);
+
+        String signature = dto.getSignature();
+
+        String validSignature = Encriptor.getMD5(mchn+"|"+seqNo+"|"+tradeType+"|"+key);
+
+        if (signature == null || !signature.equals(validSignature)){
+            throw new FssException("90008302");
+        }
+
     }
 
     /**

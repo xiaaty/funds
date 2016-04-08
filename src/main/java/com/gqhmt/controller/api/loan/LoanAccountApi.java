@@ -123,8 +123,6 @@ public class LoanAccountApi {
     
     /**
      * 还款划扣
-     * @param seqNo
-     * @param mchn
      * @return
      */
     @RequestMapping(value = "/createRefundDraw",method = RequestMethod.POST)

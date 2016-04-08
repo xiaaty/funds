@@ -9,8 +9,6 @@ import com.gqhmt.extServInter.service.tender.IBidSettle;
 import com.gqhmt.pay.service.tender.IFundFullTender;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -30,7 +28,7 @@ import javax.annotation.Resource;
 @Service
 public class BidSettleImpl implements IBidSettle {
 	
-	@Resource
+//	@Resource
 	private IFundFullTender fundFullTenderImpl;
 	
     public Response execute(SuperDto dto) {
