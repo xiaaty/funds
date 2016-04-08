@@ -23,7 +23,6 @@ import com.gqhmt.extServInter.dto.Response;
  */
 public class LendingResponse extends Response {
 
-	private Long id;
 	
 	private String contract_id;			//contract_id
 	
@@ -92,14 +91,6 @@ public class LendingResponse extends Response {
 
 	public void setLoan_platform(String loan_platform) {
 		this.loan_platform = loan_platform;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public List<LendingFeeListDto> getFee_list() {

@@ -174,7 +174,7 @@ public class FssEnterAccountService {
 			enterAccount.setSettle_list(this.getsettleListBean(enterAccountEntity.getId()));
 			enterAccounts.add(enterAccount);
 		}
-		enterAccountResponse.setEnterAccounts(enterAccounts);
+		enterAccountResponse.setEnter_account(enterAccounts);
 		enterAccountResponse.setMchn(enterAccountEntities.get(0).getMchnChild());
 		enterAccountResponse.setSeq_no(enterAccountEntities.get(0).getSeqNo());
 		enterAccountResponse.setTrade_type(enterAccountEntities.get(0).getTradeType());

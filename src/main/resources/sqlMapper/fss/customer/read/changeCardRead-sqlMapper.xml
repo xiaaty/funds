@@ -55,7 +55,7 @@
 		t.bank_city city_id,
 		t.bank_type bank_id,
 		t.card_no bank_card
-		 FROM `t_gq_fss_changecard_record` t;
+		 FROM `t_gq_fss_changecard_record` t
 		WHERE t.seq_no=#{seq_no}
 		AND t.mchn=#{mchn}
 	</select>

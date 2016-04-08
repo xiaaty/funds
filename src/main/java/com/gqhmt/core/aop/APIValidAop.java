@@ -172,7 +172,7 @@ public class APIValidAop {
 
     private void validSignature(Object obj ,String methodName,SuperDto dto) throws FssException {
         Method method = FssBeanUtil.findMethod(obj.getClass(),methodName,SuperDto.class);
-        APISignature signatureAno = method.getDeclaredAnnotation(APISignature.class);
+        APISignature signatureAno = method.getAnnotation(APISignature.class);
         if(signatureAno == null){
             return;
         }

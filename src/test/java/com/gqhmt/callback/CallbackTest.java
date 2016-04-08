@@ -35,7 +35,7 @@ public class CallbackTest  extends TestService{
 
     @Test
     public void test(){
-        FssBackplateEntity entity = backplateService.get(85l);
+        FssBackplateEntity entity = backplateService.get(70l);
 
         try {
             callbackJob.callback(entity);

@@ -28,7 +28,7 @@ public class WithDrawApplyCallback implements GetCallBack{
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
     
-    public WithDrawApplyResponse getCallBack(String seqNo,String mchn) throws FssException{
+    public WithDrawApplyResponse getCallBack(String mchn,String seqNo) throws FssException{
     	WithDrawApplyResponse response = new WithDrawApplyResponse();
     	try {
     		response=fssTradeApplyService.withDrasApplyCallBack(seqNo,mchn);

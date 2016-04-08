@@ -38,11 +38,11 @@ public class EnterAccountCallback implements GetCallBack{
 	 * time:2016年3月7日
 	 * function：得到入账回调对象
 	 */
-	public EnterAccountResponse getCallBack(String mchnNo,String seqNo){
+	public EnterAccountResponse getCallBack(String mchn,String seqNo){
 
 		EnterAccountResponse enterAccountResponse = null;
 		 try {
-			 enterAccountResponse = fssEnterAccountService.getResponse(mchnNo,seqNo);
+			 enterAccountResponse = fssEnterAccountService.getResponse(mchn,seqNo);
 			 enterAccountResponse.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());

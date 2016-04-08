@@ -36,11 +36,11 @@ public class LendingCallback implements GetCallBack{
 	 * time:2016年3月7日
 	 * function：得到借款人放款回调对象
 	 */
-	public LendingResponse getCallBack(String mchnNo,String seqNo){
+	public LendingResponse getCallBack(String mchn,String seqNo){
 		
 		 LendingResponse response = null;
 		 try {
-			response= fssLoanService.getLendingResponse(mchnNo,seqNo) ;
+			response= fssLoanService.getLendingResponse(mchn,seqNo) ;
 			response.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());

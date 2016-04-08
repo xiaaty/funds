@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class EnterAccount {
 
-	private Long id;
 	@APIValidNull(errorCode = "90002016")
 	private String contract_id;			//合同ID
 	
@@ -50,6 +49,7 @@ public class EnterAccount {
 	@APIValidNull(errorCode = "90004028")
     private List<SettleListBean> settle_list;			//清算列表
     
+	private int period ;
 
 	public String getContract_id() {
 		return contract_id;
@@ -75,13 +75,6 @@ public class EnterAccount {
 		this.acc_no = acc_no;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getSerial_number() {
 		return serial_number;
@@ -121,6 +114,14 @@ public class EnterAccount {
 
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
+	}
+
+	public int getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(int period) {
+		this.period = period;
 	}
 
 

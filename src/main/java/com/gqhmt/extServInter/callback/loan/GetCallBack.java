@@ -21,7 +21,7 @@ import com.gqhmt.core.FssException;
  */
 public interface GetCallBack {
 
-    public Object getCallBack(String seqNo,String mchn) throws FssException;
+    public Object getCallBack(String mchn,String seqNo) throws FssException;
 
 	
 }
