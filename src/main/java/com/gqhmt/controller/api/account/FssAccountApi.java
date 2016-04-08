@@ -77,7 +77,7 @@ public class FssAccountApi {
     * time:2016年2月22日
     * function：创建账户
     */
-    @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
+    @RequestMapping(value = "/createAccount",method = {RequestMethod.GET,RequestMethod.POST})
     public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
     	Response response= new Response();
         try {
