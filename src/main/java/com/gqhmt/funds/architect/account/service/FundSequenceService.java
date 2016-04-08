@@ -18,7 +18,7 @@ import com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundSequenceWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
-import com.gqhmt.util.Encriptor;
+import com.gqhmt.core.util.Encriptor;
 import com.gqhmt.util.ThirdPartyType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

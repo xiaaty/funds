@@ -10,27 +10,33 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 /**
  * 
  * Filename: com.gqhmt.extServInter.dto.account.CreateAccountByFuiou Copyright:
@@ -69,6 +75,8 @@ public class FssLoanTradeController {
 	private FssBackplateService fssBackplateService;
 	@Resource
 	private FssAccountService fssAccountService;
+	@Resource
+	private ExportAndImpService exportAndImpService;
 
 	/**
 	 * 
@@ -362,6 +370,34 @@ public class FssLoanTradeController {
 		model.addAttribute("feeList", findFeeList);
 		return "fss/trade/trade_audit/feeList";
 	}
+	
+	/**
+	 * 导出还款代扣（纯线下）
+	 * @param request
+	 * @param type
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/loan/trade/{type}/export")
+	public void loanListExport(HttpServletRequest request,HttpServletResponse response,@PathVariable String type, ModelMap model) throws FssException{
+		List<FssLoanBean> list = fssLoanService.findLoanOffilne(type);
+		try {
+			HSSFWorkbook wb = exportAndImpService.exportLoan(list);
+			response.setContentType("application/vnd.ms-excel");    
+			response.setHeader("Content-disposition", "attachment;filename=loandata.xls");    
+			OutputStream ouputStream = response.getOutputStream();  
+			wb.write(ouputStream);    
+			ouputStream.flush();    
+			ouputStream.close();
+		} catch (IOException e) {
+			throw new FssException("Io异常");
+		}    
+	}
+	
+	
+	
+	
+	
 	
 
 }

@@ -189,6 +189,14 @@ public class Application {
         return merchantEntity.getParentNo();
     }
 
+    public String getMechKey(String mchn) throws FssException {
+        MerchantEntity merchantEntity = merchantEntityMap.get(mchn);
+        if(merchantEntity == null){
+            throw new FssException("90008102");
+        }
+        return merchantEntity.getMchnKey();
+    }
+
     /*======================================银行交易限额初始化及应用结束========================================================*/
    
     /**
