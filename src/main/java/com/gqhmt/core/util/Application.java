@@ -230,7 +230,8 @@ public class Application {
     	try{
     		if(string==null||"".equals(string)){
     			String dictParentKey = this.getDictParentKey("95"+sixCode);
-    			string = getFourCode(dictParentKey);
+    			if(dictParentKey!=null&&!"".equals(dictParentKey))
+    			string = getFourCode(dictParentKey.substring(2));
     		}
     	}catch(FssException e){
     		 throw new FssException("90004031");
