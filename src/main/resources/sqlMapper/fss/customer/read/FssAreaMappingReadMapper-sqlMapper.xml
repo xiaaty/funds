@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssAreaMappingReadMapper">
+	<sql id="fieldSql">
+		SELECT 
+			t.id,
+			t.four_code fourCode,
+			t.six_code sixCode,
+			t.eight_code eightCode,
+			t.`value` value,
+			t.type type
+		 FROM `t_gq_fss_area_mapping` t 
+	</sql>
+	<sql id="whereSql">
+	</sql>
+	<sql id="otherSql">
+		<choose>
+		<when test="orderStr != null">
+			order by ${orderStr}
+		</when>
+		<otherwise>
+		</otherwise>
+		</choose>
+	</sql>
+	<select id="findAllAreaMapping"  resultType="com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity">
+		<include refid="fieldSql" />
+		WHERE t.type=12010001;
+	</select>
+	
+	
+</mapper>

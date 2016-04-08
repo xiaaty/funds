@@ -77,6 +77,7 @@ public class FssTradeRecordService {
 	public BigDecimal  getLimit(String accNo,int type) throws FssException{
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
 		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId().intValue());
+		if(queryInvestmentByCustId==null) throw new FssException("90002001");
 		return getLimitAmount(queryInvestmentByCustId.get(0).getParentBankId(),type);
 	}
 	/**
@@ -259,6 +260,7 @@ public class FssTradeRecordService {
 		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, tradeAmount);
 		//更新申请表该条数据拆分总条数
 		fssTradeApplyEntity.setCount(moneySplit);
+		fssTradeApplyEntity.setSuccessCount(0);
 		fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 		
 	}

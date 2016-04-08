@@ -197,7 +197,7 @@ public class Application {
     private  void iniBankArea(){
     	FssAreaMappingService bankAreaMappingService = ServiceLoader.get(FssAreaMappingService.class);
     	
-    	 List<FssAreaMappingEntity> bankAreas = bankAreaMappingService.findAll();
+    	 List<FssAreaMappingEntity> bankAreas = bankAreaMappingService.findAllAreaMapping();
     	
     	for(FssAreaMappingEntity bankArea:bankAreas) {
     		sixCodemap.put(bankArea.getFourCode(),bankArea.getSixCode());
@@ -236,7 +236,8 @@ public class Application {
     	try{
     		if(string==null||"".equals(string)){
     			String dictParentKey = this.getDictParentKey("95"+sixCode);
-    			string = getFourCode(dictParentKey);
+    			if(dictParentKey!=null&&!"".equals(dictParentKey))
+    			string = getFourCode(dictParentKey.substring(2));
     		}
     	}catch(FssException e){
     		 throw new FssException("90004031");

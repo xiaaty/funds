@@ -1,12 +1,8 @@
 package com.gqhmt.fss.architect.loan.mapper.read;
 
 import java.util.List;
-import java.util.Map;
 
-import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.extServInter.dto.loan.EnterAccount;
-import com.gqhmt.fss.architect.loan.bean.EnterAccountBean;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 
 /**
@@ -34,5 +30,12 @@ public interface FssEnterAccountReadMapper extends ReadMapper<FssEnterAccountEnt
 		 * function：入账回盘
 		 */
 		List<FssEnterAccountEntity> getEnterAccounts(Long parentId);
+		/**
+		 * 
+		 * author:jhz
+		 * time:2016年4月7日
+		 * function：通过父id得到该批次成功条数
+		 */
+		int getSuccessCount(Long parentId);
 	
 }

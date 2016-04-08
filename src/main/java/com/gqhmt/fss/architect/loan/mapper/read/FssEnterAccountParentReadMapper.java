@@ -38,6 +38,13 @@ public interface FssEnterAccountParentReadMapper extends ReadMapper<FssEnterAcco
 	 * function：得到主表列表
 	 */
 	List<FssEnterAccountParentEntity> getEnterAccountParentList(Map<Object, Object> map);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月7日
+	 * function：根据交易状态查询主表列表
+	 */
+	List<FssEnterAccountParentEntity> getEnterAccountParentByState();
 
 	
 }
