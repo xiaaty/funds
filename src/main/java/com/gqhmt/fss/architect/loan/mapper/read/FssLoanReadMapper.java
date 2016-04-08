@@ -34,7 +34,7 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * time:2016年3月7日
 	 * function：得到借款人放款回调对象
 	 */
-	LendingResponse getResponse(Map<String, String> map) throws FssException;
+	FssLoanEntity getResponse(Map<String, String> map) throws FssException;
 	/**
 	 * 
 	 * author:jhz
@@ -76,4 +76,11 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * @return
 	 */
 	public List<FssLoanEntity> findAbortBid();
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月8日
+	 * function：根据交易类型得到放款列表
+	 */
+	List<FssLoanEntity> findByType(String type);
 }

@@ -22,15 +22,16 @@ import com.gqhmt.extServInter.dto.Response;
  */
 public class EnterAccountResponse  extends Response {
 	
-	private List<EnterAccount> enterAccounts;
+	private List<EnterAccount> enter_account;
 
-	public List<EnterAccount> getEnterAccounts() {
-		return enterAccounts;
+	public List<EnterAccount> getEnter_account() {
+		return enter_account;
 	}
 
-	public void setEnterAccounts(List<EnterAccount> enterAccounts) {
-		this.enterAccounts = enterAccounts;
+	public void setEnter_account(List<EnterAccount> enter_account) {
+		this.enter_account = enter_account;
 	}
+
 	
 
 	

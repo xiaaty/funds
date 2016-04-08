@@ -31,26 +31,29 @@
 			t.status status,
 			t.rep_msg repMsg,
 			t.pay_amt payAmt,
+			t.rep_code repCode,
+			t.rep_msg repMsg, 
 			t.loan_platform loanPlatform  	
 			FROM t_gq_fss_loan t 
 	</sql>
 	<!-- 得到借款人放款回调对象 -->
-	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.LendingResponse" >
-		SELECT 
-			t.id,
-		    t.mchn_child mchn,
-		    t.seq_no seq_no,
-		    t.trade_type trade_type,
-		    t.contract_id contract_id,
-		    t.contract_no contract_no,
-		    t.mortgagee_acc_no mortgagee_acc_no,
-		    t.acc_no acc_no,
-			t.contract_amt contract_amt,
-			t.pay_amt pay_amt,
-		    t.rep_code resp_code,
-			t.rep_msg resp_msg,
-			t.loan_platform loan_platform
-			FROM t_gq_fss_loan t
+	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
+<!-- 		SELECT  -->
+<!-- 			t.id, -->
+<!-- 		    t.mchn_child mchn, -->
+<!-- 		    t.seq_no seq_no, -->
+<!-- 		    t.trade_type trade_type, -->
+<!-- 		    t.contract_id contract_id, -->
+<!-- 		    t.contract_no contract_no, -->
+<!-- 		    t.mortgagee_acc_no mortgagee_acc_no, -->
+<!-- 		    t.acc_no acc_no, -->
+<!-- 			t.contract_amt contract_amt, -->
+<!-- 			t.pay_amt pay_amt, -->
+<!-- 		    t.rep_code resp_code, -->
+<!-- 			t.rep_msg resp_msg, -->
+<!-- 			t.loan_platform loan_platform -->
+<!-- 			FROM t_gq_fss_loan t -->
+			<include refid="selectSql"/>
 			where 1=1
 			<include refid="whereSql" />
 	</select>
@@ -73,22 +76,24 @@
 			<include refid="whereSql" />
 	</select>
 	<!-- 流标回盘回盘 -->
-	<select id="getFailedBidResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.FailedBidResponse" >
-		SELECT 
-			t.id,
-		    t.seq_no seq_no,
-		    t.mchn_child mchn,
-		    t.trade_type trade_type,
-		    t.contract_id contract_id,
-		    t.contract_no contract_no,
-		    t.mortgagee_acc_no mortgagee_acc_no,
-		    t.acc_no acc_no,
-			t.contract_amt contract_amt,
-			t.pay_amt pay_amt,
-		    t.rep_code resp_code,
-			t.rep_msg resp_msg,
-			t.loan_platform loan_platform
-			FROM t_gq_fss_loan t
+	<select id="getFailedBidResponse"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
+<!-- 		SELECT  -->
+<!-- 		    t.seq_no seq_no, -->
+<!-- 		    t.mchn_child mchn, -->
+<!-- 		    t.trade_type trade_type, -->
+<!-- 		    t.contract_id contract_id, -->
+<!-- 		    t.contract_no contract_no, -->
+<!-- 		    t.mortgagee_acc_no mortgagee_acc_no, -->
+<!-- 		    t.acc_no acc_no, -->
+<!-- 			t.contract_amt contract_amt, -->
+<!-- 			t.pay_amt pay_amt, -->
+<!-- 		    t.rep_code resp_code, -->
+<!-- 			t.rep_msg resp_msg, -->
+<!-- 			t.loan_platform loan_platform -->
+<!-- 			FROM t_gq_fss_loan t -->
+<!-- 			where 1=1 -->
+<!-- 			<include refid="whereSql" /> -->
+			<include refid="selectSql"/>
 			where 1=1
 			<include refid="whereSql" />
 	</select>
@@ -115,6 +120,11 @@
 				AND t.trade_type = #{type}
 			</if>
 			
+	</select>
+<!-- 	通过tradeType查询得到列表数据 -->
+	<select id="findByType"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
+		<include refid="selectSql" />
+			where  t.trade_type = #{type}
 	</select>
 <!-- 	满标放款  11090002 ，信用标放款      11092001， 抵押权人提现     11090004，冠e通满标-->
 	<select id="findLoanBySettle" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">

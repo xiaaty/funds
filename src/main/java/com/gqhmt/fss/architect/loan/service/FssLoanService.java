@@ -172,8 +172,20 @@ public class FssLoanService {
 		Map<String,String> map=new HashMap<>();
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
-		LendingResponse response = fssLoanReadMapper.getResponse(map);
-		List<LendingFeeListDto> feeListDto = getFeeListDto(this.getFeeList(response.getId()));
+		LendingResponse response=new LendingResponse();
+		FssLoanEntity loan = fssLoanReadMapper.getResponse(map);
+		response.setAcc_no(loan.getAccNo());
+		response.setContract_amt(loan.getContractAmt());
+		response.setContract_id(loan.getContractId());
+		response.setContract_interest(loan.getContractInterest());
+		response.setContract_no(loan.getContractNo());
+		response.setLoan_platform(loan.getLoanPlatform());
+		response.setMchn(loan.getMchnChild());
+		response.setMortgagee_acc_no(loan.getMortgageeAccNo());
+		response.setPay_amt(loan.getPayAmt());
+		response.setSeq_no(loan.getSeqNo());
+		response.setTrade_type(loan.getTradeType());
+		List<LendingFeeListDto> feeListDto = getFeeListDto(this.getFeeList(loan.getId()));
 		if(feeListDto!=null){
 			response.setFee_list(feeListDto);
 		}
@@ -273,9 +285,21 @@ public class FssLoanService {
 		Map<String,String> map=new HashMap<>();
 		map.put("mchnNo", mchnNo);
 		map.put("seqNo", seqNo);
-		FailedBidResponse failedBidResponse = fssLoanReadMapper.getFailedBidResponse(map);
-		failedBidResponse.setFee_list(getFeeListDto(this.getFeeList(failedBidResponse.getId())));
-		return failedBidResponse;
+		FailedBidResponse response = new FailedBidResponse();
+		FssLoanEntity loan=	fssLoanReadMapper.getResponse(map);
+		response.setAcc_no(loan.getAccNo());
+		response.setContract_amt(loan.getContractAmt());
+		response.setContract_id(loan.getContractId());
+		response.setContract_no(loan.getContractNo());
+		response.setLoan_platform(loan.getLoanPlatform());
+		response.setMchn(loan.getMchnChild());
+		response.setMortgagee_acc_no(loan.getMortgageeAccNo());
+		response.setPay_amt(loan.getPayAmt());
+		response.setTrade_type(loan.getTradeType());
+		response.setSeq_no(loan.getSeqNo());
+		
+		response.setFee_list(getFeeListDto(this.getFeeList(loan.getId())));
+		return response;
 	}
 	/**
 	 * 
@@ -285,6 +309,15 @@ public class FssLoanService {
 	 */
 	public List<FssLoanEntity> findBorrowerLoan(Map map) {
 		return fssLoanReadMapper.findBorrowerLoan(map);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月8日
+	 * function：根据交易类型得到放款列表
+	 */
+	public List<FssLoanEntity> findByType(String type) {
+		return fssLoanReadMapper.findByType(type);
 	}
 //	/**
 //	 * 
@@ -442,5 +475,5 @@ public class FssLoanService {
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 		throw new FssException("异步处理，等待回调通知");
 	}
-
+	
 }	

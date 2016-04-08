@@ -34,6 +34,8 @@ public class RepaymentChildDto{
 	
 	@APIValidNull(errorCode = "90002020")
     private BigDecimal amt;       //还款金额
+	
+	private BigDecimal real_repay_amt;       //还款金额
     
     private String remark;    //还款备注
     
@@ -90,5 +92,12 @@ public class RepaymentChildDto{
 	public void setAccounting_no(String accounting_no) {
 		this.accounting_no = accounting_no;
 	}
+	public BigDecimal getReal_repay_amt() {
+		return real_repay_amt;
+	}
+	public void setReal_repay_amt(BigDecimal real_repay_amt) {
+		this.real_repay_amt = real_repay_amt;
+	}
     
+	
 }

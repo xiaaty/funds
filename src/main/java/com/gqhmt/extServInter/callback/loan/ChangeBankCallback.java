@@ -30,7 +30,7 @@ public class ChangeBankCallback implements GetCallBack{
 	@Resource
 	private IFundsAccount fundsAccountImpl;
     
-    public ChangeCardResponse getCallBack(String seqNo,String mchn) throws FssException{
+    public ChangeCardResponse getCallBack(String mchn,String seqNo) throws FssException{
     	ChangeCardResponse response = new ChangeCardResponse();
     	try {
     		response = fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
