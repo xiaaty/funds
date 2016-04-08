@@ -37,8 +37,7 @@ public abstract class SupperJob{
     protected final boolean isIp(String type) throws PayChannelNotSupports {
 
     Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
-    config.getValue("fuiouFtp."+type+".value");
-    String apachIp = (String)config.getValue("fuiouFtp.ip.value");
+    String apachIp = (String)config.getValue("job.ip.value");
     List<String> localIpList = LocalIPUtil.getLocalIpList();
     boolean isSame = false;
     for (String localIp : localIpList) {

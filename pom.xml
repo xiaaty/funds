@@ -456,12 +456,12 @@
 			<version>18.0</version>
 		</dependency>
 
-		<!--<dependency>
+		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
-			<version>2.8.4</version>
-		</dependency>-->
-		<!--<dependency>
+			<version>2.8.4-GQ-0.0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.zookeeper</groupId>
 			<artifactId>zookeeper</artifactId>
 			<version>3.4.7</version>
@@ -470,7 +470,7 @@
 			<groupId>com.github.sgroschupf</groupId>
 			<artifactId>zkclient</artifactId>
 			<version>0.1</version>
-		</dependency>-->
+		</dependency>
 
 	</dependencies>
 
