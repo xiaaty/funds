@@ -62,7 +62,7 @@ public class FssTradeApplyController {
 		/trade/tradeApply/1103/11030007   代偿人代扣
 		/trade/tradeApply/1103/11093001   还款代扣
 		/trade/tradeApply/1103/11090001   抵押权人代扣
-	   function:交易管理---交易审核--代付审核
+	     function:交易管理---交易审核--代付审核
 		/trade/tradeApply/1104/11091001    借款人提现
 		/trade/tradeApply/1104/11040005    冠e通放款
 		/trade/tradeApply/1104/11040006   抵押权人提现
