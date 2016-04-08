@@ -5,6 +5,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.fuiouFtp.service.BidSettleService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +36,12 @@ public class SettleBeforeJob extends SupperJob {
     private BidSettleService settleService;
 
 
-    public void execute(){
-        //获取需满标转账功能列表 抵押权人提现\信用标放款
+    public void execute() throws PayChannelNotSupports {
+
+        System.out.println("借款业务满满标 执行满标转账 ftp 上传记录 跑批");
+        if(!isIp("upload")){
+            return;
+        }
 
         if(isRunning) return;
         super.isRunning = true;

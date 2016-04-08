@@ -107,8 +107,12 @@ public class FundAccountService {
     private FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
-        this.fundAccountWriteMapper.insert(entity);
-        LogUtil.debug(this.getClass(),entity+":"+entity.getId());
+        try {
+			this.fundAccountWriteMapper.insert(entity);
+		} catch (Exception e) {
+			LogUtil.debug(this.getClass(),entity+":"+entity.getId());
+			throw new FssException("91004013");
+		}
         return entity;
     }
     /**
@@ -144,7 +148,7 @@ public class FundAccountService {
     private FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
         FundAccountEntity entity = new FundAccountEntity();
         entity.setCustId(customerInfoEntity.getId());
-        entity.setUserName(customerInfoEntity.getMobilePhone());
+        entity.setUserName(customerInfoEntity.getCustomerName());
         entity.setAmount(BigDecimal.ZERO);
         entity.setFreezeAmount(BigDecimal.ZERO);
         entity.setAccountType(accountType);
@@ -351,9 +355,17 @@ public class FundAccountService {
     * time:2016年2月16日
     * function：funds账号管理
     */
-   	public List<FundAccountCustomerBean> findAcountList(Map accMap) {
+   	public List<FundAccountCustomerBean> findAcountList(Map<String,String> map) {
 	   // TODO Auto-generated method stub
-	   return fundsAccountReadMapper.findAcountList(accMap);
+   		Map<String, String> map2=new HashMap<String, String>();
+   		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("customerName",map.get("customerName"));
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+	   return fundsAccountReadMapper.findAcountList(map2);
    	}
    	
     /**

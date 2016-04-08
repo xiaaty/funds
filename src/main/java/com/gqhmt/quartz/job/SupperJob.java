@@ -1,5 +1,14 @@
 package com.gqhmt.quartz.job;
 
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.pay.core.PayCommondConstants;
+import com.gqhmt.pay.core.configer.Config;
+import com.gqhmt.pay.core.factory.ConfigFactory;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
+import com.gqhmt.util.LocalIPUtil;
+
+import java.util.List;
+
 /**
  * Filename:    com.gqhmt.quartz.job.SupperJob
  * Copyright:   Copyright (c)2015
@@ -23,4 +32,29 @@ public abstract class SupperJob{
     public final boolean isRunning() {
         return isRunning;
     }
+
+
+    protected final boolean isIp(String type) throws PayChannelNotSupports {
+
+    Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+    config.getValue("fuiouFtp."+type+".value");
+    String apachIp = (String)config.getValue("fuiouFtp.ip.value");
+    List<String> localIpList = LocalIPUtil.getLocalIpList();
+    boolean isSame = false;
+    for (String localIp : localIpList) {
+        if (apachIp.indexOf(localIp) > -1) {
+            isSame = true;
+            break;
+        }
+    }
+    if (!isSame){
+        LogUtil.debug(this.getClass(),"fuiouFtp:not allowed execute");
+        return isSame;
+    }
+
+
+    String  value = (String) config.getValue("fuiouFtp."+type+".value");
+    isSame = new Boolean(value);
+    return isSame;
+}
 }

@@ -131,7 +131,7 @@
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
                                 </div> 
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1150px;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1250px;">
                                     	<col width="50" />
                                     	<col width="200" />
                                     	<col width="200" />
@@ -139,6 +139,7 @@
                                     	<col width="100" />
                                     	<col width="200" />
                                     	<col width="200" />
+                                    	<col width="100" />
                                     	<col width="100" />
                                     	<thead>
                                         <tr>
@@ -149,6 +150,7 @@
                                             <td>银行图标</td>
                                             <td>创建时间</td>
                                             <td>修改时间</td>
+                                            <td>是否有效</td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
@@ -162,6 +164,7 @@
                                                     <td><img src="${contextPath}${bankinfo.bankIcon}"/></td>
                                                     <td><fmt:formatDate value="${bankinfo.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bankinfo.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>${bankinfo.isvalid==0 ? "有效":"无效"}</td>
                                                      <td>
                                                      	 <%-- <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a> --%>&nbsp;&nbsp;&nbsp;
                                                      	  <a href="${contextPath}${bankinfo.limitPage}">查看页面限额</a> 

@@ -157,6 +157,7 @@ public class FssCustomerService {
 	            fssCustomerEntity.setCustNo(CommonUtil.getCustNo());
 	            fssCustomerEntity.setMchnChild(dto.getMchn());
 	            fssCustomerEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+	            fssCustomerEntity.setUserId("1");
 	            return fssCustomerEntity;
 	        
 	  }

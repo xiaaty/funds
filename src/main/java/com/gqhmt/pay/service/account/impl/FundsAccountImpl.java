@@ -3,9 +3,9 @@ package com.gqhmt.pay.service.account.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
-import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
@@ -204,38 +204,28 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
 	 * 银行卡变更
 	 */
-	 public boolean bankCardChange(CardChangeDto cardChangeDto)throws FssException{
+	 public Response bankCardChange(CardChangeDto cardChangeDto)throws FssException{
+		 Response response=new Response();
 			BankCardInfoEntity bankCardInfoEntity=null;
 			CustomerInfoEntity  customerInfoEntity=null;
 			//1.根据账号查询该客户账户信息
 		 	FssAccountEntity fssAccountEntity= fundAccountService.getFssFundAccountInfo(cardChangeDto.getAcc_no());
-		 	if(null!=fssAccountEntity){
-		 		//查询该账户客户信息
-		 		customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());
-		 		if(null!=customerInfoEntity){
-		 			//通过客户表中的bankid查询该客户要变更的银行卡信息
-		 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());
-		 			if(bankCardInfoEntity!=null){
-		 				try {
-		 					//将变更银行卡信息插入到银行卡变更表
-		 					FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "",Application.getInstance().getFourCode(cardChangeDto.getCity_id()) , cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
-							fssChangeCardService.insert(fssChangeCardEntity);
-							//银行卡变更记录插入成功之后，进入跑批处理
-		 				} catch (FssException e) {
-							throw new FssException("银行卡变更记录插入失败");
-						}
-		 			}else{
-		 				throw new FssException("未查到得到该客户银行卡信息");
-		 			}
-		 		}else{
-		 			throw new FssException("未查到得到该户信息");
-		 		}
-		 	}else{
-		 		throw new FssException("资金平台未查到该账户信息");
-		 	}
-		 return true;
+		 	if(fssAccountEntity==null) throw new FssException("90002001");
+		    customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());//查询该账户客户信息
+		 	if(customerInfoEntity==null) throw new FssException("90002007");
+ 			//通过客户表中的bankid查询该客户要变更的银行卡信息
+ 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());
+ 			if(bankCardInfoEntity==null) throw new FssException("90004027");
+			try {//将变更银行卡信息插入到银行卡变更表
+			FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "",Application.getInstance().getFourCode(cardChangeDto.getCity_id()) , cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
+			fssChangeCardService.insert(fssChangeCardEntity);
+			//银行卡变更记录插入成功之后，进入跑批处理(后续处理)
+			} catch (FssException e) {
+			throw new FssException("90004001");
+		}
+		 return response;
 	 }
-	
+	 
 		/**
 		 * 	银行卡变更完成，通知变更发起方（借款系统）
 		 */
@@ -250,10 +240,10 @@ public class FundsAccountImpl implements IFundsAccount {
 	    }
 	    
 	    /**
-	     * 开户
+	     * app开户
 	     */
 		@Override
-		public CreateAccountResponse createFundAccount(CreateAccountDto createAccountDto) throws FssException {
+		public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException {
 			CustomerInfoEntity customerInfoEntity =  customerInfoService.getCustomerById(Long.valueOf(createAccountDto.getCust_no()));
 			if(customerInfoEntity == null) throw new FssException("90002007");
 			customerInfoEntity.setParentBankCode(createAccountDto.getBank_id());
@@ -262,29 +252,25 @@ public class FundsAccountImpl implements IFundsAccount {
 			customerInfoEntity.setCertNo(createAccountDto.getCert_no());
 			customerInfoEntity.setMobilePhone(createAccountDto.getMobile());
 			customerInfoEntity.setCustomerName(createAccountDto.getName());
-			return this.createFundAccount(customerInfoEntity,"","",createAccountDto);
+			return this.createFundAccount(customerInfoEntity,"","");
 		}
 	    
-		public CreateAccountResponse createFundAccount(CustomerInfoEntity customerInfoEntity,
-				String pwd, String taradPwd,CreateAccountDto createAccountDto) throws FssException {
-			CreateAccountResponse response=new CreateAccountResponse();
+		public Integer createFundAccount(CustomerInfoEntity customerInfoEntity,String pwd, String taradPwd) throws FssException {
 			Long cusId = customerInfoEntity.getId();
-			
 			Integer userId = customerInfoEntity.getUserId();
 			BankCardInfoEntity bankCardInfoEntity=null;
 			FundAccountEntity primaryAccount = this.getPrimaryAccount(cusId);
-			    if(primaryAccount == null){
-					try {
-						primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
-					} catch (FssException e) {
-				            throw new FssException("90002002");
-					}
+		    if(primaryAccount == null){
+				try {
+					primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
+				} catch (FssException e) {
+			            throw new FssException("90002002");
 				}
-			
+			}
 			primaryAccount.setCustomerInfoEntity(customerInfoEntity);
 			
 			//富友
-			if (primaryAccount.getHasThirdAccount() ==1){
+			if (primaryAccount.getHasThirdAccount() ==1){//未开通第三方账户
 				paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
 				primaryAccount.setHasThirdAccount(2);
 				fundAccountService.update(primaryAccount);
@@ -295,19 +281,9 @@ public class FundsAccountImpl implements IFundsAccount {
 				if(bankCardInfoEntity==null){
 					bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
 				}
-				response.setResp_code("00000000");
-				response.setResp_msg("成功！");
-			}else{
+			}else{//已开通第三方账户
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
-				response.setResp_code("90002017");
-				response.setResp_msg("已开户，请不要重复开户！");
 			}
-			//返回银行卡id
-			response.setId(bankCardInfoEntity.getId());
-			response.setMchn(createAccountDto.getMchn());
-			response.setSeq_no(createAccountDto.getSeq_no());
-			response.setSignature(createAccountDto.getSignature());
-			response.setTrade_type(createAccountDto.getTrade_type());
-			return response;
+			return bankCardInfoEntity.getId();
 	}
 }

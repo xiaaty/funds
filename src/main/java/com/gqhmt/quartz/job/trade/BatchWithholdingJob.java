@@ -3,8 +3,8 @@ package com.gqhmt.quartz.job.trade;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.fss.event.trade.WithholdingEvent;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
-import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,11 @@ public class BatchWithholdingJob extends SupperJob{
 
 
     @Scheduled(cron="0 0/1 *  * * * ")
-    public void execute() throws JobExecutionException {
+    public void execute() throws PayChannelNotSupports {
+        System.out.println("批量跑批处理代扣代付业务 跑批");
+        if(!isIp("upload")){
+            return;
+        }
         super.isRunning = true;
         List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
 

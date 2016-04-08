@@ -102,6 +102,9 @@ public class FssLoanTradeController {
 		}
 		model.addAttribute("page", list2);
 		model.put("map", map);
+		if("11090003".equals(type)){//纯线下放款
+			return "fss/trade/trade_audit/borrowerloan_offline";
+		}
 		return "fss/trade/trade_audit/borrowerloan";
 	}
 
