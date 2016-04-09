@@ -16,6 +16,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.entity.FuiouPreauth;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
+import com.gqhmt.pay.service.tender.IFundsTender;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,6 +50,9 @@ public class AbortBidService {
 
     @Resource
     private FssLoanService fssLoanService;
+
+    @Resource
+    private IFundsTender fundsTender;
 
     public void abortBid(){
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listAbort();
@@ -103,6 +107,7 @@ public class AbortBidService {
             try {
 //                AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_ABORT_ASYN, ThirdPartyType.FUIOU, tender,fuiouPreauth.getContractNo());
 
+                fundsTender.abortLoop(tender,fuiouPreauth.getContractNo());
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.insert(fuiouPreauth);
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());

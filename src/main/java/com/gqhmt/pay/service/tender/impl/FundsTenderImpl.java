@@ -1,12 +1,16 @@
 package com.gqhmt.pay.service.tender.impl;
 
 import com.gqhmt.business.architect.loan.entity.Bid;
+import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.tender.BidDto;
+import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.core.command.CommandResponse;
@@ -18,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.pay.service.impl.FundsTenderImpl
@@ -39,6 +45,9 @@ import java.math.BigDecimal;
 public class FundsTenderImpl  implements IFundsTender {
 
     @Resource
+    private FundSequenceService sequenceService;
+
+    @Resource
     private PaySuperByFuiou paySuperByFuiou;
 
     @Resource
@@ -56,6 +65,9 @@ public class FundsTenderImpl  implements IFundsTender {
 
     @Resource
     private TradeRecordService tradeRecordService;
+
+    @Resource
+    private FetchDataService fetchDataService;
 
 	/**
 	 * 投标
@@ -112,6 +124,38 @@ public class FundsTenderImpl  implements IFundsTender {
 //        super.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 //        throw new NeedSMSValidException("异步处理，等待回调通知");
         return true;
+    }
+
+
+    public void abortLoop(Tender tender, String contactNo) throws FssException {
+        // {
+        // 实际出账账户
+        FundAccountEntity fromEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), tender.getInvestType() == 1 ? 3 : 2);
+        // super.hasEnoughBanlance(fromEntity,new
+        // BigDecimal(tender.getInvestAmount()));
+        Bid bid = bidService.findById(tender.getBidId());
+
+        Integer cusId = bid.getCustomerId();
+        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+            cusId = bid.getHypothecarius();
+        }
+
+        //产品名称，如果产品名称为空，则去标的title
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id",tender.getBidId().toString());
+        paramMap.put("type","2");
+        String title =  title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+        if (title == null) {
+            title = bid.getBidTitle();
+        }
+        // 入账账户
+        FundAccountEntity toSFEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
+        // FundAccountThirdEntity toSFEntity =
+        // super.getFundAccountThird(bid.getCustomerId(),thirdPartyType);
+        // 冻结账户
+        FundAccountEntity toEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        FundOrderEntity orderEntity = paySuperByFuiou.canclePreAuth(fromEntity,toSFEntity,tender.getRealAmount(),3011,tender.getId(),0,contactNo);
+        tradeRecordService.unFrozen(toEntity, fromEntity,tender.getRealAmount(), 3011, orderEntity,title + " 流标退款 " + new BigDecimal(tender.getRealAmount().toString()) + "元",BigDecimal.ZERO);
     }
 
 
