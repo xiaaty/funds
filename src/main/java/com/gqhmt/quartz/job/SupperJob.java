@@ -52,7 +52,7 @@ public abstract class SupperJob{
     }
 
 
-    String  value = (String) config.getValue("fuiouFtp."+type+".value");
+    String  value = (String) config.getValue("job."+type+".value");
     isSame = new Boolean(value);
     return isSame;
 }
