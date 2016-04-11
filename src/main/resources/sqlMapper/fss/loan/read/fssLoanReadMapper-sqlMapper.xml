@@ -153,11 +153,12 @@
 		    	t.contract_no contractNo,
 		    	t.acc_no accNo,
 			  	t.contract_amt contractAmt,
-        		t.mchn_child mchnClild
+        		t.mchn_child mchn
 			FROM t_gq_fss_loan t,t_gq_fss_customer c WHERE t.cust_no=c.cust_no
-			<if test="type !=null and type != '' ">
+			<!-- AND t.trade_type=#{type} -->
+			<!-- <if test="type !=null and type != '' ">
 				AND t.trade_type = #{type}
-			</if>
+			</if> -->
 	</select>
 	
 </mapper>

@@ -484,10 +484,13 @@ public class FundAccountService {
 	    /**
 	     * 根据custId更新账户信息
 	     */
-	    public void  updateCustomerName(Long custId,String custName){
+	    public void  updateAccountCustomerName(Long custId,String custName,String cityId,String parentBankId,String bankNo){
 	    	Map map=new HashMap();
-	    	map.put("cusId", custId);
+	    	map.put("custId", custId);
 	    	map.put("custName", custName);
+	    	map.put("cityId", cityId);
+	    	map.put("parentBankId", parentBankId);
+	    	map.put("bankNo", bankNo);
 	    	fundAccountWriteMapper.updateCustNameByCustId(map);
 	    }
 	    
