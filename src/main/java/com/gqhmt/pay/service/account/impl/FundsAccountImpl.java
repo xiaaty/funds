@@ -251,10 +251,10 @@ public class FundsAccountImpl implements IFundsAccount {
 			customerInfoEntity.setCertNo(createAccountDto.getCert_no());
 			customerInfoEntity.setMobilePhone(createAccountDto.getMobile());
 			customerInfoEntity.setCustomerName(createAccountDto.getName());
-			return this.createFundAccount(customerInfoEntity,"","");
+			return this.createFundAccount(customerInfoEntity,"","",createAccountDto);
 		}
 	    
-		public Integer createFundAccount(CustomerInfoEntity customerInfoEntity,String pwd, String taradPwd) throws FssException {
+		public Integer createFundAccount(CustomerInfoEntity customerInfoEntity,String pwd, String taradPwd,CreateAccountDto createAccountDto) throws FssException {
 			Long cusId = customerInfoEntity.getId();
 			Integer userId = customerInfoEntity.getUserId();
 			BankCardInfoEntity bankCardInfoEntity=null;
@@ -272,9 +272,11 @@ public class FundsAccountImpl implements IFundsAccount {
 			if (primaryAccount.getHasThirdAccount() ==1){//未开通第三方账户
 				paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
 				primaryAccount.setHasThirdAccount(2);
+				primaryAccount.setCustName(customerInfoEntity.getCustomerName());
 				fundAccountService.update(primaryAccount);
 				//跟新所有与该cust_id相同的账户名称
-				fundAccountService.updateCustomerName(cusId,primaryAccount.getCustName());
+				fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
+				customerInfoService.updateCustomer(cusId, createAccountDto.getName(), createAccountDto.getCert_no(),createAccountDto.getBank_id());
 				//创建银行卡信息
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 				if(bankCardInfoEntity==null){

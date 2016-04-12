@@ -176,11 +176,11 @@ public class APIValidAop {
         if(signatureAno == null){
             return;
         }
-        String mchn = dto.getMchn();
+        /* String mchn = dto.getMchn();
         String seqNo = dto.getSeq_no();
         String tradeType = dto.getTrade_type();
         String key = Application.getInstance().getMechKey(mchn);
-
+        
         String signature = dto.getSignature();
 
         String validSignature = Encriptor.getMD5(mchn+"|"+seqNo+"|"+tradeType+"|"+key);
@@ -188,6 +188,9 @@ public class APIValidAop {
 //        if (signature == null || !signature.equals(validSignature)){
 //            throw new FssException("90008302");
 //        }
+        if (signature == null || !signature.equals(validSignature)){
+            throw new FssException("90008302");
+        }*/
 
     }
 
