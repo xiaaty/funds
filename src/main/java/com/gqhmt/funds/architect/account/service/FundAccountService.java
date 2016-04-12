@@ -148,7 +148,7 @@ public class FundAccountService {
     private FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
         FundAccountEntity entity = new FundAccountEntity();
         entity.setCustId(customerInfoEntity.getId());
-        entity.setUserName(customerInfoEntity.getCustomerName());
+//        entity.setUserName(customerInfoEntity.getMobilePhone());
         entity.setAmount(BigDecimal.ZERO);
         entity.setFreezeAmount(BigDecimal.ZERO);
         entity.setAccountType(accountType);
@@ -484,10 +484,13 @@ public class FundAccountService {
 	    /**
 	     * 根据custId更新账户信息
 	     */
-	    public void  updateCustomerName(Long custId,String custName){
+	    public void  updateAccountCustomerName(Long custId,String custName,String cityId,String parentBankId,String bankNo){
 	    	Map map=new HashMap();
-	    	map.put("cusId", custId);
+	    	map.put("custId", custId);
 	    	map.put("custName", custName);
+	    	map.put("cityId", cityId);
+	    	map.put("parentBankId", parentBankId);
+	    	map.put("bankNo", bankNo);
 	    	fundAccountWriteMapper.updateCustNameByCustId(map);
 	    }
 	    

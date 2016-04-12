@@ -478,8 +478,11 @@ public class FssLoanService {
 	}
 	
 	//线下代扣
-	public List<FssLoanBean> findLoanOffilne(String type) {
+	/*public List<FssLoanBean> findLoanOffilne(String type) {
 		return fssLoanReadMapper.findBorrowerLoanOffline(type);
+	}*/
+	public List<FssLoanBean> findLoanOffilne() {
+		return fssLoanReadMapper.findBorrowerLoanOffline();
 	}
 	
 }	

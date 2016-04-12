@@ -20,7 +20,6 @@ import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,8 +27,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -380,7 +379,8 @@ public class FssLoanTradeController {
 	 */
 	@RequestMapping("/loan/trade/{type}/export")
 	public void loanListExport(HttpServletRequest request,HttpServletResponse response,@PathVariable String type, ModelMap model) throws FssException{
-		List<FssLoanBean> list = fssLoanService.findLoanOffilne(type);
+//		List<FssLoanBean> list = fssLoanService.findLoanOffilne(type);
+		List<FssLoanBean> list = fssLoanService.findLoanOffilne();
 		try {
 			HSSFWorkbook wb = exportAndImpService.exportLoan(list);
 			response.setContentType("application/vnd.ms-excel");    
@@ -389,6 +389,7 @@ public class FssLoanTradeController {
 			wb.write(ouputStream);    
 			ouputStream.flush();    
 			ouputStream.close();
+			JOptionPane.showMessageDialog(null, "导出成功!");
 		} catch (IOException e) {
 			throw new FssException("Io异常");
 		}    

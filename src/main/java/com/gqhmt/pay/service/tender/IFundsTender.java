@@ -88,6 +88,6 @@ public interface IFundsTender {
 //    public boolean debtApply(String thirdPartyType,int custId);
 
 
-    public boolean abortLoop(Tender tender,String contractNo) throws FssException;
+    public void abortLoop(Tender tender,String contractNo) throws FssException;
 
 }

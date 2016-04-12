@@ -18,6 +18,8 @@ import com.gqhmt.sys.service.UserService;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
 
@@ -1103,4 +1105,13 @@ public class CustomerInfoService {
 	      String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);  
 	      return temp;  
 	    } 
+	 
+	 public void updateCustomer(Long id,String custName,String certNo,String bankId){
+		 Map map=new HashMap();
+		 map.put("id", id);
+		 map.put("custName", custName);
+		 map.put("certNo", certNo);
+		 map.put("bankId", Integer.valueOf(bankId).intValue());
+		 customerInfoWriteMapper.updateCustomer(map);
+	 }
 }

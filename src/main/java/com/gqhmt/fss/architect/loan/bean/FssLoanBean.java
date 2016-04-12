@@ -10,7 +10,7 @@ public class FssLoanBean {
     private String accNo;                            
     private String contractNo;
     private String contractAmt;                            
-    private String mchnChild;
+    private String mchn;
 	public String getCustName() {
 		return custName;
 	}
@@ -35,11 +35,11 @@ public class FssLoanBean {
 	public void setContractAmt(String contractAmt) {
 		this.contractAmt = contractAmt;
 	}
-	public String getMchnChild() {
-		return mchnChild;
+	public String getMchn() {
+		return mchn;
 	}
-	public void setMchnChild(String mchnChild) {
-		this.mchnChild = mchnChild;
+	public void setMchn(String mchn) {
+		this.mchn = mchn;
 	}
 	public String getCertNo() {
 		return certNo;

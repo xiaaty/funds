@@ -85,6 +85,7 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 */
 	List<FssLoanEntity> findByType(String type);
 	
-    public List<FssLoanBean> findBorrowerLoanOffline(@Param("type") String type);	
+//    public List<FssLoanBean> findBorrowerLoanOffline(@Param("type") String type);	
+    public List<FssLoanBean> findBorrowerLoanOffline();	
 	
 }

@@ -60,22 +60,16 @@ public class ExportAndImpService {
     public HSSFWorkbook exportLoan(List<FssLoanBean> list) {  
         HSSFWorkbook wb = new HSSFWorkbook();    
         HSSFSheet sheet = wb.createSheet("还款代扣（纯线下）数据列表");  
-        sheet.autoSizeColumn((short)0); //调整第一列宽度
-        sheet.autoSizeColumn((short)1); //调整第二列宽度
-        sheet.autoSizeColumn((short)2); //调整第三列宽度
-        sheet.autoSizeColumn((short)3); //调整第四列宽度
-        sheet.autoSizeColumn((short)4); //调整第5列宽度
-        sheet.autoSizeColumn((short)5); //调整第6列宽度
         HSSFRow row = sheet.createRow((int) 0);    
         HSSFCellStyle style = wb.createCellStyle();    
         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);    
         for (int i = 0; i < excelHeader.length; i++) {
             HSSFCell cell = row.createCell(i);    
            cell.setCellValue(excelHeader[i]);    
-           cell.setCellStyle(style);    
-           sheet.autoSizeColumn(i); 
+           cell.setCellStyle(style);
         }    
         for (int i = 0; i < list.size(); i++) {
+        	sheet.autoSizeColumn(i);
             row = sheet.createRow(i + 1);    
             FssLoanBean fssLoanBean = list.get(i);    
             row.createCell(0).setCellValue(fssLoanBean.getCustName());    
@@ -83,7 +77,7 @@ public class ExportAndImpService {
             row.createCell(2).setCellValue(fssLoanBean.getCertNo());    
             row.createCell(3).setCellValue(fssLoanBean.getContractNo());    
             row.createCell(4).setCellValue(fssLoanBean.getContractAmt());    
-            row.createCell(5).setCellValue(fssLoanBean.getMchnChild());    
+            row.createCell(5).setCellValue(fssLoanBean.getMchn());    
         }    
         return wb;    
     }    

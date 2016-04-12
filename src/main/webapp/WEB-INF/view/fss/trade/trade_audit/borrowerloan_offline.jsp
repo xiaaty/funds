@@ -334,7 +334,7 @@
     
     //导出
     $("#btn_exp").button().click(function() {
-    	  parent.location.href="${contextPath}/loan/trade/{11090003}/export";
+    	  parent.location.href="${contextPath}/loan/trade/{11090001}/export";
     });
  //导入
 /*  $("#btn_return").button().click(function() {
