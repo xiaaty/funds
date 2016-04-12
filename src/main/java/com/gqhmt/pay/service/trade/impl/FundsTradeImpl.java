@@ -23,6 +23,8 @@ import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+
+import org.apache.poi.hssf.util.HSSFColor.GOLD;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -256,7 +258,8 @@ public class FundsTradeImpl  implements IFundsTrade {
      */
     @Override
     public FundOrderEntity transefer( Integer fromCusID, Integer fromType, Integer toCusID, Integer toType, BigDecimal amount, Integer orderType, Long busiId, int busiType) throws FssException {
-        FundAccountEntity fromEntity = this.getFundAccount(fromCusID, fromType);
+    	String string = GlobalConstants.TRADE_APPLY_NO__MAPPING.get(fromType);
+    	FundAccountEntity fromEntity = this.getFundAccount(fromCusID, Integer.parseInt(string));
         this.hasEnoughBanlance(fromEntity,amount);
         FundAccountEntity toEntity = this.getFundAccount(toCusID, toType);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType);

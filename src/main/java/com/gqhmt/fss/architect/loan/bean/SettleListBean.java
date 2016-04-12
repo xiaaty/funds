@@ -3,6 +3,8 @@ package com.gqhmt.fss.architect.loan.bean;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * 
@@ -23,6 +25,7 @@ import java.math.BigDecimal;
  */
 public class SettleListBean implements Serializable {
 
+	@JsonIgnore
     private long enterId;
     
     private String account_type   ;                                //账务科目       YES             (NULL)                   select,insert,update,references  账户总资产

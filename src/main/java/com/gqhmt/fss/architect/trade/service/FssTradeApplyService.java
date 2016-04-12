@@ -102,11 +102,11 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		//创建提现申请信息
 			fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(wthDrawApplyDto.getTrade_type()));
-			fssTradeApplyEntity.setApplyType(Integer.valueOf(wthDrawApplyDto.getTrade_type()));
+			fssTradeApplyEntity.setApplyType(1104);
 			fssTradeApplyEntity.setCustNo(fssAccountEntity.getCustNo());
 			fssTradeApplyEntity.setUserNo(fssAccountEntity.getUserNo());
 			fssTradeApplyEntity.setBusinessNo(wthDrawApplyDto.getContract_no());
-			fssTradeApplyEntity.setBusiType("0");
+			fssTradeApplyEntity.setBusiType(wthDrawApplyDto.getTrade_type());
 			fssTradeApplyEntity.setAccNo(wthDrawApplyDto.getAcc_no());
 			fssTradeApplyEntity.setTradeAmount(wthDrawApplyDto.getContract_amt());
 			fssTradeApplyEntity.setRealTradeAmount(wthDrawApplyDto.getPay_amt());

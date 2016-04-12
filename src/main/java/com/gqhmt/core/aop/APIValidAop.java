@@ -185,9 +185,9 @@ public class APIValidAop {
 
         String validSignature = Encriptor.getMD5(mchn+"|"+seqNo+"|"+tradeType+"|"+key);
 
-        if (signature == null || !signature.equals(validSignature)){
-            throw new FssException("90008302");
-        }
+//        if (signature == null || !signature.equals(validSignature)){
+//            throw new FssException("90008302");
+//        }
 
     }
 

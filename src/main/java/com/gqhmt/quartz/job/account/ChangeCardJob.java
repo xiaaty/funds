@@ -15,6 +15,8 @@ import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.quartz.job.SupperJob;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -55,6 +57,7 @@ public class ChangeCardJob extends SupperJob {
     private static boolean isRunning = false;
 
     /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
+//    @Scheduled(cron="0 0/1 *  * * * ")
     public void changeCard() throws PayChannelNotSupports{
         System.out.println("变更银行卡跑批");
         if(!isIp("upload")){
