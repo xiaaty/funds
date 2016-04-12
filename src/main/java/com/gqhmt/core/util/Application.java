@@ -209,7 +209,7 @@ public class Application {
     	
     	for(FssAreaMappingEntity bankArea:bankAreas) {
     		sixCodemap.put(bankArea.getFourCode(),bankArea.getSixCode());
-    		fourCodemap.put(bankArea.getSixCode(),bankArea.getSixCode());
+    		fourCodemap.put(bankArea.getSixCode(),bankArea.getFourCode());
     		eightCodemap.put(bankArea.getFourCode(),bankArea.getEightCode());
     	}
     }

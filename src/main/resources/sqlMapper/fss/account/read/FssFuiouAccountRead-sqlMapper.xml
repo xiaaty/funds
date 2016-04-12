@@ -25,7 +25,7 @@
 		c.modify_user_id modifyUserId,
 		c.cust_id custId
 	FROM t_gq_fss_fuiou_account f,t_gq_fss_customer c 
-	WHERE f.cus_no=c.cust_no and c.cert_no='${certNo}'
+	WHERE f.cus_no=c.cust_no and c.cert_no=${certNo}
 </select>
 </mapper>
 

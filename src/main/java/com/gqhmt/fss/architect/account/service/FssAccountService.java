@@ -110,7 +110,7 @@ public class FssAccountService {
      * @param dto
      * @throws FssException
      */
-    public FssCustomerEntity createAccount(CreateLoanAccountDto dto,Long userId) throws FssException {
+    public FssCustomerEntity createAccount(CreateLoanAccountDto dto,Long userId,String accNo) throws FssException {
     	FssCustomerEntity fssCustomerinfo=null;
     	FssCustBankCardEntity fssCustBankCardEntity=null;
     	FssFuiouAccountBean fssFuiouAccountBean=fssFuiouAccountReadMapper.getAccountByCentNo(dto.getCert_no());
@@ -130,20 +130,28 @@ public class FssAccountService {
 			}
 	        if(!dto.getTrade_type().equals("11020011")){//线下开户不走富友
 	        	//生成第三方开户账户信息,纯线下,次开户,不开,线上需要开户.
-	        	this.createFuiouAccount(dto,fssCustomerinfo,fssCustBankCardEntity);
+	        	this.createFuiouAccount(dto,fssCustomerinfo,fssCustBankCardEntity,accNo);
 	        }
     	}else{
     		fssCustomerinfo=fssCustomerService.getFssCustomerEntityByCertNo(dto.getCert_no());
     	}
         return fssCustomerinfo;
     }
-
-    private FssFuiouAccountEntity createFuiouAccount(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity,FssCustBankCardEntity fssCustBankCardEntity) throws FssException {
+    /**
+     * 创建富友账户
+     * @param dto
+     * @param fssCustomerEntity
+     * @param fssCustBankCardEntity
+     * @param accNo
+     * @return
+     * @throws FssException
+     */
+    private FssFuiouAccountEntity createFuiouAccount(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity,FssCustBankCardEntity fssCustBankCardEntity,String accNo) throws FssException {
         try {
             FssFuiouAccountEntity fssFuiouAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssFuiouAccountEntity.class,dto);
             fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
             fssFuiouAccountEntity.setUserNo(fssCustomerEntity.getUserId());
-            fssFuiouAccountEntity.setAccNo(fssCustomerEntity.getMobile());
+            fssFuiouAccountEntity.setAccNo(accNo);
             fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
             fssFuiouAccountEntity.setBankCardNo(fssCustBankCardEntity.getBankCardNo());
             fssFuiouAccountEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
@@ -166,30 +174,15 @@ public class FssAccountService {
      * @throws FssException
      */
     public FssAccountEntity createFssAccountEntity(CreateLoanAccountDto dto,Long custId) throws FssException {
-            FssCustomerEntity fssCustomerEntity=this.createAccount(dto,custId);
+    		String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(dto.getTrade_type());//设置账户类型
+    		String accNo=CommonUtil.getAccountNo(accType);
+            FssCustomerEntity fssCustomerEntity=this.createAccount(dto,custId,accNo);
     	try {
-            FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
-
-            fssAccountEntity.setCustNo(String.valueOf(fssCustomerEntity.getId()));
-            fssAccountEntity.setAccBalance(BigDecimal.ZERO);
-            fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
-            fssAccountEntity.setAccAvai(BigDecimal.ZERO);
-            fssAccountEntity.setAccNotran(BigDecimal.ZERO);
-            fssAccountEntity.setCustNo(fssCustomerEntity.getCustNo());
-            fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
-            String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(dto.getTrade_type());//设置账户类型
-            fssAccountEntity.setAccNo(CommonUtil.getAccountNo(accType));
-            String channelNo=GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type());//渠道编号
-            fssAccountEntity.setAccType(Integer.parseInt(accType));
-            fssAccountEntity.setState(10020001);//默认为有效账户
-            fssAccountEntity.setBusiNo(dto.getContract_id());
-            fssAccountEntity.setCustId(custId);
-            //设置开户来源
-            //设置渠道id
-            fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
-            fssAccountEntity.setMchnChild(dto.getMchn());
-            fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-            fssAccountWriteMapper.insertSelective(fssAccountEntity);
+            FssAccountEntity fssAccountEntity=this.getFssAccountEntityByCustId(custId);
+            if(fssAccountEntity==null){
+            	fssAccountEntity=this.createNewFssAccountEntity(fssCustomerEntity,dto,custId,accNo,accType);
+            	fssAccountWriteMapper.insertSelective(fssAccountEntity);
+            }
             return fssAccountEntity;
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e);
@@ -217,5 +210,34 @@ public class FssAccountService {
   /*  public FssAccountEntity getAccountEntityByCustid(Long custId){
     	return this.accountReadMapper.findAccountByCustId(custId);
     }*/
-
+    
+    public FssAccountEntity getFssAccountEntityByCustId(Long custId){
+    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+    	fssAccountEntity.setCustId(custId);
+    	return accountReadMapper.selectOne(fssAccountEntity);
+    }
+    
+    public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,CreateLoanAccountDto dto,Long custId,String accNo,String accType)  throws Exception{
+    	FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class,dto);
+    	fssAccountEntity.setAccBalance(BigDecimal.ZERO);
+    	fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
+    	fssAccountEntity.setAccAvai(BigDecimal.ZERO);
+    	fssAccountEntity.setAccNotran(BigDecimal.ZERO);
+    	fssAccountEntity.setCustNo(fssCustomerEntity.getCustNo());
+    	fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
+    	fssAccountEntity.setAccNo(accNo);
+    	String channelNo=GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type());//渠道编号
+    	fssAccountEntity.setAccType(Integer.parseInt(accType));
+    	fssAccountEntity.setState(10020001);//默认为有效账户
+//      fssAccountEntity.setBusiNo(dto.getContract_id());
+    	fssAccountEntity.setCustId(custId);
+    	fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
+    	fssAccountEntity.setMchnChild(dto.getMchn());
+    	fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
+    	return fssAccountEntity;
+    }
+    
+    
+    
+    
 }
