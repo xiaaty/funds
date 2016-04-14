@@ -46,6 +46,7 @@ public class SettleBeforeJob extends SupperJob {
         }
 
         if(isRunning) return;
+        
         super.isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();

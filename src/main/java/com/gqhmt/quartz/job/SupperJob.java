@@ -27,7 +27,7 @@ import java.util.List;
  */
 public abstract class SupperJob{
 
-    protected boolean isRunning ;
+    protected boolean isRunning = false ;
 
     public final boolean isRunning() {
         return isRunning;
