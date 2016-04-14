@@ -119,14 +119,15 @@ public class FssAccountService {
 				fssCustomerinfo = fssCustomerService.createFssCustomerEntity(dto);//生成客户信息
 				customerWriteMapper.insertSelective(fssCustomerinfo);
 			} catch (Exception e) {
-				e.printStackTrace();
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("90002027");
 			}
 			try {
 				fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(dto,fssCustomerinfo);
 				fssBankCardInfoWriteMapper.insertSelective(fssCustBankCardEntity);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LogUtil.info(this.getClass(), e.getMessage());
+				throw new FssException("90002028");
 			}
 	        if(!dto.getTrade_type().equals("11020011")){//线下开户不走富友
 	        	//生成第三方开户账户信息,纯线下,次开户,不开,线上需要开户.
@@ -159,8 +160,8 @@ public class FssAccountService {
             fssFuiouAccountWriteMapper.insertSelective(fssFuiouAccountEntity);
             return fssFuiouAccountEntity;
         } catch (Exception e) {
-            LogUtil.error(this.getClass(),e);
-            throw  new FssException("91009804");
+        	LogUtil.info(this.getClass(), e.getMessage());
+			throw new FssException("90002029");
         }
     }
 
