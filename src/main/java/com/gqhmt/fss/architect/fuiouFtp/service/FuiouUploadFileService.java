@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouUploadFileReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouUploadFileWriteMapper;
@@ -35,39 +36,39 @@ public class FuiouUploadFileService {
     @Resource
     private FuiouUploadFileWriteMapper fuiouUploadFileWriteMapper;
 
-    public void insert(FuiouUploadFile fuiouUploadFile){
+    public void insert(FuiouUploadFile fuiouUploadFile)throws FssException{
     	fuiouUploadFileWriteMapper.insertSelective(fuiouUploadFile);
     }
     
-    public void update(FuiouUploadFile fuiouUploadFile) {
+    public void update(FuiouUploadFile fuiouUploadFile)throws FssException {
     	fuiouUploadFileWriteMapper.updateByPrimaryKeySelective(fuiouUploadFile);
     }
     
-    public void update(List<FuiouUploadFile> fuiouUploadFiles){
+    public void update(List<FuiouUploadFile> fuiouUploadFiles)throws FssException{
         for (FuiouUploadFile fuiouUploadFile : fuiouUploadFiles) {
         	update(fuiouUploadFile);
 		}
     }
     
-    public void delete(Long id){
+    public void delete(Long id)throws FssException{
     	fuiouUploadFileWriteMapper.deleteByPrimaryKey(id);
     }
 
-    public List<FuiouUploadFile> list(int status){
+    public List<FuiouUploadFile> list(int status)throws FssException{
     	
         return fuiouUploadFileReadMapper.selectByStatus(status);
     }
 
-    public List<Integer> list(String orderNo){
+    public List<Integer> list(String orderNo)throws FssException{
         return fuiouUploadFileReadMapper.list(orderNo);
     }
 
-    public List<FuiouUploadFile> listAll(String orderNo){
+    public List<FuiouUploadFile> listAll(String orderNo)throws FssException{
     	FuiouUploadFile fuiouUploadFile=new FuiouUploadFile();
     	fuiouUploadFile.setOrderNo(orderNo);
         return fuiouUploadFileReadMapper.select(fuiouUploadFile);
     }
-    public FuiouUploadFile add(String businessCode,String mCode,int size,String sysdate,String fileSeqNo,BigDecimal sum,String orderNo){
+    public FuiouUploadFile add(String businessCode,String mCode,int size,String sysdate,String fileSeqNo,BigDecimal sum,String orderNo)throws FssException{
         FuiouUploadFile file = new FuiouUploadFile();
         file.setBusinessCode(businessCode);
         file.setDetailNum(size);
@@ -81,11 +82,11 @@ public class FuiouUploadFileService {
         return file;
     }
     
-    public void saveOrUpdateAll(List<FuiouUploadFile> fuiouUploadFile){
+    public void saveOrUpdateAll(List<FuiouUploadFile> fuiouUploadFile)throws FssException{
     	fuiouUploadFileWriteMapper.insertList(fuiouUploadFile);
     }
     
-    public void delete(FuiouUploadFile fuiouUploadFile){
+    public void delete(FuiouUploadFile fuiouUploadFile)throws FssException{
     	fuiouUploadFileWriteMapper.delete(fuiouUploadFile);
     }
     

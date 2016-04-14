@@ -80,11 +80,12 @@ public class FssLoanTradeController {
 	/**
 	 * 
 	 * author:jhz time:2016年3月11日 function：借款人放款
+	 * @throws FssException 
 	 */
 	@RequestMapping(value = "/loan/trade/{type}", method = { RequestMethod.GET, RequestMethod.POST })
 	@AutoPage
 	public Object loanList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map,
-			@PathVariable String type) {
+			@PathVariable String type) throws FssException {
 		if (map != null) {
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");
@@ -118,9 +119,10 @@ public class FssLoanTradeController {
 	/**
 	 * 
 	 * author:jhz time:2016年3月16日 function：点击代扣跳转到代扣页面
+	 * @throws FssException 
 	 */
 	@RequestMapping("/loan/trade/{type}/toWithHold/{id}")
-	public String withhold(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
+	public String withhold(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) throws FssException {
 		String token = TokenProccessor.getInstance().makeToken();//创建令牌
 //		System.out.println("在FormServlet中生成的token："+token);
 		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
@@ -222,9 +224,10 @@ public class FssLoanTradeController {
 	 * author:jhz
 	 * time:2016年4月6日
 	 * function：信用流标退款
+	 * @throws FssException 
 	 */
 	@RequestMapping("/loan/trade/{type}/abort/{id}")
-	public String abort(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
+	public String abort(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) throws FssException {
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		if("11090011".equals(type)){

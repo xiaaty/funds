@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssWaterReadMapper;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -40,7 +41,7 @@ public class FssWaterService {
 	 * @param endDate 
 	 * @param startDate 
      */
-	public List<FssWaterEntity> queryWaterDetail(Long id, String startDate, String endDate) {
+	public List<FssWaterEntity> queryWaterDetail(Long id, String startDate, String endDate)throws FssException {
 		Map searchWater=new HashMap();
 		if(startDate!=null&&!startDate.equals("")){
 			 startDate=startDate+" 00:00:00";

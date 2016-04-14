@@ -27,7 +27,12 @@ public class Application {
 
 
 	private Application(){
-        init();
+        try {
+			init();
+		} catch (FssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 	public static Application getInstance() {
@@ -48,7 +53,7 @@ public class Application {
     private final Map<String,String>   eightCodemap = new ConcurrentHashMap<>();
     private final Map<String,BankEntity>   bankEntitymap = new ConcurrentHashMap<>(); //银行列表
 
-    private void init(){
+    private void init() throws FssException{
         synchronized (this){
             update();
         }
@@ -63,7 +68,7 @@ public class Application {
         LogUtil.debug(this.getClass(),bankEntitymap.toString());
     }
 
-    public void reload(){
+    public void reload() throws FssException{
         synchronized (this){
             dict.clear();
             dictOrder.clear();
@@ -77,7 +82,7 @@ public class Application {
         }
     }
 
-    private void update(){
+    private void update() throws FssException{
         initDict();
         initMerchant();
         initBankDealamountLimit();
@@ -201,8 +206,9 @@ public class Application {
    
     /**
      * 地区码内存加载
+     * @throws FssException 
      */
-    private  void iniBankArea(){
+    private  void iniBankArea() throws FssException{
     	FssAreaMappingService bankAreaMappingService = ServiceLoader.get(FssAreaMappingService.class);
     	
     	 List<FssAreaMappingEntity> bankAreas = bankAreaMappingService.findAllAreaMapping();

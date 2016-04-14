@@ -195,7 +195,7 @@ public class FtpUploadService {
     }
 
 
-    public void uploadFileToFtp() throws PayChannelNotSupports{
+    public void uploadFileToFtp() throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotUpload();
         Map<String,Integer> resultMap = new HashMap<>();

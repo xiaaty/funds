@@ -1,7 +1,5 @@
 package com.gqhmt.fss.architect.customer.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -9,13 +7,10 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.bean.CustomerAndUser;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
-import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
 
@@ -48,7 +43,7 @@ public class FssCustBankCardService {
 	 * time:2016年2月16日
 	 * function：得到银行卡和用户信息列表
 	 */
-	public List<CustomerAndUser> findbankCardAll(CustomerAndUser customerAndUser) {
+	public List<CustomerAndUser> findbankCardAll(CustomerAndUser customerAndUser) throws FssException{
 		return fssCustomerReadMapper.findbankCardAll(customerAndUser);
 	}
 
@@ -58,7 +53,7 @@ public class FssCustBankCardService {
 	 * time:2016年2月16日
 	 * function：查询要申请变更银行卡用户信息
 	 */
-	public CustomerAndUser findCustomerAndUser(Long id) {
+	public CustomerAndUser findCustomerAndUser(Long id)throws FssException {
 		// TODO Auto-generated method stub
 		return fssCustomerReadMapper.findCustomerAndUser(id);
 	}

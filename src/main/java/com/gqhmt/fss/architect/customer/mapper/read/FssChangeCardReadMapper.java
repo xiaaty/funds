@@ -38,5 +38,12 @@ public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity>
      * function：根据状态查询对象
      */
 	public List<FssChangeCardEntity> queryByTradeState(@Param("tradeState")int tradeState);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月14日
+	 * function：根据custId查询银行卡变更账户
+	 */
+	public FssChangeCardEntity selectByCustId(@Param("custId")Long custId);
 
 }
