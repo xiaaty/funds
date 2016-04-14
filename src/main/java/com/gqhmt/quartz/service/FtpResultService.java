@@ -181,7 +181,7 @@ public class FtpResultService {
         }
         Long sourceId = orderEntity.getOrderFrormId();
         int size = fundSequenceService.getSizeByOrderNo(orderEntity.getOrderNo());
-        if(size<=0){
+        if(size>0){
             return;
         }
         int type = orderEntity.getOrderType();

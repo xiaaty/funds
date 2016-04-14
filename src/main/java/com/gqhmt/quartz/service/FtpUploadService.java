@@ -121,7 +121,7 @@ public class FtpUploadService {
             fieldList.add(addColomFieldForSettle(fuiouFtpColomField, fuiouFtpOrder.getType()));
             sum = sum.add(fuiouFtpColomField.getAmt());
             fuiouFtpColomField.setState(2);
-            fuiouFtpColomFieldService.update(fuiouFtpColomField);
+            //fuiouFtpColomFieldService.update(fuiouFtpColomField);
         }
         FuiouUploadFile file = fuiouUploadFileService.add(businessCode, mCode, list.size(), sysdate, fileSeqNo, sum, fuiouFtpOrder.getOrderNo());
         fuiouFtpColomFieldService.updateList(list);

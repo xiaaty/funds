@@ -48,7 +48,7 @@ public class FuiouFtpColomField implements Serializable {
     @Column(name="contract_no",updatable = false)
     private String contractNo;                           // varchar(32) DEFAULT NULL COMMENT '预授权合同号\n',
 
-    @Column()
+    @Column(name = "state")
     private int state;                                    // int(11) DEFAULT '1' COMMENT '1，新增，2提交中，3已提交，4结果处理中，5已完成',
 
     @Column(name="file_id")
@@ -74,7 +74,7 @@ public class FuiouFtpColomField implements Serializable {
     @Column(name="business_code")
     private String businessCode;
     
-    @Column(name="input_date")
+    @Column(name="input_date",updatable = false)
     private Date inputDate;
     
     @Column(name="feild_order_no")
