@@ -56,6 +56,7 @@ public class FtpResultService {
             }
             if(state.size() == 1 && (state.get(0) == 3 || state.get(0) == 5)){
                 fuiouFtpOrder.setDownloadStatus(4);
+                fuiouFtpOrderService.update(fuiouFtpOrder);
                 continue;
             }
 
@@ -66,8 +67,9 @@ public class FtpResultService {
 
     /**
      * 解析结果
+     * @throws FssException 
      */
-    public void parseResult(){
+    public void parseResult() throws FssException{
 
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotResultStatus();
         if(list == null || list.size() == 0){
@@ -83,9 +85,10 @@ public class FtpResultService {
     /**
      * 对单一订单执行结果处理
      * @param order
+     * @throws FssException 
      */
 
-    public void parseResult(FuiouFtpOrder order){
+    public void parseResult(FuiouFtpOrder order) throws FssException{
         System.out.println("fuiouFtp:parseResult:"+order.getOrderNo());
         List<String> reqCode  = fuiouFtpColomFieldService.getReqCode(order.getOrderNo());
         if(reqCode == null || reqCode.size() == 0){
@@ -178,7 +181,7 @@ public class FtpResultService {
         }
         Long sourceId = orderEntity.getOrderFrormId();
         int size = fundSequenceService.getSizeByOrderNo(orderEntity.getOrderNo());
-        if(size>0){
+        if(size<=0){
             return;
         }
         int type = orderEntity.getOrderType();
