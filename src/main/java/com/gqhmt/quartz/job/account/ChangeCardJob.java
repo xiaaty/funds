@@ -1,5 +1,6 @@
 package com.gqhmt.quartz.job.account;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
@@ -16,7 +17,6 @@ import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.quartz.job.SupperJob;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -90,7 +90,7 @@ public class ChangeCardJob extends SupperJob {
         }
     }
 
-    private void queryDate() {
+    private void queryDate() throws FssException {
         List<FssChangeCardEntity> list = changeCardService.queryByTradeState(4);
         if(list == null || list.size() == 0){
             return;
@@ -136,7 +136,7 @@ public class ChangeCardJob extends SupperJob {
     }
 
 
-    private void uploadImage(){
+    private void uploadImage() throws FssException{
         List<FssChangeCardEntity> list = changeCardService.queryByTradeState(2);
         for(FssChangeCardEntity changeCardEntity:list){
             try {
@@ -182,7 +182,7 @@ public class ChangeCardJob extends SupperJob {
     }
 
 
-    private void uploadData(){
+    private void uploadData() throws FssException{
         List<FssChangeCardEntity> list = changeCardService.queryByTradeState(3);
         for(FssChangeCardEntity changeCardEntity:list){
             try {

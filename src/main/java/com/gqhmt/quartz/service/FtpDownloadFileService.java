@@ -120,8 +120,9 @@ public class FtpDownloadFileService {
      * ftp下载回盘文件，存在失败可能，失败重新下载
      * @param file
      * @return
+     * @throws FssException 
      */
-    public boolean downloadReturn(FuiouUploadFile file) throws PayChannelNotSupports{
+    public boolean downloadReturn(FuiouUploadFile file) throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         String url = (String)config.getValue("ftp.url.value");
         String port = (String)config.getValue("ftp.port.value");

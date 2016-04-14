@@ -69,4 +69,8 @@
 		<include refid="fieldSql"/>
 		WHERE t.trade_state=#{tradeState}
 	</select>
+	<select id="selectByCustId" resultType="com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity">
+		<include refid="fieldSql"/>
+		WHERE t.cust_id=#{custId}
+	</select>
 </mapper>

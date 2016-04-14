@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FundOrder;
@@ -40,30 +41,30 @@ public class FuiouFtpOrderService {
     @Resource
     private FuiouUploadFileService fuiouUploadFileService;
 
-    public FuiouFtpOrder select(Long id) {
+    public FuiouFtpOrder select(Long id) throws FssException{
     	return fuiouFtpOrderReadMapper.selectByPrimaryKey(id);
     }
     
-    public void insert(FuiouFtpOrder fuiouFtpOrder){
+    public void insert(FuiouFtpOrder fuiouFtpOrder)throws FssException{
     	fuiouFtpOrderWriteMapper.insert(fuiouFtpOrder);
     }
 
-    public void update(FuiouFtpOrder fuiouFtpOrder){
+    public void update(FuiouFtpOrder fuiouFtpOrder)throws FssException{
     	fuiouFtpOrderWriteMapper.updateByPrimaryKeySelective(fuiouFtpOrder);
     }
     
-    public void insertlist(List<FuiouFtpOrder> list){
+    public void insertlist(List<FuiouFtpOrder> list)throws FssException{
     	fuiouFtpOrderWriteMapper.insertList(list);
     }
 
-    public void addOrder(FundOrderEntity fundOrderEntity,int type){
+    public void addOrder(FundOrderEntity fundOrderEntity,int type)throws FssException{
         FuiouFtpOrder order = new FuiouFtpOrder();
         order.setOrderNo(fundOrderEntity.getOrderNo());
         order.setType(type);
         insert(order);
     }
 
-    public void updateUploadStatus(FuiouFtpOrder fuiouFtpOrder,int status){
+    public void updateUploadStatus(FuiouFtpOrder fuiouFtpOrder,int status)throws FssException{
         fuiouFtpOrder.setUploadStatus(status);
         update(fuiouFtpOrder);
     }
@@ -72,7 +73,7 @@ public class FuiouFtpOrderService {
      * 获取ftp未上传的订单
      * @return
      */
-    public List<FuiouFtpOrder> listNotUpload(){
+    public List<FuiouFtpOrder> listNotUpload()throws FssException{
     	
         return fuiouFtpOrderReadMapper.listUpload();
     }
@@ -81,7 +82,7 @@ public class FuiouFtpOrderService {
      * 获取未回盘的ftp订单
      * @return
      */
-    public List<FuiouFtpOrder> listNotDownload(){
+    public List<FuiouFtpOrder> listNotDownload()throws FssException{
         return fuiouFtpOrderReadMapper.listDownload();
     }
 
@@ -89,7 +90,7 @@ public class FuiouFtpOrderService {
      * 获取未处理结果的回盘文件列表
      * @return
      */
-    public List<FuiouFtpOrder> listNotResultStatus(){
+    public List<FuiouFtpOrder> listNotResultStatus()throws FssException{
         return fuiouFtpOrderReadMapper.listResultStatus();
     }
 
@@ -97,30 +98,30 @@ public class FuiouFtpOrderService {
      * 获取存在部分失败的回盘文件列表
      * @return
      */
-    public List<FuiouFtpOrder> listNotResult(){
+    public List<FuiouFtpOrder> listNotResult()throws FssException{
         return fuiouFtpOrderReadMapper.listResult();
     }
 
 
-    public List<FuiouFtpOrder>  listAbort(){
+    public List<FuiouFtpOrder>  listAbort()throws FssException{
         return fuiouFtpOrderReadMapper.listAbort();
     }
 
-    public List<FuiouFtpOrder> listFile(){
+    public List<FuiouFtpOrder> listFile()throws FssException{
         return fuiouFtpOrderReadMapper.listFile();
     }
 
-    public List<FuiouFtpOrder> listNotReturnResult(){
+    public List<FuiouFtpOrder> listNotReturnResult()throws FssException{
         return fuiouFtpOrderReadMapper.listNoReturnResult();
     }
 
-    public List<FuiouFtpOrder> listAll(FundOrder fundOrder){
+    public List<FuiouFtpOrder> listAll(FundOrder fundOrder)throws FssException{
     	FuiouFtpOrder fuiouFtpOrder=new FuiouFtpOrder();
     	fuiouFtpOrder.setOrderNo(fundOrder.getOrderNo());
         return fuiouFtpOrderReadMapper.select(fuiouFtpOrder);
     }
 
-    public void repeatUpload(long id){
+    public void repeatUpload(long id)throws FssException{
         FuiouFtpOrder fuiouFtpOrder = fuiouFtpOrderReadMapper.selectByPrimaryKey(id);
         if(fuiouFtpOrder.getFileSize()>1){
             throw new CommandParmException("多文件上传，需手动数据库调整");
@@ -150,7 +151,7 @@ public class FuiouFtpOrderService {
         }
     }
 
-    public void repeatDownload(long id){
+    public void repeatDownload(long id)throws FssException{
         FuiouFtpOrder fuiouFtpOrder = select(id);
         fuiouFtpOrder.setDownloadStatus(1);
         fuiouFtpOrder.setResultStatus(1);
@@ -175,7 +176,7 @@ public class FuiouFtpOrderService {
         }
     }
 
-    public void repeatAccount(long id){
+    public void repeatAccount(long id)throws FssException{
         FuiouFtpOrder fuiouFtpOrder = select(id);
         fuiouFtpOrder.setResultStatus(0);
         update(fuiouFtpOrder);
@@ -191,7 +192,7 @@ public class FuiouFtpOrderService {
     /**
      * 批量保存
      */
-    public void saveAll(List<FuiouFtpOrder> list){
+    public void saveAll(List<FuiouFtpOrder> list)throws FssException{
     	fuiouFtpOrderWriteMapper.insertList(list);
     }
     

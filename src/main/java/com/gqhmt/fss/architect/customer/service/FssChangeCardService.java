@@ -89,11 +89,11 @@ public class FssChangeCardService {
     	changeCardWriteMapper.insertSelective(changeCardEntity);
     }
     
-    public void update(FssChangeCardEntity changeCardEntity) {
+    public void update(FssChangeCardEntity changeCardEntity) throws FssException{
     	changeCardWriteMapper.updateByPrimaryKeySelective(changeCardEntity);
     }
 
-    public FssChangeCardEntity get(Long id){
+    public FssChangeCardEntity get(Long id)throws FssException{
         return changeCardReadMapper.selectByPrimaryKey(id);
     }
 
@@ -211,7 +211,7 @@ public class FssChangeCardService {
 
 
     //自动审核换卡需求
-    public void autoPassChangeCard(){
+    public void autoPassChangeCard()throws FssException{
         List<FssChangeCardEntity> list = queryByTradeState(1);
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
@@ -223,7 +223,7 @@ public class FssChangeCardService {
         }
     }
 
-    public  List<FssChangeCardEntity> queryByTradeState(int tradeState){
+    public  List<FssChangeCardEntity> queryByTradeState(int tradeState)throws FssException{
         return changeCardReadMapper.queryByTradeState(tradeState);
     }
 
@@ -242,7 +242,7 @@ public class FssChangeCardService {
     }
 
     //同步成功数据
-    public void sycnChangeCardInfoBySucess(){
+    public void sycnChangeCardInfoBySucess()throws FssException{
         List<FssChangeCardEntity> list = queryByTradeState(5);
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
@@ -307,7 +307,7 @@ public class FssChangeCardService {
     }
 
     //同步失败记录到换卡记录中
-    public void sycnChangeCardInfoByFaile(){
+    public void sycnChangeCardInfoByFaile()throws FssException{
         List<FssChangeCardEntity> list = queryByTradeState(6);
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
@@ -356,7 +356,7 @@ public class FssChangeCardService {
         }
     }*/
 
-    private String tmCardNo(String cardNo){
+    private String tmCardNo(String cardNo)throws FssException{
         if(cardNo == null || "".equals(cardNo)){
             return "无";
         }
@@ -370,10 +370,7 @@ public class FssChangeCardService {
     * @throws FssException
     */
    public FssChangeCardEntity getChangeCardByCustId(Long custId) throws FssException{
-	   FssChangeCardEntity fssChangeCardEntity=new FssChangeCardEntity();
-	   fssChangeCardEntity.setCustId(custId);
-	   changeCardReadMapper.select(fssChangeCardEntity);
-	   return fssChangeCardEntity;
+	   return  changeCardReadMapper.selectByCustId(custId);
     }
     /**
      * 根据流水号和商户号查询返回银行卡变更信息
@@ -501,7 +498,7 @@ public class FssChangeCardService {
     * @param seqNo
     * @return
     */
-   public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String cardNo, String bankId, String bankAddr, String bankCity, String filePath, String tradeType, String seqNo,String mchn,String accNo){
+   public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String cardNo, String bankId, String bankAddr, String bankCity, String filePath, String tradeType, String seqNo,String mchn,String accNo)throws FssException{
        FssChangeCardEntity entity = new FssChangeCardEntity();
        entity.setCustId(cus.getId().longValue());
        entity.setCardNo(cardNo);

@@ -42,8 +42,9 @@ public class FtpResultService {
 
     /**
      * 解析下载文件状态
+     * @throws FssException 
      */
-    public void parseDownloadResult(){
+    public void parseDownloadResult() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotDownload();
         if(list == null || list.size() == 0){
             return;
@@ -154,8 +155,9 @@ public class FtpResultService {
      * 结果回调
      * @param orderEntity
      * @param fuiouFtpOrder
+     * @throws FssException 
      */
-    private void returnResult(FundOrderEntity orderEntity,FuiouFtpOrder fuiouFtpOrder){
+    private void returnResult(FundOrderEntity orderEntity,FuiouFtpOrder fuiouFtpOrder) throws FssException{
         int result = fuiouFtpOrder.getResult();
         if(result >1 && result<3){
 //            returnResult(orderEntity,fuiouFtpOrder);
@@ -203,7 +205,7 @@ public class FtpResultService {
         fuiouFtpOrderService.update(fuiouFtpOrder);
     }
 
-    public  void notReturnResult(){
+    public  void notReturnResult() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotReturnResult();
         if(list == null || list.size() == 0){
             return;

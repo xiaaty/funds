@@ -54,7 +54,7 @@ public class AbortBidService {
     @Resource
     private IFundsTender fundsTender;
 
-    public void abortBid(){
+    public void abortBid() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listAbort();
         for(FuiouFtpOrder fuiouFtpOrder:list){
             abortBid(fuiouFtpOrder);
@@ -136,7 +136,12 @@ public class AbortBidService {
             fuiouFtpOrder.setRetrunResultStatus(1);
         }
 
-        fuiouFtpOrderService.update(fuiouFtpOrder);
+        try {
+			fuiouFtpOrderService.update(fuiouFtpOrder);
+		} catch (FssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 

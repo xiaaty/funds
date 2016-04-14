@@ -38,7 +38,7 @@ public class BatchWithholdingJob extends SupperJob{
     private FssTradeRecordService recordService;
 
 
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("批量跑批处理代扣代付业务 跑批");
         if(!isIp("upload")){

@@ -1,6 +1,7 @@
 package com.gqhmt.controller.fss.customer;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
@@ -44,11 +45,12 @@ public class FssCustomerController {
 	 * @param model
 	 * @param customer
 	 * @return
+	 * @throws FssException 
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/fss/account/hxyhlist",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public Object findCustomerList(HttpServletRequest request,ModelMap model,FssCustomerEntity customer,@RequestParam Map<String, String> map){
+    public Object findCustomerList(HttpServletRequest request,ModelMap model,FssCustomerEntity customer,@RequestParam Map<String, String> map) throws FssException{
 		List<FssCustomerEntity> customers = customerService.findCustomerByParams(map);
     	model.addAttribute("page",customers);
     	model.addAttribute("customer",customer);
@@ -63,10 +65,11 @@ public class FssCustomerController {
 	 * @param model
 	 * @param fssAccount
 	 * @return
+	 * @throws FssException 
 	 */
 	@RequestMapping(value = "/fss/account/customerAccountDetail/{cust_no}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public Object getCustomerAccountList(HttpServletRequest request,ModelMap model,@PathVariable String cust_no,FssAccountEntity fssAccount){	
+    public Object getCustomerAccountList(HttpServletRequest request,ModelMap model,@PathVariable String cust_no,FssAccountEntity fssAccount) throws FssException{	
     	List<FssAccountEntity> fssAccounts = fssAccountService.findCustomerAccountByParams(fssAccount);
     	model.addAttribute("page",fssAccounts);
     	model.addAttribute("account",fssAccount);
