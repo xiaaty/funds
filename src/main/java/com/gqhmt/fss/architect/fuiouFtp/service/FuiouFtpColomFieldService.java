@@ -52,15 +52,11 @@ public class FuiouFtpColomFieldService {
     }
 
     public List<FuiouFtpColomField> getFuiouFtpColunm(int state)throws FssException{
-    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
-    	fuiouFtpColomField.setState(state);
-        return fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
+        return fuiouFtpColomFieldReadMapper.getByState(state);
     }
 
     public List<FuiouFtpColomField> getFuiouFtpColunm(String orderNo)throws FssException{
-    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
-    	fuiouFtpColomField.setOrderNo(orderNo);
-        return fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
+        return fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
     }
 
     public Map<String,FuiouFtpColomField> getFuiouFtpColunm(Long fileId)throws FssException{

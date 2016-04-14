@@ -15,4 +15,8 @@ public interface FuiouFtpColomFieldReadMapper extends ReadMapper<FuiouFtpColomFi
 
     public List<String> getReqCode(@Param("orderNo") String orderNo);
 
+	public List<FuiouFtpColomField> getByState(@Param("state")int state);
+
+	public List<FuiouFtpColomField> getByOrderNo(@Param("orderNo")String orderNo);
+
 }
