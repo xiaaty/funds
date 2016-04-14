@@ -87,6 +87,7 @@ public class CallbackJob extends SupperJob {
         		}else{
         			entity.setRepayResult(1);//回盘失败
         		}
+                entity.setRepayCount(entity.getRepayCount()+1);
         		fssBackplateService.update(entity);
         	} catch (Exception e) {
         		LogUtil.error(getClass(),e);

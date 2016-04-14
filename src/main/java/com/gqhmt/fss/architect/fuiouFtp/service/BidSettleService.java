@@ -151,12 +151,12 @@ public class BidSettleService {
 
         Bid bid = null;
         List<Tender> list  = null;
-        String title = "";
+        String title = "cc";
         try {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
             //产品名称，如果产品名称为空，则去标的title
-            title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+            //title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
            throw  e;

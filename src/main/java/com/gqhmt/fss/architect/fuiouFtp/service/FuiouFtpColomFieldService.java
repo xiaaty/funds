@@ -158,8 +158,7 @@ public class FuiouFtpColomFieldService {
     */
    public void updateList(List<FuiouFtpColomField> fuiyoulist)throws FssException{
 	   for (FuiouFtpColomField fuiouFtpColomField : fuiyoulist) {
-		   
-		   fuiouFtpColomFieldWriteMapper.updateByPrimaryKey(fuiouFtpColomField);
+		   fuiouFtpColomFieldWriteMapper.updateByPrimaryKeySelective(fuiouFtpColomField);
 	   }
    }
    /**
