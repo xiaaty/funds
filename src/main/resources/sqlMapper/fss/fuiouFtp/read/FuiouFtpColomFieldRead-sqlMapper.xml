@@ -45,6 +45,10 @@
 		<include refid="selectSql"/>
 		WHERE t.order_no = #{orderNo} 
 	</select>
+	<select id="selectByFileId" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
+		<include refid="selectSql"/>
+		WHERE t.file_id = #{fileId} 
+	</select>
 	
 
  </mapper>
