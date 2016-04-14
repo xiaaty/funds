@@ -60,9 +60,7 @@ public class FuiouFtpColomFieldService {
     }
 
     public Map<String,FuiouFtpColomField> getFuiouFtpColunm(Long fileId)throws FssException{
-    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
-    	fuiouFtpColomField.setFileId(fileId);
-    	List<FuiouFtpColomField> list=fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
+    	List<FuiouFtpColomField> list=fuiouFtpColomFieldReadMapper.selectByFileId(fileId);
     	 if(list == null){
              return null;
          }
