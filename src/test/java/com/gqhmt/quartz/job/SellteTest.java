@@ -2,21 +2,20 @@ package com.gqhmt.quartz.job;
 
 import com.gqhmt.TestService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
-import com.gqhmt.quartz.job.bid.DownloadFileJob;
-import com.gqhmt.quartz.job.bid.UploadFileJob;
+import com.gqhmt.quartz.job.loan.SettleBeforeJob;
 import org.junit.Test;
 
 import javax.annotation.Resource;
 
 /**
- * Filename:    com.gqhmt.quartz.job.UploadTest
+ * Filename:    com.gqhmt.quartz.job.SellteTest
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
  * @author 于泳
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   16/4/14 15:20
+ * Create at:   16/4/14 15:24
  * Description:
  * <p/>
  * Modification History:
@@ -24,31 +23,19 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 16/4/14  于泳      1.0     1.0 Version
  */
-public class UploadTest extends TestService {
+public class SellteTest extends TestService{
 
     @Resource
-    UploadFileJob uploadFileJob;
-
-    @Resource
-    DownloadFileJob downloadFileJob;
+    SettleBeforeJob settleBeforeJob;
 
     @Test
-    public void test()  {
+    public  void test(){
         try {
-            uploadFileJob.execute();
-            assert true;
+            settleBeforeJob.execute();
+            assert  true;
         } catch (PayChannelNotSupports payChannelNotSupports) {
             assert false;
-        }
-    }
 
-
-    @Test
-    public void down(){
-        try {
-            downloadFileJob.execute();
-        } catch (PayChannelNotSupports payChannelNotSupports) {
-            payChannelNotSupports.printStackTrace();
         }
     }
 }
