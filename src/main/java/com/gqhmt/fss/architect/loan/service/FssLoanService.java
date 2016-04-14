@@ -292,7 +292,7 @@ public class FssLoanService {
 		response.setContract_amt(loan.getContractAmt());
 		response.setContract_id(loan.getContractId());
 		response.setContract_no(loan.getContractNo());
-		response.setLoan_platform(loan.getLoanPlatform());
+		response.setLoan_platform(loan.getLoanPlatform()); 
 		response.setMchn(loan.getMchnChild());
 		response.setMortgagee_acc_no(loan.getMortgageeAccNo());
 		response.setPay_amt(loan.getPayAmt());

@@ -61,7 +61,7 @@ public class LoanAccountApi {
      * function：开户
      */
     @RequestMapping(value = "/createLoanAccount",method = RequestMethod.POST)
-    public Object createLoanAccount(CreateLoanAccountDto loanAccountDto){
+    public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
     	Response response=new Response();
     	try {
     		response = createLoanImpl.execute(loanAccountDto);
@@ -77,7 +77,7 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/bankCardChange",method = RequestMethod.POST)
-    public Object bankCardChange(CardChangeDto changeCardDto){
+    public Object bankCardChange(@RequestBody CardChangeDto changeCardDto){
     	Response response=new Response();
     	try {
     		response = changeCardImpl.execute(changeCardDto);

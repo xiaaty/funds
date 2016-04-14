@@ -149,7 +149,9 @@ public class FuiouFtpColomFieldService {
      * @param fuiyoulist
      */
    public void saveOrUpdateAll(List<FuiouFtpColomField> fuiyoulist){
+	   if(fuiyoulist.size()>0){
 	   fuiouFtpColomFieldWriteMapper.insertList(fuiyoulist);
+	   }
    }
     
     

@@ -243,7 +243,7 @@
 															</c:if>
 													  </c:if>
                                                       <c:if test="${t.tradeType == '11090002'}">
-															<c:if test="${t.status == '10050005'}">
+															<c:if test="${t.status == '10050009'}">
 																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;

@@ -135,7 +135,7 @@ public class FundOrderService  {
 		fundOrderEntity.setRetCode(code);
 		fundOrderEntity.setRetMessage(msg);
 		try {
-			this.insert(fundOrderEntity);
+//			this.insert(fundOrderEntity);
 			this.update(fundOrderEntity);
 		} catch (Exception e) {
 			throw new FssException(e.getMessage());

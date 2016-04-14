@@ -71,7 +71,7 @@ public class FtpUploadService {
             boolean flag  = this.upload(fuiouFtpOrder,list);
             fuiouFtpOrder.setUploadStatus(flag?3:1);
             fuiouFtpOrder.setFileSize(1);
-            fuiouFtpOrderService.insert(fuiouFtpOrder);
+            fuiouFtpOrderService.update(fuiouFtpOrder);
             return;
         }
         fuiouFtpOrder.setFileSize((int)(list.size()/limit)+1);

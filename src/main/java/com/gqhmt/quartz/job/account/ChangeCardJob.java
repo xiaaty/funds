@@ -15,6 +15,8 @@ import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.quartz.job.SupperJob;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -55,6 +57,7 @@ public class ChangeCardJob extends SupperJob {
     private static boolean isRunning = false;
 
     /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void changeCard() throws PayChannelNotSupports{
         System.out.println("变更银行卡跑批");
         if(!isIp("upload")){
@@ -88,13 +91,15 @@ public class ChangeCardJob extends SupperJob {
     }
 
     private void queryDate() {
-        List<FssChangeCardEntity> list = changeCardService.query(4);
+        List<FssChangeCardEntity> list = changeCardService.queryByTradeState(4);
         if(list == null || list.size() == 0){
             return;
         }
 
         for(FssChangeCardEntity t:list){
             this.queryDate(t);
+            t.setTradeState(5);
+            changeCardService.update(t);
         }
     }
     
@@ -132,7 +137,7 @@ public class ChangeCardJob extends SupperJob {
 
 
     private void uploadImage(){
-        List<FssChangeCardEntity> list = changeCardService.query(2);
+        List<FssChangeCardEntity> list = changeCardService.queryByTradeState(2);
         for(FssChangeCardEntity changeCardEntity:list){
             try {
                 this.uploadImageFtp(changeCardEntity);
@@ -178,7 +183,7 @@ public class ChangeCardJob extends SupperJob {
 
 
     private void uploadData(){
-        List<FssChangeCardEntity> list = changeCardService.query(3);
+        List<FssChangeCardEntity> list = changeCardService.queryByTradeState(3);
         for(FssChangeCardEntity changeCardEntity:list){
             try {
                 this.uploadData(changeCardEntity);

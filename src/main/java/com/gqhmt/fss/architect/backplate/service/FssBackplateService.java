@@ -84,7 +84,7 @@ public class FssBackplateService {
 		backplateEntity.setCreateTime(new Date());
 		backplateEntity.setModifyTime(new Date());
 		backplateEntity.setRepayCount(0);//回盘次数
-		backplateEntity.setRepayResult(0);//回盘结果
+		backplateEntity.setRepayResult(null);//回盘结果
 		try {
 			this.insert(backplateEntity);
 		} catch (Exception e) {

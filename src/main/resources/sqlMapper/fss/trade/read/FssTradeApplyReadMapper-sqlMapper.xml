@@ -99,4 +99,9 @@
 	 <include refid="selectSql" />
 	  WHERE t.trade_state=#{tradeState}
 	</select>
+	<select id="selectBySeqNoAndMchn" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+	 <include refid="selectSql" />
+	  WHERE t.seq_no=#{seqNo} and t.mchn_child=#{mchn}
+	</select>
+	
 </mapper>
