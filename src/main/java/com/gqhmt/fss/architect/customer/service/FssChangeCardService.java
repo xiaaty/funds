@@ -498,7 +498,7 @@ public class FssChangeCardService {
     * @param seqNo
     * @return
     */
-   public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String cardNo, String bankId, String bankAddr, String bankCity, String filePath, String tradeType, String seqNo,String mchn,String accNo){
+   public FssChangeCardEntity createChangeCardInstance(CustomerInfoEntity cus, String cardNo, String bankId, String bankAddr, String bankCity, String filePath, String tradeType, String seqNo,String mchn,String accNo) throws FssException{
        FssChangeCardEntity entity = new FssChangeCardEntity();
        entity.setCustId(cus.getId().longValue());
        entity.setCardNo(cardNo);

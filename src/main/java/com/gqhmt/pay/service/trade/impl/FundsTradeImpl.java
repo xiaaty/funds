@@ -95,10 +95,10 @@ public class FundsTradeImpl  implements IFundsTrade {
     /**
      * 线上代扣充值
      * @param withholdDto
-     * @return
+     * @return OrderNo
      */
     @Override
-    public boolean withholding(WithholdDto withholdDto) throws FssException {
+    public String withholding(WithholdDto withholdDto) throws FssException {
         FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(withholdDto.getCust_no()));
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004009");
@@ -107,14 +107,16 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,withholdDto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0);
         //资金处理
         tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1002);
-        return true;
+        return fundOrderEntity.getOrderNo();
     }
 
     /**
      * 提现
+     * @param WithdrawDto
+     * @return OrderNo
      */
     @Override
-    public boolean withdraw(WithdrawDto withdrawDto) throws FssException {
+    public String withdraw(WithdrawDto withdrawDto) throws FssException {
         FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(withdrawDto.getCust_no()));
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004004");
@@ -126,7 +128,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         //资金处理
         tradeRecordService.withdraw(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1012);
         this.chargeAmount(fundOrderEntity);
-        return true;
+        return fundOrderEntity.getOrderNo();
     }
     /**
      * 线上代扣申请

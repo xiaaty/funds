@@ -38,7 +38,7 @@ public class CreateAccountImpl implements ICreateAccount{
     	try {
     		Integer id=fundsAccountImpl.createFundAccount((CreateAccountDto)dto);
     		response.setId(id);
-			response.setResp_code("00000000");
+			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.debug(this.getClass(), e);
 			response.setResp_code(e.getMessage());

@@ -106,7 +106,8 @@ public class APIValidAop {
 
         String resCode = response.getResp_code();
         if(resCode != null && Integer.parseInt(resCode) == 0){
-            resCode = "00000000";
+//            resCode = "00000000";
+//            resCode = "0000";
             response.setResp_code(resCode);
         }
         String resMsg = Application.getInstance().getDictName(response.getResp_code());
@@ -176,19 +177,16 @@ public class APIValidAop {
         if(signatureAno == null){
             return;
         }
-        /* String mchn = dto.getMchn();
+       
+        String mchn = dto.getMchn();
         String seqNo = dto.getSeq_no();
         String tradeType = dto.getTrade_type();
         String key = Application.getInstance().getMechKey(mchn);
-        
         String signature = dto.getSignature();
-
         String validSignature = Encriptor.getMD5(mchn+"|"+seqNo+"|"+tradeType+"|"+key);
-
         if (signature == null || !signature.equals(validSignature)){
             throw new FssException("90008302");
-        }*/
-
+        }
     }
 
     /**

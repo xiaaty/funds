@@ -88,24 +88,13 @@ public class FssAccountApi {
         return response;
     }
     
-/*    @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
-    public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
-    	CreateAccountResponse response= null;
-        try {
-             response = fundsAccountImpl.createFundAccount(createAccountByFuiou);
-        } catch (Exception e) {
-            response = this.execute2(e);
-        }
-        return response;
-    }*/
-    
     /**
      * 
      * author:jhz
      * time:2016年2月22日
      * function：变更银行卡
      */
-    @RequestMapping(value = "/changeBankCard",method = RequestMethod.POST)
+    @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
     public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
     	Response response= null;
     	try {
@@ -122,13 +111,5 @@ public class FssAccountApi {
         response.setResp_code(e.getMessage());
         return response;
     }
-    
-    
-  /*  private CreateAccountResponse execute2(Exception e){
-    	LogUtil.error(this.getClass(), e);
-    	CreateAccountResponse response = new CreateAccountResponse();
-    	response.setResp_code(e.getMessage());
-    	return response;
-    }*/
 
 }
