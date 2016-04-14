@@ -54,9 +54,8 @@ public class FuiouUploadFileService {
     }
 
     public List<FuiouUploadFile> list(int status){
-    	FuiouUploadFile fuiouUploadFile=new FuiouUploadFile();
-    	fuiouUploadFile.setState(status);
-        return fuiouUploadFileReadMapper.select(fuiouUploadFile);
+    	
+        return fuiouUploadFileReadMapper.selectByStatus(status);
     }
 
     public List<Integer> list(String orderNo){
