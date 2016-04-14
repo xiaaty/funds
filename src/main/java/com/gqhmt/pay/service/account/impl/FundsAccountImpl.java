@@ -9,6 +9,8 @@ import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
@@ -22,6 +24,7 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 
@@ -50,6 +53,9 @@ public class FundsAccountImpl implements IFundsAccount {
 	
 	@Resource
 	private FssChangeCardService fssChangeCardService;
+	
+	@Resource
+	private FssAccountService fssAccountService;
 
 	/**
      * 创建账户
@@ -207,9 +213,10 @@ public class FundsAccountImpl implements IFundsAccount {
 			BankCardInfoEntity bankCardInfoEntity=null;
 			CustomerInfoEntity  customerInfoEntity=null;
 			//1.根据账号查询该客户账户信息
-		 	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccountInfo(cardChangeDto.getAcc_no());
-		 	if(fundAccountEntity==null) throw new FssException("90002001");
-		    customerInfoEntity=customerInfoService.queryCustomeById(fundAccountEntity.getCustId());//查询该账户客户信息
+			FssAccountEntity fssAccountEntity=fssAccountService.getFssAccountByAccNo(cardChangeDto.getAcc_no());
+//		 	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccountInfo(cardChangeDto.getAcc_no());
+		 	if(fssAccountEntity==null) throw new FssException("90002001");
+		    customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());//查询该账户客户信息
 		 	if(customerInfoEntity==null) throw new FssException("90002007");
  			//通过客户表中的bankid查询该客户要变更的银行卡信息
  			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());
@@ -250,10 +257,10 @@ public class FundsAccountImpl implements IFundsAccount {
 			customerInfoEntity.setCertNo(createAccountDto.getCert_no());
 			customerInfoEntity.setMobilePhone(createAccountDto.getMobile());
 			customerInfoEntity.setCustomerName(createAccountDto.getName());
-			return this.createFundAccount(customerInfoEntity,"","");
+			return this.createFundAccount(customerInfoEntity,"","",createAccountDto);
 		}
 	    
-		public Integer createFundAccount(CustomerInfoEntity customerInfoEntity,String pwd, String taradPwd) throws FssException {
+		public Integer createFundAccount(CustomerInfoEntity customerInfoEntity,String pwd, String taradPwd,CreateAccountDto createAccountDto) throws FssException {
 			Long cusId = customerInfoEntity.getId();
 			Integer userId = customerInfoEntity.getUserId();
 			BankCardInfoEntity bankCardInfoEntity=null;
@@ -271,9 +278,11 @@ public class FundsAccountImpl implements IFundsAccount {
 			if (primaryAccount.getHasThirdAccount() ==1){//未开通第三方账户
 				paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
 				primaryAccount.setHasThirdAccount(2);
+				primaryAccount.setCustName(customerInfoEntity.getCustomerName());
 				fundAccountService.update(primaryAccount);
 				//跟新所有与该cust_id相同的账户名称
-				fundAccountService.updateCustomerName(cusId,primaryAccount.getCustName());
+				fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
+				customerInfoService.updateCustomer(cusId, createAccountDto.getName(), createAccountDto.getCert_no(),createAccountDto.getBank_id());
 				//创建银行卡信息
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 				if(bankCardInfoEntity==null){

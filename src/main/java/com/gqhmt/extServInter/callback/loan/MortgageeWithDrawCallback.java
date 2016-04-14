@@ -37,11 +37,11 @@ public class MortgageeWithDrawCallback implements GetCallBack{
 	 * time:2016年3月7日
 	 * function：得到抵押权人提现回盘对象
 	 */
-	public MortgageeWithDrawRespons getCallBack(String mchnNo,String seqNo){
+	public MortgageeWithDrawRespons getCallBack(String mchn,String seqNo){
 		
 		 MortgageeWithDrawRespons response=null;
 		try {
-			response = fssLoanService.getMortgageeWithDrawRespons(mchnNo,seqNo);
+			response = fssLoanService.getMortgageeWithDrawRespons(mchn,seqNo);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

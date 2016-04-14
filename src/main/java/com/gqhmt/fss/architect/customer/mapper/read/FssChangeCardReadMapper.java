@@ -31,4 +31,12 @@ public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity>
     
     public ChangeCardResponse getChangeCardByParam(@Param("seq_no") String seq_no,@Param("mchn") String mchn);
 
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月13日
+     * function：根据状态查询对象
+     */
+	public List<FssChangeCardEntity> queryByTradeState(@Param("tradeState")int tradeState);
+
 }

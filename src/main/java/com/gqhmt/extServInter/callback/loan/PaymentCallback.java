@@ -28,7 +28,7 @@ public class PaymentCallback implements GetCallBack{
 	@Resource
 	private FssRepaymentService fssRepaymentService;
     
-    public RepaymentResponse getCallBack(String seqNo,String mchn) throws FssException{
+    public RepaymentResponse getCallBack(String mchn,String seqNo) throws FssException{
     	RepaymentResponse response = new RepaymentResponse();
     	try {
     		response = fssRepaymentService.rePaymentCallBack(seqNo,mchn);

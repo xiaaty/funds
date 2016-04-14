@@ -163,7 +163,7 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：提现
      */
-    @RequestMapping(value = "/withdraw",method = RequestMethod.POST)
+    @RequestMapping(value = "/withdraw",method = {RequestMethod.POST,RequestMethod.GET})
     public Object withdraw(WithdrawDto withdrawDto){
     	Response response=new Response();
     	try {
@@ -182,7 +182,7 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：代扣
      */
-    @RequestMapping(value = "/recharge",method = RequestMethod.POST)
+    @RequestMapping(value = "/recharge",method = {RequestMethod.POST,RequestMethod.GET})
     public Object withhold(WithholdDto withholdDto){
     	Response response=new Response();
     	try {

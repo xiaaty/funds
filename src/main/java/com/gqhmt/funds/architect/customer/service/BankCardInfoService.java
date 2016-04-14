@@ -485,7 +485,6 @@ public class BankCardInfoService {
 	 */
 	public BankCardInfoEntity createBankCardInfoEntity(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity) throws FssException{
 		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
-//		bankCardInfoEntity.setId(customer.getBankId());
 		bankCardInfoEntity.setCustId(customer.getId().intValue());
 		bankCardInfoEntity.setBankLongName("");
 		bankCardInfoEntity.setBankSortName("");
@@ -522,15 +521,15 @@ public class BankCardInfoService {
 		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity,FundAccountEntity primaryAccount) throws FssException{
 			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
 			bankCardInfoEntity.setCustId(Integer.valueOf(primaryAccount.getCustId().toString()));
-			bankCardInfoEntity.setBankLongName("");
-			bankCardInfoEntity.setBankSortName("");
-			bankCardInfoEntity.setBankNo(primaryAccount.getBankNo());
+			bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(customerInfoEntity.getParentBankCode()));
+			bankCardInfoEntity.setBankSortName(Application.getInstance().getBankName(customerInfoEntity.getParentBankCode()));
+			bankCardInfoEntity.setBankNo(customerInfoEntity.getBankNo());
 			bankCardInfoEntity.setIsPersonalCard(1);
 			bankCardInfoEntity.setCertNo(customerInfoEntity.getCertNo());
 			bankCardInfoEntity.setMobile(customerInfoEntity.getMobilePhone());
 			bankCardInfoEntity.setCertName(customerInfoEntity.getCustomerName());
-			bankCardInfoEntity.setCityId(primaryAccount.getCityId());
-			bankCardInfoEntity.setParentBankId(primaryAccount.getParentBankId());
+			bankCardInfoEntity.setCityId(customerInfoEntity.getCityCode());
+			bankCardInfoEntity.setParentBankId(customerInfoEntity.getParentBankCode());
 			bankCardInfoEntity.setCreateTime(new Date());
 			bankCardInfoEntity.setCreateUserId(1);
 			bankCardInfoEntity.setModifyTime(new Date());

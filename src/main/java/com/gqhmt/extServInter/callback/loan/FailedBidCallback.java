@@ -36,11 +36,11 @@ public class FailedBidCallback implements GetCallBack{
 	 * time:2016年3月7日
 	 * function：得到流标回调对象
 	 */
-	public FailedBidResponse getCallBack(String mchnNo,String seqNo){
+	public FailedBidResponse getCallBack(String mchn,String seqNo){
 		
 		 FailedBidResponse failedBidResponse =null;
 			 try {
-				 failedBidResponse=fssLoanService.getFailedBidResponse(mchnNo, seqNo);
+				 failedBidResponse=fssLoanService.getFailedBidResponse(mchn, seqNo);
 				failedBidResponse.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());

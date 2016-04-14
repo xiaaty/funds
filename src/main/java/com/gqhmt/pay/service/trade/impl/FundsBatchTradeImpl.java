@@ -106,12 +106,12 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     		selletType=fssTradeApplyService.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
     	}
     	if(accNo != null && !"".equals(accNo)){
-    		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+    		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType, entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
     	}else{
     		String custId=null;
         	if(entity.getCustId()!=null && !"".equals(entity.getCustId())){
         		custId = String.valueOf(entity.getCustId());//新版通过custId获取
-        		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType.intValue(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+        		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType, entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
         	}else{
         		throw new FssException("未得到CustId");
         	}

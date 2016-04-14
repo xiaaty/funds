@@ -182,7 +182,7 @@ public class BidSettleService {
         //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
 
         if("11090002".equals(loanEntity.getTradeType())) {
-            loanEntity.setStatus("");
+            loanEntity.setStatus("10050009");
             loanEntity.setModifyTime(new Date());
             fssLoanService.update(loanEntity);
         }else{

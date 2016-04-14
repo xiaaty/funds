@@ -172,22 +172,25 @@ public class APIValidAop {
 
     private void validSignature(Object obj ,String methodName,SuperDto dto) throws FssException {
         Method method = FssBeanUtil.findMethod(obj.getClass(),methodName,SuperDto.class);
-        APISignature signatureAno = method.getDeclaredAnnotation(APISignature.class);
+        APISignature signatureAno = method.getAnnotation(APISignature.class);
         if(signatureAno == null){
             return;
         }
-        String mchn = dto.getMchn();
+        /* String mchn = dto.getMchn();
         String seqNo = dto.getSeq_no();
         String tradeType = dto.getTrade_type();
         String key = Application.getInstance().getMechKey(mchn);
-
+        
         String signature = dto.getSignature();
 
         String validSignature = Encriptor.getMD5(mchn+"|"+seqNo+"|"+tradeType+"|"+key);
 
+//        if (signature == null || !signature.equals(validSignature)){
+//            throw new FssException("90008302");
+//        }
         if (signature == null || !signature.equals(validSignature)){
             throw new FssException("90008302");
-        }
+        }*/
 
     }
 
