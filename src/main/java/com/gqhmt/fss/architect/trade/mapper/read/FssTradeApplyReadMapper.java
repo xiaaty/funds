@@ -66,4 +66,11 @@ public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity>
 	 * function：根据申请编号查询申请对象信息
 	 */
 	public List<FssTradeApplyEntity> selectByTradeState(@Param("tradeState")String tradeState);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月12日
+	 * function：根据商户号流水号查询
+	 */
+	public FssTradeApplyEntity selectBySeqNoAndMchn(@Param("seqNo")String seqNo,@Param("mchn")String mchn);
 }

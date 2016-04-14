@@ -90,7 +90,7 @@ public interface IFundsTrade {
          */
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
     
-    public FundOrderEntity withdrawApplyNew(String accNo,String custId,int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
+    public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
     
 //    public FundOrderEntity withdrawApplyNew(int custID, int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
 

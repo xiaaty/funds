@@ -90,19 +90,17 @@ public class FssTradeApplyService {
 	 * @return
 	 */
 	public FssTradeApplyEntity getTradeApplyByParam(String seqNo,String mchn) throws FssException{
-		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
-		fssTradeApplyEntity.setSeqNo(seqNo);
-		fssTradeApplyEntity.setMchnChild(mchn);
-		fssTradeApplyReadMapper.selectOne(fssTradeApplyEntity);
-		return fssTradeApplyEntity;
+		return	fssTradeApplyReadMapper.selectBySeqNoAndMchn(seqNo,mchn);
 	}
 	
 	
 	public FssTradeApplyEntity createTradeApplyEntity(FssAccountEntity fssAccountEntity,LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
+		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(wthDrawApplyDto.getAcc_no());
 		//创建提现申请信息
 			fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(wthDrawApplyDto.getTrade_type()));
 			fssTradeApplyEntity.setApplyType(1104);
+			fssTradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
 			fssTradeApplyEntity.setCustNo(fssAccountEntity.getCustNo());
 			fssTradeApplyEntity.setUserNo(fssAccountEntity.getUserNo());
 			fssTradeApplyEntity.setBusinessNo(wthDrawApplyDto.getContract_no());
@@ -153,9 +151,11 @@ public class FssTradeApplyService {
 		withDrawApplyResponse.setSeq_no(fssTradeApplyEntity.getSeqNo());
 		withDrawApplyResponse.setTrade_type(fssTradeApplyEntity.getTradeState());
 		withDrawApplyResponse.setContract_id(fssTradeApplyEntity.getContractId());
+		withDrawApplyResponse.setContract_no(fssTradeApplyEntity.getBusinessNo());
+		withDrawApplyResponse.setAcc_no(fssTradeApplyEntity.getAccNo());
 		withDrawApplyResponse.setContract_amt(fssTradeApplyEntity.getTradeAmount());
 		withDrawApplyResponse.setPay_amt(fssTradeApplyEntity.getRealTradeAmount());
-		withDrawApplyResponse.setBespoke_date(fssTradeApplyEntity.getBespokedate());
+		withDrawApplyResponse.setBespoke_date(CommonUtil.dateTostring(fssTradeApplyEntity.getBespokedate()));
 		return withDrawApplyResponse;
 	}
 	/**

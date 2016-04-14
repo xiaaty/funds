@@ -29,7 +29,6 @@ public class ChangeBankCallback implements GetCallBack{
 //	银行卡变更完成，通知变更发起方（借款系统）返回 seqNo 流水号 和 mchn  商户号 
 	@Resource
 	private IFundsAccount fundsAccountImpl;
-    
     public ChangeCardResponse getCallBack(String mchn,String seqNo) throws FssException{
     	ChangeCardResponse response = new ChangeCardResponse();
     	try {

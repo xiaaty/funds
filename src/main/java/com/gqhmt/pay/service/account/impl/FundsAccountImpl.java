@@ -9,6 +9,8 @@ import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
@@ -51,6 +53,9 @@ public class FundsAccountImpl implements IFundsAccount {
 	
 	@Resource
 	private FssChangeCardService fssChangeCardService;
+	
+	@Resource
+	private FssAccountService fssAccountService;
 
 	/**
      * 创建账户
@@ -208,9 +213,10 @@ public class FundsAccountImpl implements IFundsAccount {
 			BankCardInfoEntity bankCardInfoEntity=null;
 			CustomerInfoEntity  customerInfoEntity=null;
 			//1.根据账号查询该客户账户信息
-		 	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccountInfo(cardChangeDto.getAcc_no());
-		 	if(fundAccountEntity==null) throw new FssException("90002001");
-		    customerInfoEntity=customerInfoService.queryCustomeById(fundAccountEntity.getCustId());//查询该账户客户信息
+			FssAccountEntity fssAccountEntity=fssAccountService.getFssAccountByAccNo(cardChangeDto.getAcc_no());
+//		 	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccountInfo(cardChangeDto.getAcc_no());
+		 	if(fssAccountEntity==null) throw new FssException("90002001");
+		    customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());//查询该账户客户信息
 		 	if(customerInfoEntity==null) throw new FssException("90002007");
  			//通过客户表中的bankid查询该客户要变更的银行卡信息
  			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());

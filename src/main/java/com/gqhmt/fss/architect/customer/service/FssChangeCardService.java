@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.customer.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssChangeCardWriteMapper;
@@ -80,6 +81,9 @@ public class FssChangeCardService {
     
     @Resource
     private InvestmentService investmentService;
+    
+    @Resource
+    private FssBackplateService fssBackplateService;
 
     public void insert(FssChangeCardEntity changeCardEntity) throws FssException{
     	changeCardWriteMapper.insertSelective(changeCardEntity);
@@ -208,7 +212,7 @@ public class FssChangeCardService {
 
     //自动审核换卡需求
     public void autoPassChangeCard(){
-        List<FssChangeCardEntity> list = query(1);
+        List<FssChangeCardEntity> list = queryByTradeState(1);
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            changeCardEntity.setPassTime(new Date());
@@ -219,10 +223,8 @@ public class FssChangeCardService {
         }
     }
 
-    public  List<FssChangeCardEntity> query(int changeState){
-    	FssChangeCardEntity entity = new FssChangeCardEntity();
-    	entity.setTradeState(changeState);
-        return changeCardReadMapper.select(entity);
+    public  List<FssChangeCardEntity> queryByTradeState(int tradeState){
+        return changeCardReadMapper.queryByTradeState(tradeState);
     }
 
     //图片上传到富友ftp
@@ -233,7 +235,7 @@ public class FssChangeCardService {
     //图片上传到富友ftp
     public void uploadData(FssChangeCardEntity changeCardEntity) throws Exception {
         update(changeCardEntity);
-        
+        //TODO:为什么要变更失败
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
         bankCardinfoEntity.setChangeState(2);
 
@@ -241,7 +243,7 @@ public class FssChangeCardService {
 
     //同步成功数据
     public void sycnChangeCardInfoBySucess(){
-        List<FssChangeCardEntity> list = query(5);
+        List<FssChangeCardEntity> list = queryByTradeState(5);
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
@@ -270,7 +272,7 @@ public class FssChangeCardService {
 	            fundAccountService.update(fundAccountEntity);
 	            this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUCESS, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),tmCardNo(changeCardEntity.getCardNo()));
 	
-	            CustomerInfoEntity customerInfoEntity = customerInfoService.queryCustomerById(changeCardEntity.getCustId().intValue());
+	            CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(changeCardEntity.getCustId());
 	            customerInfoEntity.setHasThirdAgreement(0);
 	            try {
 	                customerInfoService.update(customerInfoEntity);
@@ -306,7 +308,7 @@ public class FssChangeCardService {
 
     //同步失败记录到换卡记录中
     public void sycnChangeCardInfoByFaile(){
-        List<FssChangeCardEntity> list = query(6);
+        List<FssChangeCardEntity> list = queryByTradeState(6);
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
@@ -387,8 +389,8 @@ public class FssChangeCardService {
     
     
 
-   public void syncBusiness(){
-       List<FssChangeCardEntity> list = query(99);
+   public void syncBusiness() throws FssException{
+       List<FssChangeCardEntity> list = queryByTradeState(99);
        if(list == null) return;
        for(FssChangeCardEntity changeCardEntity:list){
            //同步业务系统数据,暂时只考虑出借系统
@@ -418,11 +420,12 @@ public class FssChangeCardService {
            }
            if(isSuccess) {
                changeCardEntity.setTradeState(100);
+               this.update(changeCardEntity);
+               fssBackplateService.createFssBackplateEntity(changeCardEntity.getSeqNo(), changeCardEntity.getMchn(), changeCardEntity.getType().toString());
            }
        }
 
 //       this.saveOrUpdateAll(list);
-       changeCardWriteMapper.insertList(list);
    }
    
    private boolean syscBusinessLend(FssChangeCardEntity changeCardEntity) throws IOException {

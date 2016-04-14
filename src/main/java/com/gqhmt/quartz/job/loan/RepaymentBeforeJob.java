@@ -36,7 +36,7 @@ public class RepaymentBeforeJob extends SupperJob {
     private FssLoanService fssLoanService;
     @Resource
     private BidRepaymentService repaymentService;
-
+//
     @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("借款业务满回款 执行回款转账 ftp 上传记录 跑批");

@@ -47,9 +47,9 @@ public class CallbackJob extends SupperJob {
     @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws JobExecutionException, PayChannelNotSupports {
         System.out.println("业务执行完成回盘跑批");
-//        if(!isIp("upload")){
-//            return;
-//        }
+        if(!isIp("upload")){
+            return;
+        }
 
         List<FssBackplateEntity> backplateEntities = fssBackplateService.findBackAll();
         for(FssBackplateEntity entity:backplateEntities){

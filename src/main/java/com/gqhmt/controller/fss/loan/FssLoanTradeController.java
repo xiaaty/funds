@@ -182,7 +182,7 @@ public class FssLoanTradeController {
 			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
-			fssLoanEntityById.setStatus("10050100");
+			fssLoanEntityById.setStatus("10050005");
 			fssLoanService.update(fssLoanEntityById);
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
@@ -207,7 +207,7 @@ public class FssLoanTradeController {
 			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(), fssLoanEntityById.getMortgageeAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
-			fssLoanEntityById.setStatus("10050005");
+			fssLoanEntityById.setStatus("10050100");
 			fssLoanService.update(fssLoanEntityById);
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
@@ -227,7 +227,7 @@ public class FssLoanTradeController {
 	public String abort(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
-		if(type=="11090011"){
+		if("11090011".equals(type)){
 			FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssLoanEntityById.getAccNo());
 			fssLoanEntityById.setCustNo(fssAccountByAccNo.getCustId().toString());
 		}

@@ -77,7 +77,7 @@ public class LoanAccountApi {
      * @return
      */
     @RequestMapping(value = "/bankCardChange",method = RequestMethod.POST)
-    public Object bankCardChange(CardChangeDto changeCardDto){
+    public Object bankCardChange(@RequestBody CardChangeDto changeCardDto){
     	Response response=new Response();
     	try {
     		response = changeCardImpl.execute(changeCardDto);
