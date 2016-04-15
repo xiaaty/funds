@@ -88,7 +88,7 @@ public class FssCustBankCardService {
 	public FssCustBankCardEntity createFssBankCardEntity(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity) throws Exception{
 			FssCustBankCardEntity  fssbankcardInfo=null;
 			fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class,dto);
-			fssbankcardInfo.setCust_no(String.valueOf(fssCustomerEntity.getId()));
+			fssbankcardInfo.setCust_no(String.valueOf(fssCustomerEntity.getCustNo()));
 			fssbankcardInfo.setCertType(fssCustomerEntity.getCertType());
 			fssbankcardInfo.setCertNo(dto.getCert_no());
 			fssbankcardInfo.setBankId(Integer.valueOf(dto.getBank_id()));

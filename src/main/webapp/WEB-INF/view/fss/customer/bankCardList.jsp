@@ -165,9 +165,9 @@
                                         <thead>
                                         <tr>
                                         	<td>编号</td>
-                                            <td>客户名称</td>
-                                            <td>银行名称  </td>
-                                            <td>银行简称  </td>
+                                            <td  align="left">客户名称</td>
+                                            <td  align="left">银行名称  </td>
+                                            <td  align="left">银行简称  </td>
                                             <td>银行账号 </td>
                                             <td>银行卡类型 </td>
                                             <td>是否绑定第三方银行账户</td>
@@ -180,9 +180,9 @@
                                         <c:forEach items="${page.list}" var="t">
                                            <tr>
                                                <td>${t.id}</td>
-                                               <td>${t.certName}</td>
-                                               <td>${t.bankLongName}</td>
-                                               <td>${t.bankSortName}</td>
+                                               <td  align="left">${t.certName}</td>
+                                               <td  align="left">${t.bankLongName}</td>
+                                               <td  align="left">${t.bankSortName}</td>
                                                <td><fss:fmtData value="${t.bankNo}"/></td>
                                                <td>${t.isPersonalCard==1?"个人":"公司"}</td>
                                                <td>${empty t.cardIndex ? "未绑定":"已绑定"}</td>
