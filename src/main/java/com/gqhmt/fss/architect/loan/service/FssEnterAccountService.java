@@ -145,6 +145,7 @@ public class FssEnterAccountService {
 				}
 			}
 		}
+		fssBackplateService.createFssBackplateEntity(enterAccountDto.getSeq_no(), enterAccountDto.getMchn(), enterAccountDto.getTrade_type());
 	}
 
 	/**
@@ -162,6 +163,7 @@ public class FssEnterAccountService {
 		FssEnterAccountParentEntity enterAccountParent = fssEnterAccountParentReadMapper.getEnterAccountParent(map);
 		//根据主表id得到子表集合对象
 		List<FssEnterAccountEntity> enterAccountEntities = fssEnterAccountReadMapper.getEnterAccounts(enterAccountParent.getId());
+		if(enterAccountEntities!=null){
 		for (FssEnterAccountEntity enterAccountEntity : enterAccountEntities) {
 			enterAccount = new EnterAccount();
 			enterAccount.setAcc_no(enterAccountEntity.getAccNo());
@@ -174,10 +176,11 @@ public class FssEnterAccountService {
 			enterAccount.setSettle_list(this.getsettleListBean(enterAccountEntity.getId()));
 			enterAccounts.add(enterAccount);
 		}
+		}
 		enterAccountResponse.setEnter_account(enterAccounts);
-		enterAccountResponse.setMchn(enterAccountEntities.get(0).getMchnChild());
-		enterAccountResponse.setSeq_no(enterAccountEntities.get(0).getSeqNo());
-		enterAccountResponse.setTrade_type(enterAccountEntities.get(0).getTradeType());
+		enterAccountResponse.setMchn(enterAccountParent.getMchnChild());
+		enterAccountResponse.setSeq_no(enterAccountParent.getSeqNo());
+		enterAccountResponse.setTrade_type(enterAccountParent.getTradeType());
 		return enterAccountResponse;
 	}
 

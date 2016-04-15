@@ -17,6 +17,7 @@ import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.quartz.job.SupperJob;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -57,7 +58,7 @@ public class ChangeCardJob extends SupperJob {
 //    private static boolean isRunning = false;
 
     /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void changeCard() throws PayChannelNotSupports{
         System.out.println("变更银行卡跑批");
         if(!isIp("upload")){
@@ -149,11 +150,12 @@ public class ChangeCardJob extends SupperJob {
 
     }
 
-    public void uploadImageFtp(FssChangeCardEntity changeCardEntity) throws PayChannelNotSupports{
+    public void uploadImageFtp(FssChangeCardEntity changeCardEntity) throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         System.out.println("上传图片:"+changeCardEntity.getId());
         if(!config.isConnection()){
             changeCardEntity.setTradeState(3);
+            changeCardService.update(changeCardEntity);
             return;
         }
 
@@ -178,6 +180,7 @@ public class ChangeCardJob extends SupperJob {
 
         if(flag){
             changeCardEntity.setTradeState(3);
+            changeCardService.update(changeCardEntity);
         }
     }
 
@@ -194,11 +197,12 @@ public class ChangeCardJob extends SupperJob {
         }
     }
 
-    public void uploadData(FssChangeCardEntity changeCardEntity) throws PayChannelNotSupports{
+    public void uploadData(FssChangeCardEntity changeCardEntity) throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         System.out.println("提交数据到富友:"+changeCardEntity.getId());
         if(!config.isConnection()){
             changeCardEntity.setTradeState(4);
+            changeCardService.update(changeCardEntity);
             return;
         }
         try{
@@ -211,6 +215,7 @@ public class ChangeCardJob extends SupperJob {
             changeCardEntity.setRespMsg(e.getMessage());
 
         }
+        changeCardService.update(changeCardEntity);
     }
 
 }

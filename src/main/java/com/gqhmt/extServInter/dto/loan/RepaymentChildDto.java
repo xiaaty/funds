@@ -23,7 +23,7 @@ public class RepaymentChildDto{
 	@APIValidNull(errorCode = "90002019")
 	private String serial_number; //序列号
 	
-	@APIValidNull(errorCode = "90002016")
+//	@APIValidNull(errorCode = "90002016")
     private String contract_id;   //合同Id
 	
 	@APIValidNull(errorCode = "90002022")

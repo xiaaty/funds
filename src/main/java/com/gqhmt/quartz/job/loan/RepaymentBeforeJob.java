@@ -9,6 +9,9 @@ import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 
 import javax.annotation.Resource;
+
+import org.springframework.scheduling.annotation.Scheduled;
+
 import java.util.List;
 
 /**
@@ -34,7 +37,7 @@ public class RepaymentBeforeJob extends SupperJob {
     @Resource
     private BidRepaymentService repaymentService;
 //
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("借款业务满回款 执行回款转账 ftp 上传记录 跑批");
         if(!isIp("upload")){

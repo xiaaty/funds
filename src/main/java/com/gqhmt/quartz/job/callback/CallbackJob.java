@@ -69,7 +69,8 @@ public class CallbackJob extends SupperJob {
 
         //验证是否配置回盘参数
         if(classMethodName == null){
-        	entity.setRepayResult(2);//无需回盘
+        	entity.setRepayCount(entity.getRepayCount()+1);
+        	entity.setRepayResult(98060004);//无需回盘
         	fssBackplateService.update(entity);
         }else{
         	try {
@@ -83,9 +84,9 @@ public class CallbackJob extends SupperJob {
         		Response response  = UrlConnectUtil.sendDataReturnAutoSingleObject(Response.class,entity.getMchn()+"_"+entity.getTradeType(),value);
         		//修改完成状态;
         		if("00000000".equals(response.getResp_code()) || "0000".equals(response.getResp_code())){//返回代码为00000000或0000表示回盘成功
-        			entity.setRepayResult(0);//回盘成功
+        			entity.setRepayResult(98060001);//回盘成功
         		}else{
-        			entity.setRepayResult(1);//回盘失败
+        			entity.setRepayResult(98060003);//回盘失败
         		}
                 entity.setRepayCount(entity.getRepayCount()+1);
         		fssBackplateService.update(entity);
