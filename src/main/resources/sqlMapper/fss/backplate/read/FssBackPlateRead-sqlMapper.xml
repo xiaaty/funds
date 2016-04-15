@@ -16,12 +16,12 @@
 	<!-- 查询所有回盘次数为0的记录 -->
 	 <select id="findBackAll" parameterType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
 		<include refid="field"/>
-		WHERE t.repay_count=0
+		WHERE t.repay_count=0 
 	</select>
 
 	<select id="findBackAllByTime" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
 		<include refid="field"/>
-		WHERE t.repay_count=${repayCount} AND DATE_ADD(t.modify_time,INTERVAL 20 HOUR  ) &lt; NOW();
+		WHERE t.repay_count=${repayCount} AND DATE_ADD(t.modify_time,INTERVAL 20 HOUR  ) &lt; NOW() or t.repay_result=98060003
 	</select>
 
 </mapper>

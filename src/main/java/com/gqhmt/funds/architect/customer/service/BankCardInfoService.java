@@ -87,6 +87,7 @@ public class BankCardInfoService {
     	if(null != entity.getId()) {
     		return bankCardinfoWriteMapper.updateByPrimaryKey(entity);
     	} else {
+    		entity.setCreateTime(new Date());
     		return insert(entity);
     	}
     }

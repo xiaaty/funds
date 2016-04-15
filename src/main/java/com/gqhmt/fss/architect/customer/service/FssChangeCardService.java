@@ -18,6 +18,7 @@ import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.mapping.service.FuiouBankCodeService;
 import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
@@ -247,7 +248,7 @@ public class FssChangeCardService {
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
-	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
+	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getCustId().toString()));
 	            if(bankCardinfoEntity == null){
 	                bankCardinfoEntity = new BankCardInfoEntity();
 	            }
@@ -263,6 +264,7 @@ public class FssChangeCardService {
 	            bankCardinfoEntity.setParentBankId(changeCardEntity.getBankType());
 	            bankCardinfoEntity.setBankSortName(fuiouBankCodeService.queryFuiouBankValueByCode(changeCardEntity.getBankType()));
 	            bankCardinfoEntity.setMemo("变更成功");
+	            bankCardinfoEntity.setModifyTime(new Date());
 	            bankCardinfoService.saveOrUpdate(bankCardinfoEntity);
 	            changeCardEntity.setState(2);
 	            changeCardEntity.setEffectTime(new Date());
@@ -301,6 +303,7 @@ public class FssChangeCardService {
             }else if("2".equals(resCode)){
                 changeCardEntity.setTradeState(6);
                 changeCardEntity.setRespMsg(resMess);
+                
             }
         }
         update(changeCardEntity);
@@ -504,7 +507,7 @@ public class FssChangeCardService {
        entity.setCardNo(cardNo);
        entity.setBankType(bankId);
        entity.setBankAdd(bankAddr);
-       entity.setBankCity(bankCity);
+       entity.setBankCity(Application.getInstance().getFourCode(bankCity));
        entity.setFilePath(filePath);
        entity.setAccNo(accNo);
        entity.setbBankInfoId(cus.getBankId().longValue());

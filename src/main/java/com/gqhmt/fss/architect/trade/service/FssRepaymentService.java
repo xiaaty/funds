@@ -191,6 +191,7 @@ public class FssRepaymentService {
 		repaymentEntity.setSeqNo(repaymentDto.getSeq_no());
 		repaymentEntity.setSerialNumber(repyament.getSerial_number());
 		repaymentEntity.setContractId(repyament.getContract_id());
+		repaymentEntity.setContractNo(repyament.getContract_no());
 		repaymentEntity.setMchnParent(Application.getInstance().getParentMchn(repaymentDto.getMchn()));
 		repaymentEntity.setMchnChild(repaymentDto.getMchn());
 		repaymentEntity.setRemark(repyament.getRemark());
