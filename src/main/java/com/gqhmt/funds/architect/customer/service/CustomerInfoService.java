@@ -14,6 +14,7 @@ import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.sys.service.UserService;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
@@ -338,7 +339,7 @@ public class CustomerInfoService {
 	}
 
 	/**//**
-	 * 根据手机号查询客户信息
+	 * 根据省份证号查询客户信息
 	 *
 	 * @param mobile
 	 * @return
@@ -1042,6 +1043,10 @@ public class CustomerInfoService {
 				customerInfoEntity = this.createCustomerInfo(loanAccountDto);
 				customerInfoWriteMapper.insertSelective(customerInfoEntity);
 			} catch (Exception e) {
+				final Throwable cause = e.getCause();
+				if( cause instanceof MySQLIntegrityConstraintViolationException ){
+				 throw new FssException("90002030");
+				 }
 				LogUtil.info(this.getClass(), e.getMessage());
 				throw new FssException("90002024");
 			}
