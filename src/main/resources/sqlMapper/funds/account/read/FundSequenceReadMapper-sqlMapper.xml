@@ -94,6 +94,12 @@
 			AND a.account_no like CONCAT('%',#{accountNo},'%') 
 		</if>
 	</select>
+	<select id="getSizeByOrderNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT 
+			count(*)
+		From t_gq_fund_sequence t
+		where t.order_no=#{orderNo}
+	</select>
 	
 <!-- 	
 	<select id="getSumByDay" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">

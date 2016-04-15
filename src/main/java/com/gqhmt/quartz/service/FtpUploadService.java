@@ -1,5 +1,6 @@
 package com.gqhmt.quartz.service;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
@@ -49,7 +50,7 @@ public class FtpUploadService {
     @Resource
     private FuiouUploadFileService fuiouUploadFileService;
 
-    public void upload()  throws PayChannelNotSupports{
+    public void upload()  throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listFile();//fuiouFtpOrderService.listNotUpload();
         for(FuiouFtpOrder fuiouFtpOrder:list){
             this.upload(fuiouFtpOrder);
@@ -60,8 +61,9 @@ public class FtpUploadService {
     /**
      * 上传文件
      * @param fuiouFtpOrder
+     * @throws FssException 
      */
-    public void upload(FuiouFtpOrder fuiouFtpOrder) throws PayChannelNotSupports{
+    public void upload(FuiouFtpOrder fuiouFtpOrder) throws FssException{
       Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         List<FuiouFtpColomField> list = fuiouFtpColomFieldService.getFuiouFtpColunm(fuiouFtpOrder.getOrderNo());
 //        if(list.size()>=4000)
@@ -71,7 +73,7 @@ public class FtpUploadService {
             boolean flag  = this.upload(fuiouFtpOrder,list);
             fuiouFtpOrder.setUploadStatus(flag?3:1);
             fuiouFtpOrder.setFileSize(1);
-            fuiouFtpOrderService.insert(fuiouFtpOrder);
+            fuiouFtpOrderService.update(fuiouFtpOrder);
             return;
         }
         fuiouFtpOrder.setFileSize((int)(list.size()/limit)+1);
@@ -101,10 +103,10 @@ public class FtpUploadService {
             return;
         }
         fuiouFtpOrder.setUploadStatus(success == fuiouFtpOrder.getFileSize()?3:2);
-        fuiouFtpOrderService.insert(fuiouFtpOrder);
+        fuiouFtpOrderService.update(fuiouFtpOrder);
     }
 
-    public boolean upload(FuiouFtpOrder fuiouFtpOrder, List<FuiouFtpColomField> list)  throws PayChannelNotSupports{
+    public boolean upload(FuiouFtpOrder fuiouFtpOrder, List<FuiouFtpColomField> list)  throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
     	String businessCode = "PW03";
         String mCode = (String)config.getValue("public.mchnt_cd.value");
@@ -119,12 +121,14 @@ public class FtpUploadService {
             fieldList.add(addColomFieldForSettle(fuiouFtpColomField, fuiouFtpOrder.getType()));
             sum = sum.add(fuiouFtpColomField.getAmt());
             fuiouFtpColomField.setState(2);
+            //fuiouFtpColomFieldService.update(fuiouFtpColomField);
         }
         FuiouUploadFile file = fuiouUploadFileService.add(businessCode, mCode, list.size(), sysdate, fileSeqNo, sum, fuiouFtpOrder.getOrderNo());
-        fuiouFtpColomFieldService.saveOrUpdateAll(list);
+        fuiouFtpColomFieldService.updateList(list);
         String filePath = this.saveFileTran(fieldList,businessCode,sysdate,fileSeqNo,mCode,sum,list.size());
         //boolean flag = uploadFileToFtp(filePath,businessCode,sysdate,fileSeqNo);
         fuiouFtpOrder.setFileStatus(2);
+        fuiouFtpOrderService.update(fuiouFtpOrder);
         return true;
     }
 
@@ -191,7 +195,7 @@ public class FtpUploadService {
     }
 
 
-    public void uploadFileToFtp() throws PayChannelNotSupports{
+    public void uploadFileToFtp() throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotUpload();
         Map<String,Integer> resultMap = new HashMap<>();
@@ -200,6 +204,7 @@ public class FtpUploadService {
             if(config.isConnection() == false){
                 fuiouUploadFile.setState(2);
                 resultMap.put(fuiouUploadFile.getOrderNo(),(resultMap.get(fuiouUploadFile.getOrderNo())==null?0:resultMap.get(fuiouUploadFile.getOrderNo()))+1);
+                fuiouUploadFileService.update(fuiouUploadFile);
                 continue;
             }
             String businessCode = fuiouUploadFile.getBusinessCode();
@@ -212,12 +217,14 @@ public class FtpUploadService {
             if(flag){
                 fuiouUploadFile.setState(2);
                 resultMap.put(fuiouUploadFile.getOrderNo(),(resultMap.get(fuiouUploadFile.getOrderNo())==null?0:resultMap.get(fuiouUploadFile.getOrderNo()))+1);
+                fuiouUploadFileService.update(fuiouUploadFile);
             }
         }
         for(FuiouFtpOrder fuiouFtpOrder:list){
             Integer successSize = resultMap.get(fuiouFtpOrder.getOrderNo());
             if(successSize != null && successSize == fuiouFtpOrder.getFileSize()){
                 fuiouFtpOrder.setUploadStatus(3);
+                fuiouFtpOrderService.update(fuiouFtpOrder);
             }
         }
     }

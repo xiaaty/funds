@@ -21,7 +21,7 @@
 
 	<select id="findBackAllByTime" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
 		<include refid="field"/>
-		WHERE t.repay_count=${count} AND DATE_ADD(t.modify_time,INTERVAL 20 HOUR  ) &lt; NOW();
+		WHERE t.repay_count=${repayCount} AND DATE_ADD(t.modify_time,INTERVAL 20 HOUR  ) &lt; NOW();
 	</select>
 
 </mapper>

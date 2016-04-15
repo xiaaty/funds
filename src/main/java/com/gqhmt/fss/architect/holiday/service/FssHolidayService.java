@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.holiday.entity.FssHolidayEntity;
 import com.gqhmt.fss.architect.holiday.mapper.read.FssHolidayReaderMapper;
 //import com.gqhmt.fss.architect.holiday.mapper.writer.FssHolidayWriterMapper;
@@ -54,7 +55,7 @@ public class FssHolidayService  {
      * guo jin ran
      * 2015-10-27
      */
-    public Boolean isWeekday(String date) {
+    public Boolean isWeekday(String date) throws FssException{
 
         if (date == null) {
             return false;
@@ -113,7 +114,7 @@ public class FssHolidayService  {
      * @param date 参数日期
      * @return date
      */
-    public String isDate(String date) {
+    public String isDate(String date)throws FssException {
     	
     	if(date == null){
     		return null;

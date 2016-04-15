@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.customer.service;
 
 import org.springframework.stereotype.Service;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssAreaMappingReadMapper;
 
@@ -37,7 +38,7 @@ public class FssAreaMappingService {
      * time:2016年4月7日
      * function：查询所有的地区映射数据
      */
-    public List<FssAreaMappingEntity> findAllAreaMapping(){
+    public List<FssAreaMappingEntity> findAllAreaMapping()throws FssException{
         return  this.fssBankAreaMappingReadMapper.findAllAreaMapping();
     }
 

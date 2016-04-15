@@ -12,10 +12,16 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface FuiouUploadFileReadMapper extends ReadMapper<FuiouUploadFile> {
 
-    public List<FuiouUploadFile> list(@Param("state") int state);
 
     public List<Integer> list(String order);
 
     public List<FuiouUploadFile> listAll(String orderNo);
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月14日
+     * function：根据状态查询对象
+     */
+	public List<FuiouUploadFile> selectByStatus(@Param("status")int status);
 
 }

@@ -42,10 +42,11 @@ public class FssAccountController {
      * author:jhz
      * time:2016年1月26日
      * function：查看流水详情
+     * @throws FssException 
      */
     @RequestMapping(value = "/accounts/{type}/list/{id}/water",method = {RequestMethod.GET,RequestMethod.POST})
  	@AutoPage
-     public Object waterDetail(HttpServletRequest request,ModelMap model,@PathVariable Long id,@PathVariable Integer type,String startDate,String endDate){
+     public Object waterDetail(HttpServletRequest request,ModelMap model,@PathVariable Long id,@PathVariable Integer type,String startDate,String endDate) throws FssException{
     	List<FssWaterEntity> waterDetails = fssWaterService.queryWaterDetail(id,startDate,endDate);
  		model.addAttribute("startDate", startDate);
  		model.addAttribute("endDate", endDate);

@@ -54,7 +54,7 @@ public class AbortBidService {
     @Resource
     private IFundsTender fundsTender;
 
-    public void abortBid(){
+    public void abortBid() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listAbort();
         for(FuiouFtpOrder fuiouFtpOrder:list){
             abortBid(fuiouFtpOrder);
@@ -109,11 +109,11 @@ public class AbortBidService {
 
                 fundsTender.abortLoop(tender,fuiouPreauth.getContractNo());
                 fuiouPreauth.setState(2);
-                fuiouPreauthService.insert(fuiouPreauth);
+                fuiouPreauthService.update(fuiouPreauth);
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
             }catch (Exception e){
                 fuiouPreauth.setState(3);
-                fuiouPreauthService.insert(fuiouPreauth);
+                fuiouPreauthService.update(fuiouPreauth);
                 falidSize++;
                 System.out.println("fuiouFtp:abortBid:failed:"+fuiouFtpOrder.getOrderNo());
             }
@@ -136,7 +136,12 @@ public class AbortBidService {
             fuiouFtpOrder.setRetrunResultStatus(1);
         }
 
-        fuiouFtpOrderService.insert(fuiouFtpOrder);
+        try {
+			fuiouFtpOrderService.update(fuiouFtpOrder);
+		} catch (FssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 
@@ -153,7 +158,7 @@ public class AbortBidService {
            /* try {
                 AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_BID_FAILED_RETURN, ThirdPartyType.FUIOU, fuiouPreauth);
                 fuiouPreauth.setState(2);
-                fuiouPreauthService.insert(fuiouPreauth);
+                fuiouPreauthService.update(fuiouPreauth);
                 System.out.println("fuiouFtp:BidFailed:success:"+fuiouPreauth.getOrderNo());
             }catch (FssException e){
                 System.out.println("fuiouFtp:BidFailed:failed:"+fuiouPreauth.getOrderNo());

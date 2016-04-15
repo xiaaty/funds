@@ -151,12 +151,12 @@ public class BidSettleService {
 
         Bid bid = null;
         List<Tender> list  = null;
-        String title = "";
+        String title = "cc";
         try {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
             //产品名称，如果产品名称为空，则去标的title
-            title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+            //title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
            throw  e;
@@ -182,7 +182,7 @@ public class BidSettleService {
         //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
 
         if("11090002".equals(loanEntity.getTradeType())) {
-            loanEntity.setStatus("");
+            loanEntity.setStatus("10050009");
             loanEntity.setModifyTime(new Date());
             fssLoanService.update(loanEntity);
         }else{

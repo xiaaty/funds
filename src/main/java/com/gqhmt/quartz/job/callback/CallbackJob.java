@@ -12,6 +12,7 @@ import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -43,8 +44,8 @@ public class CallbackJob extends SupperJob {
     @Resource
     private ApplicationContext context;
 
-
-    public void execute() throws JobExecutionException, PayChannelNotSupports {
+    @Scheduled(cron="0 0/1 *  * * * ")
+    public void execute() throws JobExecutionException, FssException {
         System.out.println("业务执行完成回盘跑批");
         if(!isIp("upload")){
             return;
@@ -86,6 +87,7 @@ public class CallbackJob extends SupperJob {
         		}else{
         			entity.setRepayResult(1);//回盘失败
         		}
+                entity.setRepayCount(entity.getRepayCount()+1);
         		fssBackplateService.update(entity);
         	} catch (Exception e) {
         		LogUtil.error(getClass(),e);

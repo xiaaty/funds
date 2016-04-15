@@ -7,7 +7,6 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper;
 import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper;
 import com.gqhmt.util.LogUtil;
-import com.gqhmt.util.StringUtils;
 
 import org.springframework.stereotype.Service;
 
@@ -15,9 +14,7 @@ import javax.annotation.Resource;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -50,7 +47,7 @@ public class FssBackplateService {
      * time:2016年3月19日
      * function：添加
      */
-    public void insert(FssBackplateEntity fssBackplateEntity) {
+    public void insert(FssBackplateEntity fssBackplateEntity)throws FssException {
     	fssBackplateWriteMapper.insertSelective(fssBackplateEntity);
     }
     /**
@@ -59,7 +56,7 @@ public class FssBackplateService {
      * time:2016年3月19日
      * function：修改
      */
-    public void update(FssBackplateEntity fssBackplateEntity) {
+    public void update(FssBackplateEntity fssBackplateEntity) throws FssException{
     	fssBackplateWriteMapper.updateByPrimaryKeySelective(fssBackplateEntity);
     }
     /**
@@ -68,7 +65,7 @@ public class FssBackplateService {
      * time:2016年3月19日
      * function：查询
      */
-    public FssBackplateEntity get(Long id){
+    public FssBackplateEntity get(Long id)throws FssException{
         return fssBackplateReadMapper.selectByPrimaryKey(id);
     }
     
@@ -84,7 +81,7 @@ public class FssBackplateService {
 		backplateEntity.setCreateTime(new Date());
 		backplateEntity.setModifyTime(new Date());
 		backplateEntity.setRepayCount(0);//回盘次数
-		backplateEntity.setRepayResult(0);//回盘结果
+		backplateEntity.setRepayResult(null);//回盘结果
 		try {
 			this.insert(backplateEntity);
 		} catch (Exception e) {
@@ -94,7 +91,7 @@ public class FssBackplateService {
     }
 
 
-    public List<FssBackplateEntity> findBackAll(){
+    public List<FssBackplateEntity> findBackAll()throws FssException{
     	List<FssBackplateEntity> list= this.fssBackplateReadMapper.findBackAll();
     	if(list==null && list.size()==0){
     		list=new ArrayList<FssBackplateEntity>();

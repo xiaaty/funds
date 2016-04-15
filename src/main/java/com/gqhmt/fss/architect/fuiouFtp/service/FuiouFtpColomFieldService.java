@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper;
@@ -9,6 +10,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,34 +39,28 @@ public class FuiouFtpColomFieldService {
     @Resource
     private FuiouFtpColomFieldWriteMapper fuiouFtpColomFieldWriteMapper;
 
-    public void insert(FuiouFtpColomField fuiouFtpColomField){
+    public void insert(FuiouFtpColomField fuiouFtpColomField)throws FssException{
     	fuiouFtpColomFieldWriteMapper.insertSelective(fuiouFtpColomField);
     }
 
-    public void insertList(List<FuiouFtpColomField> fuiouFtpColomFields){
+    public void insertList(List<FuiouFtpColomField> fuiouFtpColomFields)throws FssException{
     	fuiouFtpColomFieldWriteMapper.insertList(fuiouFtpColomFields);
     }
 
-    public void update(FuiouFtpColomField fuiouFtpColomField){
+    public void update(FuiouFtpColomField fuiouFtpColomField)throws FssException{
     	fuiouFtpColomFieldWriteMapper.updateByPrimaryKey(fuiouFtpColomField);
     }
 
-    public List<FuiouFtpColomField> getFuiouFtpColunm(int state){
-    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
-    	fuiouFtpColomField.setState(state);
-        return fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
+    public List<FuiouFtpColomField> getFuiouFtpColunm(int state)throws FssException{
+        return fuiouFtpColomFieldReadMapper.getByState(state);
     }
 
-    public List<FuiouFtpColomField> getFuiouFtpColunm(String orderNo){
-    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
-    	fuiouFtpColomField.setOrderNo(orderNo);
-        return fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
+    public List<FuiouFtpColomField> getFuiouFtpColunm(String orderNo)throws FssException{
+        return fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
     }
 
-    public Map<String,FuiouFtpColomField> getFuiouFtpColunm(Long fileId){
-    	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
-    	fuiouFtpColomField.setFileId(fileId);
-    	List<FuiouFtpColomField> list=fuiouFtpColomFieldReadMapper.select(fuiouFtpColomField);
+    public Map<String,FuiouFtpColomField> getFuiouFtpColunm(Long fileId)throws FssException{
+    	List<FuiouFtpColomField> list=fuiouFtpColomFieldReadMapper.selectByFileId(fileId);
     	 if(list == null){
              return null;
          }
@@ -75,11 +71,11 @@ public class FuiouFtpColomFieldService {
         return map;
     }
 
-    public List<Long> getOrder(){
+    public List<Long> getOrder()throws FssException{
         return this.fuiouFtpColomFieldReadMapper.getOrder();
     }
 
-    public List<String > getReqCode(String orderNo){
+    public List<String > getReqCode(String orderNo)throws FssException{
         return fuiouFtpColomFieldReadMapper.getReqCode(orderNo);
     }
 
@@ -93,12 +89,12 @@ public class FuiouFtpColomFieldService {
      * @param bidTitle
      * @param contractNo
      */
-    public void addColomField(FundAccountEntity fromEntity, FundAccountEntity toEntity, FundOrderEntity fundOrderEntity, BigDecimal amt, int type, String bidTitle, String contractNo){
+    public void addColomField(FundAccountEntity fromEntity, FundAccountEntity toEntity, FundOrderEntity fundOrderEntity, BigDecimal amt, int type, String bidTitle, String contractNo)throws FssException{
         FuiouFtpColomField field = this.addColomFieldByNotInsert(fromEntity,toEntity,fundOrderEntity,amt,type,bidTitle,contractNo);
         insert(field);
     }
 
-    public FuiouFtpColomField addColomFieldByNotInsert(FundAccountEntity fromEntity,FundAccountEntity toEntity,FundOrderEntity fundOrderEntity,BigDecimal amt,int type,String bidTitle,String contractNo){
+    public FuiouFtpColomField addColomFieldByNotInsert(FundAccountEntity fromEntity,FundAccountEntity toEntity,FundOrderEntity fundOrderEntity,BigDecimal amt,int type,String bidTitle,String contractNo)throws FssException{
         FuiouFtpColomField field = new FuiouFtpColomField();
         field.setFromAccountId(fromEntity.getId());
         field.setFromUserName(fromEntity.getUserName());
@@ -132,7 +128,7 @@ public class FuiouFtpColomFieldService {
     }
 
 
-    public void updateByFileSeqId(String fileSeq,String reqCode,String msg){
+    public void updateByFileSeqId(String fileSeq,String reqCode,String msg)throws FssException{
     	FuiouFtpColomField fuiouFtpColomField=new FuiouFtpColomField();
     	fuiouFtpColomField.setId(Long.valueOf(fileSeq));
     	fuiouFtpColomField.setReturnCode(reqCode);
@@ -148,8 +144,33 @@ public class FuiouFtpColomFieldService {
      * 批量插入
      * @param fuiyoulist
      */
-   public void saveOrUpdateAll(List<FuiouFtpColomField> fuiyoulist){
-	   fuiouFtpColomFieldWriteMapper.insertList(fuiyoulist);
+   public void saveOrUpdateAll(List<FuiouFtpColomField> fuiyoulist)throws FssException{
+	   for (FuiouFtpColomField fuiouFtpColomField : fuiyoulist) {
+		
+		   fuiouFtpColomFieldWriteMapper.insert(fuiouFtpColomField);
+	}
+   }
+   /**
+    * 
+    * author:jhz
+    * time:2016年4月14日
+    * function：批量修改
+    */
+   public void updateList(List<FuiouFtpColomField> fuiyoulist)throws FssException{
+	   for (FuiouFtpColomField fuiouFtpColomField : fuiyoulist) {
+		   fuiouFtpColomFieldWriteMapper.updateByPrimaryKeySelective(fuiouFtpColomField);
+	   }
+   }
+   /**
+    * 
+    * author:jhz
+    * time:2016年4月14日
+    * function：批量修改
+    */
+   public void updateCollection(Collection<FuiouFtpColomField> collection)throws FssException {
+	   for (FuiouFtpColomField fuiouFtpColomField : collection) {
+		   fuiouFtpColomFieldWriteMapper.updateByPrimaryKey(fuiouFtpColomField);
+	   }
    }
     
     

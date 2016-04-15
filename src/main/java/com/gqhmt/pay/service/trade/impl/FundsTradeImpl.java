@@ -23,6 +23,7 @@ import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -258,9 +259,11 @@ public class FundsTradeImpl  implements IFundsTrade {
      */
     @Override
     public FundOrderEntity transefer( Integer fromCusID, Integer fromType, Integer toCusID, Integer toType, BigDecimal amount, Integer orderType, Long busiId, int busiType) throws FssException {
-        FundAccountEntity fromEntity = this.getFundAccount(fromCusID, fromType);
+    	Integer string = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(fromType);
+    	FundAccountEntity fromEntity = this.getFundAccount(fromCusID, string);
         this.hasEnoughBanlance(fromEntity,amount);
-        FundAccountEntity toEntity = this.getFundAccount(toCusID, toType);
+        Integer to = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(toType);
+        FundAccountEntity toEntity = this.getFundAccount(toCusID, to);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType);
         //资金处理
         tradeRecordService.transfer(fromEntity,toEntity,amount,busiType,fundOrderEntity);
@@ -501,7 +504,7 @@ public class FundsTradeImpl  implements IFundsTrade {
      * 批量代付
      */
     @Override
-    public FundOrderEntity withdrawApplyNew(String accNo,String custID, int businessType, String contractNo, BigDecimal amount, Long busiId,int selletType) throws FssException {
+    public FundOrderEntity withdrawApplyNew(String accNo,String custID, Integer businessType, String contractNo, BigDecimal amount, Long busiId,int selletType) throws FssException {
     	FundOrderEntity fundOrderEntity=null;
     	if(accNo!=null &&!"".equals(accNo)){//账号不为空
     		FssAccountEntity fssAccountEntity  = this.fssAccountService.getFssAccountByAccNo(accNo);

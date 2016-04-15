@@ -12,10 +12,6 @@ import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.funds.architect.customer.entity.UserEntity;
-import com.gqhmt.util.StringUtils;
 
 import org.springframework.stereotype.Service;
 
@@ -41,7 +37,7 @@ public class FssCustomerService {
     @Resource
     private FssBankCardInfoWriteMapper fssBankCardInfoWriteMapper;
    
-    public List<FssCustomerEntity> findCustomerByParams(Map<String,String> map){
+    public List<FssCustomerEntity> findCustomerByParams(Map<String,String> map)throws FssException{
     	Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
 			String startTime = map.get("startTime");
@@ -86,14 +82,12 @@ public class FssCustomerService {
     }
     
     
-    public FssCustomerEntity getCustomerNameById(Long id){
+    public FssCustomerEntity getCustomerNameById(Long id)throws FssException{
     	return customerReadMapper.selectByPrimaryKey(id);
     }
     
-    public FssCustomerEntity getFssCustomerEntityByCertNo(String certNo){
-    	FssCustomerEntity fssCustomerEntity=new FssCustomerEntity();
-    	fssCustomerEntity.setCertNo(certNo);
-    	return customerReadMapper.selectOne(fssCustomerEntity);
+    public FssCustomerEntity getFssCustomerEntityByCertNo(String certNo)throws FssException{
+    	return customerReadMapper.selectByCertNo(certNo);
     }
     /**
      * 
@@ -101,10 +95,8 @@ public class FssCustomerService {
      * time:2016年3月28日
      * function：根据custNo得到用户对象
      */
-    public FssCustomerEntity getCustomerNameByCustNo(String custNo){
-    	FssCustomerEntity record=new FssCustomerEntity();
-    	record.setCustNo(custNo);
-		return customerReadMapper.selectOne(record);
+    public FssCustomerEntity getCustomerNameByCustNo(String custNo)throws FssException{
+		return customerReadMapper.selectByCustNo(custNo);
     }
     
     

@@ -1,5 +1,6 @@
 package com.gqhmt.quartz.service;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
@@ -45,13 +46,13 @@ public class FtpDownloadFileService {
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
 
-    public void downFile()  throws PayChannelNotSupports{
+    public void downFile()  throws NumberFormatException, FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         List<FuiouUploadFile> list = this.fuiouUploadFileService.list(2);
         for(FuiouUploadFile file:list){
             if(config.isConnection() == false){
                 file.setState(3);
-                fuiouUploadFileService.insert(file);
+                fuiouUploadFileService.update(file);
                 Map<String,FuiouFtpColomField> fields = this.fuiouFtpColomFieldService.getFuiouFtpColunm(Long.parseLong(file.getEntrustDate() + file.getNo()));
                 List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
                 Collection<FuiouFtpColomField> collection = fields.values();
@@ -63,7 +64,7 @@ public class FtpDownloadFileService {
                     field.setReturnMsg(returnMsg);
                     fuiouFtpColomFields.add(field);
                 }
-                fuiouFtpColomFieldService.saveOrUpdateAll((List)collection);
+                fuiouFtpColomFieldService.updateCollection(collection);
                 continue;
             }
             if(download(file)){
@@ -72,7 +73,7 @@ public class FtpDownloadFileService {
         }
     }
 
-    public boolean download(FuiouUploadFile file) throws PayChannelNotSupports{
+    public boolean download(FuiouUploadFile file) throws FssException{
         boolean isReject = downloadReject(file);
         if(isReject)  return true;      //确认是否获取到拒盘文件，处理拒盘结果
         boolean isReturn = downloadReturn(file);
@@ -89,8 +90,9 @@ public class FtpDownloadFileService {
      * 验证拒盘文件
      * @param file
      * @return  存在拒盘文件，true，不存在，false
+     * @throws FssException 
      */
-    private boolean downloadReject(FuiouUploadFile file)  throws PayChannelNotSupports{
+    private boolean downloadReject(FuiouUploadFile file)  throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         String url = (String)config.getValue("ftp.url.value");
         String port = (String)config.getValue("ftp.port.value");
@@ -109,7 +111,7 @@ public class FtpDownloadFileService {
 
         if(!flag)   return false;
         file.setState(5);
-        fuiouUploadFileService.insert(file);
+        fuiouUploadFileService.update(file);
         this.fuiouFtpColomFieldService.updateByFileSeqId(file.getEntrustDate() + file.getNo(), "9999","文件拒盘");
         return flag;
     }
@@ -118,8 +120,9 @@ public class FtpDownloadFileService {
      * ftp下载回盘文件，存在失败可能，失败重新下载
      * @param file
      * @return
+     * @throws FssException 
      */
-    public boolean downloadReturn(FuiouUploadFile file) throws PayChannelNotSupports{
+    public boolean downloadReturn(FuiouUploadFile file) throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         String url = (String)config.getValue("ftp.url.value");
         String port = (String)config.getValue("ftp.port.value");
@@ -135,15 +138,16 @@ public class FtpDownloadFileService {
         String fileName= filepath+"/"+file.getBusinessCode()+"_"+file.getEntrustDate()+"_"+file.getNo()+"_over.txt";
         flag = ftp.getFile("/return/" + file.getBusinessCode() + "_" + file.getEntrustDate() + "_" + file.getNo() + "_over.txt",fileName);
         file.setState(3);
-        fuiouUploadFileService.insert(file);
+        fuiouUploadFileService.update(file);
         return true;
     }
 
     /**
      * 对已下载回盘文件处理
      * @param file
+     * @throws FssException 
      */
-    private void parseFile(FuiouUploadFile file){
+    private void parseFile(FuiouUploadFile file) throws FssException{
         String path = getClassPath();
         File filepath  = new File(path+"/tmp/return");
         String fileName= filepath+"/"+file.getBusinessCode()+"_"+file.getEntrustDate()+"_"+file.getNo()+"_over.txt";
@@ -173,8 +177,10 @@ public class FtpDownloadFileService {
      * 结果处理，返回结果更新数据库
      * @param file
      * @param list
+     * @throws FssException 
+     * @throws NumberFormatException 
      */
-    private void parseFileResult(FuiouUploadFile file,List<String> list){
+    private void parseFileResult(FuiouUploadFile file,List<String> list) throws NumberFormatException, FssException{
         Map<String,FuiouFtpColomField> fields = this.fuiouFtpColomFieldService.getFuiouFtpColunm(Long.parseLong(file.getEntrustDate() + file.getNo()));
         if(fields == null || fields.size()==0){
             return;
@@ -203,7 +209,12 @@ public class FtpDownloadFileService {
             field.setReturnMsg(returnMsg);
             fuiouFtpColomFields.add(field);
         }
-        fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
+        try {
+			fuiouFtpColomFieldService.updateList(fuiouFtpColomFields);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 

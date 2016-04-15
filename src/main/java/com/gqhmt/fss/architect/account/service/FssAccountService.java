@@ -18,7 +18,6 @@ import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
 import com.gqhmt.fss.architect.customer.service.FssCustBankCardService;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +74,7 @@ public class FssAccountService {
     @Resource
 	private FssBankCardInfoWriteMapper fssBankCardInfoWriteMapper;
     
-    public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity){
+    public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity)throws FssException{
         return this.accountReadMapper.findCustomerAccountByParams(fssAccountEntity);
     }
 
@@ -203,7 +201,7 @@ public class FssAccountService {
      * time:2016年3月17日
      * function：根据acc_no查询账户
      */
-    public FssAccountEntity getFssAccountByAccNo(String accNo){
+    public FssAccountEntity getFssAccountByAccNo(String accNo)throws FssException{
     	return this.accountReadMapper.findAccountByAccNo(accNo);
     }
     
@@ -212,7 +210,7 @@ public class FssAccountService {
     	return this.accountReadMapper.findAccountByCustId(custId);
     }*/
     
-    public FssAccountEntity getFssAccountEntityByCustId(Long custId){
+    public FssAccountEntity getFssAccountEntityByCustId(Long custId)throws FssException{
     	FssAccountEntity fssAccountEntity=new FssAccountEntity();
     	fssAccountEntity.setCustId(custId);
     	return accountReadMapper.selectOne(fssAccountEntity);

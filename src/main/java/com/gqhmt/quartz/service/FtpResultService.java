@@ -42,8 +42,9 @@ public class FtpResultService {
 
     /**
      * 解析下载文件状态
+     * @throws FssException 
      */
-    public void parseDownloadResult(){
+    public void parseDownloadResult() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotDownload();
         if(list == null || list.size() == 0){
             return;
@@ -56,6 +57,7 @@ public class FtpResultService {
             }
             if(state.size() == 1 && (state.get(0) == 3 || state.get(0) == 5)){
                 fuiouFtpOrder.setDownloadStatus(4);
+                fuiouFtpOrderService.update(fuiouFtpOrder);
                 continue;
             }
 
@@ -66,8 +68,9 @@ public class FtpResultService {
 
     /**
      * 解析结果
+     * @throws FssException 
      */
-    public void parseResult(){
+    public void parseResult() throws FssException{
 
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotResultStatus();
         if(list == null || list.size() == 0){
@@ -83,9 +86,10 @@ public class FtpResultService {
     /**
      * 对单一订单执行结果处理
      * @param order
+     * @throws FssException 
      */
 
-    public void parseResult(FuiouFtpOrder order){
+    public void parseResult(FuiouFtpOrder order) throws FssException{
         System.out.println("fuiouFtp:parseResult:"+order.getOrderNo());
         List<String> reqCode  = fuiouFtpColomFieldService.getReqCode(order.getOrderNo());
         if(reqCode == null || reqCode.size() == 0){
@@ -151,8 +155,9 @@ public class FtpResultService {
      * 结果回调
      * @param orderEntity
      * @param fuiouFtpOrder
+     * @throws FssException 
      */
-    private void returnResult(FundOrderEntity orderEntity,FuiouFtpOrder fuiouFtpOrder){
+    private void returnResult(FundOrderEntity orderEntity,FuiouFtpOrder fuiouFtpOrder) throws FssException{
         int result = fuiouFtpOrder.getResult();
         if(result >1 && result<3){
 //            returnResult(orderEntity,fuiouFtpOrder);
@@ -200,7 +205,7 @@ public class FtpResultService {
         fuiouFtpOrderService.update(fuiouFtpOrder);
     }
 
-    public  void notReturnResult(){
+    public  void notReturnResult() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listNotReturnResult();
         if(list == null || list.size() == 0){
             return;

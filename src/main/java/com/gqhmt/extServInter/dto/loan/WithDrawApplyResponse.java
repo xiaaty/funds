@@ -33,7 +33,7 @@ public class WithDrawApplyResponse  extends Response {
 	private BigDecimal pay_amt;//放款（提现）金额
 	
 	
-	private Date  bespoke_date; //预约到账日期
+	private String  bespoke_date; //预约到账日期
 
 
 	public String getContract_id() {
@@ -76,12 +76,12 @@ public class WithDrawApplyResponse  extends Response {
 	}
 
 
-	public Date getBespoke_date() {
+	public String getBespoke_date() {
 		return bespoke_date;
 	}
 
 
-	public void setBespoke_date(Date date) {
+	public void setBespoke_date(String date) {
 		this.bespoke_date = date;
 	}
 

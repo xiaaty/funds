@@ -30,7 +30,7 @@ public class UploadFileJob extends SupperJob{
     @Resource
     private FtpUploadService ftpUploadService;
 
-    //    @Scheduled(cron="0  0/5 7-23  * * * ")
+//        @Scheduled(cron="0/23 * 7-23  * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("富友ftp批量处理 生成及上传交易文件 跑批");
         if(!isIp("upload")){
