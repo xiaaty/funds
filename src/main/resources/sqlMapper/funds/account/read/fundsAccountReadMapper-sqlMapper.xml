@@ -91,4 +91,29 @@
 		where cust_id = ${cust_no} and busi_type = ${busi_type}
 	</select>
 	
+	<select id="selectFundAccountEntity" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		SELECT
+		  	 id,
+			 cust_id custId,
+			 amount,
+			 freeze_amount freezeAmount,
+			 account_type accountType,
+			 busi_type busiType,
+			 parent_id parentId,
+			 CREATE_TIME createTime,
+			 MODIFY_TIME modifyTime,
+			 account_no accountNo,
+			 user_id userId,
+			 has_Third_Account hasThirdAccount,
+			 user_name userName,
+			 cust_name custName,
+			 settle_type settleType,
+			 is_change_bank_card ishangeBankCard
+		  FROM
+			 t_gq_fund_account
+		WHERE account_no = #{accNo}
+	</select>
+	
+	
+	
 </mapper>

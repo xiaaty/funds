@@ -144,8 +144,8 @@
                                     	<thead>
                                         <tr>
                                             <td>编号</td>
-                                            <td>银行名称</td>
-                                            <td>银行短名称</td>
+                                            <td  align="left">银行名称</td>
+                                            <td  align="left">银行短名称</td>
                                             <td>银行代码</td>
                                             <td>银行图标</td>
                                             <td>创建时间</td>
@@ -158,8 +158,8 @@
                                         <c:forEach items="${page.list}" var="bankinfo">
                                                 <tr>
                                                   	<td>${bankinfo.id}</td>
-                                                    <td>${bankinfo.bankName}</td>
-                                                    <td>${bankinfo.sortName}</td>
+                                                    <td  align="left">${bankinfo.bankName}</td>
+                                                    <td  align="left">${bankinfo.sortName}</td>
                                                     <td>${bankinfo.bankCode}</td>
                                                     <td><img src="${contextPath}${bankinfo.bankIcon}"/></td>
                                                     <td><fmt:formatDate value="${bankinfo.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

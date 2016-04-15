@@ -85,4 +85,8 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	public FundAccountCustomerBean fundAccountCustomerById(Integer withHoldId);
 	
 
+	public FundAccountEntity selectFundAccountEntity(@Param("accNo") String accNo);
+	
+	
+	
 }

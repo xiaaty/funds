@@ -1043,7 +1043,7 @@ public class CustomerInfoService {
 				customerInfoWriteMapper.insertSelective(customerInfoEntity);
 			} catch (Exception e) {
 				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
+				throw new FssException("90002024");
 			}
 			//2.创建用户         t_gq_user	
 			UserEntity userEntity;
@@ -1052,7 +1052,7 @@ public class CustomerInfoService {
 				gqUserWriteMapper.insertSelective(userEntity);
 			} catch (Exception e) {
 				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
+				throw new FssException("90002025");
 			}
 			//3.创建银行卡信息     t_gq_bank_info
 			BankCardInfoEntity bankCardInfoEntity;
@@ -1061,7 +1061,7 @@ public class CustomerInfoService {
 				bankCardinfoService.insert(bankCardInfoEntity);
 			} catch (Exception e) {
 				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
+				throw new FssException("90002026");
 			}
 		return customerInfoEntity;
 	}

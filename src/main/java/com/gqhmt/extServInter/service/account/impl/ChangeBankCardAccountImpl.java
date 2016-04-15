@@ -42,7 +42,7 @@ public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
 
 			fundsAccountImpl.changeCard((ChangeBankCardDto) dto);
 
-			response.setResp_code("00000000");
+			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
