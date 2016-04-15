@@ -60,7 +60,7 @@ public interface IFundsTrade {
      * @param withholdDto
      * @return
      */
-    public String withholding(WithholdDto withholdDto)throws FssException;
+    public boolean withholding(WithholdDto withholdDto)throws FssException;
 
     /**
      *线上提现，目前已直连富友代付接口，未来改为异步，存入数据库，定时跑批提现
@@ -68,7 +68,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public String withdraw(WithdrawDto withdrawDto) throws FssException;
+    public boolean withdraw(WithdrawDto withdrawDto) throws FssException;
 
     /**
      * 代扣申请

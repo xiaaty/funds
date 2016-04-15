@@ -98,7 +98,7 @@ public class FssAssetApi {
      * time:2016年3月1日
      * function：账户资金流水查询
      */
-    @RequestMapping(value = "/queryFundSequence",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryFundSequence",method = {RequestMethod.POST,RequestMethod.GET})
     public Object queryFundSequence(FundSequenceDto tradflowDto){
     	Response response= new Response();
     	try {

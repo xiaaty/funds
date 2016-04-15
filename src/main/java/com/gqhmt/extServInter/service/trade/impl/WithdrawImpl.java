@@ -5,7 +5,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;
-import com.gqhmt.extServInter.dto.trade.WithholdResponse;
 import com.gqhmt.extServInter.service.trade.IWithdraw;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
@@ -36,10 +35,9 @@ public class WithdrawImpl implements IWithdraw{
 	
     @Override
     public Response execute(SuperDto dto) {
-    	WithholdResponse response = new WithholdResponse();
+    	Response response = new Response();
     	try {
-    		String orderNo=fundsTradeImpl.withdraw((WithdrawDto)dto);
-    		response.setOrderNo(orderNo);
+    		fundsTradeImpl.withdraw((WithdrawDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
