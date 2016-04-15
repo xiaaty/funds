@@ -167,8 +167,6 @@ public class FssTradeApi {
     public Object withdraw(WithdrawDto withdrawDto){
     	Response response=new Response();
     	try {
-//            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
-//            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
     		response = withdrawImpl.execute(withdrawDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);
@@ -180,14 +178,12 @@ public class FssTradeApi {
      * 
      * author:jhz
      * time:2016年2月22日
-     * function：代扣
+     * function：代扣充值
      */
     @RequestMapping(value = "/recharge",method = {RequestMethod.POST,RequestMethod.GET})
     public Object withhold(WithholdDto withholdDto){
     	Response response=new Response();
     	try {
-//            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
-//            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
     		response = rechargeImpl.execute(withholdDto);
     	} catch (Exception e) {
     		LogUtil.error(this.getClass(), e);

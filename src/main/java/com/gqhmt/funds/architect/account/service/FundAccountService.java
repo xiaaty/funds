@@ -496,9 +496,7 @@ public class FundAccountService {
 	    
 	    
 	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{
-	    	FundAccountEntity fundAccountEntity=new FundAccountEntity();
-	    	fundAccountEntity.setAccountNo(accNo);
-	        return fundsAccountReadMapper.selectOne(fundAccountEntity);
+	        return fundsAccountReadMapper.selectFundAccountEntity(accNo);
 	    }
 }
 

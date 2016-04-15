@@ -128,7 +128,7 @@ public class Application {
         if(key == null || "".equals(key) || "null".equals(key)){
             return "无";
         }
-        if("00000000".equals(key)){
+        if("00000000".equals(key) || "0000".equals(key) ){
             return "成功";
         }
         String value = this.dict.get(key);
@@ -280,6 +280,13 @@ public class Application {
             throw new FssException("90002012");
         }
         return bankEntity.getBankName();
+    }
+    public String getBankShortName(String bankCode) throws FssException {
+    	BankEntity bankEntity = bankEntitymap.get(bankCode);
+    	if(bankEntity == null){
+    		throw new FssException("90002012");
+    	}
+    	return bankEntity.getSortName();
     }
 //    =============================银行列表初始化及应用=====================end===========================
     

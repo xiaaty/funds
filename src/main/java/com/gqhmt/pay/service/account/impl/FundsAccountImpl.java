@@ -139,7 +139,7 @@ public class FundsAccountImpl implements IFundsAccount {
 		String cardNo = changeBankCardDto.getBank_card();
 		String bankCd = changeBankCardDto.getBank_id();
 		String cityId = changeBankCardDto.getCity_id();
-		String fileName = changeBankCardDto.getImage();
+		String fileName = changeBankCardDto.getFile_path();
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
 		boolean changeCard = paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankCd,cityId,fileName);
 		if(!changeCard) throw new FssException("90002001");
@@ -218,12 +218,12 @@ public class FundsAccountImpl implements IFundsAccount {
 		 	if(fssAccountEntity==null) throw new FssException("90002001");
 		    customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());//查询该账户客户信息
 		 	if(customerInfoEntity==null) throw new FssException("90002007");
- 			//通过客户表中的bankid查询该客户要变更的银行卡信息
- 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankId(customerInfoEntity.getBankId());
+ 			//通过客户表中的bank_card查询该客户要变更的银行卡信息
+ 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankNo(cardChangeDto.getBank_card());
  			if(bankCardInfoEntity==null) throw new FssException("90004027");
-			try {//将变更银行卡信息插入到银行卡变更表
-			FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "",Application.getInstance().getFourCode(cardChangeDto.getCity_id()) , cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
-			fssChangeCardService.insert(fssChangeCardEntity);
+ 			try {//将变更银行卡信息插入到银行卡变更表
+				FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "",Application.getInstance().getSixCode(cardChangeDto.getCity_id()) , cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
+				fssChangeCardService.insert(fssChangeCardEntity);
 			//银行卡变更记录插入成功之后，进入跑批处理(后续处理)
 			} catch (FssException e) {
 			throw new FssException("90004001");
@@ -245,7 +245,7 @@ public class FundsAccountImpl implements IFundsAccount {
 	    }
 	    
 	    /**
-	     * app开户
+	     * app开户、冠E通前台开户
 	     */
 		@Override
 		public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException {
@@ -280,15 +280,15 @@ public class FundsAccountImpl implements IFundsAccount {
 				primaryAccount.setHasThirdAccount(2);
 				primaryAccount.setCustName(customerInfoEntity.getCustomerName());
 				fundAccountService.update(primaryAccount);
-				//跟新所有与该cust_id相同的账户名称
-				fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
-				customerInfoService.updateCustomer(cusId, createAccountDto.getName(), createAccountDto.getCert_no(),createAccountDto.getBank_id());
-				//创建银行卡信息
-				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
-				if(bankCardInfoEntity==null){
-					bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
-				}
-			}else{//已开通第三方账户
+			}
+			//跟新所有与该cust_id相同的账户名称
+			fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
+			customerInfoService.updateCustomer(cusId, createAccountDto.getName(), createAccountDto.getCert_no(),createAccountDto.getBank_id());
+			//创建银行卡信息
+			bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
+			if(bankCardInfoEntity==null){
+				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
+			}else{
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			}
 			return bankCardInfoEntity.getId();

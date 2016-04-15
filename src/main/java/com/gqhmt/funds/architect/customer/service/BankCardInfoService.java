@@ -468,9 +468,9 @@ public class BankCardInfoService {
 		
 	}
 	
-	public BankCardInfoEntity getBankCardByBankId(Integer bankid){
+	public BankCardInfoEntity getBankCardByBankNo(String CardNo){
 		BankCardInfoEntity  bankCardInfo=new BankCardInfoEntity();
-		bankCardInfo.setBankNo(bankid.toString());
+		bankCardInfo.setBankNo(CardNo);
 		bankCardinfoReadMapper.selectOne(bankCardInfo);
 		return bankCardInfo;
 	}
@@ -520,9 +520,10 @@ public class BankCardInfoService {
 	 	 */
 		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity,FundAccountEntity primaryAccount) throws FssException{
 			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+			String bankCode=customerInfoEntity.getParentBankCode();
 			bankCardInfoEntity.setCustId(Integer.valueOf(primaryAccount.getCustId().toString()));
-			bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(customerInfoEntity.getParentBankCode()));
-			bankCardInfoEntity.setBankSortName(Application.getInstance().getBankName(customerInfoEntity.getParentBankCode()));
+			bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(bankCode));
+			bankCardInfoEntity.setBankSortName(Application.getInstance().getBankShortName(bankCode));
 			bankCardInfoEntity.setBankNo(customerInfoEntity.getBankNo());
 			bankCardInfoEntity.setIsPersonalCard(1);
 			bankCardInfoEntity.setCertNo(customerInfoEntity.getCertNo());
