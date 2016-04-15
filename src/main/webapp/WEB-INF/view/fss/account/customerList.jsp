@@ -147,7 +147,7 @@
                                         <thead>
                                         <tr>
                                               <td>客户编号</td>
-                                              <td>客户姓名</td>
+                                              <td align="left">客户姓名</td>
                                               <td>客户手机号</td>
                                               <td>证件类型</td>
                                               <td>证件号码</td>
@@ -161,7 +161,7 @@
                                              <c:forEach items="${page.list}" var="customer">
                                                 <tr>
                                                     <td>${customer.custNo}</td>
-                                                    <td>${customer.name}</td>
+                                                    <td  align="left">${customer.name}</td>
                                                     <td><fss:fmtData value="${customer.mobile}"/></td>
                                                     <td>${customer.certType==1?"身份证":"护照"}</td>
                                                     <td><fss:fmtData value="${customer.certNo}"/></td>
