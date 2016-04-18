@@ -113,6 +113,11 @@
 			 t_gq_fund_account
 		WHERE account_no = #{accNo}
 	</select>
+
+	<select id="getFundsAccountByBusiType" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		<include refid="fieldSql" />
+		where busi_type = #{busi_type}
+	</select>
 	
 	
 	

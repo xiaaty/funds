@@ -81,6 +81,12 @@ public class FssAccountEntity implements Serializable {
     
     @Column(name="cust_id")
     private Long custId;              // 跟t_gq_custinfo_info表中的id对应
+
+	@Column(name="third_acc_no")
+	private String thirdAccNo ;			//第三方账户编号
+
+	@Column(name = "trade_type")
+	private String tradeType;
     
 	public Long getId() {
 		return id;
@@ -217,5 +223,21 @@ public class FssAccountEntity implements Serializable {
 
 	public void setCustId(Long custId) {
 		this.custId = custId;
+	}
+
+	public String getThirdAccNo() {
+		return thirdAccNo;
+	}
+
+	public void setThirdAccNo(String thirdAccNo) {
+		this.thirdAccNo = thirdAccNo;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
 	}
 }

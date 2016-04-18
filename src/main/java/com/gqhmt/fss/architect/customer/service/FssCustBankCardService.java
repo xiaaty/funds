@@ -1,18 +1,19 @@
 package com.gqhmt.fss.architect.customer.service;
 
-import java.util.List;
-import javax.annotation.Resource;
-import org.springframework.stereotype.Service;
-
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.bean.CustomerAndUser;
 import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+import com.gqhmt.fss.architect.customer.mapper.read.FssBankCardInfoReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.fss.architect.customer.service.FssCustBankCardService
@@ -32,13 +33,20 @@ import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
  */
 @Service
 public class FssCustBankCardService {
+
 	@Resource
-	private FssCustomerReadMapper fssCustomerReadMapper;
+	private FssCustomerReadMapper fssCustomerReadMapper ;
+
 	@Resource
 	private FssBankCardInfoWriteMapper fssBankCardInfoWriteMapper;
+
+	@Resource
+	private FssBankCardInfoReadMapper fssBankCardInfoReadMapper;
+
+
 	
 	/**
-	 * 
+	 *
 	 * author:kyl
 	 * time:2016年2月16日
 	 * function：得到银行卡和用户信息列表
@@ -57,47 +65,37 @@ public class FssCustBankCardService {
 		// TODO Auto-generated method stub
 		return fssCustomerReadMapper.findCustomerAndUser(id);
 	}
-	
+
+
 	/**
-	 * 创建本地账户银行卡信息
-	 * @return fssbankcardInfo
-	 */
-/*	public FssCustBankCardEntity createFssBankCardInfo(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity) throws FssException{
-		FssCustBankCardEntity  fssbankcardInfo;
-		try {
-			fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class,dto);
-			fssbankcardInfo.setCust_no(String.valueOf(fssCustomerEntity.getId()));
-			fssbankcardInfo.setCertType(fssCustomerEntity.getCertType());
-			fssbankcardInfo.setCertNo(dto.getCert_no());
-			fssbankcardInfo.setBankId(Integer.valueOf(dto.getBank_id()));
-			fssbankcardInfo.setCardNo(dto.getBank_card());
-			fssbankcardInfo.setArea(Integer.valueOf(Application.getInstance().getFourCode(dto.getCity_id())));
-			fssbankcardInfo.setBankCardNo(dto.getBank_card());
-			fssbankcardInfo.setMchnChild(dto.getMchn());
-			fssbankcardInfo.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-			fssBankCardInfoWriteMapper.insertSelective(fssbankcardInfo);
-		} catch (Exception e) {
-			 LogUtil.error(this.getClass(),e);
-	         //生成错误码
-	         throw  new FssException("91009804");
-		}
-		return fssbankcardInfo;
-	}
-	*/
-	
-	public FssCustBankCardEntity createFssBankCardEntity(CreateLoanAccountDto dto,FssCustomerEntity fssCustomerEntity) throws Exception{
-			FssCustBankCardEntity  fssbankcardInfo=null;
-			fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class,dto);
+	 *
+	 * @param bankType			银行类型
+	 * @param bankNo			银行卡号
+	 * @param area				所属地区
+	 * @param mchn				商户号
+	 * @param fssCustomerEntity 客户实例
+	 * @return
+     * @throws FssException
+     */
+	public FssCustBankCardEntity createFssBankCardEntity(String bankType,String bankNo,String area,String mchn,FssCustomerEntity fssCustomerEntity) throws FssException{
+			FssCustBankCardEntity fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class);
 			fssbankcardInfo.setCust_no(String.valueOf(fssCustomerEntity.getCustNo()));
 			fssbankcardInfo.setCertType(fssCustomerEntity.getCertType());
-			fssbankcardInfo.setCertNo(dto.getCert_no());
-			fssbankcardInfo.setBankId(Integer.valueOf(dto.getBank_id()));
-			fssbankcardInfo.setCardNo(dto.getBank_card());
-			fssbankcardInfo.setArea(Integer.valueOf(dto.getCity_id()));
-			fssbankcardInfo.setBankCardNo(dto.getBank_card());
-			fssbankcardInfo.setMchnChild(dto.getMchn());
-			fssbankcardInfo.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-		return fssbankcardInfo;
+			fssbankcardInfo.setCertNo(fssCustomerEntity.getCertNo());
+
+			fssbankcardInfo.setBankType(bankType.length() == 8 ? bankType : bankType.length() == 3? "97030"+bankType : "9703"+bankType );
+			fssbankcardInfo.setCardNo(bankNo);
+			fssbankcardInfo.setArea(area.length() == 8 ? area : area.length() == 6 ? "95" + area : Application.getInstance().getEightCode( area)   );
+
+			fssbankcardInfo.setAreaThird(area.length() == 6 ? Application.getInstance().getFourCode(area):area);
+			fssbankcardInfo.setBankTypeThird(fssbankcardInfo.getBankType().substring(4));
+
+			fssbankcardInfo.setBankCardNo(CommonUtil.getBankCardNo());
+			fssbankcardInfo.setMchnChild(mchn);
+			fssbankcardInfo.setMchnParent(Application.getInstance().getParentMchn(mchn));
+
+			this.fssBankCardInfoWriteMapper.insertSelective(fssbankcardInfo);
+			return fssbankcardInfo;
 	}
 	
 	

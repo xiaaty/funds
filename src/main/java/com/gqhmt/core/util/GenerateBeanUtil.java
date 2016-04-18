@@ -1,7 +1,6 @@
 package com.gqhmt.core.util;
 
 
-import com.fasterxml.jackson.databind.ser.std.ClassSerializer;
 import com.gqhmt.annotations.AutoDate;
 import com.gqhmt.annotations.AutoDateType;
 import com.gqhmt.annotations.AutoMapping;
@@ -52,7 +51,7 @@ public class GenerateBeanUtil {
      * @return
      * @throws Exception
      */
-    private static <T> T GenerateClassInstance(Class<T> tClass) throws Exception {
+    public static <T> T GenerateClassInstance(Class<T> tClass) throws FssException {
         try {
             T t = tClass.newInstance();
             List<Field> fields = getFields(tClass);
@@ -67,7 +66,7 @@ public class GenerateBeanUtil {
             LogUtil.error(GenerateBeanUtil.class,e);
         }
 
-        throw new Exception("Don't generate instance ");
+        throw new FssException("Don't generate instance ");
     }
 
     /**

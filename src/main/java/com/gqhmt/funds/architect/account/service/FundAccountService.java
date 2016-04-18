@@ -3,15 +3,15 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
-import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.exception.NeedSMSValidException;
@@ -20,9 +20,9 @@ import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.StringUtils;
-import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -498,5 +498,9 @@ public class FundAccountService {
 	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{
 	        return fundsAccountReadMapper.selectFundAccountEntity(accNo);
 	    }
+
+	public List<FundAccountEntity> getFundsAccountByBusiType( String busi_type){
+		return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);
+	}
 }
 
