@@ -2,6 +2,7 @@ package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
@@ -17,6 +18,7 @@ import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.pay.service.loan.ILoan;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import com.gqhmt.pay.service.cost.impl.CostImpl;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.impl.LoanImpl
@@ -49,6 +51,8 @@ public class LoanImpl implements ILoan {
 	private FssAccountService fssAccountService;
 	@Resource
 	private FssCustomerService fssCustomerService;
+	@Resource
+	private CostImpl costImpl;
 	
 	/**
 	 * 借款系统开户
@@ -101,9 +105,15 @@ public class LoanImpl implements ILoan {
      */
 	@Override
 	public boolean marginSendBack(MarginDto dto) throws FssException {
+		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
+		try {
+			costImpl.cost("10990006", fssAccountByAccNo.getCustId(), GlobalConstants.TRADETYPE_ACCOUNT_MAPPING.get(dto.getTrade_type()), dto.getRefund_amt(),null , Integer.parseInt(dto.getTrade_type()));
+			return true;
+		} catch (Exception e) { 
+			LogUtil.info(this.getClass(), e.getMessage());
+			return false;
+		}
 		
-		
-		return true;
 	}
   
 	}

@@ -20,6 +20,7 @@ import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.StringUtils;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
@@ -71,7 +72,6 @@ public class FundAccountService {
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
-    
     public void delete(Long id) {
     	fundAccountWriteMapper.deleteByPrimaryKey(id);
     }
@@ -498,5 +498,27 @@ public class FundAccountService {
 	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{
 	        return fundsAccountReadMapper.selectFundAccountEntity(accNo);
 	    }
+		/**
+		 * 获取其他账户信息
+		 * 
+		 * @param cusID
+		 * @param type
+		 * @return
+		 * @throws FssException 
+		 */
+		public final FundAccountEntity getFundAccount(Long cusID, int type, boolean isNull) throws CommandParmException, FssException {
+			FundAccountEntity entity = null;
+			if (cusID < 100) {
+				entity = this.getFundsAccount(cusID, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+			} else {
+				entity = this.getFundAccount(cusID, type);
+			}
+			if (entity == null && isNull) {
+				throw new FssException("" + GlobalConstants.accountType.get(type) + "不存在");
+			}
+			return entity;
+		}
+		
+		  
 }
 
