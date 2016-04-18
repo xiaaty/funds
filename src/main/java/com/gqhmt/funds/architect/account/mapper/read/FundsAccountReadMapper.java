@@ -86,7 +86,10 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	
 
 	public FundAccountEntity selectFundAccountEntity(@Param("accNo") String accNo);
-	
+
+	public List<FundAccountEntity> getFundsAccountByBusiType(@Param("busi_type") String busi_type);
+
+
 	
 	
 }

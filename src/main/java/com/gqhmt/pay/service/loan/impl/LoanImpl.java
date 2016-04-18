@@ -66,32 +66,25 @@ public class LoanImpl implements ILoan {
     	 * 放款(纯线下) ：11090003
     	 * 还款代扣（纯线下）：11093002
     	 * 入账清结算（纯线下）：11099002
-    	 */    	
-    	if(!dto.getTrade_type().equals("11020011")){//根据交易类型判断是否为线上或线下
-    		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
-    		if(customerInfoEntity==null){//不存在就创建旧版客户信息
-    			customerInfoEntity=customerInfoService.createLoanAccount(dto);
-    			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
-    			customerInfoEntity.setParentBankCode(dto.getBank_id());
-    			customerInfoEntity.setBankLongName("");
-    			customerInfoEntity.setBankNo(dto.getBank_card());
-    		}
-    		try {
+    	 */
+
+		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
+		if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
+			customerInfoEntity=customerInfoService.createLoanAccount(dto);
+			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
+			customerInfoEntity.setParentBankCode(dto.getBank_id());
+			customerInfoEntity.setBankLongName("");
+			customerInfoEntity.setBankNo(dto.getBank_card());
+			try {
 				fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
 			} catch (FssException e) {
 				LogUtil.error(this.getClass(), e);
 				throw new FssException("91004013");
 			}
-    		custId=customerInfoEntity.getId();
-		}else{//纯线下的就不在旧版里创建客户信息、用户信息和银行卡信息，而在新版账户创建这些信息
-			fssCustomerEntity=fssCustomerService.getFssCustomerEntityByCertNo(dto.getCert_no());
-			if(fssCustomerEntity==null){
-				fssCustomerEntity=fssCustomerService.createFssAccountInfo(dto);
-				custId=fssCustomerEntity.getId();
-			}
 		}
+		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
-    	fssAccount=fssAccountService.createFssAccountEntity(dto, custId);
+    	fssAccount=fssAccountService.createAccount(dto, custId);
     	accNo=fssAccount.getAccNo();
     	return accNo;
     }
