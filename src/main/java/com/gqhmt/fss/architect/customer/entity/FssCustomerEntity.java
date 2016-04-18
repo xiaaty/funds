@@ -25,33 +25,33 @@ import java.util.Date;
 public class FssCustomerEntity implements Serializable{
 
     @Id
-    @Column(name="id")
+    @Column(name="id",updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                             // bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
 
-    @Column(name="name")
+    @Column(name="name",updatable = false)
     private String name;                                         // varchar(45) DEFAULT NULL COMMENT '客户姓名',
 
-    @Column(name="mobile")
+    @Column(name="mobile",updatable = false)
     private String mobile;                                       //` varchar(45) DEFAULT NULL COMMENT '客户手机号',
 
-    @Column(name="cert_type")
+    @Column(name="cert_type",updatable = false)
     private Integer certType;                                    // varchar(45) DEFAULT NULL COMMENT '证件类型，1身份证',
 
 
-    @Column(name="cert_no")
+    @Column(name="cert_no",updatable = false)
     private String certNo;                                      // varchar(45) DEFAULT NULL COMMENT '证件号码',
 
-    @Column(name="user_id")
+    @Column(name="user_id",updatable = false)
     private String userId;                                      // bigint(20) DEFAULT NULL COMMENT '冠e通用户表id',
 
-    @Column(name="create_time")
+    @Column(name="create_time",updatable = false)
     private Date createTime;                                    // varchar(45) DEFAULT NULL COMMENT '创建时间',
 
     @Column(name="modify_time")
     private Date modifyTime;                                    // varchar(45) DEFAULT NULL COMMENT '最后修改时间',
 
-    @Column(name="cust_no")
+    @Column(name="cust_no",updatable = false)
     private String custNo;                                      // varchar(45) DEFAULT NULL COMMENT '客户编号唯一',
 
     @Column(name="user_no")
@@ -66,10 +66,10 @@ public class FssCustomerEntity implements Serializable{
     @Column(name="modify_user_id")
     private Long modifyUserId;                                 // bigint(20) DEFAULT NULL,
 
-    @Column(name="mchn_parent")
+    @Column(name="mchn_parent",updatable = false)
     private String mchnParent;                             // varchar(45) DEFAULT NULL COMMENT '主商户号',
 
-    @Column(name="mchn_child")
+    @Column(name="mchn_child",updatable = false)
     private String mchnChild;                                  // varchar(45) DEFAULT NULL COMMENT '子商户号',
     
     @Column(name="cust_id")

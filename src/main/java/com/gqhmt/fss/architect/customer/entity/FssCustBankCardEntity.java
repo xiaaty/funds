@@ -34,8 +34,8 @@ public class FssCustBankCardEntity {
     @Column(name="cert_no")
     private String certNo;                             // varchar(45) NOT NULL COMMENT '证件号码',
 
-    @Column(name="bank_id")
-    private Integer bankId;                            // int(11) NOT NULL COMMENT '所属银行',
+    @Column(name="bank_type")
+    private String bankType;                            // int(11) NOT NULL COMMENT '所属银行',
 
     @Column(name="card_no")
     private String cardNo;                             ///varchar(45) NOT NULL COMMENT '银行卡号',
@@ -44,13 +44,13 @@ public class FssCustBankCardEntity {
     private String bankArea;                           // varchar(45) DEFAULT NULL COMMENT '开户支行',
 
     @Column(name = "area")
-    private Integer area;                               // int(11) DEFAULT NULL COMMENT '开户地区',
+    private String area;                               // int(11) DEFAULT NULL COMMENT '本地开户地区',
 
     @Column(name="user_no")
     private String userNo;                             // varchar(45) DEFAULT NULL COMMENT '用户编号，系统唯一，不可更改',
 
-    @Column(name = "bank_id_third")
-    private String bankIdThird;                       // varchar(45) DEFAULT NULL COMMENT '第三方银行编码',
+    @Column(name = "bank_type_third")
+    private String bankTypeThird;                       // varchar(45) DEFAULT NULL COMMENT '第三方银行编码',
 
     @Column(name="area_third")
     private String  areaThird;                         // varchar(45) DEFAULT NULL COMMENT '第三方 地区码',
@@ -96,12 +96,12 @@ public class FssCustBankCardEntity {
         this.certNo = certNo;
     }
 
-    public Integer getBankId() {
-        return bankId;
+    public String getBankType() {
+        return bankType;
     }
 
-    public void setBankId(Integer bankId) {
-        this.bankId = bankId;
+    public void setBankType(String bankType) {
+        this.bankType = bankType;
     }
 
     public String getCardNo() {
@@ -120,11 +120,11 @@ public class FssCustBankCardEntity {
         this.bankArea = bankArea;
     }
 
-    public Integer getArea() {
+    public String getArea() {
         return area;
     }
 
-    public void setArea(Integer area) {
+    public void setArea(String area) {
         this.area = area;
     }
 
@@ -136,12 +136,12 @@ public class FssCustBankCardEntity {
         this.userNo = userNo;
     }
 
-    public String getBankIdThird() {
-        return bankIdThird;
+    public String getBankTypeThird() {
+        return bankTypeThird;
     }
 
-    public void setBankIdThird(String bankIdThird) {
-        this.bankIdThird = bankIdThird;
+    public void setBankTypeThird(String bankTypeThird) {
+        this.bankTypeThird = bankTypeThird;
     }
 
     public String getAreaThird() {
