@@ -83,6 +83,7 @@
                                                                 <input type="text" name="customerName" value="${accMap.customerName}">
                                                             </label>
                                                         </td>
+                                                        <td></td>
                                                      	<td class="tr">创建日期：</td>
 			                                             <td colspan="3">
 				                                                <section class="fl">

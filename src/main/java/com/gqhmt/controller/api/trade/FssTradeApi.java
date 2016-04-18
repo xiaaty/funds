@@ -89,7 +89,7 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：web提现订单生成
      */
-    @RequestMapping(value = "/withdrawOrder",method = RequestMethod.POST)
+    @RequestMapping(value = "/withdrawOrder",method = {RequestMethod.POST,RequestMethod.GET})
     public Object orderWithdrawApply(WithdrawOrderDto withdrawOrderDto){
     	Response response=new Response();
     	try {
@@ -108,7 +108,7 @@ public class FssTradeApi {
      * time:2016年2月22日
      * function：web代扣订单生成
      */
-    @RequestMapping(value = "/rechargeOrder",method = RequestMethod.POST)
+    @RequestMapping(value = "/rechargeOrder",method = {RequestMethod.POST,RequestMethod.GET})
     public Object orderWithholdApply(RechargeOrderDto rechargeOrderDto){
     	Response response=new Response();
     	try {
@@ -129,7 +129,7 @@ public class FssTradeApi {
 	 * time:2016年2月27日
 	 * function：PC端网银充值成功入账
 	 */
-	@RequestMapping(value = "/rechargeCallback",method = RequestMethod.POST)
+	@RequestMapping(value = "/rechargeCallback",method = {RequestMethod.POST,RequestMethod.GET})
 	public Object rechargeSuccess(RechargeSuccessDto rechargeSuccessDto){
 		Response response=new Response();
 		try {
@@ -146,7 +146,7 @@ public class FssTradeApi {
 	 * time:2016年2月27日
 	 * function：PC端提现成功入账
 	 */
-	@RequestMapping(value = "/withdrawCallback",method = RequestMethod.POST)
+	@RequestMapping(value = "/withdrawCallback",method = {RequestMethod.POST,RequestMethod.GET})
 	public Object freeze(WithdrawSuccessDto withdrawSuccessDto){
 		Response response=new Response();
 		try {
