@@ -32,13 +32,10 @@ public class CreateLoanAccountDto extends SuperDto {
     @APIValidNull(errorCode = "90002011")
     private String name;			//客户姓名
 
-    @APIValidNull(errorCode = "90002012")
     private String bank_id;			//银行类型
 
-    @APIValidNull(errorCode = "90002013")
     private String bank_card;		//银行卡号
 
-    @APIValidNull(errorCode = "90002014")
     private String city_id;			//开户地区
 
     public String getMobile() {
