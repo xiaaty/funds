@@ -24,6 +24,8 @@ public class WebOrderResponse extends Response {
 
     private String mchnt;
 
+    private String username;
+    
     public String getOrder_no() {
         return order_no;
     }
@@ -40,6 +42,12 @@ public class WebOrderResponse extends Response {
         this.mchnt = mchnt;
     }
 
+	public String getUsername() {
+		return username;
+	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 }
