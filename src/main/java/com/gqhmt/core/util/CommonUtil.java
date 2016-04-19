@@ -46,6 +46,8 @@ public class CommonUtil {
         return commonUtil.executeTradeApplyNo(tradeType);
     }
 
+    public static String getBankCardNo(){return commonUtil.executeBankCardNo();}
+
     public  String  executeAcconutNo(String tradeType){
         StringBuffer acc_no= new StringBuffer();
         acc_no.append(GlobalConstants.ACCOUNT_TYPE_MAPPING.get(tradeType));
@@ -83,6 +85,15 @@ public class CommonUtil {
         return  orderNo.toString();
     }
 
+
+    public String executeBankCardNo(){
+        StringBuffer custNo= new StringBuffer();
+        custNo.append("BC");
+        custNo.append(this.getRandom(4));
+        custNo.append(this.getRandom(8));
+        custNo.append(this.getRandom(4));
+        return  custNo.toString();
+    }
 
 
 

@@ -87,7 +87,7 @@
                                                             <td align="left">业务编号：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                <input type="text" maxlength="50" readonly="readonly" name="contractId" value="${tradeapply.contractId}" style="width:256px;" />
+                                                                <input type="text" maxlength="50" readonly="readonly" name="businessNo" value="${tradeapply.businessNo}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -95,7 +95,7 @@
                                                             <td align="left">金额：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                <input type="text" maxlength="50" readonly="readonly" name="tradeAmount" value="${tradeapply.tradeAmount}" style="width:256px;" />
+                                                                <input type="text" maxlength="50" readonly="readonly" name="tradeAmount" value="${tradeapply.realTradeAmount}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -151,7 +151,7 @@
     	                        //自动跳转
     	                    	parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records";
     	                    } else {
-    	                    	jAlert("添加失败,该编号已经存在,请勿重复添加!", '消息提示');
+    	                    	jAlert("审核失败!", '消息提示');
     	                        return;
     	                    }
     	                }

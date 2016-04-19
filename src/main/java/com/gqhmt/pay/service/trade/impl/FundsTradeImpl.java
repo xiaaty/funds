@@ -77,7 +77,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.hasEnoughBanlance(entity, withdrawOrderDto.getAmt().add(withdrawOrderDto.getCharge_amt()));
         this.cashWithSetReq(entity.getCustId(),1);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrderByRefund(entity, withdrawOrderDto.getAmt(),withdrawOrderDto.getCharge_amt(),GlobalConstants.ORDER_WITHDRAW,0,0,"2");
-        return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
+        return entity.getUserName()+":"+ fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
     /**
      * 生成web代扣订单
@@ -89,17 +89,17 @@ public class FundsTradeImpl  implements IFundsTrade {
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0,"2");
-        return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
+        return entity.getUserName()+":"+fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
 
 
     /**
      * 线上代扣充值
      * @param withholdDto
-     * @return OrderNo
+     * 
      */
     @Override
-    public String withholding(WithholdDto withholdDto) throws FssException {
+    public boolean withholding(WithholdDto withholdDto) throws FssException {
         FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(withholdDto.getCust_no()));
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004009");
@@ -108,7 +108,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,withholdDto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0);
         //资金处理
         tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1002);
-        return fundOrderEntity.getOrderNo();
+        return true;
     }
 
     /**
@@ -117,7 +117,7 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @return OrderNo
      */
     @Override
-    public String withdraw(WithdrawDto withdrawDto) throws FssException {
+    public boolean withdraw(WithdrawDto withdrawDto) throws FssException {
         FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(withdrawDto.getCust_no()));
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004004");
@@ -129,7 +129,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         //资金处理
         tradeRecordService.withdraw(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1012);
         this.chargeAmount(fundOrderEntity);
-        return fundOrderEntity.getOrderNo();
+        return true;
     }
     /**
      * 线上代扣申请
@@ -381,9 +381,6 @@ public class FundsTradeImpl  implements IFundsTrade {
 			 throw new FssException("90002001");//账户信息不存在
 		 }*/
         List<FundTradeBean> tradelist= tradeRecordService.queryFundTrade(tradrecord.getCust_no(),tradrecord.getStr_trade_time(),tradrecord.getEnd_trade_time(),tradrecord.getTradeFilters());
-        if(tradelist.size()==0){
-            throw new FssException("90002015");
-        }
         return tradelist;
     }
 

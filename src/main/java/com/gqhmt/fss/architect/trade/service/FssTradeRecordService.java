@@ -232,7 +232,7 @@ public class FssTradeRecordService {
 			//限额
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
 			tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
-			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
+			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getRealTradeAmount());
 			//更新申请表该条数据拆分总条数
 			fssTradeApplyEntity.setCount(moneySplit);
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);

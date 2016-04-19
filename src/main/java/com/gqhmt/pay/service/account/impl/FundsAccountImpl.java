@@ -6,6 +6,7 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
@@ -171,8 +172,11 @@ public class FundsAccountImpl implements IFundsAccount {
 	}
 
 
-	private FundAccountEntity getPrimaryAccount(Long cusId){
+	private FundAccountEntity getPrimaryAccount(Long cusId) throws FssException{
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		if (primaryAccount == null) {
+			throw new FssException("90002003");
+		}
 		return primaryAccount;
 	}
 
@@ -283,7 +287,7 @@ public class FundsAccountImpl implements IFundsAccount {
 			}
 			//跟新所有与该cust_id相同的账户名称
 			fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
-			customerInfoService.updateCustomer(cusId, createAccountDto.getName(), createAccountDto.getCert_no(),createAccountDto.getBank_id());
+//			customerInfoService.updateCustomer(cusId, createAccountDto.getName(), createAccountDto.getCert_no(),createAccountDto.getBank_id());
 			//创建银行卡信息
 			bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			if(bankCardInfoEntity==null){
@@ -293,4 +297,23 @@ public class FundsAccountImpl implements IFundsAccount {
 			}
 			return bankCardInfoEntity.getId();
 	}
+		
+		/**
+		 * 银行卡变更接口
+		 */
+		public boolean changeBankCard(UpdateBankCardDto dto) throws FssException {
+			try {
+				fssChangeCardService.addChangeCard(dto.getCust_no(),dto.getBank_card(),dto.getBank_id(), dto.getBankAddr(), dto.getCity_id(), dto.getFile_path(),dto.getSeq_no(),Integer.valueOf(dto.getTrade_type()).intValue(),dto.getMchn());
+			} catch (Exception e) {
+				throw new FssException("90004001");
+			}
+			return true;
+		}
+		
+		
+		
+		
+		
+		
+		
 }

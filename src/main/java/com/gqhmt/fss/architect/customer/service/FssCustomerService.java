@@ -7,12 +7,10 @@ import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
-import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
-
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -89,6 +87,12 @@ public class FssCustomerService {
     public FssCustomerEntity getFssCustomerEntityByCertNo(String certNo)throws FssException{
     	return customerReadMapper.selectByCertNo(certNo);
     }
+
+    public void updateCustId(FssCustomerEntity fssCustomerEntity,Long custId){
+        fssCustomerEntity.setCustId(custId);
+        this.customerWriteMapper.updateByPrimaryKeySelective(fssCustomerEntity);
+    }
+
     /**
      * 
      * author:jhz
@@ -100,57 +104,54 @@ public class FssCustomerService {
     }
     
     
-    /**
-	 * 借款系统线下开户只创建新版账户信息
-	 * @param loanAccountDto
-	 * @throws FssException
-	 */
-	public FssCustomerEntity createFssAccountInfo(CreateLoanAccountDto dto) throws FssException {
-//			1.创建账户 
-		FssCustomerEntity fssCustomerEntity;
-			try {
-				fssCustomerEntity = this.createFssCustomerEntity(dto);
-				customerWriteMapper.insertSelective(fssCustomerEntity);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
-			}
-			/*//2.创建用户
-			UserEntity userEntity;
-			try {
-				userEntity = gqUserService.createUser(loanAccountDto,customerInfoEntity);
-				gqUserWriteMapper.insertSelective(userEntity);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
-			}*/
-			//3.创建银行卡信息     t_gq_bank_info
-			FssCustBankCardEntity fssBankCardInfoEntity;
-			try {
-				fssBankCardInfoEntity = fssCustBankCardService.createFssBankCardEntity(dto, fssCustomerEntity);
-				fssBankCardInfoWriteMapper.insertSelective(fssBankCardInfoEntity);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("91009804");
-			}
-		return fssCustomerEntity;
-	}
+//	public FssCustomerEntity createFssAccountInfo(CreateLoanAccountDto dto) throws FssException {
+////			1.创建账户
+//		FssCustomerEntity fssCustomerEntity;
+//			try {
+//				fssCustomerEntity = this.createFssCustomerEntity(dto);
+//				customerWriteMapper.insertSelective(fssCustomerEntity);
+//			} catch (Exception e) {
+//				LogUtil.info(this.getClass(), e.getMessage());
+//				throw new FssException("91009804");
+//			}
+//			/*//2.创建用户
+//			UserEntity userEntity;
+//			try {
+//				userEntity = gqUserService.createUser(loanAccountDto,customerInfoEntity);
+//				gqUserWriteMapper.insertSelective(userEntity);
+//			} catch (Exception e) {
+//				LogUtil.info(this.getClass(), e.getMessage());
+//				throw new FssException("91009804");
+//			}*/
+//			//3.创建银行卡信息     t_gq_bank_info
+//			FssCustBankCardEntity fssBankCardInfoEntity;
+//			try {
+//				fssBankCardInfoEntity = fssCustBankCardService.createFssBankCardEntity(dto, fssCustomerEntity);
+//				fssBankCardInfoWriteMapper.insertSelective(fssBankCardInfoEntity);
+//			} catch (Exception e) {
+//				LogUtil.info(this.getClass(), e.getMessage());
+//				throw new FssException("91009804");
+//			}
+//		return fssCustomerEntity;
+//	}
+
     
     
-    
-	   public FssCustomerEntity createFssCustomerEntity(CreateLoanAccountDto dto) throws Exception {
-	            FssCustomerEntity fssCustomerEntity = GenerateBeanUtil.GenerateClassInstance(FssCustomerEntity.class,dto);
-	            fssCustomerEntity.setName(dto.getName());
-	            fssCustomerEntity.setMobile(dto.getMobile());
-	            fssCustomerEntity.setCertType(1);
-	            fssCustomerEntity.setCertNo(dto.getCert_no());
-	            fssCustomerEntity.setCreateTime(new Date());
-	            fssCustomerEntity.setModifyTime(new Date());
-	            fssCustomerEntity.setCustNo(CommonUtil.getCustNo());
-	            fssCustomerEntity.setMchnChild(dto.getMchn());
-	            fssCustomerEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-	            fssCustomerEntity.setUserId("1");
-	            return fssCustomerEntity;
+	   public FssCustomerEntity createFssCustomerEntity(String  name,String  mobile,String certNo,Long custId,String mchn) throws FssException {
+			FssCustomerEntity fssCustomerEntity = GenerateBeanUtil.GenerateClassInstance(FssCustomerEntity.class);
+			fssCustomerEntity.setName(name);
+			fssCustomerEntity.setMobile(mobile);
+			fssCustomerEntity.setCertType(1);
+			fssCustomerEntity.setCertNo(certNo);
+			fssCustomerEntity.setCreateTime(new Date());
+			fssCustomerEntity.setModifyTime(new Date());
+			fssCustomerEntity.setCustNo(CommonUtil.getCustNo());
+		   fssCustomerEntity.setCustId(custId);
+			fssCustomerEntity.setMchnChild(mchn);
+			fssCustomerEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
+			fssCustomerEntity.setUserId("1");
+		   	this.customerWriteMapper.insertSelective(fssCustomerEntity);
+		    return fssCustomerEntity;
 	        
 	  }
     

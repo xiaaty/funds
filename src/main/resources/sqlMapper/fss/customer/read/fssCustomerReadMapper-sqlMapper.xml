@@ -19,6 +19,7 @@
 		t.cust_id custId,
 		t.create_time createTime,
 		t.modify_time modifyTime
+		FROM `t_gq_fss_customer` t
 	</sql>
 	<sql id="whereSql">
 	</sql>

@@ -73,7 +73,7 @@ public class APIValidAop {
             //校验商户
             this.validMch(dto);
             //签名校验
-            validSignature(targetClass,methodName,dto);
+            //validSignature(targetClass,methodName,dto);
             //交易类型校验
             this.validTradeType(targetClass,methodName,dto);
             //数据校验

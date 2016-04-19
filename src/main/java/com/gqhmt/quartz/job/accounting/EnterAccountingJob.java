@@ -22,6 +22,7 @@ import org.quartz.JobExecutionException;
 public class EnterAccountingJob extends SupperJob {
 
     public void execute( ) throws JobExecutionException {
+    	
 
     }
 }
