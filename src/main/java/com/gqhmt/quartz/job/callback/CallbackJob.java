@@ -44,7 +44,7 @@ public class CallbackJob extends SupperJob {
     @Resource
     private ApplicationContext context;
 
-    @Scheduled(cron="0 0/1 *  * * * ")
+//    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws JobExecutionException, FssException {
         System.out.println("业务执行完成回盘跑批");
         if(!isIp("upload")){

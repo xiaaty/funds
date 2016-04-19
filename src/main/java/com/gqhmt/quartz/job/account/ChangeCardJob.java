@@ -58,7 +58,7 @@ public class ChangeCardJob extends SupperJob {
 //    private static boolean isRunning = false;
 
     /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
-    @Scheduled(cron="0 0/1 *  * * * ")
+//    @Scheduled(cron="0 0/1 *  * * * ")
     public void changeCard() throws PayChannelNotSupports{
         System.out.println("变更银行卡跑批");
         if(!isIp("upload")){
