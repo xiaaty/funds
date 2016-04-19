@@ -61,7 +61,8 @@ public class LoanAccountApi {
      * function：开户
      */
     @RequestMapping(value = "/createLoanAccount",method = RequestMethod.POST)
-    public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
+//    public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
+    	public Object createLoanAccount(CreateLoanAccountDto loanAccountDto){
     	Response response=new Response();
     	try {
     		response = createLoanImpl.execute(loanAccountDto);

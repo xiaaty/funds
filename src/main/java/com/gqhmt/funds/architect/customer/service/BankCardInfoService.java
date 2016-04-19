@@ -92,6 +92,10 @@ public class BankCardInfoService {
     	}
     }
 
+    public void updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity){
+    	bankCardinfoWriteMapper.updateBankCardByParam(bankCardInfoEntity);
+    }
+    
     public void remove(BankCardInfoEntity entity){
     	bankCardinfoWriteMapper.delete(entity);
     }

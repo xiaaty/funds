@@ -22,4 +22,5 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 public interface BankCardinfoWriteMapper extends ReadAndWriteMapper<BankCardInfoEntity> {
 	public void updateBankCardInfo(BankCardInfoEntity bankcard);
 	public void deleteBankCardInfo(Integer id);
+	public void updateBankCardByParam(BankCardInfoEntity bankCardInfoEntity);
 }
