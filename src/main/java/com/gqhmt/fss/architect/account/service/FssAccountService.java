@@ -139,7 +139,7 @@ public class FssAccountService {
     }*/
 
     public FssAccountEntity createAccount(CreateLoanAccountDto dto,Long custId) throws FssException {
-        return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_id(),custId);
+        return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(),custId);
     }
 
 	public FssAccountEntity createAccount(String tradeType,String mchn,String mobile,String certNo,String name,String bankType,String bankNo,String area,String busiNo,Long custId) throws FssException {
@@ -169,8 +169,9 @@ public class FssAccountService {
                 fssCustomerService.updateCustId(fssCustomerinfo,custId);
             }
 
-            FssFuiouAccountBean fssFuiouAccountBean=fssFuiouAccountReadMapper.getAccountByCentNo(certNo);
-            if(fssFuiouAccountBean == null && !"11020011".equals(tradeType)){
+//            FssFuiouAccountBean fssFuiouAccountBean=fssFuiouAccountReadMapper.getAccountByCentNo(certNo);
+            fssFuiouAccountEntity=fssFuiouAccountReadMapper.getByAccNo(fssCustomerinfo.getMobile());
+            if(fssFuiouAccountEntity == null && !"11020011".equals(tradeType)){
                 //获取银行信息
                 //验证银行卡信息
                 //首次富友开户,需要银行信息
@@ -230,12 +231,13 @@ public class FssAccountService {
     	fssAccountEntity.setAccType(Integer.parseInt(accType));
     	fssAccountEntity.setState(10020001);//默认为有效账户
         fssAccountEntity.setBusiNo(busiNo);
-    	fssAccountEntity.setCustId(fssAccountEntity.getCustId());
+    	fssAccountEntity.setCustId(fssCustomerEntity.getCustId());
     	fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
         fssAccountEntity.setThirdAccNo(thirdAccNo);
         fssAccountEntity.setTradeType(tradeType);
     	fssAccountEntity.setMchnChild(mchn);
     	fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
+    	fssAccountWriteMapper.insert(fssAccountEntity);
     	return fssAccountEntity;
     }
 
