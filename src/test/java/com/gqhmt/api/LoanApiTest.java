@@ -44,7 +44,7 @@ public class LoanApiTest extends SupperAPI {
             dto.setBank_id("0105");
             dto.setCert_no("220881198005150333");
             dto.setCity_id("1000");
-            dto.setContract_id("JK2016032600031");
+            dto.setContract_no("JK2016032600031");
             dto.setMobile("13581790473");
             dto.setName("dy1");
             LoanAccountResponse response = UrlConnectUtil.sendJsonDataReturnObjectUrl(LoanAccountResponse.class,"http://localhost:8080/api/createLoanAccount", JsonUtil.getInstance().getJson(dto))  ;
