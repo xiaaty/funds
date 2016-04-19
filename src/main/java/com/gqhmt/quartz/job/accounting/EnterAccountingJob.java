@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.annotation.Scheduled;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.accounting.EnterAccountingJob
@@ -31,7 +32,7 @@ public class EnterAccountingJob extends SupperJob {
 	
 	@Resource
 	private FssEnterAccountService fssEnterAccountService;
-	
+	@Scheduled(cron="0 0/1 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
     	System.out.println("入账 跑批");
         if(!isIp("upload")){
