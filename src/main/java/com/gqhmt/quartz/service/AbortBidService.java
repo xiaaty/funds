@@ -8,6 +8,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -53,6 +54,9 @@ public class AbortBidService {
 
     @Resource
     private IFundsTender fundsTender;
+    
+    @Resource
+    private FssBackplateService fssBackplateService;
 
     public void abortBid() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listAbort();
@@ -110,6 +114,8 @@ public class AbortBidService {
                 fundsTender.abortLoop(tender,fuiouPreauth.getContractNo());
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.update(fuiouPreauth);
+                //数据回盘
+                fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
             }catch (Exception e){
                 fuiouPreauth.setState(3);

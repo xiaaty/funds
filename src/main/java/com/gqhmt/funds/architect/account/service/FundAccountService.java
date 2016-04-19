@@ -71,7 +71,6 @@ public class FundAccountService {
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
-    
     public void delete(Long id) {
     	fundAccountWriteMapper.deleteByPrimaryKey(id);
     }
@@ -498,6 +497,7 @@ public class FundAccountService {
 	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{
 	        return fundsAccountReadMapper.selectFundAccountEntity(accNo);
 	    }
+		  
 
 	public List<FundAccountEntity> getFundsAccountByBusiType( String busi_type){
 		return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);

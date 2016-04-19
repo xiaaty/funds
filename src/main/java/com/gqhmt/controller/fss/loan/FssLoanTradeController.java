@@ -10,6 +10,7 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -17,7 +18,9 @@ import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -76,6 +79,12 @@ public class FssLoanTradeController {
 	private FssAccountService fssAccountService;
 	@Resource
 	private ExportAndImpService exportAndImpService;
+	@Resource
+	private FuiouFtpOrderService fuiouFtpOrderService;
+	@Resource
+	private FundAccountService fundAccountService;
+	@Resource
+	private FundOrderService fundOrderService;
 
 	/**
 	 * 
@@ -242,10 +251,8 @@ public class FssLoanTradeController {
 			LogUtil.info(this.getClass(), e.getMessage());
 			model.addAttribute("erroMsg", e.getMessage());
 		}
-		
 		return "redirect:/loan/trade/"+type;
 	}
-
 	/**
 	 * 
 	 * author:jhz time:2016年3月16日 function：收费
@@ -285,6 +292,8 @@ public class FssLoanTradeController {
 					map.put("msg", "0003");
 
 				}
+				fssLoanEntityById.setStatus("10050007");
+				fssLoanService.update(fssLoanEntityById);
 			}
 			// 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
 			for (FssFeeList fssFeeList : fssFeeLists) {
@@ -351,7 +360,8 @@ public class FssLoanTradeController {
 				}
 			}
 			if(i==fssFeeLists.size()){
-				fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
+				fssLoanEntityById.setStatus("10050099");
+				fssLoanService.update(fssLoanEntityById);
 				map.put("msg", "0000");
 				//todo 成功之后取消收费按钮
 			}else{

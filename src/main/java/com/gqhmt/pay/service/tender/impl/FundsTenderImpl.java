@@ -126,7 +126,9 @@ public class FundsTenderImpl  implements IFundsTender {
         return true;
     }
 
-
+    /**
+     * 退款
+     */
     public void abortLoop(Tender tender, String contactNo) throws FssException {
         // {
         // 实际出账账户
