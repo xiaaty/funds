@@ -33,6 +33,8 @@ public abstract class SuperDto {
     @APIValidNull(errorCode = "90008201")
     private String seq_no;
 
+//    @AutoMapping("signature")
+//    @APIValidNull(errorCode = "90008301")
     private String signature;
     
     @APIValidNull(errorCode = "90008401")

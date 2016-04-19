@@ -94,7 +94,7 @@ public class FssBankEndApi {
      * 
      * author:jhz
      * time:2016年3月23日
-     * function：满标
+     * function：回款
      */
     @RequestMapping(value = "/p2p/rePayments",method = RequestMethod.POST)
     @ResponseBody
