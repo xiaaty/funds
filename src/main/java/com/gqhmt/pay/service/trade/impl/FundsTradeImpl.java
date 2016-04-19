@@ -77,7 +77,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.hasEnoughBanlance(entity, withdrawOrderDto.getAmt().add(withdrawOrderDto.getCharge_amt()));
         this.cashWithSetReq(entity.getCustId(),1);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrderByRefund(entity, withdrawOrderDto.getAmt(),withdrawOrderDto.getCharge_amt(),GlobalConstants.ORDER_WITHDRAW,0,0,"2");
-        return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
+        return entity.getUserName()+":"+ fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
     /**
      * 生成web代扣订单
@@ -89,7 +89,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0,"2");
-        return fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
+        return entity.getUserName()+":"+fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
 
 

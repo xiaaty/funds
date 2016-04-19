@@ -38,7 +38,7 @@ public class WithdrawCallbackImpl implements IWithdrawCallback {
     	Response response = new Response();
     	try {
 			iFundsTrade.withdraw((WithdrawSuccessDto)dto);
-			 response.setResp_code("00000000");
+			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

@@ -112,9 +112,20 @@ public class FssChangeCardService {
      * @param filePath
      * @throws Exception
      */
-    public void addChangeCard(int customId, String bankNo, String bankId, String bankAddr, String bankCity, String filePath) throws FssException {
-        CustomerInfoEntity customerInfo  = customerInfoService.queryCustomerById(customId);
-        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,1,null);
+    public void addChangeCard(String custNo, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,String seqNo,int type,String mchn) throws FssException {
+//        CustomerInfoEntity customerInfo  = customerInfoService.getCustomerById(Long.valueOf(customId));
+    	CustomerInfoEntity customerInfo  = customerInfoService.getCustomerById(Long.valueOf(custNo));
+//        if(customerInfo==null) throw new FssException("90002007");
+        if(customerInfo == null){
+            throw new FssException("90002007");
+        }
+        if(filePath ==null || "".equals(filePath)){
+            throw new FssException("90002032");
+        }
+        
+        
+        
+        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,1,null,null);
     }
 
     /**
@@ -130,12 +141,12 @@ public class FssChangeCardService {
     public void addChangeCard(String certNo, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,String seqNo,int type) throws Exception {
         CustomerInfoEntity customerInfo  = customerInfoService.queryCustomerInfoByCertNo(certNo);
         if(customerInfo == null){
-            throw new Exception("身份证未找到对应客户");
+            throw new Exception("90002007");
         }
         if(filePath ==null || "".equals(filePath)){
-            throw new Exception("请上传审核图片");
+            throw new Exception("90002032");
         }
-        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,type,seqNo);
+        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,type,seqNo,null);
     }
 
 
@@ -149,33 +160,38 @@ public class FssChangeCardService {
      * @param filePath
      * @throws Exception
      */
-    public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo) throws FssException {
-        if(bankNo.length()>19){
+    public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo,String mchn) throws FssException {
+      /*  if(bankNo.length()!=16 || bankNo.length()!=19){
             throw new FssException("银行卡号错误");
         }
-        if(bankCity.length()>4){
+        if(bankCity.length()!=4){
             throw new FssException("银行所属地区错误");
         }
-        if(bankId.length()>4){
+        if(bankId.length()!=4){
             throw new FssException("所属银行错误");
-        }
+        }*/
 
         Integer bankCardId = custom.getBankId();
         if(bankCardId == null){
             throw new FssException("0021");
         }
-
+        
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(bankCardId);
-       /* if(bankNo.equals(bankCardinfoEntity.getBankNo())){
-            throw new FssException("0020");
-        }*/
+        if(bankCardinfoEntity==null) throw new FssException("90004027");
+        if(bankNo.equals(bankCardinfoEntity.getBankNo())){
+            throw new FssException("90002034");
+        }
+        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo,mchn);
+        try {
+			this.insert(entity);
+		} catch (Exception e) {
+			throw new FssException("90002035");
+		}
 
-        FssChangeCardEntity entity = getChangeCardInstance(custom,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo);
-        insert(entity);
-
-        bankCardinfoEntity.setChangeState(1);
+//      bankCardinfoEntity.setChangeState(1);
         bankCardinfoEntity.setMemo("变更申请已提交,原银行卡不能做提现操作");
-        bankCardinfoService.saveOrUpdate(bankCardinfoEntity);
+        bankCardinfoEntity.setModifyTime(new Date());
+        bankCardinfoService.updateBankCardInfo(bankCardinfoEntity);
 
         FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custom.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         fundAccountEntity.setIshangeBankCard(1);
@@ -184,7 +200,7 @@ public class FssChangeCardService {
 //        this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT, entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
     }
 
-    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo){
+    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bankCardinfoEntity, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn){
         FssChangeCardEntity entity = new FssChangeCardEntity();
         entity.setCustId(cus.getId().longValue());
         entity.setCardNo(bankNo);
@@ -204,6 +220,10 @@ public class FssChangeCardService {
         entity.setCertType(cus.getCertType());
         entity.setMobile(cus.getMobilePhone());
         entity.setType(type);
+        entity.setBankType(bankId);
+        entity.setBankName(bankCardinfoEntity.getBankSortName());
+        entity.setCardNo(bankNo);
+        entity.setMchn(mchn);
         if(seqNo != null){
             entity.setSeqNo(seqNo);
         }

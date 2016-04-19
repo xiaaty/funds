@@ -10,6 +10,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
 /**
@@ -91,6 +92,10 @@ public interface IFundsAccount {
      * @throws FssException
      */
     public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException;
+    
+    
+    public boolean changeBankCard(UpdateBankCardDto changeBankCardDto) throws FssException;
+    
     
 
 
