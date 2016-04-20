@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class FssTradeApplyController {
 	     function:交易管理---交易审核--代付审核
 		/trade/tradeApply/1104/11091001    借款人提现
 		/trade/tradeApply/1104/11040005    冠e通放款
-		/trade/tradeApply/1104/11040006   抵押权人提现
+		/trade/tradeApply/1104/11092001   抵押权人提现
 		/trade/tradeApply/1104/11040007   代偿人提现
 		/trade/tradeApply/1104/11040004   委托出借人提现
 	 */
@@ -165,8 +166,11 @@ public class FssTradeApplyController {
 				e.printStackTrace();
 			}
 			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
-			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+//			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		}else{//不通过，添加回盘记录
+			tradeapply.setApplyState("10100005");
+			tradeapply.setModifyTime(new Date());
+			fssTradeApplyService.updateTradeApply(tradeapply);
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		}
 		map.put("code", "0000");

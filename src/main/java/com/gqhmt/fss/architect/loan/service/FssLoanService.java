@@ -213,6 +213,7 @@ public class FssLoanService {
     	fssLoanEntity.setContractId(dto.getContract_id());
     	fssLoanEntity.setContractNo(dto.getContract_no());
     	fssLoanEntity.setCreateTime(new Date());
+    	fssLoanEntity.setModifyTime(new Date());
     	fssLoanEntity.setMchnChild(dto.getMchn());
     	fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
     	return fssLoanWriteMapper.insertLending(fssLoanEntity);
@@ -474,7 +475,7 @@ public class FssLoanService {
 		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID,"2");
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 3);
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
-		throw new FssException("异步处理，等待回调通知");
+//		throw new FssException("异步处理，等待回调通知");
 	}
 	
 	//线下代扣

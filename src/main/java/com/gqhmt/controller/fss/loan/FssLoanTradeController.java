@@ -121,6 +121,8 @@ public class FssLoanTradeController {
 		model.put("map", map);
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";
+		}else if("11092001".equals(type)){//抵押标满标
+			return "fss/trade/trade_audit/motegreeWithDraw";
 		}
 		return "fss/trade/trade_audit/borrowerloan";
 	}
@@ -382,6 +384,7 @@ public class FssLoanTradeController {
 		model.addAttribute("feeList", findFeeList);
 		return "fss/trade/trade_audit/feeList";
 	}
+
 	
 	/**
 	 * 导出还款代扣（纯线下）
