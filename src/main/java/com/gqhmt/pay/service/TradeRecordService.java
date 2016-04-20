@@ -178,6 +178,9 @@ public class TradeRecordService {
             case 10010007:
                 businessType = 1;
                 break;
+            case 10012002:
+                businessType = 1;
+                break;
             default:
                 businessType = 0;
         }

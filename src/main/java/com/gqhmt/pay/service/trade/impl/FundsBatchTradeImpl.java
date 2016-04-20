@@ -50,7 +50,6 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     public void batchTrade(FssTradeRecordEntity entity){
         FundOrderEntity orderEntity = null;
 
-
         try {
 
             if(entity.getTradeType() != 1103 && entity.getTradeType() != 1104){
@@ -63,11 +62,10 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
             }else if(entity.getTradeType() == 1104){
                 orderEntity = this.batchWithdraw(entity);
             }
-
             entity.setOrderNo(orderEntity.getOrderNo());
             this.recordService.updateTradeRecordExecuteState(entity,1,null);
 
-        } catch (FssException e) {
+        } catch (Exception e) {
             LogUtil.error(this.getClass(),e);
             this.recordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
         }
