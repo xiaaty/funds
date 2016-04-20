@@ -114,8 +114,6 @@ public class AbortBidService {
                 fundsTender.abortLoop(tender,fuiouPreauth.getContractNo());
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.update(fuiouPreauth);
-                //数据回盘
-                fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
             }catch (Exception e){
                 fuiouPreauth.setState(3);
@@ -144,11 +142,12 @@ public class AbortBidService {
 
         try {
 			fuiouFtpOrderService.update(fuiouFtpOrder);
+			//数据回盘
+				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
 		} catch (FssException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
     }
 
 
