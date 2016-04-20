@@ -41,7 +41,7 @@ public class AbortBidService {
     protected TenderService tenderService;
 
     @Resource
-    protected FuiouPreauthService fuiouPreauthService ;
+    protected FuiouPreauthService fuiouPreauthService;
 
     @Resource
     private FuiouFtpOrderService fuiouFtpOrderService;
@@ -90,6 +90,7 @@ public class AbortBidService {
             //获取投标列表
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
         } catch (FssException e) {
+
             LogUtil.error(getClass(),e);
             return;
         }
