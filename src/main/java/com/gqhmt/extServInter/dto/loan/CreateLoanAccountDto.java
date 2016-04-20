@@ -20,7 +20,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class CreateLoanAccountDto extends SuperDto {
 
-    @APIValidNull(errorCode = "90002016")
+//    @APIValidNull(errorCode = "90002016")
     private String contract_no;		//合同编号
  
     @APIValidNull(errorCode = "90002009")
