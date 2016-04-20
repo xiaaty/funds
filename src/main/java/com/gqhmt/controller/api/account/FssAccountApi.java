@@ -4,6 +4,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
@@ -94,8 +95,20 @@ public class FssAccountApi {
      * time:2016年2月22日
      * function：变更银行卡
      */
+//    @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
+//    public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
+//    	Response response= null;
+//    	try {
+//    		response = changeBankCardAccountImpl.execute(changeBankCardDto);
+//    	} catch (Exception e) {
+//            response = this.execute(e);
+//    	}
+//    	return response;
+//    }
+
+    
     @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
-    public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
+    public Object changeBankCard(UpdateBankCardDto changeBankCardDto){
     	Response response= null;
     	try {
     		response = changeBankCardAccountImpl.execute(changeBankCardDto);
@@ -105,6 +118,8 @@ public class FssAccountApi {
     	return response;
     }
 
+    
+    
     private Response execute(Exception e){
         LogUtil.error(this.getClass(), e);
         Response response = new Response();

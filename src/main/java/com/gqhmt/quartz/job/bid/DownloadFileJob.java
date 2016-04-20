@@ -37,7 +37,7 @@ public class DownloadFileJob extends SupperJob{
     @Resource
     private FtpResultService ftpResultService;
 
-//        @Scheduled(cron="0/27 * 7-23  * * * ")
+        @Scheduled(cron="0/27 * 7-23  * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("富友ftp批量处理 下载回盘结果及结果处理 跑批");
         if(!isIp("upload")){

@@ -47,8 +47,9 @@ public class RechargeOrderImpl implements IRechargeOrder {
     		String result = fundsTradeImpl.webRechargeOrder((RechargeOrderDto)dto);
 			response.setResp_code("0000");
 			String[] tmp = result.split(":");
-			response.setOrder_no(tmp[0]);
-			response.setMchnt(tmp[1]);
+			response.setUsername(tmp[0]);
+			response.setOrder_no(tmp[1]);
+			response.setMchnt(tmp[2]);
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

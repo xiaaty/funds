@@ -19,7 +19,10 @@
 			 user_name userName,
 			 cust_name custName,
 			 settle_type settleType,
-			 is_change_bank_card ishangeBankCard
+			 is_change_bank_card ishangeBankCard,
+			 bankNo,
+			 parent_bank_id parentBankId,
+			 city_id cityId
 		  FROM
 			 t_gq_fund_account
 	</sql>

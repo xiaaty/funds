@@ -122,6 +122,9 @@ public class FssLoanTradeController {
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";
 		}
+//		else if("11092001".equals(type)){//抵押标满标
+//			return "fss/trade/trade_audit/motegreeWithDraw";
+//		}
 		return "fss/trade/trade_audit/borrowerloan";
 	}
 
@@ -277,8 +280,8 @@ public class FssLoanTradeController {
 			map.put("msg", "0002");
 		} else {
 
+			try {
 			for (FssFeeList fssFeeList : fssFeeLists) {
-				try {
 					if(!"10050007".equals(fssFeeList.getTradeStatus())){
 						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
 								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
@@ -287,14 +290,14 @@ public class FssLoanTradeController {
 						fssFeeList.setTradeStatus("10050007");
 						fssLoanService.updateFeeList(fssFeeList);
 					}
-				} catch (FssException e) {
-					e.printStackTrace();
-					map.put("msg", "0003");
-
-				}
-				fssLoanEntityById.setStatus("10050007");
-				fssLoanService.update(fssLoanEntityById);
 			}
+			} catch (FssException e) {
+				e.printStackTrace();
+				map.put("msg", "0003");
+				
+			}
+			fssLoanEntityById.setStatus("10050007");
+			fssLoanService.update(fssLoanEntityById);
 			// 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
 			for (FssFeeList fssFeeList : fssFeeLists) {
 				if("10050007".equals(fssFeeList.getTradeStatus())){
@@ -382,6 +385,7 @@ public class FssLoanTradeController {
 		model.addAttribute("feeList", findFeeList);
 		return "fss/trade/trade_audit/feeList";
 	}
+
 	
 	/**
 	 * 导出还款代扣（纯线下）
