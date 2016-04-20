@@ -177,7 +177,7 @@ public class TradeRecordService {
                 break;
 
             case 10011001:
-            	businessType = 99;
+            	businessType = 0;
             	break;
             case 10011002:
             	businessType = 1;
@@ -195,7 +195,7 @@ public class TradeRecordService {
             	businessType = 2;
             	break;
             case 10019002:
-            	businessType = 96;
+            	businessType = 1;
             	break;
             case 10010007:
                 businessType = 1;

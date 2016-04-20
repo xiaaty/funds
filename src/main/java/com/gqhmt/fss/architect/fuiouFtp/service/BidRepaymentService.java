@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gqhmt.fss.architect.fuiouFtp.service.BidRepaymentService
@@ -123,6 +120,9 @@ public class BidRepaymentService {
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", ""));
         }
         fuiouFtpOrderService.addOrder(fundOrderEntity, 2);
+        loanEntity.setStatus("10050012");
+        loanEntity.setModifyTime(new Date());
+        fssLoanService.update(loanEntity);
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 
 
@@ -176,7 +176,9 @@ public class BidRepaymentService {
 
         //回盘处理
         fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
-
+        loanEntity.setStatus("10050013");
+        loanEntity.setModifyTime(new Date());
+        fssLoanService.update(loanEntity);
 
     }
 

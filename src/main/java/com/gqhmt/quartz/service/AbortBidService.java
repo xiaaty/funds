@@ -41,7 +41,7 @@ public class AbortBidService {
     protected TenderService tenderService;
 
     @Resource
-    protected FuiouPreauthService fuiouPreauthService ;
+    protected FuiouPreauthService fuiouPreauthService;
 
     @Resource
     private FuiouFtpOrderService fuiouFtpOrderService;
