@@ -73,6 +73,7 @@ public class LoanImpl implements ILoan {
     	 */
 
 		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
+		try{
 		if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
 			customerInfoEntity=customerInfoService.createLoanAccount(dto);
 			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
@@ -85,6 +86,10 @@ public class LoanImpl implements ILoan {
 				LogUtil.error(this.getClass(), e);
 				throw new FssException("91004013");
 			}
+		}
+		}catch (FssException e) {
+			LogUtil.error(this.getClass(), e);
+			throw new FssException("");
 		}
 		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
@@ -99,14 +104,10 @@ public class LoanImpl implements ILoan {
 	@Override
 	public boolean marginSendBack(MarginDto dto) throws FssException {
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
-		try {
-			costImpl.cost("10990006", fssAccountByAccNo.getCustId(), GlobalConstants.TRADETYPE_ACCOUNT_MAPPING.get(dto.getTrade_type()), dto.getRefund_amt(),null , Integer.parseInt(dto.getTrade_type()));
+			Integer integer = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(GlobalConstants.TRADETYPE_ACCOUNT_MAPPING.get(dto.getTrade_type()));
+			costImpl.costReturn("10990006", fssAccountByAccNo.getCustId(), integer, dto.getRefund_amt(),0l , Integer.parseInt(dto.getTrade_type()));
 			return true;
-		} catch (Exception e) { 
-			LogUtil.info(this.getClass(), e.getMessage());
-			return false;
 		}
 		
 	}
   
-	}
