@@ -1,6 +1,8 @@
 package com.gqhmt.core.util;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -36,7 +38,10 @@ public class JsonUtil {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-
+    public static String toJson(Object obj) {
+		return JSON.toJSONString(obj, SerializerFeature.WriteDateUseDateFormat, SerializerFeature.DisableCircularReferenceDetect);
+	}
+    
     private JsonUtil(){
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
