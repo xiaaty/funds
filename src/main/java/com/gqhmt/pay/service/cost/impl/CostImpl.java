@@ -155,15 +155,28 @@ public class CostImpl  implements ICost{
     public void cost(String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         this.cost("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
     }
-    @Override
-    public void costReturn(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
-        FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
 
-        this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,2);
-    }
+	@Override
+	public void costReturn(String loanType, String fundsType, String accNo, BigDecimal decimal, Long busiId,
+			Integer busiType) {
+//		FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
+		
+//		this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,2);
+		
+	}
 
-    @Override
-    public void costReturn(String loanType, String fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) {
+    public void costReturn(String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
+    	FundAccountEntity toAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
+    	Long toCustId = this.map.get(fundsType+"_"+"10040001");
+           if (toCustId == null) throw new FssException("");
+
+           FundAccountEntity  fromAccountEntity= fundAccountService.getFundAccount(toCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+
+           if (toAccountEntity == null) throw new FssException("90004006");
+           FundOrderEntity fundOrderEntity = null;
+               fundOrderEntity  = paySuperByFuiou.transerer(toAccountEntity,fromAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType);
+               tradeRecordService.transfer(toAccountEntity,fromAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+
     }
 
 
@@ -187,6 +200,14 @@ public class CostImpl  implements ICost{
 
         return  fundOrderEntity;
     }
+
+	@Override
+	public void costReturn(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal,
+			Long busiId, Integer busiType) throws FssException {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 
