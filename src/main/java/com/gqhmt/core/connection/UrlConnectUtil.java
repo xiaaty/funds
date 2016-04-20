@@ -2,6 +2,7 @@ package com.gqhmt.core.connection;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.JsonUtil;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.ResourceUtil;
 
 import java.io.*;
@@ -173,6 +174,7 @@ public class UrlConnectUtil {
 
     private String parseUrl(String urlType) throws FssException {
         String url = ResourceUtil.getValue("config.appContext",urlType);
+        LogUtil.info(this.getClass(),"获取地址:"+url);
         return url;
     }
 
@@ -243,6 +245,7 @@ public class UrlConnectUtil {
     }
 
     private void postData(URLConnection conn,String param) throws IOException {
+        LogUtil.info(this.getClass(),"发送数据:"+conn.getURL()+"参数:"+param);
         PrintWriter out = new PrintWriter(conn.getOutputStream());
         // 发送请求参数
         out.print(param);
@@ -308,6 +311,7 @@ public class UrlConnectUtil {
 
 
     private InputStream sendJsonData(String  url,String param) throws FssException {
+
         if(param == null || url == null){
             throw new FssException("90099007");
         }
