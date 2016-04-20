@@ -28,5 +28,13 @@
          SET deleted=0 WHERE id=#{id}
 	</update>
 	
+	<update id="updateBankCardByParam" parameterType="bankCardInfoEntity">  
+        UPDATE t_gq_bank_info
+        SET
+        change_state=1,
+     	memo=#{memo},
+        MODIFY_TIME=#{modifyTime}
+        WHERE id=#{id}
+   </update>
 	
 </mapper>

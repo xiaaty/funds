@@ -6,6 +6,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
+import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
@@ -39,9 +40,7 @@ public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-
-			fundsAccountImpl.changeCard((ChangeBankCardDto) dto);
-
+			fundsAccountImpl.changeBankCard((UpdateBankCardDto) dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
