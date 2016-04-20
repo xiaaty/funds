@@ -65,7 +65,7 @@ public class AbortBidService {
         }
     }
 
-    public void abortBid(FuiouFtpOrder fuiouFtpOrder){
+    public void abortBid(FuiouFtpOrder fuiouFtpOrder) throws FssException{
 
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
         if(fundOrderEntity.getOrderType() != GlobalConstants.ORDER_ABORT_BID){
@@ -90,6 +90,10 @@ public class AbortBidService {
             //获取投标列表
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
         } catch (FssException e) {
+        	loanEntity.setStatus("10050102");
+        	fssLoanService.update(loanEntity);
+        	//数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
             LogUtil.error(getClass(),e);
             return;
         }
@@ -116,6 +120,10 @@ public class AbortBidService {
                 fuiouPreauthService.update(fuiouPreauth);
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
             }catch (Exception e){
+            	loanEntity.setStatus("10050102");
+            	fssLoanService.update(loanEntity);
+            	//数据回盘
+				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
                 fuiouPreauth.setState(3);
                 fuiouPreauthService.update(fuiouPreauth);
                 falidSize++;
@@ -130,6 +138,10 @@ public class AbortBidService {
             fuiouFtpOrder.setResultStatus(3);
             fuiouFtpOrder.setResult(1);
             fuiouFtpOrder.setRetrunResultStatus(1);
+            loanEntity.setStatus("10050102");
+            fssLoanService.update(loanEntity);
+          //数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         }
         else if(falidSize == list.size()){
             //tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),false,0);
@@ -138,14 +150,14 @@ public class AbortBidService {
             fuiouFtpOrder.setResultStatus(3);
             fuiouFtpOrder.setResult(2);
             fuiouFtpOrder.setRetrunResultStatus(1);
+            
+            loanEntity.setStatus("10050100");
+            fssLoanService.update(loanEntity);
+          //数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         }
-
         try {
 			fuiouFtpOrderService.update(fuiouFtpOrder);
-			loanEntity.setStatus("10050100");
-			fssLoanService.update(loanEntity);
-			//数据回盘
-				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
 		} catch (FssException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
