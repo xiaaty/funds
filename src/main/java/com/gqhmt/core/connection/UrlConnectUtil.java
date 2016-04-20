@@ -228,6 +228,7 @@ public class UrlConnectUtil {
 
 
     private  InputStream getData(String url) throws IOException {
+        LogUtil.info(this.getClass(),"get方式发送数据:"+url);
         URLConnection conn = connectionMethodGet(url);
         return conn.getInputStream();
     }
@@ -245,7 +246,7 @@ public class UrlConnectUtil {
     }
 
     private void postData(URLConnection conn,String param) throws IOException {
-        LogUtil.info(this.getClass(),"发送数据:"+conn.getURL()+"参数:"+param);
+        LogUtil.info(this.getClass(),"post发送数据:"+conn.getURL()+"参数:"+param);
         PrintWriter out = new PrintWriter(conn.getOutputStream());
         // 发送请求参数
         out.print(param);

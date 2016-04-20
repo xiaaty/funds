@@ -86,6 +86,12 @@ public class BidRepaymentService {
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
+            LogUtil.error(getClass(),e);
+            loanEntity.setStatus("10050014");
+            loanEntity.setModifyTime(new Date());
+            fssLoanService.update(loanEntity);
+            fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+
             throw  e;
         }
 
