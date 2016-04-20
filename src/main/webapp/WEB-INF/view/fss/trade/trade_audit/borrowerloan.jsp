@@ -250,20 +250,22 @@
 															</c:if>
 													  </c:if>
                                                       <c:if test="${t.tradeType == '11090011' || t.tradeType=='11090010'}">
-                                                      		<c:if test="${t.status!=10050099}">
+                                                      		<c:if test="${t.status!=10050099||t.status == '10050010'||t.status=='10050009'"}">
 																<a href="${contextPath}/loan/trade/${type}/recharge/${t.id}">退费 </a>
                                                       		</c:if>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															<c:if test="${t.tradeType == '11090010'}">
+															<c:if test="${t.status!=10050100}">
 																<a href="${contextPath}/loan/trade/${type}/retransfer/${t.id}">转账</a>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
+																</c:if>
 															</c:if>
 															<c:if test="${t.tradeType == '11090011'}">
-<%-- 															<c:if test="${t.status=='10050099'}"> --%>
+															<c:if test="${t.status!='10050100' && t.status!='11050011'}">
 																<a href="${contextPath}/loan/trade/${type}/abort/${t.id}">退款 </a>
-<%-- 																</c:if> --%>
+																</c:if>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															</c:if>
