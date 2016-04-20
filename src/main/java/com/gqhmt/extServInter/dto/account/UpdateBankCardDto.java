@@ -28,7 +28,7 @@ public class UpdateBankCardDto extends SuperDto{
 	private String bank_id;
 	private String bank_card;
 	private String bankAddr;
-	private String  file_path;
+	private String file_path;
 	
 	public String getCust_no() {
 		return cust_no;

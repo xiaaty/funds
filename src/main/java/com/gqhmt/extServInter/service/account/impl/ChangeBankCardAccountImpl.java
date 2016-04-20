@@ -5,7 +5,6 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
