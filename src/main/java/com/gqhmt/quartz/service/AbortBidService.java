@@ -142,6 +142,8 @@ public class AbortBidService {
 
         try {
 			fuiouFtpOrderService.update(fuiouFtpOrder);
+			loanEntity.setStatus("10050100");
+			fssLoanService.update(loanEntity);
 			//数据回盘
 				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
 		} catch (FssException e) {

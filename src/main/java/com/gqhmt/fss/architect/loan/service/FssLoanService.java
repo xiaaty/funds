@@ -142,7 +142,11 @@ public class FssLoanService {
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setLoanPlatform(dto.getLoan_platform());
 		fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
+		if("11090001".equals(dto.getTrade_type())){
+			long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
+		}else{
+			long insertLending = fssLoanWriteMapper.insertFullBid(fssLoanEntity);
+		}
 //		feeList
 		List<LendingFeeListDto> feeLists = dto.getFee_list();
 
@@ -216,7 +220,7 @@ public class FssLoanService {
     	fssLoanEntity.setModifyTime(new Date());
     	fssLoanEntity.setMchnChild(dto.getMchn());
     	fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-    	return fssLoanWriteMapper.insertLending(fssLoanEntity);
+    	return fssLoanWriteMapper.insertFullBid(fssLoanEntity);
 		
 	}
 	/**
@@ -256,7 +260,7 @@ public class FssLoanService {
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
 		//添加数据并返回ID
-		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
+		long insertLending = fssLoanWriteMapper.insertFullBid(fssLoanEntity);
 //		feeList
 		
 			List<LendingFeeListDto> feeLists = dto.getFee_list();
