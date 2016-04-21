@@ -246,8 +246,8 @@ public class FssLoanTradeController {
 			FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssLoanEntityById.getAccNo());
 			fssLoanEntityById.setCustNo(fssAccountByAccNo.getCustId().toString());
 		}
-		//			fssLoanService.abort(fssLoanEntityById);
-		fssLoanEntityById.setStatus("11050103");
+//					fssLoanService.abort(fssLoanEntityById);
+		fssLoanEntityById.setStatus("10050103");
 		fssLoanService.update(fssLoanEntityById);
 		return "redirect:/loan/trade/"+type;
 	}

@@ -1,4 +1,5 @@
 package com.gqhmt.controller.api.loan;
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
@@ -11,6 +12,8 @@ import com.gqhmt.extServInter.service.loan.ICreateLoan;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
 import com.gqhmt.extServInter.service.loan.IMarginSendBack;
 import com.gqhmt.extServInter.service.loan.IRepayment;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.pay.service.account.IFundsAccount;
 
 import org.springframework.context.ApplicationContext;
@@ -55,6 +58,9 @@ public class LoanAccountApi {
     @Resource
     private IRepayment repaymentImpl;
     
+    @Resource
+    private FssAccountService fssAccountService;
+    
     /**
      * author:柯禹来
      * time:2016年3月7日
@@ -95,9 +101,14 @@ public class LoanAccountApi {
      * 借款人提现
      * @param
      * @return
+     * @throws FssException 
      */
     @RequestMapping(value = "/createWithDrawApply",method = RequestMethod.POST)
-    public Object createWithDrawApply(@RequestBody LoanWithDrawApplyDto loanWithDrawApplyDto){
+    public Object createWithDrawApply(@RequestBody LoanWithDrawApplyDto loanWithDrawApplyDto) throws FssException{
+    	//借款人对象
+    	FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(loanWithDrawApplyDto.getAcc_no());
+    	if(!"11020012".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
+    	
     	Response response=new Response();
     	try {
     		response = loadWithDrawImpl.execute(loanWithDrawApplyDto);
