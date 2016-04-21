@@ -425,7 +425,8 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(withdrawSuccessDto.getOrder_no());
         FundAccountEntity entity=fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if("0000".equals(withdrawSuccessDto.getRespCode())) {
-            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1003);
+//            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1003);
+            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003);
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
             this.chargeAmount(fundOrderEntity);
