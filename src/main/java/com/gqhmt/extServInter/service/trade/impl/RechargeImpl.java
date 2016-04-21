@@ -1,5 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -33,6 +35,8 @@ public class RechargeImpl implements IRecharge {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
+	@APITradeTypeValid(value = "11030002,11030003,11030004,11030005")
+	@APISignature
     @Override
     public Response execute(SuperDto dto) {
     	Response response=new Response();

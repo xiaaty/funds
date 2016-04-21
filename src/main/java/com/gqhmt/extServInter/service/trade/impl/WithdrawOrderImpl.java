@@ -1,5 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
@@ -35,6 +37,8 @@ public class WithdrawOrderImpl implements IWithdrawOrder {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
+	@APITradeTypeValid(value = "11040001")//web提现
+//	@APISignature
     @Override
     public Response execute(SuperDto dto) {
 		WebOrderResponse response = null;
