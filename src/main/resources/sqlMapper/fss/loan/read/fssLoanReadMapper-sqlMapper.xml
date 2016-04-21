@@ -139,7 +139,7 @@
 <!-- 	流标  11090011 ，信用标流标           11090012，冠e通流标-->
 	<select id="findAbortBid" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
-		WHERE (t.trade_type = 11090011 OR t.trade_type = 11090012 ) AND t.status = 10050010
+		WHERE (t.trade_type = 11090011 ) AND t.status = 10050103
 	</select>
 	
 	<!-- 用来导出线下数据 -->
