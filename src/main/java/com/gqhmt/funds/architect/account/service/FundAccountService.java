@@ -356,7 +356,8 @@ public class FundAccountService {
     */
    	public List<FundAccountCustomerBean> findAcountList(Map<String,String> map) {
 	   // TODO Auto-generated method stub
-   		Map<String, String> map2=new HashMap<String, String>();
+		Map<String, String> map2=new HashMap<String, String>();
+		map2.putAll(map);
    		if(map!=null){
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");

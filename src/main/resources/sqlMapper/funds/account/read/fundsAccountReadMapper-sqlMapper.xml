@@ -52,11 +52,12 @@
 		b.has_Third_Account hasThirdAccount
 		FROM `t_gq_customer_info` a RIGHT JOIN `t_gq_fund_account` b ON a.ID=b.cust_id
 		<where>
-			<if test="custId==99 ">
-				and b.cust_id &gt; 100 and b.busi_type=0
+			and b.busi_type=0
+			<if test="custId=='101'">
+				and b.cust_id &gt; 100
 			</if>
-			<if test="custId==101 ">
-				and b.cust_id  &lt; 100 and b.busi_type=0
+			<if test="custId=='99'">
+				and b.cust_id  &lt; 100
 			</if>
 			<if test="customerName != null and customerName != ''">
 				and a.CUSTOMER_NAME like concat('%',#{customerName},'%')

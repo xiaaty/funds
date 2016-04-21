@@ -39,13 +39,16 @@ public class LoanApiTest extends SupperAPI {
     @Test
     public  void createAccount() {
         try {
-            CreateLoanAccountDto dto = super.getSuperDto(CreateLoanAccountDto.class,"11020009","63488471YHBC");
-            dto.setBank_card("2201211");
+            /*
+           {"mchn":"88721657SUKQ","seq_no":"2016042114075876306","trade_type":"11020009","signature":"2016042114075876306","contract_no":null,"bank_card":"6228480402564890018","name":"红楼梦","mobile":"15933213123","cert_no":"630101190303220010","bank_id":"0103","city_id":"110101","contractNo":null,"tradeType":"11020009","bankId":"0103","cityId":"110101","bankCard":"6228480402564890018","certNo":"630101190303220010"}
+             */
+            CreateLoanAccountDto dto = super.getSuperDto(CreateLoanAccountDto.class,"11020009","88721657SUKQ");
+            dto.setBank_card("6228480402564890018");
             dto.setBank_id("0105");
-            dto.setCert_no("rweqrqwrwer");
-            dto.setCity_id("110000");
-            dto.setContract_no("JK201603260eee0031");
-            dto.setMobile("123232222");
+            dto.setCert_no("630101190303220010");
+            dto.setCity_id("110101");
+            dto.setContract_no("1");
+            dto.setMobile("123232222221");
             dto.setName("dy1");
             LoanAccountResponse response = UrlConnectUtil.sendJsonDataReturnObjectUrl(LoanAccountResponse.class,"http://localhost:8080/api/createLoanAccount", JsonUtil.getInstance().getJson(dto))  ;
             System.out.println(response.getResp_code()+":"+response.getResp_msg());
