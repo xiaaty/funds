@@ -11,7 +11,6 @@ import com.gqhmt.extServInter.service.loan.IEnterAccount;
 import com.gqhmt.extServInter.service.loan.ILending;
 import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
 import com.gqhmt.extServInter.service.loan.impl.FailedBidImpl;
-import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -109,9 +108,9 @@ public class FssLoan {
     @RequestMapping(value = "/loan/mortgageeWithDraw",method = RequestMethod.POST)
     public Object MortgageeWithDraw(@RequestBody MortgageeWithDrawDto mortgageeWithDrawDto) throws FssException{
     	//抵押权人对象
-    	FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(mortgageeWithDrawDto.getMortgagee_acc_no());
+    	/*FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(mortgageeWithDrawDto.getMortgagee_acc_no());
     	if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
-    	
+    	*/
     	Response response= null;
     	try {
     		response = mortgageeWithDrawImpl.execute(mortgageeWithDrawDto);
