@@ -291,6 +291,12 @@ public class FundsAccountImpl implements IFundsAccount {
 			//创建银行卡信息
 			bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			if(bankCardInfoEntity==null){
+				//判断输入的银行卡号是否已经存在
+				bankCardInfoEntity=bankCardInfoService.getBankCardByBankNo(customerInfoEntity.getBankNo());
+				if(bankCardInfoEntity!=null){
+					throw new FssException("90002038");//该银行卡号已经存在
+				}
+				
 				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
 			}else{
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));

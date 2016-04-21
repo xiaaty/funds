@@ -5,7 +5,6 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.dto.fund.BankResponse;
 import com.gqhmt.extServInter.service.asset.IBankList;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
@@ -28,7 +27,7 @@ public class BankListImpl implements IBankList{
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	BankResponse response = new BankResponse();
     	try {
-    		List<BankEntity> banklist=fundBankImpl.getBankInfo((BankDto)dto);
+    		List<BankEntity> banklist=fundBankImpl.getBankInfo();
     		response.setBanklist(banklist);
 			response.setResp_code("0000");
 		} catch (FssException e) {
