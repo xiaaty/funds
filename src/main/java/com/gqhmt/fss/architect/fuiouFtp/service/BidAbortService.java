@@ -136,7 +136,7 @@ public class BidAbortService {
         loanEntity.setStatus("10050104");
         loanEntity.setModifyTime(new Date());
         fssLoanService.update(loanEntity);
-
+        
     }
 
     public void bidAbortCallback(FundOrderEntity fundOrderEntity) throws FssException {

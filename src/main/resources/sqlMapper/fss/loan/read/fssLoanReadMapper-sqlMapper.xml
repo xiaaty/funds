@@ -101,15 +101,15 @@
 	<select id="findBorrowerLoan"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
 		<include refid="selectSql" />
 			where 1=1
-			<if test="contractNo != null and contractNo != ''">
-				and t.contract_no like concat('%',#{contractNo},'%')
-			</if>
-			<if test="status != null and status != ''">
-				and t.status like concat('%',#{status},'%')
-			</if>
-			<if test="mchnChild != null and mchnChild != ''">
-				and t.mchn_child like concat('%',#{mchnChild},'%')
-			</if>
+<!-- 			<if test="contractNo != null and contractNo != ''"> -->
+<!-- 				and t.contract_no like concat('%',#{contractNo},'%') -->
+<!-- 			</if> -->
+<!-- 			<if test="status != null and status != ''"> -->
+<!-- 				and t.status like concat('%',#{status},'%') -->
+<!-- 			</if> -->
+<!-- 			<if test="mchnChild != null and mchnChild != ''"> -->
+<!-- 				and t.mchn_child like concat('%',#{mchnChild},'%') -->
+<!-- 			</if> -->
 			<if test="startTime != null and startTime != '' ">
 				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>
@@ -129,7 +129,7 @@
 <!-- 	满标放款  11090002 ，信用标放款      11092001， 抵押权人提现     11090004，冠e通满标-->
 	<select id="findLoanBySettle" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
-		WHERE (t.trade_type = 11090002 OR t.trade_type = 11092001 OR t.trade_type = 11090004) AND t.status = 10050010
+		WHERE (t.trade_type = 11090002 OR t.trade_type = 11092001 OR t.trade_type = 11090004 ) AND t.status = 10050010
 	</select>
 <!-- 	回款  11094002 ，提前回款     11094003， 正常回款    11094004，逾期回款-->
 	<select id="findLoanRepayment" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">

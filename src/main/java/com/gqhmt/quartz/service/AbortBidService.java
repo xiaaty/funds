@@ -21,6 +21,8 @@ import com.gqhmt.pay.service.tender.IFundsTender;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,9 +92,10 @@ public class AbortBidService {
             //获取投标列表
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
             //数据回盘
-			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
+//			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         } catch (FssException e) {
-        	loanEntity.setStatus("10050102");
+        	loanEntity.setStatus("10050014");
+        	loanEntity.setModifyTime(new Date());
         	fssLoanService.update(loanEntity);
         	//数据回盘
 			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
@@ -101,69 +104,72 @@ public class AbortBidService {
         }
 
 
-//        Integer cusId = bid.getCustomerId();
-//        Map<Integer,FuiouPreauth> map = fuiouPreauthService.getFuiouPreauth(bid.getId().longValue());
-//        if(bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() >0){
-//            cusId = bid.getHypothecarius();
-//        }
-//
-//        int falidSize =  0;
-//
-//        for(Tender tender:list){
-//            FuiouPreauth fuiouPreauth  = map.get(tender.getId());
-//            if(fuiouPreauth.getState() == 2){
-//                continue;
-//            }
-//            try {
-////                AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_ABORT_ASYN, ThirdPartyType.FUIOU, tender,fuiouPreauth.getContractNo());
-//
-//                fundsTender.abortLoop(tender,fuiouPreauth.getContractNo());
-//                fuiouPreauth.setState(2);
-//                fuiouPreauthService.update(fuiouPreauth);
-//                System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
-//            }catch (Exception e){
-//            	loanEntity.setStatus("10050102");
-//            	fssLoanService.update(loanEntity);
-//            	//数据回盘
-//				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
-//                fuiouPreauth.setState(3);
-//                fuiouPreauthService.update(fuiouPreauth);
-//                falidSize++;
-//                System.out.println("fuiouFtp:abortBid:failed:"+fuiouFtpOrder.getOrderNo());
-//            }
-//        }
-//
-//        if(falidSize == 0){
-//            tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),true,0);
-//            fuiouFtpOrder.setUploadStatus(3);
-//            fuiouFtpOrder.setDownloadStatus(4);
-//            fuiouFtpOrder.setResultStatus(3);
-//            fuiouFtpOrder.setResult(1);
-//            fuiouFtpOrder.setRetrunResultStatus(1);
-//            loanEntity.setStatus("10050102");
-//            fssLoanService.update(loanEntity);
-//          //数据回盘
-//			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
-//        }
-//        else if(falidSize == list.size()){
-//            //tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),false,0);
-//            fuiouFtpOrder.setUploadStatus(3);
-//            fuiouFtpOrder.setDownloadStatus(4);
-//            fuiouFtpOrder.setResultStatus(3);
-//            fuiouFtpOrder.setResult(2);
-//            fuiouFtpOrder.setRetrunResultStatus(1);
-//            
-//            loanEntity.setStatus("10050100");
-//            fssLoanService.update(loanEntity);
-//          //数据回盘
-//			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
-//        }
-//        try {
-//			fuiouFtpOrderService.update(fuiouFtpOrder);
-//		} catch (FssException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+        Integer cusId = bid.getCustomerId();
+        Map<Integer,FuiouPreauth> map = fuiouPreauthService.getFuiouPreauth(bid.getId().longValue());
+        if(bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() >0){
+            cusId = bid.getHypothecarius();
+        }
+
+        int falidSize =  0;
+
+        for(Tender tender:list){
+            FuiouPreauth fuiouPreauth  = map.get(tender.getId());
+            if(fuiouPreauth.getState() == 2){
+                continue;
+            }
+            try {
+//                AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_ABORT_ASYN, ThirdPartyType.FUIOU, tender,fuiouPreauth.getContractNo());
+
+                fundsTender.abortLoop(tender,fuiouPreauth.getContractNo());
+                fuiouPreauth.setState(2);
+                fuiouPreauthService.update(fuiouPreauth);
+                System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
+            }catch (Exception e){
+            	loanEntity.setStatus("10050102");
+            	loanEntity.setModifyTime(new Date());
+            	fssLoanService.update(loanEntity);
+            	//数据回盘
+				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
+                fuiouPreauth.setState(3);
+                fuiouPreauthService.update(fuiouPreauth);
+                falidSize++;
+                System.out.println("fuiouFtp:abortBid:failed:"+fuiouFtpOrder.getOrderNo());
+            }
+        }
+
+        if(falidSize == 0){
+            tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),true,0);
+            fuiouFtpOrder.setUploadStatus(3);
+            fuiouFtpOrder.setDownloadStatus(4);
+            fuiouFtpOrder.setResultStatus(3);
+            fuiouFtpOrder.setResult(1);
+            fuiouFtpOrder.setRetrunResultStatus(1);
+            loanEntity.setStatus("10050102");
+            loanEntity.setModifyTime(new Date());
+            fssLoanService.update(loanEntity);
+          //数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
+        }
+        else if(falidSize == list.size()){
+            //tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),false,0);
+            fuiouFtpOrder.setUploadStatus(3);
+            fuiouFtpOrder.setDownloadStatus(4);
+            fuiouFtpOrder.setResultStatus(3);
+            fuiouFtpOrder.setResult(2);
+            fuiouFtpOrder.setRetrunResultStatus(1);
+            
+            loanEntity.setStatus("10050100");
+            loanEntity.setModifyTime(new Date());
+            fssLoanService.update(loanEntity);
+          //数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
+        }
+        try {
+			fuiouFtpOrderService.update(fuiouFtpOrder);
+		} catch (FssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 

@@ -19,4 +19,13 @@
 		VALUES
     	(null,#{custNo},#{userNo},#{accNo},#{contractId},#{contractNo},#{contractAmt},#{payAmt},#{bespokeDate},#{tradeType},#{seqNo},#{mortgageeAccNo},#{createTime},#{modifyTime},#{mchnParent},#{mchnChild},#{loanPlatform},'10050010')
     </insert>  
+	<insert id="insertAbortBid"  parameterType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity"  > 
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+		SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+       	INSERT INTO t_gq_fss_loan
+		(id,cust_no,user_no,acc_no,contract_id,contract_no,contract_amt,pay_amt,bespoke_date,trade_type,seq_no,mortgagee_acc_no,create_time,modify_time,mchn_parent,mchn_child,loan_platform,status)
+		VALUES
+    	(null,#{custNo},#{userNo},#{accNo},#{contractId},#{contractNo},#{contractAmt},#{payAmt},#{bespokeDate},#{tradeType},#{seqNo},#{mortgageeAccNo},#{createTime},#{modifyTime},#{mchnParent},#{mchnChild},#{loanPlatform},'10050103')
+    </insert>  
 </mapper>

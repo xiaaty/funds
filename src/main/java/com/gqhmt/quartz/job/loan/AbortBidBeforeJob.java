@@ -47,7 +47,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
         super.isRunning = true;
 
-        List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();
+        List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
 
         for (FssLoanEntity loanEntity:loanEntities){
             try {
