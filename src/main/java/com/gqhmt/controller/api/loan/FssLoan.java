@@ -85,7 +85,7 @@ public class FssLoan {
     @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
     public Object lending(@RequestBody LendingDto lendingDto) throws FssException{
     	//抵押权人对象
-    	FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getMortgagee_acc_no());
+    	//FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getMortgagee_acc_no());
     	/*if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
     	//借款人对象
     	FssAccountEntity lendingAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getAcc_no());
