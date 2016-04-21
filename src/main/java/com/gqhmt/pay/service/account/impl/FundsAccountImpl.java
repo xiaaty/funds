@@ -87,12 +87,18 @@ public class FundsAccountImpl implements IFundsAccount {
 	public boolean createAccount(CustomerInfoEntity customerInfoEntity,String pwd, String taradPwd) throws FssException {
 		Long cusId = customerInfoEntity.getId();
 		Integer userId = customerInfoEntity.getUserId();
-		FundAccountEntity primaryAccount = this.getPrimaryAccount(cusId);
-        if(primaryAccount == null){
-			try {
-				primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
-			} catch (FssException e) {
+		FundAccountEntity primaryAccount = null;
+
+		try {
+			primaryAccount = this.getPrimaryAccount(cusId);
+		} catch (FssException e) {
+			if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
+				primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
+			}else{
+				throw e;
 			}
+
+
 		}
 		primaryAccount.setCustomerInfoEntity(customerInfoEntity);
 		if (primaryAccount.getHasThirdAccount() ==1){//富友
@@ -100,7 +106,7 @@ public class FundsAccountImpl implements IFundsAccount {
 				primaryAccount.setHasThirdAccount(2);
 				fundAccountService.update(primaryAccount);
 		}
-			return true;
+		return true;
 	}
 
 	/**
