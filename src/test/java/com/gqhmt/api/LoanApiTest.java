@@ -36,16 +36,16 @@ import java.util.List;
  */
 public class LoanApiTest extends SupperAPI {
 
-//    @Test
+    @Test
     public  void createAccount() {
         try {
             CreateLoanAccountDto dto = super.getSuperDto(CreateLoanAccountDto.class,"11020009","63488471YHBC");
             dto.setBank_card("2201211");
             dto.setBank_id("0105");
-            dto.setCert_no("220881198005150333");
-            dto.setCity_id("1000");
-            dto.setContract_no("JK2016032600031");
-            dto.setMobile("13581790473");
+            dto.setCert_no("rweqrqwrwer");
+            dto.setCity_id("110000");
+            dto.setContract_no("JK201603260eee0031");
+            dto.setMobile("123232222");
             dto.setName("dy1");
             LoanAccountResponse response = UrlConnectUtil.sendJsonDataReturnObjectUrl(LoanAccountResponse.class,"http://localhost:8080/api/createLoanAccount", JsonUtil.getInstance().getJson(dto))  ;
             System.out.println(response.getResp_code()+":"+response.getResp_msg());

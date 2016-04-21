@@ -6,19 +6,20 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
-import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
+import com.gqhmt.pay.service.cost.impl.CostImpl;
 import com.gqhmt.pay.service.loan.ILoan;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
-import com.gqhmt.pay.service.cost.impl.CostImpl;
 
 /**
  * Filename:    com.gqhmt.pay.service.loan.impl.LoanImpl
@@ -84,12 +85,12 @@ public class LoanImpl implements ILoan {
 				fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
 			} catch (FssException e) {
 				LogUtil.error(this.getClass(), e);
-				throw new FssException("91004013");
+				throw e;
 			}
 		}
 		}catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
-			throw new FssException("");
+			throw e;
 		}
 		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
