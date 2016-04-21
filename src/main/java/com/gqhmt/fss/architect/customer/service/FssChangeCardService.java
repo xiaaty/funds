@@ -18,6 +18,7 @@ import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.mapping.service.FuiouBankCodeService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.pay.fuiou.util.HttpClientUtil;
+import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
@@ -25,7 +26,6 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.util.LogUtil;
-import com.gqhmt.core.util.JsonUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.BufferedReader;
@@ -162,7 +162,11 @@ public class FssChangeCardService {
      * @throws Exception
      */
     public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo,String mchn) throws FssException {
-      /*  if(bankNo.length()!=16 || bankNo.length()!=19){
+    	List<Map<String, String>> noticeList= new ArrayList<Map<String, String>>();
+		Map<String, String> noticeMap = new HashMap<String, String>();
+		noticeMap.put("sysCode",CoreConstants.SYS_CODE);//商户系统编码，在平台系统查看
+		noticeList.add(noticeMap);
+    	/*  if(bankNo.length()!=16 || bankNo.length()!=19){
             throw new FssException("银行卡号错误");
         }
         if(bankCity.length()!=4){
@@ -176,9 +180,11 @@ public class FssChangeCardService {
         if(bankCardId == null){
             throw new FssException("90002036");//未得到客户银行卡信息
         }
-        
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(bankCardId);
         if(bankCardinfoEntity==null) throw new FssException("90004027");
+        if(bankCardinfoEntity.getChangeState() == 1){//变更中,请勿重复提交变更
+        	throw new FssException("90002037");
+        }
         if(bankNo.equals(bankCardinfoEntity.getBankNo())){
             throw new FssException("90002034");
         }
@@ -197,11 +203,14 @@ public class FssChangeCardService {
         FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custom.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         fundAccountEntity.setIshangeBankCard(1);
         fundAccountService.update(fundAccountEntity);
-
-        this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT, entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
-//        if (entity.getType() == 1) {
-//            this.sendMms(entity.getMobile(), 1);
-//        }
+		//发送站内通知短信
+    	noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
+        HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
+        
+        if (entity.getType() == 1) {
+            this.sendMms(entity.getMobile(), 1);
+        }
+        
     }
 
     public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bankCardinfoEntity, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn){
@@ -554,11 +563,11 @@ public class FssChangeCardService {
        }
        return  entity;
    }
-/*
+
    private boolean sendMms(String phone,int type){
        List<Map<String, String>> list = new ArrayList<>();
        Map<String, String> baMap = new HashMap<>();
-       baMap.put("sysCode", com.gqhmt.pay.fuiou.util.CoreConstants.FUNDS_SYS_CODE);	//商户系统编码，在平台系统查看
+       baMap.put("sysCode", CoreConstants.FUNDS_SYS_CODE);	//商户系统编码，在平台系统查看
        String tempCode = "";
        if(type == 1) {
            tempCode = CoreConstants.FUNDS_CHANGE_CARD_SUMBIT;
@@ -576,17 +585,15 @@ public class FssChangeCardService {
        map.put("phoneNo", phone);	//手机号，多个用","分开
        list.add(map);
        try {
-           String result = HttpClientUtil.postBody(CoreConstants.BACKEND_SMS_URL,JsonUtil.toJson(list));
+           String result = HttpClientUtil.postBody(
+                   CoreConstants.BACKEND_SMS_URL,
+                   JsonUtil.toJson(list));
            System.out.println(result);
        } catch (Exception e) {
            e.printStackTrace();
        }
        return true;
    }
-   
-   */
-   
-   
    
    
    

@@ -1,7 +1,14 @@
 package com.gqhmt.funds.architect.account.service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import com.gqhmt.funds.architect.account.entity.Notice;
 import com.gqhmt.funds.architect.account.mapper.write.NoticeWriteMapper;
@@ -10,7 +17,7 @@ import com.gqhmt.funds.architect.account.mapper.write.NoticeWriteMapper;
 public class NoticeService {
 
 	private static final String PREFIX_NOTICE = "尊敬的用户:\n ";
-
+	private static final Log log = LogFactory.getLog(NoticeService.class);
 	@Resource
 	private NoticeWriteMapper noticeWriteMapper;
 
@@ -59,6 +66,37 @@ public class NoticeService {
 		noticeWriteMapper.deleteByPrimaryKey(noticeId);
 	}
 
+	
+	/**
+	 * 站内信发送包装
+	 * @param list
+	 * @param noticeType
+	 * @param tempCode
+	 * @param userId
+	 * @param customerId
+	 * @param sendType
+	 * @param noticeBodyParams
+	 * @return
+	 */
+	public List<Map<String, String>> packSendNotice(List<Map<String, String>> list,String tempCode,int sendType,NoticeType noticeType,int userId, int customerId,String... noticeBodyParams){
+		String noticeArray[] = noticeType.getDescription().split("-");
+		Map<String, String> map = new HashMap<String, String>();
+		//参数
+		for (int i = 0; i < noticeBodyParams.length; i++) {
+			map.put(String.valueOf(i), String.valueOf(noticeBodyParams[i]));
+		}
+		map.put("title",noticeArray[0]);			//商户模板编码，在平台系统查看
+		map.put("customerId",String.valueOf(customerId));//商户模板编码，在平台系统查看
+		map.put("tempCode", tempCode);//商户模板编码，在平台系统查看
+		map.put("sendType", String.valueOf(sendType));	//发送类型 1.短信 2.站内信	
+		list.add(map);
+		log.info("【用户】:"+customerId+"\n【操作】:"+noticeArray[0]+"发送站内信");
+		return list;
+	}
+	
+	
+	
+	
 	public enum NoticeType {
 		TENDER_NOTICE("出借冻结-您出借的【|】于【|】出借冻结金额【|】元，详情请在[我的账户]>[我的出借]中查看，如需帮助请致电4006526818。"),
         SETTLE_NOTICE("满标出借成功-您出借的【|】于【|】满标计息，开始赚钱啦！详情请在【我的账户】>【我的出借】中查看，多投多赚让每一分发挥最大价值。"),

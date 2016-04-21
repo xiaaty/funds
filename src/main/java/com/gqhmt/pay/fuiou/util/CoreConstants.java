@@ -51,7 +51,7 @@ public class CoreConstants {
    public static final String REPAYMENT_TEMP_CODE=sysConfig.getProperty("repayMent_tempCode");
    public static final String TENDERSUCCESS_TEMP_CODE=sysConfig.getProperty("tenderSuccess_tempCode");
    public static final String TENDERFAILURE_TEMP_CODE=sysConfig.getProperty("tenderFailure_tempCode");
-
+   public static final String BACKEND_NOTICE_URL = sysConfig.getProperty("backend_notice_url");
    public static final String BACKEND_SMS_URL=sysConfig.getProperty("back_end_sms_url");
 
    public static final String MARKETING_BASEURL = sysConfig.getProperty("marketing.baseUrl");
@@ -60,5 +60,7 @@ public class CoreConstants {
    public static final String FUNDS_CHANGE_CARD_SUCCES = sysConfig.getProperty("funds.change.card.success");
    public static final String FUNDS_CHANGE_CARD_FAIL = sysConfig.getProperty("funds.change.card.fail");
    public static final String FUNDS_SYS_CODE = sysConfig.getProperty("funds.sysCode");
-
+   public static final String FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE = sysConfig.getProperty("fund_update_bankcard_submit_tempCode");
+   public static final Integer SMS_DX=1;
+   public static final Integer SMS_NOTICE=2;
 }

@@ -2,9 +2,8 @@ package com.gqhmt.pay.service.account.impl;
 
 import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
-import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.customer.service.BankService;
 import com.gqhmt.pay.service.account.IFundBank;
 import java.util.List;
 import javax.annotation.Resource;
@@ -18,17 +17,16 @@ import javax.annotation.Resource;
 public class FundBankImpl implements IFundBank {
 
 	@Resource
-	private BankCardInfoService bankCardInfoService;
+	private BankService bankService;
 	
 	@Override
-	public List<BankEntity> getBankInfo(BankDto bank) throws FssException {
-		List<BankEntity> list=bankCardInfoService.getBankList(null);
+	public List<BankEntity> getBankInfo() throws FssException {
+		List<BankEntity> list=bankService.findAll();
 		if(list==null && list.size()==0){
 			throw new FssException("没有得到银行信息");
 		}
 		return list;
 	}
-
 	
 	
 }
