@@ -260,7 +260,13 @@ public class FssLoanService {
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
 		//添加数据并返回ID
+		if("11090013".equals(dto.getTrade_type())){
+			//放款前流标
+			long insertLending = fssLoanWriteMapper.insertAbortBid(fssLoanEntity);
+		}else{
+			//放款后流标
 		long insertLending = fssLoanWriteMapper.insertFullBid(fssLoanEntity);
+		}
 //		feeList
 		
 			List<LendingFeeListDto> feeLists = dto.getFee_list();
