@@ -107,6 +107,7 @@ public class GlobalConstants {
 
     public static final int ORDER_ABORT_NEW = 11990050;
 
+    public static final int ORDER_ABORT_BID_NEW = 11990060;
 
     public static final int ORDER_MORTGAGEE_TRANS_ACC = 1001;  //抵押权人转给借款人
 
@@ -475,6 +476,8 @@ public class GlobalConstants {
         fundsType.put(2008,"一般冻结解冻");
         fundsType.put(2009,"应付金转出");
         fundsType.put(2010,"应付金转入");
+
+        fundsType.put(2011,"流标退款");
         /*
         #3开头投标交易类型
         3001:投标

@@ -9,6 +9,7 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -39,6 +40,9 @@ public class FtpResultService {
 
     @Resource
     private BidRepaymentService bidRepaymentService;
+
+    @Resource
+    private BidAbortService abortService;
 
     /**
      * 解析下载文件状态
@@ -192,8 +196,9 @@ public class FtpResultService {
                 settleService.settleCallback(orderEntity);
             } else if (type == GlobalConstants.ORDER_REPAYMENT_NEW) {
                bidRepaymentService.BidRepaymentCallback(orderEntity);
-            }else if (type == GlobalConstants.ORDER_ABORT_NEW) {
-//                bidRepaymentService.updateCallbackBidRepaymentStatus(sourceId.intValue(), result == 1 ? true : false, 0);
+            }else if (type == GlobalConstants.ORDER_ABORT_BID_NEW) {
+//
+               abortService.bidAbortCallback(orderEntity);
            }
             fuiouFtpOrder.setRetrunResultStatus(1);
         }catch (RuntimeException e){

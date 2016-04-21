@@ -246,14 +246,9 @@ public class FssLoanTradeController {
 			FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssLoanEntityById.getAccNo());
 			fssLoanEntityById.setCustNo(fssAccountByAccNo.getCustId().toString());
 		}
-		try {
-			fssLoanService.abort(fssLoanEntityById);
-			fssLoanEntityById.setStatus("11050011");
-			fssLoanService.update(fssLoanEntityById);
-		} catch (FssException e) {
-			LogUtil.info(this.getClass(), e.getMessage());
-			model.addAttribute("erroMsg", e.getMessage());
-		}
+		//			fssLoanService.abort(fssLoanEntityById);
+		fssLoanEntityById.setStatus("11050103");
+		fssLoanService.update(fssLoanEntityById);
 		return "redirect:/loan/trade/"+type;
 	}
 	/**

@@ -461,6 +461,37 @@ public class FundSequenceService {
 
   }
 
+    public void abortSequence(List<Tender> list,FundAccountEntity  fromEntity , FundOrderEntity fundOrderEntity ,String title) throws FssException {
+
+        BigDecimal bonusAmount = BigDecimal.ZERO;
+        List<Tender> tenders = new ArrayList<>();		//返现tender集合
+
+
+        for (Tender tender : list) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
+            try {
+                this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2011,null, ThirdPartyType.FUIOU, fundOrderEntity);
+            } catch (FssException e) {
+                LogUtil.error(this.getClass(), e.getMessage());
+            }
+
+            this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2011, "你出借的产品" + title + " 已流标，退回资金 " + tender.getRealAmount() + "元");
+
+            //红包使用金额汇总2015.07.31 于泳
+            if(tender.getBonusAmount() != null) {
+                bonusAmount = bonusAmount.add(tender.getBonusAmount());
+            }
+        }
+
+        //红包账户出账，使用红包汇总 2015.07.31 于泳
+        if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+            this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
+            this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
+        }
+
+    }
+
 
     public void repaymentSequence(List<RepaymentBean> list,String title,FundAccountEntity fromEntity,FundOrderEntity fundOrderEntity,BigDecimal sumRepay){
         //产品名称，如果产品名称为空，则去标的title
