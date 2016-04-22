@@ -256,7 +256,7 @@
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															<c:if test="${t.tradeType == '11090010'}">
-															<c:if test="${t.status=='10050001' ||t.status=='10050099'}">
+															<c:if test="${t.status=='10050001' ||t.status=='10050099'}">0
 																<a href="${contextPath}/loan/trade/${type}/retransfer/${t.id}" >转账</a>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
