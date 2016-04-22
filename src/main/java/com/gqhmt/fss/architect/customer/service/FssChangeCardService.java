@@ -166,16 +166,6 @@ public class FssChangeCardService {
 		Map<String, String> noticeMap = new HashMap<String, String>();
 		noticeMap.put("sysCode",CoreConstants.SYS_CODE);//商户系统编码，在平台系统查看
 		noticeList.add(noticeMap);
-    	/*  if(bankNo.length()!=16 || bankNo.length()!=19){
-            throw new FssException("银行卡号错误");
-        }
-        if(bankCity.length()!=4){
-            throw new FssException("银行所属地区错误");
-        }
-        if(bankId.length()!=4){
-            throw new FssException("所属银行错误");
-        }*/
-
         Integer bankCardId = custom.getBankId();
         if(bankCardId == null){
             throw new FssException("90002036");//未得到客户银行卡信息
