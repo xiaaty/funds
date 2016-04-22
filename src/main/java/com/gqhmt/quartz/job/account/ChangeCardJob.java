@@ -15,6 +15,7 @@ import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.account.IFundsAccount;
 import com.gqhmt.quartz.job.SupperJob;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -46,13 +47,19 @@ import java.util.List;
 public class ChangeCardJob extends SupperJob {
 
     @Resource
-    public FssChangeCardService changeCardService;
+    private FssChangeCardService changeCardService;
     
     @Resource
-    public PaySuperByFuiou paySuperByFuiou;
+    private PaySuperByFuiou paySuperByFuiou;
     
     @Resource
-    public FundAccountService fundAccountService;
+    private FundAccountService fundAccountService;
+
+
+    @Resource
+    private IFundsAccount fundsAccount;
+
+
    
     
     private static boolean isRunning = false;
@@ -213,6 +220,9 @@ public class ChangeCardJob extends SupperJob {
         try{
 //            AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD, ThirdPartyType.FUIOU,changeCardEntity);
 
+//            paySuperByFuiou.changeCard(changeCardEntity);
+
+            fundsAccount.changeCard(changeCardEntity);
             changeCardEntity.setTradeState(4);
             changeCardService.update(changeCardEntity);
         }catch (Exception e){

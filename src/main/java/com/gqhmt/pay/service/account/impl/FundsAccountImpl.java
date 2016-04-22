@@ -12,6 +12,7 @@ import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
+import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -136,15 +137,15 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	/**
      * 银行卡变更
-     * @param changeBankCardDto            支付渠道
+     * @param FundsAccountImpl.java            支付渠道
      * @throws FssException
      */
-	public boolean changeCard(ChangeBankCardDto changeBankCardDto) throws FssException {
-		Long cusId = Long.valueOf(changeBankCardDto.getCust_no());
-		String cardNo = changeBankCardDto.getBank_card();
-		String bankCd = changeBankCardDto.getBank_id();
-		String cityId = changeBankCardDto.getCity_id();
-		String fileName = changeBankCardDto.getFile_path();
+	public boolean changeCard(FssChangeCardEntity changeCardEntity) throws FssException {
+		Long cusId = Long.valueOf(changeCardEntity.getCustId());
+		String cardNo = changeCardEntity.getCardNo();
+		String bankCd = changeCardEntity.getBankType();
+		String cityId = changeCardEntity.getBankCity();
+		String fileName = changeCardEntity.getFilePath();
 		FundAccountEntity primaryAccount =this.getPrimaryAccount(cusId);
 		boolean changeCard = paySuperByFuiou.changeCard(primaryAccount,cardNo,bankCd,bankCd,cityId,fileName);
 		if(!changeCard) throw new FssException("90002001");
@@ -294,7 +295,7 @@ public class FundsAccountImpl implements IFundsAccount {
 					throw new FssException("90002038");//该银行卡号已经存在
 				}
 				
-				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
+				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity);
 			}else{
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			}

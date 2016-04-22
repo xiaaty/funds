@@ -111,8 +111,7 @@ public class APIValidAop {
 
         String resCode = response.getResp_code();
         if(resCode != null && Integer.parseInt(resCode) == 0){
-//            resCode = "00000000";
-//            resCode = "0000";
+            resCode = "00000000";
             response.setResp_code(resCode);
         }
         String resMsg = Application.getInstance().getDictName(response.getResp_code());

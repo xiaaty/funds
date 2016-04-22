@@ -290,7 +290,7 @@ public class FssChangeCardService {
 	            bankCardinfoEntity.setBankSortName(fuiouBankCodeService.queryFuiouBankValueByCode(changeCardEntity.getBankType()));
 	            bankCardinfoEntity.setMemo("变更成功");
 	            bankCardinfoEntity.setModifyTime(new Date());
-	            bankCardinfoService.saveOrUpdate(bankCardinfoEntity);
+	            bankCardinfoService.update(bankCardinfoEntity);
 	            changeCardEntity.setState(2);
 	            changeCardEntity.setEffectTime(new Date());
 	            changeCardEntity.setTradeState(99);
@@ -344,7 +344,7 @@ public class FssChangeCardService {
 	            if(bankCardinfoEntity !=null){
 	                bankCardinfoEntity.setChangeState(2);
 	                bankCardinfoEntity.setMemo("资料审核不通过，新银行卡变更失败，请重新变更；原银行卡充值提现不受影响。");
-	                bankCardinfoService.saveOrUpdate(bankCardinfoEntity);
+	                bankCardinfoService.update(bankCardinfoEntity);
 	            }
 	            changeCardEntity.setState(3);
 	            changeCardEntity.setTradeState(99);
