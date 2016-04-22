@@ -1,5 +1,6 @@
 package com.gqhmt.controller.api.loan;
 
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.EnterAccountDto;
@@ -10,6 +11,7 @@ import com.gqhmt.extServInter.service.loan.IEnterAccount;
 import com.gqhmt.extServInter.service.loan.ILending;
 import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
 import com.gqhmt.extServInter.service.loan.impl.FailedBidImpl;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,6 +52,10 @@ public class FssLoan {
     @Resource
     private IEnterAccount enterAccountImpl;
     
+    @Resource
+    private FssAccountService fssAccountService;
+    
+    
    /**
     * 
     * author:jhz
@@ -58,6 +64,7 @@ public class FssLoan {
     */
     @RequestMapping(value = "/loan/failedBid",method = RequestMethod.POST)
     public Object ceeateAccount(@RequestBody FailedBidDto failedBidDto){
+    	
     	Response response= null;
         try {
         	
@@ -72,9 +79,17 @@ public class FssLoan {
      * author:jhz
      * time:2016年3月8日
      * function：借款人放款
+     * @throws FssException 
      */
     @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
-    public Object lending(@RequestBody LendingDto lendingDto){
+    public Object lending(@RequestBody LendingDto lendingDto) throws FssException{
+    	//抵押权人对象
+    	//FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getMortgagee_acc_no());
+    	/*if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
+    	//借款人对象
+    	FssAccountEntity lendingAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getAcc_no());
+    	if(!"11020012".equals(lendingAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
+    	*/
     	Response response= null;
     	try {
     		response = lendingImpl.execute(lendingDto);
@@ -87,10 +102,15 @@ public class FssLoan {
      * 
      * author:jhz
      * time:2016年3月8日
-     * function：抵押权人放款
+     * function：抵押权人提现
+     * @throws FssException 
      */
     @RequestMapping(value = "/loan/mortgageeWithDraw",method = RequestMethod.POST)
-    public Object MortgageeWithDraw(@RequestBody MortgageeWithDrawDto mortgageeWithDrawDto){
+    public Object MortgageeWithDraw(@RequestBody MortgageeWithDrawDto mortgageeWithDrawDto) throws FssException{
+    	//抵押权人对象
+    	/*FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(mortgageeWithDrawDto.getMortgagee_acc_no());
+    	if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
+    	*/
     	Response response= null;
     	try {
     		response = mortgageeWithDrawImpl.execute(mortgageeWithDrawDto);

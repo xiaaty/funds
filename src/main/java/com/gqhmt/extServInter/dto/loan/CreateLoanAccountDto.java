@@ -21,7 +21,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
 public class CreateLoanAccountDto extends SuperDto {
 
 //    @APIValidNull(errorCode = "90002016")
-    private String contract_id;		//合同Id
+    private String contract_no;		//合同编号
  
     @APIValidNull(errorCode = "90002009")
     private String mobile;			//手机号
@@ -86,12 +86,12 @@ public class CreateLoanAccountDto extends SuperDto {
         this.city_id = city_id;
     }
 
-	public String getContract_id() {
-		return contract_id;
+	public String getContract_no() {
+		return contract_no;
 	}
 
-	public void setContract_id(String contract_id) {
-		this.contract_id = contract_id;
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
 	}
     
 }

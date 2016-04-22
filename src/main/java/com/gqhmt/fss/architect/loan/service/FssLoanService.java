@@ -142,7 +142,11 @@ public class FssLoanService {
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setLoanPlatform(dto.getLoan_platform());
 		fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
+		if("11090001".equals(dto.getTrade_type())){
+			long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
+		}else{
+			long insertLending = fssLoanWriteMapper.insertFullBid(fssLoanEntity);
+		}
 //		feeList
 		List<LendingFeeListDto> feeLists = dto.getFee_list();
 
@@ -213,9 +217,10 @@ public class FssLoanService {
     	fssLoanEntity.setContractId(dto.getContract_id());
     	fssLoanEntity.setContractNo(dto.getContract_no());
     	fssLoanEntity.setCreateTime(new Date());
+    	fssLoanEntity.setModifyTime(new Date());
     	fssLoanEntity.setMchnChild(dto.getMchn());
     	fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-    	return fssLoanWriteMapper.insertLending(fssLoanEntity);
+    	return fssLoanWriteMapper.insertFullBid(fssLoanEntity);
 		
 	}
 	/**
@@ -255,7 +260,13 @@ public class FssLoanService {
 		fssLoanEntity.setMchnChild(dto.getMchn());
 		fssLoanEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
 		//添加数据并返回ID
-		long insertLending = fssLoanWriteMapper.insertLending(fssLoanEntity);
+		if("11090013".equals(dto.getTrade_type())){
+			//放款前流标
+			long insertLending = fssLoanWriteMapper.insertAbortBid(fssLoanEntity);
+		}else{
+			//放款后流标
+		long insertLending = fssLoanWriteMapper.insertFullBid(fssLoanEntity);
+		}
 //		feeList
 		
 			List<LendingFeeListDto> feeLists = dto.getFee_list();
@@ -474,7 +485,7 @@ public class FssLoanService {
 		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID,"2");
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 3);
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
-		throw new FssException("异步处理，等待回调通知");
+//		throw new FssException("异步处理，等待回调通知");
 	}
 	
 	//线下代扣

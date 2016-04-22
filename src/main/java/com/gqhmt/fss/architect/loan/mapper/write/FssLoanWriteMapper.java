@@ -27,4 +27,18 @@ public interface FssLoanWriteMapper extends ReadAndWriteMapper<FssLoanEntity> {
      * function：添加
      */
 	public long insertLending(FssLoanEntity fssLoanEntity);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月20日
+	 * function：添加满标转账中
+	 */
+	public long insertFullBid(FssLoanEntity fssLoanEntity);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月21日
+	 * function：放款前流标
+	 */
+	public long insertAbortBid(FssLoanEntity fssLoanEntity);
 }

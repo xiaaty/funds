@@ -1,7 +1,17 @@
 package com.gqhmt.quartz.job.accounting;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
+import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.quartz.job.SupperJob;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.accounting.EnterAccountingJob
@@ -19,10 +29,22 @@ import org.quartz.JobExecutionException;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
+@Component
 public class EnterAccountingJob extends SupperJob {
-
-    public void execute( ) throws JobExecutionException {
-    	
-
+	
+	@Resource
+	private FssEnterAccountService fssEnterAccountService;
+	@Scheduled(cron="0 0/1 *  * * * ")
+    public void execute( ) throws JobExecutionException, FssException {
+    	System.out.println("入账跑批");
+        if(!isIp("upload")){
+            return;
+        }
+        if(isRunning) return;
+        super.isRunning = true;
+    	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
+    	for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
+    		fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
+		}
     }
 }

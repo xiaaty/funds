@@ -28,7 +28,7 @@ public class MarginSendBackImpl implements IMarginSendBack{
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		loanImpl.marginSendBack((MarginDto)dto);
+    		boolean marginSendBack = loanImpl.marginSendBack((MarginDto)dto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

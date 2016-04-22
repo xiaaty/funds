@@ -5,7 +5,6 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.event.trade.WithholdingEvent;
 import com.gqhmt.pay.service.trade.IFundsBatchTrade;
 import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
@@ -26,7 +25,7 @@ import java.util.Calendar;
  * -----------------------------------------------------------------
  * 15/12/31  于泳      1.0     1.0 Version
  */
-@Component
+//@Component
 public class AccountingWithholdingListener  implements ApplicationListener<WithholdingEvent> {
 
     @Resource

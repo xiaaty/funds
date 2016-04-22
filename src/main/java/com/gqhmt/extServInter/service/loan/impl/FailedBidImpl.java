@@ -37,7 +37,7 @@ public class FailedBidImpl implements IFailedBid {
 	private FssLoanService loanService;
 
 
-	@APITradeTypeValid(value = "11090010,11090011")
+	@APITradeTypeValid(value = "11090010,11090011,11090013")
 	@APISignature
     public Response execute(SuperDto dto) {
     	Response response = new Response();

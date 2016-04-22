@@ -107,6 +107,7 @@ public class GlobalConstants {
 
     public static final int ORDER_ABORT_NEW = 11990050;
 
+    public static final int ORDER_ABORT_BID_NEW = 11990060;
 
     public static final int ORDER_MORTGAGEE_TRANS_ACC = 1001;  //抵押权人转给借款人
 
@@ -235,6 +236,8 @@ public class GlobalConstants {
 
     //开户交易类型,与账户类型匹配规则
     public static Map<String,String> TRADE_ACCOUNT_TYPE_MAPPING = new ConcurrentHashMap<>();
+   //交易类型与账户类型匹配规则
+    public static Map<String,Integer> TRADETYPE_ACCOUNT_MAPPING = new ConcurrentHashMap<>();
 
     //开户交易类型,与交易渠道映射
     public static Map<String,String> TRADE_ACCOUNT_PAY_CHANNEL_MAPPING = new ConcurrentHashMap<>();
@@ -473,6 +476,8 @@ public class GlobalConstants {
         fundsType.put(2008,"一般冻结解冻");
         fundsType.put(2009,"应付金转出");
         fundsType.put(2010,"应付金转入");
+
+        fundsType.put(2011,"流标退款");
         /*
         #3开头投标交易类型
         3001:投标
@@ -576,22 +581,22 @@ public class GlobalConstants {
 
 
         //借款系统开户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020010","10010003");//借款人开户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020009","10019002");//纯线下借款账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020012","10010003");//借款人开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020011","10019002");//纯线下借款账户
 
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020010","97010001");
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020009","97010000");//纯线下
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020012","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020011","97010000");//纯线下
 
 
         //中间人账户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020006","10012001");//代偿人账户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020007","10012002");//抵押权人开户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020011","10012003");//借款代还账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020008","10012001");//代偿人账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020009","10012002");//抵押权人开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020013","10012003");//借款代还账户
 
 
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020006","97010001");
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020007","97010001");
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020011","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020008","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020009","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020013","97010001");
 
 
         TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
@@ -627,7 +632,7 @@ public class GlobalConstants {
         TRADE_BUSINESS_TYPE__MAPPING.put(10019002,0);
 
         
-        
+        TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);
         
         
         

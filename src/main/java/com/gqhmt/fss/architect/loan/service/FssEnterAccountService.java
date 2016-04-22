@@ -145,7 +145,7 @@ public class FssEnterAccountService {
 				}
 			}
 		}
-		fssBackplateService.createFssBackplateEntity(enterAccountDto.getSeq_no(), enterAccountDto.getMchn(), enterAccountDto.getTrade_type());
+//		fssBackplateService.createFssBackplateEntity(enterAccountDto.getSeq_no(), enterAccountDto.getMchn(), enterAccountDto.getTrade_type());
 	}
 
 	/**
@@ -332,6 +332,18 @@ public class FssEnterAccountService {
 					this.updateExecuteCount(fssEnterAccountEntity);
 				}
 		}
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月18日
+	 * function：入账跑批
+	 * @throws FssException 
+	 */
+	public void enterAccounting(FssEnterAccountParentEntity fssEnterAccountParentEntity) throws FssException {
+		List<FssEnterAccountEntity> enterAccounts = this.getEnterAccounts(fssEnterAccountParentEntity.getId());
+		//TODO：入账
+		fssBackplateService.createFssBackplateEntity(fssEnterAccountParentEntity.getSeqNo(), fssEnterAccountParentEntity.getMchnChild(), fssEnterAccountParentEntity.getTradeType());
 	}
 	
 }

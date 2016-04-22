@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,6 +90,7 @@ public class CallbackJob extends SupperJob {
         			entity.setRepayResult(98060003);//回盘失败
         		}
                 entity.setRepayCount(entity.getRepayCount()+1);
+                entity.setModifyTime(new Date());
         		fssBackplateService.update(entity);
         	} catch (Exception e) {
         		LogUtil.error(getClass(),e);
