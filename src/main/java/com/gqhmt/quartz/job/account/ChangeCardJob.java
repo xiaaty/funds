@@ -68,8 +68,8 @@ public class ChangeCardJob extends SupperJob {
 
         if(isRunning) return;
 
-        Long startTime = Calendar.getInstance().getTimeInMillis();
-        LogUtil.info(getClass(),"变更银行卡跑批开始执行");
+
+        startLog("变更银行卡");
         isRunning = true;
 
         try {
@@ -93,8 +93,9 @@ public class ChangeCardJob extends SupperJob {
         }finally {
             isRunning = false;
         }
-        Long endTime = Calendar.getInstance().getTimeInMillis();
-        LogUtil.info(getClass(),"变更银行卡跑批执行完成,共耗时:"+(endTime-startTime));
+
+        endtLog();
+
     }
 
     private void queryDate() throws FssException {
@@ -105,8 +106,6 @@ public class ChangeCardJob extends SupperJob {
 
         for(FssChangeCardEntity t:list){
             this.queryDate(t);
-            t.setTradeState(5);
-            changeCardService.update(t);
         }
     }
     
@@ -148,7 +147,7 @@ public class ChangeCardJob extends SupperJob {
         for(FssChangeCardEntity changeCardEntity:list){
             try {
                 this.uploadImageFtp(changeCardEntity);
-                changeCardService.uploadImageFtp(changeCardEntity);
+//                changeCardService.uploadImageFtp(changeCardEntity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -196,7 +195,7 @@ public class ChangeCardJob extends SupperJob {
         for(FssChangeCardEntity changeCardEntity:list){
             try {
                 this.uploadData(changeCardEntity);
-                changeCardService.uploadData(changeCardEntity);
+//
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -213,15 +212,26 @@ public class ChangeCardJob extends SupperJob {
         }
         try{
 //            AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD, ThirdPartyType.FUIOU,changeCardEntity);
+
             changeCardEntity.setTradeState(4);
+            changeCardService.update(changeCardEntity);
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
             changeCardEntity.setTradeState(6);
             changeCardEntity.setRespCode("0001");
             changeCardEntity.setRespMsg(e.getMessage());
+            try {
+                changeCardService.uploadData(changeCardEntity);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
 
         }
-        changeCardService.update(changeCardEntity);
+
     }
 
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
 }

@@ -1,7 +1,6 @@
 package com.gqhmt.quartz.job.accounting;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.quartz.job.SupperJob;
@@ -10,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -43,8 +41,7 @@ public class EnterAccountingJob extends SupperJob {
         }
         if(isRunning) return;
 
-		Long startTime = Calendar.getInstance().getTimeInMillis();
-		LogUtil.info(getClass(),"入账跑批 开始执行");
+		startLog("入账");
 
         isRunning = true;
     	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
@@ -56,7 +53,11 @@ public class EnterAccountingJob extends SupperJob {
 
     	isRunning=false;
 
-		Long endTime = Calendar.getInstance().getTimeInMillis();
-		LogUtil.info(getClass(),"入账跑批 执行完成,共耗时:"+(endTime-startTime));
+		endtLog();
     }
+
+	@Override
+	public boolean isRunning() {
+		return isRunning;
+	}
 }

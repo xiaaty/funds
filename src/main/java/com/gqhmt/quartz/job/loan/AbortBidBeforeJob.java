@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -49,8 +48,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
         if(isRunning) return;
 
-        Long startTime = Calendar.getInstance().getTimeInMillis();
-        LogUtil.info(getClass(),"借款业务流标 执行流标前置 跑批 开始执行");
+        startLog("借款业务流标 执行流标前置");
         isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
@@ -69,9 +67,12 @@ public class AbortBidBeforeJob extends SupperJob {
         isRunning = false;
 
 
-        Long endTime = Calendar.getInstance().getTimeInMillis();
-        LogUtil.info(getClass(),"借款业务流标 执行流标前置 跑批 执行完成,共耗时:"+(endTime-startTime));
+        endtLog();
 
+    }
 
+    @Override
+    public boolean isRunning() {
+        return isRunning;
     }
 }
