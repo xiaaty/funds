@@ -15,7 +15,6 @@ import com.gqhmt.extServInter.service.loan.IRepayment;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.pay.service.account.IFundsAccount;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,8 +87,6 @@ public class LoanAccountApi {
     	try {
     		response = changeCardImpl.execute(changeCardDto);
     	} catch (Exception e) {
-//    		LogUtil.error(this.getClass(), e);
-//    		response.setResp_code(e.getMessage());
     		response=this.execute(e);
     	}
     	return response;
