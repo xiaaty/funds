@@ -545,7 +545,10 @@ public class BankCardInfoService {
 			return bankCardInfoEntity;
 		}
 	 
-	 
+		public BankCardInfoEntity queryBankCardByBankNo(String cardNo){
+			
+			return bankCardinfoReadMapper.queryBankCardByBankNo(cardNo);
+		}
 	 
 	 
 }

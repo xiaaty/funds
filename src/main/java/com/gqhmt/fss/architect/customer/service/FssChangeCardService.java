@@ -118,7 +118,7 @@ public class FssChangeCardService {
      * @param filePath
      * @throws Exception
      */
-    public void addChangeCard(String custNo, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,String seqNo,int type,String mchn) throws FssException {
+    public void addChangeCard(String custNo, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,String seqNo,String tradeType,String mchn) throws FssException {
     	CustomerInfoEntity customerInfo  = customerInfoService.getCustomerById(Long.valueOf(custNo));
         if(customerInfo == null){
             throw new FssException("90002007");
@@ -126,7 +126,7 @@ public class FssChangeCardService {
         if(filePath ==null || "".equals(filePath)){
             throw new FssException("90002032");
         }
-        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,1,seqNo,mchn);
+        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,1,seqNo,mchn,tradeType);
     }
 
     /**
@@ -147,7 +147,7 @@ public class FssChangeCardService {
         if(filePath ==null || "".equals(filePath)){
             throw new Exception("90002032");
         }
-        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,type,seqNo,null);
+        this.addChangeCard(customerInfo,bankNo,bankId,bankAddr,bankCity,filePath,type,seqNo,null,null);
     }
 
 
@@ -161,7 +161,7 @@ public class FssChangeCardService {
      * @param filePath
      * @throws Exception
      */
-    public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo,String mchn) throws FssException {
+    public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo,String mchn,String tradeType) throws FssException {
     	List<Map<String, String>> noticeList= new ArrayList<Map<String, String>>();
 		Map<String, String> noticeMap = new HashMap<String, String>();
 		noticeMap.put("sysCode",CoreConstants.SYS_CODE);//商户系统编码，在平台系统查看
@@ -188,7 +188,7 @@ public class FssChangeCardService {
         if(bankNo.equals(bankCardinfoEntity.getBankNo())){
             throw new FssException("90002034");
         }
-        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo,mchn);
+        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo,mchn,tradeType);
         try {
 			this.insert(entity);
 		} catch (Exception e) {
@@ -213,7 +213,7 @@ public class FssChangeCardService {
         
     }
 
-    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bankCardinfoEntity, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn){
+    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bankCardinfoEntity, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn,String tradeType){
         FssChangeCardEntity entity = new FssChangeCardEntity();
         entity.setCustId(cus.getId().longValue());
         entity.setCardNo(bankNo);
@@ -240,6 +240,7 @@ public class FssChangeCardService {
         if(seqNo != null){
             entity.setSeqNo(seqNo);
         }
+        entity.setTradeType(tradeType);
         return  entity;
     }
 

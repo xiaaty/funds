@@ -26,7 +26,7 @@ public class CoreConstants {
 
     static{
         try {
-            sysConfig.load(new InputStreamReader(CoreConstants.class.getResourceAsStream("/config/server.properties"),"utf-8"));
+            sysConfig.load(new InputStreamReader(CoreConstants.class.getResourceAsStream("/config/appContext.properties"),"utf-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class CoreConstants {
 	/**
 	 * 短信系统接口参数
 	 */
-   public static final String SYS_CODE=sysConfig.getProperty("sysCode") ;
+   public static final String SYS_CODE=sysConfig.getProperty("funds.sysCode") ;
    public static final String FULL_BID_TEMP_CODE=sysConfig.getProperty("fullBid_tempCode");
    public static final String REPAYMENT_TEMP_CODE=sysConfig.getProperty("repayMent_tempCode");
    public static final String TENDERSUCCESS_TEMP_CODE=sysConfig.getProperty("tenderSuccess_tempCode");
