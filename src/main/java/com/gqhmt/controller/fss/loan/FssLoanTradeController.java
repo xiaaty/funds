@@ -218,7 +218,7 @@ public class FssLoanTradeController {
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		
 		try {
-			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(), fssLoanEntityById.getMortgageeAccNo(),
+			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
 			fssLoanEntityById.setStatus("10050100");
