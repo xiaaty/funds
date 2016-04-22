@@ -32,7 +32,7 @@ public interface FundOrderReadMapper extends ReadMapper<FundOrderEntity> {
 
     public List<FundOrderEntity> queryFundOrder(Map<Object,Object> map);
 
-    public int getWithdrawNum(@Param("accountID") Long accountID);
+    public int getWithdrawNum(@Param("accountId") Long accountId);
 
     public List<FundOrderBean> getFundOrderRechargeAndWithdraw(@Param("custId") Integer custId,@Param("order_type")int orderType,@Param("strTime")String strTime,@Param("endTime")String endTime);
     
