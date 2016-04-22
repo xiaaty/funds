@@ -60,12 +60,16 @@ public class ChangeCardJob extends SupperJob {
     /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
     @Scheduled(cron="0 0/1 *  * * * ")
     public void changeCard() throws PayChannelNotSupports{
-        System.out.println("变更银行卡跑批");
+
+        System.out.println();
         if(!isIp("upload")){
             return;
         }
 
         if(isRunning) return;
+
+        Long startTime = Calendar.getInstance().getTimeInMillis();
+        LogUtil.info(getClass(),"变更银行卡跑批开始执行");
         isRunning = true;
 
         try {
@@ -89,6 +93,8 @@ public class ChangeCardJob extends SupperJob {
         }finally {
             isRunning = false;
         }
+        Long endTime = Calendar.getInstance().getTimeInMillis();
+        LogUtil.info(getClass(),"变更银行卡跑批执行完成,共耗时:"+(endTime-startTime));
     }
 
     private void queryDate() throws FssException {

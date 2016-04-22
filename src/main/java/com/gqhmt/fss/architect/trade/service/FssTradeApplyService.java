@@ -275,7 +275,7 @@ public class FssTradeApplyService {
 
 	/**
 	 * 修改执行条数
-	 * @param applyNo
+	 * @param fssTradeRecordEntity
 	 * 根据申请编号修改执行条数,实际交易金额，修改日期
 	 * @throws FssException 
      */

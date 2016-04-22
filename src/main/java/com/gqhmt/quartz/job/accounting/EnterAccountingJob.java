@@ -1,16 +1,16 @@
 package com.gqhmt.quartz.job.accounting;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.quartz.job.SupperJob;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import javax.annotation.Resource;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.accounting.EnterAccountingJob
@@ -39,10 +39,16 @@ public class EnterAccountingJob extends SupperJob {
             return;
         }
         if(isRunning) return;
+
+		Long startTime = Calendar.getInstance().getTimeInMillis();
+		LogUtil.info(getClass(),"变更银行卡跑批开始执行");
+
         super.isRunning = true;
     	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
     	for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
     		fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
 		}
+
+		super.isRunning = false;
     }
 }

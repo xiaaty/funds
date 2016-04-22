@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -61,6 +62,7 @@ public class APIValidAop {
     @Around("point()")
     public Object validAround(ProceedingJoinPoint joinPoint) {
 
+        Long startTime = Calendar.getInstance().getTimeInMillis();
         Response response = null;
         String code = "90099999";
         SuperDto dto = null;
@@ -69,7 +71,10 @@ public class APIValidAop {
         try {
             dto = getArgsDto(joinPoint);
             targetClass = joinPoint.getTarget();
+
             methodName = joinPoint.getSignature().getName();
+            LogUtil.info(targetClass.getClass(),"API接入:"+targetClass.getClass().getName()+"."+methodName+":参数seq:"+dto.getMchn()+"|"+dto.getSeq_no()+"|"+dto.getTrade_type());
+            LogUtil.info(targetClass.getClass(),"API接入:"+targetClass.getClass().getName()+"."+methodName+":参数json:"+JsonUtil.getInstance().getJson(dto));
             //校验商户
             this.validMch(dto);
             //签名校验
@@ -118,6 +123,10 @@ public class APIValidAop {
         generateAutoPage(targetClass,methodName,response);
         //更改订单结果
         this.callbackOrder(response,dto);
+
+
+        Long endTime = Calendar.getInstance().getTimeInMillis();
+        LogUtil.info(targetClass.getClass(),"API接入:"+targetClass.getClass().getName()+"."+methodName+":参数seq:"+dto.getMchn()+"|"+dto.getSeq_no()+"|"+dto.getTrade_type()+":执行结果:"+response.getResp_code()+"|"+response.getResp_msg()+":执行时间:"+(endTime-startTime));
 
         return response;
     }
