@@ -32,6 +32,7 @@ public class UploadFileJob extends SupperJob{
     @Resource
     private FtpUploadService ftpUploadService;
 
+    private static boolean isRunning = false;
         @Scheduled(cron="0/23 * 7-23  * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("富友ftp批量处理 生成及上传交易文件 跑批");
@@ -39,7 +40,7 @@ public class UploadFileJob extends SupperJob{
             return;
         }
         if(isRunning) return;
-        super.isRunning = true;
+        isRunning = true;
 
         try{
             ftpUploadService.upload();
@@ -47,7 +48,7 @@ public class UploadFileJob extends SupperJob{
         }catch (Exception e){
             LogUtil.error(getClass(),e);
         }finally {
-            super.isRunning = false;
+          isRunning = false;
         }
         //生成数据文件
 

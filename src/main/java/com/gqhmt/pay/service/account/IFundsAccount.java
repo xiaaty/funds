@@ -131,7 +131,7 @@ public interface IFundsAccount {
      * 银行卡变更信息
      * @return
      */
-    public Response bankCardChange(CardChangeDto cardChangeDto)throws FssException;
+    public boolean bankCardChange(CardChangeDto cardChangeDto)throws FssException;
     
     /**
 	 * 	银行卡变更完成，通知变更发起方（借款系统）

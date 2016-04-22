@@ -1,16 +1,15 @@
 package com.gqhmt.extServInter.service.account.impl;
 
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 
 /**
@@ -36,6 +35,8 @@ public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
 	@Resource
 	private IFundsAccount fundsAccountImpl;
 	
+	@APITradeTypeValid(value = "11029003")//互联网账户银行卡变更
+//	@APISignature
     @Override
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();

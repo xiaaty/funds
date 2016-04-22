@@ -35,7 +35,7 @@ public class FailedBidDto extends SuperDto {
 	private String contract_no;			//合同编号
 
 	
-	@APIValidNull(errorCode = "90004022")
+//	@APIValidNull(errorCode = "90004022")
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
 	@APIValidNull(errorCode = "90004023")

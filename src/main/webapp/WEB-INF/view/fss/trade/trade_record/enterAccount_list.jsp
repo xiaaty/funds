@@ -93,7 +93,7 @@
                                                         <td class="tr" nowrap="nowrap">执行状态:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
-                                                                <input type="text" name="state" value="${map.state}">
+                                                                <input type="text" name="resultState" value="${map.resultState}">
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -134,45 +134,53 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="200" />
-                                    	<col width="200" />
-                                    	<col width="200" />
-                                    	<col width="200" />
-                                    	<col width="200" />
-                                    	<col width="400" />
                                     	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="400" />
+                                    	<col width="400" />
                                     	<col width="300" />
                                     	<col width="300" />
                                         <thead>
                                         <tr>
-                                            <td>操作</td>
                                             <td>交易流水号</td>
-                                            <td>交易类型</td>
+<!--                                             <td>交易类型</td> -->
                                             <td>商户号</td>
-                                            <td>执行状态</td>
+<!--                                             <td>执行状态</td> -->
                                             <td>交易情况</td>
                                             <td>执行结果</td>
                                             <td>创建时间</td>
                                             <td>修改时间</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>					
-                                                    <a href="${contextPath}/loan/enterAccount/${t.tradeType}/${t.id}/detail">查看详情</a>
-                                                    </td>
                                                     <td>${t.seqNo}</td>
-                                                    <td>${t.tradeType}</td>
+<!--                                                     <td> -->
+<%--                                                    <fss:dictOrder var="order" dictOrder="tradeType"> --%>
+<%--                                                     <c:if test="${t.tradeType == order.key}">${order.value}</c:if> --%>
+<%--                                                    	 </fss:dictOrder></td> --%>
                                                     <td>${t.mchnChild}</td>
-                                                    <td>${t.state}</td>
+<%--                                                     <td>${t.state} --%>
+<%--                                                     <fss:dictOrder var="order" dictOrder="resultStatus"> --%>
+<%--                                                     <c:if test="${t.resultState == order.key}">${order.value}</c:if> --%>
+<%--                                                    	 </fss:dictOrder></td> --%>
                                                     <td>该批交易共${t.tradeCount}批，${t.successCount}批成功，${t.filedCount}批失败</td>
-                                                    <td>${t.resultState}</td>
+                                                    <td>
+                                                    <fss:dictOrder var="order" dictOrder="resultStatus">
+                                                    <c:if test="${t.resultState == order.key}">${order.value}</c:if>
+                                                   	 </fss:dictOrder></td>
                                                       <td> <fss:fmtDate value="${t.createTime}"/>
 <%--                                                       <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/> --%>
                                                       </td>
                                                     <td> <fss:fmtDate value="${t.motifyTime}"/>
 <%--                                                     <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/> --%>
+                                                    </td>
+                                                    <td>					
+                                                    <a href="${contextPath}/loan/enterAccount/${t.tradeType}/${t.id}/detail">查看详情</a>
                                                     </td>
                                                 </tr>
                                         </c:forEach>

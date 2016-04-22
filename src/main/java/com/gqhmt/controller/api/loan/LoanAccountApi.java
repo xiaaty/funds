@@ -15,7 +15,6 @@ import com.gqhmt.extServInter.service.loan.IRepayment;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.pay.service.account.IFundsAccount;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,9 +66,7 @@ public class LoanAccountApi {
      * function：开户
      */
     @RequestMapping(value = "/createLoanAccount",method = RequestMethod.POST)
-//    public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
-    	public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
-    	
+    public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
     	Response response=new Response();
     	try {
     		response = createLoanImpl.execute(loanAccountDto);
@@ -90,8 +87,6 @@ public class LoanAccountApi {
     	try {
     		response = changeCardImpl.execute(changeCardDto);
     	} catch (Exception e) {
-//    		LogUtil.error(this.getClass(), e);
-//    		response.setResp_code(e.getMessage());
     		response=this.execute(e);
     	}
     	return response;
@@ -105,10 +100,10 @@ public class LoanAccountApi {
      */
     @RequestMapping(value = "/createWithDrawApply",method = RequestMethod.POST)
     public Object createWithDrawApply(@RequestBody LoanWithDrawApplyDto loanWithDrawApplyDto) throws FssException{
-    	/*//借款人对象
-    	FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(loanWithDrawApplyDto.getAcc_no());
-    	if(!"11020012".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
-    	*/
+    	//借款人对象
+//    	FssAccountEntity lendAccount = fssAccountService.getFssAccountByAccNo(loanWithDrawApplyDto.getAcc_no());
+//    	if(!"11020012".equals(lendAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
+    	
     	Response response=new Response();
     	try {
     		response = loadWithDrawImpl.execute(loanWithDrawApplyDto);

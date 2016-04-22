@@ -113,6 +113,9 @@ public class FssChangeCardEntity implements java.io.Serializable{
     @Column(name="mchn",updatable = false)
     private String mchn;
     
+    @Column(name="trade_type")
+    private String tradeType;
+    
     public Long getCreateUserId() {
         return createUserId;
     }
@@ -347,6 +350,14 @@ public class FssChangeCardEntity implements java.io.Serializable{
 
 	public void setAccNo(String accNo) {
 		this.accNo = accNo;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
 	}
     
 }

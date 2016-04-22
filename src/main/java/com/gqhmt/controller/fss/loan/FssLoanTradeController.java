@@ -218,7 +218,7 @@ public class FssLoanTradeController {
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		
 		try {
-			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(), fssLoanEntityById.getMortgageeAccNo(),
+			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
 			fssLoanEntityById.setStatus("10050100");
@@ -339,7 +339,7 @@ public class FssLoanTradeController {
 				try {
 					if(!"10050099".equals(fssFeeList.getTradeStatus())){
 						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
-								fssFeeList.getFeeType(),fssLoanEntityById.getMortgageeAccNo(), fssFeeList.getFeeAmt(),
+								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
 								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
 						// 修改费用状态	退费成功
 						fssFeeList.setTradeStatus("10050099");

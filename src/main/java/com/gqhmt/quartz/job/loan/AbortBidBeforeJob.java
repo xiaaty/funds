@@ -8,6 +8,7 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
@@ -29,7 +30,7 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 16/4/21  于泳      1.0     1.0 Version
  */
-
+@Component
 public class AbortBidBeforeJob extends SupperJob {
 
     @Resource
@@ -37,6 +38,7 @@ public class AbortBidBeforeJob extends SupperJob {
     @Resource
     private BidAbortService abortService;
 
+    private static boolean isRunning = false;
     @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
@@ -49,7 +51,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
         Long startTime = Calendar.getInstance().getTimeInMillis();
         LogUtil.info(getClass(),"借款业务流标 执行流标前置 跑批 开始执行");
-        super.isRunning = true;
+        isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
 
@@ -64,7 +66,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
 
 
-        super.isRunning = false;
+        isRunning = false;
 
 
         Long endTime = Calendar.getInstance().getTimeInMillis();

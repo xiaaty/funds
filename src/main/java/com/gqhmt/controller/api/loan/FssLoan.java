@@ -11,6 +11,7 @@ import com.gqhmt.extServInter.service.loan.IEnterAccount;
 import com.gqhmt.extServInter.service.loan.ILending;
 import com.gqhmt.extServInter.service.loan.IMortgageeWithDraw;
 import com.gqhmt.extServInter.service.loan.impl.FailedBidImpl;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,12 +85,14 @@ public class FssLoan {
     @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
     public Object lending(@RequestBody LendingDto lendingDto) throws FssException{
     	//抵押权人对象
-    	//FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getMortgagee_acc_no());
-    	/*if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
-    	//借款人对象
-    	FssAccountEntity lendingAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getAcc_no());
-    	if(!"11020012".equals(lendingAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
-    	*/
+//    	if("11090001".equals(lendingDto.getTrade_type())){
+//    	FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getMortgagee_acc_no());
+//    	if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
+//    	}
+//    	//借款人对象
+//    	FssAccountEntity lendingAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getAcc_no());
+//    	if(!"11020012".equals(lendingAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
+    	
     	Response response= null;
     	try {
     		response = lendingImpl.execute(lendingDto);

@@ -3,7 +3,6 @@ package com.gqhmt.pay.service.account.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
@@ -13,7 +12,6 @@ import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -218,27 +216,20 @@ public class FundsAccountImpl implements IFundsAccount {
 	/**
 	 * 银行卡变更
 	 */
-	 public Response bankCardChange(CardChangeDto cardChangeDto)throws FssException{
-		 Response response=new Response();
-			BankCardInfoEntity bankCardInfoEntity=null;
+	 public boolean bankCardChange(CardChangeDto cardChangeDto)throws FssException{
 			CustomerInfoEntity  customerInfoEntity=null;
 			//1.根据账号查询该客户账户信息
 			FssAccountEntity fssAccountEntity=fssAccountService.getFssAccountByAccNo(cardChangeDto.getAcc_no());
-//		 	FundAccountEntity fundAccountEntity= fundAccountService.getFundAccountInfo(cardChangeDto.getAcc_no());
 		 	if(fssAccountEntity==null) throw new FssException("90002001");
 		    customerInfoEntity=customerInfoService.queryCustomeById(fssAccountEntity.getCustId());//查询该账户客户信息
 		 	if(customerInfoEntity==null) throw new FssException("90002007");
- 			//通过客户表中的bank_card查询该客户要变更的银行卡信息
- 			bankCardInfoEntity = bankCardInfoService.getBankCardByBankNo(cardChangeDto.getBank_card());
- 			if(bankCardInfoEntity==null) throw new FssException("90004027");
- 			try {//将变更银行卡信息插入到银行卡变更表
-				FssChangeCardEntity fssChangeCardEntity=fssChangeCardService.createChangeCardInstance(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "",cardChangeDto.getCity_id(), cardChangeDto.getFile_path(),cardChangeDto.getTrade_type(), cardChangeDto.getSeq_no(),cardChangeDto.getMchn(),cardChangeDto.getAcc_no());
-				fssChangeCardService.insert(fssChangeCardEntity);
+ 			try {
+ 				fssChangeCardService.addChangeCard(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "", cardChangeDto.getCity_id(), cardChangeDto.getFile_path(),1, cardChangeDto.getSeq_no(), cardChangeDto.getMchn(), cardChangeDto.getTrade_type());
 			//银行卡变更记录插入成功之后，进入跑批处理(后续处理)
 			} catch (FssException e) {
-			throw new FssException("90004001");
-		}
-		 return response;
+				throw new FssException("90004001");
+			}
+		 return true;
 	 }
 	 
 		/**
@@ -297,6 +288,12 @@ public class FundsAccountImpl implements IFundsAccount {
 			//创建银行卡信息
 			bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			if(bankCardInfoEntity==null){
+				//判断输入的银行卡号是否已经存在
+				bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
+				if(bankCardInfoEntity!=null){
+					throw new FssException("90002038");//该银行卡号已经存在
+				}
+				
 				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
 			}else{
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
@@ -309,7 +306,7 @@ public class FundsAccountImpl implements IFundsAccount {
 		 */
 		public boolean changeBankCard(UpdateBankCardDto dto) throws FssException {
 			try {
-				fssChangeCardService.addChangeCard(dto.getCust_no(),dto.getBank_card(),dto.getBank_id(), dto.getBankAddr(), dto.getCity_id(), dto.getFile_path(),dto.getSeq_no(),Integer.valueOf(dto.getTrade_type()).intValue(),dto.getMchn());
+				fssChangeCardService.addChangeCard(dto.getCust_no(),dto.getBank_card(),dto.getBank_id(), dto.getBankAddr(), dto.getCity_id(), dto.getFile_path(),dto.getSeq_no(),dto.getTrade_type(),dto.getMchn());
 			} catch (Exception e) {
 				throw new FssException("90004001");
 			}

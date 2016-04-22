@@ -55,7 +55,7 @@ public class ChangeCardJob extends SupperJob {
     public FundAccountService fundAccountService;
    
     
-//    private static boolean isRunning = false;
+    private static boolean isRunning = false;
 
     /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
     @Scheduled(cron="0 0/1 *  * * * ")

@@ -2,6 +2,7 @@ package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.TokenProccessor;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
@@ -73,8 +74,10 @@ public class FssTradeApplyController {
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-	    map.put("applyType",type.toString());
+    	
+    	map.put("applyType",type.toString());
 		map.put("busiType", bus);
+		
         List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
@@ -105,6 +108,8 @@ public class FssTradeApplyController {
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/withdrawcheck",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo) throws Exception {
+    	String token = TokenProccessor.getInstance().makeToken();//创建令牌
+		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
     	FssTradeApplyEntity tradeapplyentity=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
     	if(tradeapplyentity==null){
     		throw new FssException("未查到交易申请记录！");
@@ -149,8 +154,11 @@ public class FssTradeApplyController {
 //	审核通过,先进行处理，处理完成后走回盘	
 	@RequestMapping(value = "/trade/tradeApply/{applyType}/{busiType}/{applyNo}/moneySplit")
 	@ResponseBody
-	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo) throws FssException {
+	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String token) throws FssException {
+		String server_token  = (String) request.getSession().getAttribute("token");
+		request.getSession().removeAttribute("token");
 		Map<String, String> map = new HashMap<String, String>();
+		if(token.equals(server_token)){
 		FssTradeApplyEntity tradeapply=null;
 		int splitCount=0;//资金拆分条数
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -175,6 +183,10 @@ public class FssTradeApplyController {
 		}
 		map.put("code", "0000");
         map.put("message", "success");
+		}else{
+			map.put("code", "0001");
+	        map.put("message", "defeat");
+		}
 		return map;
 	}
 	

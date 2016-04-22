@@ -55,7 +55,7 @@
 		 SELECT  
 		 count(*)
 		FROM t_gq_fss_repayment 
-		where state='10050003' 
+		where result_state='10080002' 
 		and parent_id = #{parentId}
 	</select>
 

@@ -42,14 +42,15 @@ public class BatchWithholdingJob extends SupperJob{
     @Resource
     private IFundsBatchTrade fundsBatchTrade;
 
-
+    private static boolean isRunning = false;
     @Scheduled(cron="0 0/1 * * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("批量跑批处理代扣代付业务 跑批");
         if(!isIp("upload")){
             return;
         }
-        super.isRunning = true;
+        if(isRunning) return;
+        isRunning = true;
         List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
 
         for(FssTradeRecordEntity entity:recordEntities){
@@ -59,6 +60,6 @@ public class BatchWithholdingJob extends SupperJob{
             LogUtil.info(getClass(),"代扣执行完成,共耗时:"+(endTime-startTime));
 
         }
-        super.isRunning = false;
+        isRunning = false;
     }
 }
