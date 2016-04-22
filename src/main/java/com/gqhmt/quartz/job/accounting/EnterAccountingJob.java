@@ -4,14 +4,12 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.quartz.job.SupperJob;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.quartz.fuiouFtp.accounting.EnterAccountingJob
@@ -38,18 +36,28 @@ public class EnterAccountingJob extends SupperJob {
 	 private static boolean isRunning = false;
 	@Scheduled(cron="0 0/1 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
-    	System.out.println("入账跑批");
         if(!isIp("upload")){
             return;
         }
         if(isRunning) return;
+
+		startLog("入账");
+
         isRunning = true;
     	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
-    	if(enterAccountParentByState.size()>0){
-    	for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
-    		fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
+    	if(enterAccountParentByState.size()>0) {
+			for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
+				fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
+			}
 		}
-    	}
+
     	isRunning=false;
+
+		endtLog();
     }
+
+	@Override
+	public boolean isRunning() {
+		return isRunning;
+	}
 }

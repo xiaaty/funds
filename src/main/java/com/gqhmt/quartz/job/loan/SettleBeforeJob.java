@@ -7,7 +7,6 @@ import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -41,12 +40,12 @@ public class SettleBeforeJob extends SupperJob {
     @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
-        System.out.println("借款业务满满标 执行满标前置 跑批");
         if(!isIp("upload")){
             return;
         }
 
         if(isRunning) return;
+        startLog("借款业务流标 执行流标前置");
         
         isRunning = true;
 
@@ -64,9 +63,13 @@ public class SettleBeforeJob extends SupperJob {
 
 
         isRunning = false;
-
+        endtLog();
 
     }
 
 
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
 }
