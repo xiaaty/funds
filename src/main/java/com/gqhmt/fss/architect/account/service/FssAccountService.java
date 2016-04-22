@@ -188,7 +188,7 @@ public class FssAccountService {
         }
 
         try{
-        	if(!"11020012".equals(tradeType)||!"11020011".equals(tradeType)){
+        	if(!"11020012".equals(tradeType) && !"11020011".equals(tradeType)){
         		busiNo=fssCustomerinfo.getCustNo();
         	}
             fssAccountEntity = this.createNewFssAccountEntity(fssCustomerinfo,tradeType,busiNo,mchn,fssFuiouAccountEntity.getAccNo());
