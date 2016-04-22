@@ -35,6 +35,7 @@ public class AbortBidBeforeJob extends SupperJob {
     @Resource
     private BidAbortService abortService;
 
+    private static boolean isRunning = false;
     @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
@@ -45,7 +46,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
         if(isRunning) return;
 
-        super.isRunning = true;
+        isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
 
@@ -60,7 +61,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
 
 
-        super.isRunning = false;
+        isRunning = false;
 
 
     }

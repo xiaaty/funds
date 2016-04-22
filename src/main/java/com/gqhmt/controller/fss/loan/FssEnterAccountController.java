@@ -54,11 +54,11 @@ public class FssEnterAccountController {
 	@RequestMapping(value = "/loan/enterAccount/list", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
 	public Object enterAccountList(HttpServletRequest request, ModelMap model,String mchnChild,
-					String state ,String tradeType) {
+					String resultState ,String tradeType) {
 		Map<Object, Object> map = new HashMap<>();
 		map.put("tradeType", tradeType);
 		map.put("mchnChild", mchnChild);
-		map.put("state", state);
+		map.put("resultState", resultState);
 		List<FssEnterAccountParentEntity> enterAccountEntities = fssEnterAccountService.getEnterAccountParentEntities(map);
 		model.addAttribute("page", enterAccountEntities);
 		model.addAttribute("map", map);

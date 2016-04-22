@@ -180,6 +180,7 @@
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
                                                     <td>
+                                                    
                                                     	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
                                                         &nbsp;&nbsp;&nbsp;
                                                         <a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
