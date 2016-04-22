@@ -90,6 +90,10 @@ public class BidSettleService {
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
+            loanEntity.setStatus("10050014");
+            loanEntity.setModifyTime(new Date());
+            fssLoanService.update(loanEntity);
+            fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
             return;
         }
 
@@ -127,7 +131,7 @@ public class BidSettleService {
         fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
         loanEntity.setStatus("10050008");
-
+        loanEntity.setModifyTime(new Date());
         fssLoanService.update(loanEntity);
     }
 
@@ -181,16 +185,11 @@ public class BidSettleService {
 
         //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
 
-        if("11090002".equals(loanEntity.getTradeType())) {
-            loanEntity.setStatus("10050009");
-            loanEntity.setModifyTime(new Date());
-            fssLoanService.update(loanEntity);
-        }else{
+        if(!"11090002".equals(loanEntity.getTradeType())) {
             fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
         }
-
-
-
-
+        loanEntity.setStatus("10050009");
+        loanEntity.setModifyTime(new Date());
+        fssLoanService.update(loanEntity);
     }
 }

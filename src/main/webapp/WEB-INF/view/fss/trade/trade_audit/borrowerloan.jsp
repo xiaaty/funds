@@ -162,9 +162,9 @@
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="100" />
-                                        <col width="100" />
                                         <col width="200" />
+                                        <col width="200" />
+<%--                                         <col width="200" /> --%>
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
@@ -181,7 +181,7 @@
                                             <td>放款金额   </td>
                                             <td>借款平台</td>
                                             <td>交易状态 </td>
-                                            <td>交易结果</td>
+<!--                                             <td>交易结果</td> -->
                                             <td>交易类型</td>
                                             <td>所属商户 </td>
                                             <td>交易日期 </td>
@@ -212,9 +212,9 @@
 	                                                    	<c:if test="${t.status == order.key}">${order.value}</c:if>
 	                                                     </fss:dictOrder>
                                                     </td>
-                                                    <td>
-                                                        <fss:dictView key="${t.result}" />
-                                                    </td>
+<!--                                                     <td> -->
+<%--                                                         <fss:dictView key="${t.result}" /> --%>
+<!--                                                     </td> -->
                                                     <td>
                                                       <fss:dictOrder var="order" dictOrder="tradeType">
                                                     <c:if test="${t.tradeType == order.key}">${order.value}</c:if>
@@ -250,16 +250,22 @@
 															</c:if>
 													  </c:if>
                                                       <c:if test="${t.tradeType == '11090011' || t.tradeType=='11090010'}">
+                                                      		<c:if test="${t.status!=10050099||t.status == '10050010'||t.status=='10050009'}">
 																<a href="${contextPath}/loan/trade/${type}/recharge/${t.id}">退费 </a>
+                                                      		</c:if>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															<c:if test="${t.tradeType == '11090010'}">
+															<c:if test="${t.status!=10050100}">
 																<a href="${contextPath}/loan/trade/${type}/retransfer/${t.id}">转账</a>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
+																</c:if>
 															</c:if>
 															<c:if test="${t.tradeType == '11090011'}">
+															<c:if test="${t.status!='10050100' && t.status!='11050011'}">
 																<a href="${contextPath}/loan/trade/${type}/abort/${t.id}">退款 </a>
+																</c:if>
 <%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															</c:if>

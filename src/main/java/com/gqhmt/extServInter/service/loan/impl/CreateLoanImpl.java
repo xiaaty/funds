@@ -24,7 +24,7 @@ public class CreateLoanImpl implements ICreateLoan{
 	@Resource
 	private ILoan loanImpl;
 
-	@APITradeTypeValid(value = "11020010,11020007,11020009")
+	@APITradeTypeValid(value = "11020011,11020012,11020009,11020013")
 	@APISignature
     @Override
     public Response execute(SuperDto dto) throws APIExcuteErrorException {

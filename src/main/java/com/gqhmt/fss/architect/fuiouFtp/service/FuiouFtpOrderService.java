@@ -46,7 +46,7 @@ public class FuiouFtpOrderService {
     }
     
     public void insert(FuiouFtpOrder fuiouFtpOrder)throws FssException{
-    	fuiouFtpOrderWriteMapper.insert(fuiouFtpOrder);
+    	fuiouFtpOrderWriteMapper.insertSelective(fuiouFtpOrder);
     }
 
     public void update(FuiouFtpOrder fuiouFtpOrder)throws FssException{

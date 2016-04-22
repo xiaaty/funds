@@ -1066,7 +1066,12 @@ public class CustomerInfoService {
 				bankCardinfoService.insert(bankCardInfoEntity);
 			} catch (Exception e) {
 				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("90002026");
+				if(e.getMessage() == null) {
+					throw new FssException("90002026");
+				}else{
+					throw  e;
+				}
+
 			}
 		return customerInfoEntity;
 	}

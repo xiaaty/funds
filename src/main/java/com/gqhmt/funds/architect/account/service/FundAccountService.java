@@ -71,7 +71,6 @@ public class FundAccountService {
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
-    
     public void delete(Long id) {
     	fundAccountWriteMapper.deleteByPrimaryKey(id);
     }
@@ -357,7 +356,8 @@ public class FundAccountService {
     */
    	public List<FundAccountCustomerBean> findAcountList(Map<String,String> map) {
 	   // TODO Auto-generated method stub
-   		Map<String, String> map2=new HashMap<String, String>();
+		Map<String, String> map2=new HashMap<String, String>();
+		map2.putAll(map);
    		if(map!=null){
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");
@@ -498,6 +498,7 @@ public class FundAccountService {
 	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{
 	        return fundsAccountReadMapper.selectFundAccountEntity(accNo);
 	    }
+		  
 
 	public List<FundAccountEntity> getFundsAccountByBusiType( String busi_type){
 		return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);

@@ -8,6 +8,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -20,6 +21,8 @@ import com.gqhmt.pay.service.tender.IFundsTender;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +43,7 @@ public class AbortBidService {
     protected TenderService tenderService;
 
     @Resource
-    protected FuiouPreauthService fuiouPreauthService ;
+    protected FuiouPreauthService fuiouPreauthService;
 
     @Resource
     private FuiouFtpOrderService fuiouFtpOrderService;
@@ -53,6 +56,9 @@ public class AbortBidService {
 
     @Resource
     private IFundsTender fundsTender;
+    
+    @Resource
+    private FssBackplateService fssBackplateService;
 
     public void abortBid() throws FssException{
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listAbort();
@@ -61,7 +67,7 @@ public class AbortBidService {
         }
     }
 
-    public void abortBid(FuiouFtpOrder fuiouFtpOrder){
+    public void abortBid(FuiouFtpOrder fuiouFtpOrder) throws FssException{
 
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(fuiouFtpOrder.getOrderNo());
         if(fundOrderEntity.getOrderType() != GlobalConstants.ORDER_ABORT_BID){
@@ -85,7 +91,14 @@ public class AbortBidService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             //获取投标列表
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
+            //数据回盘
+//			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         } catch (FssException e) {
+        	loanEntity.setStatus("10050014");
+        	loanEntity.setModifyTime(new Date());
+        	fssLoanService.update(loanEntity);
+        	//数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
             LogUtil.error(getClass(),e);
             return;
         }
@@ -112,6 +125,11 @@ public class AbortBidService {
                 fuiouPreauthService.update(fuiouPreauth);
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
             }catch (Exception e){
+            	loanEntity.setStatus("10050102");
+            	loanEntity.setModifyTime(new Date());
+            	fssLoanService.update(loanEntity);
+            	//数据回盘
+				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
                 fuiouPreauth.setState(3);
                 fuiouPreauthService.update(fuiouPreauth);
                 falidSize++;
@@ -126,6 +144,11 @@ public class AbortBidService {
             fuiouFtpOrder.setResultStatus(3);
             fuiouFtpOrder.setResult(1);
             fuiouFtpOrder.setRetrunResultStatus(1);
+            loanEntity.setStatus("10050102");
+            loanEntity.setModifyTime(new Date());
+            fssLoanService.update(loanEntity);
+          //数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         }
         else if(falidSize == list.size()){
             //tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),false,0);
@@ -134,15 +157,19 @@ public class AbortBidService {
             fuiouFtpOrder.setResultStatus(3);
             fuiouFtpOrder.setResult(2);
             fuiouFtpOrder.setRetrunResultStatus(1);
+            
+            loanEntity.setStatus("10050100");
+            loanEntity.setModifyTime(new Date());
+            fssLoanService.update(loanEntity);
+          //数据回盘
+			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         }
-
         try {
 			fuiouFtpOrderService.update(fuiouFtpOrder);
 		} catch (FssException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
     }
 
 

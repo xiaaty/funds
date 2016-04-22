@@ -2,20 +2,23 @@ package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
-import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
+import com.gqhmt.pay.service.cost.impl.CostImpl;
 import com.gqhmt.pay.service.loan.ILoan;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 
 /**
@@ -49,6 +52,8 @@ public class LoanImpl implements ILoan {
 	private FssAccountService fssAccountService;
 	@Resource
 	private FssCustomerService fssCustomerService;
+	@Resource
+	private CostImpl costImpl;
 	
 	/**
 	 * 借款系统开户
@@ -69,6 +74,7 @@ public class LoanImpl implements ILoan {
     	 */
 
 		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
+		try{
 		if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
 			customerInfoEntity=customerInfoService.createLoanAccount(dto);
 			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
@@ -79,8 +85,12 @@ public class LoanImpl implements ILoan {
 				fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
 			} catch (FssException e) {
 				LogUtil.error(this.getClass(), e);
-				throw new FssException("91004013");
+				throw e;
 			}
+		}
+		}catch (FssException e) {
+			LogUtil.error(this.getClass(), e);
+			throw e;
 		}
 		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
@@ -94,9 +104,11 @@ public class LoanImpl implements ILoan {
      */
 	@Override
 	public boolean marginSendBack(MarginDto dto) throws FssException {
+		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
+			Integer integer = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(GlobalConstants.TRADETYPE_ACCOUNT_MAPPING.get(dto.getTrade_type()));
+			costImpl.costReturn("10990006", fssAccountByAccNo.getCustId(), integer, dto.getRefund_amt(),0l , Integer.parseInt(dto.getTrade_type()));
+			return true;
+		}
 		
-		
-		return true;
 	}
   
-	}

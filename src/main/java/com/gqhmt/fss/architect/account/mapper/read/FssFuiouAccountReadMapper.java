@@ -25,4 +25,6 @@ import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
 public interface FssFuiouAccountReadMapper extends ReadMapper<FssFuiouAccountEntity> {
 
 	public FssFuiouAccountBean getAccountByCentNo(@Param(value="certNo") String certNo);
+	
+	public FssFuiouAccountEntity getByAccNo(@Param(value="accNo") String accNo);
 }
