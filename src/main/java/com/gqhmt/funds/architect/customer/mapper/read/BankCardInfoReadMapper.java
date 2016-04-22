@@ -3,6 +3,8 @@ package com.gqhmt.funds.architect.customer.mapper.read;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
@@ -73,5 +75,13 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
 	 * @return
 	 */
 	public List<BankCardInfoEntity> selectBankCardList(Map map);
+	
+	
+	
+	 public BankCardInfoEntity	queryBankCardByBankNo(@Param("bankNo") String bankNo);
+		
+		
+	
+	
 	
 }

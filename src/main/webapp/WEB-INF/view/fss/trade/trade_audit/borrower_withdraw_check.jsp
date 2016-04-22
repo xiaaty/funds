@@ -151,7 +151,7 @@
     	                       jAlert("审核完成!", '信息提示');
     	                        //自动跳转
     	                    	parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records";
-    	                    } else if(data.code == '0000') {
+    	                    } else if(data.code == '0001') {
     	                    	jAlert("请勿重复审核!", '消息提示');
     	                        return;
     	                    }else {

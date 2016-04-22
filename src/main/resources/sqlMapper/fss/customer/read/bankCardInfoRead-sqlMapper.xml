@@ -66,4 +66,31 @@
 		</where>
 		order by t.create_time desc
 	</select>
+	
+	<select id="queryBankCardByBankNo" parameterType="java.lang.String" resultType="bankCardInfoEntity">
+		SELECT 
+			t.id id,
+			t.cust_id  custId,
+			t.bank_long_name  bankLongName,
+			t.bank_sort_name bankSortName,
+			t.bank_no bankNo,
+			t.is_personal_card isPersonalCard,
+			t.cert_no  certNo,
+			t.mobile mobile,
+			t.cert_name certName,
+			t.card_index cardIndex,
+			t.city_id cityId,
+			t.parent_bank_id parentBankId,
+			t.create_user_id createUserId,
+			t.create_time createTime,
+			t.modify_user_id modifyUserId,
+			t.modify_time modifyTime,
+			t.deleted isDel,
+			t.change_state changeState,
+			t.memo memo,
+			t.source source
+		FROM t_gq_bank_info t where t.bank_no=#{bankNo}
+	</select>
+	
+	
 </mapper>

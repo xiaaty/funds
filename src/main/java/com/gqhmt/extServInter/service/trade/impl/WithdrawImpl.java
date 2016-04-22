@@ -1,5 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -33,6 +35,8 @@ public class WithdrawImpl implements IWithdraw{
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
+	@APITradeTypeValid(value = "11040002,11040003,11040004,11040005")
+//	@APISignature
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();

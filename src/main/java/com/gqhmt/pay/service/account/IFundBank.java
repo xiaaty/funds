@@ -1,9 +1,7 @@
 package com.gqhmt.pay.service.account;
 
 import java.util.List;
-
 import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
 /**
  * Filename:    com.gq.funds.interaction.IFundsTender
@@ -21,6 +19,6 @@ import com.gqhmt.funds.architect.customer.entity.BankEntity;
  */
 public interface IFundBank {
     
-    public List<BankEntity> getBankInfo(BankDto bank) throws FssException;
+    public List<BankEntity> getBankInfo() throws FssException;
 
 }

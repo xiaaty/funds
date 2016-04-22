@@ -34,7 +34,7 @@ public class AbortBidJob extends SupperJob{
 
     private static boolean isRunning = false;
     //    @Scheduled(cron="0  5 18 * * * ")
-    @Scheduled(cron="0 0/1 *  * * * ")
+//    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws FssException {
         System.out.println("流标退款跑批");
         if(!isIp("upload")){
