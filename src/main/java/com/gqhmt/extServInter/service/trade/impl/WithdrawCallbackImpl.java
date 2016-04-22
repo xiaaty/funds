@@ -50,7 +50,4 @@ public class WithdrawCallbackImpl implements IWithdrawCallback {
         return response;
     }
 
-	public static void main(String[] args) {
-		
-	}
 }
