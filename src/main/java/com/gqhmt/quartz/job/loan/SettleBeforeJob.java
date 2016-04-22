@@ -36,8 +36,9 @@ public class SettleBeforeJob extends SupperJob {
     private FssLoanService fssLoanService;
     @Resource
     private BidSettleService settleService;
-
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    
+    private static boolean isRunning = false;
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
         System.out.println("借款业务满满标 执行满标前置 跑批");
@@ -47,7 +48,7 @@ public class SettleBeforeJob extends SupperJob {
 
         if(isRunning) return;
         
-        super.isRunning = true;
+        isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();
 
@@ -62,7 +63,7 @@ public class SettleBeforeJob extends SupperJob {
 
 
 
-        super.isRunning = false;
+        isRunning = false;
 
 
     }

@@ -339,7 +339,7 @@ public class FssLoanTradeController {
 				try {
 					if(!"10050099".equals(fssFeeList.getTradeStatus())){
 						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
-								fssFeeList.getFeeType(),fssLoanEntityById.getMortgageeAccNo(), fssFeeList.getFeeAmt(),
+								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
 								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
 						// 修改费用状态	退费成功
 						fssFeeList.setTradeStatus("10050099");

@@ -35,7 +35,8 @@ public class AbortBidBeforeJob extends SupperJob {
     @Resource
     private BidAbortService abortService;
 
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    private static boolean isRunning = false;
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
         System.out.println("借款业务流标 执行流标前置 跑批");
@@ -45,7 +46,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
         if(isRunning) return;
 
-        super.isRunning = true;
+        isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
 
@@ -60,7 +61,7 @@ public class AbortBidBeforeJob extends SupperJob {
 
 
 
-        super.isRunning = false;
+        isRunning = false;
 
 
     }

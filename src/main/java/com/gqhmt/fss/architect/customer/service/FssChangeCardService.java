@@ -272,7 +272,7 @@ public class FssChangeCardService {
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
-	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getCustId().toString()));
+	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getbBankInfoId().toString()));
 	            if(bankCardinfoEntity == null){
 	                bankCardinfoEntity = new BankCardInfoEntity();
 	            }
@@ -535,7 +535,7 @@ public class FssChangeCardService {
        entity.setBankCity(Application.getInstance().getFourCode(bankCity));
        entity.setFilePath(filePath);
        entity.setAccNo(accNo);
-       entity.setbBankInfoId(cus.getBankId().longValue());
+       entity.setbBankInfoId(cus.getId());
        entity.setCertNo(cus.getCertNo());
        entity.setCustName(cus.getCustomerName());
        entity.setCreateUserId(-1l);

@@ -27,11 +27,11 @@ import java.util.List;
  */
 public abstract class SupperJob{
 
-    protected boolean isRunning = false ;
+//    protected boolean isRunning = false ;
 
-    public final boolean isRunning() {
-        return isRunning;
-    }
+//    public final boolean isRunning() {
+//        return isRunning;
+//    }
 
 
     protected final boolean isIp(String type) throws PayChannelNotSupports {

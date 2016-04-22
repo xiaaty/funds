@@ -32,8 +32,9 @@ public class AbortBidJob extends SupperJob{
     @Resource
     private AbortBidService abortBidService;
 
+    private static boolean isRunning = false;
     //    @Scheduled(cron="0  5 18 * * * ")
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws FssException {
         System.out.println("流标退款跑批");
         if(!isIp("upload")){
@@ -41,7 +42,7 @@ public class AbortBidJob extends SupperJob{
         }
 
         if(isRunning) return;
-        super.isRunning = true;
+        isRunning = true;
         //执行流标操作
         abortBidService.abortBid();
 

@@ -34,17 +34,22 @@ public class EnterAccountingJob extends SupperJob {
 	
 	@Resource
 	private FssEnterAccountService fssEnterAccountService;
-//	@Scheduled(cron="0 0/1 *  * * * ")
+	
+	 private static boolean isRunning = false;
+	@Scheduled(cron="0 0/1 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
     	System.out.println("入账跑批");
         if(!isIp("upload")){
             return;
         }
         if(isRunning) return;
-        super.isRunning = true;
+        isRunning = true;
     	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
+    	if(enterAccountParentByState.size()>0){
     	for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
     		fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
 		}
+    	}
+    	isRunning=false;
     }
 }
