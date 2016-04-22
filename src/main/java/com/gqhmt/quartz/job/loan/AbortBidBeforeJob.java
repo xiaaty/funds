@@ -41,13 +41,14 @@ public class AbortBidBeforeJob extends SupperJob {
     @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
-        System.out.println("借款业务流标 执行流标前置 跑批");
         if(!isIp("upload")){
             return;
         }
 
+
         if(isRunning) return;
 
+        startLog("借款业务流标 执行流标前置");
         isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
@@ -66,5 +67,12 @@ public class AbortBidBeforeJob extends SupperJob {
         isRunning = false;
 
 
+        endtLog();
+
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
     }
 }

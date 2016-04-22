@@ -83,13 +83,8 @@ public class BankCardInfoService {
         return bankCardinfoWriteMapper.insertSelective(entity);
     }
     
-    public int saveOrUpdate(BankCardInfoEntity entity){
-    	if(null != entity.getId()) {
-    		return bankCardinfoWriteMapper.updateByPrimaryKey(entity);
-    	} else {
-    		entity.setCreateTime(new Date());
-    		return insert(entity);
-    	}
+    public int update(BankCardInfoEntity entity){
+		return bankCardinfoWriteMapper.updateByPrimaryKey(entity);
     }
 
     public void updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity){
@@ -126,19 +121,14 @@ public class BankCardInfoService {
     /**
      * 根据条件查询返回所有客户银行卡列表
      * @param bankDto
-     * @param pageReq
      * @return
-     * @throws AppException
      */
     public Page queryCardListByCustomer(BankCardBean bankDto) throws FssException{
     	return bankCardinfoReadMapper.queryCardListByCustomer(bankDto);
     }
     /**
      * 银行列表
-     * @param bankDto
-     * @param pageReq
      * @return
-     * @throws AppException
      */
     public List<BankCardBean> queryBankList() {
     	return bankCardinfoReadMapper.queryBankList();
@@ -150,25 +140,6 @@ public class BankCardInfoService {
 	 */
 	public BankCardInfoEntity queryBankCardinfoById(int id){
 		return bankCardinfoReadMapper.selectByPrimaryKey(id);
-	}
-	/**
-	 * 
-	 *添加银行卡信息
-	 * @param entity
-	 * @throws Exception 
-	 */
-	public void saveBankCard(BankCardInfoEntity entity, String userId) throws Exception{
-	
-	    entity.setCreateTime(new Date());
-	    entity.setCreateUserId(Integer.parseInt(userId));
-	    insert(entity);
-
-    	try {
-	        //绑定银行卡
-//    		AccountCommand.payCommand.command(CommandEnum.CARD.CARD_BIND,ThirdPartyType.DAQIAN, entity.getCustId(), 2, entity);
-		} catch(CommandParmException e){
-			throw  new Exception("0001" + e.getMessage()); 
-		}
 	}
 
 	
@@ -210,7 +181,7 @@ public class BankCardInfoService {
         bankCard.setModifyTime((new Date(System.currentTimeMillis())));
         bankCard.setModifyUserId(Integer.parseInt(userId));
 		//开户行地区代码 开户行行别
-        saveOrUpdate(bankCard);
+        update(bankCard);
         
 		if (bankChangeFlg) {
 			//富友修改客户绑定银行卡信息
@@ -518,16 +489,13 @@ public class BankCardInfoService {
 	
 	 	/**
 	 	 * 创建银行卡信息
-	 	 * @param loanAccountDto
-	 	 * @param customer
-	 	 * @param userEntity
 	 	 * @return
 	 	 * @throws FssException
 	 	 */
-		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity,FundAccountEntity primaryAccount) throws FssException{
+		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity) throws FssException{
 			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
 			String bankCode=customerInfoEntity.getParentBankCode();
-			bankCardInfoEntity.setCustId(Integer.valueOf(primaryAccount.getCustId().toString()));
+			bankCardInfoEntity.setCustId(customerInfoEntity.getId().intValue());
 			bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(bankCode));
 			bankCardInfoEntity.setBankSortName(Application.getInstance().getBankShortName(bankCode));
 			bankCardInfoEntity.setBankNo(customerInfoEntity.getBankNo());
