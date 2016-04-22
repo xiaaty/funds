@@ -89,7 +89,9 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Override
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        checkwithholdingOrWithDraw(entity,1,entity.getBusiType().intValue());//银行卡变更中不允许代扣
+        if(Integer.valueOf(rechargeOrderDto.getTrade_type()).intValue()!=11030001){
+        	checkwithholdingOrWithDraw(entity,1,entity.getBusiType().intValue());//银行卡变更中可以进行网银充值，但是不允许代扣充值
+        }
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0,"2");
         return entity.getUserName()+":"+fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
