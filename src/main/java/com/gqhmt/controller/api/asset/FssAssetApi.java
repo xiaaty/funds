@@ -68,11 +68,11 @@ public class FssAssetApi {
      * time:2016年3月1日
      * function：银行列表查询
      */
-    @RequestMapping(value = "/getBankInfo",method = RequestMethod.POST)
-    public Object getBankInfo(BankDto bank) throws APIExcuteErrorException{
+    @RequestMapping(value = "/getBankInfo",method = {RequestMethod.POST,RequestMethod.GET})
+    public Object getBankInfo(BankDto dto) throws APIExcuteErrorException{
     	Response response= new Response();
     	try {
-    		response= bankListImpl.execute(bank);
+    		response= bankListImpl.execute(dto);
     	} catch (FssException e) {
             execute(e);
     	}

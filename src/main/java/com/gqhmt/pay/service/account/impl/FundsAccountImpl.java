@@ -297,6 +297,12 @@ public class FundsAccountImpl implements IFundsAccount {
 			//创建银行卡信息
 			bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			if(bankCardInfoEntity==null){
+				//判断输入的银行卡号是否已经存在
+				bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
+				if(bankCardInfoEntity!=null){
+					throw new FssException("90002038");//该银行卡号已经存在
+				}
+				
 				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,primaryAccount);
 			}else{
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
@@ -309,7 +315,7 @@ public class FundsAccountImpl implements IFundsAccount {
 		 */
 		public boolean changeBankCard(UpdateBankCardDto dto) throws FssException {
 			try {
-				fssChangeCardService.addChangeCard(dto.getCust_no(),dto.getBank_card(),dto.getBank_id(), dto.getBankAddr(), dto.getCity_id(), dto.getFile_path(),dto.getSeq_no(),Integer.valueOf(dto.getTrade_type()).intValue(),dto.getMchn());
+				fssChangeCardService.addChangeCard(dto.getCust_no(),dto.getBank_card(),dto.getBank_id(), dto.getBankAddr(), dto.getCity_id(), dto.getFile_path(),dto.getSeq_no(),dto.getTrade_type(),dto.getMchn());
 			} catch (Exception e) {
 				throw new FssException("90004001");
 			}

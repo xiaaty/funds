@@ -37,7 +37,7 @@ public class SettleBeforeJob extends SupperJob {
     @Resource
     private BidSettleService settleService;
 
-    @Scheduled(cron="0 0/1 *  * * * ")
+//    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
         System.out.println("借款业务满满标 执行满标前置 跑批");

@@ -35,7 +35,7 @@ public class RepaymentBeforeJob extends SupperJob {
     @Resource
     private BidRepaymentService repaymentService;
 //
-    @Scheduled(cron="0 0/1 *  * * * ")
+//    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         System.out.println("借款业务满回款 执行回款前置  跑批");
         if(!isIp("upload")){

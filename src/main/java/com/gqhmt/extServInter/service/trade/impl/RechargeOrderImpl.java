@@ -1,5 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
@@ -35,6 +37,8 @@ public class RechargeOrderImpl implements IRechargeOrder {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
+	@APITradeTypeValid(value = "11030001")//网银充值
+	@APISignature
     @Override
     public Response execute(SuperDto dto) {
 		WebOrderResponse response = null;
