@@ -101,8 +101,8 @@ public class LoanAccountApi {
     @RequestMapping(value = "/createWithDrawApply",method = RequestMethod.POST)
     public Object createWithDrawApply(@RequestBody LoanWithDrawApplyDto loanWithDrawApplyDto) throws FssException{
     	//借款人对象
-    	FssAccountEntity lendAccount = fssAccountService.getFssAccountByAccNo(loanWithDrawApplyDto.getAcc_no());
-    	if(!"11020012".equals(lendAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
+//    	FssAccountEntity lendAccount = fssAccountService.getFssAccountByAccNo(loanWithDrawApplyDto.getAcc_no());
+//    	if(!"11020012".equals(lendAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
     	
     	Response response=new Response();
     	try {

@@ -85,13 +85,13 @@ public class FssLoan {
     @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
     public Object lending(@RequestBody LendingDto lendingDto) throws FssException{
     	//抵押权人对象
-    	if("11090001".equals(lendingDto.getTrade_type())){
-    	FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getMortgagee_acc_no());
-    	if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
-    	}
-    	//借款人对象
-    	FssAccountEntity lendingAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getAcc_no());
-    	if(!"11020012".equals(lendingAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
+//    	if("11090001".equals(lendingDto.getTrade_type())){
+//    	FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getMortgagee_acc_no());
+//    	if(!"11020009".equals(mortgageeAccount.getTradeType()))  throw new FssException("该用户非抵押权人账户");
+//    	}
+//    	//借款人对象
+//    	FssAccountEntity lendingAccount = fssAccountService.getFssAccountByAccNo(lendingDto.getAcc_no());
+//    	if(!"11020012".equals(lendingAccount.getTradeType()))  throw new FssException("该用户非借款人账户");
     	
     	Response response= null;
     	try {
