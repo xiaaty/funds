@@ -34,7 +34,7 @@ public class EnterAccountingJob extends SupperJob {
 	
 	@Resource
 	private FssEnterAccountService fssEnterAccountService;
-	@Scheduled(cron="0 0/1 *  * * * ")
+//	@Scheduled(cron="0 0/1 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
     	System.out.println("入账跑批");
         if(!isIp("upload")){
