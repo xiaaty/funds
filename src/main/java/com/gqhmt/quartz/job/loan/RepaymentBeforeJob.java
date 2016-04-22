@@ -8,6 +8,7 @@ import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 16/4/5  于泳      1.0     1.0 Version
  */
+@Component
 public class RepaymentBeforeJob extends SupperJob {
 
     @Resource
