@@ -120,16 +120,11 @@ public class AbortBidService {
             try {
 //                AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_ABORT_ASYN, ThirdPartyType.FUIOU, tender,fuiouPreauth.getContractNo());
 
-                fundsTender.abortLoop(tender,fuiouPreauth.getContractNo());
+                fundsTender.abortLoop(bid,tender,fuiouPreauth.getContractNo());
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.update(fuiouPreauth);
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());
             }catch (Exception e){
-            	loanEntity.setStatus("10050102");
-            	loanEntity.setModifyTime(new Date());
-            	fssLoanService.update(loanEntity);
-            	//数据回盘
-				fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
                 fuiouPreauth.setState(3);
                 fuiouPreauthService.update(fuiouPreauth);
                 falidSize++;
@@ -138,7 +133,6 @@ public class AbortBidService {
         }
 
         if(falidSize == 0){
-            tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),true,0);
             fuiouFtpOrder.setUploadStatus(3);
             fuiouFtpOrder.setDownloadStatus(4);
             fuiouFtpOrder.setResultStatus(3);
@@ -151,7 +145,6 @@ public class AbortBidService {
 			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         }
         else if(falidSize == list.size()){
-            //tenderService.updateCallbackFlowBidStatus(fundOrderEntity.getOrderFrormId().intValue(),false,0);
             fuiouFtpOrder.setUploadStatus(3);
             fuiouFtpOrder.setDownloadStatus(4);
             fuiouFtpOrder.setResultStatus(3);
