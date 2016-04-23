@@ -192,11 +192,12 @@ public class FssChangeCardService {
         FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custom.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         fundAccountEntity.setIshangeBankCard(1);
         fundAccountService.update(fundAccountEntity);
-		//发送站内通知短信
-    	noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
-        HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
-        
-        if (entity.getType() == 1) {
+
+        if (entity.getType() == 1 || entity.getType() == 11029003) {
+            //发送站内通知短信
+            noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
+            HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
+
             this.sendMms(entity.getMobile(), 1);
         }
         
