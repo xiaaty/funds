@@ -13,16 +13,15 @@ import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
-import com.gqhmt.sys.service.UserService;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import javax.annotation.Resource;
 
 /**
  *
@@ -341,7 +340,7 @@ public class CustomerInfoService {
 	/**//**
 	 * 根据省份证号查询客户信息
 	 *
-	 * @param mobile
+	 * @param certNo
 	 * @return
 	 */
 	public CustomerInfoEntity searchCustomerInfoByCertNo(String certNo) {
@@ -934,11 +933,6 @@ public class CustomerInfoService {
 		}
 	}
 
-	*//**
-	 * 富友修改个人信息回调用方法
-	 *
-	 * @param custMap
-	 *//*
 	public void updateCustomerInfoCallBack(Map<String, String> custMap) throws Exception {
 
 		// 身份证号码
@@ -1064,6 +1058,8 @@ public class CustomerInfoService {
 			try {
 				bankCardInfoEntity = bankCardinfoService.createBankCardInfoEntity(loanAccountDto,customerInfoEntity,userEntity);
 				bankCardinfoService.insert(bankCardInfoEntity);
+				customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+				this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
 			} catch (Exception e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 				if(e.getMessage() == null) {

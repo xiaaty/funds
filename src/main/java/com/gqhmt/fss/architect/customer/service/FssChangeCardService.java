@@ -166,11 +166,10 @@ public class FssChangeCardService {
 		noticeMap.put("sysCode",CoreConstants.SYS_CODE);//商户系统编码，在平台系统查看
 		noticeList.add(noticeMap);
         Integer bankCardId = custom.getBankId();
-        if(bankCardId == null){
-            throw new FssException("90002036");//未得到客户银行卡信息
-        }
+
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(bankCardId);
-        if(bankCardinfoEntity==null) throw new FssException("90004027");
+
+        if(bankCardinfoEntity==null) throw new FssException("90002036");
         if(bankCardinfoEntity.getChangeState() == 1){//变更中,请勿重复提交变更
         	throw new FssException("90002037");
         }
@@ -192,11 +191,12 @@ public class FssChangeCardService {
         FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custom.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         fundAccountEntity.setIshangeBankCard(1);
         fundAccountService.update(fundAccountEntity);
-		//发送站内通知短信
-    	noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
-        HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
-        
-        if (entity.getType() == 1) {
+
+        if (entity.getType() == 1 || entity.getType() == 11029003) {
+            //发送站内通知短信
+            noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
+            HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
+
             this.sendMms(entity.getMobile(), 1);
         }
         
