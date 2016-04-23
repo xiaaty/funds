@@ -218,13 +218,14 @@ public class FssLoanTradeController {
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		
 		try {
-			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
+			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(),fssLoanEntityById.getMortgageeAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
 			fssLoanEntityById.setStatus("10050100");
 			fssLoanService.update(fssLoanEntityById);
+			fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
 		} catch (FssException e) {
-			LogUtil.info(this.getClass(), e.getMessage());
+			LogUtil.error(this.getClass(), e.getMessage());
 			model.addAttribute("erroMsg", e.getMessage());
 		}
 		
