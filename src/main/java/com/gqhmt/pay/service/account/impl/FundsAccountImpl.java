@@ -228,7 +228,7 @@ public class FundsAccountImpl implements IFundsAccount {
  				fssChangeCardService.addChangeCard(customerInfoEntity, cardChangeDto.getBank_card(), cardChangeDto.getBank_id(), "", cardChangeDto.getCity_id(), cardChangeDto.getFile_path(),1, cardChangeDto.getSeq_no(), cardChangeDto.getMchn(), cardChangeDto.getTrade_type());
 			//银行卡变更记录插入成功之后，进入跑批处理(后续处理)
 			} catch (FssException e) {
-				throw new FssException("90004001");
+				throw e;
 			}
 		 return true;
 	 }
