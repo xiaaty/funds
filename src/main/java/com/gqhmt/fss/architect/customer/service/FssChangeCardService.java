@@ -208,9 +208,15 @@ public class FssChangeCardService {
         entity.setCardNo(bankNo);
         entity.setBankType(bankId);
         entity.setBankAdd(bankAddr);
+        if(bankCity.length() == 6){
+            try {
+                bankCity = Application.getInstance().getFourCode(bankId);
+            } catch (FssException e) {
+                LogUtil.error(getClass(),e);
+            }
+        }
         entity.setBankCity(bankCity);
         entity.setFilePath(filePath);
-
         entity.setbBankInfoId(cus.getBankId().longValue());
         entity.setCertNo(cus.getCertNo());
         entity.setCustName(cus.getCustomerName());
@@ -446,7 +452,7 @@ public class FssChangeCardService {
            if(isSuccess) {
                changeCardEntity.setTradeState(100);
                this.update(changeCardEntity);
-               fssBackplateService.createFssBackplateEntity(changeCardEntity.getSeqNo(), changeCardEntity.getMchn(), changeCardEntity.getType().toString());
+               fssBackplateService.createFssBackplateEntity(changeCardEntity.getSeqNo(), changeCardEntity.getMchn(), changeCardEntity.getTradeType());
            }
        }
 
