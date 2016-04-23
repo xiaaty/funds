@@ -116,10 +116,10 @@ public class FundOrderService  {
     }
 
     public boolean checkWithdrawNumber(Long accountId){
-        int num = fundOrderReadMapper.getWithdrawNum(accountId);
-        if(num > GlobalConstants.CHECK_WITHRAW_NUM)
+//        int num = fundOrderReadMapper.getWithdrawNum(accountId);
+//        if(num > GlobalConstants.CHECK_WITHRAW_NUM)
             return true;
-        return false;
+//        return false;
     }
     
     /**
