@@ -117,7 +117,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     /**
      * 提现
-     * @param WithdrawDto
+     * @param withdrawDto
      * @return OrderNo
      */
     @Override
@@ -335,13 +335,13 @@ public class FundsTradeImpl  implements IFundsTrade {
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("银行卡变更中,不允许"+(type == 1?"代扣":"提现"));
         }
-        //提现次数限制
-        if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){
-            boolean checkWithdraw = this.fundOrderService.checkWithdrawNumber(entity.getId());
-            if(checkWithdraw){
-                throw new CommandParmException("90004005");
-            }
-        }
+        //提现次数限制 ,暂时去掉限制功能,未来更具需要进行添加
+//        if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){
+//            boolean checkWithdraw = this.fundOrderService.checkWithdrawNumber(entity.getId());
+//            if(checkWithdraw){
+//                throw new CommandParmException("90004005");
+//            }
+//        }
     }
 
     private FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException {
