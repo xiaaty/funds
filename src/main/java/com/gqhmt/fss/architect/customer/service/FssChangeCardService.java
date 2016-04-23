@@ -210,7 +210,7 @@ public class FssChangeCardService {
         entity.setBankAdd(bankAddr);
         if(bankCity.length() == 6){
             try {
-                bankCity = Application.getInstance().getFourCode(bankId);
+                bankCity = Application.getInstance().getFourCode(bankCity);
             } catch (FssException e) {
                 LogUtil.error(getClass(),e);
             }

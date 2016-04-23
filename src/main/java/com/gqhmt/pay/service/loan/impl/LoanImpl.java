@@ -105,8 +105,9 @@ public class LoanImpl implements ILoan {
 	@Override
 	public boolean marginSendBack(MarginDto dto) throws FssException {
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
-			//Integer integer = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(GlobalConstants.TRADETYPE_ACCOUNT_MAPPING.get(dto.getTrade_type()));
-			costImpl.costReturn("10990006", fssAccountByAccNo.getCustId(), GlobalConstants.ACCOUNT_TYPE_LOAN, dto.getRefund_amt(),0l , Integer.parseInt(dto.getTrade_type()));
+			Integer integer = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(GlobalConstants.TRADETYPE_ACCOUNT_MAPPING.get(dto.getTrade_type()));
+
+		costImpl.costReturn("10040001",String.valueOf(dto.getTrade_type()),dto.getAcc_no(),dto.getRefund_amt(),0l,0);
 		return true;
 		}
 		
