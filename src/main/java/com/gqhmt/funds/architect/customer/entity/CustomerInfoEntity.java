@@ -153,7 +153,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	private Integer payChannel;
 	
 	//富有开户关联用银行卡id
-	@Column(name = "bank_id",updatable = false)
+	@Column(name = "bank_id")
 	private Integer bankId;
 	
 	
