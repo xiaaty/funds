@@ -91,10 +91,10 @@ public class FssChangeCardEntity implements java.io.Serializable{
     @Column(name = "resp_msg",insertable = false)
     private String respMsg;
 
-    @Column(name = "type")
+    @Column(name = "type",updatable = false)
     private Integer type;
 
-    @Column(name = "mobile")
+    @Column(name = "mobile",updatable = false)
     private String mobile;
 
 
@@ -107,10 +107,10 @@ public class FssChangeCardEntity implements java.io.Serializable{
     @Column(name="effect_time",insertable = false)
     private Date effectTime;
 
-    @Column(name="seq_no")
+    @Column(name="seq_no",updatable = false)
     private String seqNo;
     
-    @Column(name="mchn")
+    @Column(name="mchn",updatable = false)
     private String mchn;
     
     @Column(name="trade_type")

@@ -13,7 +13,6 @@
 	<sql id="fileSql">
 			 SELECT 
 			t.id,
-		    t.mchn_child mchnChild,
 		    t.seq_no seqNo,
 		    t.trade_type tradeType,
 		    t.trade_count tradeCount,
@@ -22,7 +21,9 @@
 		    t.state state,
 		    t.result_state resultState,
 		    t.create_time createTime,
-		    t.motify_time motifyTime
+		    t.motify_time motifyTime,
+		    t.mchn_parent mchnParent,
+		    t.mchn_child mchnChild
 			FROM t_gq_fss_enter_account_parent t
 	</sql>
 	<!-- 入账回盘-->
@@ -34,15 +35,14 @@
 <!-- 	根据交易状态查询主表列表 -->
 	<select id="getEnterAccountParentByState"   resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
 			<include refid="fileSql" />
-			where t.state=10090001
+			where t.result_state=10080001
 	</select>
 		<!-- 得到入账表 -->
 	<select id="getEnterAccountParentList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
 			<include refid="fileSql" />
-			FROM t_gq_fss_enter_account_parent t
 			where 1=1
-			<if test="state != null and state != ''">
-				and t.state like concat('%',#{state},'%')
+			<if test="resultState != null and resultState != ''">
+				and t.result_state like concat('%',#{resultState},'%')
 			</if>
 			<if test="tradeType != null and tradeType != ''">
 				and t.trade_type like concat('%',#{tradeType},'%')

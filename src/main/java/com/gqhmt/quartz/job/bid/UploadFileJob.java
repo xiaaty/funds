@@ -4,7 +4,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpUploadService;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -32,14 +31,19 @@ public class UploadFileJob extends SupperJob{
     @Resource
     private FtpUploadService ftpUploadService;
 
-//        @Scheduled(cron="0/23 * 7-23  * * * ")
+    private static boolean isRunning = false;
+        @Scheduled(cron="0/23 * 7-23  * * * ")
     public void execute() throws PayChannelNotSupports {
-        System.out.println("富友ftp批量处理 生成及上传交易文件 跑批");
         if(!isIp("upload")){
             return;
         }
+
         if(isRunning) return;
-        super.isRunning = true;
+
+        startLog("富友ftp批量处理 生成及上传交易文件");
+
+
+        isRunning = true;
 
         try{
             ftpUploadService.upload();
@@ -47,11 +51,15 @@ public class UploadFileJob extends SupperJob{
         }catch (Exception e){
             LogUtil.error(getClass(),e);
         }finally {
-            super.isRunning = false;
+          isRunning = false;
         }
-        //生成数据文件
 
-        //上传数据文件
+            endtLog();
+    }
 
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
     }
 }

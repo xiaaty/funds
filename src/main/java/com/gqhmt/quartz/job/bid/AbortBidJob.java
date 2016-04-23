@@ -1,10 +1,8 @@
 package com.gqhmt.quartz.job.bid;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.AbortBidService;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -32,20 +30,37 @@ public class AbortBidJob extends SupperJob{
     @Resource
     private AbortBidService abortBidService;
 
+    private static boolean isRunning = false;
     //    @Scheduled(cron="0  5 18 * * * ")
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws FssException {
-        System.out.println("流标退款跑批");
         if(!isIp("upload")){
             return;
         }
 
         if(isRunning) return;
-        super.isRunning = true;
+
+
+        startLog("流标退款");
+
+        isRunning = true;
         //执行流标操作
-        abortBidService.abortBid();
+        try {
+            abortBidService.abortBid();
+        }catch (Exception e){
+
+        }finally {
+            isRunning = false;
+        }
 
 
+        endtLog();
 
+
+    }
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
     }
 }

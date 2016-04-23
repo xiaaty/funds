@@ -263,6 +263,7 @@ public class FssLoanService {
 		if("11090013".equals(dto.getTrade_type())){
 			//放款前流标
 			long insertLending = fssLoanWriteMapper.insertAbortBid(fssLoanEntity);
+			this.abort(fssLoanEntity);
 		}else{
 			//放款后流标
 		long insertLending = fssLoanWriteMapper.insertFullBid(fssLoanEntity);

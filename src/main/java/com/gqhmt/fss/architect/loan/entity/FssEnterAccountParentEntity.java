@@ -64,8 +64,8 @@ public class FssEnterAccountParentEntity implements Serializable {
     @Column(name = "mchn_child")
     private String mchnChild ;  //子商户号
     
-    @Column(name = "remark")
-    private String remark ;  //备注
+//    @Column(name = "remark")
+//    private String remark ;  //备注
 
 	public Long getId() {
 		return id;
@@ -123,13 +123,13 @@ public class FssEnterAccountParentEntity implements Serializable {
 		this.mchnChild = mchnChild;
 	}
 
-	public String getRemark() {
-		return remark;
-	}
+//	public String getRemark() {
+//		return remark;
+//	}
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+//	public void setRemark(String remark) {
+//		this.remark = remark;
+//	}
 
 	public String getState() {
 		return state;

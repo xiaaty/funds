@@ -15,6 +15,7 @@ import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.account.IFundsAccount;
 import com.gqhmt.quartz.job.SupperJob;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -46,26 +47,36 @@ import java.util.List;
 public class ChangeCardJob extends SupperJob {
 
     @Resource
-    public FssChangeCardService changeCardService;
+    private FssChangeCardService changeCardService;
     
     @Resource
-    public PaySuperByFuiou paySuperByFuiou;
+    private PaySuperByFuiou paySuperByFuiou;
     
     @Resource
-    public FundAccountService fundAccountService;
+    private FundAccountService fundAccountService;
+
+
+    @Resource
+    private IFundsAccount fundsAccount;
+
+
    
     
-//    private static boolean isRunning = false;
+    private static boolean isRunning = false;
 
     /*@Scheduled(cron="0 0/10 8-21  * * * ")*/
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void changeCard() throws PayChannelNotSupports{
-        System.out.println("变更银行卡跑批");
+
+        System.out.println();
         if(!isIp("upload")){
             return;
         }
 
         if(isRunning) return;
+
+
+        startLog("变更银行卡");
         isRunning = true;
 
         try {
@@ -89,6 +100,9 @@ public class ChangeCardJob extends SupperJob {
         }finally {
             isRunning = false;
         }
+
+        endtLog();
+
     }
 
     private void queryDate() throws FssException {
@@ -99,8 +113,6 @@ public class ChangeCardJob extends SupperJob {
 
         for(FssChangeCardEntity t:list){
             this.queryDate(t);
-            t.setTradeState(5);
-            changeCardService.update(t);
         }
     }
     
@@ -142,7 +154,7 @@ public class ChangeCardJob extends SupperJob {
         for(FssChangeCardEntity changeCardEntity:list){
             try {
                 this.uploadImageFtp(changeCardEntity);
-                changeCardService.uploadImageFtp(changeCardEntity);
+//                changeCardService.uploadImageFtp(changeCardEntity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -190,7 +202,7 @@ public class ChangeCardJob extends SupperJob {
         for(FssChangeCardEntity changeCardEntity:list){
             try {
                 this.uploadData(changeCardEntity);
-                changeCardService.uploadData(changeCardEntity);
+//
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -207,15 +219,29 @@ public class ChangeCardJob extends SupperJob {
         }
         try{
 //            AccountCommand.payCommand.command(CommandEnum.AccountCommand.ACCOUNT_UPDATE_CARD, ThirdPartyType.FUIOU,changeCardEntity);
+
+//            paySuperByFuiou.changeCard(changeCardEntity);
+
+            fundsAccount.changeCard(changeCardEntity);
             changeCardEntity.setTradeState(4);
+            changeCardService.update(changeCardEntity);
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
             changeCardEntity.setTradeState(6);
             changeCardEntity.setRespCode("0001");
             changeCardEntity.setRespMsg(e.getMessage());
+            try {
+                changeCardService.uploadData(changeCardEntity);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
 
         }
-        changeCardService.update(changeCardEntity);
+
     }
 
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
 }

@@ -110,7 +110,6 @@ public class FssChangeCardService {
 
     /**
      * 录入客户修改银行卡信息,前台传入,需要根据id获取客户实体bean
-     * @param customId
      * @param bankNo
      * @param bankId
      * @param bankAddr
@@ -264,6 +263,8 @@ public class FssChangeCardService {
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
         bankCardinfoEntity.setChangeState(2);
 
+        bankCardinfoService.updateBankCard(bankCardinfoEntity,"0");
+
     }
 
     //同步成功数据
@@ -272,7 +273,7 @@ public class FssChangeCardService {
         if(list != null && list.size() > 0) {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
-	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getCustId().toString()));
+	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getbBankInfoId().toString()));
 	            if(bankCardinfoEntity == null){
 	                bankCardinfoEntity = new BankCardInfoEntity();
 	            }
@@ -289,7 +290,7 @@ public class FssChangeCardService {
 	            bankCardinfoEntity.setBankSortName(fuiouBankCodeService.queryFuiouBankValueByCode(changeCardEntity.getBankType()));
 	            bankCardinfoEntity.setMemo("变更成功");
 	            bankCardinfoEntity.setModifyTime(new Date());
-	            bankCardinfoService.saveOrUpdate(bankCardinfoEntity);
+	            bankCardinfoService.update(bankCardinfoEntity);
 	            changeCardEntity.setState(2);
 	            changeCardEntity.setEffectTime(new Date());
 	            changeCardEntity.setTradeState(99);
@@ -343,7 +344,7 @@ public class FssChangeCardService {
 	            if(bankCardinfoEntity !=null){
 	                bankCardinfoEntity.setChangeState(2);
 	                bankCardinfoEntity.setMemo("资料审核不通过，新银行卡变更失败，请重新变更；原银行卡充值提现不受影响。");
-	                bankCardinfoService.saveOrUpdate(bankCardinfoEntity);
+	                bankCardinfoService.update(bankCardinfoEntity);
 	            }
 	            changeCardEntity.setState(3);
 	            changeCardEntity.setTradeState(99);
@@ -535,7 +536,7 @@ public class FssChangeCardService {
        entity.setBankCity(Application.getInstance().getFourCode(bankCity));
        entity.setFilePath(filePath);
        entity.setAccNo(accNo);
-       entity.setbBankInfoId(cus.getBankId().longValue());
+       entity.setbBankInfoId(cus.getId());
        entity.setCertNo(cus.getCertNo());
        entity.setCustName(cus.getCustomerName());
        entity.setCreateUserId(-1l);
