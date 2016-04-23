@@ -78,7 +78,7 @@ public class AbortBidService {
         FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11090012".equals(loanEntity.getTradeType())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");
@@ -105,7 +105,7 @@ public class AbortBidService {
 
 
         Integer cusId = bid.getCustomerId();
-        Map<Integer,FuiouPreauth> map = fuiouPreauthService.getFuiouPreauth(bid.getId().longValue());
+        Map<Long,FuiouPreauth> map = fuiouPreauthService.getFuiouPreauth(bid.getId().longValue());
         if(bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() >0){
             cusId = bid.getHypothecarius();
         }

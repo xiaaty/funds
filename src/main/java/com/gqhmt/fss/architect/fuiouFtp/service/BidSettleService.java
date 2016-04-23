@@ -112,7 +112,7 @@ public class BidSettleService {
 
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_SETTLE_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_SETTLE, "2");
 
-        Map<Integer, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
+        Map<Long, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
         BigDecimal bonusAmount = BigDecimal.ZERO;
 
         List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
