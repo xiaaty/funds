@@ -166,11 +166,10 @@ public class FssChangeCardService {
 		noticeMap.put("sysCode",CoreConstants.SYS_CODE);//商户系统编码，在平台系统查看
 		noticeList.add(noticeMap);
         Integer bankCardId = custom.getBankId();
-        if(bankCardId == null){
-            throw new FssException("90002036");//未得到客户银行卡信息
-        }
+
         BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(bankCardId);
-        if(bankCardinfoEntity==null) throw new FssException("90004027");
+
+        if(bankCardinfoEntity==null) throw new FssException("90002036");
         if(bankCardinfoEntity.getChangeState() == 1){//变更中,请勿重复提交变更
         	throw new FssException("90002037");
         }
