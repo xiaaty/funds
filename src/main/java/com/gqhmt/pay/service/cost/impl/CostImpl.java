@@ -202,9 +202,8 @@ public class CostImpl  implements ICost{
         FundAccountEntity  fromAccountEntity= fundAccountService.getFundAccount(fromCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
         if (fromAccountEntity == null) throw new FssException("90004006");
-        FundOrderEntity fundOrderEntity = null;
-        fundOrderEntity  = paySuperByFuiou.transerer(toAccountEntity,fromAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType);
-        tradeRecordService.transfer(toAccountEntity,fromAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType);
+        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
         return  fundOrderEntity;
     }
 
