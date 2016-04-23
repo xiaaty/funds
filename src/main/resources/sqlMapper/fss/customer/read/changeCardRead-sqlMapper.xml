@@ -30,7 +30,8 @@
 		t.pass_user_id passUserId,
 		t.effect_time effectTime,
 		t.mchn mchn,
-		t.seq_no seqNo
+		t.seq_no seqNo,
+		t.trade_type tradeType
 		FROM `t_gq_fss_changecard_record` t
 	</sql>
 	<select id="queryChangeCardList" parameterType="changeCardEntity" resultType="changeCardEntity">
