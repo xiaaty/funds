@@ -482,7 +482,8 @@ public class FssLoanService {
 	 * function：信用标退款
 	 */
 	public void abort(FssLoanEntity fssLoanEntity) throws FssException {
-		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(Long.parseLong(fssLoanEntity.getCustNo()), GlobalConstants.ACCOUNT_TYPE_LOAN);
+		FssAccountEntity fssAccountEntity = fssAccountService.getFssAccountByAccNo(fssLoanEntity.getAccNo());
+		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(fssAccountEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID,"2");
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 3);
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
