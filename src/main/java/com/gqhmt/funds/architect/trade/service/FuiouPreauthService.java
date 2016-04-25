@@ -55,26 +55,27 @@ public class FuiouPreauthService {
         return fuiouPreauthReadMapper.getContractNo(bid,userName,toUserName,amt);
     }
 
-    public Map<Integer,String> getContractNo(Long bid){
-    	Map<Integer,String> map = new HashMap<>();
+    public Map<Long,String> getContractNo(Long bid){
+    	Map<Long,String> map = new HashMap<>();
     	List<FuiouPreauth>	fuiouPreauthlist = fuiouPreauthReadMapper.getContractNos(bid);
     	if(fuiouPreauthlist == null || fuiouPreauthlist.size() == 0){
             return null;
         }
     	for(FuiouPreauth fuiouPreauth:fuiouPreauthlist){
-            map.put(fuiouPreauth.getTenderid(),fuiouPreauth.getContractNo());
+            map.put(Long.valueOf(fuiouPreauth.getTenderid()),fuiouPreauth.getContractNo());
         }
     	return map;
     }
-    public Map<Integer,FuiouPreauth> getFuiouPreauth(Long bid){
+    public Map<Long,FuiouPreauth> getFuiouPreauth(Long bid){
 //        return fuiouPreauthReadMapper.getFuiouPreauth(bid);
-    	Map<Integer,FuiouPreauth> map = new HashMap<>();
+    	Map<Long,FuiouPreauth> map = new HashMap<>();
     	List<FuiouPreauth>	list = fuiouPreauthReadMapper.getContractNos(bid);
     	if(list == null || list.size() == 0){
             return null;
         }
     	for(FuiouPreauth fuiouPreauth:list){
-    		map.put(fuiouPreauth.getTenderid(),fuiouPreauth);
+            Integer tId = fuiouPreauth.getTenderid();
+    		map.put(Long.valueOf(tId),fuiouPreauth);
         }
     	return map;
     	

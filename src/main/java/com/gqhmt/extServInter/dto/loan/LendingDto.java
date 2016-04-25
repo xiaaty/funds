@@ -1,13 +1,11 @@
 package com.gqhmt.extServInter.dto.loan;
+import com.gqhmt.annotations.APIValid;
+import com.gqhmt.annotations.APIValidNull;
+import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-
-import com.gqhmt.annotations.APIValid;
-import com.gqhmt.annotations.APIValidNull;
-import com.gqhmt.annotations.APIValidType;
 
 
 
@@ -40,7 +38,6 @@ public class LendingDto extends SuperDto {
     private BigDecimal contract_interest;		//合同利息
 	
 	
-	@APIValidNull(errorCode = "90004022")
     private String mortgagee_acc_no;			//抵押权人资金平台账号
 
 	@APIValidNull(errorCode = "90004023")

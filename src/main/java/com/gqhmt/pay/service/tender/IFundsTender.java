@@ -1,6 +1,7 @@
 package com.gqhmt.pay.service.tender;
 
 
+import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.FssException;
 import com.gqhmt.extServInter.dto.tender.BidDto;
@@ -88,6 +89,6 @@ public interface IFundsTender {
 //    public boolean debtApply(String thirdPartyType,int custId);
 
 
-    public void abortLoop(Tender tender,String contractNo) throws FssException;
+    public void abortLoop(Bid bid, Tender tender, String contractNo) throws FssException;
 
 }
