@@ -87,6 +87,7 @@
                                                             <td align="left">业务编号：</td>
                                                             <td>
                                                                 <label class="input">
+                                                                <input type="hidden" name="token" value="${token}"/> 
                                                                 <input type="text" maxlength="50" readonly="readonly" name="businessNo" value="${tradeapply.businessNo}" style="width:256px;" />
                                                                 </label>
                                                             </td>
@@ -150,7 +151,10 @@
     	                       jAlert("审核完成!", '信息提示');
     	                        //自动跳转
     	                    	parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records";
-    	                    } else {
+    	                    } else if(data.code == '0001') {
+    	                    	jAlert("请勿重复审核!", '消息提示');
+    	                        return;
+    	                    }else {
     	                    	jAlert("审核失败!", '消息提示');
     	                        return;
     	                    }

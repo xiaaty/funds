@@ -307,17 +307,27 @@ public class FssRepaymentService {
 	public void changeRepaymentParentStatus(FssRepaymentEntity queryRepayment){
 		FssRepaymentParentEntity queryRepaymentParentById = this.queryRepaymentParentById(queryRepayment.getParentId());
 		if(queryRepaymentParentById.getTradeCount()<=queryRepaymentParentById.getSuccessCount()){
+			int successCount = getSuccessCount(queryRepayment.getParentId());
+			if(queryRepaymentParentById.getTradeCount()==successCount){
+				
 				//成功
 				queryRepaymentParentById.setResultState("10080002");
+				 queryRepaymentParentById.setState("10090003");
+				 queryRepaymentParentById.setMotifyTime(new Date());
 				this.updateRepaymentParent(queryRepaymentParentById);
-		}else if(queryRepaymentParentById.getSuccessCount()==0){
+			}else if(successCount==0){
 				//失败
 				queryRepaymentParentById.setResultState("10080010");
+				 queryRepaymentParentById.setState("10090003");
+				 queryRepaymentParentById.setMotifyTime(new Date());
 				this.updateRepaymentParent(queryRepaymentParentById);
-		}else{
+			}else{
 				//部分成功
 				queryRepaymentParentById.setResultState("10080003");
+				 queryRepaymentParentById.setState("10090003");
+				 queryRepaymentParentById.setMotifyTime(new Date());
 				this.updateRepaymentParent(queryRepaymentParentById);
+			}
 		}
 	}
 	

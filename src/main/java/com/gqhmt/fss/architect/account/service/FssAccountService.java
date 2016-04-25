@@ -4,7 +4,6 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
-import com.gqhmt.fss.architect.account.bean.FssFuiouAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
@@ -189,6 +188,9 @@ public class FssAccountService {
         }
 
         try{
+        	if(!"11020012".equals(tradeType) && !"11020011".equals(tradeType)){
+        		busiNo=fssCustomerinfo.getCustNo();
+        	}
             fssAccountEntity = this.createNewFssAccountEntity(fssCustomerinfo,tradeType,busiNo,mchn,fssFuiouAccountEntity.getAccNo());
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);

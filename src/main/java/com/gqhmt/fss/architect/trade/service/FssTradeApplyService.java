@@ -275,7 +275,7 @@ public class FssTradeApplyService {
 
 	/**
 	 * 修改执行条数
-	 * @param applyNo
+	 * @param fssTradeRecordEntity
 	 * 根据申请编号修改执行条数,实际交易金额，修改日期
 	 * @throws FssException 
      */
@@ -310,6 +310,7 @@ public class FssTradeApplyService {
 						 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 						 fssLoanEntityById.setResult("98060001");	//成功
 						 fssLoanEntityById.setStatus("10050003");//划扣成功
+						 fssLoanEntityById.setModifyTime(new Date());
 						 fssLoanService.update(fssLoanEntityById);
 					 }else{
 						 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
@@ -320,6 +321,7 @@ public class FssTradeApplyService {
 							queryRepayment.setAmt(realTradeAmt);
 							//更新主表执行成功条数
 							fssRepaymentService.updateSuccessCount(queryRepayment);
+							fssRepaymentService.changeRepaymentParentStatus(queryRepayment);
 					 }
 			 //划扣失败
 			 }else if(successCount==0){
@@ -327,13 +329,16 @@ public class FssTradeApplyService {
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 fssLoanEntityById.setResult("98060003");
 					 fssLoanEntityById.setStatus("10050004");
+					 fssLoanEntityById.setModifyTime(new Date());
 					 fssLoanService.update(fssLoanEntityById);
+					
 				 }else{
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
 					 queryRepayment.setState("10090003");	//10090003划扣完成
 					 queryRepayment.setResultState("10080010");	//失败
 					 queryRepayment.setMotifyTime(new Date());
 					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
+					 fssRepaymentService.changeRepaymentParentStatus(queryRepayment);
 				 }
 			 //部分成功
 			 }else{
@@ -344,16 +349,16 @@ public class FssTradeApplyService {
 				 }else{
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
 					 queryRepayment.setState("10090003");	//10090003划扣完成
-					 queryRepayment.setResultState("10080010");	//部分成功
+					 queryRepayment.setResultState("10080003");	//部分成功
 					 queryRepayment.setMotifyTime(new Date());
 					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
 					 queryRepayment.setAmt(realTradeAmt);
 					 //更新主表执行成功条数
 					 fssRepaymentService.updateSuccessCount(queryRepayment);
+					 fssRepaymentService.changeRepaymentParentStatus(queryRepayment);
 				 }
 			   }
 			 }
-					
 			 fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				//创建回盘信息
 				

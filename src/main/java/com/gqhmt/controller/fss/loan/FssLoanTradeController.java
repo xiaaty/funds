@@ -218,13 +218,14 @@ public class FssLoanTradeController {
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		
 		try {
-			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(), fssLoanEntityById.getMortgageeAccNo(),
+			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(),fssLoanEntityById.getMortgageeAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
 			fssLoanEntityById.setStatus("10050100");
 			fssLoanService.update(fssLoanEntityById);
+			fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
 		} catch (FssException e) {
-			LogUtil.info(this.getClass(), e.getMessage());
+			LogUtil.error(this.getClass(), e.getMessage());
 			model.addAttribute("erroMsg", e.getMessage());
 		}
 		
@@ -338,8 +339,8 @@ public class FssLoanTradeController {
 			for (FssFeeList fssFeeList : fssFeeLists) {
 				try {
 					if(!"10050099".equals(fssFeeList.getTradeStatus())){
-						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
-								fssFeeList.getFeeType(),fssLoanEntityById.getMortgageeAccNo(), fssFeeList.getFeeAmt(),
+						FundOrderEntity fundOrderEntity = cost.costReturn(fssLoanEntityById.getLoanPlatform(),
+								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
 								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
 						// 修改费用状态	退费成功
 						fssFeeList.setTradeStatus("10050099");

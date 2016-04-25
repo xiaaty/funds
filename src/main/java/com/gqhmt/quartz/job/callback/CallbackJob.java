@@ -8,7 +8,6 @@ import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
@@ -42,15 +41,19 @@ public class CallbackJob extends SupperJob {
     @Resource
     private FssBackplateService fssBackplateService;
 
+    private static boolean isRunning = false;
+
     @Resource
     private ApplicationContext context;
-
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws JobExecutionException, FssException {
-        System.out.println("业务执行完成回盘跑批");
         if(!isIp("upload")){
             return;
         }
+
+        if(isRunning) return;
+
+        startLog("业务执行完成回盘");
 
         List<FssBackplateEntity> backplateEntities = fssBackplateService.findBackAll();
         for(FssBackplateEntity entity:backplateEntities){
@@ -62,6 +65,7 @@ public class CallbackJob extends SupperJob {
             }
         }
 
+        endtLog();
     }
 
 
@@ -98,6 +102,12 @@ public class CallbackJob extends SupperJob {
         	}
         }
        
+    }
+
+
+    @Override
+    public boolean isRunning() {
+        return isRunning;
     }
 }
 
