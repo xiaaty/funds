@@ -36,7 +36,6 @@ public class WithdrawCallbackImpl implements IWithdrawCallback {
 	private IFundsTrade iFundsTrade;
 	
 	@APITradeTypeValid(value = "11040010")
-	@APISignature
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();

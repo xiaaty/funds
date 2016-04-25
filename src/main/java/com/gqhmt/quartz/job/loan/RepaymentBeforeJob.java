@@ -38,7 +38,7 @@ public class RepaymentBeforeJob extends SupperJob {
     private BidRepaymentService repaymentService;
     
     private static boolean isRunning = false;
-    @Scheduled(cron="0 0/1 *  * * * ")
+//    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;

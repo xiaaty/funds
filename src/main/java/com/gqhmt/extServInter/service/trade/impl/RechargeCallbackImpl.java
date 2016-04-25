@@ -36,7 +36,6 @@ public class RechargeCallbackImpl implements IRechargeCallback {
 	private IFundsTrade iFundsTrade;
 	
 	@APITradeTypeValid(value = "11030012")
-	@APISignature
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();

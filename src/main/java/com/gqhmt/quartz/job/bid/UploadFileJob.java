@@ -32,7 +32,7 @@ public class UploadFileJob extends SupperJob{
     private FtpUploadService ftpUploadService;
 
     private static boolean isRunning = false;
-        @Scheduled(cron="0/23 * 7-23  * * * ")
+//        @Scheduled(cron="0/23 * 7-23  * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
