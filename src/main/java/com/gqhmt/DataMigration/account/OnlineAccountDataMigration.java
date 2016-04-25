@@ -1,5 +1,6 @@
 package com.gqhmt.DataMigration.account;
 
+import com.gqhmt.DataMigration.dao.LoanDao;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -8,6 +9,7 @@ import com.sun.rowset.CachedRowSetImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.rowset.CachedRowSet;
 import java.sql.*;
 
 /**
@@ -120,28 +122,10 @@ public class OnlineAccountDataMigration {
      * 纯线下账户导入
      */
     public void LoanOffLineAccountDataMig(){
-        String classDriver = ResourceUtil.getValue("jdbc.jdbc","jdbc.driverClassName");
-        String  url = ResourceUtil.getValue("jdbc.jdbc","dataMig.loan.jdbc.url");
-        String user = ResourceUtil.getValue("jdbc.jdbc","dataMig.loan.jdbc.username");
-        String pwd = ResourceUtil.getValue("jdbc.jdbc","dataMig.loan.jdbc.password");
+        LoanDao loanDao = LoanDao.getLoanDao();
         try {
-            Class.forName(classDriver);
-            Connection conn = DriverManager.getConnection(url,user,pwd);
-            PreparedStatement ps = conn.prepareCall("select distinct \n" +
-                    "          合同编号 " +
-                    "          ,银行卡号 " +
-                    "          ,主借人姓名" +
-                    "          ,客户电话号码" +
-                    "          ,主借人身份证号 " +
-                    "          ,银行全称" +
-                    "    from  transfer_basic");
 
-            ResultSet rs = ps.executeQuery();
-            CachedRowSetImpl cs = new CachedRowSetImpl();
-            cs.acceptChanges(conn);
-            cs.populate(rs);
-            rs.close();
-            ps.close();
+            CachedRowSet cs = loanDao.findAllData();
 
             while (cs.next()){
                 String  contractNo  = cs.getString(1);
@@ -152,6 +136,8 @@ public class OnlineAccountDataMigration {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
