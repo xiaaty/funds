@@ -129,13 +129,12 @@ public class FundsTenderImpl  implements IFundsTender {
     /**
      * 退款
      */
-    public void abortLoop(Tender tender, String contactNo) throws FssException {
+    public void abortLoop(Bid bid,Tender tender, String contactNo) throws FssException {
         // {
         // 实际出账账户
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), tender.getInvestType() == 1 ? 3 : 2);
         // super.hasEnoughBanlance(fromEntity,new
         // BigDecimal(tender.getInvestAmount()));
-        Bid bid = bidService.findById(tender.getBidId());
 
         Integer cusId = bid.getCustomerId();
         if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
@@ -146,10 +145,10 @@ public class FundsTenderImpl  implements IFundsTender {
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",tender.getBidId().toString());
         paramMap.put("type","2");
-        String title =  title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
-        if (title == null) {
-            title = bid.getBidTitle();
-        }
+        String title = ""; // fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+//        if (title == null) {
+//            title = bid.getBidTitle();
+//        }
         // 入账账户
         FundAccountEntity toSFEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
         // FundAccountThirdEntity toSFEntity =

@@ -55,9 +55,10 @@ public interface ICost {
     public void cost(String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
 
 
-    public void costReturn(String loanType,String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
+    public FundOrderEntity costReturn(String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
 
-    public void costReturn(String loanType,String  fundsType,String accNo, BigDecimal decimal,Long busiId,Integer busiType);
+    public FundOrderEntity costReturn(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException;
+
 
 
 }

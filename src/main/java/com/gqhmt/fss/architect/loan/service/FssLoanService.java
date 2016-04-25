@@ -383,8 +383,7 @@ public class FssLoanService {
 		fssLoanEntity.setContractInterest(bidApplyDto.getContract_interest());
 		fssLoanEntity.setAccNo(bidApplyDto.getUser_id());
 		fssLoanEntity.setMortgageeAccNo(bidApplyDto.getMortgagee_user_id());
-		fssLoanEntity.setContractId(bidApplyDto.getBusi_bid_no());
-		fssLoanEntity.setContractId(bidApplyDto.getBusi_bid_no());
+		fssLoanEntity.setContractNo(bidApplyDto.getContract_no());
 		fssLoanEntity.setMchnChild(bidApplyDto.getMchn());
 		String parentMchn = Application.getInstance().getParentMchn(bidApplyDto.getMchn());
 		fssLoanEntity.setMchnParent(parentMchn);
@@ -431,6 +430,12 @@ public class FssLoanService {
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
 		fssLoanEntity.setContractId(BidApplyDto.getBusi_bid_no());
 		fssLoanEntity.setMchnChild(BidApplyDto.getMchn());
+		fssLoanEntity.setContractAmt(BidApplyDto.getContract_amt());
+		fssLoanEntity.setPayAmt(BidApplyDto.getPayment_amt());
+		fssLoanEntity.setContractInterest(BidApplyDto.getContract_interest());
+		fssLoanEntity.setContractNo(BidApplyDto.getContract_no());
+		fssLoanEntity.setAccNo(BidApplyDto.getUser_id());
+		fssLoanEntity.setMortgageeAccNo(BidApplyDto.getMortgagee_user_id());
 		String parentMchn = Application.getInstance().getParentMchn(BidApplyDto.getMchn());
 		fssLoanEntity.setMchnParent(parentMchn);
 		fssLoanEntity.setSeqNo(BidApplyDto.getSeq_no());
@@ -482,7 +487,8 @@ public class FssLoanService {
 	 * function：信用标退款
 	 */
 	public void abort(FssLoanEntity fssLoanEntity) throws FssException {
-		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(Long.parseLong(fssLoanEntity.getCustNo()), GlobalConstants.ACCOUNT_TYPE_LOAN);
+		FssAccountEntity fssAccountEntity = fssAccountService.getFssAccountByAccNo(fssLoanEntity.getAccNo());
+		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(fssAccountEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID,"2");
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 3);
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");

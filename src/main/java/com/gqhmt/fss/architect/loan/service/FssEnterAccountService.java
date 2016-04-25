@@ -343,6 +343,7 @@ public class FssEnterAccountService {
 	public void enterAccounting(FssEnterAccountParentEntity fssEnterAccountParentEntity) throws FssException {
 		List<FssEnterAccountEntity> enterAccounts = this.getEnterAccounts(fssEnterAccountParentEntity.getId());
 		fssEnterAccountParentEntity.setState("10080002");
+		fssEnterAccountParentEntity.setResultState("10080002");
 		fssEnterAccountParentWriteMapper.updateByPrimaryKey(fssEnterAccountParentEntity);
 		
 		//TODO：入账

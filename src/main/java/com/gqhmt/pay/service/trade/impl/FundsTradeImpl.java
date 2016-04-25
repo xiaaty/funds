@@ -333,7 +333,12 @@ public class FundsTradeImpl  implements IFundsTrade {
     private void checkwithholdingOrWithDraw(FundAccountEntity entity,int type,int busiType) throws FssException{
         FundAccountEntity primaryAccount = entity == null || entity.getBusiType() !=0? this.getPrimaryAccount(entity.getCustId().intValue()):entity;
         if (primaryAccount.getIshangeBankCard()==1){
-            throw new CommandParmException("银行卡变更中,不允许"+(type == 1?"代扣":"提现"));
+//            throw new CommandParmException("银行卡变更中,不允许"+(type == 1?"代扣":"提现"));
+        	if(type == 1){
+        		throw new FssException("90004009");
+        	}else{
+        		throw new FssException("90004004");
+        	}
         }
         //提现次数限制 ,暂时去掉限制功能,未来更具需要进行添加
 //        if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){

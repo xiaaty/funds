@@ -1,6 +1,7 @@
 package com.gqhmt.quartz.job.bid;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.AbortBidService;
 import org.springframework.stereotype.Component;
@@ -47,7 +48,7 @@ public class AbortBidJob extends SupperJob{
         try {
             abortBidService.abortBid();
         }catch (Exception e){
-
+            LogUtil.error(getClass(),e);
         }finally {
             isRunning = false;
         }
