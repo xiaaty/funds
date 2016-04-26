@@ -75,7 +75,7 @@ public class BidAbortService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11090012".equals(loanEntity.getTradeType())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");
@@ -88,6 +88,8 @@ public class BidAbortService {
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
         } catch (FssException e) {
             loanEntity.setStatus("10050014");
+//            loanEntity.setRepCode("98060003");
+//            loanEntity.setRepMsg("获取标的信息或投标人信息列表失败");
             loanEntity.setModifyTime(new Date());
             fssLoanService.update(loanEntity);
             fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
@@ -130,7 +132,7 @@ public class BidAbortService {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null));
         }
-        fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
+        fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
         fuiouFtpOrderService.addOrder(fundOrderEntity, 10);
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
         loanEntity.setStatus("10050104");
@@ -150,7 +152,7 @@ public class BidAbortService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11090012".equals(loanEntity.getTradeType())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");

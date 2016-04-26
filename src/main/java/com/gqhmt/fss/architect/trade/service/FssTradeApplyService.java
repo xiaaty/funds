@@ -147,6 +147,13 @@ public class FssTradeApplyService {
 		if(fssTradeApplyEntity==null){
 			throw new FssException("90004002");
 		}
+		if("10090003".equals(fssTradeApplyEntity.getTradeState())){
+			withDrawApplyResponse.setResp_code("0000");
+			withDrawApplyResponse.setResp_msg("成功");
+		}else{
+			withDrawApplyResponse.setResp_code("0001");
+			withDrawApplyResponse.setResp_msg("失败");
+		}
 		withDrawApplyResponse.setMchn(fssTradeApplyEntity.getMchnChild());
 		withDrawApplyResponse.setSeq_no(fssTradeApplyEntity.getSeqNo());
 		withDrawApplyResponse.setTrade_type(fssTradeApplyEntity.getTradeState());

@@ -33,7 +33,6 @@ public class ChangeBankCallback implements GetCallBack{
     	ChangeCardResponse response = new ChangeCardResponse();
     	try {
     		response = fundsAccountImpl.bankCardChangeCallBack(seqNo,mchn);
-			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
 			response.setResp_code(e.getMessage());

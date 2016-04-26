@@ -32,7 +32,6 @@ public class WithDrawApplyCallback implements GetCallBack{
     	WithDrawApplyResponse response = new WithDrawApplyResponse();
     	try {
     		response=fssTradeApplyService.withDrasApplyCallBack(seqNo,mchn);
-    		response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
 			response.setResp_code(e.getMessage());

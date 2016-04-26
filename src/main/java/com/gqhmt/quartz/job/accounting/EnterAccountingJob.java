@@ -34,7 +34,7 @@ public class EnterAccountingJob extends SupperJob {
 	private FssEnterAccountService fssEnterAccountService;
 	
 	 private static boolean isRunning = false;
-	@Scheduled(cron="0 0/1 *  * * * ")
+//	@Scheduled(cron="0 0/1 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
         if(!isIp("upload")){
             return;
