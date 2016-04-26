@@ -7,6 +7,8 @@ import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.extServInter.service.p2p.IBidRepayApply;
 import com.gqhmt.extServInter.service.p2p.IFullBidApply;
 import com.gqhmt.extServInter.service.p2p.IRePayments;
+
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,7 +60,8 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/fullBidApply",method = RequestMethod.POST)
     @ResponseBody
-    public Object fullBidApply(BidApplyDto fullBidApplyDto){
+    public Object fullBidApply(@RequestBody BidApplyDto fullBidApplyDto){
+    	
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
@@ -78,7 +81,7 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/bidRepayApply",method = RequestMethod.POST)
     @ResponseBody
-    public Object bidRepayApply(BidApplyDto bidApplyDto){
+    public Object bidRepayApply(@RequestBody BidApplyDto bidApplyDto){
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
@@ -98,7 +101,7 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/rePayments",method = RequestMethod.POST)
     @ResponseBody
-    public Object rePayments(RePaymentDto rePaymentDto){
+    public Object rePayments(@RequestBody RePaymentDto rePaymentDto){
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);

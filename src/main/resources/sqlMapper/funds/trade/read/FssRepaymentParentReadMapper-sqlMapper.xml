@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper">
-	<select id="queryFssRepaymentParent" parameterType="com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity">
-		 SELECT 
+	<sql id="selectSql">
+	SELECT 
 		    id id, 
 			trade_type tradeType,
 			seq_no seqNo,
@@ -19,6 +19,9 @@
 			mchn_child mchnChild,
 			remark
 		 FROM t_gq_fss_repayment_parent 
+		 </sql>
+	<select id="queryFssRepaymentParent" parameterType="com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity">
+		 <include refid="selectSql"/>
 		<where>
 			<if test="mchnChild != null and mchnChild !=''">
 			 	and mchn_child like  CONCAT('%',#{mchnChild},'%')
@@ -33,5 +36,9 @@
 			 	and result_state = #{resultState}
 			</if>
 		</where>
+	</select>
+	<select id="queryByMchnAndSeqNo" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity">
+	 <include refid="selectSql"/>
+	 where mchnChild=#{mchn} and seqNo=#{seqNo}
 	</select>
 </mapper>

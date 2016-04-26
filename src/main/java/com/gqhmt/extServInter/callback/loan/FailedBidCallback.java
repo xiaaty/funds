@@ -41,7 +41,6 @@ public class FailedBidCallback implements GetCallBack{
 		 FailedBidResponse failedBidResponse =null;
 			 try {
 				 failedBidResponse=fssLoanService.getFailedBidResponse(mchn, seqNo);
-				failedBidResponse.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 				failedBidResponse.setResp_code(e.getMessage());

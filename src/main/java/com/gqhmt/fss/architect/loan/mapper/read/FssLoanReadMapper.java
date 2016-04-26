@@ -5,6 +5,7 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
 import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
+import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
 import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 
@@ -86,6 +87,13 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	List<FssLoanEntity> findByType(String type);
 	
 //    public List<FssLoanBean> findBorrowerLoanOffline(@Param("type") String type);	
-    public List<FssLoanBean> findBorrowerLoanOffline();	
+    public List<FssLoanBean> findBorrowerLoanOffline();
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月25日
+	 * function：得到冠e通回调对象
+	 */
+	BidApplyResponse getBidApplyResponse(Map<String, String> map);	
 	
 }

@@ -42,7 +42,6 @@ public class MortgageeWithDrawCallback implements GetCallBack{
 		 MortgageeWithDrawRespons response=null;
 		try {
 			response = fssLoanService.getMortgageeWithDrawRespons(mchn,seqNo);
-			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
 	    	response.setResp_code(e.getMessage());

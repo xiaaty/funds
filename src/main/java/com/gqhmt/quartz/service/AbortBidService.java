@@ -138,7 +138,7 @@ public class AbortBidService {
             fuiouFtpOrder.setResultStatus(3);
             fuiouFtpOrder.setResult(1);
             fuiouFtpOrder.setRetrunResultStatus(1);
-            loanEntity.setStatus("10050102");
+            loanEntity.setStatus("10050100");
             loanEntity.setModifyTime(new Date());
             fssLoanService.update(loanEntity);
           //数据回盘
@@ -151,7 +151,7 @@ public class AbortBidService {
             fuiouFtpOrder.setResult(2);
             fuiouFtpOrder.setRetrunResultStatus(1);
             
-            loanEntity.setStatus("10050100");
+            loanEntity.setStatus("10050102");
             loanEntity.setModifyTime(new Date());
             fssLoanService.update(loanEntity);
           //数据回盘
