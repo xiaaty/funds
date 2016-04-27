@@ -7,6 +7,8 @@ import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.extServInter.service.p2p.IBidRepayApply;
 import com.gqhmt.extServInter.service.p2p.IFullBidApply;
 import com.gqhmt.extServInter.service.p2p.IRePayments;
+
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
