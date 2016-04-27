@@ -87,6 +87,7 @@
                                                             <td align="left">业务编号：</td>
                                                             <td>
                                                                 <label class="input">
+                                                                <input type="hidden" name="token" value="${sessionScope.token}"/> 
                                                                 <input type="text" maxlength="50" readonly="readonly" name="contractId" value="${tradeapply.contractId}" style="width:256px;" />
                                                                 </label>
                                                             </td>

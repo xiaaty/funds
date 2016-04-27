@@ -72,7 +72,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                 <div class="mb20" id="wid-id-713">
-                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/loan/trade/borrow'" ><i class="fa fa-minus"></i>返回</button>
+                                            <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/loan/trade/${type}'" ><i class="fa fa-minus"></i>返回</button>
                                       </div>
                                      <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
                                     	<col width="300" />

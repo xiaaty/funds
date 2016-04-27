@@ -87,7 +87,7 @@
                                                             <td align="left">业务编号：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                <input type="hidden" name="token" value="${token}"/> 
+                                                                <input type="hidden" name="token" value="${sessionScope.token}"/> 
                                                                 <input type="text" maxlength="50" readonly="readonly" name="businessNo" value="${tradeapply.businessNo}" style="width:256px;" />
                                                                 </label>
                                                             </td>

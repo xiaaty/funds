@@ -77,7 +77,8 @@ public class FssTradeApplyController {
     	
     	map.put("applyType",type.toString());
 		map.put("busiType", bus);
-		
+		String token = TokenProccessor.getInstance().makeToken();//创建令牌
+		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
         List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
@@ -107,9 +108,8 @@ public class FssTradeApplyController {
      */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/withdrawcheck",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo) throws Exception {
-    	String token = TokenProccessor.getInstance().makeToken();//创建令牌
-		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
+    public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo,String token) throws Exception {
+    	
     	FssTradeApplyEntity tradeapplyentity=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
     	if(tradeapplyentity==null){
     		throw new FssException("未查到交易申请记录！");
@@ -174,6 +174,9 @@ public class FssTradeApplyController {
 				e.printStackTrace();
 			}
 			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+			tradeapply.setApplyState("10100002");
+			tradeapply.setModifyTime(new Date());
+			fssTradeApplyService.updateTradeApply(tradeapply);
 //			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		}else{//不通过，添加回盘记录
 			tradeapply.setApplyState("10100005");
