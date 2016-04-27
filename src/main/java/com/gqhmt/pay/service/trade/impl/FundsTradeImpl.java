@@ -10,6 +10,7 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
+import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
@@ -20,6 +21,8 @@ import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.pay.fuiou.util.CoreConstants;
+import com.gqhmt.pay.fuiou.util.HttpClientUtil;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
@@ -28,8 +31,13 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 交易相关api
@@ -65,6 +73,8 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Resource
     private FssAccountService fssAccountService;
 
+    @Resource
+    private NoticeService noticeService;
     /**
      * 生成web提现订单
      * @param withdrawOrderDto            支付渠道
@@ -89,7 +99,9 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Override
     public String webRechargeOrder(RechargeOrderDto rechargeOrderDto) throws FssException {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(rechargeOrderDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        checkwithholdingOrWithDraw(entity,1,entity.getBusiType().intValue());//银行卡变更中不允许代扣
+        if(Integer.valueOf(rechargeOrderDto.getTrade_type()).intValue()!=11030001){
+        	checkwithholdingOrWithDraw(entity,1,entity.getBusiType().intValue());//银行卡变更中可以进行网银充值，但是不允许代扣充值
+        }
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(entity, rechargeOrderDto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0,"2");
         return entity.getUserName()+":"+fundOrderEntity.getOrderNo()+":"+ ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU).getValue("public.mchnt_cd.value")+":等待回调通知";
     }
@@ -115,7 +127,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     /**
      * 提现
-     * @param WithdrawDto
+     * @param withdrawDto
      * @return OrderNo
      */
     @Override
@@ -331,15 +343,20 @@ public class FundsTradeImpl  implements IFundsTrade {
     private void checkwithholdingOrWithDraw(FundAccountEntity entity,int type,int busiType) throws FssException{
         FundAccountEntity primaryAccount = entity == null || entity.getBusiType() !=0? this.getPrimaryAccount(entity.getCustId().intValue()):entity;
         if (primaryAccount.getIshangeBankCard()==1){
-            throw new CommandParmException("银行卡变更中,不允许"+(type == 1?"代扣":"提现"));
+//            throw new CommandParmException("银行卡变更中,不允许"+(type == 1?"代扣":"提现"));
+        	if(type == 1){
+        		throw new FssException("90004009");
+        	}else{
+        		throw new FssException("90004004");
+        	}
         }
-        //提现次数限制
-        if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){
-            boolean checkWithdraw = this.fundOrderService.checkWithdrawNumber(entity.getId());
-            if(checkWithdraw){
-                throw new CommandParmException("90004005");
-            }
-        }
+        //提现次数限制 ,暂时去掉限制功能,未来更具需要进行添加
+//        if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){
+//            boolean checkWithdraw = this.fundOrderService.checkWithdrawNumber(entity.getId());
+//            if(checkWithdraw){
+//                throw new CommandParmException("90004005");
+//            }
+//        }
     }
 
     private FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException {
@@ -412,6 +429,9 @@ public class FundsTradeImpl  implements IFundsTrade {
             tradeRecordService.recharge(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001);
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
+          //发送站内通知短信
+            this.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE,NoticeService.NoticeType.FUND_CHARGE,entity,fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
+          
         }else{
             fundOrderEntity.setOrderState(3);
             fundOrderService.update(fundOrderEntity);
@@ -432,6 +452,8 @@ public class FundsTradeImpl  implements IFundsTrade {
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
             this.chargeAmount(fundOrderEntity);
+            //提现成功发送站内短信
+            this.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE,NoticeService.NoticeType.FUND_WITHDRAW,entity,fundOrderEntity.getOrderAmount(),fundOrderEntity.getChargeAmount());
         }else{
             fundOrderEntity.setOrderState(3);
             fundOrderService.update(fundOrderEntity);
@@ -527,10 +549,27 @@ public class FundsTradeImpl  implements IFundsTrade {
     
     
     
-    
-    
-    
-    
-    
+    /**
+	 * 充值提现金额变动通知
+	 * 
+	 * @param noticeType
+	 * @param entity
+	 * @param amount
+	 */
+	protected void sendNotice(String tempCode,NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount,BigDecimal chargeAmount) {
+		List<Map<String, String>> noticeList = new ArrayList<Map<String, String>>();
+		Map<String, String> noticeMap = new HashMap<String, String>();
+		noticeMap.put("sysCode", CoreConstants.SYS_CODE);// 商户系统编码，在平台系统查看
+		noticeList.add(noticeMap);
+        if(chargeAmount == null){
+            chargeAmount = BigDecimal.ZERO;
+        }
+        if(entity.getBusiType() != 3) return;
+		Date date = new Date();
+		//String dateFormat = String.format("%tF",date)+" "+String.format("%t",date);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		noticeService.packSendNotice(noticeList,tempCode,CoreConstants.SMS_NOTICE,noticeType, entity.getUserId().intValue(), entity.getCustId().intValue(),df.format(date), amount.toPlainString(),chargeAmount.toPlainString());
+		HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
+	}
     
 }

@@ -38,7 +38,6 @@ public class RechargeOrderImpl implements IRechargeOrder {
 	private IFundsTrade fundsTradeImpl;
 	
 	@APITradeTypeValid(value = "11030001")//网银充值
-	@APISignature
     @Override
     public Response execute(SuperDto dto) {
 		WebOrderResponse response = null;
