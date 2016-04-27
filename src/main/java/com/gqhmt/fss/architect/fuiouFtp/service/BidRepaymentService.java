@@ -72,7 +72,7 @@ public class BidRepaymentService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");
@@ -85,7 +85,6 @@ public class BidRepaymentService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
         } catch (FssException e) {
-            LogUtil.error(getClass(),e);
             LogUtil.error(getClass(),e);
             loanEntity.setStatus("10050014");
             loanEntity.setModifyTime(new Date());
@@ -126,7 +125,8 @@ public class BidRepaymentService {
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", ""));
         }
 
-        fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
+        fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
+
         fuiouFtpOrderService.addOrder(fundOrderEntity, 2);
         loanEntity.setStatus("10050012");
         loanEntity.setModifyTime(new Date());
@@ -146,7 +146,7 @@ public class BidRepaymentService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");

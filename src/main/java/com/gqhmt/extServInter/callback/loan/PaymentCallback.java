@@ -32,7 +32,7 @@ public class PaymentCallback implements GetCallBack{
     	RepaymentResponse response = new RepaymentResponse();
     	try {
     		response = fssRepaymentService.rePaymentCallBack(seqNo,mchn);
-			response.setResp_code("0000");
+//			response.setResp_code("0000");
 		} catch (FssException e) {
 			response.setResp_code(e.getMessage());
 		}

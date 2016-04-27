@@ -45,7 +45,7 @@ public class RepaymentBeforeJob extends SupperJob {
 
         if(isRunning) return;
 
-        startLog("借款业务流标 执行流标前置");
+        startLog("回款");
         isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findLoanRepayment();

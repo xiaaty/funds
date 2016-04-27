@@ -31,50 +31,50 @@ public class FssEnterAccountEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  
 	
-	@Column(name = "parent_id") 
+	@Column(name = "parent_id",updatable = false) 
 	private Long  parentId ;    
 	    
-    @Column(name = "trade_type")
+    @Column(name = "trade_type",updatable = false)
     private String tradeType  ;                               //交易类型    (NULL)           YES             (NULL)                   select,insert,update,references
   
-    @Column(name = "contract_id")
+    @Column(name = "contract_id",updatable = false)
     private String contractId   ;  
     
-    @Column(name = "contract_no")
+    @Column(name = "contract_no",updatable = false)
     private String contractNo   ;  
     
-    @Column(name = "serial_number")
+    @Column(name = "serial_number",updatable = false)
     private String serialNumber  ;                               //序列号    (NULL)           YES             (NULL)                   select,insert,update,references
    
-    @Column(name = "accounting_no")
+    @Column(name = "accounting_no",updatable = false)
     private String accountingNo  ;                               //账务流水号  (NULL)           YES             (NULL)                   select,insert,update,references
     
-    @Column(name = "seq_no")
+    @Column(name = "seq_no",updatable = false)
     private String seqNo  ;                               //交易流水号    (NULL)           YES             (NULL)                   select,insert,update,references
    
-    @Column(name = "acc_no")
+    @Column(name = "acc_no",updatable = false)
     private String accNo   ;                                //借款人资金平台账号
     
-   @Column(name = "mortgagee_acc_no")
+   @Column(name = "mortgagee_acc_no",updatable = false)
     private String mortgageeAccNo;						//抵押权人资金平台账号
    	
-    @Column(name = "create_time")
+    @Column(name = "create_time",updatable = false)
     private Date createTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
 
     @Column(name = "modify_time")
     private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
     
-    @Column(name="mchn_parent")
+    @Column(name="mchn_parent",updatable = false)
     private String mchnParent;             // varchar(45) NOT NULL COMMENT '大商户号',
 
-    @Column(name="mchn_child")
+    @Column(name="mchn_child",updatable = false)
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
   
     @Column(name="result")
     private String result;              // 98060001成功98060002部分成功还是98060003失败
     
     
-    @Column(name="loan_platform")
+    @Column(name="loan_platform",updatable = false)
     private String loanPlatform;              // 借款平台
     
 

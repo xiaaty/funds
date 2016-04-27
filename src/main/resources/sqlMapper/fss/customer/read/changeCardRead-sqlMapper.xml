@@ -61,7 +61,10 @@
 		t.acc_no acc_no,
 		t.bank_city city_id,
 		t.bank_type bank_id,
-		t.card_no bank_card
+		t.card_no bank_card,
+		case when 
+		t.state=2 AND t.trade_state=5 
+		then '0000'	else '0001'  end resp_code
 		 FROM `t_gq_fss_changecard_record` t
 		WHERE t.seq_no=#{seq_no}
 		AND t.mchn=#{mchn}

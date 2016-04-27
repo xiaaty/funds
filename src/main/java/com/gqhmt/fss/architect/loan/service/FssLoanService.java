@@ -5,6 +5,7 @@ import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.*;
 import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
+import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
 import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
@@ -390,7 +391,8 @@ public class FssLoanService {
 		fssLoanEntity.setSeqNo(bidApplyDto.getSeq_no());
 		fssLoanEntity.setTradeType(bidApplyDto.getTrade_type());
 		fssLoanEntity.setCreateTime(new Date());
-		fssLoanEntity.setStatus("10050001");
+		fssLoanEntity.setModifyTime(new Date());
+		fssLoanEntity.setStatus("10050010");
 		fssLoanWriteMapper.insert(fssLoanEntity);
 	}
 	/**
@@ -409,14 +411,15 @@ public class FssLoanService {
 		fssLoanEntity.setUserNo(rePaymentDto.getPeriod());  	//期数
 		fssLoanEntity.setPayAmt(rePaymentDto.getPayment_amt());//回款金额
 		fssLoanEntity.setRepMsg(rePaymentDto.getRemark());	//备注
-		fssLoanEntity.setTradeTypeParent(rePaymentDto.getPayment_type());//交易类型
+		fssLoanEntity.setTradeTypeParent(rePaymentDto.getTrade_type());//交易类型
 		String parentMchn = Application.getInstance().getParentMchn(rePaymentDto.getMchn());
 		fssLoanEntity.setMchnChild(rePaymentDto.getMchn());
 		fssLoanEntity.setMchnParent(parentMchn);
 		fssLoanEntity.setSeqNo(rePaymentDto.getSeq_no());
-		fssLoanEntity.setTradeType(rePaymentDto.getTrade_type());
+		fssLoanEntity.setTradeType(rePaymentDto.getPayment_type());
 		fssLoanEntity.setCreateTime(new Date());
-		fssLoanEntity.setStatus("10050001");
+		fssLoanEntity.setModifyTime(new Date());
+		fssLoanEntity.setStatus("10050011");
 		fssLoanWriteMapper.insert(fssLoanEntity);
 	}
 	/**
@@ -441,8 +444,9 @@ public class FssLoanService {
 		fssLoanEntity.setSeqNo(BidApplyDto.getSeq_no());
 		fssLoanEntity.setTradeType(BidApplyDto.getTrade_type());
 		fssLoanEntity.setCreateTime(new Date());
-		fssLoanEntity.setStatus("10050001");
-		fssLoanWriteMapper.insert(fssLoanEntity);
+		fssLoanEntity.setModifyTime(new Date());
+		long insertLending = fssLoanWriteMapper.insertAbortBid(fssLoanEntity);
+		this.abort(fssLoanEntity);
 	}
 
 	/**
@@ -464,7 +468,7 @@ public class FssLoanService {
 
 
 	/**
-	 * 获取回款列表
+	 * 获取流标列表
 	 * @return
 	 */
 	public List<FssLoanEntity> findAbortBid() {
@@ -487,7 +491,12 @@ public class FssLoanService {
 	 * function：信用标退款
 	 */
 	public void abort(FssLoanEntity fssLoanEntity) throws FssException {
-		FssAccountEntity fssAccountEntity = fssAccountService.getFssAccountByAccNo(fssLoanEntity.getAccNo());
+		FssAccountEntity fssAccountEntity =new FssAccountEntity();
+		if("11090012".equals(fssLoanEntity.getTradeType())){
+			fssAccountEntity.setCustId(Long.parseLong(fssLoanEntity.getAccNo()));
+		}else{
+		 fssAccountEntity = fssAccountService.getFssAccountByAccNo(fssLoanEntity.getAccNo());
+		}
 		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(fssAccountEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID,"2");
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 3);
@@ -501,6 +510,19 @@ public class FssLoanService {
 	}*/
 	public List<FssLoanBean> findLoanOffilne() {
 		return fssLoanReadMapper.findBorrowerLoanOffline();
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月25日
+	 * function：得到冠e通回调对象
+	 */
+	public BidApplyResponse getBidApplyResponse(String mchn, String seqNo)throws FssException {
+		// TODO Auto-generated method stub
+		Map<String,String> map=new HashMap<>();
+		map.put("mchnNo", mchn);
+		map.put("seqNo", seqNo);
+		return fssLoanReadMapper.getBidApplyResponse(map);
 	}
 	
 }	

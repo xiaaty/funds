@@ -48,7 +48,7 @@ public class BatchWithholdingJob extends SupperJob{
             return;
         }
         if(isRunning) return;
-        startLog("借款业务流标 执行流标前置 ");
+        startLog("还款代扣");
         isRunning = true;
         List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
 

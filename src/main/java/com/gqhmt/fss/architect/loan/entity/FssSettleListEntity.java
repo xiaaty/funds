@@ -36,13 +36,13 @@ public class FssSettleListEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
     
-    @Column(name = "enter_id")
+    @Column(name = "enter_id",updatable = false)
     private Long enterId;                          //入账表ID
     
-    @Column(name = "account_type")
+    @Column(name = "account_type",updatable = false)
     private String accountType   ;                                //账务科目       YES             (NULL)                   select,insert,update,references  账户总资产
     
-    @Column(name = "settle_amt")
+    @Column(name = "settle_amt",updatable = false)
     private BigDecimal settleAmt   ;                                //清算金额             (NULL)                   select,insert,update,references  账户总资产
    
     @Column(name = "trade_status")

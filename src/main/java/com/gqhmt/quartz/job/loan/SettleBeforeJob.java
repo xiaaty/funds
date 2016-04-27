@@ -44,7 +44,7 @@ public class SettleBeforeJob extends SupperJob {
         }
 
         if(isRunning) return;
-        startLog("借款业务流标 执行流标前置");
+        startLog("满标放款 ");
         
         isRunning = true;
 

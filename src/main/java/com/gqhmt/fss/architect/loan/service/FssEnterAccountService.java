@@ -177,6 +177,16 @@ public class FssEnterAccountService {
 			enterAccounts.add(enterAccount);
 		}
 		}
+		if("10080002".equals(enterAccountParent.getResultState())){
+			enterAccountResponse.setResp_code("0000");
+    		enterAccountResponse.setResp_msg("成功");
+    	}else if("10080003".equals(enterAccountParent.getResultState())){
+    		enterAccountResponse.setResp_code("0001");
+    		enterAccountResponse.setResp_msg("部分成功");
+    	}else{
+    		enterAccountResponse.setResp_code("0002");
+    		enterAccountResponse.setResp_msg("失败");
+    	}
 		enterAccountResponse.setEnter_account(enterAccounts);
 		enterAccountResponse.setMchn(enterAccountParent.getMchnChild());
 		enterAccountResponse.setSeq_no(enterAccountParent.getSeqNo());
