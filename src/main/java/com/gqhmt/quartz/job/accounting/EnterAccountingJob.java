@@ -5,6 +5,7 @@ import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.quartz.job.SupperJob;
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ public class EnterAccountingJob extends SupperJob {
 	private FssEnterAccountService fssEnterAccountService;
 	
 	 private static boolean isRunning = false;
-//	@Scheduled(cron="0 0/1 *  * * * ")
+	@Scheduled(cron="0 0/1 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
         if(!isIp("upload")){
             return;

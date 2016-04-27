@@ -4,6 +4,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.AbortBidService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,7 +33,7 @@ public class AbortBidJob extends SupperJob{
 
     private static boolean isRunning = false;
     //    @Scheduled(cron="0  5 18 * * * ")
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws FssException {
         if(!isIp("upload")){
             return;
