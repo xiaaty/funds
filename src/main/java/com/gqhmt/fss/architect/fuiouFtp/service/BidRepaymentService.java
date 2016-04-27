@@ -124,7 +124,9 @@ public class BidRepaymentService {
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", ""));
         }
+
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
+
         fuiouFtpOrderService.addOrder(fundOrderEntity, 2);
         loanEntity.setStatus("10050012");
         loanEntity.setModifyTime(new Date());

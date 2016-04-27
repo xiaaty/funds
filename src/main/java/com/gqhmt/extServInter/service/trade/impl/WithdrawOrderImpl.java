@@ -38,7 +38,6 @@ public class WithdrawOrderImpl implements IWithdrawOrder {
 	private IFundsTrade fundsTradeImpl;
 	
 	@APITradeTypeValid(value = "11040001")//web提现
-	@APISignature
     @Override
     public Response execute(SuperDto dto) {
 		WebOrderResponse response = null;
