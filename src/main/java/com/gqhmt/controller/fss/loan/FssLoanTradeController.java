@@ -162,8 +162,8 @@ public class FssLoanTradeController {
 		Map<String, String> map = new HashMap<String, String>();
 		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
 		fssLoanEntity.setStatus("10050002");
-		String server_token  = (String) request.getSession().getAttribute("token");
-		request.getSession().removeAttribute("token");
+//		String server_token  = (String) request.getSession().getAttribute("token");
+//		request.getSession().removeAttribute("token");
 //		if(token.equals(server_token)){
 		try {
 			fssLoanService.update(fssLoanEntity);
