@@ -76,7 +76,7 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                        	<input type="hidden" name="token" value="${token}"/> 
+<%--                                                         	<input type="hidden" name="token" value="${token}"/>  --%>
                                                             <input type="text" name="contractNo" readonly="readonly" value="${loan.contractNo }">
                                                         </label>
                                                     </section>
