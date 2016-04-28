@@ -4,6 +4,7 @@ import com.gqhmt.DataMigration.dao.FundAccountDao;
 import com.gqhmt.DataMigration.dao.LoanDao;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.springframework.stereotype.Service;
 
@@ -60,9 +61,14 @@ public class OnlineAccountDataMigration {
             CachedRowSet cs = fundAccountDao.findOnlineAccount();
 
             while (cs.next()){
-                Long custId = cs.getLong("");
+                Long custId = cs.getLong("cust_id");
+
+                CustomerInfoEntity customerInfoEntity = fundAccountDao.findCustom(custId);
+
+                System.out.println(custId+"|"+(customerInfoEntity == null?"客户不存在":customerInfoEntity.getCustomerName()));
 
             }
+
 
 
 

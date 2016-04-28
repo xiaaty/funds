@@ -9,6 +9,7 @@ import javax.sql.rowset.CachedRowSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Filename:    com.gqhmt.DataMigration.dao.FundAccountDao
@@ -50,6 +51,7 @@ public class FundAccountDao extends SuperGqDao {
         cs.populate(rs);
         rs.close();
         ps.close();
+        conn.close();
 
         return  cs;
 
@@ -68,22 +70,55 @@ public class FundAccountDao extends SuperGqDao {
             fundAccountEntity.setId(rs.getLong("id"));
 
         }
+
+        rs.close();
+        ps.close();
+        conn.close();
         return  fundAccountEntity;
     }
 
     public CustomerInfoEntity findCustom(Long custId) throws Exception{
         String  sql = "SELECT * FROM `t_gq_customer_info` t1 WHERE t1.id = "+custId;
 
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
 
-        ResultSet rs = ps.executeQuery();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         CustomerInfoEntity customerInfoEntity = null;
-        if(rs.next()){
-            customerInfoEntity  = new CustomerInfoEntity();
-            customerInfoEntity.setId(rs.getLong("id"));
 
+        try {
+            conn = getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                customerInfoEntity = new CustomerInfoEntity();
+                customerInfoEntity.setId(rs.getLong("id"));
+                customerInfoEntity.setBankId(rs.getInt("bank_id"));
+                customerInfoEntity.setCertNo(rs.getString("CERT_NO"));
+                customerInfoEntity.setCustomerName(rs.getString("CUSTOMER_NAME"));
+                customerInfoEntity.setMobilePhone(rs.getString("MOBILE_PHONE"));
+                customerInfoEntity.setCustomerType(rs.getInt("CUSTOMER_TYPE"));  // 客户类型 1：借款用户 2:借款共借人 3：线下出借用户 4：线上出借注册用户 6:抵押人 7：抵押权人 8：线下赎回接标紧急用户（内部用）9：A0公司内用用户
+
+                customerInfoEntity.setSendMsgRechargeWithdrawFouyou(rs.getInt("send_msg_recharge_withdraw_fouyou"));  //send_msg_recharge_withdraw_fouyou
+
+                customerInfoEntity.setSendMsgTransferOutFouyou(rs.getInt("send_msg_transfer_out_fouyou"));   //出账是否发短信0-发送；1-不发送
+
+                customerInfoEntity.setSendMsgTransferInFouyou(rs.getInt("send_msg_transfer_in_fouyou"));    //send_msg_transfer_in_fouyou
+
+                customerInfoEntity.setSendMsgTransferAllFouyou(rs.getInt("send_msg_transfer_all_fouyou"));  //汇总是否发短信0-发送；1-不发送
+
+
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+
+            ps.close();
+            conn.close();
         }
+
+
         return  customerInfoEntity;
     }
 
@@ -99,6 +134,10 @@ public class FundAccountDao extends SuperGqDao {
             bankCardInfoEntity  = new BankCardInfoEntity();
             bankCardInfoEntity.setId(rs.getInt("id"));
         }
+
+        rs.close();
+        ps.close();
+        conn.close();
         return  bankCardInfoEntity;
     }
 }

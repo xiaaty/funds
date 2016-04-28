@@ -30,6 +30,7 @@ public class DataMigTest extends TestService {
     /**
      * 线上客户数据迁移
      */
+    @Test
     public  void onlineAccountDataMigTest(){
         onlineAccountDataMigration.onlineAccountDataMig();
     }
