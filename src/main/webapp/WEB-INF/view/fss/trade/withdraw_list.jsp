@@ -181,7 +181,7 @@
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
                                                     <td>
                                                     <input type="hidden" name="token" value="${token}"/> 
-                                                    	<c:if test="${tradeapply.applyState!=1110100001}">
+                                                    	<c:if test="${tradeapply.applyState==10100001}">
                                                     	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
                                                     	</c:if>
                                                         &nbsp;&nbsp;&nbsp;
