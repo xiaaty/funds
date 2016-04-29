@@ -18,25 +18,28 @@
 		FROM `t_gq_fss_dict` t
 	</sql>
 
-	<select id="selectDictmain" parameterType="DictMain"  resultType="DictMain">
+	<select id="selectDictmain" parameterType="com.gqhmt.sys.entity.DictEntity"  resultType="com.gqhmt.sys.entity.DictEntity">
 
 		<include refid="field"/>
-		where t.parent_id =#{parentId}
-		<!--<if test="dictId ! = null and dictId != ''">
-			/*and t.dict_id like  concat('%',${dictId},'%')*/
-		</if>-->
+		where 1=1
+		<if test="dictId!= null and dictId !='' ">
+		  and t.dict_id like  concat('%',#{dictId},'%')
+		</if>
+		<if test="parentId!=null and parentId !='' ">
+		  and t.parent_id =#{parentId}
+		</if>
 		<if test="dictName != null and dictName !=''">
 			and t.dict_name like  concat('%',#{dictName},'%')
 		</if>
 	</select>
 	
 	
-	<select id="getDictMainById" parameterType="java.lang.String" resultType="DictMain">
+	<select id="getDictMainById" parameterType="java.lang.String" resultType="com.gqhmt.sys.entity.DictEntity">
 		<include refid="field"/>
 	   where t.dict_id=#{dictId}
 	</select>
 	
-	<select id="selectDictByOrderList" parameterType="java.util.List" resultType="DictMain">
+	<select id="selectDictByOrderList" parameterType="java.util.List" resultType="com.gqhmt.sys.entity.DictEntity">
 		<include refid="field"/>
 	   where t.dict_id  NOT IN
 	    <foreach collection="list" item="dictId" index="index"
@@ -46,7 +49,7 @@
 		
 	</select>
 	
-	<select id="selectDictOrderList" parameterType="java.util.List" resultType="DictMain">
+	<select id="selectDictOrderList" parameterType="java.util.List" resultType="com.gqhmt.sys.entity.DictEntity">
 		<include refid="field"/>
 		 where t.dict_id IN
 	    <foreach collection="list" item="dictId" index="index"

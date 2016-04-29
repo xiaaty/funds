@@ -110,7 +110,7 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setRealTradeAmount(wthDrawApplyDto.getPay_amt());
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setTradeState(wthDrawApplyDto.getTrade_type());
-			fssTradeApplyEntity.setApplyState("0");
+			fssTradeApplyEntity.setApplyState("10100001");
 			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(wthDrawApplyDto.getMchn()));
 			fssTradeApplyEntity.setMchnChild(wthDrawApplyDto.getMchn());
 			fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
