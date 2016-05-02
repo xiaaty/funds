@@ -32,23 +32,10 @@ public class DataMigTest extends TestService {
      */
     @Test
     public  void onlineAccountDataMigTest(){
-        onlineAccountDataMigration.onlineAccountDataMig();
+        onlineAccountDataMigration.accountDataMig();
     }
 
 
-    /**
-     * 线上借款客户账户迁移
-     */
-    public void loanOnlineAccountDataMigTest(){
-        onlineAccountDataMigration.loanOnlineAccountDataMig();
-    }
-
-    /**
-     *线上出借客户账户迁移
-     */
-    public void lendOnLineAccountDataMigTest(){
-        onlineAccountDataMigration.lendOnLineAccountDataMig();
-    }
 
 
     /**

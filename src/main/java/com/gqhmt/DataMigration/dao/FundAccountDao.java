@@ -3,6 +3,7 @@ package com.gqhmt.DataMigration.dao;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.util.LogUtil;
 import com.sun.rowset.CachedRowSetImpl;
 
 import javax.sql.rowset.CachedRowSet;
@@ -40,7 +41,7 @@ public class FundAccountDao extends SuperGqDao {
 
     public CachedRowSet findOnlineAccount() throws Exception{
 
-        String  sql = "SELECT * FROM `t_gq_fund_account` t1 WHERE t1.busi_type=3";
+        String  sql = "SELECT * FROM `t_gq_fund_account` t1 WHERE t1.busi_type=0 AND t1.`has_Third_Account` = 2 order by id ";
 
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -60,20 +61,29 @@ public class FundAccountDao extends SuperGqDao {
     public FundAccountEntity findFundAccountPrimay(Long id) throws Exception{
         String  sql = "SELECT * FROM `t_gq_fund_account` t1 WHERE t1.id = "+id;
 
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        ResultSet rs = ps.executeQuery();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         FundAccountEntity fundAccountEntity = null;
-        if(rs.next()){
-            fundAccountEntity  = new FundAccountEntity();
-            fundAccountEntity.setId(rs.getLong("id"));
+        try{
 
+            conn = getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            if(rs.next()){
+                fundAccountEntity  = new FundAccountEntity();
+                fundAccountEntity.setId(rs.getLong("id"));
+            }
+
+        }catch (Exception e){
+            LogUtil.error(getClass(),e);
+        }finally {
+            close(rs);
+            close(ps);
+            close(conn);
         }
 
-        rs.close();
-        ps.close();
-        conn.close();
         return  fundAccountEntity;
     }
 
@@ -111,33 +121,50 @@ public class FundAccountDao extends SuperGqDao {
 
             }
         } catch (SQLException e) {
-            throw e;
+            LogUtil.error(getClass(),e);
         } finally {
-
-            ps.close();
-            conn.close();
+            close(rs);
+            close(ps);
+            close(conn);
         }
 
 
         return  customerInfoEntity;
     }
 
-    public BankCardInfoEntity findBankCardInfo(Long id) throws Exception{
-        String  sql = "SELECT * FROM `t_gq_customer_info` t1 WHERE t1.id = "+id;
+    public BankCardInfoEntity findBankCardInfo(Integer id) throws Exception{
+        String  sql = "SELECT * FROM `t_gq_bank_info` t1 WHERE t1.id = "+id;
 
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
 
-        ResultSet rs = ps.executeQuery();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         BankCardInfoEntity bankCardInfoEntity = null;
-        if(rs.next()){
-            bankCardInfoEntity  = new BankCardInfoEntity();
-            bankCardInfoEntity.setId(rs.getInt("id"));
+        try{
+
+
+            conn = getConnection();
+
+            ps = conn.prepareStatement(sql);
+
+
+            rs = ps.executeQuery();
+
+            if(rs.next()){
+                bankCardInfoEntity  = new BankCardInfoEntity();
+                bankCardInfoEntity.setId(rs.getInt("id"));
+                bankCardInfoEntity.setBankNo(rs.getString("bank_no"));
+
+            }
+
+        }catch (Exception e){
+            LogUtil.error(getClass(),e);
+        }finally {
+            close(rs);
+            close(ps);
+            close(conn);
         }
 
-        rs.close();
-        ps.close();
-        conn.close();
         return  bankCardInfoEntity;
     }
 }
