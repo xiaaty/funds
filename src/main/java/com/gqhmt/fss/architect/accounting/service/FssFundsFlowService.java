@@ -8,12 +8,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity;
-import com.gqhmt.fss.architect.accounting.entity.FssLendAssetEntity;
-import com.gqhmt.fss.architect.accounting.mapper.read.FssLendAssetDetailReadMapper;
-import com.gqhmt.fss.architect.accounting.mapper.read.FssLendAssetReadMapper;
-import com.gqhmt.fss.architect.accounting.mapper.write.FssLendAssetDetailWriteMapper;
-import com.gqhmt.fss.architect.accounting.mapper.write.FssLendAssetWriteMapper;
+import com.gqhmt.fss.architect.accounting.entity.FssFundsFlowEntity;
+import com.gqhmt.fss.architect.accounting.mapper.read.FssFundsFlowReadMapper;
+import com.gqhmt.fss.architect.accounting.mapper.write.FssFundsFlowWriteMapper;
 
 /**
  * 
@@ -36,50 +33,41 @@ import com.gqhmt.fss.architect.accounting.mapper.write.FssLendAssetWriteMapper;
 public class FssFundsFlowService {
 	
 	@Resource
-	private FssLendAssetReadMapper fssLendAssetReadMapper;
+	private FssFundsFlowReadMapper fssFundsFlowReadMapper;
 	@Resource
-	private FssLendAssetWriteMapper fssLendAssetWriteMapper;
-	
-	@Resource
-	private FssLendAssetDetailReadMapper fssLendAssetDetailReadMapper;
-	
-	@Resource
-	private FssLendAssetDetailWriteMapper fssLendAssetDetailWriteMapper;
+	private FssFundsFlowWriteMapper fssFundsFlowWriteMapper;
 	
 	/**
+	 * 
 	 * author:jhz
-	 * time:2016年4月28日
-	 * function：添加出借资产主表信息
+	 * time:2016年5月3日
+	 * function：添加资金流水
 	 */
-	public void insertLendAsset(FssLendAssetEntity fssLendAssetEntity)throws FssException{
-		fssLendAssetWriteMapper.insertSelective(fssLendAssetEntity);
+	public void insertFundsFlow(FssFundsFlowEntity fssFundsFlowEntity)throws FssException{
+		fssFundsFlowWriteMapper.insertSelective(fssFundsFlowEntity);
 	}
 	
 	/**
 	 * author:jhz
-	 * time:2016年4月28日
-	 * function：批量添加出借资产详情表信息
+	 * time:2016年5月3日
+	 * function：批量添加出资金流水
 	 */
-	public void insertLendAssetDetail(List<FssLendAssetDetailEntity> assetDetailEntities)throws FssException{
-		fssLendAssetWriteMapper.insertList(assetDetailEntities);
+	public void insertFundsFlow(List<FssFundsFlowEntity> fundsFlows)throws FssException{
+		fssFundsFlowWriteMapper.insertList(fundsFlows);
 	}
 	
 	/**
+	 * 
 	 * author:jhz
-	 * time:2016年4月28日
-	 * function：通过parent_id得到详情表信息集合
+	 * time:2016年5月3日
+	 * function：通过查询条件得到得到资金流水信息
 	 */
-	public List<FssLendAssetDetailEntity> getDetailByParentId(Long id) throws FssException{
-		return fssLendAssetDetailReadMapper.getDetailByParentId(id);
-	}
-	
-	/**
-	 * author:jhz
-	 * time:2016年4月28日
-	 * function：通过查询条件得到得到借款资产表信息
-	 */
-	public List<FssLendAssetEntity> getLendAsset(Map map) throws FssException{
-		return fssLendAssetReadMapper.getLendAssets(map);
+	public List<FssFundsFlowEntity> getFundsFlow(Map<String,String> map) throws FssException{
+		if(map!=null){
+			map.put("startTime", map.get("startTime") != null ? map.get("startTime").replace("-", "") : null);
+			map.put("endTime", map.get("endTime") != null ? map.get("endTime").replace("-", "") : null);
+			}
+		return fssFundsFlowReadMapper.getFundsFlow(map);
 	}
 	
 	

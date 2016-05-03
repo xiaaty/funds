@@ -78,7 +78,11 @@ public class FssLendAssetService {
 	 * time:2016年4月28日
 	 * function：通过查询条件得到得到借款资产表信息
 	 */
-	public List<FssLendAssetEntity> getLendAsset(Map map) throws FssException{
+	public List<FssLendAssetEntity> getLendAsset(Map<String,String> map) throws FssException{
+		if(map!=null){
+		map.put("startTime", map.get("startTime") != null ? map.get("startTime").replace("-", "") : null);
+		map.put("endTime", map.get("endTime") != null ? map.get("endTime").replace("-", "") : null);
+		}
 		return fssLendAssetReadMapper.getLendAssets(map);
 	}
 	

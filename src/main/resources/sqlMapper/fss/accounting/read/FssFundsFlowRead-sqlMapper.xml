@@ -28,6 +28,21 @@
 	 <select id="getFundsFlow" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.accounting.entity.FssFundsFlowEntity" >
 		<include refid="field"/>
 		WHERE 1=1
+		<if test="accountingNo!=null and accountingNo!=''">
+			AND t.`accounting_no` like CONCAT('%',#{accountingNo},'%')
+		</if>
+		<if test="accNo!=null and accNo!=''">
+			AND t.`acc_no` like CONCAT('%',#{accNo},'%')
+		</if>
+		<if test="custName!=null and custName!=''">
+			AND t.`cust_name` like CONCAT('%',#{custName},'%')
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
 	</select>
 
 </mapper>

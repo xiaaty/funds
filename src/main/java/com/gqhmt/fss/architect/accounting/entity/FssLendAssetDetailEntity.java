@@ -38,6 +38,10 @@ public class FssLendAssetDetailEntity implements Serializable {
     @Column(name="cust_no")
     private String custNo;                  // '客户编号',
 
+    @Column(name="cust_name")
+    private String custName;                  // varchar(45) NOT NULL COMMENT '客户姓名,
+
+
     @Column(name="acc_no")
     private String accNo;                  // varchar(45) NOT NULL COMMENT '富友账户号，唯一，与富友对应',
 
@@ -60,7 +64,7 @@ public class FssLendAssetDetailEntity implements Serializable {
     private String tradeDate;     // 交易日期
     
     @Column(name="capital_type")
-    private String capital_type;     // '资金类型,
+    private String capitalType;     // '资金类型,
     
     @Column(name="lend_no")
     private String lendNo;     // '出借编号,
@@ -157,12 +161,12 @@ public class FssLendAssetDetailEntity implements Serializable {
 		this.tradeDate = tradeDate;
 	}
 
-	public String getCapital_type() {
-		return capital_type;
+	public String getCapitalType() {
+		return capitalType;
 	}
 
-	public void setCapital_type(String capital_type) {
-		this.capital_type = capital_type;
+	public void setCapitalType(String capitalType) {
+		this.capitalType = capitalType;
 	}
 
 
@@ -196,6 +200,14 @@ public class FssLendAssetDetailEntity implements Serializable {
 
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+	public String getCustName() {
+		return custName;
+	}
+
+	public void setCustName(String custName) {
+		this.custName = custName;
 	}
 
 }
