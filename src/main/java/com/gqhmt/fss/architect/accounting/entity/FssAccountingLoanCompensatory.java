@@ -15,7 +15,7 @@ import com.gqhmt.annotations.AutoDate;
  * @author keyulai
  */
 @Entity
-@Table(name = "t_gq_fss_accounting_service_charge")
+@Table(name = "t_gq_fss_accounting_loan_compensatory")
 public class FssAccountingLoanCompensatory implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -36,6 +36,9 @@ public class FssAccountingLoanCompensatory implements Serializable{
     
     @Column(name = "accounting_no") 
     private String  accountingNo;    
+    
+    @Column(name = "loan_no") 
+    private String  loanNo;    
     
     @Column(name = "loan_acc_no") 
     private String  loanAccNo;    
@@ -178,4 +181,12 @@ public class FssAccountingLoanCompensatory implements Serializable{
 		this.sendBack = sendBack;
 	}
 
+	public String getLoanNo() {
+		return loanNo;
+	}
+
+	public void setLoanNo(String loanNo) {
+		this.loanNo = loanNo;
+	}
+	
 }

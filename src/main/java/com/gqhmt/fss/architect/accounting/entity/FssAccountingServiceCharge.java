@@ -37,6 +37,9 @@ public class FssAccountingServiceCharge implements Serializable{
     @Column(name = "accounting_no") 
     private String  accountingNo;    
     
+    @Column(name = "loan_no") 
+    private String  loanNo;    
+    
     @Column(name = "fund_type") 
     private String  fundType;    
     
@@ -165,6 +168,14 @@ public class FssAccountingServiceCharge implements Serializable{
 
 	public void setSendBack(Long sendBack) {
 		this.sendBack = sendBack;
+	}
+
+	public String getLoanNo() {
+		return loanNo;
+	}
+
+	public void setLoanNo(String loanNo) {
+		this.loanNo = loanNo;
 	}
 	
 }
