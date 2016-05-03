@@ -43,7 +43,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>记账信息</li>
-            <li>出借资产</li>
+            <li>资金冻结</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -59,7 +59,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="lendAssetForm" action="${contextPath}/accounting/lendAsset/list" method="post" >
+                                <form class="smart-form" id="freezeForm" action="${contextPath}/accounting/freeze/list" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -78,7 +78,7 @@
                                                 <col />
                                                 <tbody>
                                                     <tr></tr>
-                                                    <tr>
+                                                     <tr>
                                                         <td class="tr" nowrap="nowrap">客户姓名：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
@@ -137,7 +137,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>出借资产</h2>
+                            <h2>资金冻结</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -150,35 +150,21 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                        <col width="50" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
                                         <col width="200" />
-                                        <col width="200" />
-                                        <col width="200"/>
+                                        <col width="300" />
+                                        <col width="300" />
+                                        <col width="300" />
+                                        <col width="300" />
+                                        <col width="300" />
+                                        <col width="300"/>
+                                        <col width="300"/>
                                         <thead>
                                         <tr>
                                             <td></td>
                                             <td>客户编号</td>
-                                            <td>资金平台账号</td>
-                                            <td>财务编号</td>
                                             <td>客户姓名</td>
-                                            <td>应收余额</td>
-                                            <td>应收本金 </td>
-                                            <td>应收利息 </td>
-                                            <td>已收本金</td>
-                                            <td>已收利息 </td>
+                                            <td>资金平台账号</td>
                                             <td>冻结金额</td>
-                                            <td>可用金额</td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
                                             <td>操作</td>
@@ -189,21 +175,13 @@
                                                 <tr>
                                                     <td>${l.index+1}</td>
                                                     <td>${t.custNo}</td>
-                                                    <td>${t.accNo}</td>
-                                                    <td>${t.accountingNo}</td>
                                                     <td>${t.custName}</td>
-                                                    <td>${t.receiveBalance}</td>
-                                                    <td>${t.receivePrincipal}</td>
-                                                    <td>${t.receiveInterest}</td>
-                                                    <td>${t.returnPrincipal}</td>
-                                                    <td>${t.returnInterest}</td>
+                                                    <td>${t.accNo}</td>
                                                     <td>${t.freezeAmount}</td>
-                                                    <td>${t.availableAmount}</td>
-                                                    <td>${t.mchnParent}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
                                                     <td> <fss:fmtDate value="${t.modifyTime}"/></td>
-                                                <td >
-                                                    <a href="${contextPath}/accounting/${t.id}/detail/">查看详情</a>
+                                               <td >
+                                                    <a href="${contextPath}/accounting/freeze/${t.id}/detail">查看详情</a>
                                                     </td>
                                                 </tr>
                                         </c:forEach>
@@ -225,7 +203,7 @@
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#lendAssetForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#freezeForm"));
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',
@@ -245,7 +223,7 @@
     		if(a[0].value>b[0].value){
     			JAlert("请检查您输入的日期","提示消息");
     		}else{
-    			$("#lendAssetForm").submit();
+    			$("#freezeForm").submit();
     		}
     	}else{
     		var d = new Date();
@@ -253,7 +231,7 @@
     		if(a[0].value>str){
     			JAlert("请检查您输入的日期","提示消息");
     		}else{
-    			$("#lendAssetForm").submit();
+    			$("#freezeForm").submit();
     		}
     	}
     }
