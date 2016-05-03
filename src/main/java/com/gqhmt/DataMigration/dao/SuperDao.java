@@ -3,6 +3,8 @@ package com.gqhmt.DataMigration.dao;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.util.LogUtil;
 
+import java.sql.*;
+
 /**
  * Filename:    com.gqhmt.DataMigration.dao.SuperDao
  * Copyright:   Copyright (c)2015
@@ -29,5 +31,51 @@ public class SuperDao {
             LogUtil.error(SuperDao.class,e);
         }
     }
+
+
+    protected void  close(ResultSet resultSet){
+        if(resultSet != null){
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    protected void close(PreparedStatement preparedStatement){
+        if(preparedStatement != null){
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    protected void close(Statement statement){
+        if(statement != null){
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    protected void close(Connection connection){
+        if(connection != null){
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
 }
