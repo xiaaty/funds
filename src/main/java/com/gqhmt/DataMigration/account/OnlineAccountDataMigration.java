@@ -79,6 +79,18 @@ public class OnlineAccountDataMigration {
 
                 System.out.println((cardInfoEntity != null ?cardInfoEntity.getBankNo():""));
 
+
+                //互联网客户
+
+
+                //线下出借
+
+
+                //借款
+
+
+                //其他
+
             }
 
 
