@@ -4,10 +4,14 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayable;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayableDetail;
+import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoanCompensatory;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebt;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebtDetail;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingMargin;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingMarginDetail;
+import com.gqhmt.fss.architect.accounting.entity.FssAccountingServiceCharge;
+import com.gqhmt.fss.architect.accounting.service.FssAccountingChargeService;
+import com.gqhmt.fss.architect.accounting.service.FssAccountingCompensatoryService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingLendPayableService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingLoandebtService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingMarginService;
@@ -46,6 +50,10 @@ public class FssAccountingManagementController {
     private FssAccountingLoandebtService fssAccountingLoandebtService;
     @Resource
     private FssAccountingMarginService fssAccountingMarginService;
+    @Resource
+    private FssAccountingChargeService fssAccountingChargeService;
+    @Resource
+    private FssAccountingCompensatoryService fssAccountingCompensatoryService;
  
     /**
      * 出借应付款列表
@@ -154,5 +162,43 @@ public class FssAccountingManagementController {
     	model.put("map", map);
     	return "fss/accounting/margin/marginDetailList";
     }
+    
+    /**
+     * 逆服务费
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/traderecord/servicecharge",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryAccountingServiceCharge(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+        List<FssAccountingServiceCharge> chargelist = fssAccountingChargeService.queryFssAccountingChargeList(map);
+        model.addAttribute("page", chargelist);
+        model.put("map", map);
+    	return "fss/accounting/charge/serviceChargeList";
+    }
+    
+    /**
+     * 借款代偿
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/traderecord/loanCompensatory",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryAccountingCompensatory(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    	List<FssAccountingLoanCompensatory> compensatorylist = fssAccountingCompensatoryService.queryFssAccountingCompensatoryList(map);
+    	model.addAttribute("page", compensatorylist);
+    	model.put("map", map);
+    	return "fss/accounting/compensatory/compensatoryList";
+    }
+    
+    
+    
+    
     
 }
