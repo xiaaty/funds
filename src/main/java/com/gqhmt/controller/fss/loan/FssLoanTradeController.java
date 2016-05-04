@@ -4,7 +4,6 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.core.util.TokenProccessor;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;

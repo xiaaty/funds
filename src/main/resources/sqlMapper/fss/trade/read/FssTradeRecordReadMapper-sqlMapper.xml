@@ -55,6 +55,10 @@
 		select sum(t.amount) from t_gq_fss_trade_record t
 		where trade_result=98060001 and t.apply_no =#{applyNo}
 	</select>
-	
+	<!-- 	 通过申请编号得到交易记录表信息 -->
+	<select id="getByApplyNo"   resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+		<include refid="selectSql"/>
+			where t.apply_no=#{applyNo}
+	</select>
 	
 </mapper>
