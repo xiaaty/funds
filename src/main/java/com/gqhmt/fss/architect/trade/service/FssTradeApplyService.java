@@ -162,6 +162,9 @@ public class FssTradeApplyService {
 		withDrawApplyResponse.setAcc_no(fssTradeApplyEntity.getAccNo());
 		withDrawApplyResponse.setContract_amt(fssTradeApplyEntity.getTradeAmount());
 		withDrawApplyResponse.setPay_amt(fssTradeApplyEntity.getRealTradeAmount());
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		String format = sdf.format(fssTradeApplyEntity.getModifyTime());
+		withDrawApplyResponse.setWithDraw_date(format);
 		withDrawApplyResponse.setBespoke_date(CommonUtil.dateTostring(fssTradeApplyEntity.getBespokedate()));
 		return withDrawApplyResponse;
 	}
