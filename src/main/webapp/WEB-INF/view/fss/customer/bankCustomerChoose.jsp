@@ -122,8 +122,20 @@
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
                                 </div> -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                        <thead>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="100" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<thead>
                                         <tr>
                                           <th align="center">请选择</th>
                                           <th align="center">客户姓名</th>

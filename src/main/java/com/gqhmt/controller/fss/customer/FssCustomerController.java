@@ -1,23 +1,19 @@
 package com.gqhmt.controller.fss.customer;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
-import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,46 +45,16 @@ public class FssCustomerController {
 	 * @param model
 	 * @param customer
 	 * @return
+	 * @throws FssException 
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/fss/account/hxyhlist",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public Object findCustomerList(HttpServletRequest request,ModelMap model,FssCustomerEntity customer){
-		String startime=request.getParameter("startime");
-		String endtime=request.getParameter("endtime");
-		
-		Map map=new HashMap();
-    	if(StringUtils.isNotEmptyString(customer.getMobile())){
-    		map.put("mobile",customer.getMobile());
-    	}
-    	if(StringUtils.isNotEmptyString(customer.getName())){
-    		map.put("name",customer.getName());
-    	}
-    	if(StringUtils.isNotEmptyString(customer.getCert_no())){
-    		map.put("cert_no", customer.getCert_no());
-    	}
-    	if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
-			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", endtime+" 23:59:59");
-    	}
-    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
-    		map.put("startime", "1970-01-01 23:59:59");
-			map.put("endtime", endtime+" 23:59:59");
-    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
-    		Date sysday=new Date();
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    		String nowtime=sdf.format(sysday);
-			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", nowtime);
-    	}else{
-    		map.put("startime", "");
-			map.put("endtime", "");
-    	}
+    public Object findCustomerList(HttpServletRequest request,ModelMap model,FssCustomerEntity customer,@RequestParam Map<String, String> map) throws FssException{
 		List<FssCustomerEntity> customers = customerService.findCustomerByParams(map);
     	model.addAttribute("page",customers);
     	model.addAttribute("customer",customer);
-    	model.addAttribute("startime",startime);
-    	model.addAttribute("endtime",endtime);
+    	model.addAttribute("map",map);
     	return "fss/account/customerList";
     }
 	
@@ -99,35 +65,14 @@ public class FssCustomerController {
 	 * @param model
 	 * @param fssAccount
 	 * @return
+	 * @throws FssException 
 	 */
 	@RequestMapping(value = "/fss/account/customerAccountDetail/{cust_no}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public Object getCustomerAccountList(HttpServletRequest request,ModelMap model,@PathVariable String cust_no,FssAccountEntity fssAccount){	
-		String accNo=fssAccount.getAccNo();
-		String startime=request.getParameter("startime");
-		String endtime=request.getParameter("endtime");
-		
-		Map map=new HashMap();
-		if(StringUtils.isNotEmptyString(cust_no)){
-			map.put("custNo", cust_no);
-		}
-		
-		if(StringUtils.isNotEmptyString(accNo)){
-			map.put("accNo",accNo);
-		}
-		if(StringUtils.isNotEmptyString(startime)){
-    		map.put("startDate", startime+" 00:00:00");
-    	}
-    	if(StringUtils.isNotEmptyString(endtime)){
-    		map.put("endDate", endtime+" 23:59:59");
-    	}
-		
-    	List<FssAccountEntity> fssAccounts = fssAccountService.findCustomerAccountByParams(map);
-//    	GqPageInfo pageInfo = new GqPageInfo(fssAccounts);
+    public Object getCustomerAccountList(HttpServletRequest request,ModelMap model,@PathVariable String cust_no,FssAccountEntity fssAccount) throws FssException{	
+    	List<FssAccountEntity> fssAccounts = fssAccountService.findCustomerAccountByParams(fssAccount);
     	model.addAttribute("page",fssAccounts);
     	model.addAttribute("account",fssAccount);
-    	model.addAttribute("startime",startime);
-    	model.addAttribute("endtime",endtime);
     	return "fss/account/customerAccountDetail";
     }
 	

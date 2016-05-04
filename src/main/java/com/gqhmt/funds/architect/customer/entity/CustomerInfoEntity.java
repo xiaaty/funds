@@ -1,16 +1,7 @@
 package com.gqhmt.funds.architect.customer.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 /**
  * 客户信息实体bean
@@ -25,7 +16,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	//用户id
 	@Column(name = "user_id",updatable = false)
 	private Integer userId;
@@ -162,7 +153,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	private Integer payChannel;
 	
 	//富有开户关联用银行卡id
-	@Column(name = "bank_id",updatable = false)
+	@Column(name = "bank_id")
 	private Integer bankId;
 	
 	
@@ -194,14 +185,9 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	//汇总是否发短信0-发送；1-不发送
 	private Integer sendMsgTransferAllFouyou;
 
-	// Property accessors
-	public Integer getId() {
-		return this.id;
-	}
+	private Date nameIdentificationTime;//实名认证时间
+	
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "CUSTOMER_NAME", length = 30)
 	public String getCustomerName() {
@@ -578,7 +564,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	}
 
 	/**
-	 * @param isvalid the hasThirdAgreement to set
+	 * @param hasThirdAgreement the hasThirdAgreement to set
 	 */
 	public void setHasThirdAgreement(Integer hasThirdAgreement) {
 		this.hasThirdAgreement = hasThirdAgreement;
@@ -595,7 +581,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	}
 
 	/**
-	 * @param isvalid the hasAcount to set
+	 * @param hasAcount the hasAcount to set
 	 */
 	public void setHasAcount(Integer hasAcount) {
 		this.hasAcount = hasAcount;
@@ -796,4 +782,21 @@ public class CustomerInfoEntity implements java.io.Serializable {
 		this.bankNo = bankNo;
 	}
 	
+	@Column(name = "name_identification_time",insertable = false)
+	public Date getNameIdentificationTime() {
+		return nameIdentificationTime;
+	}
+
+	public void setNameIdentificationTime(Date nameIdentificationTime) {
+		this.nameIdentificationTime = nameIdentificationTime;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

@@ -261,6 +261,6 @@ public class MerchantService {
 	public List<MerchantApiEntity> findMerchantApiAll(){
 		return merchantApiReadMapper.selectAll();
 	}
-
+	
 	
 }

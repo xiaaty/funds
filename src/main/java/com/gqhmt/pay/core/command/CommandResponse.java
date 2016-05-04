@@ -1,5 +1,6 @@
 package com.gqhmt.pay.core.command;
 
+import com.gqhmt.pay.core.command.AccountCommandResponse;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 /**
  * Created by yuyonf on 15/3/29.
  */
-public class CommandResponse{
+public class CommandResponse extends AccountCommandResponse{
     private String code;                //0000成功，0001第三方需要短信验证，0002，网络连接超时，0003，第三方返回错误
     private String thirdReturnCode;     //第三方返回错误码
     private String msg;

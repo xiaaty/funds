@@ -1,18 +1,19 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
+import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WebOrderResponse;
 import com.gqhmt.extServInter.dto.trade.WithdrawOrderDto;
 import com.gqhmt.extServInter.service.trade.IWithdrawOrder;
-import com.gqhmt.pay.service.IFundsTrade;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.pay.service.trade.IFundsTrade;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -36,8 +37,9 @@ public class WithdrawOrderImpl implements IWithdrawOrder {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
+	@APITradeTypeValid(value = "11040001")//web提现
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
 		WebOrderResponse response = null;
 		try {
 			response = GenerateBeanUtil.GenerateClassInstance(WebOrderResponse.class,dto);
@@ -49,9 +51,10 @@ public class WithdrawOrderImpl implements IWithdrawOrder {
 			String result = fundsTradeImpl.webWithdrawOrder((WithdrawOrderDto)dto);
 			response.setResp_code("0000");
 			String[] tmp = result.split(":");
-			response.setOrder_no(tmp[0]);
-			response.setMchnt(tmp[1]);
-			 response.setResp_code("00000000");
+			response.setUsername(tmp[0]);
+			response.setOrder_no(tmp[1]);
+			response.setMchnt(tmp[2]);
+			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

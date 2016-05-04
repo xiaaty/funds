@@ -9,7 +9,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.service.asset.IFundTrade;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,7 +29,7 @@ public class FundTradeImpl implements IFundTrade{
 
 	@AutoPage
 	@Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
 		QueryListResponse response = new QueryListResponse();
     	try {
     		List list = fundsTradeImpl.queryFundTrade((FundTradeDto)dto);

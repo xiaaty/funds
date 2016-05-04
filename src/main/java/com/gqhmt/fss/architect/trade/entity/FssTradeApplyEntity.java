@@ -1,7 +1,5 @@
 package com.gqhmt.fss.architect.trade.entity;
 
-import org.apache.poi.hssf.record.crypto.Biff8Cipher;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -37,6 +35,9 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "apply_type")
     private Integer applyType;                                  //int(11)        (NULL)           NO              (NULL)           select,insert,update,references  1，充值，2，提现
 
+    @Column(name = "cust_id")
+    private Long custId;  
+    
     @Column(name = "cust_no")
     private String custNo;                                     // varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  客户编号
 
@@ -47,7 +48,7 @@ public class FssTradeApplyEntity implements Serializable {
     private String businessNo;                                 //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务编号
 
     @Column(name = "busi_type")
-    private Integer busiype ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
+    private String busiType ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
 
     @Column(name = "acc_no")
     private String accNo ;                                     //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号
@@ -62,7 +63,7 @@ public class FssTradeApplyEntity implements Serializable {
     private BigDecimal tradeChargeAmount ;                        //decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  交易手续费
 
     @Column(name = "trade_state")
-    private Integer tradetate ;                                //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败
+    private String tradeState ;                                //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败
 
     @Column(name = "apply_state")
     private String applyState  ;                               //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  申请状态，新增，审核成功，，已交易，已回调通知
@@ -81,4 +82,235 @@ public class FssTradeApplyEntity implements Serializable {
 
     @Column(name = "seq_no")
     private String seqNo     ;                                 //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  api业务交易流水号
+    
+    @Column(name = "bespoke_date")  //预约到账日期
+    private Date bespokedate ;   
+    
+    @Column(name = "contract_id")//合同Id
+    private String contractId;
+    
+    @Column(name = "channel_no")//交易渠道
+    private String channelNo;
+    
+    @Column(name = "count")		//总条数
+    private int count;
+    
+    @Column(name = "form_id")		//相关联表的主键
+    private Long formId;
+    
+    @Column(name = "success_count")	//成功条数
+    private int successCount;
+    
+    @Column(name = "cust_type")	//客户类型
+    private Integer custType;
+    
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
+
+	public Integer getApplyType() {
+		return applyType;
+	}
+
+	public void setApplyType(Integer applyType) {
+		this.applyType = applyType;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+
+	public String getBusinessNo() {
+		return businessNo;
+	}
+
+	public void setBusinessNo(String businessNo) {
+		this.businessNo = businessNo;
+	}
+
+	public String getBusiType() {
+		return busiType;
+	}
+
+	public void setBusiType(String busiType) {
+		this.busiType = busiType;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public BigDecimal getTradeAmount() {
+		return tradeAmount;
+	}
+
+	public void setTradeAmount(BigDecimal tradeAmount) {
+		this.tradeAmount = tradeAmount;
+	}
+
+	public BigDecimal getRealTradeAmount() {
+		return realTradeAmount;
+	}
+
+	public void setRealTradeAmount(BigDecimal realTradeAmount) {
+		this.realTradeAmount = realTradeAmount;
+	}
+
+	public BigDecimal getTradeChargeAmount() {
+		return tradeChargeAmount;
+	}
+
+	public void setTradeChargeAmount(BigDecimal tradeChargeAmount) {
+		this.tradeChargeAmount = tradeChargeAmount;
+	}
+
+
+	public String getTradeState() {
+		return tradeState;
+	}
+
+	public void setTradeState(String tradeState) {
+		this.tradeState = tradeState;
+	}
+
+	public String getApplyState() {
+		return applyState;
+	}
+
+	public void setApplyState(String applyState) {
+		this.applyState = applyState;
+	}
+
+	public String getMchnParent() {
+		return mchnParent;
+	}
+
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
+
+	public String getMchnChild() {
+		return mchnChild;
+	}
+
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getSeqNo() {
+		return seqNo;
+	}
+
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
+	}
+
+	public Date getBespokedate() {
+		return bespokedate;
+	}
+
+	public void setBespokedate(Date bespokedate) {
+		this.bespokedate = bespokedate;
+	}
+
+	public String getContractId() {
+		return contractId;
+	}
+
+	public void setContractId(String contractId) {
+		this.contractId = contractId;
+	}
+	
+	public String getChannelNo() {
+		return channelNo;
+	}
+
+	public void setChannelNo(String channelNo) {
+		this.channelNo = channelNo;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public int getSuccessCount() {
+		return successCount;
+	}
+
+	public void setSuccessCount(int successCount) {
+		this.successCount = successCount;
+	}
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public Long getFormId() {
+		return formId;
+	}
+
+	public void setFormId(Long formId) {
+		this.formId = formId;
+	}
+
+	public Integer getCustType() {
+		return custType;
+	}
+
+	public void setCustType(Integer custType) {
+		this.custType = custType;
+	}
+	
 }

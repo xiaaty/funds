@@ -1,62 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper">
+	<sql id="selectSql">
+	 SELECT 
+	 	   t.id id,
+		   t.acc_no accNo,
+		   t.acc_balance accBalance,
+		   t.acc_freeze accFreeze,
+		   t.acc_avai accAvai,
+		   t.acc_notran accNotran,
+		   t.cust_no custNo,
+		   t.user_no userNo,
+		   t.create_time createTime,
+		   t.modify_time modifyTime,
+		   t.acc_type accType,
+		   t.state state,
+		   t.channel_no channelNo,
+		   t.mchn_child mchnChild,
+		   t.mchn_parent mchnParent,
+		   t.busi_no busiNo,
+		   t.cust_id custId,
+		   t.third_acc_no thirdAccNo,
+	       t.trade_type tradeType
+			FROM t_gq_fss_account t
+	</sql>
 
 
-
-	<select id="findCustomerAccountByParams" parameterType="java.util.Map" resultType="fssAccountEntity">
-		SELECT 
-			id,
-			acc_no accNo,
-			cust_no custNo,
-			acc_balance accBalance,
-			acc_freeze accFreeze,
-			acc_avai accAvai,
-			create_time createTime,
-			modify_time modifyTime 
-		FROM 
-			t_gq_fss_account t
+	<select id="findCustomerAccountByParams" parameterType="fssAccountEntity" resultType="fssAccountEntity">
+		<include refid="selectSql"/>
 		WHERE t.cust_no = #{custNo}
-		
-		<if test="accNo != null and accNo != '' ">
-        AND t.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
-        </if>
-       <if test="startDate != null and startDate != '' and endDate!=null and endDate!=''">
-        AND t.create_time BETWEEN DATE_FORMAT(#{startDate},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endDate},'%Y%m%d%H%i%s')
-       </if>
-		
 	</select>
 	
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">
-		SELECT 
-		account.id id,
-		account.busi_no busiNo,
-		account.acc_no accNo,
-		account.cust_no custNo,
-		account.acc_balance accBalance,
-		account.acc_freeze accFreeze,
-		account.acc_avai accAvai,
-		account.create_time accCreateTime,
-		account.modify_time accModifyTime,
-		customer.name bussinessname,
-		customer.cert_no bussinesscertno
-		FROM `t_gq_fss_customer` customer,`t_gq_fss_account` account 
-		WHERE account.cust_no=customer.cust_no AND account.busi_no=#{busiNo} 
-	
-		 <if test="accNo!= null and accNo!= '' ">
-        	AND account.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
-        </if>
-        
-		<if test="custNo!= null and custNo!= '' ">
-        	AND account.cust_no Like CONCAT(CONCAT('%',#{custNo}),'%')
-        </if>
-        
-		<if test="bussinessname != null and bussinessname != '' ">
-        	AND customer.name Like CONCAT(CONCAT('%',#{bussinessname}),'%')
-        </if>
-        
-		<if test="bussinesscertno != null and bussinesscertno != '' ">
-        	AND customer.cert_no Like CONCAT(CONCAT('%',#{bussinesscertno}),'%')
-        </if> 
+	   SELECT 
+		   a.acc_no accNo,
+		   a.state state,
+		   a.acc_type accType,
+		   a.acc_balance accBalance,
+		   a.acc_freeze accFreeze,
+		   a.acc_avai accAvai,
+		   a.busi_no busiNo,
+		   a.third_acc_no thirdAccNo,
+		   a.mchn_child mchnChild,
+		   a.mchn_parent mchnParent,
+		   a.create_time createTime,
+		   a.modify_time modifyTime,
+		   a.cust_no custNo,
+		   a.user_no userNo,
+		   a.channel_no channelNo,
+		   a.cust_id custId,
+	       a.trade_type tradeType,
+		   c.name custName,
+		   c.mobile mobile,
+		   c.cert_type certType,
+		   c.cert_no certNo,
+		   c.user_id userId,
+		   c.create_time createTime,
+		   c.modify_time modifyTime,
+		   c.is_auth_real_name isAuthRealName,
+		   c.create_user_id,
+		   c.modify_user_id
+	   FROM `t_gq_fss_account` a,`t_gq_fss_customer` c
+	   WHERE a.cust_no=c.cust_no
+	   <if test="accType!= null and accType!= '' ">
+       	  AND a.acc_type = #{accType}
+       </if>
+	   <if test="accNo!= null and accNo!= '' ">
+       	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
+       </if>
+	   <if test="custName != null and custName != '' ">
+       	  AND c.CUSTOMER_NAME Like CONCAT(CONCAT('%',#{custName}),'%')
+       </if>
+	   <if test="certNo != null and certNo != '' ">
+	      AND c.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
+	   </if> 
+	   order by c.create_time desc
 	</select>
+
+	<select id="findAccountByAccNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+		<include refid="selectSql"/>
+		where t.acc_no = #{accNo}
+
+	</select>
+	
+	<select id="findAccountByCustId" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+		<include refid="selectSql"/>
+		where t.cust_id = #{custId}
+	</select>
+	
 </mapper>

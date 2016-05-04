@@ -1,9 +1,6 @@
 package com.gqhmt.fss.architect.order.service;
 
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.gqhmt.TestService;
 
 /**
  * Filename:    com.gqhmt.fss.architect.order.service.OrderServiceTest
@@ -21,9 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class ChangeCardServiceTest extends AbstractJUnit4SpringContextTests {
+
+public class ChangeCardServiceTest extends TestService {
 
 //    @Resource
 //    private ChangeCardService changeCardService;

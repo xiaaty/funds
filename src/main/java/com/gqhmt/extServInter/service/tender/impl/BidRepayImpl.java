@@ -6,10 +6,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.RepayDto;
 import com.gqhmt.extServInter.service.tender.IBidRepay;
-import com.gqhmt.pay.service.IRepayBid;
-
-import javax.annotation.Resource;
-
+import com.gqhmt.pay.service.tender.IRepayBid;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,10 +28,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class BidRepayImpl implements IBidRepay {
 	
-	@Resource
+//	@Resource
 	private IRepayBid repayBidImpl;
 	
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		repayBidImpl.repay((RepayDto)dto);

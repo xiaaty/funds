@@ -34,13 +34,22 @@ public class FundAccountEntity {
     private Long id;
     //客户id
 	@Column(name = "cust_id",updatable = false)
-    private Integer custId;
+    private Long custId ;
+
+    public Long getCustId() {
+        return custId;
+    }
+
+    public void setCustId(Long custId) {
+        this.custId = custId;
+    }
+
     //用户id
-	@Column(name = "user_id")
+	@Column(name = "user_id",updatable = false)
     private Integer userId;
-	@Column(name = "amount")
+	@Column(name = "amount",updatable = false)
     private BigDecimal amount;
-	@Column(name = "freeze_amount")
+	@Column(name = "freeze_amount",updatable = false)
     private BigDecimal freezeAmount;
     //1： 客户账户 2 ：A0 3： AX
 	@Column(name = "account_type",updatable = false)
@@ -48,7 +57,7 @@ public class FundAccountEntity {
     //1借款客户 2 线下出借客户 3线上出借客户 99冻结金账户
 	@Column(name = "busi_type",updatable = false)
     private Integer busiType;
-	@Column(name = "parent_id")
+	@Column(name = "parent_id",updatable = false)
     private Long parentId;
 	@Column(name = "trade_password")
     private String tradePassword;
@@ -93,13 +102,7 @@ public class FundAccountEntity {
     }
 
     
-    public Integer getCustId() {
-        return custId;
-    }
 
-    public void setCustId(Integer custId) {
-        this.custId = custId;
-    }
     
     public Integer getUserId() {
         return userId;

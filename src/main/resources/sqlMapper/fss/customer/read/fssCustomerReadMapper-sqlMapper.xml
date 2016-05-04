@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper">
 	<sql id="fieldSql">
+	select
+		t.id id,
+		t.name name,
+		t.mobile mobile,
+		t.cert_type certType,
+		t.cert_no certNo,
+		t.user_id userId,
+		t.cust_no custNo,
+		t.user_no userNo,
+		t.is_auth_real_name isAuthRealName,
+		t.create_user_id createUserId,
+		t.modify_user_id modifyUserId,
+		t.mchn_parent mchnParent,
+		t.mchn_child mchnChild,
+		t.cust_id custId,
+		t.create_time createTime,
+		t.modify_time modifyTime
+		FROM `t_gq_fss_customer` t
 	</sql>
 	<sql id="whereSql">
 	</sql>
@@ -40,6 +58,7 @@
               <if test="bankSortName != null and bankSortName != ''">
                 and  bank.sort_name like concat('%',${bankSortName},'%') 
               </if>
+              order by customer.create_time desc
 	</select>
 <!-- 	查询要申请变更银行卡用户信息 -->
 	<select id="findCustomerAndUser" parameterType="java.lang.Long" resultType="CustomerAndUser">
@@ -56,9 +75,59 @@
 		customer.create_time createTime,
 		customer.modify_time modifyTime
 		FROM `t_gq_fss_bank_card_info` bankCard ,`t_gq_fss_customer` customer where bankCard.user_no=customer.id and customer.id=${id}
-		
+		order by customer.create_time desc
 	</select>
 	<select id="quaryBankCardInfoList" parameterType="bankCardInfoEntity" resultType="bankCardInfoEntity">
 		
 	</select>
+	
+	<select id="findCustomerByParams"  parameterType="java.util.Map" resultType="customer">
+		SELECT 
+			t.id id,
+			t.cust_no custNo,
+			t.name name,
+			t.mobile mobile,
+			t.cert_type certType,
+			t.cert_no certNo,
+			t.create_time createTime,
+			t.modify_time modifyTime
+		FROM t_gq_fss_customer t
+		<where>
+			<if test="mobile!=null and mobile!=''">
+			 	AND t.mobile Like CONCAT(CONCAT('%',#{mobile}),'%') 
+			</if>    
+			<if test="cert_no != null and cert_no != ''"> 
+				AND t.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
+			 </if>    
+			<if test="name!=null and name!=''"> 
+				AND  t.name Like CONCAT(CONCAT('%',#{name}),'%')
+			</if>    
+			<if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
+		</where>
+		order by t.create_time desc
+</select>
+	<select id="selectByCertNo"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.customer.entity.FssCustomerEntity">
+	<include refid="fieldSql"/>
+	where t.cert_no=#{certNo}
+</select>
+	<select id="selectByCustNo"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.customer.entity.FssCustomerEntity">
+	<include refid="fieldSql"/>
+	where t.cust_no=#{custNo}
+</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

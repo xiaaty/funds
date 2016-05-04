@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper">
+	<select id="queryFssRepayment" parameterType="com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity">
+		 SELECT  
+		 	id id,
+		 	parent_id parentId,
+			acc_no accNo,
+			trade_type tradeType,
+			create_time createTime,
+			motify_time motifyTime,
+			amt,
+			state,
+			result_state resultState,
+			seq_no seqNo,
+			serial_number serialNumber,
+			contract_id contractId,
+			mchn_parent mchnParent,
+			mchn_child mchnChild,
+			remark,
+			resp_code respCode,
+			resp_msg respMsg
+		FROM t_gq_fss_repayment 
+		<where>
+			<if test="parentId != null and parentId !=''">
+			 	and parent_id = #{parentId}
+			</if>
+			<if test="accNo != null and accNo !=''">
+			  	and acc_no like  CONCAT('%',#{accNo},'%')
+			</if>
+			<if test="contractId != null and contractId !=''">
+			  	and contract_id like  CONCAT('%',#{contractId},'%')
+			</if>
+			<if test="serialNumber != null and serialNumber !=''">
+			 	and serial_number like  CONCAT('%',#{serialNumber},'%')
+			</if>
+			<if test="state != null and state !=''">
+			 	and state = #{state}
+			</if>
+			<if test="resultState != null and resultState !=''">
+			 	and result_state = #{resultState}
+			</if>
+			
+		</where>
+	</select>
+<!-- 	查询该批次交易总数 -->
+	<select id="getTradeCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		 SELECT  
+		 count(*)
+		FROM t_gq_fss_repayment 
+		where  parent_id = #{parentId}
+	</select>
+<!-- 	查询该批次交易代扣成功总数 -->
+	<select id="getSuccessCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		 SELECT  
+		 count(*)
+		FROM t_gq_fss_repayment 
+		where result_state='10080002' 
+		and parent_id = #{parentId}
+	</select>
+
+</mapper>

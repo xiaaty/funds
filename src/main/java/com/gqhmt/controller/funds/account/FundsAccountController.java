@@ -7,12 +7,13 @@ import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -57,22 +58,11 @@ public class FundsAccountController {
 	 */
 	@RequestMapping(value = "/funds/accountBusinessList/{custId}", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
-	public Object acountList(HttpServletRequest request, ModelMap model, @PathVariable Integer custId,
-							 String customerName, String creatTime, String modifyTime) {
-		Map<Object, Object> accMap = new HashMap<>();
-		if (creatTime != null && !creatTime.equals("")) {
-			creatTime = creatTime + " 00:00:00";
-		}
-		if (modifyTime != null && !modifyTime.equals("")) {
-			modifyTime = modifyTime + " 23:59:59";
-		}
-		accMap.put("customerName", customerName);
-		accMap.put("creatTime", creatTime);
-		accMap.put("modifyTime", modifyTime);
-		accMap.put("custId", custId);
-		List<FundAccountCustomerBean> acountList = fundAccountService.findAcountList(accMap);
+	public Object acountList(HttpServletRequest request, ModelMap model, @PathVariable Integer custId,@RequestParam Map<String, String> map) {
+		map.put("custId", String.valueOf(custId));
+		List<FundAccountCustomerBean> acountList = fundAccountService.findAcountList(map);
 		model.addAttribute("page", acountList);
-		model.addAttribute("accMap", accMap);
+		model.addAttribute("accMap", map);
 //    	System.out.println(custId+"****************");
 		if (custId > 100) {
 			//帐号管理
@@ -177,7 +167,7 @@ public class FundsAccountController {
 //                }
 		try {
 			fundsTradeImpl.withholdingApply(custId, businessType, null, amount, null);
-			map.put("tips", "提现成功!!");
+			map.put("tips", "代扣成功!!");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e.getMessage(), e);
 			map.put("tips", "代扣失败!!" + e.getMessage());

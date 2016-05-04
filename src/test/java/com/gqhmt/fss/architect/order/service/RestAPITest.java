@@ -2,17 +2,14 @@ package com.gqhmt.fss.architect.order.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gqhmt.TestService;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
-import com.gqhmt.util.Encriptor;
+import com.gqhmt.core.util.Encriptor;
 import com.gqhmt.util.LogUtil;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +35,8 @@ import java.util.regex.Pattern;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class RestAPITest extends AbstractJUnit4SpringContextTests {
+
+public class RestAPITest extends TestService {
 	@Resource
 	private MerchantService merchantService;
 

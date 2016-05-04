@@ -19,7 +19,10 @@
 			 user_name userName,
 			 cust_name custName,
 			 settle_type settleType,
-			 is_change_bank_card ishangeBankCard
+			 is_change_bank_card ishangeBankCard,
+			 bankNo,
+			 parent_bank_id parentBankId,
+			 city_id cityId
 		  FROM
 			 t_gq_fund_account
 	</sql>
@@ -47,31 +50,24 @@
 		b.CREATE_TIME creatTime,
 		b.freeze_amount freezeAmount,
 		b.has_Third_Account hasThirdAccount
-		FROM `t_gq_customer_info` a RIGHT JOIN `t_gq_fund_account` b ON a.ID=b.user_id
+		FROM `t_gq_customer_info` a RIGHT JOIN `t_gq_fund_account` b ON a.ID=b.cust_id
 		<where>
-			<if test="custId &gt; 100 ">
-				and b.cust_id &gt; 100 and b.busi_type=0
+			and b.busi_type=0
+			<if test="custId=='101'">
+				and b.cust_id &gt; 100
 			</if>
-			<if test="custId &lt; 100 ">
-				and b.cust_id  &lt; 100 and b.busi_type=0
+			<if test="custId=='99'">
+				and b.cust_id  &lt; 100
 			</if>
 			<if test="customerName != null and customerName != ''">
 				and a.CUSTOMER_NAME like concat('%',#{customerName},'%')
 			</if>
-			<choose>
-				<when test="creatTime == null or creatTime == '' and modifyTime==null ">
-					AND 1=1
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime==null or modifyTime=='' ">
-					AND b.create_time BETWEEN #{creatTime} AND SYSDATE()
-				</when>
-				<when test="creatTime != null and creatTime != '' and modifyTime!=null and modifyTime!=''">
-					AND b.create_time BETWEEN #{creatTime} AND #{modifyTime}
-				</when>
-				<!-- <when test="creatTime == null or creatTime == '' and modifyTime!=null and modifyTime!=''">
-					AND b.create_time &lt; #{modifyTime}
-				</when> -->
-			</choose>
+			<if test="startTime != null and startTime != '' ">
+				and date_format(b.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(b.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
 		</where>
 	</select>
 <!-- 	找到指定的客户 -->
@@ -98,5 +94,35 @@
 		<include refid="fieldSql" />
 		where cust_id = ${cust_no} and busi_type = ${busi_type}
 	</select>
+	
+	<select id="selectFundAccountEntity" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		SELECT
+		  	 id,
+			 cust_id custId,
+			 amount,
+			 freeze_amount freezeAmount,
+			 account_type accountType,
+			 busi_type busiType,
+			 parent_id parentId,
+			 CREATE_TIME createTime,
+			 MODIFY_TIME modifyTime,
+			 account_no accountNo,
+			 user_id userId,
+			 has_Third_Account hasThirdAccount,
+			 user_name userName,
+			 cust_name custName,
+			 settle_type settleType,
+			 is_change_bank_card ishangeBankCard
+		  FROM
+			 t_gq_fund_account
+		WHERE account_no = #{accNo}
+	</select>
+
+	<select id="getFundsAccountByBusiType" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		<include refid="fieldSql" />
+		where busi_type = #{busi_type}
+	</select>
+	
+	
 	
 </mapper>

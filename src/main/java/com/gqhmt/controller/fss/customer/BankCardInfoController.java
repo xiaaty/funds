@@ -18,17 +18,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -144,7 +143,7 @@ public class BankCardInfoController {
     	bank.setModifyTime(date);//修改日期
     	bank.setCreateUserId(1l);//创建人
     	bank.setModifyUserId(1l);//修改人
-    	
+    	bank.setIsvalid(0);
     	if(StringUtils.isNotEmptyString(bank.getTmplatePage())){
     		bank.setTmplatePage(bank.getTmplatePage());
     	}else{
@@ -215,54 +214,17 @@ public class BankCardInfoController {
 			return map;
     }
     
-    @RequestMapping(value = "/fund/checkPageXe/{id}",method = {RequestMethod.GET,RequestMethod.POST})
-  	public Object chakanyemian(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws FssException {
-      	BankEntity bank =bankCardInfoService.getBankById(id);
-      	model.addAttribute("bank", bank);
-  		return "fss/customer/ckxe";
-  	}
-    
     /**
      * 银行卡管理
      */
 	@RequestMapping(value = "/fund/bankCardsManage", method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public Object bankCardList(HttpServletRequest request, ModelMap model,
-			@ModelAttribute(value = "bankcard") BankCardInfoEntity  bankcard) {
-		String startime=request.getParameter("startime");
-		String endtime=request.getParameter("endtime");
-		Map map=new HashMap();
-		if(StringUtils.isNotEmptyString(bankcard.getCertName())){
-    		map.put("certName",bankcard.getCertName());
-    	}
-    	if(StringUtils.isNotEmptyString(bankcard.getBankNo())){
-    		map.put("bankNo",bankcard.getBankNo());
-    	}
-    	if(StringUtils.isNotEmptyString(bankcard.getBankSortName())){
-    		map.put("bankSortName",bankcard.getBankSortName());
-    	}
-		if(StringUtils.isNotEmptyString(startime) && StringUtils.isNotEmptyString(endtime)){
-			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", endtime+" 23:59:59");
-    	}
-    	else if(StringUtils.isEmpty(startime) && StringUtils.isNotEmptyString(endtime)){
-    		map.put("startime", "1970-01-01 23:59:59");
-			map.put("endtime", endtime+" 23:59:59");
-    	}else if(StringUtils.isNotEmptyString(startime) && StringUtils.isEmpty(endtime)){
-    		Date sysday=new Date();
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    		String nowtime=sdf.format(sysday);
-			map.put("startime", startime+" 00:00:00");
-			map.put("endtime", nowtime);
-    	}else{
-    		map.put("startime", "");
-			map.put("endtime", "");
-    	}
+			@ModelAttribute(value = "bankcard") BankCardInfoEntity  bankcard,@RequestParam Map<String, String> map) {
 		List<BankCardInfoEntity> bankCards = bankCardInfoService.findAllbankCards(map);
 		model.addAttribute("page", bankCards);
 		model.addAttribute("bankcard", bankcard);
-		model.addAttribute("startime",startime);
-    	model.addAttribute("endtime",endtime);
+		model.put("map", map);
 		return "fss/customer/bankCardList";
 	}
 	

@@ -47,5 +47,19 @@ public interface FssCustomerReadMapper extends ReadMapper<FssCustomerEntity> {
 	 * function：查询要申请变更银行卡用户信息
 	 */
 	public CustomerAndUser findCustomerAndUser(Long id);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月14日
+	 * function：根据身份证号查询对象
+	 */
+	public FssCustomerEntity selectByCertNo(String certNo);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月14日
+	 * function：根据custNo得到用户对象
+	 */
+	public FssCustomerEntity selectByCustNo(String custNo);
 
 }

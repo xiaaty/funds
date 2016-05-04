@@ -7,7 +7,7 @@ import com.gqhmt.extServInter.dto.trade.FreezeDto;
 import com.gqhmt.extServInter.service.trade.IFreeze;
 import com.gqhmt.core.FssException;
 
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,7 +35,7 @@ public class FreezeImpl implements IFreeze {
     @Resource
     private IFundsTrade fundsTrade;
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
         try {
             fundsTrade.froze((FreezeDto) dto);

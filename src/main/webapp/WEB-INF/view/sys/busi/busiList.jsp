@@ -74,7 +74,15 @@
                                 </c:if>     
                                             <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/busi/add/${parentId}'"><i class="fa fa-plus"></i>添加</button>
                                       </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                    	<col width="300" />
+                                        <col width="200" />
                                         <thead>
                                         <tr>
                                             <td>商户名称</td>

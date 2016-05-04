@@ -26,23 +26,23 @@ import java.util.Date;
 public class FssTradeRecordEntity implements Serializable {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id",updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                //int(11)        (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references
 
-    @Column(name = "cust_no")
+    @Column(name = "cust_no",updatable = false)
     private String custNo;                         //varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references
 
-    @Column(name = "user_no")
+    @Column(name = "user_no",updatable = false)
     private String userNo ;                        //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
 
-    @Column(name = "acc_no")
+    @Column(name = "acc_no",updatable = false)
     private String accNo;                          //varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references
 
-    @Column(name = "trade_type")
+    @Column(name = "trade_type",updatable = false)
     private Integer tradeType;                      //int(11)        (NULL)           NO              (NULL)                   select,insert,update,references  交易类型，充值，提现
 
-    @Column(name = "amount")
+    @Column(name = "amount",updatable = false)
     private BigDecimal amount  ;                        //decimal(17,2)  (NULL)           YES             (NULL)                   select,insert,update,references  交易金额
 
     @Column(name = "charge")
@@ -57,10 +57,10 @@ public class FssTradeRecordEntity implements Serializable {
     @Column(name = "trade_time")
     private String tradeTime ;                     // char(6)        utf8_general_ci  NO              (NULL)                   select,insert,update,references
 
-    @Column(name = "apply_no")
+    @Column(name = "apply_no",updatable = false)
     private String applyNo  ;                      //varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references  申请编号
 
-    @Column(name = "settle_type")
+    @Column(name = "settle_type",updatable = false)
     private Integer settleType ;                    //int(11)        (NULL)           YES             (NULL)                   select,insert,update,references  提现时效。0：T+0，1：T+1
 
     @Column(name = "trade_state")
@@ -69,21 +69,248 @@ public class FssTradeRecordEntity implements Serializable {
     @Column(name = "trade_result")
     private Integer tradeResult ;                   //int(11)        (NULL)           YES             (NULL)                   select,insert,update,references  交易结果，未交易，交易成功，交易失败，交易退票
 
-    @Column(name = "sumary")
+    @Column(name = "sumary",updatable = false)
     private String sumary      ;                    // varchar(3000)  utf8_general_ci  YES             (NULL)                   select,insert,update,references  交易描述
 
-    @Column(name = "create_time")
+    @Column(name = "create_time",updatable = false)
     private Date createTime  ;                   //datetime       (NULL)           YES             (NULL)                   select,insert,update,references
 
     @Column(name = "modify_time")
     private Date modifyTime  ;                   //datetime       (NULL)           YES             (NULL)                   select,insert,update,references
 
-    @Column(name = "mchn_parent")
+    @Column(name = "mchn_parent",updatable = false)
     private String mchnParent  ;                   //qvarchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references
 
-    @Column(name = "mchn_child")
+    @Column(name = "mchn_child",updatable = false)
     private String mchnChild   ;                   //varchar(45)    utf8_general_ci  NO              (NULL)                   select,insert,update,references
 
     @Column(name = "order_no")
     private String orderNo    ;                    // varchar(45)    utf8_general_ci  YES             (NULL)                   select,insert,update,references
+
+    @Column(name = "trade_type_child",updatable = false)
+    private Integer tradeTypeChild    ;                    	
+    
+    @Column(name = "channel_no",updatable = false)  //交易渠道
+    private String channelNo;   
+    
+    @Column(name = "bespoke_date",updatable = false)//预约到账日期
+    private Date bespokeDate  ;  
+    
+    @Column(name = "cust_id",updatable = false)
+    private Long custId;
+    
+    @Column(name = "resp_code")
+    private String respCode;
+    
+    @Column(name = "cust_type")
+    private Integer custType;
+    
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public Integer getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(Integer tradeType) {
+		this.tradeType = tradeType;
+	}
+
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	public BigDecimal getCharge() {
+		return charge;
+	}
+
+	public void setCharge(BigDecimal charge) {
+		this.charge = charge;
+	}
+
+	public BigDecimal getThirdparytCharge() {
+		return thirdparytCharge;
+	}
+
+	public void setThirdparytCharge(BigDecimal thirdparytCharge) {
+		this.thirdparytCharge = thirdparytCharge;
+	}
+
+	public String getTradeDate() {
+		return tradeDate;
+	}
+
+	public void setTradeDate(String tradeDate) {
+		this.tradeDate = tradeDate;
+	}
+
+	public String getTradeTime() {
+		return tradeTime;
+	}
+
+	public void setTradeTime(String tradeTime) {
+		this.tradeTime = tradeTime;
+	}
+
+	public String getApplyNo() {
+		return applyNo;
+	}
+
+	public void setApplyNo(String applyNo) {
+		this.applyNo = applyNo;
+	}
+
+	public Integer getSettleType() {
+		return settleType;
+	}
+
+	public void setSettleType(Integer settleType) {
+		this.settleType = settleType;
+	}
+
+	public Integer getTradeState() {
+		return tradeState;
+	}
+
+	public void setTradeState(Integer tradeState) {
+		this.tradeState = tradeState;
+	}
+
+	public Integer getTradeResult() {
+		return tradeResult;
+	}
+
+	public void setTradeResult(Integer tradeResult) {
+		this.tradeResult = tradeResult;
+	}
+
+	public String getSumary() {
+		return sumary;
+	}
+
+	public void setSumary(String sumary) {
+		this.sumary = sumary;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getMchnParent() {
+		return mchnParent;
+	}
+
+	public void setMchnParent(String mchnParent) {
+		this.mchnParent = mchnParent;
+	}
+
+	public String getMchnChild() {
+		return mchnChild;
+	}
+
+	public void setMchnChild(String mchnChild) {
+		this.mchnChild = mchnChild;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public Integer getTradeTypeChild() {
+		return tradeTypeChild;
+	}
+
+	public void setTradeTypeChild(Integer tradeTypeChild) {
+		this.tradeTypeChild = tradeTypeChild;
+	}
+
+	public String getChannelNo() {
+		return channelNo;
+	}
+
+	public void setChannelNo(String channelNo) {
+		this.channelNo = channelNo;
+	}
+
+	public Date getBespokeDate() {
+		return bespokeDate;
+	}
+
+	public void setBespokeDate(Date bespokeDate) {
+		this.bespokeDate = bespokeDate;
+	}
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public String getRespCode() {
+		return respCode;
+	}
+
+	public void setRespCode(String respCode) {
+		this.respCode = respCode;
+	}
+
+	public Integer getCustType() {
+		return custType;
+	}
+
+	public void setCustType(Integer custType) {
+		this.custType = custType;
+	}
+	
 }

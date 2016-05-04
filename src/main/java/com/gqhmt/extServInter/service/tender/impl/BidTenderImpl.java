@@ -1,16 +1,15 @@
 package com.gqhmt.extServInter.service.tender.impl;
 
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.extServInter.service.tender.IBidTender;
-import com.gqhmt.pay.service.IFundsTender;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.pay.service.tender.IFundsTender;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -35,7 +34,7 @@ public class BidTenderImpl implements IBidTender {
 	@Resource
 	private IFundsTender fundsTenderImpl;
 	
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		fundsTenderImpl.bid((BidDto)dto);

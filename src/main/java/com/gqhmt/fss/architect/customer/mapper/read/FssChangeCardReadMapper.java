@@ -3,8 +3,10 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
  */
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Filename:    com.gq.funds.dao.ChangeCardDao
@@ -25,5 +27,23 @@ import java.util.List;
 public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity> {
 
     public List<FssChangeCardEntity> queryChangeCardList(FssChangeCardEntity fssBankcard);
+    
+    
+    public ChangeCardResponse getChangeCardByParam(@Param("seq_no") String seq_no,@Param("mchn") String mchn);
+
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月13日
+     * function：根据状态查询对象
+     */
+	public List<FssChangeCardEntity> queryByTradeState(@Param("tradeState")int tradeState);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月14日
+	 * function：根据custId查询银行卡变更账户
+	 */
+	public FssChangeCardEntity selectByCustId(@Param("custId")Long custId);
 
 }

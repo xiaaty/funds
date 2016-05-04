@@ -6,8 +6,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.tender.FailureBidDto;
 import com.gqhmt.extServInter.service.tender.IBidAbort;
-import com.gqhmt.pay.service.IFundFailure;
-import javax.annotation.Resource;
+import com.gqhmt.pay.service.tender.IFundFailure;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,10 +28,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class BidAbortImpl implements IBidAbort {
 	
-	@Resource
+//	@Resource
 	private IFundFailure fundFailureImpl;
 	
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
     		fundFailureImpl.abort((FailureBidDto)dto);

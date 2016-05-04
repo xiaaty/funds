@@ -9,14 +9,12 @@ import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
 import com.gqhmt.pay.exception.CommandParmException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gq.p2p.account.service
@@ -41,7 +39,7 @@ public class FundOrderService  {
     private FundOrderReadMapper fundOrderReadMapper;
     @Resource
     private FundOrderWriteMapper fundOrderWriteMapper;
-
+    
     public void insert(FundOrderEntity entity) throws FssException{
         fundOrderWriteMapper.insertSelective(entity);
     }
@@ -82,7 +80,7 @@ public class FundOrderService  {
         fundOrderEntity.setOrderState(GlobalConstants.ORDER_STATUS_SUBMIT);
         try {
         	this.insert(fundOrderEntity);
-        	this.update(fundOrderEntity);
+//        	this.update(fundOrderEntity);
         } catch (Exception e) {
             throw new FssException(e.getMessage());
         }
@@ -110,14 +108,18 @@ public class FundOrderService  {
     }
 
     public List<FundOrderEntity> queryFundOrder(int orderType,int orderSource,int orderFromId){
-        return fundOrderReadMapper.queryFundOrder(orderType,orderSource,orderFromId);
+    	Map<Object,Object> map=new HashMap<>();
+    	map.put("orderType", orderType);
+    	map.put("orderSource", orderSource);
+    	map.put("orderFromId", orderFromId);
+        return fundOrderReadMapper.queryFundOrder(map);
     }
 
-    public boolean checkWithdrawNumber(long accountId){
-        int num = fundOrderReadMapper.getWithdrawNum(accountId);
-        if(num > GlobalConstants.CHECK_WITHRAW_NUM)
+    public boolean checkWithdrawNumber(Long accountId){
+//        int num = fundOrderReadMapper.getWithdrawNum(accountId);
+//        if(num > GlobalConstants.CHECK_WITHRAW_NUM)
             return true;
-        return false;
+//        return false;
     }
     
     /**
@@ -128,13 +130,12 @@ public class FundOrderService  {
      * @param msg
      * @throws CommandParmException
      */
-	@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, noRollbackFor = { CommandParmException.class }, readOnly = false)
 	public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws FssException {
 		fundOrderEntity.setOrderState(status);
 		fundOrderEntity.setRetCode(code);
 		fundOrderEntity.setRetMessage(msg);
 		try {
-			this.insert(fundOrderEntity);
+//			this.insert(fundOrderEntity);
 			this.update(fundOrderEntity);
 		} catch (Exception e) {
 			throw new FssException(e.getMessage());
@@ -145,5 +146,5 @@ public class FundOrderService  {
 
         return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type == null?0:type==1003?1:2,strTime,endTime);
     }
-    
+
 }

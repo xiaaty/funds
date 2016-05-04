@@ -135,9 +135,16 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                       <%--  <col width="200" />
-                                        <col /> --%>
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                        <col width="200" />
+                                        <col width="250" />
+                                        <col width="250" />
+                                        <col width="250" />
+                                        <col width="250" />
+                                        <col width="250" />
+                                        <col width="300" />
+                                        <col width="300" />
+                                        <col width="250" />
                                         <thead>
                                         <tr>
                                               <td>客户编号</td>
@@ -156,9 +163,9 @@
                                                 <tr class="success">
                                                     <td>${t.cust_no}</td>
                                                     <td>${t.name}</td>
-                                                    <td>${t.mobile}</td>
+                                                    <td><fss:fmtData value="${t.mobile}"/></td>
                                                     <td>${t.cert_type==1?"身份证":"护照"}</td>
-                                                    <td>${t.cert_no}</td>
+                                                    <td><fss:fmtData value="${t.cert_no}"/></td>
                                                     <td>否</td>
                                                     <td><fmt:formatDate value="${t.create_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modify_time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

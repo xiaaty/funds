@@ -15,7 +15,7 @@ import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.sys.beans.SysUsers;
 
 import org.springframework.stereotype.Controller;

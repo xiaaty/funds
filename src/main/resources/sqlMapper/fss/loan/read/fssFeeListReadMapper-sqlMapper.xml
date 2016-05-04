@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.loan.mapper.read.FssFeeListReadMapper">
+
+	<!-- 通过loanId得到收费列表 -->
+	<select id="getFeeList"  parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.loan.entity.FssFeeList" >
+		SELECT 
+			f.id,
+			f.fee_type feeType,
+			f.rep_code repCode,
+			f.rep_msg repMsg,
+			f.trade_status tradeStatus,
+			f.result result,
+			f.loan_id loanId,
+			f.loan_platform loanPlatform,
+			f.fee_amt feeAmt
+			FROM t_gq_fss_feeList f
+			where f.loan_id=#{id}
+	</select>
+</mapper>

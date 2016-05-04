@@ -188,17 +188,25 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:950px;">
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="100" />
                                         <thead>
                                         <tr>
-                                            <th>账户编号 </th>
-                                            <th>客户姓名 </th>
-                                            <th>账户类型</th>
-                                            <th>业务类型 </th>
-                                            <th>流水类型</th>
-                                            <th>流水金额 </th>
-                                            <th>创建日期 </th>
-                                            <th>所属机构 </th>
+                                            <td>账户编号 </td>
+                                            <td>客户姓名 </td>
+                                            <td>账户类型</td>
+                                            <td>业务类型 </td>
+                                            <td>流水类型</td>
+                                            <td>流水金额 </td>
+                                            <td>创建日期 </td>
+                                            <td>所属机构 </td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -222,12 +230,12 @@
                                                     <td>
                                                      <c:if test="${t.actionType==1}">充值</c:if> 
 									                 <c:if test="${t.actionType==2}">提现</c:if> 
-									                   <c:if test="${t.actionType==3}">转账</c:if> 
-									                    <c:if test="${t.actionType==4}">冻结</c:if> 
-									                    <c:if test="${t.actionType==5}">解冻 </c:if> 
-									                     <c:if test="${t.actionType==6}">投标成功 </c:if>
-									                     <c:if test="${t.actionType==7}">还款 </c:if>
-									                     <c:if test="${t.actionType==8}">债权转让 </c:if>
+									                 <c:if test="${t.actionType==3}">转账</c:if> 
+									                 <c:if test="${t.actionType==4}">冻结</c:if> 
+									                 <c:if test="${t.actionType==5}">解冻 </c:if> 
+									                 <c:if test="${t.actionType==6}">投标成功 </c:if>
+									                 <c:if test="${t.actionType==7}">还款 </c:if>
+									                 <c:if test="${t.actionType==8}">债权转让 </c:if>
 												               
                                                     </td>
                                                     <td>${t.amount}</td>

@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.account.entity;
 
+import com.gqhmt.annotations.AutoDate;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -52,11 +54,12 @@ public class FssAccountEntity implements Serializable {
     private String userNo;                             // varchar(45) NOT NULL COMMENT '用户表编号',
 
     @Column(name = "create_time")
+	@AutoDate
     private Date createTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
 
     @Column(name = "modify_time")
+	@AutoDate
     private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
-
 
     @Column(name = "acc_type")
     private Integer accType;                           // int(11) DEFAULT NULL COMMENT '账户类型，1借款账户；2线下出借账户；3线上账户；4抵押权人账户；5代偿人账户；99，冻结账户100公司账户',
@@ -75,7 +78,16 @@ public class FssAccountEntity implements Serializable {
 
     @Column(name="mchn_child")
     private String mchnChild;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
+    
+    @Column(name="cust_id")
+    private Long custId;              // 跟t_gq_custinfo_info表中的id对应
 
+	@Column(name="third_acc_no")
+	private String thirdAccNo ;			//第三方账户编号
+
+	@Column(name = "trade_type")
+	private String tradeType;
+    
 	public Long getId() {
 		return id;
 	}
@@ -203,5 +215,29 @@ public class FssAccountEntity implements Serializable {
 	public void setMchnChild(String mchnChild) {
 		this.mchnChild = mchnChild;
 	}
-    
+
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public String getThirdAccNo() {
+		return thirdAccNo;
+	}
+
+	public void setThirdAccNo(String thirdAccNo) {
+		this.thirdAccNo = thirdAccNo;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
+	}
 }

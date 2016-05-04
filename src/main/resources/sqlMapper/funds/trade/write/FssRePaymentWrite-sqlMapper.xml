@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper">
+	<insert id="insertRepaymentList">
+		insert into t_gq_fss_repayment (acc_no,trade_type,create_time,motify_time,amt,state,result_state,seq_no,serial_number,contract_id,mchn_parent,mchn_child,remark,resp_code,resp_msg,parent_id) values
+		<foreach collection="repaymentCollection"   separator=","  item="repaymentCollection" index="index">
+			(${repaymentCollection.accNo},${repaymentCollection.tradeType},${repaymentCollection.createTime},${repaymentCollection.motifyTime},${repaymentCollection.amt},${repaymentCollection.state},${repaymentCollection.resultState},${repaymentCollection.seqNo},${repaymentCollection.serialNumber},${repaymentCollection.contractId},${repaymentCollection.mchnParent},${repaymentCollection.mchnChild},${repaymentCollection.remark},${repaymentCollection.respCode},${repaymentCollection.respMsg},${repaymentCollection.parentId})
+		</foreach>
+	</insert>
+</mapper>

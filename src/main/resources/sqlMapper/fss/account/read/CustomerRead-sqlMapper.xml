@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper">
 
-<select resultType="customer" parameterType="java.util.Map" id="findCustomerByParams">
+<!-- <select resultType="customer" parameterType="java.util.Map" id="findCustomerByParams">
 	SELECT id,cust_no,name,mobile,cert_type,cert_no,create_time,modify_time FROM t_gq_fss_customer t
 	<where>
 		<if test="mobile!=null and mobile!=''">
@@ -18,7 +18,7 @@
 			AND t.create_time BETWEEN DATE_FORMAT(#{startime},'%Y%m%d%H%i%s') AND DATE_FORMAT(#{endtime},'%Y%m%d%H%i%s')
 		</if>
 	</where>
-</select>
+</select> -->
 </mapper>
 
 

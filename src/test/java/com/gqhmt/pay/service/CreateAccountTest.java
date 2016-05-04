@@ -1,14 +1,12 @@
 package com.gqhmt.pay.service;
 
+import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.pay.service.impl.FundsAccountImpl;
+import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
@@ -28,9 +26,8 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2016/1/9  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class CreateAccountTest {
+
+public class CreateAccountTest extends TestService {
 
     @Resource
     private ApplicationContext applicationContext;

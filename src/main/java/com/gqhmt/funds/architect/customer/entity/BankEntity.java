@@ -49,6 +49,10 @@ public class BankEntity implements java.io.Serializable {
 	//备注
 	@Column(name = "bank_code",updatable = false)
 	private String bankCode;
+	
+	@Column(name = "isvalid")
+	private Integer isvalid;
+	
 	public Long getId() {
 		return id;
 	}
@@ -120,5 +124,11 @@ public class BankEntity implements java.io.Serializable {
 	}
 	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
+	}
+	public Integer getIsvalid() {
+		return isvalid;
+	}
+	public void setIsvalid(Integer isvalid) {
+		this.isvalid = isvalid;
 	}
 }

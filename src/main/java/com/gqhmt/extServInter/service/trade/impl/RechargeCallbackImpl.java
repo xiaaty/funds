@@ -1,12 +1,14 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
 import com.gqhmt.extServInter.service.trade.IRechargeCallback;
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,8 +35,9 @@ public class RechargeCallbackImpl implements IRechargeCallback {
 	@Resource
 	private IFundsTrade iFundsTrade;
 	
+	@APITradeTypeValid(value = "11030012")
     @Override
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
 			iFundsTrade.recharge((RechargeSuccessDto)dto);

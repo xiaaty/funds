@@ -8,6 +8,7 @@ import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ public class SystemController{
     private SystemService sysService;
     @Resource
     private MerchantService merchantService;
+
+
     /**
      * 查询字典表
      * @param request
@@ -33,13 +36,26 @@ public class SystemController{
      * @param dictmain
      * @return
      */
-    @RequestMapping(value = "/sys/workassist/dictionary/{parent_id}",method = {RequestMethod.GET,RequestMethod.POST})
-    @AutoPage
-    public Object DictList(HttpServletRequest request, ModelMap model, DictEntity dictmain, @PathVariable String parent_id){
-    	if(null!=parent_id){
-    		dictmain.setParentId(parent_id);
 
-    	}
+	@RequestMapping(value = "/sys/dictionary",method = {RequestMethod.GET})
+	@AutoPage
+	public Object DictList(HttpServletRequest request, ModelMap model, DictEntity dictmain){
+		return this.dictModel(model,dictmain,"0");
+	}
+
+    @RequestMapping(value = "/sys/dictionary/{parent_id}",method = {RequestMethod.GET})
+    @AutoPage
+    public Object DictList(HttpServletRequest request, ModelMap model, DictEntity dictmain, @PathVariable String parent_id) {
+		return dictModel(model, dictmain, parent_id);
+	}
+
+
+	public String dictModel(ModelMap model, DictEntity dictmain,String parent_id){
+		if(null == parent_id){
+			parent_id = "0";
+		}
+
+		dictmain.setParentId(parent_id);
 		String returnId = "0";
 		List<DictEntity> dictList =sysService.queryDictmain(dictmain);
 		if(Integer.parseInt(parent_id)>0){
@@ -48,11 +64,11 @@ public class SystemController{
 		}
 
 
-        model.addAttribute("page",dictList);
-        model.addAttribute("dictmain",dictmain);
+		model.addAttribute("page",dictList);
+		model.addAttribute("dictmain",dictmain);
 		model.addAttribute("returnId",returnId);
-        return "sys/workAssist/dictList";
-    }
+		return "sys/workAssist/dictList";
+	}
     
     /**
      * 跳转到字典编辑页面
@@ -61,7 +77,7 @@ public class SystemController{
      * @return
      * @throws FssException
      */
-    @RequestMapping(value = "/sys/workassist/dictAdd/{parent_id}",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/dictionary/{parent_id}/add",method = {RequestMethod.GET})
 	public Object DictmainAdd(HttpServletRequest request, ModelMap model,@PathVariable String parent_id,DictEntity dict) throws FssException {
     	dict.setParentId(parent_id);
     	model.addAttribute("dict", dict);
@@ -74,7 +90,7 @@ public class SystemController{
      * @return
      * @throws FssException
      */
-    @RequestMapping(value = "/sys/workassist/dictSave",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/dictionary/{parent_id}/add/save",method = {RequestMethod.POST})
     @ResponseBody
     public Object DictmainSave(HttpServletRequest request,@ModelAttribute(value="dict")DictEntity dict){
     	if(StringUtils.isNotEmptyString(dict.getDictId())){
@@ -115,7 +131,7 @@ public class SystemController{
      * @return
      * @throws FssException
      */
-    @RequestMapping(value = "/sys/workassist/dictToUpdate/{dictId}",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/dictionary/{dictId}/update",method = {RequestMethod.GET})
 	public Object DictmaintoUpdate(HttpServletRequest request, ModelMap model,@PathVariable String dictId) throws FssException {
     	DictEntity dict =sysService.getDictmainById(dictId);
     	model.addAttribute("dict", dict);
@@ -128,7 +144,7 @@ public class SystemController{
      * @param dict
      * @return
      */
-    @RequestMapping(value = "/sys/workassist/updateAndSave",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/dictionary/{dictId}/update/save",method = {RequestMethod.POST})
     @ResponseBody
     public Object dictUpdate(HttpServletRequest request,@ModelAttribute(value="dict")DictEntity dict){
     	dict.setModifyUserId(2l);
@@ -149,14 +165,10 @@ public class SystemController{
      * @return
      */
     @RequestMapping(value = "/sys/workassist/deletedeict",method = {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public Object dictDelete(HttpServletRequest request,ModelMap model){
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+    public void dictDelete(HttpServletRequest request,ModelMap model){
     	String dictId=	request.getParameter("dictId");
     	sysService.delteDict(dictId);
-    	Map<String, String> map = new HashMap<String, String>();
-        map.put("code", "0000");
-        map.put("message", "success");
-        return map;
 //		return "redirect:/sys/workassist/dictionary/0";
     }
    

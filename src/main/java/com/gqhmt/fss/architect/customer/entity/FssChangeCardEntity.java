@@ -54,7 +54,9 @@ public class FssChangeCardEntity implements java.io.Serializable{
 
     @Column(name = "cust_name",updatable = false)
     private String custName;                           // varchar(45) DEFAULT NULL COMMENT '客户姓名',
-
+    
+    @Column(name = "acc_no",updatable = false)         //账号
+    private String accNo; 
 
     @Column(name = "state")
     private int state;                                  // int(11) DEFAULT NULL COMMENT '状态，1变更中，2成功，3失败',
@@ -89,10 +91,10 @@ public class FssChangeCardEntity implements java.io.Serializable{
     @Column(name = "resp_msg",insertable = false)
     private String respMsg;
 
-    @Column(name = "type")
+    @Column(name = "type",updatable = false)
     private Integer type;
 
-    @Column(name = "mobile")
+    @Column(name = "mobile",updatable = false)
     private String mobile;
 
 
@@ -105,9 +107,15 @@ public class FssChangeCardEntity implements java.io.Serializable{
     @Column(name="effect_time",insertable = false)
     private Date effectTime;
 
-    @Column(name="seq_no")
+    @Column(name="seq_no",updatable = false)
     private String seqNo;
-
+    
+    @Column(name="mchn",updatable = false)
+    private String mchn;
+    
+    @Column(name="trade_type")
+    private String tradeType;
+    
     public Long getCreateUserId() {
         return createUserId;
     }
@@ -327,4 +335,29 @@ public class FssChangeCardEntity implements java.io.Serializable{
     public void setSeqNo(String seqNo) {
         this.seqNo = seqNo;
     }
+
+	public String getMchn() {
+		return mchn;
+	}
+
+	public void setMchn(String mchn) {
+		this.mchn = mchn;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
+	}
+    
 }

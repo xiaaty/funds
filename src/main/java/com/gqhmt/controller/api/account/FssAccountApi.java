@@ -2,10 +2,11 @@ package com.gqhmt.controller.api.account;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,6 +45,11 @@ public class FssAccountApi {
     @Resource
     private IChangeBankCardAccount changeBankCardAccountImpl;
     
+    @Resource
+    private IFundsAccount fundsAccountImpl;
+    
+    
+    
     /**
      * 富友开户,通用接口
      * @param createAccountByFuiou
@@ -71,36 +77,49 @@ public class FssAccountApi {
     * time:2016年2月22日
     * function：创建账户
     */
-    @RequestMapping(value = "/createAccount",method = RequestMethod.POST)
+    @RequestMapping(value = "/createAccount",method = {RequestMethod.GET,RequestMethod.POST})
     public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
-    	Response response= null;
+    	Response response= new Response();
         try {
-//            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
-//            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-             response = createAccountImpl.excute(createAccountByFuiou);
+             response = createAccountImpl.execute(createAccountByFuiou);
         } catch (Exception e) {
-            response = this.excute(e);
+            response = this.execute(e);
         }
         return response;
     }
+    
     /**
      * 
      * author:jhz
      * time:2016年2月22日
      * function：变更银行卡
      */
-    @RequestMapping(value = "/changeBankCard",method = RequestMethod.POST)
-    public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
+//    @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
+//    public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
+//    	Response response= null;
+//    	try {
+//    		response = changeBankCardAccountImpl.execute(changeBankCardDto);
+//    	} catch (Exception e) {
+//            response = this.execute(e);
+//    	}
+//    	return response;
+//    }
+
+    
+    @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object changeBankCard(UpdateBankCardDto changeBankCardDto){
     	Response response= null;
     	try {
-    		response = changeBankCardAccountImpl.excute(changeBankCardDto);
+    		response = changeBankCardAccountImpl.execute(changeBankCardDto);
     	} catch (Exception e) {
-            response = this.excute(e);
+            response = this.execute(e);
     	}
     	return response;
     }
 
-    private Response excute(Exception e){
+    
+    
+    private Response execute(Exception e){
         LogUtil.error(this.getClass(), e);
         Response response = new Response();
         response.setResp_code(e.getMessage());

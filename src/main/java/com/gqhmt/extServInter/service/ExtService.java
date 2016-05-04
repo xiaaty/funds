@@ -22,7 +22,7 @@ import com.gqhmt.core.APIExcuteErrorException;
  */
 public interface ExtService {
 
-    public Response excute(SuperDto dto) throws APIExcuteErrorException;
+    public Response execute(SuperDto dto) throws APIExcuteErrorException;
 
 	
 }

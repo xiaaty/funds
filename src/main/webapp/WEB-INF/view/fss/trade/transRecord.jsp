@@ -150,26 +150,43 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    	<col width="50" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150"/>
+                                        <col width="150"/>
+                                        <col width="150"/>
                                         <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>转账申请方(客户编号)</th>
-                                            <th>用户编号userNo</th>
-                                            <th>申请编号	 </th>
-                                            <th>转出账号</th>
-                                            <th>转入账号 </th>
-                                            <th>转账金额 </th>
-                                            <th>交易类型 </th>
-                                            <th>账务类型 </th>
-                                            <th>转账编号</th>
-                                            <th>交易日期 </th>
-                                            <th>交易时间 </th>
-                                            <th>创建时间 </th>
-                                            <th>修改日期 </th>
-                                            <th>大商户号</th>
-                                            <th>子商户号 </th>
-                                            <th>操作</th>
+                                            <td>序号</td>
+                                            <td>客户编号</td>
+                                            <td>用户编号</td>
+                                            <td>申请编号</td>
+                                            <td>转出账号</td>
+                                            <td>转入账号 </td>
+                                            <td>转账金额 </td>
+                                            <td>交易类型 </td>
+                                            <td>账务类型 </td>
+                                            <td>转账编号</td>
+                                            <td>交易日期 </td>
+                                            <td>交易时间 </td>
+                                            <td>创建时间 </td>
+                                            <td>修改日期 </td>
+                                            <td>大商户号</td>
+                                            <td>子商户号 </td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -182,12 +199,7 @@
                                                     <td>${t.accNo}</td>
                                                     <td>${t.toAccNo}</td>
                                                     <td>${t.amount}</td>
-                                                    <td>
-                                                    ${t.tradeType}
-<%--                                                       <c:forEach items="${banks}" var="banks"> --%>
-<%--                                                       <c:if test="${t.bankId==banks.custId}">${banks.bankLongName}</c:if> --%>
-<%--                                                     </c:forEach> --%>
-                                                    </td>
+                                                    <td>${t.tradeType}</td>
                                                     <td>${t.fundsType}</td>
                                                     <td>${t.transNo}</td>
                                                     <td>${t.tradeDate}</td>

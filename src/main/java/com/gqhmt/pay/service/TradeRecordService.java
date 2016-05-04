@@ -1,6 +1,10 @@
 package com.gqhmt.pay.service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
+import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
+import com.gqhmt.fss.architect.trade.mapper.read.FssTransRecordReadMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
@@ -44,6 +48,12 @@ public class TradeRecordService {
 
     @Resource
     private FundWithrawChargeService fundWithrawChargeService;
+    
+    @Resource
+    private FssTradeRecordReadMapper fssTradeRecordReadMapper;
+    
+    @Resource
+    private FssTransRecordReadMapper fssTransRecordReadMapper;
 
     public void recharge(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
         try {
@@ -72,6 +82,17 @@ public class TradeRecordService {
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
+    /**
+     *
+     * @param fromEntity
+     * @param toEntity
+     * @param amount
+     * @param fundType
+     * @param fundOrderEntity
+     * @param memo
+     * @param boundsAmout
+     * @throws FssException
+     */
     public void unFrozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int fundType,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout) throws FssException {
         sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
@@ -108,4 +129,82 @@ public class TradeRecordService {
     	FundAccountSequenceBean fundsequencelist = sequenceService.searchTradFlow(cust_no,user_no,busi_no);
     	return fundsequencelist;
     }*/
+    
+    /**
+     * 查询充值/提现记录
+     * @param traderecorder
+     * @return
+     */
+    public List<FssTradeRecordEntity> queryRechargeList(FssTradeRecordEntity traderecorder){
+    	List<FssTradeRecordEntity> traderecorderlist=fssTradeRecordReadMapper.select(traderecorder);
+    	return traderecorderlist;
+    }
+    
+    /**
+     * 转账交易记录查询
+     * @param transrecord
+     * @return
+     */
+    public List<FssTransRecordEntity> queryTransRecordList(FssTransRecordEntity transrecord){
+    	List<FssTransRecordEntity> transrecordlist=fssTransRecordReadMapper.select(transrecord);
+    	return transrecordlist;
+    	
+    }
+
+
+    public  int parseBusinessType(int accType){
+
+        int businessType = 0;
+
+        switch (accType){
+            case 10010001:
+                businessType = 3;
+                break;
+            case 10010002:
+                businessType = 2;
+                break;
+            case 10010003:
+                businessType = 1;
+                break;
+            case 10010004:
+                businessType = 0;
+                break;
+            case 10010005:
+                businessType = 1;
+                break;
+            case 10011000:
+                businessType = 1;
+                break;
+
+            case 10011001:
+            	businessType = 0;
+            	break;
+            case 10011002:
+            	businessType = 1;
+            	break;
+            case 10012001:
+            	businessType = 1;
+            	break;
+            case 10012002:
+            	businessType = 1;
+            	break;
+            case 10012003:
+            	businessType = 1;
+            	break;
+            case 10019001:
+            	businessType = 2;
+            	break;
+            case 10019002:
+            	businessType = 1;
+            	break;
+            case 10010007:
+                businessType = 1;
+                break;
+            default:
+                businessType = 0;
+        }
+
+        return businessType;
+    }
+    
 }

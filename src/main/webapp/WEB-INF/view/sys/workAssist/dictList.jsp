@@ -43,13 +43,13 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div class="jarviswidget" id="dictList-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="dictList-id-021"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
                            <%--  ${contextPath}/sys/workassist/dictionary --%>
-                                <form class="smart-form" action=""  method="post" id="dictForm">
+                                <form class="smart-form" action=""  method="get" id="dictForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -90,7 +90,7 @@
                 		</div>
                 
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-02"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="dictList-id-0231"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>数据字典信息</h2>
@@ -112,11 +112,17 @@
                                         <input type="hidden" id="parentId" value="${dictmain.parentId}" />
                                         <%-- <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_detail"><i class="fa fa-list-ul"></i>&nbsp;详情</button>--%>
                                     </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:800px;">
+                                    	<col width="50" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="100" />
                                         <thead>
-                                        <tr>
-                                              <td>编号</td>
-                                              <td>名称</td>
+                                        <tr>  <td>编号</td>
+                                              <td align="left">名称</td>
                                               <td>上级目录</td>
                                               <td>是否有效</td>
                                               <td>创建日期</td>
@@ -127,8 +133,8 @@
                                         <tbody>
                                              <c:forEach items="${page.list}" var="dict">
                                                 <tr>
-                                                    <td>${dict.dictId}</td>
-                                                    <td>${dict.dictName}</td>
+                                                    <td >${dict.dictId}</td>
+                                                    <td align="left">${dict.dictName}</td>
                                                     <td><c:choose >
                                                         <c:when test="${dict.parentId == 0}">
                                                             无
@@ -143,11 +149,11 @@
                                                    <td>
 
 
-                                                       <a href="${contextPath}/sys/workassist/dictToUpdate/${dict.dictId}">修改</a>
+                                                       <a href="${contextPath}/sys/dictionary/${dict.dictId}/update">修改</a>
 
                                                        &nbsp;&nbsp;&nbsp;
                                                        <c:if test="${dict.isEnd == 98010002 }">
-                                                           <a href="${contextPath}/sys/workassist/dictionary/${dict.dictId}">查看</a>
+                                                           <a href="${contextPath}/sys/dictionary/${dict.dictId}">查看</a>
                                                        </c:if>
 
 
@@ -300,11 +306,11 @@
 	    
 	  //添加按钮按下
         $("#btn_add").button().click(function() {
-        	window.open("${contextPath}/sys/workassist/dictAdd/${parent_id}","_self");
+        	window.open("${contextPath}/sys/dictionary/${parent_id}/add","_self");
         });
      //添加按钮按下
      $("#btn_return").button().click(function() {
-         window.open("${contextPath}/sys/workassist/dictionary/${returnId}","_self");
+         window.open("${contextPath}/sys/dictionary/${returnId}","_self");
      });
 	    
 	  
@@ -320,7 +326,7 @@
   	                    if (data.code == '0000') {
   	                      jAlert("删除成功!", '确认信息');
   	                      //自动跳转
-  	                      parent.location.href="${contextPath}/sys/workassist/dictionary/${parent_id}";
+  	                      parent.location.href="${contextPath}/sys/dictionary/${parent_id}";
   	                    } else {
   	                        return;
   	                    }

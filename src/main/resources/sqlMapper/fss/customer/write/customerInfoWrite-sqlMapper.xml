@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper">
+	
+	<update id="updateCustomer" parameterType="java.util.Map">  
+         UPDATE t_gq_customer_info
+         SET
+         CUSTOMER_NAME=#{custName},
+         CERT_NO=#{certNo},
+         bank_id=#{bankId}
+         WHERE id=#{id}
+    </update>
+</mapper>

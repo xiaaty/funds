@@ -38,7 +38,7 @@ public class RechargeAndWitwdrawOrder implements IRechargeAndWithdrawOrder {
 
     @AutoPage
     @Override
-    public Response excute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) throws APIExcuteErrorException {
         QueryListResponse response = new QueryListResponse();
         try {
             RechargeAndWithdrawListDto dd = (RechargeAndWithdrawListDto) dto;

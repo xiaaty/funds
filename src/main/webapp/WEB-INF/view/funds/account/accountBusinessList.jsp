@@ -39,7 +39,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>资金管理</li>
-            <li>对公账号列表</li>
+            <li>账户列表</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -77,13 +77,27 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                     <td class="tr" nowrap="nowrap">客户姓名:</td>
+                                                     	<td class="tr" nowrap="nowrap">客户姓名:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
                                                                 <input type="text" name="customerName" value="${accMap.customerName}">
                                                             </label>
                                                         </td>
-                                                    
+                                                        <td></td>
+                                                     	<td class="tr">创建日期：</td>
+			                                             <td colspan="3">
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${accMap.startTime}">
+				                                                    </label>
+				                                                </section>
+				                                                <span class="fl">&nbsp;至&nbsp;</span>
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${accMap.endTime}">
+				                                                    </label>
+				                                                </section>
+				                                         </td>
                                                     </tr>
                                                    
                                                 </tbody>
@@ -106,7 +120,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>对公账号列表</h2>
+                            <h2>账户列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -117,14 +131,22 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                       <%--  <col width="200" />
-                                        <col /> --%>
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1300px;">
+                                    	<col width="200" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="100" />
                                         <thead>
                                         <tr>
-                                              <td width="100">客户姓名</td>
+                                              <td>客户姓名</td>
                                               <td>手机号码</td>
-                                              <td>账户编号</td>
+                                              <td>资金帐号</td>
                                               <td>账户类型</td>
                                               <td>业务类型</td>
                                               <td>账户余额</td>
@@ -145,7 +167,7 @@
                                                     <c:if test="${acc.accountType==2}">A0 </c:if>
                                                     <c:if test="${acc.accountType==3}">AX</c:if>
                                                    </td>
-                                                     <td>${acc.busiType==0?"主账户":"其他账户"}</td>
+                                                    <td>${acc.busiType==0?"主账户":"其他账户"}</td>
                                                     <td align="right"><fss:money money="${acc.amount}"/></td>
                                                     <td align="right"><fss:money money="${acc.freezeAmount}" /></td>
                                                     <td>${acc.hasThirdAccount==1?"未创建":"创建"}</td>
@@ -188,7 +210,7 @@
 	    });
 	    function verify(){
 	    	var a=document.getElementsByName("creatTime");
-	    	var b=document.getElementsByName("modifyTime");
+	    	var b=document.getElementsByName("endTime");
 	    	if(b[0].value!=null&&b[0].value!=''){
 	    		if(a[0].value>b[0].value){
 	    			alert("请检查您输入的日期");

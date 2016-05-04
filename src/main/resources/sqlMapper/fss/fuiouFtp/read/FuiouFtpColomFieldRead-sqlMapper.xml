@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper">
+	<sql id="selectSql">
+	SELECT 
+	t.id id,
+	t.from_account_Id fromAccountId,
+	t.from_userName fromUserName,
+	t.from_cn_userName fromCnUserName,
+	t.to_account_Id toAccountId,
+	t.to_userName toUserName,
+	t.to_cn_userName toCnUserName,
+	t.amt amt,
+	t.rem rem,
+	t.contract_no contractNo,
+	t.state state,
+	t.file_id fileId,
+	t.seq_no seqNo,
+	t.order_id orderId,
+	t.order_no orderNo,
+	t.return_Code returnCode,
+	t.return_msg returnMsg,
+	t.business_code businessCode,
+	t.input_date inputDate,
+	t.feild_order_no feildOrderNo,
+	t.feild_order_no_his feildOrderNoHis,
+	t.tender_id tenderId
+	FROM t_fuiou_ftp_field t
+	
+	</sql>
+
+	<select id="getOrder"  resultType="java.util.List">
+		SELECT  t.order_id orderId FROM t_fuiou_ftp_field t WHERE t.state = 4 GROUP BY t.order_id
+	</select>
+	
+	<select id="getReqCode" resultType="java.lang.String">
+		SELECT t.return_Code returnCode FROM t_fuiou_ftp_field t WHERE t.order_no = #{orderNo} GROUP BY t.return_Code
+	</select>
+	
+	<select id="getByState" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
+		<include refid="selectSql"/>
+		WHERE t.state = #{state} 
+	</select>
+	<select id="getByOrderNo" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
+		<include refid="selectSql"/>
+		WHERE t.order_no = #{orderNo} 
+	</select>
+	<select id="selectByFileId" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
+		<include refid="selectSql"/>
+		WHERE t.file_id = #{fileId} 
+	</select>
+	
+
+ </mapper>

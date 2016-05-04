@@ -1,7 +1,5 @@
 package com.gqhmt.extServInter.dto;
 
-import com.gqhmt.annotations.AutoMapping;
-
 /**
  * Filename:    com.gqhmt.extServInter.dto.Response
  * Copyright:   Copyright (c)2015
@@ -20,13 +18,13 @@ import com.gqhmt.annotations.AutoMapping;
  */
 public class Response {
 
-    @AutoMapping(value = "mchnChild",isParent = true)
     private String mchn;
 
-    @AutoMapping("seqNo")
     private String seq_no;
 
     private String signature;
+
+    private String trade_type;
 
     private String resp_code;
     private String resp_msg;
@@ -73,7 +71,11 @@ public class Response {
     }
 
 
+    public String getTrade_type() {
+        return trade_type;
+    }
 
-
-
+    public void setTrade_type(String trade_type) {
+        this.trade_type = trade_type;
+    }
 }

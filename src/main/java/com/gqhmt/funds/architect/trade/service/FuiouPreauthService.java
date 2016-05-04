@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,11 +55,30 @@ public class FuiouPreauthService {
         return fuiouPreauthReadMapper.getContractNo(bid,userName,toUserName,amt);
     }
 
-    public Map<Integer,String> getContractNo(Long bid){
-        return fuiouPreauthReadMapper.getContractNo(bid);
+    public Map<Long,String> getContractNo(Long bid){
+    	Map<Long,String> map = new HashMap<>();
+    	List<FuiouPreauth>	fuiouPreauthlist = fuiouPreauthReadMapper.getContractNos(bid);
+    	if(fuiouPreauthlist == null || fuiouPreauthlist.size() == 0){
+            return null;
+        }
+    	for(FuiouPreauth fuiouPreauth:fuiouPreauthlist){
+            map.put(Long.valueOf(fuiouPreauth.getTenderid()),fuiouPreauth.getContractNo());
+        }
+    	return map;
     }
-    public Map<Integer,FuiouPreauth> getFuiouPreauth(Long bid){
-        return fuiouPreauthReadMapper.getFuiouPreauth(bid);
+    public Map<Long,FuiouPreauth> getFuiouPreauth(Long bid){
+//        return fuiouPreauthReadMapper.getFuiouPreauth(bid);
+    	Map<Long,FuiouPreauth> map = new HashMap<>();
+    	List<FuiouPreauth>	list = fuiouPreauthReadMapper.getContractNos(bid);
+    	if(list == null || list.size() == 0){
+            return null;
+        }
+    	for(FuiouPreauth fuiouPreauth:list){
+            Integer tId = fuiouPreauth.getTenderid();
+    		map.put(Long.valueOf(tId),fuiouPreauth);
+        }
+    	return map;
+    	
     }
 
     //

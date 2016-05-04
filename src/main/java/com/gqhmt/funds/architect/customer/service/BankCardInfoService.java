@@ -2,13 +2,17 @@ package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
+import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.BankCardInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.read.BankReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
@@ -19,8 +23,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,14 +83,14 @@ public class BankCardInfoService {
         return bankCardinfoWriteMapper.insertSelective(entity);
     }
     
-    public int saveOrUpdate(BankCardInfoEntity entity){
-    	if(null != entity.getId()) {
-    		return bankCardinfoWriteMapper.updateByPrimaryKey(entity);
-    	} else {
-    		return insert(entity);
-    	}
+    public int update(BankCardInfoEntity entity){
+		return bankCardinfoWriteMapper.updateByPrimaryKey(entity);
     }
 
+    public void updateBankCardInfo(BankCardInfoEntity bankCardInfoEntity){
+    	bankCardinfoWriteMapper.updateBankCardByParam(bankCardInfoEntity);
+    }
+    
     public void remove(BankCardInfoEntity entity){
     	bankCardinfoWriteMapper.delete(entity);
     }
@@ -114,19 +121,14 @@ public class BankCardInfoService {
     /**
      * 根据条件查询返回所有客户银行卡列表
      * @param bankDto
-     * @param pageReq
      * @return
-     * @throws AppException
      */
     public Page queryCardListByCustomer(BankCardBean bankDto) throws FssException{
     	return bankCardinfoReadMapper.queryCardListByCustomer(bankDto);
     }
     /**
      * 银行列表
-     * @param bankDto
-     * @param pageReq
      * @return
-     * @throws AppException
      */
     public List<BankCardBean> queryBankList() {
     	return bankCardinfoReadMapper.queryBankList();
@@ -138,25 +140,6 @@ public class BankCardInfoService {
 	 */
 	public BankCardInfoEntity queryBankCardinfoById(int id){
 		return bankCardinfoReadMapper.selectByPrimaryKey(id);
-	}
-	/**
-	 * 
-	 *添加银行卡信息
-	 * @param entity
-	 * @throws Exception 
-	 */
-	public void saveBankCard(BankCardInfoEntity entity, String userId) throws Exception{
-	
-	    entity.setCreateTime(new Date());
-	    entity.setCreateUserId(Integer.parseInt(userId));
-	    insert(entity);
-
-    	try {
-	        //绑定银行卡
-//    		AccountCommand.payCommand.command(CommandEnum.CARD.CARD_BIND,ThirdPartyType.DAQIAN, entity.getCustId(), 2, entity);
-		} catch(CommandParmException e){
-			throw  new Exception("0001" + e.getMessage()); 
-		}
 	}
 
 	
@@ -198,7 +181,7 @@ public class BankCardInfoService {
         bankCard.setModifyTime((new Date(System.currentTimeMillis())));
         bankCard.setModifyUserId(Integer.parseInt(userId));
 		//开户行地区代码 开户行行别
-        saveOrUpdate(bankCard);
+        update(bankCard);
         
 		if (bankChangeFlg) {
 			//富友修改客户绑定银行卡信息
@@ -429,8 +412,18 @@ public class BankCardInfoService {
 	 * @param bankcard
 	 * @return
 	 */
-	public List<BankCardInfoEntity> findAllbankCards(Map map){
-		return this.bankCardinfoReadMapper.selectBankCardList(map);
+	public List<BankCardInfoEntity> findAllbankCards(Map<String,String> map){
+		Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("certName",map.get("certName")!=null ? map.get("certName") : null);
+			map2.put("bankNo", map.get("bankNo")!=null ? map.get("bankNo") : null);
+			map2.put("bankSortName", map.get("bankSortName")!=null ? map.get("bankSortName") : null);
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+		return this.bankCardinfoReadMapper.selectBankCardList(map2);
 	}
     
 	
@@ -451,18 +444,79 @@ public class BankCardInfoService {
 		
 	}
 	
+	public BankCardInfoEntity getBankCardByBankNo(String CardNo){
+		BankCardInfoEntity  bankCardInfo=new BankCardInfoEntity();
+		bankCardInfo.setBankNo(CardNo);
+		bankCardinfoReadMapper.selectOne(bankCardInfo);
+		return bankCardInfo;
+	}
 	
 	
+	/**
+	 * 创建银行账户
+	 * @param loanAccountDto
+	 * @param customer
+	 * @return
+	 * @throws FssException
+	 */
+	public BankCardInfoEntity createBankCardInfoEntity(CreateLoanAccountDto loanAccountDto,CustomerInfoEntity customer,UserEntity userEntity) throws FssException{
+		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+		String  bankCode=loanAccountDto.getBank_id();
+		bankCardInfoEntity.setCustId(customer.getId().intValue());
+		bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(bankCode));
+		bankCardInfoEntity.setBankSortName(Application.getInstance().getBankShortName(bankCode));
+		bankCardInfoEntity.setBankNo(loanAccountDto.getBank_card());
+		bankCardInfoEntity.setIsPersonalCard(1);
+		bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
+		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
+		bankCardInfoEntity.setCertName(customer.getCustomerName());
+		bankCardInfoEntity.setCityId(Application.getInstance().getFourCode(loanAccountDto.getCity_id()));
+		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+		bankCardInfoEntity.setCreateTime(new Date());
+		bankCardInfoEntity.setCreateUserId(1);
+		bankCardInfoEntity.setModifyTime(new Date());
+		bankCardInfoEntity.setModifyUserId(1);
+		return bankCardInfoEntity;
+	}
 	
 	
+	 public BankCardInfoEntity getInvestmentByCustId(Integer custId){
+	    	BankCardInfoEntity queryEntity = new BankCardInfoEntity();
+		    queryEntity.setCustId(custId);
+			return bankCardinfoReadMapper.selectOne(queryEntity);
+	    }
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	 	/**
+	 	 * 创建银行卡信息
+	 	 * @return
+	 	 * @throws FssException
+	 	 */
+		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity) throws FssException{
+			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+			String bankCode=customerInfoEntity.getParentBankCode();
+			bankCardInfoEntity.setCustId(customerInfoEntity.getId().intValue());
+			bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(bankCode));
+			bankCardInfoEntity.setBankSortName(Application.getInstance().getBankShortName(bankCode));
+			bankCardInfoEntity.setBankNo(customerInfoEntity.getBankNo());
+			bankCardInfoEntity.setIsPersonalCard(1);
+			bankCardInfoEntity.setCertNo(customerInfoEntity.getCertNo());
+			bankCardInfoEntity.setMobile(customerInfoEntity.getMobilePhone());
+			bankCardInfoEntity.setCertName(customerInfoEntity.getCustomerName());
+			bankCardInfoEntity.setCityId(customerInfoEntity.getCityCode());
+			bankCardInfoEntity.setParentBankId(customerInfoEntity.getParentBankCode());
+			bankCardInfoEntity.setCreateTime(new Date());
+			bankCardInfoEntity.setCreateUserId(1);
+			bankCardInfoEntity.setModifyTime(new Date());
+			bankCardInfoEntity.setModifyUserId(1);
+			bankCardinfoWriteMapper.insertSelective(bankCardInfoEntity);
+			return bankCardInfoEntity;
+		}
+	 
+		public BankCardInfoEntity queryBankCardByBankNo(String cardNo){
+			
+			return bankCardinfoReadMapper.queryBankCardByBankNo(cardNo);
+		}
+	 
+	 
 }

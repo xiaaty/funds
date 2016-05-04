@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper">
+	 <sql id="field">
+		SELECT 
+			t.id id,
+		  	t.seq_no seqNo, 
+		  	t.mchn,
+		  	t.trade_type tradeType,
+		  	t.create_time createTime,
+		  	t.modify_time modifyTime,
+		  	t.repay_count repayCount,
+		  	t.repay_result repay_result
+		FROM t_gq_fss_backplate t
+	 </sql>
+	<!-- 查询所有回盘次数为0的记录 -->
+	 <select id="findBackAll" parameterType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
+		<include refid="field"/>
+		WHERE t.repay_count=0 
+	</select>
+
+	<select id="findBackAllByTime" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
+		<include refid="field"/>
+		WHERE t.repay_count=${repayCount} AND DATE_ADD(t.modify_time,INTERVAL 20 HOUR  ) &lt; NOW() and t.repay_result=98060003
+	</select>
+
+</mapper>
+
+

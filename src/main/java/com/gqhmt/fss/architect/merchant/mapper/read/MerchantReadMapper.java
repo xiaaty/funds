@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.merchant.bean.BusinessAndApi;
+import com.gqhmt.fss.architect.merchant.entity.MerchantApiEntity;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 
 
@@ -74,5 +75,13 @@ public interface MerchantReadMapper extends ReadMapper<MerchantEntity> {
 	 * function：子商户列表
 	 */
 	public List<MerchantEntity> getChildBusiness(MerchantEntity merchantEntity);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年3月7日
+	 * function：通过商户号查询商户对象
+	 * @param mchnNo 
+	 */
+	public MerchantEntity selectByMchnNo(String mchnNo);
 	
 }

@@ -1,17 +1,21 @@
 package com.gqhmt.core.util;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
+import com.gqhmt.fss.architect.customer.service.FssAreaMappingService;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
+import com.gqhmt.funds.architect.customer.entity.BankEntity;
+import com.gqhmt.funds.architect.customer.service.BankService;
+import com.gqhmt.sys.entity.BankDealamountLimitEntity;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
-import com.gqhmt.sys.service.MenuService;
+import com.gqhmt.sys.service.BankDealamountLimitService;
 import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.ServiceLoader;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,45 +27,67 @@ public class Application {
 
 
 	private Application(){
-        init();
+        try {
+			init();
+		} catch (FssException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 	public static Application getInstance() {
 		return application;
 	}
 
-	private final Map<Long,MenuEntity> menuMap = new ConcurrentHashMap<>();
-    private final List<MenuEntity> menus = Collections.synchronizedList(new ArrayList<MenuEntity>());
 
     private final Map<String,String> dict = new ConcurrentHashMap<>();
     private final Map<String,DictEntity> dictEntityMap = new ConcurrentHashMap<>();
     private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
 
     private final Map<String,MerchantEntity>   merchantEntityMap = new ConcurrentHashMap<>();
+    
+    private final Map<String,BankDealamountLimitEntity>   bankAmountLimitMap = new ConcurrentHashMap<>();
+    
+    private final Map<String,String>   fourCodemap = new ConcurrentHashMap<>();
+    private final Map<String,String>   sixCodemap = new ConcurrentHashMap<>();
+    private final Map<String,String>   eightCodemap = new ConcurrentHashMap<>();
+    private final Map<String,BankEntity>   bankEntitymap = new ConcurrentHashMap<>(); //银行列表
 
-    private void init(){
+    private void init() throws FssException{
         synchronized (this){
             update();
         }
-        LogUtil.debug(this.getClass(),menus.toString());
-        LogUtil.debug(this.getClass(),menuMap.toString());
+        LogUtil.debug(this.getClass(),dict.toString());
+        LogUtil.debug(this.getClass(),dictEntityMap.toString());
+        LogUtil.debug(this.getClass(),dictOrder.toString());
+        LogUtil.debug(this.getClass(),merchantEntityMap.toString());
+        LogUtil.debug(this.getClass(),bankAmountLimitMap.toString());
+        LogUtil.debug(this.getClass(),eightCodemap.toString());
+        LogUtil.debug(this.getClass(),sixCodemap.toString());
+        LogUtil.debug(this.getClass(),fourCodemap.toString());
+        LogUtil.debug(this.getClass(),bankEntitymap.toString());
     }
 
-    public void reload(){
+    public void reload() throws FssException{
         synchronized (this){
-            menuMap.clear();
-            menus.clear();
             dict.clear();
             dictOrder.clear();
             merchantEntityMap.clear();
+            bankAmountLimitMap.clear();
+            fourCodemap.clear();
+            sixCodemap.clear();
+            eightCodemap.clear();
+            bankEntitymap.clear();
             update();
         }
     }
 
-    private void update(){
-        initMenu();
+    private void update() throws FssException{
         initDict();
         initMerchant();
+        initBankDealamountLimit();
+        iniBankArea();
+        initBankList();
     }
 
     /*======================================数据字典初始化及应用========================================================*/
@@ -99,12 +125,15 @@ public class Application {
     }
 
     public String getDictName(String key){
-        if(key == null){
-            return "未知错误";
+        if(key == null || "".equals(key) || "null".equals(key)){
+            return "无";
+        }
+        if("00000000".equals(key) || "0000".equals(key) ){
+            return "成功";
         }
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
-            value = "未知错误";
+            value = "数据字典未配置";
         }
         return value;
     }
@@ -117,8 +146,29 @@ public class Application {
         }
         return value;
     }
+    /*======================================银行交易限额初始化及应用========================================================*/
 
-
+	private  void initBankDealamountLimit(){
+    	BankDealamountLimitService bankDealamountLimitService = ServiceLoader.get(BankDealamountLimitService.class);
+    	
+    	List<BankDealamountLimitEntity> findAll = bankDealamountLimitService.findAll();  	
+    	for(BankDealamountLimitEntity bankDealamountLimitEntity:findAll) {
+            bankAmountLimitMap.put(bankDealamountLimitEntity.getBankCode()+bankDealamountLimitEntity.getTradeType(),bankDealamountLimitEntity);
+    	}
+    }
+    
+//    public boolean  existsBankDealamountLimit(String  bankCode){
+//    	return bankAmountLimitMap.containsKey(bankCode);
+//    }
+    
+    public BigDecimal getBankDealamountLimit(String bankCode) throws FssException {
+    	BankDealamountLimitEntity bankDealamountLimitEntity = bankAmountLimitMap.get(bankCode);
+    	if(bankDealamountLimitEntity == null){
+    		throw new FssException("90004024");
+    	}
+    	return bankDealamountLimitEntity.getLimitAmount();
+    }
+    /*======================================银行交易限额初始化及应用结束========================================================*/
     /**
      * 商户内存加载
      */
@@ -144,34 +194,105 @@ public class Application {
         return merchantEntity.getParentNo();
     }
 
+    public String getMechKey(String mchn) throws FssException {
+        MerchantEntity merchantEntity = merchantEntityMap.get(mchn);
+        if(merchantEntity == null){
+            throw new FssException("90008102");
+        }
+        return merchantEntity.getMchnKey();
+    }
+
+    /*======================================银行交易限额初始化及应用结束========================================================*/
+   
+    /**
+     * 地区码内存加载
+     * @throws FssException 
+     */
+    private  void iniBankArea() throws FssException{
+    	FssAreaMappingService bankAreaMappingService = ServiceLoader.get(FssAreaMappingService.class);
+    	
+    	 List<FssAreaMappingEntity> bankAreas = bankAreaMappingService.findAllAreaMapping();
+    	
+    	for(FssAreaMappingEntity bankArea:bankAreas) {
+    		sixCodemap.put(bankArea.getFourCode(),bankArea.getSixCode());
+    		fourCodemap.put(bankArea.getSixCode(),bankArea.getFourCode());
+    		eightCodemap.put(bankArea.getFourCode(),bankArea.getEightCode());
+    	}
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月1日
+     * function：根据四位码返回六位码
+     */
+    public String getSixCode(String fourCode) throws FssException {
+    	String string = sixCodemap.get(fourCode);
+    	return string;
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月1日
+     * function：根据四位码返回八位码
+     */
+    public String getEightCode(String fourCode) throws FssException {
+    	String string = eightCodemap.get(fourCode);
+    	return string;
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月1日
+     * function：根据六位码返回四位码
+     */
+    public String getFourCode(String sixCode) throws FssException {
+    	String string = fourCodemap.get(sixCode);
+    	try{
+    		if(string==null||"".equals(string)){
+    			String dictParentKey = this.getDictParentKey("95"+sixCode);
+    			if(dictParentKey!=null&&!"".equals(dictParentKey))
+    			string = getFourCode(dictParentKey.substring(2));
+    		}
+    	}catch(FssException e){
+    		 throw new FssException("90004031");
+    	}
+    	return string;
+    }
+    
+//    =============================银行列表初始化及应用=====================start===========================
+    private void initBankList(){
+    	BankService bankService = ServiceLoader.get(BankService.class);
+        List<BankEntity> banks = bankService.findAll();
+        if(banks == null) return;
+
+        for(BankEntity bankEntity:banks){
+            this.dict.put(bankEntity.getBankCode(),bankEntity.getBankName());
+            bankEntitymap.put(bankEntity.getBankCode(),bankEntity);
+        }
+    }
+    public boolean  existsBank(String  bankCode){
+        return bankEntitymap.containsKey(bankCode);
+    }
+
+    public String getBankName(String bankCode) throws FssException {
+    	BankEntity bankEntity = bankEntitymap.get(bankCode);
+        if(bankEntity == null){
+            throw new FssException("90002012");
+        }
+        return bankEntity.getBankName();
+    }
+    public String getBankShortName(String bankCode) throws FssException {
+    	BankEntity bankEntity = bankEntitymap.get(bankCode);
+    	if(bankEntity == null){
+    		throw new FssException("90002012");
+    	}
+    	return bankEntity.getSortName();
+    }
+//    =============================银行列表初始化及应用=====================end===========================
+    
     /*======================================菜单初始化及应用========================================================*/
 
-    private void initMenu(){
-        MenuService menuService = com.gqhmt.util.ServiceLoader.get(MenuService.class);
-        List<MenuEntity> menus = menuService.findMenuAll();
-        LogUtil.debug(this.getClass(),menus.toString());
-        //循环菜单项，初始化菜单
-        for(MenuEntity menu:menus){
-            menuMap.put(Long.parseLong(menu.getId()),menu);
-            if(Integer.parseInt(menu.getParentId() )== 0){
-                this.menus.add(menu);
-            }
-        }
-        for(MenuEntity menu:menus){
-            if(Integer.parseInt(menu.getParentId() ) == 0){
-                continue;
-            }
-            Long parentId = Long.parseLong(menu.getParentId());
-            MenuEntity menu1 = menuMap.get(parentId);
-            if(menu1 != null){
-                menu1.addMenu(menu);
-            }
-        }
-    }
 
-    public String getMenu(String context,String url){
-        return this.getHtml(menus,context,url).toString();
-    }
 
     public StringBuffer getHtml(List<MenuEntity> func, String context, String url){
 

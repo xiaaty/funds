@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.account.mapper.read;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -31,10 +32,14 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	 * @param map
 	 * @return
 	 */
-	public List<FssAccountEntity> findCustomerAccountByParams(Map map);
+	public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity);
 
 	
 	
 	public List<BussAndAccountBean> getBussinessAccountList(Map map);
+
+	public FssAccountEntity findAccountByAccNo(@Param("accNo") String accNo);
+	
+//	public FssAccountEntity findAccountByCustId(@Param("custId") Long custId);
 
 }

@@ -1,16 +1,17 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APISignature;
+import com.gqhmt.annotations.APITradeTypeValid;
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.extServInter.service.trade.IRecharge;
-import com.gqhmt.pay.service.IFundsTrade;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.pay.service.trade.IFundsTrade;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -34,12 +35,14 @@ public class RechargeImpl implements IRecharge {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
+	@APITradeTypeValid(value = "11030002,11030003,11030004,11030005")
+	@APISignature
     @Override
-    public Response excute(SuperDto dto) {
-    	Response response = new Response();
+    public Response execute(SuperDto dto) {
+    	Response response=new Response();
     	try {
     		fundsTradeImpl.withholding((WithholdDto)dto);
-			 response.setResp_code("00000000");
+    		response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

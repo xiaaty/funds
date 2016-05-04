@@ -1,12 +1,9 @@
 package com.gqhmt.fss.architect.order.service;
 
-import com.gqhmt.fss.architect.order.mapper.write.OrderWriteDaoInter;
+import com.gqhmt.TestService;
 import com.gqhmt.fss.architect.order.entity.Order;
+import com.gqhmt.fss.architect.order.mapper.write.OrderWriteDaoInter;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
@@ -26,9 +23,7 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class OrderServiceTest extends AbstractJUnit4SpringContextTests {
+public class OrderServiceTest extends TestService {
 
     @Resource
     private OrderService orderService;

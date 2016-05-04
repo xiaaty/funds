@@ -20,5 +20,5 @@
 	<bean id="casFilter" class="org.jasig.cas.client.authentication.AuthenticationFilter" />
 	<bean id="casValidationFilter" class="org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter"/>
 	<!--<bean id="casAssertionThreadLocalFilter" class="org.jasig.cas.client.util.AssertionThreadLocalFilter"/>-->
-	<!--<bean id="loginFilter" class="com.gqhmt.sys.web.LoginFilter" />-->
+	<bean id="loginFilter" class="com.gqhmt.sys.web.LoginFilter" />
 </beans>

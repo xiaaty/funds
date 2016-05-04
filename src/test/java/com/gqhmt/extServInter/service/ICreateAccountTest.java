@@ -1,13 +1,11 @@
 package com.gqhmt.extServInter.service;
 
+import com.gqhmt.TestService;
 import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.service.account.impl.CreateAccountImpl;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
@@ -27,9 +25,7 @@ import javax.annotation.Resource;
  * -----------------------------------------------------------------
  * 16/2/19  于泳      1.0     1.0 Version
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/*.xml")
-public class ICreateAccountTest {
+public class ICreateAccountTest extends TestService {
 
     @Resource
     private CreateAccountImpl createAccount;
@@ -38,7 +34,7 @@ public class ICreateAccountTest {
     public void createAccountTest() throws APIExcuteErrorException {
         CreateAccountDto dto = new CreateAccountDto();
         try {
-            Response response = createAccount.excute(dto);
+            Response response = createAccount.execute(dto);
             assert response.getResp_code().equals("90008101");
         }catch (Throwable t){
             t.printStackTrace();

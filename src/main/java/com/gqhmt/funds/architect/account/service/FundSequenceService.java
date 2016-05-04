@@ -1,7 +1,10 @@
 package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
+import com.gqhmt.business.architect.loan.bean.RepaymentBean;
+import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
@@ -15,9 +18,8 @@ import com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundSequenceWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
-import com.gqhmt.util.Encriptor;
+import com.gqhmt.core.util.Encriptor;
 import com.gqhmt.util.ThirdPartyType;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -49,11 +51,8 @@ public class FundSequenceService {
     private FundSequenceReadMapper fundSequenceReadMapper;
     @Resource
     private FundSequenceWriteMapper fundSequenceWriteMapper;
-
     @Resource
     private FundAccountService fundAccountService;
-    
-
     @Resource
     private FundTradeService fundTradeService;
 
@@ -422,8 +421,136 @@ public class FundSequenceService {
 	  return list;
   }
    
-   
-   
+  /**
+   * 查询资金流水列表
+   */
+  public List<FundFlowBean> queryFundFlowBean(FundFlowBean fundflow){
+	  List<FundFlowBean> list=fundSequenceReadMapper.selectAllFundFlow(fundflow);
+	  return list;
+  }
+
+
+  public void selletSequence(List<Tender> list,FundAccountEntity toEntity, FundOrderEntity fundOrderEntity ,String title) throws FssException {
+
+      BigDecimal bonusAmount = BigDecimal.ZERO;
+      List<Tender> tenders = new ArrayList<>();		//返现tender集合
+
+
+      for (Tender tender : list) {
+          FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
+          try {
+              this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null, ThirdPartyType.FUIOU, fundOrderEntity);
+          } catch (FssException e) {
+              LogUtil.error(this.getClass(), e.getMessage());
+          }
+
+          this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2006, "你出借的产品" + title + " 已满标，转给借款人 " + tender.getRealAmount() + "元" + (tender.getBonusAmount().intValue() > 0 ? ",红包抵扣 " + tender.getBonusAmount() + "元" : ""));
+
+          //红包使用金额汇总2015.07.31 于泳
+          if(tender.getBonusAmount() != null) {
+              bonusAmount = bonusAmount.add(tender.getBonusAmount());
+          }
+      }
+
+      //红包账户出账，使用红包汇总 2015.07.31 于泳
+      if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
+          FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+          this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
+          this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
+      }
+
+  }
+
+    public void abortSequence(List<Tender> list,FundAccountEntity  fromEntity , FundOrderEntity fundOrderEntity ,String title) throws FssException {
+
+        BigDecimal bonusAmount = BigDecimal.ZERO;
+        List<Tender> tenders = new ArrayList<>();		//返现tender集合
+
+
+        for (Tender tender : list) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
+            try {
+                this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2011,null, ThirdPartyType.FUIOU, fundOrderEntity);
+            } catch (FssException e) {
+                LogUtil.error(this.getClass(), e.getMessage());
+            }
+
+            this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2011, "你出借的产品" + title + " 已流标，退回资金 " + tender.getRealAmount() + "元");
+
+            //红包使用金额汇总2015.07.31 于泳
+            if(tender.getBonusAmount() != null) {
+                bonusAmount = bonusAmount.add(tender.getBonusAmount());
+            }
+        }
+
+        //红包账户出账，使用红包汇总 2015.07.31 于泳
+        if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+            this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
+            this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
+        }
+
+    }
+
+
+    public void repaymentSequence(List<RepaymentBean> list,String title,FundAccountEntity fromEntity,FundOrderEntity fundOrderEntity,BigDecimal sumRepay){
+        //产品名称，如果产品名称为空，则去标的title
+        ThirdPartyType thirdPartyType = ThirdPartyType.FUIOU;
+        for (RepaymentBean bean : list) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
+
+            if (bean.getCustomerId() < GlobalConstants.RESERVED_CUSTOMERID_LIMIT) {
+                if (bean.getRepaymentAmount().compareTo(BigDecimal.ZERO) > 0) {
+                    try {
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,null,thirdPartyType.FUIOU, fundOrderEntity);
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                }
+            } else {
+                if (bean.getRepaymentPrincipal().compareTo(BigDecimal.ZERO) > 0) {
+                    try {
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentPrincipal(), 7, 3003,null,thirdPartyType, fundOrderEntity);
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                    try {
+                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentPrincipal(), BigDecimal.ZERO, 3005, title + " 收到还款本金 " + bean.getRepaymentPrincipal() + "元");
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                }
+                if (bean.getRepaymentInterest().compareTo(BigDecimal.ZERO) > 0) {
+                    try {
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentInterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                    try {
+                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentInterest(), BigDecimal.ZERO, 3006, title + " 收到还款利息 " + bean.getRepaymentInterest() + "元");
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                }
+            }
+
+            // 转到应付账户
+            BigDecimal amount = bean.getPayableAmount();
+            if (amount.compareTo(BigDecimal.ZERO) > 0) {
+                FundAccountEntity toA0Account = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
+                try {
+                    this.transfer(toEntity, toA0Account, amount, 7, 1005,null,thirdPartyType, fundOrderEntity);
+                } catch (FssException e) {
+                    LogUtil.error(this.getClass(), e);
+                }
+            }
+        }
+        try {
+            fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, sumRepay, 3003, title + " 还款成功，扣除还款金额 " + sumRepay + "元");
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(), e);
+        }
+    }
    
    
 }

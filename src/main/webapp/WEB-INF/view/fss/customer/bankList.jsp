@@ -4,9 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!-- <meta charset="UTF-8"> -->
     <title>资金清结算系统--银行列表--冠群驰骋投资管理(北京)有限公司</title>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../view/include/common_css_js.jsp"%>
     <style>
@@ -77,19 +77,21 @@
                                                     <tr>
                                                         <td class="tr" nowrap="nowrap">银行代码:</td>
                                                         <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="bankCode" value="${bankinfo.bankCode}">
                                                             </label>
                                                         </td>
+                                                        
                                                         <td class="tr" nowrap="nowrap">银行名称:</td>
                                                         <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="bankName" value="${bankinfo.bankName}">
                                                             </label>
                                                         </td>
+                                                        
                                                         <td class="tr" nowrap="nowrap">银行短名称:</td>
                                                         <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
+                                                            <label class="input"  style="width:250px" >
                                                                 <input type="text" name="sortName" value="${bankinfo.sortName}">
                                                             </label>
                                                         </td>
@@ -111,7 +113,6 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
@@ -130,33 +131,43 @@
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;新增银行</button>
                                 </div> 
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
-                                        <thead>
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1250px;">
+                                    	<col width="50" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="200" />
+                                    	<col width="200" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<thead>
                                         <tr>
-                                            <th>编号</th>
-                                            <th>银行名称</th>
-                                            <th>银行短名称</th>
-                                            <th>银行代码</th>
-                                            <th>银行图标</th>
-                                            <th>创建时间</th>
-                                            <th>修改时间</th>
-                                            <th>操作</th>
+                                            <td>编号</td>
+                                            <td  align="left">银行名称</td>
+                                            <td  align="left">银行短名称</td>
+                                            <td>银行代码</td>
+                                            <td>银行图标</td>
+                                            <td>创建时间</td>
+                                            <td>修改时间</td>
+                                            <td>是否有效</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${page.list}" var="t">
+                                        <c:forEach items="${page.list}" var="bankinfo">
                                                 <tr>
-                                                  	<td>${t.id}</td>
-                                                    <td>${t.bankName}</td>
-                                                    <td>${t.sortName}</td>
-                                                    <td>${t.bankCode}</td>
-                                                    <td><img src="${contextPath}${t.bankIcon}"/></td>
-                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                  	<td>${bankinfo.id}</td>
+                                                    <td  align="left">${bankinfo.bankName}</td>
+                                                    <td  align="left">${bankinfo.sortName}</td>
+                                                    <td>${bankinfo.bankCode}</td>
+                                                    <td><img src="${contextPath}${bankinfo.bankIcon}"/></td>
+                                                    <td><fmt:formatDate value="${bankinfo.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${bankinfo.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>${bankinfo.isvalid==0 ? "有效":"无效"}</td>
                                                      <td>
-                                                     	 <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a>&nbsp;&nbsp;&nbsp;
-                                                      	 <a href="${contextPath}/fund/checkPageXe/${t.id}">查看页面限额</a>  
-                                                     	 <%-- <a href="${contextPath}${t.limitPage}">查看页面限额</a> --%>
+                                                     	 <%-- <a href="${contextPath}/fund/banktoupdate/${t.id}">修改</a> --%>&nbsp;&nbsp;&nbsp;
+                                                     	  <a href="${contextPath}${bankinfo.limitPage}">查看页面限额</a> 
                                                      </td>
                                                 </tr>
                                         </c:forEach>
@@ -167,7 +178,6 @@
                             </form>
                         </div>
                     </div>
-                </article>
             </div>
 
         </section>

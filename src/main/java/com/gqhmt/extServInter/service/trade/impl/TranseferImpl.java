@@ -9,7 +9,7 @@ import com.gqhmt.extServInter.service.trade.ITransefer;
 
 import javax.annotation.Resource;
 
-import com.gqhmt.pay.service.IFundsTrade;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,7 +34,7 @@ public class TranseferImpl implements ITransefer{
 	@Resource
 	private IFundsTrade fundsTrade;
 	
-    public Response excute(SuperDto dto) {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
 			fundsTrade.transfer((TransferDto)dto);

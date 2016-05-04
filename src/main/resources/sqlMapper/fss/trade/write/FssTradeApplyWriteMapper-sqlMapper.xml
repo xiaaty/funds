@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper">
+	<!-- 根据申请编号修改执行成功条数 -->
+	<update id="updateTradeApplyByApplyNo" parameterType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity">
+		UPDATE
+		t_gq_fss_trade_apply t
+		SET
+		t.success_count= t.success_count+1,
+		t.modify_time=#{modifyTime}
+		WHERE t.apply_no=#{applyNo}
+	</update>
+</mapper>

@@ -23,25 +23,49 @@ public class FundOrderEntity implements java.io.Serializable {
 	private Long id;
 
 	@Column(name = "account_id" ,updatable = false)
-	private Long accountId;
-    private Long toAccountId;             //to_account_id
+	private Long accountId;				//出账账户编号',
+	
+	@Column(name="to_account_id",updatable = false)
+    private Long toAccountId;             //入账账户编号',
 
 	@Column(name = "order_no", length = 30)
-	private String orderNo;
+	private String orderNo;				//订单编号(特定生成)
 
 	@Column(name = "order_type",updatable = false)
-	private Integer orderType;
-	private Long orderFrormId;
-	private Integer orderSource;
-	private BigDecimal orderAmount;
-	private Integer orderState;
-	private String retCode;
-	private String retMessage;
-	private Date createTime;
-	private Date lastModifyTime;
+	private Integer orderType;			//订单类型(1-充值 2-提现 3-代偿 4-投标 5-转账 6-还款 7-流标)
+	
+	@Column(name = "order_frorm_id",updatable =  false)
+	private Long orderFrormId;				//'订单来源编号',
+	
+	@Column(name = "order_source",updatable =  false)
+	private Integer orderSource;		//来源类型
+	
+	@Column(name = "order_amount", precision = 18, scale = 2,updatable =  false)
+	private BigDecimal orderAmount;		//订单金额
+
+	@Column(name = "charge_amount",updatable = false)
+	private BigDecimal chargeAmount;
+	
+	@Column(name = "order_state")
+	private Integer orderState;				//订单状态(1-提交 2-成功 3-失败 4-无响应,5待校验码验证，6异步处理，7第三方返回值为空，需验证)',
+	
+	private String retCode;				//'第三方返回代码',
+	
+	private String retMessage;			//第三方返回信息
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "create_time", updatable =  false)
+	private Date createTime;			//订单创建时间
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "last_modify_time")
+	private Date lastModifyTime;			//最后更新时间
+	
 	@Column(name = "thirdparty_type",updatable = false,nullable = false)
-    private String thirdPartyType;
-    private BigDecimal chargeAmount;
+    private String thirdPartyType;			//第三方支付类型
+	
+
+
 
 	public Long getId() {
 		return this.id;
@@ -78,7 +102,6 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.orderType = orderType;
 	}
 
-	@Column(name = "order_frorm_id",updatable =  false)
 	public Long getOrderFrormId() {
 		return this.orderFrormId;
 	}
@@ -87,7 +110,7 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.orderFrormId = orderFrormId;
 	}
 
-	@Column(name = "order_source",updatable =  false)
+	
 	public Integer getOrderSource() {
 		return this.orderSource;
 	}
@@ -96,7 +119,6 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.orderSource = orderSource;
 	}
 
-	@Column(name = "order_amount", precision = 18, scale = 2,updatable =  false)
 	public BigDecimal getOrderAmount() {
 		return this.orderAmount;
 	}
@@ -105,7 +127,6 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.orderAmount = orderAmount;
 	}
 
-	@Column(name = "order_state")
 	public Integer getOrderState() {
 		return this.orderState;
 	}
@@ -132,8 +153,7 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.retMessage = retMessage;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "create_time", length = 0,updatable =  false)
+	
 	public Date getCreateTime() {
 		return this.createTime;
 	}
@@ -142,8 +162,7 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.createTime = createTime;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "last_modify_time", length = 0)
+	
 	public Date getLastModifyTime() {
 		return this.lastModifyTime;
 	}
@@ -160,7 +179,6 @@ public class FundOrderEntity implements java.io.Serializable {
         this.thirdPartyType = thirdPartyType;
     }
 
-    @Column(name="to_account_id",updatable = false)
     public Long getToAccountId() {
         return toAccountId;
     }
@@ -170,7 +188,6 @@ public class FundOrderEntity implements java.io.Serializable {
     }
 
 
-    @Column(name = "charge_amount",updatable = false)
     public BigDecimal getChargeAmount() {
         return chargeAmount;
     }

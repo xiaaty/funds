@@ -64,7 +64,7 @@
                             </header>
                             <!-- widget div-->
                             <div>
-                                <form class="smart-form" id="cardListForm" action="" method="post" >
+                                <form class="smart-form" id="cardListForm" action="${contextPath}/fund/bankCardsManage" method="post" >
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
                                         <!-- This area used as dropdown edit box -->
@@ -85,13 +85,13 @@
                                                         <td class="tr" nowrap="nowrap">客户姓名:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
-                                                                <input type="text" name="certName" value="${bankcard.certName}">
+                                                                <input type="text" name="certName" value="${map.certName}">
                                                             </label>
                                                         </td>
                                                         <td class="tr" nowrap="nowrap">银行卡号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="bankNo" value="${bankcard.bankNo}">
+                                                                <input type="text" style="width:210px" name="bankNo" value="${map.bankNo}">
                                                             </label>
                                                         </td>
                                                         </tr>
@@ -99,29 +99,29 @@
                                                         <td class="tr" nowrap="nowrap">银行简称：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="bankSortName" value="${bankcard.bankSortName}">
+                                                                <input type="text" style="width:210px" name="bankSortName" value="${map.bankSortName}">
                                                             </label>
                                                         </td>
                                                         <td class="tr">创建时间：</td>
-			                                            <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="startime" name="startime" value="${startime}" class="selectdate" placeholder="请选择时间">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" id="endtime" name="endtime" value="${endtime}" class="selectdate" placeholder="请选择时间" >
-			                                                    </label>
-			                                                </section>
-			                                            </td>
+			                                            <td colspan="3">
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
+				                                                    </label>
+				                                                </section>
+				                                                <span class="fl">&nbsp;至&nbsp;</span>
+				                                                <section class="fl">
+				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+				                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
+				                                                    </label>
+				                                                </section>
+				                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                         <footer>
-                                            <button type="submit" class="btn btn-primary" onclick="tijiao()">查&nbsp;&nbsp;&nbsp;询</button>
+                                             <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -136,8 +136,8 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
+             <!--    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>银行卡列表</h2>
@@ -152,29 +152,38 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered mt15" style="text-align:center;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1150px;">
+                                    	<col width="50" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="50" />
+                                        <col width="150" />
+                                        <col width="150" />
+                                        <col width="150" />
                                         <thead>
                                         <tr>
-                                        	<th>编号</th>
-                                            <th>客户名称</th>
-                                            <th>银行名称  </th>
-                                            <th>银行简称  </th>
-                                            <th>银行账号 </th>
-                                            <th>银行卡类型 </th>
-                                            <th>是否绑定第三方银行账户</th>
-                                            <th>创建日期 </th>
-                                            <th>修改日期 </th>
-                                           <!--  <th>操作</th> -->
+                                        	<td>编号</td>
+                                            <td  align="left">客户名称</td>
+                                            <td  align="left">银行名称  </td>
+                                            <td  align="left">银行简称  </td>
+                                            <td>银行账号 </td>
+                                            <td>银行卡类型 </td>
+                                            <td>是否绑定第三方银行账户</td>
+                                            <td>创建日期 </td>
+                                            <td>修改日期 </td>
+                                           <!--  <td>操作</td> -->
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                            <tr>
                                                <td>${t.id}</td>
-                                               <td>${t.certName}</td>
-                                               <td>${t.bankLongName}</td>
-                                               <td>${t.bankSortName}</td>
-                                               <td>${t.bankNo}</td>
+                                               <td  align="left">${t.certName}</td>
+                                               <td  align="left">${t.bankLongName}</td>
+                                               <td  align="left">${t.bankSortName}</td>
+                                               <td><fss:fmtData value="${t.bankNo}"/></td>
                                                <td>${t.isPersonalCard==1?"个人":"公司"}</td>
                                                <td>${empty t.cardIndex ? "未绑定":"已绑定"}</td>
                                                <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -192,7 +201,7 @@
                             </form>
                         </div>
                     </div>
-                </article>
+               <!--  </article> -->
             </div>
 
         </section>
@@ -207,38 +216,37 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#cardListForm"));
-        
-        $('.selectdate').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            autoclose: 1,
-            format: 'yyyy-mm-dd',
-            todayHighlight: 1,
-            startView: 2,
-            minView: 2,
-            forceParse: 0
-        });
-	     
-	     dateCheck();
-	     
-	     
-        $('.selectdate_time').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            autoclose: 1,
-            format: 'hh:m:00',
-            todayHighlight: 1,
-            startView: 1,
-            minView: 1,
-            forceParse: 0
-        });
-        
-        
-        
-        
-        
     });
-
+    $('.selectdate').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        autoclose: 1,
+        format:'yyyy-mm-dd',
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    function verify(){
+    	var a=document.getElementsByName("startTime");
+    	var b=document.getElementsByName("endTime");
+    	if(b[0].value!=null&&b[0].value!=''){
+    		
+    		if(a[0].value>b[0].value){
+    			JAlert("请检查您输入的日期","提示消息");
+    		}else{
+    			$("#cardListForm").submit();
+    		}
+    	}else{
+    		var d = new Date();
+    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+    		if(a[0].value>str){
+    			JAlert("请检查您输入的日期","提示消息");
+    		}else{
+    			$("#cardListForm").submit();
+    		}
+    	}
+    }
     
     /**
    	删除
@@ -259,129 +267,6 @@
 	            });
     }
     **/
-    
-  //日期的合法性check
-    function dateCheck() {
-    	var $selectdate = $(".selectdate");
-    	$selectdate.each(function() {
-    		//$(this).off();
-        	$(this).focus(function() {
-        		//
-        		this.select();
-        	})
-        	.blur(function() {
-	        	if($(this).val() != "") {
-		        	var val = $(this).val();
-		        	if (val.indexOf("\-") > 0 ) {
-		        	} else {
-		        		if (val.length == 8) {
-		        			val = val.substr(0,4) + "-" + val.substr(4,2) + "-" + val.substr(6,2);
-		        			$(this).val(val);
-		        		}
-		        	}
-		        	var msg= isDate($(this).val());
-		        	if (msg != "") {
-			        	alert(msg);
-			        	this.focus();
-		        	}
-
-        		}
-        	});
-    	});
-    }
- 
-    function isDate(strDate){
-    	var strSeparator = "-"; //日期分隔符 
-    	var strDateArray; 
-    	var intYear; 
-    	var intMonth; 
-    	var intDay; 
-    	var boolLeapYear; 
-    	var ErrorMsg = ""; //出错信息 
-    	strDateArray = strDate.split(strSeparator); 
-    	//没有判断长度,其实2008-8-8也是合理的//strDate.length != 10 || 
-    	if(strDateArray.length != 3) { 
-        	ErrorMsg += "日期格式必须为: 年-月-日"; 
-        	return ErrorMsg; 
-    	} 
-    	intYear = parseInt(strDateArray[0],10); 
-    	intMonth = parseInt(strDateArray[1],10); 
-    	intDay = parseInt(strDateArray[2],10); 
-    	if(isNaN(intYear)||isNaN(intMonth)||isNaN(intDay)) { 
-    		ErrorMsg += "请输入有效的日期！"; 
-        	return ErrorMsg; 
-    	} 
-    	if(intMonth>12 || intMonth<1) { 
-    		ErrorMsg += "请输入有效的日期！"; 
-        	return ErrorMsg; 
-    	} 
-    	if((intMonth==1||intMonth==3||intMonth==5||intMonth==7 
-    		||intMonth==8||intMonth==10||intMonth==12) &&(intDay>31||intDay<1)) { 
-    		ErrorMsg += "请输入有效的日期！"; 
-        	return ErrorMsg; 
-    	} 
-    	if((intMonth==4||intMonth==6||intMonth==9||intMonth==11) 
-    		&&(intDay>30||intDay<1)) { 
-    		ErrorMsg += "请输入有效的日期！";  
-        	return ErrorMsg; 
-    	} 
-    	if(intMonth==2){ 
-        	if(intDay < 1) { 
-        		ErrorMsg += "请输入有效的日期！";  
-	        	return ErrorMsg; 
-    		} 
-        	boolLeapYear = false; 
-        	if((intYear%100) == 0){ 
-	        	if((intYear%400) == 0) 
-	        	boolLeapYear = true; 
-    		} else { 
-	        	if((intYear % 4) == 0) 
-	        		boolLeapYear = true; 
-        		} 
-        		if(boolLeapYear){ 
-	        		if(intDay > 29) { 
-	        			ErrorMsg += "请输入有效的日期！"; 
-		        		return ErrorMsg; 
-        			} 
-    			} else { 
-		        	if(intDay > 28) { 
-			        	ErrorMsg += "请输入有效的日期！"; 
-			        	return ErrorMsg; 
-	        		} 
-    			} 
-    		} 
-    	return ErrorMsg; 
-    } 
- 
-    //验证输入的开户开始日期与结束日期 
-    function tijiao(){
-    	var startime=$("#startime").val();
-    	var endtime=$("#endtime").val();
-    	var d=new Date();
-    	var nowday=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-    	var d1 = new Date(startime.replace(/\-/g, "\/"));  
-		var d2 = new Date(endtime.replace(/\-/g, "\/"));  
-		var d3 = new Date(nowday.replace(/\-/g, "\/"));  
-    	
-    	if(startime!="" && endtime.length==0){
-    		if(d1>d3){
-    			alert('查询开始时间不能早于当前时间！');
-    			return false;
-    		}
-    	}else
-    	if(startime!="" && endtime!=""){
-    		if(d1>d3 && d1<=d2){
-    			alert('您查询时间范围超前了！');
-    			return false;
-    		}else
-    		if(d1>d2){
-    			alert('查询开始时间不能早于结束时间！');
-    			return false;
-    		}
-    	}
-    }
-    
-    
     
     
     

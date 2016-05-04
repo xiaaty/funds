@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper">
-	<select id="queryChangeCardList" parameterType="changeCardEntity" resultType="changeCardEntity">
-		SELECT 
+	<sql id="fieldSql">
+	SELECT 
 		t.id id,
 		t.cust_id custId,
 		t.cert_type certType,
@@ -18,6 +18,8 @@
 		t.create_time createTime,
 		t.modify_time modifyTime,
 		t.create_user_id createUserId,
+		t.b_bank_info_id bBankInfoId,
+		t.a_bank_info_id aBankInfoId,
 		t.order_no orderNo,
 		t.file_path filePath,
 		t.resp_code respCode,
@@ -27,8 +29,13 @@
 		t.pass_time passTime,
 		t.pass_user_id passUserId,
 		t.effect_time effectTime,
-		t.seq_no seqNo
+		t.mchn mchn,
+		t.seq_no seqNo,
+		t.trade_type tradeType
 		FROM `t_gq_fss_changecard_record` t
+	</sql>
+	<select id="queryChangeCardList" parameterType="changeCardEntity" resultType="changeCardEntity">
+		<include refid="fieldSql"/>
 		<where>
 		<if test="custName!=null and custName!=''">
 		 	AND t.cust_name Like CONCAT(CONCAT('%',#{custName}),'%') 
@@ -43,10 +50,28 @@
 			AND t.state=#{state}
 		</if>
 	</where>
-		
-		
-		
-		
-		
+	order by t.create_time desc
+	</select>
+	
+	<select id="getChangeCardByParam" resultType="com.gqhmt.extServInter.dto.loan.ChangeCardResponse">
+		SELECT 
+		t.mchn mchn,
+		t.type trade_type,
+		t.seq_no seq_no,
+		t.acc_no acc_no,
+		t.bank_city city_id,
+		t.bank_type bank_id,
+		t.card_no bank_card
+		 FROM `t_gq_fss_changecard_record` t
+		WHERE t.seq_no=#{seq_no}
+		AND t.mchn=#{mchn}
+	</select>
+	<select id="queryByTradeState" resultType="com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity">
+		<include refid="fieldSql"/>
+		WHERE t.trade_state=#{tradeState}
+	</select>
+	<select id="selectByCustId" resultType="com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity">
+		<include refid="fieldSql"/>
+		WHERE t.cust_id=#{custId}
 	</select>
 </mapper>

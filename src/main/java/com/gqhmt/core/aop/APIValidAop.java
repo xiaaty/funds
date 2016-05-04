@@ -1,16 +1,10 @@
 package com.gqhmt.core.aop;
 
 import com.github.pagehelper.PageHelper;
-import com.gqhmt.annotations.APIValid;
-import com.gqhmt.annotations.APIValidNull;
-import com.gqhmt.annotations.APIValidType;
-import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.annotations.*;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.mybatis.GqPageInfo;
-import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.core.util.JsonUtil;
-import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.PageSuperDto;
 import com.gqhmt.extServInter.dto.QueryListResponse;
 import com.gqhmt.extServInter.dto.Response;
@@ -29,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -58,7 +53,7 @@ public class APIValidAop {
     public APIValidAop() {
     }
 
-    @Pointcut("execution(* com.gqhmt.extServInter.service.*.impl.*.excute(..))")
+    @Pointcut("execution(* com.gqhmt.extServInter.service.*.impl.*.execute(..))")
     public void point(){
 
     }
@@ -67,6 +62,7 @@ public class APIValidAop {
     @Around("point()")
     public Object validAround(ProceedingJoinPoint joinPoint) {
 
+        Long startTime = Calendar.getInstance().getTimeInMillis();
         Response response = null;
         String code = "90099999";
         SuperDto dto = null;
@@ -75,11 +71,16 @@ public class APIValidAop {
         try {
             dto = getArgsDto(joinPoint);
             targetClass = joinPoint.getTarget();
-            methodName = joinPoint.getSignature().getName();
-            //校验商户
-            this.validMch(targetClass,methodName,dto);
-            //交易类型校验
 
+            methodName = joinPoint.getSignature().getName();
+            LogUtil.info(targetClass.getClass(),"API接入:"+targetClass.getClass().getName()+"."+methodName+":参数seq:"+dto.getMchn()+"|"+dto.getSeq_no()+"|"+dto.getTrade_type());
+            LogUtil.info(targetClass.getClass(),"API接入:"+targetClass.getClass().getName()+"."+methodName+":参数json:"+JsonUtil.getInstance().getJson(dto));
+            //校验商户
+            this.validMch(dto);
+            //签名校验
+            //validSignature(targetClass,methodName,dto);
+            //交易类型校验
+            this.validTradeType(targetClass,methodName,dto);
             //数据校验
             this.validData(dto);
             //生成交易订单
@@ -108,12 +109,23 @@ public class APIValidAop {
             LogUtil.error(this.getClass(),e);
         }
 
+        String resCode = response.getResp_code();
+        if(resCode != null && Integer.parseInt(resCode) == 0){
+            resCode = "0000";
+            response.setResp_code(resCode);
+        }
+        String resMsg = Application.getInstance().getDictName(response.getResp_code());
         //处理成功返回值
-        response.setResp_msg(Integer.parseInt(response.getResp_code())==0 ? "成功": Application.getInstance().getDictName(response.getResp_code()));
+        response.setResp_msg(resMsg);
+
 
         generateAutoPage(targetClass,methodName,response);
         //更改订单结果
         this.callbackOrder(response,dto);
+
+
+        Long endTime = Calendar.getInstance().getTimeInMillis();
+        LogUtil.info(targetClass.getClass(),"API接入:"+targetClass.getClass().getName()+"."+methodName+":参数seq:"+dto.getMchn()+"|"+dto.getSeq_no()+"|"+dto.getTrade_type()+":执行结果:"+response.getResp_code()+"|"+response.getResp_msg()+":执行时间:"+(endTime-startTime));
 
         return response;
     }
@@ -122,9 +134,9 @@ public class APIValidAop {
      * 数据校验
      * @param dto
      */
-    private void validData(SuperDto dto) throws FssException {
-        Class<SuperDto> dtoClass = (Class<SuperDto>) dto.getClass();
-        Class<SuperDto> superDtoClass = (Class<SuperDto>) dtoClass.getSuperclass();
+    private void validData(Object dto) throws FssException {
+        Class dtoClass =  dto.getClass();
+        Class superDtoClass = dtoClass.getSuperclass();
         Field[] fields  = dtoClass.getDeclaredFields();
         Field[] superFields= superDtoClass.getDeclaredFields();
         for(Field field:superFields){
@@ -143,13 +155,11 @@ public class APIValidAop {
 
     /**
      * 商户校验
-     * @param obj
-     * @param method
      * @param dto
      * @return
      * @throws FssException
      */
-    private String validMch(Object obj ,String method,SuperDto dto) throws FssException {
+    private String validMch(SuperDto dto) throws FssException {
         String  result = "90099999";
         try {
             Class superDtoClass = getEntityClass(dto,SuperDto.class);
@@ -162,10 +172,29 @@ public class APIValidAop {
             //校验权限 使用dubbo,此功能暂时不做
             //校验ip白名单,黑名单 使用dubbo,此功能暂时不做
             //签名校验,使用dubbo ,此处暂时不做
+
         } catch (NoSuchFieldException e) {
             throw  new FssException("90099998",e);
         }
         return result;
+    }
+
+    private void validSignature(Object obj ,String methodName,SuperDto dto) throws FssException {
+        Method method = FssBeanUtil.findMethod(obj.getClass(),methodName,SuperDto.class);
+        APISignature signatureAno = method.getAnnotation(APISignature.class);
+        if(signatureAno == null){
+            return;
+        }
+       
+        String mchn = dto.getMchn();
+        String seqNo = dto.getSeq_no();
+        String tradeType = dto.getTrade_type();
+        String key = Application.getInstance().getMechKey(mchn);
+        String signature = dto.getSignature();
+        String validSignature = Encriptor.getMD5(mchn+"|"+seqNo+"|"+tradeType+"|"+key);
+        if (signature == null || !signature.equals(validSignature)){
+            throw new FssException("90008302");
+        }
     }
 
     /**
@@ -194,6 +223,13 @@ public class APIValidAop {
 
     }
 
+    /**
+     * 交易金额校验
+     * @param superField
+     * @param obj
+     * @param methodName
+     * @throws FssException
+     */
     private void validMoney(Field superField,Object obj,String methodName) throws FssException {
         APIValid apiValid = superField.getAnnotation(APIValid.class);
         if(apiValid == null){
@@ -242,8 +278,6 @@ public class APIValidAop {
                     throw  new FssException("90004016");
                 }
             }
-
-
 
         } catch (NoSuchMethodException e) {
             throw new FssException("90099998",e);
@@ -298,6 +332,11 @@ public class APIValidAop {
     }
 
 
+    /**
+     * 生成交易订单
+     * @param dto
+     * @throws Exception
+     */
     private void generate(final SuperDto dto) throws Exception {
         FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,dto);
         fssSeqOrderEntity.setTradeType(Application.getInstance().getDictParentKey(dto.getTrade_type()));
@@ -307,6 +346,11 @@ public class APIValidAop {
         fssSeqOrderService.save(fssSeqOrderEntity);
     }
 
+    /**
+     * 交易完成,更新订单状态
+     * @param response
+     * @param dto
+     */
     private void callbackOrder(Response response, SuperDto dto){
         FssSeqOrderEntity fssSeqOrderEntity = dto.getFssSeqOrderEntity();
         if (fssSeqOrderEntity == null){
@@ -323,6 +367,12 @@ public class APIValidAop {
     }
 
 
+    /**
+     * API分页控制
+     * @param obj
+     * @param methodName
+     * @param dto
+     */
     private void generateAutoPage(Object obj,String  methodName,SuperDto dto){
         Class class1 = obj.getClass();
         try {
@@ -351,6 +401,12 @@ public class APIValidAop {
 
     }
 
+    /**
+     * 分页返回结果处理
+     * @param obj
+     * @param methodName
+     * @param response
+     */
     private void generateAutoPage(Object obj,String  methodName,Response response){
         Class class1 = obj.getClass();
         try {
@@ -367,8 +423,34 @@ public class APIValidAop {
 
             }
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            LogUtil.error(this.getClass(),e);
         }
 
+    }
+
+
+    private void validTradeType(Object obj,String methodName,SuperDto dto) throws FssException {
+        Class class1 = obj.getClass();
+        String tradeType = dto.getTrade_type();
+        boolean isSuccess = false;
+        try {
+            Method method = class1.getMethod(methodName,SuperDto.class);
+            APITradeTypeValid apiValidType = method.getAnnotation(APITradeTypeValid.class);
+            if(apiValidType == null){
+                return ;
+            }
+            String  value = apiValidType.value();
+            String  type = apiValidType.filterType();
+            String  filter = type == null || "".equals(type) ?"" : Application.getInstance().getDictOrderValue(type);
+            String  tradeFilter = apiValidType.mchnFilter();
+            String mchnFilter =tradeFilter == null || "".equals(tradeFilter)?"": Application.getInstance().getDictOrderValue(dto.getMchn()+"_"+tradeFilter);
+            String validType = value+","+mchnFilter+","+filter;
+            if(!validType.contains(tradeType)){
+                throw new FssException("90004020");
+            }
+
+        } catch (NoSuchMethodException e) {
+            LogUtil.error(this.getClass(),e);
+        }
     }
 }

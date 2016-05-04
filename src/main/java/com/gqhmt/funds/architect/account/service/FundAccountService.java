@@ -3,11 +3,15 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.FssException;
-import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
-import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
+import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.exception.NeedSMSValidException;
@@ -16,9 +20,9 @@ import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.StringUtils;
-
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -58,11 +62,15 @@ public class FundAccountService {
     
     @Resource
     private  FssAssetReadMapper assetReadMapper;
-
+    
+    @Resource
+    private FssAccountReadMapper fssAccountReadMapper;
+    @Resource
+	private FssTradeApplyService fssTradeApplyService;
+    
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
-    
     public void delete(Long id) {
     	fundAccountWriteMapper.deleteByPrimaryKey(id);
     }
@@ -98,8 +106,12 @@ public class FundAccountService {
     private FundAccountEntity createCustomerAccount(CustomerInfoEntity customerInfoEntity, Integer userID) throws FssException {
         FundAccountEntity entity = getFundAccount(customerInfoEntity,userID,1, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
-        this.fundAccountWriteMapper.insert(entity);
-        LogUtil.debug(this.getClass(),entity+":"+entity.getId());
+        try {
+			this.fundAccountWriteMapper.insert(entity);
+		} catch (Exception e) {
+			LogUtil.debug(this.getClass(),entity+":"+entity.getId());
+			throw new FssException("91004013");
+		}
         return entity;
     }
     /**
@@ -135,7 +147,7 @@ public class FundAccountService {
     private FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
         FundAccountEntity entity = new FundAccountEntity();
         entity.setCustId(customerInfoEntity.getId());
-        entity.setUserName(customerInfoEntity.getMobilePhone());
+//        entity.setUserName(customerInfoEntity.getMobilePhone());
         entity.setAmount(BigDecimal.ZERO);
         entity.setFreezeAmount(BigDecimal.ZERO);
         entity.setAccountType(accountType);
@@ -174,9 +186,9 @@ public class FundAccountService {
     * 
     * author:jhz
     * time:2016年2月22日
-    * function：通过custId得到账户
+    * function：通过custId,BUSI_TYPE得到账户
     */
-    public FundAccountEntity getFundAccount(Integer cusID, Integer type){
+    public FundAccountEntity getFundAccount(Long cusID, Integer type){
         return this.fundsAccountReadMapper.queryFundAccountByCutId(cusID, type);
     }
 
@@ -342,9 +354,18 @@ public class FundAccountService {
     * time:2016年2月16日
     * function：funds账号管理
     */
-   	public List<FundAccountCustomerBean> findAcountList(Map accMap) {
+   	public List<FundAccountCustomerBean> findAcountList(Map<String,String> map) {
 	   // TODO Auto-generated method stub
-	   return fundsAccountReadMapper.findAcountList(accMap);
+		Map<String, String> map2=new HashMap<String, String>();
+		map2.putAll(map);
+   		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("customerName",map.get("customerName"));
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+	   return fundsAccountReadMapper.findAcountList(map2);
    	}
    	
     /**
@@ -397,7 +418,7 @@ public class FundAccountService {
 	 * @param type
 	 * @return
 	 */
-	public FundAccountEntity getFundsAccount(Integer cusID, int type) throws FssException {
+	public FundAccountEntity getFundsAccount(Long cusID, int type) throws FssException {
 		FundAccountEntity fundaccount = null;
 		if (cusID < 100) {
 			fundaccount = fundsAccountReadMapper.queryFundAccountByCutId(cusID, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
@@ -416,11 +437,71 @@ public class FundAccountService {
 	    * time:2016年2月22日
 	    * function 查询账户余额
 	    */
-	    public FundAccountEntity getAccountBanlance(int cust_no, int busi_type){
+	    public FundAccountEntity getAccountBanlance(Long cust_no, int busi_type){
 	        return this.fundsAccountReadMapper.getAccountBanlance(cust_no,busi_type);
 	    }
+	    
+		/**
+		 * 借款人提现
+		 */
+		public boolean createWithDrawApply(LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
+			FssTradeApplyEntity fssTradeApplyEntity=null;
+			//1.根据acc_no查询借款人账户信息
+		 	FssAccountEntity fssAccountEntity= this.getFssFundAccountInfo(wthDrawApplyDto.getAcc_no());
+		 	if(fssAccountEntity==null){
+		 		throw new FssException("90004006");
+		 	}else{//账户余额小于提现金额
+	 			//创建提现申请信息
+	 			try {
+	 			    fssTradeApplyEntity = fssTradeApplyService.createTradeApplyEntity(fssAccountEntity,wthDrawApplyDto);
+					fssTradeApplyService.createTradeApply(fssTradeApplyEntity);
+				} catch (FssException e) {
+					LogUtil.info(this.getClass(), e.getMessage());
+					throw new FssException("90099005");
+				}
+	 		
+		 	}
+		 	return true;
+		}
+	    /**
+	     * 根据accNo查询账户
+	     * @param accNo
+	     * @return
+	     * @throws FssException
+	     */
+	    public FssAccountEntity getFssFundAccountInfo(String accNo) throws FssException{
+	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+	    	fssAccountEntity.setAccNo(accNo);
+	        return fssAccountReadMapper.selectOne(fssAccountEntity);
+	    }
 	
-	
-	
+	    public FssAccountEntity getFundsAccountByCustId(String custId) throws FssException{
+	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
+	    	fssAccountEntity.setCustId(Long.valueOf(custId));
+	    	return fssAccountReadMapper.selectOne(fssAccountEntity);
+	    }
+	    
+	    /**
+	     * 根据custId更新账户信息
+	     */
+	    public void  updateAccountCustomerName(Long custId,String custName,String cityId,String parentBankId,String bankNo){
+	    	Map map=new HashMap();
+	    	map.put("custId", custId);
+	    	map.put("custName", custName);
+	    	map.put("cityId", cityId);
+	    	map.put("parentBankId", parentBankId);
+	    	map.put("bankNo", bankNo);
+	    	fundAccountWriteMapper.updateCustNameByCustId(map);
+	    }
+	    
+	    
+	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{
+	        return fundsAccountReadMapper.selectFundAccountEntity(accNo);
+	    }
+		  
+
+	public List<FundAccountEntity> getFundsAccountByBusiType( String busi_type){
+		return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);
+	}
 }
 
