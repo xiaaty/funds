@@ -2,6 +2,7 @@ package com.gqhmt.controller.fss.accounting;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.accounting.entity.FssAccountingCompanyIncome;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayable;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayableDetail;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoanCompensatory;
@@ -11,6 +12,7 @@ import com.gqhmt.fss.architect.accounting.entity.FssAccountingMargin;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingMarginDetail;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingServiceCharge;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingChargeService;
+import com.gqhmt.fss.architect.accounting.service.FssAccountingCompanyIncomeService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingCompensatoryService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingLendPayableService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingLoandebtService;
@@ -54,6 +56,8 @@ public class FssAccountingManagementController {
     private FssAccountingChargeService fssAccountingChargeService;
     @Resource
     private FssAccountingCompensatoryService fssAccountingCompensatoryService;
+    @Resource
+    private FssAccountingCompanyIncomeService fssAccountingCompanyIncomeService;
  
     /**
      * 出借应付款列表
@@ -195,6 +199,23 @@ public class FssAccountingManagementController {
     	model.addAttribute("page", compensatorylist);
     	model.put("map", map);
     	return "fss/accounting/compensatory/compensatoryList";
+    }
+    
+    /**
+     * 公司收入
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/traderecord/companyincome",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryAccountingCompanyIncome(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    	List<FssAccountingCompanyIncome> companyincomelist = fssAccountingCompanyIncomeService.queryFssAccountingCompanyIncomeList(map);
+    	model.addAttribute("page", companyincomelist);
+    	model.put("map", map);
+    	return "fss/accounting/companyincome/companyincomeList";
     }
     
     
