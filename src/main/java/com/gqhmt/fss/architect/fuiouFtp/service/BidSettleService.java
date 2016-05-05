@@ -182,6 +182,7 @@ public class BidSettleService {
             LogUtil.error(this.getClass(), e);
         }
         fundSequenceService.selletSequence(list,toEntity,fundOrderEntity,title);
+        //修改订单信息
         fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
 
         //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo

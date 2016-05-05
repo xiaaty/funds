@@ -35,6 +35,9 @@ public class RepaymentBean {
 	}
 
 	public BigDecimal getRepaymentPrincipal() {
+		if("".equals(repaymentPrincipal)||repaymentPrincipal==null){
+			repaymentPrincipal=BigDecimal.ZERO;
+		}
 		return repaymentPrincipal;
 	}
 
@@ -43,6 +46,9 @@ public class RepaymentBean {
 	}
 
 	public BigDecimal getRepaymentInterest() {
+		if("".equals(repaymentInterest)||repaymentInterest==null){
+			repaymentPrincipal=BigDecimal.ZERO;
+		}
 		return repaymentInterest;
 	}
 
@@ -51,6 +57,9 @@ public class RepaymentBean {
 	}
 
 	public BigDecimal getRepaymentAmount() {
+		if("".equals(repaymentAmount)||repaymentAmount==null){
+			repaymentAmount=BigDecimal.ZERO;
+		}
 		return repaymentAmount;
 	}
 
@@ -118,6 +127,9 @@ public class RepaymentBean {
 	}
 
 	public BigDecimal getRepaymentExtrinterest() {
+		if("".equals(repaymentExtrinterest)||repaymentExtrinterest==null){
+			repaymentExtrinterest=BigDecimal.ZERO;
+		}
 		return repaymentExtrinterest;
 	}
 

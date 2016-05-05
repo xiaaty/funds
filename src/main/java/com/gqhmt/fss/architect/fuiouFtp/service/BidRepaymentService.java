@@ -181,7 +181,8 @@ public class BidRepaymentService {
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay);
-
+        //修改订单信息
+        paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
 
         //回盘处理
         fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
