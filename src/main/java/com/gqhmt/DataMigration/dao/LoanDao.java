@@ -46,7 +46,7 @@ public class LoanDao extends SuperLoan {
         cs.populate(rs);
         rs.close();
         ps.close();
-
+        conn.close();
         return  cs;
     }
 

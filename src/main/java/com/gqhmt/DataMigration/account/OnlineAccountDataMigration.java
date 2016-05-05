@@ -3,7 +3,10 @@ package com.gqhmt.DataMigration.account;
 import com.gqhmt.DataMigration.dao.FundAccountDao;
 import com.gqhmt.DataMigration.dao.LoanDao;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +55,7 @@ public class OnlineAccountDataMigration {
     /**
      * 线上用户及 其他客户账户迁移
      */
-    public void onlineAccountDataMig(){
+    public void accountDataMig(){
 
         FundAccountDao fundAccountDao = FundAccountDao.getFundAccountDao();
 
@@ -60,9 +63,36 @@ public class OnlineAccountDataMigration {
             CachedRowSet cs = fundAccountDao.findOnlineAccount();
 
             while (cs.next()){
-                Long custId = cs.getLong("");
+                Long custId = cs.getLong("cust_id");
+
+                CustomerInfoEntity customerInfoEntity = fundAccountDao.findCustom(custId);
+
+                System.out.println(custId+"|"+(customerInfoEntity == null?"客户不存在":customerInfoEntity.getCustomerName()));
+
+                if(customerInfoEntity == null){
+                    continue;
+                }
+
+                Integer bankId = customerInfoEntity.getBankId();
+
+                BankCardInfoEntity cardInfoEntity = fundAccountDao.findBankCardInfo(customerInfoEntity.getBankId());
+
+                System.out.println((cardInfoEntity != null ?cardInfoEntity.getBankNo():""));
+
+
+                //互联网客户
+
+
+                //线下出借
+
+
+                //借款
+
+
+                //其他
 
             }
+
 
 
 
@@ -76,6 +106,13 @@ public class OnlineAccountDataMigration {
 
 
     }
+
+
+    public void onlineAccountDataMig(FundAccountEntity entity,CustomerInfoEntity customerInfoEntity,BankCardInfoEntity bankCardInfoEntity){
+
+    }
+
+
 
     /**
      * 借款账户迁移

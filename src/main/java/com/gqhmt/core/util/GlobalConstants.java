@@ -502,6 +502,7 @@ public class GlobalConstants {
         fundsType.put(3009,"投标异常");
         fundsType.put(3010,"债权退回");
         fundsType.put(3011,"流标");
+        fundsType.put(3012,"提前还款补偿利息");
 
         fundsType.put(4001,"收取账户管理费");
         fundsType.put(4002,"账户管理费");
