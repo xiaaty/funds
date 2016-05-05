@@ -541,9 +541,13 @@ public class GlobalConstants {
 
         ACCOUNT_TYPE_MAPPING.put("10010005","2481");            //借款账户（冠e通）
 
-        /*//借款系统开户
+        /*//借款系统开户*/
         ACCOUNT_TYPE_MAPPING.put("11020010","2346");//借款人开户
-        ACCOUNT_TYPE_MAPPING.put("11020009","5231");//纯线下借款账户*/
+        ACCOUNT_TYPE_MAPPING.put("10019002","5231");//纯线下借款账户
+
+        //出借账户
+        ACCOUNT_TYPE_MAPPING.put("10019001","5531");//纯线下借款账户
+
 
         ACCOUNT_TYPE_MAPPING.put("10011000","9180");            //公司收费账户
         ACCOUNT_TYPE_MAPPING.put("10011001","8246");            //保证金账户

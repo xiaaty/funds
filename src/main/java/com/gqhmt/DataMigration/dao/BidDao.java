@@ -6,6 +6,8 @@ import javax.sql.rowset.CachedRowSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Filename:    com.gqhmt.DataMigration.dao.BidDao
@@ -37,18 +39,27 @@ public class BidDao extends SuperGqDao {
 
         String  sql = "SELECT * FROM `t_gq_bid` t1 WHERE t1.contract_no = "+contractNo;
 
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
 
-        ResultSet rs = ps.executeQuery();
-        if(rs.next()){
-            return true;
+            conn = getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
 
+            if(rs.next()){
+                return true;
+            }
+        }catch (Exception e){
+
+        }finally {
+            close(rs);
+            close(ps);
+            close(conn);
         }
 
-        rs.close();
-        ps.close();
-        conn.close();
+
         return  false;
 
     }
@@ -56,16 +67,53 @@ public class BidDao extends SuperGqDao {
     public CachedRowSet findAllBid() throws Exception{
         String  sql = "SELECT * FROM `t_gq_bid` t1";
 
-        Connection conn = getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql);
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        CachedRowSetImpl cs = null;
+        try{
+            conn = getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            cs = new CachedRowSetImpl();
+            cs.populate(rs);
 
-        ResultSet rs = ps.executeQuery();
+        }catch (Exception e){
 
-        CachedRowSetImpl cs = new CachedRowSetImpl();
-        cs.populate(rs);
-        rs.close();
-        ps.close();
+        }finally {
+            close(rs);
+            close(ps);
+            close(conn);
+        }
+
+
 
         return  cs;
+    }
+
+    public Set<String> findAllBidByMap() throws Exception{
+        String  sql = "SELECT contract_no FROM `t_gq_bid` t1";
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Set<String> set = new HashSet<>();
+        try{
+            conn = getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                set.add(rs.getString(1));
+            }
+
+        }catch (Exception e){
+
+        }finally {
+            close(rs);
+            close(ps);
+            close(conn);
+        }
+
+        return  set;
     }
 }
