@@ -9,6 +9,7 @@ public class RepaymentBean {
 	private BigDecimal repaymentPrincipal;              //本金
 	private BigDecimal repaymentInterest;               //利息
 	private BigDecimal repaymentAmount;                 //本息
+	private BigDecimal repaymentExtrinterest;			//额外利息
 	// 投标类型(1.线上,2.线下)
 	private int investType;
 	
@@ -114,5 +115,13 @@ public class RepaymentBean {
 
 	public void setTenderId(Integer tenderId) {
 		this.tenderId = tenderId;
+	}
+
+	public BigDecimal getRepaymentExtrinterest() {
+		return repaymentExtrinterest;
+	}
+
+	public void setRepaymentExtrinterest(BigDecimal repaymentExtrinterest) {
+		this.repaymentExtrinterest = repaymentExtrinterest;
 	}
 }

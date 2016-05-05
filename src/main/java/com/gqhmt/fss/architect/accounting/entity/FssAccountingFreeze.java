@@ -5,7 +5,6 @@ import com.gqhmt.annotations.AutoDate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -15,17 +14,17 @@ import java.util.Date;
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年4月28日
- * Description:出借资产实体
- * <p>
+ * Create at:   2016年5月3日
+ * Description:
+ * <p>冻结资金主表
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年4月28日  jhz      1.0     1.0 Version
+ * 2016年5月3日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_accounting_lend_asset")
-public class FssLendAssetEntity implements Serializable {
+@Table(name = "t_gq_fss_accounting_freeze")
+public class FssAccountingFreeze implements Serializable {
 
     @Id
     @Column(name="id")
@@ -37,42 +36,24 @@ public class FssLendAssetEntity implements Serializable {
 
     @Column(name="acc_no")
     private String accNo;                  // varchar(45) NOT NULL COMMENT '富友账户号，唯一，与富友对应',
-    
+  
     @Column(name="cust_name")
-    private String custName;                  // varchar(45) NOT NULL COMMENT '客户姓名,
+    private String custName;                  // varchar(45) NOT NULL COMMENT '客户姓名',
 
     @Column(name="accounting_no")
     private String accountingNo;           // varchar(200) DEFAULT NULL COMMENT '账务编号，唯一',
 
-    @Column(name="receive_balance")
-    private Long receiveBalance;            // bigint '应收余额',
+    @Column(name="freeze_amount")
+    private Long freezeAmount;            // bigint 冻结余额',
 
-    @Column(name="receive_principal")
-    private Long receivePrincipal;     // '应收本金,
-    
-    @Column(name="receive_interest")
-    private Long receiveInterest;     // '应收利息,
-    
-    @Column(name="return_principal")
-    private Long returnPrincipal;     // '已收本金,
-    
-    @Column(name="return_interest")
-    private Long returnInterest;     // '已收利息,
-    
     @Column(name="trade_date")
     private String tradeDate;     // '交易日期,
     
     @Column(name="trade_time")
     private String tradeTime;     // '交易时间,
     
-    @Column(name="balance")
-    private Long balance;     // '账户余额,
-    
-    @Column(name="freeze_amount")
-    private Long freezeAmount;     // '冻结金额,
-    
-    @Column(name="available_amount")
-    private Long availableAmount;     // '可用金额,
+    @Column(name="summary")
+    private String summary;     // '交易摘要
     
     @Column(name="create_time")
     @AutoDate
@@ -115,44 +96,20 @@ public class FssLendAssetEntity implements Serializable {
 		this.accountingNo = accountingNo;
 	}
 
-	public Long getReceiveBalance() {
-		return receiveBalance;
+	public String getCustName() {
+		return custName;
 	}
 
-	public void setReceiveBalance(Long receiveBalance) {
-		this.receiveBalance = receiveBalance;
+	public void setCustName(String custName) {
+		this.custName = custName;
 	}
 
-	public Long getReceivePrincipal() {
-		return receivePrincipal;
+	public Long getFreezeAmount() {
+		return freezeAmount;
 	}
 
-	public void setReceivePrincipal(Long receivePrincipal) {
-		this.receivePrincipal = receivePrincipal;
-	}
-
-	public Long getReceiveInterest() {
-		return receiveInterest;
-	}
-
-	public void setReceiveInterest(Long receiveInterest) {
-		this.receiveInterest = receiveInterest;
-	}
-
-	public Long getReturnPrincipal() {
-		return returnPrincipal;
-	}
-
-	public void setReturnPrincipal(Long returnPrincipal) {
-		this.returnPrincipal = returnPrincipal;
-	}
-
-	public Long getReturnInterest() {
-		return returnInterest;
-	}
-
-	public void setReturnInterest(Long returnInterest) {
-		this.returnInterest = returnInterest;
+	public void setFreezeAmount(Long freezeAmount) {
+		this.freezeAmount = freezeAmount;
 	}
 
 	public String getTradeDate() {
@@ -171,28 +128,12 @@ public class FssLendAssetEntity implements Serializable {
 		this.tradeTime = tradeTime;
 	}
 
-	public Long getBalance() {
-		return balance;
+	public String getSummary() {
+		return summary;
 	}
 
-	public void setBalance(Long balance) {
-		this.balance = balance;
-	}
-
-	public Long getFreezeAmount() {
-		return freezeAmount;
-	}
-
-	public void setFreezeAmount(Long freezeAmount) {
-		this.freezeAmount = freezeAmount;
-	}
-
-	public Long getAvailableAmount() {
-		return availableAmount;
-	}
-
-	public void setAvailableAmount(Long availableAmount) {
-		this.availableAmount = availableAmount;
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 
 	public Date getCreateTime() {
@@ -211,12 +152,5 @@ public class FssLendAssetEntity implements Serializable {
 		this.modifyTime = modifyTime;
 	}
 
-	public String getCustName() {
-		return custName;
-	}
-
-	public void setCustName(String custName) {
-		this.custName = custName;
-	}
 
 }

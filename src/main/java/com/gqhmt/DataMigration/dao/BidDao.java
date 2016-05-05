@@ -45,6 +45,10 @@ public class BidDao extends SuperGqDao {
             return true;
 
         }
+
+        rs.close();
+        ps.close();
+        conn.close();
         return  false;
 
     }

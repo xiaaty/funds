@@ -3,20 +3,25 @@ package com.gqhmt.controller.fss.accounting;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingCompanyIncome;
+import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreeze;
+import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreezeDetail;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayable;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayableDetail;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoanCompensatory;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebt;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebtDetail;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingMargin;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingMarginDetail;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingServiceCharge;
-import com.gqhmt.fss.architect.accounting.service.FssAccountingChargeService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingCompanyIncomeService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingCompensatoryService;
+import com.gqhmt.fss.architect.accounting.entity.FssFundsFlowEntity;
+import com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity;
+import com.gqhmt.fss.architect.accounting.entity.FssLendAssetEntity;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingLendPayableService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingLoandebtService;
 import com.gqhmt.fss.architect.accounting.service.FssAccountingMarginService;
+import com.gqhmt.fss.architect.accounting.service.FssFreezeService;
+import com.gqhmt.fss.architect.accounting.service.FssFundsFlowService;
+import com.gqhmt.fss.architect.accounting.service.FssLendAssetService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,11 +58,14 @@ public class FssAccountingManagementController {
     @Resource
     private FssAccountingMarginService fssAccountingMarginService;
     @Resource
-    private FssAccountingChargeService fssAccountingChargeService;
+    private FssLendAssetService fssLendAssetSetrvice;
     @Resource
     private FssAccountingCompensatoryService fssAccountingCompensatoryService;
     @Resource
     private FssAccountingCompanyIncomeService fssAccountingCompanyIncomeService;
+    private FssFreezeService fssFreezeService;
+    @Resource
+    private FssFundsFlowService fssFundsFlowService;
  
     /**
      * 出借应付款列表
@@ -166,39 +174,33 @@ public class FssAccountingManagementController {
     	model.put("map", map);
     	return "fss/accounting/margin/marginDetailList";
     }
-    
     /**
-     * 逆服务费
-     * @param request
-     * @param model
-     * @param map
-     * @return
-     * @throws FssException
+     * 
+     * author:jhz
+     * time:2016年4月28日
+     * function：出借资产展示
      */
-    @RequestMapping(value = "/traderecord/servicecharge",method = {RequestMethod.GET,RequestMethod.POST})
-    @AutoPage
-    public String queryAccountingServiceCharge(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-        List<FssAccountingServiceCharge> chargelist = fssAccountingChargeService.queryFssAccountingChargeList(map);
-        model.addAttribute("page", chargelist);
-        model.put("map", map);
-    	return "fss/accounting/charge/serviceChargeList";
-    }
-    
-    /**
-     * 借款代偿
-     * @param request
-     * @param model
-     * @param map
-     * @return
-     * @throws FssException
-     */
-    @RequestMapping(value = "/traderecord/loanCompensatory",method = {RequestMethod.GET,RequestMethod.POST})
-    @AutoPage
-    public String queryAccountingCompensatory(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-    	List<FssAccountingLoanCompensatory> compensatorylist = fssAccountingCompensatoryService.queryFssAccountingCompensatoryList(map);
-    	model.addAttribute("page", compensatorylist);
+    @RequestMapping(value = "/accounting/lendAsset/list",method = {RequestMethod.GET,RequestMethod.POST})
+ 	@AutoPage
+     public Object lendAssetList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException{
     	model.put("map", map);
-    	return "fss/accounting/compensatory/compensatoryList";
+		List<FssLendAssetEntity> lendAsset = fssLendAssetSetrvice.getLendAsset(map);
+ 		model.addAttribute("page", lendAsset);
+ 		return "fss/accounting/lendAsset/lendAsset";
+     }
+    
+    /**
+     * 
+     * author:jhz
+     * time:2016年4月28日
+     * function：查看账目详情
+     */
+    @RequestMapping(value = "/accounting/lendAsset/{parentId}/detail",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+    public Object lendAssetDetail(HttpServletRequest request,ModelMap model,@PathVariable Long parentId) throws FssException {
+    	List<FssLendAssetDetailEntity> detailByParentId = fssLendAssetSetrvice.getDetailByParentId(parentId);
+		model.addAttribute("page", detailByParentId);
+		return "fss/accounting/lendAsset/lendAssetDetail";
     }
     
     /**
@@ -217,9 +219,45 @@ public class FssAccountingManagementController {
     	model.put("map", map);
     	return "fss/accounting/companyincome/companyincomeList";
     }
+    /*
+     * 
+     * author:jhz
+     * time:2016年5月3日
+     * function：资金冻结展示
+     */
+    @RequestMapping(value = "/accounting/freeze/list",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public Object freeze(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException{
+    	model.put("map", map);
+    	 List<FssAccountingFreeze> freezeList = fssFreezeService.getLendAsset(map);
+    	model.addAttribute("page", freezeList);
+    	return "fss/accounting/freeze/freeze_list";
+    }
     
-    
-    
-    
-    
+    /**
+     * author:jhz
+     * time:2016年5月3日
+     * function：资金冻结详情
+     */
+    @RequestMapping(value = "/accounting/freeze/{parentId}/detail",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public Object freezeDetail(HttpServletRequest request,ModelMap model,@PathVariable Long parentId) throws FssException {
+    	List<FssAccountingFreezeDetail> detailByParentId = fssFreezeService.getDetailByParentId(parentId);
+    	model.addAttribute("page", detailByParentId);
+    	return "fss/accounting/freeze/freeze_detai";
+    }
+    /**
+     * 
+     * author:jhz
+     * time:2016年5月3日
+     * function：资金流水结展示
+     */
+    @RequestMapping(value = "/accounting/fundFlow/list",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public Object fundFlow(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException{
+    	model.put("map", map);
+    	List<FssFundsFlowEntity> fundsFlow = fssFundsFlowService.getFundsFlow(map);
+    	model.addAttribute("page", fundsFlow);
+    	return "fss/accounting/fundFlow/fundFlow_list";
+    }
 }

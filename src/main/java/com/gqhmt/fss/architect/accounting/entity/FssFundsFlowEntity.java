@@ -35,6 +35,9 @@ public class FssFundsFlowEntity implements Serializable {
     @Column(name="cust_no")
     private String custNo;                  // '客户编号',
 
+    @Column(name="cust_name")
+    private String custName;                  // varchar(45) NOT NULL COMMENT '客户姓名,
+
     @Column(name="acc_no")
     private String accNo;                  // varchar(45) NOT NULL COMMENT '富友账户号，唯一，与富友对应',
 
@@ -241,5 +244,14 @@ public class FssFundsFlowEntity implements Serializable {
 	public void setBalance(Long balance) {
 		this.balance = balance;
 	}
+
+	public String getCustName() {
+		return custName;
+	}
+
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
+	
 
 }
