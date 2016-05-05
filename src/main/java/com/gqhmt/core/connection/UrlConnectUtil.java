@@ -64,6 +64,13 @@ public class UrlConnectUtil {
         return JsonUtil.getInstance().parseJson(result,tClass);
     }
 
+    public static String sendDataReturnString(String urlType, Map<String, String> map) throws FssException {
+        String url = urlConnectUtil.parseUrl(urlType,map);
+        InputStream inputStream = urlConnectUtil.sendData(url);
+        String result = urlConnectUtil.parseResponse(inputStream);
+        return result;
+    }
+
     public static <T> T sendDataReturnSingleObjcet(Class<T> tClass, String urlType, String  key,String  param) throws FssException {
         String url = urlConnectUtil.parseUrl(urlType,key,param);
         InputStream inputStream = urlConnectUtil.sendData(url);
@@ -109,6 +116,9 @@ public class UrlConnectUtil {
         String result = urlConnectUtil.parseResponse(inputStream);
         return JsonUtil.getInstance().parseJson(result,tClass);
     }
+
+
+
 
     private String  parseResponse(InputStream is) throws FssException {
         if(is == null){
