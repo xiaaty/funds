@@ -50,7 +50,7 @@ public class FssAccountingCompanyIncome implements Serializable{
     private String  busiType;    
     
     @Column(name = "income") 
-    private String  income;    
+    private Long  income;    
     
     @Column(name = "send_back")
     private Long sendBack; 
@@ -192,11 +192,11 @@ public class FssAccountingCompanyIncome implements Serializable{
 		this.busiType = busiType;
 	}
 
-	public String getIncome() {
+	public Long getIncome() {
 		return income;
 	}
 
-	public void setIncome(String income) {
+	public void setIncome(Long income) {
 		this.income = income;
 	}
 	

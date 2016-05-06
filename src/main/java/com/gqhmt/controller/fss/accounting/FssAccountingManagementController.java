@@ -2,6 +2,7 @@ package com.gqhmt.controller.fss.accounting;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.fss.architect.accounting.entity.FssAccountingCompanyIncome;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreeze;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreezeDetail;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayable;
@@ -10,6 +11,8 @@ import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebt;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebtDetail;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingMargin;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingMarginDetail;
+import com.gqhmt.fss.architect.accounting.service.FssAccountingCompanyIncomeService;
+import com.gqhmt.fss.architect.accounting.service.FssAccountingCompensatoryService;
 import com.gqhmt.fss.architect.accounting.entity.FssFundsFlowEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssLendAssetEntity;
@@ -19,7 +22,6 @@ import com.gqhmt.fss.architect.accounting.service.FssAccountingMarginService;
 import com.gqhmt.fss.architect.accounting.service.FssFreezeService;
 import com.gqhmt.fss.architect.accounting.service.FssFundsFlowService;
 import com.gqhmt.fss.architect.accounting.service.FssLendAssetService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 import java.util.Map;
 /**
@@ -59,6 +60,9 @@ public class FssAccountingManagementController {
     @Resource
     private FssLendAssetService fssLendAssetSetrvice;
     @Resource
+    private FssAccountingCompensatoryService fssAccountingCompensatoryService;
+    @Resource
+    private FssAccountingCompanyIncomeService fssAccountingCompanyIncomeService;
     private FssFreezeService fssFreezeService;
     @Resource
     private FssFundsFlowService fssFundsFlowService;
@@ -200,6 +204,22 @@ public class FssAccountingManagementController {
     }
     
     /**
+     * 公司收入
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/traderecord/companyincome",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryAccountingCompanyIncome(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    	List<FssAccountingCompanyIncome> companyincomelist = fssAccountingCompanyIncomeService.queryFssAccountingCompanyIncomeList(map);
+    	model.addAttribute("page", companyincomelist);
+    	model.put("map", map);
+    	return "fss/accounting/companyincome/companyincomeList";
+    }
+    /*
      * 
      * author:jhz
      * time:2016年5月3日
