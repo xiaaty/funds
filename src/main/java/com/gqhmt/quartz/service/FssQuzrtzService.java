@@ -60,6 +60,7 @@ public class FssQuzrtzService {
 	 * time:2016年3月14日
 	 * function：根据ID查找
 	 */
+	
 	public FssQuartzJobEntity selectByPrimaryKey(Long id) {
 		return (FssQuartzJobEntity) this.fssQuartzWriteMapper.selectByPrimaryKey(id);
 	}
