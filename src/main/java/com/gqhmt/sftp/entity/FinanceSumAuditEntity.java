@@ -14,80 +14,84 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_gq_sftp_finance_sum_audit")
 public class FinanceSumAuditEntity implements Serializable {
+
 	@Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                    // bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键\n',
+    private Long id;                                 //主键id
 
     @Column(name="org_target_id")
-    private String orgTargetId;                              // varchar(45) DEFAULT NULL COMMENT '账户编号,唯一，不可更改',
+    private String orgTargetId;                      //支付机构标的id
 
     @Column(name = "org_terrace_id")
-    private String orgTerraceId;                     // decimal(17,2) DEFAULT NULL COMMENT '账户余额',
+    private String orgTerraceId;                     //支付机构平台id
 
-    @Column(name = "cust_no")
-    private String custNo;                      // decimal(17,2) DEFAULT NULL COMMENT '冻结金额',
+    @Column(name = "cust_no")                     
+    private String custNo;                           //放款客户号
 
-    @Column(name = "cust_name")
-    private String custName;                        // decimal(17,2) DEFAULT NULL COMMENT '可用余额',
+    @Column(name = "cust_name")       
+    private String custName;                        //客户姓名
 
     @Column(name = "cert_no")
-    private String certNo;                      // decimal(17,2) DEFAULT NULL COMMENT '未转结余额',
+    private String certNo;                          //客户身份证号
 
     @Column(name = "target_state")
-    private String targetState;                             // varchar(45) NOT NULL COMMENT '客户编号',
+    private String targetState;                    //标的状态  
 
     @Column(name = "tender_time")
-    private String tenderTime;                             // varchar(45) NOT NULL COMMENT '用户表编号',
+    private String tenderTime;                     //发标日期
     
     @Column(name = "full_scale_time")
-    private String fullScaleTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
+    private String fullScaleTime;                  //实际满标日期
 
     @Column(name = "t_re_captical")
-    private BigDecimal tReCaptical;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
+    private BigDecimal tReCaptical;                 //应还款总本金
 
     @Column(name = "t_re_interest")
-    private BigDecimal tReInterest;                           // int(11) DEFAULT NULL COMMENT '账户类型，1借款账户；2线下出借账户；3线上账户；4抵押权人账户；5代偿人账户；99，冻结账户100公司账户',
+    private BigDecimal tReInterest;                 //应还款总利息          
 
-    @Column(name = "l_rep_time")
-    private String lRepaymentTime;                              // int(11) DEFAULT NULL COMMENT '账户状态：1，有效账户，2，账户锁定，3账户注销申请，4账户注销',
-
+	@Column(name = "l_rep_time")
+    private String lRepaymentTime;                  //最后还款日期
+    
+    @Column(name = "a_square_time")
+    private String aSquareTime;                      //实际结清日期
+    
     @Column(name = "a_re_captical")
-    private BigDecimal aReCaptical;                         // varchar(45) DEFAULT NULL COMMENT '渠道编号，绑定渠道',
+    private BigDecimal aReCaptical;                 //至结清日累计已还款日期           
 
     @Column(name = "a_re_interest")
-    private BigDecimal aReInterest;                            // varchar(45) DEFAULT NULL COMMENT '对应的业务编号，出借编号，借款编号，互联网用户编号。。。。',
+    private BigDecimal aReInterest;                  //至结清日累计已还款利息          
 
     @Column(name="today_re_captical")
-    private BigDecimal todayReCaptical;             // varchar(45) NOT NULL COMMENT '大商户号',
+    private BigDecimal todayReCaptical;             //本日还款本金
 
     @Column(name="today_re_interest")
-    private BigDecimal todayReInterest;              // varchar(45) DEFAULT NULL COMMENT '子商户号',
+    private BigDecimal todayReInterest;             //本日还款利息
     
     @Column(name="e_re_captical")
-    private BigDecimal eReCaptical;              // 跟t_gq_custinfo_info表中的id对应
+    private BigDecimal eReCaptical;                //截止当日累计已还款本金
 
 	@Column(name="e_re_interest")
-	private BigDecimal eReInterest;			//第三方账户编号
+	private BigDecimal eReInterest;		           //截止当日累计已还款利息
 
 	@Column(name = "paid_sum")
-	private BigDecimal paidSum;
+	private BigDecimal paidSum;                    //已垫资总金额
 	
 	@Column(name="credit_sum")
-	private BigDecimal creditSum;			//第三方账户编号
+	private BigDecimal creditSum;			       //剩余未偿垫资金额
 
-	@Column(name = "debt_sum")
-	private BigDecimal debtSum;
+	@Column(name = "debt_sum")                     
+	private BigDecimal debtSum;                      //放款金额
 
 	@Column(name="t_credit_sum")
-	private BigDecimal tCreditSum;
-
-	@Column(name = "audit_state")
-	private String auditState;
+	private BigDecimal tCreditSum;                 //截止当日累计放款
+	
+	@Column(name = "audit_state")                 
+	private String auditState;                      //放款审核状态
 
 	@Column(name="freeze_sum")
-	private BigDecimal freezeSum;
-	
+	private BigDecimal freezeSum;                    //冻结资金
+
 	public String getAuditState() {
 		return auditState;
 	}
@@ -200,6 +204,14 @@ public class FinanceSumAuditEntity implements Serializable {
 		this.lRepaymentTime = lRepaymentTime;
 	}
 
+	public String getaSquareTime() {
+		return aSquareTime;
+	}
+
+	public void setaSquareTime(String aSquareTime) {
+		this.aSquareTime = aSquareTime;
+	}
+
 	public BigDecimal getaReCaptical() {
 		return aReCaptical;
 	}
@@ -278,6 +290,9 @@ public class FinanceSumAuditEntity implements Serializable {
 
 	public void settCreditSum(BigDecimal tCreditSum) {
 		this.tCreditSum = tCreditSum;
-	}	
+	}
 
-}
+	}
+
+
+
