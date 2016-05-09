@@ -509,6 +509,7 @@ public class BankCardInfoService {
 			bankCardInfoEntity.setCreateUserId(1);
 			bankCardInfoEntity.setModifyTime(new Date());
 			bankCardInfoEntity.setModifyUserId(1);
+			bankCardInfoEntity.setCardIndex("fuyou");
 			bankCardinfoWriteMapper.insertSelective(bankCardInfoEntity);
 			return bankCardInfoEntity;
 		}
@@ -518,5 +519,16 @@ public class BankCardInfoService {
 			return bankCardinfoReadMapper.queryBankCardByBankNo(cardNo);
 		}
 	 
+		/**
+		 * 查询客户银行卡信息
+		 * @param custNo
+		 * @return
+		 * @throws FssException
+		 */
+		public List<BankCardInfoEntity> findBankCardByCustNo(String custNo) throws FssException{
+			return bankCardinfoReadMapper.findBankCardByCustNo(custNo);
+		}
+		
+		
 	 
 }

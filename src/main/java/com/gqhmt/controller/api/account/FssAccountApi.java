@@ -94,18 +94,6 @@ public class FssAccountApi {
      * time:2016年2月22日
      * function：变更银行卡
      */
-//    @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
-//    public Object changeBankCard(ChangeBankCardDto changeBankCardDto){
-//    	Response response= null;
-//    	try {
-//    		response = changeBankCardAccountImpl.execute(changeBankCardDto);
-//    	} catch (Exception e) {
-//            response = this.execute(e);
-//    	}
-//    	return response;
-//    }
-
-    
     @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
     public Object changeBankCard(UpdateBankCardDto changeBankCardDto){
     	Response response= null;
