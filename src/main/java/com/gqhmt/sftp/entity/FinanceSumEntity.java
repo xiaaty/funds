@@ -2,7 +2,6 @@ package com.gqhmt.sftp.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.gqhmt.annotations.AutoDate;
 
 @Entity
 @Table(name = "t_gq_sftp_finance_sum")
