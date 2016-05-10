@@ -50,11 +50,11 @@ public class FinanceSumAuditEntity implements Serializable {
     @Column(name = "t_re_interest")
     private BigDecimal tReInterest;                 //应还款总利息          
 
-	@Column(name = "l_rep_time")
-    private String lRepaymentTime;                  //最后还款日期
+	@Column(name = "l_re_time")
+    private String lReTime;                  //最后还款日期
     
-    @Column(name = "a_square_time")
-    private String aSquareTime;                      //实际结清日期
+    @Column(name = "a_sq_time")
+    private String aSqTime;                      //实际结清日期
     
     @Column(name = "a_re_captical")
     private BigDecimal aReCaptical;                 //至结清日累计已还款日期           
@@ -196,20 +196,21 @@ public class FinanceSumAuditEntity implements Serializable {
 		this.tReInterest = tReInterest;
 	}
 
-	public String getlRepaymentTime() {
-		return lRepaymentTime;
+
+	public String getlReTime() {
+		return lReTime;
 	}
 
-	public void setlRepaymentTime(String lRepaymentTime) {
-		this.lRepaymentTime = lRepaymentTime;
+	public void setlReTime(String lReTime) {
+		this.lReTime = lReTime;
 	}
 
-	public String getaSquareTime() {
-		return aSquareTime;
+	public String getaSqTime() {
+		return aSqTime;
 	}
 
-	public void setaSquareTime(String aSquareTime) {
-		this.aSquareTime = aSquareTime;
+	public void setaSqTime(String aSqTime) {
+		this.aSqTime = aSqTime;
 	}
 
 	public BigDecimal getaReCaptical() {

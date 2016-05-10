@@ -22,8 +22,8 @@ import javax.persistence.*;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_sftp_item_callback")
-public class FssItemsCallbackEntity implements Serializable{
+@Table(name = "t_gq_fss_sftp_project_callback")
+public class FssProjectCallbackEntity implements Serializable{
 
 
     @Id

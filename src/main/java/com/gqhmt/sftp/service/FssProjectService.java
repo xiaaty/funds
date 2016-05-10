@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.entity.FssItemsCallbackEntity;
-import com.gqhmt.sftp.entity.FssItemsInfoEntity;
-import com.gqhmt.sftp.mapper.read.FssItemInfoReadMapper;
+import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
+import com.gqhmt.sftp.entity.FssProjectInfoEntity;
+import com.gqhmt.sftp.mapper.read.FssProjectInfoReadMapper;
 import com.gqhmt.sftp.mapper.write.FssItemsCallbackWriteMapper;
 
 /**
@@ -30,9 +30,9 @@ import com.gqhmt.sftp.mapper.write.FssItemsCallbackWriteMapper;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Service
-public class FssItemService {
+public class FssProjectService {
 	@Resource
-	private FssItemInfoReadMapper fssItemInfoReadMapper;
+	private FssProjectInfoReadMapper fssItemInfoReadMapper;
 	@Resource
 	private FssItemsCallbackWriteMapper fssFssItemsCallbackWriteMapper;
 	
@@ -42,7 +42,7 @@ public class FssItemService {
 	 * time:2016年5月6日
 	 * function：查找所有项目信息
 	 */
-	public List<FssItemsInfoEntity> queryItemsInfos()throws FssException {
+	public List<FssProjectInfoEntity> queryItemsInfos()throws FssException {
 		return fssItemInfoReadMapper.selectAll();
 	}
 	/**
@@ -51,7 +51,7 @@ public class FssItemService {
 	 * time:2016年5月6日
 	 * function：把回盘信息添加进项目信息回盘表
 	 */
-	public void insetItemCallback(List<FssItemsCallbackEntity> itemsCallbacks){
+	public void insetItemCallback(List<FssProjectCallbackEntity> itemsCallbacks){
 		fssFssItemsCallbackWriteMapper.insertList(itemsCallbacks);
 	}
 	

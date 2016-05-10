@@ -12,8 +12,8 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "t_gq_sftp_finance_sum")
-public class FinanceSumEntity implements Serializable {
+@Table(name = "t_gq_fss_sftp_finance_sum")
+public class FssFinanceSumEntity implements Serializable {
 	@Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,8 +49,8 @@ public class FinanceSumEntity implements Serializable {
     @Column(name = "t_re_interest")
     private BigDecimal tReInterest;                 //应还款总利息          
 
-	@Column(name = "l_rep_time")
-    private String lRepaymentTime;                  //最后还款日期
+	@Column(name = "l_re_time")
+    private String lReTime;                  //最后还款日期
     
     @Column(name = "a_square_time")
     private String aSquareTime;                      //实际结清日期
@@ -173,12 +173,12 @@ public class FinanceSumEntity implements Serializable {
 		this.tReInterest = tReInterest;
 	}
 
-	public String getlRepaymentTime() {
-		return lRepaymentTime;
+	public String getlReTime() {
+		return lReTime;
 	}
 
-	public void setlRepaymentTime(String lRepaymentTime) {
-		this.lRepaymentTime = lRepaymentTime;
+	public void setlReTime(String lReTime) {
+		this.lReTime = lReTime;
 	}
 
 	public String getaSquareTime() {

@@ -1,7 +1,11 @@
-package com.gqhmt.sftp.mapper.write;
+package com.gqhmt.sftp.mapper.read;
 
-import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
+import java.util.List;
+import java.util.Map;
+
+
+import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.sftp.entity.FssSftpRecordEntity;
 
 /**
  * Filename:    com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper
@@ -19,5 +23,13 @@ import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
-public interface FssItemsCallbackWriteMapper extends ReadAndWriteMapper<FssProjectCallbackEntity> {
+public interface FssSftpRecordReadMapper extends ReadMapper<FssSftpRecordEntity> {
+	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月10日
+	 * function：通过条件得到对象列表
+	 */
+	public List<FssSftpRecordEntity> getRecordList(Map<String,String> map);
 }
