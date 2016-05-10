@@ -23,7 +23,7 @@ import javax.persistence.*;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_sftp_credit_info")
+@Table(name = "t_gq_fss_sftp_credit_info")
 public class FssCreditInfoEntity implements Serializable{
 
 
@@ -36,6 +36,9 @@ public class FssCreditInfoEntity implements Serializable{
     @Column(name = "id",updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+	@Column(name="parent_id")
+	private Long parentId;                      //parent_id
 
     @Column(name = "total_number") 
     private int  totalNumber;  //总笔数',
@@ -186,6 +189,14 @@ public class FssCreditInfoEntity implements Serializable{
 
 	public void setRepaymentInterest(BigDecimal repaymentInterest) {
 		this.repaymentInterest = repaymentInterest;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
     
     

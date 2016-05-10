@@ -12,14 +12,17 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "t_gq_sftp_finance_sum_audit")
-public class FinanceSumAuditEntity implements Serializable {
+@Table(name = "t_gq_fss_sftp_finance_sum_audit")
+public class FssSumAuditEntity implements Serializable {
 
 	@Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                 //主键id
 
+	@Column(name="parent_id")
+	private Long parentId;                      //parent_id
+	
     @Column(name="org_target_id")
     private String orgTargetId;                      //支付机构标的id
 
@@ -290,6 +293,14 @@ public class FinanceSumAuditEntity implements Serializable {
 
 	public void settCreditSum(BigDecimal tCreditSum) {
 		this.tCreditSum = tCreditSum;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 
 	}

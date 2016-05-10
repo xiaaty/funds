@@ -22,7 +22,7 @@ import javax.persistence.*;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_sftp_item_info")
+@Table(name = "t_gq_fss_sftp_item_info")
 public class FssItemsInfoEntity implements Serializable{
 
 
@@ -31,6 +31,9 @@ public class FssItemsInfoEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="parent_id")
+	private Long parentId;                      //parent_id
+    
     @Column(name = "mchn") 
     private String  mchn;  //商户号
     
@@ -345,6 +348,14 @@ public class FssItemsInfoEntity implements Serializable{
 
 	public void setCertNo(String certNo) {
 		this.certNo = certNo;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
     
     
