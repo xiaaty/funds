@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.entity;
+package com.gqhmt.fss.architect.sftp.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -23,7 +23,7 @@ import javax.persistence.*;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_sftp_credit_info")
+@Table(name = "t_gq_fss_sftp_credit_info")
 public class FssCreditInfoEntity implements Serializable{
 
 

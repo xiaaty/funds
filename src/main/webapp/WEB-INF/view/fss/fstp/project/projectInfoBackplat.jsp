@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>资金清结算系统--项目信息回盘回盘--冠群驰骋投资管理(北京)有限公司</title>
+    <title>资金清结算系统--项目信息回盘--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,7 +11,7 @@
     <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
-   <%@include file="../../../view/include/common_css_js.jsp"%>
+   <%@include file="../../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn{
             font:15/29px;
@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>
-<%@include file="../../../view/include/menu.jsp"%>
+<%@include file="../../../../view/include/menu.jsp"%>
 <div id="main" role="main">
 
     <!-- RIBBON -->
@@ -50,7 +50,7 @@
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="projectForm">
+                                <form class="smart-form" action="${contextPath}/fstp/projectcallback"  method="post" id="projectForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -67,14 +67,14 @@
                                                       <td class="tr" nowrap="nowrap">项目编号:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:250px" >
-                                                              <input type="text" name="projectNo" value="${map.projectNo}">
+                                                              <input type="text" name="itemNo" value="${map.itemNo}">
                                                             </label>
                                                         </td>
                                                         
                                                         <td class="tr" nowrap="nowrap">项目名称:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:250px" >
-                                                              <input type="text" name="projectName" value="${map.projectName}">
+                                                              <input type="text" name="itemName" value="${map.itemName}">
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -130,14 +130,14 @@
                                         <tbody>
                                          <c:forEach items="${page.list}" var="t">
                                          <tr>
-	                                    	<td>${t.procjectNo }</td>
-	                                    	<td>${t.procjectName }</td>
-	                                    	<td>${t.payagentId }</td>
-	                                    	<td>${t.checkState }</td>
-	                                    	<td>${t.respCode }</td>
-	                                    	<td>${t.respMsg }</td>
-	                                    	<td>${t.bankBidId }</td>
-	                                    	<td>${t.refused }</td>
+	                                    	<td>${t.itemNo}</td>
+	                                    	<td>${t.itemName}</td>
+	                                    	<td>${t.payChannel}</td>
+	                                    	<td>${t.status}</td>
+	                                    	<td>${t.respCode}</td>
+	                                    	<td>${t.respMsg}</td>
+	                                    	<td>${t.bidId}</td>
+	                                    	<td>${t.failedMsg}</td>
                                         </tr>
                                         </c:forEach>
                                         </tbody> 
@@ -152,7 +152,7 @@
         </section>
     </div>
     </div>
-<%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
  <script type="text/javascript" charset="utf-8">
@@ -171,29 +171,12 @@
 	        forceParse: 0
 	    });
 	    function verify(){
-	    	var a=document.getElementsByName("startTime");
-	    	var b=document.getElementsByName("endTime");
-	    	if(b[0].value!=null&&b[0].value!=''){
-	    		
-	    		if(a[0].value>b[0].value){
-	    			JAlert("请检查您输入的日期","提示消息");
-	    		}else{
-	    			$("#projectForm").submit();
-	    		}
-	    	}else{
-	    		var d = new Date();
-	    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
-	    		if(a[0].value>str){
-	    			JAlert("请检查您输入的日期","提示消息");
-	    		}else{
-	    			$("#projectForm").submit();
-	    		}
-	    	}
+   			$("#projectForm").submit();
 	    }
 	     
 </script>
 
-<%@include file="../../../view/include/foot.jsp"%>
+<%@include file="../../../../view/include/foot.jsp"%>
 </body>
 
 </html>

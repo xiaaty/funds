@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.entity;
+package com.gqhmt.fss.architect.sftp.entity;
 
 import java.io.Serializable;
 
@@ -22,8 +22,8 @@ import javax.persistence.*;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_sftp_item_info")
-public class FssItemsInfoEntity implements Serializable{
+@Table(name = "t_gq_fss_sftp_project_info")
+public class FssProjectInfoEntity implements Serializable{
 
 
     @Id
