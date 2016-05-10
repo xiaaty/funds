@@ -12,17 +12,13 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "t_gq_fss_sftp_finance_sum_audit")
-public class FssSumAuditEntity implements Serializable {
-
+@Table(name = "t_gq_fss_sftp_finance_sum")
+public class FssFinanceSumEntity implements Serializable {
 	@Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                 //主键id
 
-	@Column(name="parent_id")
-	private Long parentId;                      //parent_id
-	
     @Column(name="org_target_id")
     private String orgTargetId;                      //支付机构标的id
 
@@ -53,8 +49,8 @@ public class FssSumAuditEntity implements Serializable {
     @Column(name = "t_re_interest")
     private BigDecimal tReInterest;                 //应还款总利息          
 
-	@Column(name = "l_rep_time")
-    private String lRepaymentTime;                  //最后还款日期
+	@Column(name = "l_re_time")
+    private String lReTime;                  //最后还款日期
     
     @Column(name = "a_square_time")
     private String aSquareTime;                      //实际结清日期
@@ -87,29 +83,7 @@ public class FssSumAuditEntity implements Serializable {
 	private BigDecimal debtSum;                      //放款金额
 
 	@Column(name="t_credit_sum")
-	private BigDecimal tCreditSum;                 //截止当日累计放款
-	
-	@Column(name = "audit_state")                 
-	private String auditState;                      //放款审核状态
-
-	@Column(name="freeze_sum")
-	private BigDecimal freezeSum;                    //冻结资金
-
-	public String getAuditState() {
-		return auditState;
-	}
-
-	public void setAuditState(String auditState) {
-		this.auditState = auditState;
-	}
-
-	public BigDecimal getFreezeSum() {
-		return freezeSum;
-	}
-
-	public void setFreezeSum(BigDecimal freezeSum) {
-		this.freezeSum = freezeSum;
-	}
+	private BigDecimal tCreditSum;                  //截止当日累计放款
 
 	public Long getId() {
 		return id;
@@ -199,12 +173,12 @@ public class FssSumAuditEntity implements Serializable {
 		this.tReInterest = tReInterest;
 	}
 
-	public String getlRepaymentTime() {
-		return lRepaymentTime;
+	public String getlReTime() {
+		return lReTime;
 	}
 
-	public void setlRepaymentTime(String lRepaymentTime) {
-		this.lRepaymentTime = lRepaymentTime;
+	public void setlReTime(String lReTime) {
+		this.lReTime = lReTime;
 	}
 
 	public String getaSquareTime() {
@@ -295,15 +269,4 @@ public class FssSumAuditEntity implements Serializable {
 		this.tCreditSum = tCreditSum;
 	}
 
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
-
-	}
-
-
-
+}

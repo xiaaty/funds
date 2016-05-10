@@ -69,7 +69,12 @@
 	</properties>
 
 	<dependencies>
-
+	<!-- 	jcraft -->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.53</version>
+		</dependency>
 		<!-- temp -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>
