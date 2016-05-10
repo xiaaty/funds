@@ -62,16 +62,16 @@
 		   c.modify_user_id
 	   FROM `t_gq_fss_account` a,`t_gq_fss_customer` c
 	   WHERE a.cust_no=c.cust_no
-	   <if test="accType!= null and accType!= '' ">
+	   <if test="accType!=null and accType!=''">
        	  AND a.acc_type = #{accType}
        </if>
-	   <if test="accNo!= null and accNo!= '' ">
+	   <if test="accNo!=null and accNo!=''">
        	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
        </if>
-	   <if test="custName != null and custName != '' ">
-       	  AND c.CUSTOMER_NAME Like CONCAT(CONCAT('%',#{custName}),'%')
+	   <if test="custName!=null and custName!=''">
+       	  AND c.name Like CONCAT(CONCAT('%',#{custName}),'%')
        </if>
-	   <if test="certNo != null and certNo != '' ">
+	   <if test="certNo!=null and certNo!=''">
 	      AND c.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
 	   </if> 
 	   order by c.create_time desc
