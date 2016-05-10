@@ -1,8 +1,4 @@
-package com.gqhmt.sftp.mapper.read;
-
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
+package com.gqhmt.fss.architect.sftp.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.sftp.entity.FssCreditInfoEntity;
@@ -25,11 +21,4 @@ import com.gqhmt.fss.architect.sftp.entity.FssCreditInfoEntity;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 public interface FssCreditInfoReadMapper extends ReadMapper<FssCreditInfoEntity> {
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年5月10日
-	 * function：通过parent_id得到对象列表
-	 */
-	public List<FssCreditInfoEntity> getByParentId(@Param("parentId") Long parentId);
 }
