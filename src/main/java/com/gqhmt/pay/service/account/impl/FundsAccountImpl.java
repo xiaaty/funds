@@ -178,9 +178,6 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	private FundAccountEntity getPrimaryAccount(Long cusId) throws FssException{
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		if (primaryAccount == null) {
-			throw new FssException("90002003");
-		}
 		return primaryAccount;
 	}
 
