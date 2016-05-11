@@ -54,15 +54,21 @@ public class SystemController{
 		if(null == parent_id){
 			parent_id = "0";
 		}
-
-		dictmain.setParentId(parent_id);
+//		if(dictmain!=null){
+//			parent_id =null;
+//		}
+		if((dictmain.getDictId()!=null&&!"".equals(dictmain.getDictId().trim()))||(dictmain.getDictName()!=null&&!"".equals(dictmain.getDictName().trim()))){
+			parent_id=null;
+		}
 		String returnId = "0";
-		List<DictEntity> dictList =sysService.queryDictmain(dictmain);
+		if(parent_id!=null){
+			dictmain.setParentId(parent_id);
 		if(Integer.parseInt(parent_id)>0){
 			DictEntity dict = (DictEntity) sysService.findDictmain(parent_id);
 			returnId = String.valueOf(dict.getParentId());
 		}
-
+		}
+		List<DictEntity> dictList =sysService.queryDictmain(dictmain);
 
 		model.addAttribute("page",dictList);
 		model.addAttribute("dictmain",dictmain);

@@ -7,6 +7,7 @@ import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.service.trade.IFundsBatchTrade;
 import com.gqhmt.quartz.job.SupperJob;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -42,13 +43,13 @@ public class BatchWithholdingJob extends SupperJob{
     private IFundsBatchTrade fundsBatchTrade;
 
     private static boolean isRunning = false;
-//    @Scheduled(cron="0 0/1 * * * * ")
+    @Scheduled(cron="0 0/1 * * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
         }
         if(isRunning) return;
-        startLog("借款业务流标 执行流标前置 ");
+        startLog("还款代扣");
         isRunning = true;
         List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
 

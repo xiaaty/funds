@@ -29,31 +29,31 @@ public class FssTradeApplyEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //int(11)        (NULL)           NO      PRI     (NULL)           select,insert,update,references
 
-    @Column(name = "apply_no")
+    @Column(name = "apply_no",updatable = false)
     private String applyNo;                                    //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  申请编号
 
-    @Column(name = "apply_type")
+    @Column(name = "apply_type",updatable = false)
     private Integer applyType;                                  //int(11)        (NULL)           NO              (NULL)           select,insert,update,references  1，充值，2，提现
 
-    @Column(name = "cust_id")
+    @Column(name = "cust_id",updatable = false)
     private Long custId;  
     
-    @Column(name = "cust_no")
+    @Column(name = "cust_no",updatable = false)
     private String custNo;                                     // varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  客户编号
 
-    @Column(name = "user_no")
+    @Column(name = "user_no",updatable = false)
     private String userNo;                                     // varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  用户编号
 
-    @Column(name = "business_no")
+    @Column(name = "business_no",updatable = false)
     private String businessNo;                                 //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务编号
 
-    @Column(name = "busi_type")
+    @Column(name = "busi_type",updatable = false)
     private String busiType ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
 
-    @Column(name = "acc_no")
+    @Column(name = "acc_no",updatable = false)
     private String accNo ;                                     //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号
 
-    @Column(name = "trade_amount")
+    @Column(name = "trade_amount",updatable = false)
     private BigDecimal tradeAmount ;                               // decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  交易金额
 
     @Column(name = "real_trade_amount")
@@ -68,28 +68,28 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "apply_state")
     private String applyState  ;                               //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  申请状态，新增，审核成功，，已交易，已回调通知
 
-    @Column(name = "mchn_parent")
+    @Column(name = "mchn_parent",updatable = false)
     private String mchnParent ;                                //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references
 
-    @Column(name = "mchn_child")
+    @Column(name = "mchn_child",updatable = false)
     private String  mchnChild ;                                //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references
 
-    @Column(name = "create_time")
+    @Column(name = "create_time",updatable = false)
     private Date createTime ;                                //datetime       (NULL)           NO              (NULL)           select,insert,update,references  录入时间
 
     @Column(name = "modify_time")
     private Date modifyTime ;                                //datetime       (NULL)           NO              (NULL)           select,insert,update,references
 
-    @Column(name = "seq_no")
+    @Column(name = "seq_no",updatable = false)
     private String seqNo     ;                                 //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  api业务交易流水号
     
     @Column(name = "bespoke_date")  //预约到账日期
     private Date bespokedate ;   
     
-    @Column(name = "contract_id")//合同Id
+    @Column(name = "contract_id",updatable = false)//合同Id
     private String contractId;
     
-    @Column(name = "channel_no")//交易渠道
+    @Column(name = "channel_no",updatable = false)//交易渠道
     private String channelNo;
     
     @Column(name = "count")		//总条数
@@ -101,7 +101,7 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "success_count")	//成功条数
     private int successCount;
     
-    @Column(name = "cust_type")	//客户类型
+    @Column(name = "cust_type",updatable = false)	//客户类型
     private Integer custType;
     
 	public Long getId() {

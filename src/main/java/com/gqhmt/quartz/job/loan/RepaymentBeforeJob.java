@@ -7,6 +7,7 @@ import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -37,7 +38,7 @@ public class RepaymentBeforeJob extends SupperJob {
     private BidRepaymentService repaymentService;
     
     private static boolean isRunning = false;
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
@@ -45,7 +46,7 @@ public class RepaymentBeforeJob extends SupperJob {
 
         if(isRunning) return;
 
-        startLog("借款业务流标 执行流标前置");
+        startLog("回款");
         isRunning = true;
 
         List<FssLoanEntity> loanEntities = fssLoanService.findLoanRepayment();

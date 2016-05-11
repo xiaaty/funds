@@ -76,7 +76,7 @@
                                                 <td>
                                                     <section style="width:210px">
                                                         <label class="input">
-                                                        	<input type="hidden" name="token" value="${token}"/> 
+<%--                                                         	<input type="hidden" name="token" value="${token}"/>  --%>
                                                             <input type="text" name="contractNo" readonly="readonly" value="${loan.contractNo }">
                                                         </label>
                                                     </section>
@@ -129,7 +129,7 @@
                                         </table>
                                          <div class="mb20" id="wid-id-713">
  													<button id="btn-success" class="btn btn-primary table-nobg-btn" type="button">保存</button>
-                                                    <button class="btn btn-default table-nobg-btn" onclick="loaction.href='${contextPath}/fss/loan/trade/borrowWithDraw'" type="button" >取消</button>
+                                                    <button class="btn btn-default table-nobg-btn" onclick="loaction.href='${contextPath}//loan/trade/${type}'" type="button" >取消</button>
                                                 </div>
                                             </div>
                                         </div>

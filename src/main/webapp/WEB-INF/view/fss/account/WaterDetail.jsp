@@ -63,7 +63,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="waterDetailForm" action="${contextPath}/fss/account/waterDetail/${id}" method="post" >
+                                <form class="smart-form" id="waterDetailForm" action="${contextPath}/accounts/${type}/list/${id}/water" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">

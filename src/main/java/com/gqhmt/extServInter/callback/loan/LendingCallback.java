@@ -41,7 +41,6 @@ public class LendingCallback implements GetCallBack{
 		 LendingResponse response = null;
 		 try {
 			response= fssLoanService.getLendingResponse(mchn,seqNo) ;
-			response.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 		    	response.setResp_code(e.getMessage());

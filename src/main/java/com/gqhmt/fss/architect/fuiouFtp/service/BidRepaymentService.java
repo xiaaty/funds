@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
@@ -72,7 +73,7 @@ public class BidRepaymentService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");
@@ -85,7 +86,6 @@ public class BidRepaymentService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
         } catch (FssException e) {
-            LogUtil.error(getClass(),e);
             LogUtil.error(getClass(),e);
             loanEntity.setStatus("10050014");
             loanEntity.setModifyTime(new Date());
@@ -125,6 +125,9 @@ public class BidRepaymentService {
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", ""));
         }
+
+        fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
+
         fuiouFtpOrderService.addOrder(fundOrderEntity, 2);
         loanEntity.setStatus("10050012");
         loanEntity.setModifyTime(new Date());
@@ -144,7 +147,7 @@ public class BidRepaymentService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");
@@ -158,7 +161,7 @@ public class BidRepaymentService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
             //产品名称，如果产品名称为空，则去标的title
-            title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
             throw  e;
@@ -178,7 +181,8 @@ public class BidRepaymentService {
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay);
-
+        //修改订单信息
+        paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
 
         //回盘处理
         fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());

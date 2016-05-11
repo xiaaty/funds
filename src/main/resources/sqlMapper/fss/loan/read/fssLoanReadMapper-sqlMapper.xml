@@ -32,28 +32,30 @@
 			t.rep_msg repMsg,
 			t.pay_amt payAmt,
 			t.rep_code repCode,
+			t.trade_type_parent tradeTypeParent,
 			t.rep_msg repMsg, 
+			t.busi_no busiNo, 
 			t.loan_platform loanPlatform  	
 			FROM t_gq_fss_loan t 
 	</sql>
 	<!-- 得到借款人放款回调对象 -->
 	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
-<!-- 		SELECT  -->
-<!-- 			t.id, -->
-<!-- 		    t.mchn_child mchn, -->
-<!-- 		    t.seq_no seq_no, -->
-<!-- 		    t.trade_type trade_type, -->
-<!-- 		    t.contract_id contract_id, -->
-<!-- 		    t.contract_no contract_no, -->
-<!-- 		    t.mortgagee_acc_no mortgagee_acc_no, -->
-<!-- 		    t.acc_no acc_no, -->
-<!-- 			t.contract_amt contract_amt, -->
-<!-- 			t.pay_amt pay_amt, -->
-<!-- 		    t.rep_code resp_code, -->
-<!-- 			t.rep_msg resp_msg, -->
-<!-- 			t.loan_platform loan_platform -->
-<!-- 			FROM t_gq_fss_loan t -->
-			<include refid="selectSql"/>
+		SELECT 
+			t.id,
+		    t.mchn_child mchn,
+		    t.seq_no seq_no,
+		    t.trade_type trade_type,
+		    t.contract_id contract_id,
+		    t.contract_no contract_no,
+		    t.mortgagee_acc_no mortgagee_acc_no,
+		    t.acc_no acc_no,
+			t.contract_amt contract_amt,
+			t.pay_amt pay_amt,
+		    case when 
+			t.status='10050007' then '0000' 
+			else '0001'  end resp_code,
+			t.loan_platform loan_platform
+			FROM t_gq_fss_loan t
 			where 1=1
 			<include refid="whereSql" />
 	</select>
@@ -69,31 +71,52 @@
 		    t.acc_no acc_no,
 			t.pay_amt pay_amt,
 			t.contract_amt contract_amt,
-			t.rep_code resp_code,
-			t.rep_msg resp_msg
+			case when 
+			t.status='10050009' then '0000' 
+			else '0001'  end resp_code
 			FROM t_gq_fss_loan t 
 			where 1=1
 			<include refid="whereSql" />
 	</select>
+	<!-- 冠e通回盘 -->
+	<select id="getBidApplyResponse"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.p2p.BidApplyResponse" >
+		SELECT 
+		    t.seq_no seq_no,
+		    t.mchn_child mchn,
+		    t.trade_type trade_type,
+			case when 
+			t.trade_type_parent='11101002' then t.busi_no 
+			else t.contract_id END  busi_bid_no,
+			case when 
+			t.status='10050101' then '0000' 
+			WHEN 
+			t.status='10050009' then '0000' 
+			WHEN 
+			t.status='10050013' then '0000'
+			WHEN 
+			t.status='10050100' then '0000'
+			else '0001'  end resp_code
+			FROM t_gq_fss_loan t 
+			where 1=1 
+			<include refid="whereSql" />
+	</select>
 	<!-- 流标回盘回盘 -->
 	<select id="getFailedBidResponse"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
-<!-- 		SELECT  -->
-<!-- 		    t.seq_no seq_no, -->
-<!-- 		    t.mchn_child mchn, -->
-<!-- 		    t.trade_type trade_type, -->
-<!-- 		    t.contract_id contract_id, -->
-<!-- 		    t.contract_no contract_no, -->
-<!-- 		    t.mortgagee_acc_no mortgagee_acc_no, -->
-<!-- 		    t.acc_no acc_no, -->
-<!-- 			t.contract_amt contract_amt, -->
-<!-- 			t.pay_amt pay_amt, -->
-<!-- 		    t.rep_code resp_code, -->
-<!-- 			t.rep_msg resp_msg, -->
-<!-- 			t.loan_platform loan_platform -->
-<!-- 			FROM t_gq_fss_loan t -->
-<!-- 			where 1=1 -->
-<!-- 			<include refid="whereSql" /> -->
-			<include refid="selectSql"/>
+		SELECT 
+		    t.seq_no seq_no,
+		    t.mchn_child mchn,
+		    t.trade_type trade_type,
+		    t.contract_id contract_id,
+		    t.contract_no contract_no,
+		    t.mortgagee_acc_no mortgagee_acc_no,
+		    t.acc_no acc_no,
+			t.contract_amt contract_amt,
+			t.pay_amt pay_amt,
+		   	case when 
+			t.status='10050100' then '0000' 
+			else '0001'  end resp_code,
+			t.loan_platform loan_platform
+			FROM t_gq_fss_loan t
 			where 1=1
 			<include refid="whereSql" />
 	</select>
@@ -131,15 +154,15 @@
 		<include refid="selectSql" />
 		WHERE (t.trade_type = 11090002 OR t.trade_type = 11092001 OR t.trade_type = 11090004 ) AND t.status = 10050010
 	</select>
-<!-- 	回款  11094002 ，提前回款     11094003， 正常回款    11094004，逾期回款-->
+<!-- 	回款  11100001 ，提前回款     11100002， 正常回款    11100003，逾期回款-->
 	<select id="findLoanRepayment" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
-		WHERE (t.trade_type = 11094002 OR t.trade_type = 11094003 OR t.trade_type = 11094004) AND t.status = 10050011
+		WHERE (t.trade_type = 11100001 OR t.trade_type = 11100002 OR t.trade_type = 11100003) AND t.status = 10050011
 	</select>
 <!-- 	流标  11090011 ，信用标流标           11090012，冠e通流标-->
 	<select id="findAbortBid" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
-		WHERE (t.trade_type = 11090011 ) AND t.status = 10050103
+		WHERE (t.trade_type = 11090011 or t.trade_type=11090012 ) AND t.status = 10050103
 	</select>
 	
 	<!-- 用来导出线下数据 -->

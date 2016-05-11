@@ -21,6 +21,8 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.util.CommonUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -71,7 +73,8 @@ public class FssTradeApplyService {
 	private FssTradeRecordService fssTradeRecordService;
 	@Resource
 	private FssLoanService fssLoanService;
-	
+	@Resource
+    private FundOrderService fundOrderService;
 	
 	/**
 	 * 创建借款人提现申请
@@ -110,7 +113,7 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setRealTradeAmount(wthDrawApplyDto.getPay_amt());
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setTradeState(wthDrawApplyDto.getTrade_type());
-			fssTradeApplyEntity.setApplyState("0");
+			fssTradeApplyEntity.setApplyState("10100001");
 			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(wthDrawApplyDto.getMchn()));
 			fssTradeApplyEntity.setMchnChild(wthDrawApplyDto.getMchn());
 			fssTradeApplyEntity.setCreateTime((new Timestamp(new Date().getTime())));
@@ -147,6 +150,13 @@ public class FssTradeApplyService {
 		if(fssTradeApplyEntity==null){
 			throw new FssException("90004002");
 		}
+		if("10090003".equals(fssTradeApplyEntity.getTradeState())){
+			withDrawApplyResponse.setResp_code("0000");
+			withDrawApplyResponse.setResp_msg("成功");
+		}else{
+			withDrawApplyResponse.setResp_code("0001");
+			withDrawApplyResponse.setResp_msg("失败");
+		}
 		withDrawApplyResponse.setMchn(fssTradeApplyEntity.getMchnChild());
 		withDrawApplyResponse.setSeq_no(fssTradeApplyEntity.getSeqNo());
 		withDrawApplyResponse.setTrade_type(fssTradeApplyEntity.getTradeState());
@@ -155,6 +165,15 @@ public class FssTradeApplyService {
 		withDrawApplyResponse.setAcc_no(fssTradeApplyEntity.getAccNo());
 		withDrawApplyResponse.setContract_amt(fssTradeApplyEntity.getTradeAmount());
 		withDrawApplyResponse.setPay_amt(fssTradeApplyEntity.getRealTradeAmount());
+		List<FssTradeRecordEntity> byApplyNo = fssTradeRecordService.getByApplyNo(fssTradeApplyEntity.getApplyNo());
+		if(byApplyNo!=null){
+			if(byApplyNo.get(0).getOrderNo()!=null) {
+				FundOrderEntity findfundOrder = fundOrderService.findfundOrder(byApplyNo.get(0).getOrderNo());
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+				String format = sdf.format(findfundOrder.getCreateTime());
+				withDrawApplyResponse.setWithDraw_date(format);
+			}
+		}
 		withDrawApplyResponse.setBespoke_date(CommonUtil.dateTostring(fssTradeApplyEntity.getBespokedate()));
 		return withDrawApplyResponse;
 	}

@@ -532,6 +532,18 @@ public class FundSequenceService {
                         LogUtil.error(this.getClass(), e);
                     }
                 }
+                if (bean.getRepaymentExtrinterest().compareTo(BigDecimal.ZERO) > 0) {
+                    try {
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentExtrinterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                    try {
+                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentExtrinterest(), BigDecimal.ZERO, 3012, title + " 收到提前还款利息补偿 " + bean.getRepaymentInterest() + "元");
+                    } catch (FssException e) {
+                        LogUtil.error(this.getClass(), e);
+                    }
+                }
             }
 
             // 转到应付账户

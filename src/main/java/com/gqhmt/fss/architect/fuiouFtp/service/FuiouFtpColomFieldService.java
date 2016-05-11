@@ -140,16 +140,6 @@ public class FuiouFtpColomFieldService {
         return fuiouFtpColomFieldReadMapper.selectAll();
     }
     
-    /**
-     * 批量插入
-     * @param fuiyoulist
-     */
-   public void saveOrUpdateAll(List<FuiouFtpColomField> fuiyoulist)throws FssException{
-	   for (FuiouFtpColomField fuiouFtpColomField : fuiyoulist) {
-		
-		   fuiouFtpColomFieldWriteMapper.insert(fuiouFtpColomField);
-	}
-   }
    /**
     * 
     * author:jhz

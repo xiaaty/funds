@@ -43,7 +43,6 @@ public class EnterAccountCallback implements GetCallBack{
 		EnterAccountResponse enterAccountResponse = null;
 		 try {
 			 enterAccountResponse = fssEnterAccountService.getResponse(mchn,seqNo);
-			 enterAccountResponse.setResp_code("0000");
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 				enterAccountResponse.setResp_code(e.getMessage());

@@ -60,7 +60,8 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/fullBidApply",method = RequestMethod.POST)
     @ResponseBody
-    public Object fullBidApply(BidApplyDto fullBidApplyDto){
+    public Object fullBidApply(@RequestBody BidApplyDto fullBidApplyDto){
+    	
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
@@ -80,7 +81,7 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/bidRepayApply",method = RequestMethod.POST)
     @ResponseBody
-    public Object bidRepayApply(BidApplyDto bidApplyDto){
+    public Object bidRepayApply(@RequestBody BidApplyDto bidApplyDto){
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
@@ -100,7 +101,7 @@ public class FssBankEndApi {
      */
     @RequestMapping(value = "/p2p/rePayments",method = RequestMethod.POST)
     @ResponseBody
-    public Object rePayments(RePaymentDto rePaymentDto){
+    public Object rePayments(@RequestBody RePaymentDto rePaymentDto){
     	Response response=new Response();
     	try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);

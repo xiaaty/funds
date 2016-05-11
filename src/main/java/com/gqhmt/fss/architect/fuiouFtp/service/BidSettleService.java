@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
@@ -127,7 +128,7 @@ public class BidSettleService {
             FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null));
         }
-        fuiouFtpColomFieldService.saveOrUpdateAll(fuiouFtpColomFields);
+        fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
         fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
         loanEntity.setStatus("10050008");
@@ -160,7 +161,7 @@ public class BidSettleService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
             //产品名称，如果产品名称为空，则去标的title
-            //title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
            throw  e;
@@ -181,6 +182,7 @@ public class BidSettleService {
             LogUtil.error(this.getClass(), e);
         }
         fundSequenceService.selletSequence(list,toEntity,fundOrderEntity,title);
+        //修改订单信息
         fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
 
         //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo

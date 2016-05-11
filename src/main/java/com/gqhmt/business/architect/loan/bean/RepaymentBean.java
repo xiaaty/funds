@@ -9,6 +9,7 @@ public class RepaymentBean {
 	private BigDecimal repaymentPrincipal;              //本金
 	private BigDecimal repaymentInterest;               //利息
 	private BigDecimal repaymentAmount;                 //本息
+	private BigDecimal repaymentExtrinterest;			//额外利息
 	// 投标类型(1.线上,2.线下)
 	private int investType;
 	
@@ -34,6 +35,9 @@ public class RepaymentBean {
 	}
 
 	public BigDecimal getRepaymentPrincipal() {
+		if("".equals(repaymentPrincipal)||repaymentPrincipal==null){
+			repaymentPrincipal=BigDecimal.ZERO;
+		}
 		return repaymentPrincipal;
 	}
 
@@ -42,6 +46,9 @@ public class RepaymentBean {
 	}
 
 	public BigDecimal getRepaymentInterest() {
+		if("".equals(repaymentInterest)||repaymentInterest==null){
+			repaymentPrincipal=BigDecimal.ZERO;
+		}
 		return repaymentInterest;
 	}
 
@@ -50,6 +57,9 @@ public class RepaymentBean {
 	}
 
 	public BigDecimal getRepaymentAmount() {
+		if("".equals(repaymentAmount)||repaymentAmount==null){
+			repaymentAmount=BigDecimal.ZERO;
+		}
 		return repaymentAmount;
 	}
 
@@ -114,5 +124,16 @@ public class RepaymentBean {
 
 	public void setTenderId(Integer tenderId) {
 		this.tenderId = tenderId;
+	}
+
+	public BigDecimal getRepaymentExtrinterest() {
+		if("".equals(repaymentExtrinterest)||repaymentExtrinterest==null){
+			repaymentExtrinterest=BigDecimal.ZERO;
+		}
+		return repaymentExtrinterest;
+	}
+
+	public void setRepaymentExtrinterest(BigDecimal repaymentExtrinterest) {
+		this.repaymentExtrinterest = repaymentExtrinterest;
 	}
 }
