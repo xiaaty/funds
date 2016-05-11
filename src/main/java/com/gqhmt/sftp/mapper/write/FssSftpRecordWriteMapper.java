@@ -1,7 +1,8 @@
-package com.gqhmt.fss.architect.sftp.mapper.read;
+package com.gqhmt.sftp.mapper.write;
 
-import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.sftp.entity.FssCreditInfoEntity;
+
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
+import com.gqhmt.sftp.entity.FssSftpRecordEntity;
 
 /**
  * 
@@ -12,13 +13,14 @@ import com.gqhmt.fss.architect.sftp.entity.FssCreditInfoEntity;
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年5月6日
+ * Create at:   2016年5月11日
  * Description:
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年5月6日  jhz      1.0     1.0 Version
+ * 2016年5月11日  jhz      1.0     1.0 Version
  */
-public interface FssCreditInfoReadMapper extends ReadMapper<FssCreditInfoEntity> {
+public interface FssSftpRecordWriteMapper extends ReadAndWriteMapper<FssSftpRecordEntity> {
+	
 }

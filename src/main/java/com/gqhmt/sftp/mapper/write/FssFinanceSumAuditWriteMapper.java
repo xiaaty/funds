@@ -1,8 +1,8 @@
 package com.gqhmt.sftp.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.sftp.entity.FinanceSumAuditEntity;
+import com.gqhmt.sftp.entity.FssSumAuditEntity;
 
-public interface FssFinanceSumAuditWriteMapper extends ReadAndWriteMapper<FinanceSumAuditEntity> {
+public interface FssFinanceSumAuditWriteMapper extends ReadAndWriteMapper<FssSumAuditEntity> {
 
 }

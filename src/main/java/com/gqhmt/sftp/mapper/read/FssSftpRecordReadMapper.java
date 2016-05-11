@@ -8,20 +8,21 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sftp.entity.FssSftpRecordEntity;
 
 /**
- * Filename:    com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper
- * Copyright:   Copyright (c)2015
+ * 
+ * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
+ * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author 于泳
+ * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   16/3/14 10:15
+ * Create at:   2016年5月11日
  * Description:
- * <p/>
+ * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 16/3/14  于泳      1.0     1.0 Version
+ * 2016年5月11日  jhz      1.0     1.0 Version
  */
 public interface FssSftpRecordReadMapper extends ReadMapper<FssSftpRecordEntity> {
 	
