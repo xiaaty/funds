@@ -31,5 +31,6 @@ public interface FssSftpRecordReadMapper extends ReadMapper<FssSftpRecordEntity>
 	 * time:2016年5月10日
 	 * function：通过条件得到对象列表
 	 */
-	public List<FssSftpRecordEntity> getRecordList(Map<String,String> map);
+	public List<FssSftpRecordEntity> getRecordList(Map map);
+	
 }

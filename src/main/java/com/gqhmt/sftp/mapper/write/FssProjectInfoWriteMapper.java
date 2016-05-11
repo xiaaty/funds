@@ -1,7 +1,7 @@
-package com.gqhmt.fss.architect.sftp.mapper.write;
+package com.gqhmt.sftp.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.sftp.entity.FssProjectInfoEntity;
+import com.gqhmt.sftp.entity.FssProjectInfoEntity;
 /**
  * Filename:    com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper
  * Copyright:   Copyright (c)2015

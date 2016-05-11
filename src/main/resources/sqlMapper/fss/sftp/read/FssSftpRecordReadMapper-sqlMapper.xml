@@ -11,5 +11,17 @@
 			t.type type,
 			t.status status
 		FROM `t_gq_fss_sftp_project_callback` t
+		<where>
+			<if test="title!=null and title!=''">
+				AND t.`title` like CONCAT('%',#{title},'%')
+			</if>
+			<if test="type!=null and type!=''">
+				AND t.`type` = #{type}
+			</if>
+			<if test="status!=null and status!=''">
+				AND t.`cert_no` = #{status}
+			</if>
+		</where>
+		ORDER BY t.create_time DESC
 	</select>
  </mapper>

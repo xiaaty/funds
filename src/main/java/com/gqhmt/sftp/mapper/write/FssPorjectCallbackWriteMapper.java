@@ -2,7 +2,6 @@ package com.gqhmt.sftp.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
-
 /**
  * Filename:    com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper
  * Copyright:   Copyright (c)2015
@@ -19,5 +18,5 @@ import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
  * -----------------------------------------------------------------
  * 16/3/14  于泳      1.0     1.0 Version
  */
-public interface FssItemsCallbackWriteMapper extends ReadAndWriteMapper<FssProjectCallbackEntity> {
+public interface FssPorjectCallbackWriteMapper extends ReadAndWriteMapper<FssProjectCallbackEntity> {
 }

@@ -1,12 +1,18 @@
 package com.gqhmt.controller.fss.fstp;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.sftp.entity.FinanceSumEntity;
-import com.gqhmt.fss.architect.sftp.entity.FssProjectCallbackEntity;
-import com.gqhmt.fss.architect.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.fss.architect.sftp.service.FssBidFinanceService;
-import com.gqhmt.fss.architect.sftp.service.FssProjectInfoCallBackService;
-import com.gqhmt.fss.architect.sftp.service.FssProjectInfoService;
+import com.gqhmt.sftp.entity.FssCreditInfoEntity;
+import com.gqhmt.sftp.entity.FssFinanceSumEntity;
+import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
+import com.gqhmt.sftp.entity.FssProjectInfoEntity;
+import com.gqhmt.sftp.entity.FssSftpRecordEntity;
+import com.gqhmt.sftp.entity.FssSumAuditEntity;
+import com.gqhmt.sftp.service.FssBidFinanceService;
+import com.gqhmt.sftp.service.FssCreditInfoService;
+import com.gqhmt.sftp.service.FssProjectInfoCallBackService;
+import com.gqhmt.sftp.service.FssProjectInfoService;
+import com.gqhmt.sftp.service.FssSftpRecordService;
+import com.gqhmt.sftp.service.FssSumAuditService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,6 +48,12 @@ public class FssFstpController {
     private FssProjectInfoCallBackService fssProjectInfoCallBackService;
     @Resource
     private FssBidFinanceService fssBidFinanceService;
+    @Resource
+    private FssCreditInfoService fssCreditInfoService;
+    @Resource
+    private FssSumAuditService fssSumAuditService;
+    @Resource
+    private FssSftpRecordService fssSftpRecordService;
 
     /**
      * 项目信息列表
@@ -88,17 +100,63 @@ public class FssFstpController {
     @RequestMapping(value = "/fstp/bidFinanceTotals",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String querybidFinanceTotals(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-    	List<FinanceSumEntity> bidfinancelist = fssBidFinanceService.queryBidFinanceList(map);
+    	List<FssFinanceSumEntity> bidfinancelist = fssBidFinanceService.queryBidFinanceList(map);
     	model.addAttribute("page", bidfinancelist);
     	model.put("map", map);
     	return "fss/fstp/bid/bidFinanceTotals";
     }
     
+    /**
+     * 标的放款明细文件列表
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/fstp/bidLoanDetails",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryBidLoanDetails(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    	List<FssCreditInfoEntity>creditInfolist = fssCreditInfoService.queryFssCreditInfoEntityList(map);
+    	model.addAttribute("page", creditInfolist);
+    	model.put("map", map);
+    	return "fss/fstp/bid/bidLoanDetails";
+    }
+    
+    /**
+     * 标的财务汇总审核回盘文件表
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/fstp/bidFinanceSumAudit",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryBidSumAudit(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    	List<FssSumAuditEntity>creditInfolist = fssSumAuditService.querySumAuditList(map);
+    	model.addAttribute("page", creditInfolist);
+    	model.put("map", map);
+    	return "fss/fstp/bid/bidSumAudit";
+    }
     
     
-    
-    
-    
+    /**
+     * sftp数据上传记录列表
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/fstp/mainRecordInfo",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryMainRecordInfo(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    	List<FssSftpRecordEntity>creditInfolist = fssSftpRecordService.findSftpRecordList(map);
+    	model.addAttribute("page", creditInfolist);
+    	model.put("map", map);
+    	return "fss/fstp/bid/fstpRecordList";
+    }
     
     
     

@@ -1,19 +1,19 @@
-package com.gqhmt.fss.architect.sftp.service;
+package com.gqhmt.sftp.service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.gqhmt.fss.architect.sftp.entity.FssProjectCallbackEntity;
-import com.gqhmt.fss.architect.sftp.mapper.read.FssProjectInfoCallBackReadMapper;
-import com.gqhmt.fss.architect.sftp.mapper.write.FssPorjectCallbackWriteMapper;
+import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
+import com.gqhmt.sftp.mapper.read.FssProjectCallbackReadMapper;
+import com.gqhmt.sftp.mapper.write.FssPorjectCallbackWriteMapper;
 
 @Service
 public class FssProjectInfoCallBackService {
 	
 	@Resource
-	private FssProjectInfoCallBackReadMapper fssProjectInfoCallBackReadMapper;
+	private FssProjectCallbackReadMapper fssProjectInfoCallBackReadMapper;
 	@Resource
 	private FssPorjectCallbackWriteMapper fssPorjectCallbackWriteMapper;
 	

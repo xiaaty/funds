@@ -24,4 +24,33 @@
 		WHERE t.parent_id=${parentId} 
 	</select>
 		
+	<select  id="queryCreditInfoList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssCreditInfoEntity" >
+		SELECT
+		  `id` id,
+		  `parent_id` parentId,
+		  `total_number` totalNumber,
+		  `target_id` targetId,
+		  `trade_time` tradeTime,
+		  `trade_type` tradeType,
+		  `cust_name` custName,
+		  `cert_type` certType,
+		  `cert_no` certNo,
+		  `loan_id` loanId,
+		  `loan_name` loanName,
+		  `loan_cert_no` loanCertNo,
+		  `pay_amount` payAmount,
+		  `repayment_capital` repaymentCapital,
+		  `repayment_interest` repaymentInterest
+	    FROM `t_gq_fss_sftp_credit_info` t
+	 <where>
+		<if test="custName!=null and custName!=''">
+			AND t.`cust_name` like CONCAT('%',#{custName},'%')
+		</if>
+		<if test="certNo!=null and certNo!=''">
+			AND t.`cert_no` like CONCAT('%',#{certNo},'%')
+		</if>
+	</where>
+</select>	
+		
+		
 </mapper>

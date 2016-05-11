@@ -1,6 +1,7 @@
 package com.gqhmt.sftp.mapper.read;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -32,4 +33,9 @@ public interface FssCreditInfoReadMapper extends ReadMapper<FssCreditInfoEntity>
 	 * function：通过parent_id得到对象列表
 	 */
 	public List<FssCreditInfoEntity> getByParentId(@Param("parentId") Long parentId);
+	
+	
+	public List<FssCreditInfoEntity> queryCreditInfoList(Map map);
+	
+	
 }
