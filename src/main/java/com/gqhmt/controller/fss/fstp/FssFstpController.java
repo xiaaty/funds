@@ -1,12 +1,9 @@
 package com.gqhmt.controller.fss.fstp;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.sftp.entity.FinanceSumEntity;
-import com.gqhmt.fss.architect.sftp.entity.FssProjectCallbackEntity;
-import com.gqhmt.fss.architect.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.fss.architect.sftp.service.FssBidFinanceService;
-import com.gqhmt.fss.architect.sftp.service.FssProjectInfoCallBackService;
-import com.gqhmt.fss.architect.sftp.service.FssProjectInfoService;
+//import com.gqhmt.fss.architect.sftp.service.FssBidFinanceService;
+//import com.gqhmt.fss.architect.sftp.service.FssProjectInfoCallBackService;
+//import com.gqhmt.fss.architect.sftp.service.FssProjectInfoService;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,75 +33,75 @@ import java.util.Map;
 @Controller
 public class FssFstpController {
 
-    @Resource
-    private FssProjectInfoService fssProjectInfoService;
-    @Resource
-    private FssProjectInfoCallBackService fssProjectInfoCallBackService;
-    @Resource
-    private FssBidFinanceService fssBidFinanceService;
+//    @Resource
+//    private FssProjectInfoService fssProjectInfoService;
+//    @Resource
+//    private FssProjectInfoCallBackService fssProjectInfoCallBackService;
+//    @Resource
+//    private FssBidFinanceService fssBidFinanceService;
 
-    /**
-     * 项目信息列表
-     * @param request
-     * @param model
-     * @param map
-     * @return
-     * @throws FssException
-     */
-    @RequestMapping(value = "/fstp/projectInfo",method = {RequestMethod.GET,RequestMethod.POST})
-    @AutoPage
-    public String queryProjectInfoList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-        List<FssProjectInfoEntity> projectlist = fssProjectInfoService.queryFssProjectList(map);
-        model.addAttribute("page", projectlist);
-        model.put("map", map);
-    	return "fss/fstp/project/projectInfoList";
-    }
-    
-    /**
-     * 项目信息回盘列表
-     * @param request
-     * @param model
-     * @param map
-     * @return
-     * @throws FssException
-     */
-    @RequestMapping(value = "/fstp/projectcallback",method = {RequestMethod.GET,RequestMethod.POST})
-    @AutoPage
-    public String queryProjectInfoCallBackList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-    	List<FssProjectCallbackEntity> projectcallbacklist = fssProjectInfoCallBackService.queryFssProjectCallBackList(map);
-    	model.addAttribute("page", projectcallbacklist);
-    	model.put("map", map);
-    	return "fss/fstp/project/projectInfoBackplat";
-    }
-    
-    /**
-     * 标的财务汇总文件列表
-     * @param request
-     * @param model
-     * @param map
-     * @return
-     * @throws FssException
-     */
-    @RequestMapping(value = "/fstp/bidFinanceTotals",method = {RequestMethod.GET,RequestMethod.POST})
-    @AutoPage
-    public String querybidFinanceTotals(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-    	List<FinanceSumEntity> bidfinancelist = fssBidFinanceService.queryBidFinanceList(map);
-    	model.addAttribute("page", bidfinancelist);
-    	model.put("map", map);
-    	return "fss/fstp/bid/bidFinanceTotals";
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+//    /**
+//     * 项目信息列表
+//     * @param request
+//     * @param model
+//     * @param map
+//     * @return
+//     * @throws FssException
+//     */
+//    @RequestMapping(value = "/fstp/projectInfo",method = {RequestMethod.GET,RequestMethod.POST})
+//    @AutoPage
+//    public String queryProjectInfoList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+//        List<FssProjectInfoEntity> projectlist = fssProjectInfoService.queryFssProjectList(map);
+//        model.addAttribute("page", projectlist);
+//        model.put("map", map);
+//    	return "fss/fstp/project/projectInfoList";
+//    }
+//    
+//    /**
+//     * 项目信息回盘列表
+//     * @param request
+//     * @param model
+//     * @param map
+//     * @return
+//     * @throws FssException
+//     */
+//    @RequestMapping(value = "/fstp/projectcallback",method = {RequestMethod.GET,RequestMethod.POST})
+//    @AutoPage
+//    public String queryProjectInfoCallBackList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+//    	List<FssProjectCallbackEntity> projectcallbacklist = fssProjectInfoCallBackService.queryFssProjectCallBackList(map);
+//    	model.addAttribute("page", projectcallbacklist);
+//    	model.put("map", map);
+//    	return "fss/fstp/project/projectInfoBackplat";
+//    }
+//    
+//    /**
+//     * 标的财务汇总文件列表
+//     * @param request
+//     * @param model
+//     * @param map
+//     * @return
+//     * @throws FssException
+//     */
+//    @RequestMapping(value = "/fstp/bidFinanceTotals",method = {RequestMethod.GET,RequestMethod.POST})
+//    @AutoPage
+//    public String querybidFinanceTotals(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+//    	List<FinanceSumEntity> bidfinancelist = fssBidFinanceService.queryBidFinanceList(map);
+//    	model.addAttribute("page", bidfinancelist);
+//    	model.put("map", map);
+//    	return "fss/fstp/bid/bidFinanceTotals";
+//    }
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
     
 }
