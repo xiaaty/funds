@@ -1093,7 +1093,7 @@ public class CustomerInfoService {
 		customerInfoEntity.setHasThirdAgreement(0);
 		customerInfoEntity.setHasAcount(0);
 		customerInfoEntity.setPayChannel(2);
-		customerInfoEntity.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
+//		customerInfoEntity.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
 		customerInfoEntity.setIsBatchSendmsgCalled(0);
 		customerInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
 		customerInfoEntity.setCreateUserId(0);
