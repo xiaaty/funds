@@ -1,12 +1,16 @@
 package com.gqhmt.DataMigration.dao;
 
+import com.gqhmt.business.architect.loan.entity.Bid;
+import com.gqhmt.util.LogUtil;
 import com.sun.rowset.CachedRowSetImpl;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -89,6 +93,40 @@ public class BidDao extends SuperGqDao {
 
 
         return  cs;
+    }
+
+    public List<Bid> findAllBid(Long custId) throws Exception{
+        String  sql = "SELECT * FROM `t_gq_bid` t1 where t1.customer_id = "+custId;
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        CachedRowSetImpl cs = null;
+        List<Bid> list = new ArrayList<>();
+        try{
+            conn = getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Bid bid = new Bid();
+                bid.setId(rs.getInt("id"));
+                bid.setCustomerId(rs.getInt("customer_id"));
+                bid.setContractNo(rs.getString("contract_no"));
+                list.add(bid);
+
+            }
+
+        }catch (Exception e){
+            LogUtil.error(getClass(),e);
+        }finally {
+            close(rs);
+            close(ps);
+            close(conn);
+        }
+
+
+
+        return  list;
     }
 
     public Set<String> findAllBidByMap() throws Exception{

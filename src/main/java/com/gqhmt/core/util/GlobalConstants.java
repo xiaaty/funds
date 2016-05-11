@@ -549,13 +549,22 @@ public class GlobalConstants {
         ACCOUNT_TYPE_MAPPING.put("10019001","5531");//纯线下借款账户
 
 
-        ACCOUNT_TYPE_MAPPING.put("10011000","9180");            //公司收费账户
-        ACCOUNT_TYPE_MAPPING.put("10011001","8246");            //保证金账户
-        ACCOUNT_TYPE_MAPPING.put("10011002","8248");            //逆服务费账户
+        ACCOUNT_TYPE_MAPPING.put("10018001","9180");            //公司收费账户
+        ACCOUNT_TYPE_MAPPING.put("10018002","8246");            //保证金账户
+        ACCOUNT_TYPE_MAPPING.put("10018003","8248");            //逆服务费账户
+        ACCOUNT_TYPE_MAPPING.put("10018004","8268");            //保理账户
+        ACCOUNT_TYPE_MAPPING.put("10018005","8288");            //运营红包账户
+
+
         ACCOUNT_TYPE_MAPPING.put("10012001","6601");            //代偿人账户
         ACCOUNT_TYPE_MAPPING.put("10012002","6635");            //抵押权人账户
         ACCOUNT_TYPE_MAPPING.put("10012003","6663");            //借款代还账户
+        ACCOUNT_TYPE_MAPPING.put("10012004","6896");            //紧急接标人账户
+        //对公账户
 
+        // 10018001 公司收费账户          11028001
+        // 10018002 保证金账户           11028002
+        // 10018003 逆服务费账户          11028003
 
         //线上开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020001","10010001");//web开户
@@ -568,16 +577,18 @@ public class GlobalConstants {
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
+
+        //11020014
 //        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
 //        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
 //        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
 
         //冠e通
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020004","10010002");//委托出借开户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020005","10010005");//借款账户（冠e通）
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020006","10010002");//委托出借开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020007","10010003");//借款账户
 
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020004","97010001");
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020005","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020006","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020007","97010001");
 
 
         //保理
@@ -598,11 +609,37 @@ public class GlobalConstants {
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020008","10012001");//代偿人账户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020009","10012002");//抵押权人开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020013","10012003");//借款代还账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020014","10012004");//线下紧急赎回接标账户
+        //
 
 
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020008","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020009","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020013","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020014","97010001");
+
+
+        //对公账户
+        // 10018001 公司收费账户          11028001
+        // 10018002 保证金账户           11028002
+        // 10018003 逆服务费账户          11028003
+        // 10018004 保理公司账户          11028004
+        // 10018005 运营红包账户          11028005
+
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028001","10018001");//公司收费账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028002","10018002");//保证金账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028003","10018003");//逆服务费账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028004","10018004");//保理账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028005","10018005");//运营红包账户
+        //
+
+
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028001","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028002","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028003","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028004","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028005","97010001");
+
 
 
         TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
@@ -640,19 +677,7 @@ public class GlobalConstants {
         
         TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         
 
 	}
