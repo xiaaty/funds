@@ -319,7 +319,8 @@ public class CustomerInfoService {
 	 * @return
 	 */
 	public CustomerInfoEntity queryCustomerById(int id) {
-		return customerInfoReadMapper.selectByPrimaryKey(id);
+		Long id1=Long.valueOf(String.valueOf(id));
+		return customerInfoReadMapper.selectByPrimaryKey(id1);
 	}
 	public CustomerInfoEntity getCustomerById(Long id) {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
