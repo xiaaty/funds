@@ -20,7 +20,9 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -87,6 +89,18 @@ public class FssRepaymentService {
 	 */
 	public List<FssRepaymentParentEntity> queryRepaymentParents(FssRepaymentParentEntity repayment) throws FssException{
 		return fssRepaymentParentReadMapper.queryFssRepaymentParent(repayment);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年4月25日
+	 * function：根据商户号流水号查询对象信息
+	 */
+	public FssRepaymentParentEntity queryByMchnAndSeqNo(String mchn,String seqNo) throws FssException{
+		Map<String, String> map=new HashMap<>();
+		map.put("mchn",mchn);
+		map.put("seqNo",seqNo);
+		return fssRepaymentParentReadMapper.queryByMchnAndSeqNo(map);
 	}
 	/**
 	 * 
@@ -229,6 +243,7 @@ public class FssRepaymentService {
 	 */
     public RepaymentResponse rePaymentCallBack(String seqNo,String mchn) throws FssException{
     	RepaymentResponse repaymentResponse=new RepaymentResponse();
+    	FssRepaymentParentEntity queryByMchnAndSeqNo = this.queryByMchnAndSeqNo(mchn, seqNo);
     	List<FssRepaymentEntity> repaymentlist=this.searRepaymentByparam(seqNo,mchn);
     	if(repaymentlist==null){
     		throw new FssException("还款划扣失败");
@@ -245,6 +260,18 @@ public class FssRepaymentService {
     		repaymentChild.setSerial_number(fssRepaymentEntity.getSerialNumber());
     		repaymentChilds.add(repaymentChild);
 		}
+    	
+    	if("10080002".equals(queryByMchnAndSeqNo.getResultState())){
+    		repaymentResponse.setResp_code("0000");
+    		repaymentResponse.setResp_msg("成功");
+    	}else if("10080003".equals(queryByMchnAndSeqNo.getResultState())){
+    		repaymentResponse.setResp_code("0001");
+    		repaymentResponse.setResp_msg("部分成功");
+    	}else{
+    		repaymentResponse.setResp_code("0002");
+    		repaymentResponse.setResp_msg("失败");
+    	}
+    	
     	repaymentResponse.setRepay_list(repaymentChilds);
     	repaymentResponse.setMchn(mchn);
     	repaymentResponse.setSeq_no(seqNo);

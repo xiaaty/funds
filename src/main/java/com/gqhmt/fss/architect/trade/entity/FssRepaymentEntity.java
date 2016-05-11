@@ -30,22 +30,22 @@ public class FssRepaymentEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;  
 	
-	@Column(name = "parent_id") 
+	@Column(name = "parent_id",updatable = false) 
 	private Long  parentId ;    
 	
-    @Column(name = "acc_no") 
+    @Column(name = "acc_no",updatable = false) 
     private String  accNo ;     //账号          
     
-    @Column(name = "trade_type")
+    @Column(name = "trade_type",updatable = false)
     private String tradeType ;  //交易类型    
 
-    @Column(name = "create_time")
+    @Column(name = "create_time",updatable = false)
     private Date createTime;    //创建时间      
 
     @Column(name = "motify_time")
     private Date motifyTime;   //修改时间          
 
-    @Column(name = "amt")
+    @Column(name = "amt",updatable = false)
     private BigDecimal amt;     //还款金额 
 
     @Column(name = "state")
@@ -54,22 +54,22 @@ public class FssRepaymentEntity implements Serializable {
     @Column(name = "result_state")
     private String resultState ;  //还款划扣结果
     
-    @Column(name = "seq_no")
+    @Column(name = "seq_no",updatable = false)
     private String seqNo;	//流水号
     
-    @Column(name = "serial_number")
+    @Column(name = "serial_number",updatable = false)
     private String serialNumber;//序列号
     
-    @Column(name = "contract_id")
+    @Column(name = "contract_id",updatable = false)
     private String contractId;//合同id
     
-    @Column(name = "contract_no")
-    private String contractNo;//合同id
+    @Column(name = "contract_no",updatable = false)
+    private String contractNo;//合同编号
     
-    @Column(name = "mchn_parent")
+    @Column(name = "mchn_parent",updatable = false)
     private String mchnParent ; //父商户号       
 
-    @Column(name = "mchn_child")
+    @Column(name = "mchn_child",updatable = false)
     private String mchnChild ;  //子商户号
     
     @Column(name = "remark")

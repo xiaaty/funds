@@ -37,7 +37,7 @@ public class SettleBeforeJob extends SupperJob {
     private BidSettleService settleService;
     
     private static boolean isRunning = false;
-//    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
         if(!isIp("upload")){
@@ -45,7 +45,7 @@ public class SettleBeforeJob extends SupperJob {
         }
 
         if(isRunning) return;
-        startLog("借款业务流标 执行流标前置");
+        startLog("满标放款 ");
         
         isRunning = true;
 

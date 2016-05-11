@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssLendAssetReadMapper">
+	 <sql id="field">
+		SELECT 
+			t.id id,
+		  	t.cust_no custNo, 
+		  	t.acc_no accNo,
+		  	t.accounting_no accountingNo,
+		  	t.receive_balance receiveBalance,
+		  	t.receive_principal receivePrincipal,
+		  	t.receive_interest receiveInterest,
+		  	t.return_principal returnPrincipal,
+		  	t.return_interest returnInterest,
+		  	t.trade_date tradeDate,
+		  	t.trade_time tradeTime,
+		  	t.balance balance,
+		  	t.freeze_amount freezeAmount,
+		  	t.available_amount availableAmount,
+		  	t.create_time createTime,
+		  	t.modify_time modifyTime
+		FROM t_gq_fss_accounting_lend_asset t
+	 </sql>
+	 
+	 <select id="getLendAssets" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.accounting.entity.FssLendAssetEntity" >
+		<include refid="field"/>
+		WHERE 1=1
+		<if test="accountingNo!=null and accountingNo!=''">
+			AND t.`accounting_no` like CONCAT('%',#{accountingNo},'%')
+		</if>
+		<if test="accNo!=null and accNo!=''">
+			AND t.`acc_no` like CONCAT('%',#{accNo},'%')
+		</if>
+		<if test="custName!=null and custName!=''">
+			AND t.`cust_name` like CONCAT('%',#{custName},'%')
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+	</select>
+
+
+</mapper>
+
+

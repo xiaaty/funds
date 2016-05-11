@@ -30,17 +30,17 @@ public class FssBackplateEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;           		//bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     
-    @Column(name = "seq_no")
+    @Column(name = "seq_no",updatable = false)
     private String seqNo;   		//varchar(45) DEFAULT NULL COMMENT '流水号',
     
-    @Column(name = "mchn")
+    @Column(name = "mchn",updatable = false)
     private String mchn  ;			//varchar(30) DEFAULT NULL COMMENT '商户号',
     
-    @Column(name = "trade_type")
+    @Column(name = "trade_type",updatable = false)
     private String tradeType   ;         	//varchar(8) DEFAULT NULL COMMENT '交易类型',                          
    
     
-    @Column(name = "create_time")
+    @Column(name = "create_time",updatable = false)
     private Date createTime   ;         	//DEFAULT NULL COMMENT '创建时间',                      
     
     @Column(name = "modify_time")

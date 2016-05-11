@@ -127,7 +127,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     /**
      * 提现
-     * @param WithdrawDto
+     * @param withdrawDto
      * @return OrderNo
      */
     @Override
@@ -350,13 +350,13 @@ public class FundsTradeImpl  implements IFundsTrade {
         		throw new FssException("90004004");
         	}
         }
-        //提现次数限制
-        if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){
-            boolean checkWithdraw = this.fundOrderService.checkWithdrawNumber(entity.getId());
-            if(checkWithdraw){
-                throw new CommandParmException("90004005");
-            }
-        }
+        //提现次数限制 ,暂时去掉限制功能,未来更具需要进行添加
+//        if (busiType==GlobalConstants.ACCOUNT_TYPE_LEND_ON){
+//            boolean checkWithdraw = this.fundOrderService.checkWithdrawNumber(entity.getId());
+//            if(checkWithdraw){
+//                throw new CommandParmException("90004005");
+//            }
+//        }
     }
 
     private FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException {

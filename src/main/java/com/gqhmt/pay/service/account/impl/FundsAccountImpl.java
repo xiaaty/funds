@@ -3,7 +3,6 @@ package com.gqhmt.pay.service.account.impl;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.account.ChangeBankCardDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
@@ -137,7 +136,7 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	/**
      * 银行卡变更
-     * @param FundsAccountImpl.java            支付渠道
+     * @param changeCardEntity
      * @throws FssException
      */
 	public boolean changeCard(FssChangeCardEntity changeCardEntity) throws FssException {

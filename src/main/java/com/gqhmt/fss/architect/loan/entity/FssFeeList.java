@@ -36,10 +36,10 @@ public class FssFeeList implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
     
-    @Column(name = "loan_id")
+    @Column(name = "loan_id",updatable = false)
     private Long loanId;                                            //bigint(20)     (NULL)           NO      PRI     (NULL)   auto_increment  select,insert,update,references  等于 与account表 id相同
     
-    @Column(name = "fee_type")
+    @Column(name = "fee_type",updatable = false)
     private String feeType   ;                                //费用类型        YES             (NULL)                   select,insert,update,references  账户总资产
   
     @Column(name = "trade_status")
@@ -48,10 +48,10 @@ public class FssFeeList implements Serializable {
     @Column(name = "result")
     private String result   ;                             // 98060001成功还是98060003失败        YES             (NULL)                   select,insert,update,references  账户总资产
    
-    @Column(name="loan_platform")
+    @Column(name="loan_platform",updatable = false)
     private String loanPlatform;              // 借款平台 “北京”、"上海"...
     
-    @Column(name = "fee_amt")
+    @Column(name = "fee_amt",updatable = false)
     private BigDecimal feeAmt   ;                                //费用金额       YES             (NULL)                   select,insert,update,references  账户总资产
    
     @Column(name="rep_code")

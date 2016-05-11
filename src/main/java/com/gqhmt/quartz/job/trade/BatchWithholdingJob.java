@@ -43,13 +43,13 @@ public class BatchWithholdingJob extends SupperJob{
     private IFundsBatchTrade fundsBatchTrade;
 
     private static boolean isRunning = false;
-//    @Scheduled(cron="0 0/1 * * * * ")
+    @Scheduled(cron="0 0/1 * * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
         }
         if(isRunning) return;
-        startLog("借款业务流标 执行流标前置 ");
+        startLog("还款代扣");
         isRunning = true;
         List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
 

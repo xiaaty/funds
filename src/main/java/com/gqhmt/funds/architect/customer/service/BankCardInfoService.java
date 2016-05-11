@@ -463,8 +463,8 @@ public class BankCardInfoService {
 		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
 		String  bankCode=loanAccountDto.getBank_id();
 		bankCardInfoEntity.setCustId(customer.getId().intValue());
-		bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(bankCode));
-		bankCardInfoEntity.setBankSortName(Application.getInstance().getBankShortName(bankCode));
+		bankCardInfoEntity.setBankLongName(Application.getInstance().getDictName("9703"+bankCode));
+		bankCardInfoEntity.setBankSortName(Application.getInstance().getDictName("9703"+bankCode));
 		bankCardInfoEntity.setBankNo(loanAccountDto.getBank_card());
 		bankCardInfoEntity.setIsPersonalCard(1);
 		bankCardInfoEntity.setCertNo(loanAccountDto.getCert_no());
@@ -496,8 +496,8 @@ public class BankCardInfoService {
 			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
 			String bankCode=customerInfoEntity.getParentBankCode();
 			bankCardInfoEntity.setCustId(customerInfoEntity.getId().intValue());
-			bankCardInfoEntity.setBankLongName(Application.getInstance().getBankName(bankCode));
-			bankCardInfoEntity.setBankSortName(Application.getInstance().getBankShortName(bankCode));
+			bankCardInfoEntity.setBankLongName(Application.getInstance().getDictName("9703"+bankCode));
+			bankCardInfoEntity.setBankSortName(Application.getInstance().getDictName("9703"+bankCode));
 			bankCardInfoEntity.setBankNo(customerInfoEntity.getBankNo());
 			bankCardInfoEntity.setIsPersonalCard(1);
 			bankCardInfoEntity.setCertNo(customerInfoEntity.getCertNo());
