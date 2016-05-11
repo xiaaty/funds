@@ -4,17 +4,19 @@ import com.gqhmt.core.APIExcuteErrorException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.account.BankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.service.asset.*;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.List;
 import javax.annotation.Resource;
 
 /**
@@ -48,6 +50,8 @@ public class FssAssetApi {
 
     @Resource
     private IRechargeAndWithdrawOrder rechargeAndWithdrawOrder;
+    @Resource
+    private  BankCardInfoService bankCardInfoService;
     /**
      * 账户余额查询
      * @param dto
@@ -69,7 +73,8 @@ public class FssAssetApi {
      * function：银行列表查询
      */
     @RequestMapping(value = "/getBankInfo",method = {RequestMethod.POST,RequestMethod.GET})
-    public Object getBankInfo(BankDto dto) throws APIExcuteErrorException{
+    public Object getBankInfo() throws APIExcuteErrorException{
+    	BankDto dto=new BankDto();
     	Response response= new Response();
     	try {
     		response= bankListImpl.execute(dto);
@@ -78,21 +83,19 @@ public class FssAssetApi {
     	}
     	return response;
     }
+    
     /**
      * author:柯禹来
      * time:2016年3月1日
      * function：银行卡信息查询
      */
-    @RequestMapping(value = "/getBankCardInfo",method = RequestMethod.POST)
-    public Object getBankCardInfo(BankCardDto bankcard){
-    	Response response= new Response();
-    	try {
-    		response = bankCardListImpl.execute(bankcard);
-    	} catch (Exception e) {
-            execute(e);
-    	}
-    	return response;
+    @RequestMapping(value = "/getBankCardInfo/{custNo}",method = {RequestMethod.POST,RequestMethod.GET})
+    public List<BankCardInfoEntity> getBankCardInfo(@PathVariable String custNo) throws FssException{
+    	List<BankCardInfoEntity> list = bankCardInfoService.findBankCardByCustNo(custNo);
+    	if(list==null) throw new FssException("90002036");
+    	return list;
     }
+  
     /**
      * author:柯禹来
      * time:2016年3月1日
