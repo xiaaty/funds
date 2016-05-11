@@ -139,7 +139,7 @@ public class BankCardInfoService {
 	 * @return
 	 */
 	public BankCardInfoEntity queryBankCardinfoById(int id){
-		return bankCardinfoReadMapper.selectByPrimaryKey(id);
+		return bankCardinfoReadMapper.selectByPrimaryKey(Integer.valueOf(id));
 	}
 
 	
@@ -160,7 +160,7 @@ public class BankCardInfoService {
 		
 		BankCardInfoEntity bankCard = queryBankCardinfoById(entity.getId());
 		//客户信息bean
-		CustomerInfoEntity customerInfo = customerInfoService.queryCustomerById(bankCard.getCustId());
+		CustomerInfoEntity customerInfo = customerInfoService.queryCustomerById(bankCard.getCustId().intValue());
         
 		//是否需要掉用富友银行卡变更接口
 		boolean bankChangeFlg = false;
