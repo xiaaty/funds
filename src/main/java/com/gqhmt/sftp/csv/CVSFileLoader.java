@@ -4,8 +4,8 @@ package com.gqhmt.sftp.csv;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-/** 
- * 逗号分割文件数据加载类 
+/**
+ * 逗号分割文件数据加载类
  * @version 1.0 
  * @author zhanzhengqiang 
  */ 

@@ -1,8 +1,6 @@
 
 package com.gqhmt.sftp.csv;
 
-import com.gqhmt.sftp.cvss.Loader;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
