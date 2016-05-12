@@ -48,7 +48,7 @@
         <!-- end breadcrumb -->
     </div>
     <div id="content">
-            <section id="widget-grid" class="">
+            <section id="freezeList" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

@@ -1,4 +1,6 @@
-package com.gqhmt.sftp.cvs;
+
+package com.gqhmt.sftp.csv;
+
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
 import com.gqhmt.sftp.service.FssProjectService;
@@ -10,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
-public class CSVUtils{
+public class CSVUtils {
+
 	
 	
 	 @Resource
