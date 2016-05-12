@@ -237,13 +237,18 @@ public class OnlineAccountDataMigration {
         BidDao bidDao = BidDao.getBidDao();
 
         List<Bid> bids = bidDao.findAllBid(customerInfoEntity.getId());
-
+        if(bids == null && bids .size() ==0){
+            return;
+        }
+        LogUtil.info(getClass(),"执行借款人合同开户:"+customerInfoEntity.getId());
         String  bankNo= bankCardInfoEntity != null ? bankCardInfoEntity.getBankNo():"0000";                //银行卡号
         String  name= entity.getCustName() == null ? customerInfoEntity.getCustomerName():entity.getCustName();                  //主借人姓名
         String  mobile= entity.getUserName();                //客户电话
         String  certNo = customerInfoEntity.getCertNo();               //身份证号
         String  bankId = bankCardInfoEntity != null ? bankCardInfoEntity.getParentBankId():"0000";               //银行全称
         String  area = bankCardInfoEntity != null ? bankCardInfoEntity.getCityId():"0000";
+
+
 
         for(Bid bid:bids){
             String contractNo = bid.getContractNo();
@@ -254,7 +259,6 @@ public class OnlineAccountDataMigration {
                 fssAccountService.createAccount("11020007",gqgetBackendMchn,mobile ,certNo,name,bankId,bankNo,area,contractNo,customerInfoEntity.getId());
 
             }catch (Exception e){
-
 
                 if("90002017".equals(e.getMessage())){
                     System.out.println("重复合同号:"+contractNo);

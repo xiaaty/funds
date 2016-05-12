@@ -1,24 +1,15 @@
 package com.gqhmt.sftp.cvs;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.junit.Test;
-
-import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssCreditInfoEntity;
 import com.gqhmt.sftp.entity.FssFinanceSumEntity;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.sftp.entity.FssSumAuditEntity;
 import com.gqhmt.sftp.service.FssProjectService;
 import com.gqhmt.util.CommonUtil;
+
+import javax.annotation.Resource;
+import java.io.File;
+import java.util.*;
 
 /**
  * 
@@ -37,7 +28,7 @@ import com.gqhmt.util.CommonUtil;
  * -----------------------------------------------------------------
  * 2016年5月11日  jhz      1.0     1.0 Version
  */
-public class CreateCSV  extends TestService{
+public class CreateCSV {
 	
 	
 	@Resource
@@ -49,7 +40,6 @@ public class CreateCSV  extends TestService{
 	 * function：生成项目信息csv文件
 	 * @throws FssException 
 	 */
-	@Test
 	public void createProjectInfoCVS() throws FssException{
 			
 		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
@@ -132,7 +122,6 @@ public class CreateCSV  extends TestService{
 	 * function：标的财务汇总文件 csv文件
 	 * @throws FssException 
 	 */
-	@Test
 	public void createFinanceSumCVS() throws FssException{
 		 List<FssFinanceSumEntity> queryFinaSum = fssProjectService.queryFinaSum();
 		if(queryFinaSum==null) throw new FssException("标的财务汇总文件不存在");
@@ -224,7 +213,6 @@ public class CreateCSV  extends TestService{
 	 * function：标的放款明细 csv文件
 	 * @throws FssException 
 	 */
-	@Test
 	public void createCreditInfoCVS() throws FssException{
 		List<FssCreditInfoEntity> queryCreditInfo = fssProjectService.queryCreditInfo();
 		if(queryCreditInfo==null) throw new FssException("标的放款明细文件不存在");

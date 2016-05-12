@@ -101,7 +101,6 @@ public class BidDao extends SuperGqDao {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        CachedRowSetImpl cs = null;
         List<Bid> list = new ArrayList<>();
         try{
             conn = getConnection();
@@ -123,8 +122,6 @@ public class BidDao extends SuperGqDao {
             close(ps);
             close(conn);
         }
-
-
 
         return  list;
     }

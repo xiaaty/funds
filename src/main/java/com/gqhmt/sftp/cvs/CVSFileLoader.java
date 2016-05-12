@@ -1,14 +1,7 @@
 package com.gqhmt.sftp.cvs;
-import java.io.BufferedReader;  
-import java.io.File;  
-import java.io.FileNotFoundException;  
-import java.io.FileReader;  
-import java.io.IOException;  
-import java.io.RandomAccessFile;  
-import java.util.ArrayList;  
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
-
-import com.gqhmt.sftp.cvss.Loader; 
 /** 
  * 逗号分割文件数据加载类 
  * @version 1.0 
@@ -35,8 +28,7 @@ public class CVSFileLoader {
      * 构造函数 
      * @param cvsFile 加载cvs文件路径 
      * @param logFile 加载数据日志文件路径 
-     * @param loader 
-     */  
+     */
     public CVSFileLoader(File cvsFile, File logFile) {  
         this.cvsFile = cvsFile;  
         this.logFile = logFile;  
