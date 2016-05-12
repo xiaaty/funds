@@ -1,6 +1,5 @@
 package com.gqhmt.extServInter.dto.loan;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.gqhmt.extServInter.dto.Response;
 
@@ -32,6 +31,7 @@ public class WithDrawApplyResponse  extends Response {
 	
 	private BigDecimal pay_amt;//放款（提现）金额
 	
+	private String withDraw_date; //实际转账日期
 	
 	private String  bespoke_date; //预约到账日期
 
@@ -93,6 +93,16 @@ public class WithDrawApplyResponse  extends Response {
 
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
+	}
+
+
+	public String getWithDraw_date() {
+		return withDraw_date;
+	}
+
+
+	public void setWithDraw_date(String withDraw_date) {
+		this.withDraw_date = withDraw_date;
 	}
 	
 }

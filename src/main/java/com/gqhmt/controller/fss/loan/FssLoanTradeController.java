@@ -4,7 +4,6 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.core.util.TokenProccessor;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
@@ -135,9 +134,9 @@ public class FssLoanTradeController {
 	 */
 	@RequestMapping("/loan/trade/{type}/toWithHold/{id}")
 	public String withhold(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) throws FssException {
-		String token = TokenProccessor.getInstance().makeToken();//创建令牌
+//		String token = TokenProccessor.getInstance().makeToken();//创建令牌
 //		System.out.println("在FormServlet中生成的token："+token);
-		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
+//		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		//通过custNo查询用户对象
@@ -158,13 +157,13 @@ public class FssLoanTradeController {
 	 */
 	@RequestMapping("/loan/trade/{type}/withHold/{id}")
 	@ResponseBody
-	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt,String token) throws InterruptedException{
+	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt) throws InterruptedException{
 		Map<String, String> map = new HashMap<String, String>();
 		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
 		fssLoanEntity.setStatus("10050002");
-		String server_token  = (String) request.getSession().getAttribute("token");
-		request.getSession().removeAttribute("token");
-		if(token.equals(server_token)){
+//		String server_token  = (String) request.getSession().getAttribute("token");
+//		request.getSession().removeAttribute("token");
+//		if(token.equals(server_token)){
 		try {
 			fssLoanService.update(fssLoanEntity);
 			fssLoanEntity.setPayAmt(payAmt);
@@ -176,10 +175,10 @@ public class FssLoanTradeController {
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
 		}
-		}else{
-			map.put("code", "0001");
-	        map.put("message", "请勿重复提交!");
-		}
+//		}else{
+//			map.put("code", "0001");
+//	        map.put("message", "请勿重复提交!");
+//		}
 		return map;
 	}
 

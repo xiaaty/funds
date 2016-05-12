@@ -1041,7 +1041,7 @@ public class CustomerInfoService {
 				if( cause instanceof MySQLIntegrityConstraintViolationException ){
 				 throw new FssException("90002030");
 				 }
-				LogUtil.info(this.getClass(), e.getMessage());
+				LogUtil.error(this.getClass(), e);
 				throw new FssException("90002024");
 			}
 			//2.创建用户         t_gq_user	
