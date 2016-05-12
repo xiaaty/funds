@@ -1,15 +1,13 @@
-package com.gqhmt.sftp.cvs;
+package com.gqhmt.sftp.csv;
 import java.io.File;  
 import java.io.IOException;  
 import java.util.List;
 
-import javax.annotation.Resource;
 
 import com.gqhmt.sftp.cvss.CVSFileLoader;
 import com.gqhmt.sftp.cvss.Loader;
-import com.gqhmt.sftp.service.FssProjectService;  
   
-/** 测试类 */ 
+
 public class ReadCSVFile {
 	
 	 /** 

@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.cvs;
+package com.gqhmt.sftp.csv;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,15 +20,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
  
 import org.apache.commons.beanutils.BeanUtils;
-import org.junit.Test;
-
-import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.cvs.CSVUtils;
+import com.gqhmt.sftp.csv.CSVUtils;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
 import com.gqhmt.sftp.service.FssProjectService;
 import com.gqhmt.util.CommonUtil;
-public class CSVUtils extends TestService{
+public class CSVUtils {
 	
 	
 	 @Resource
@@ -185,7 +182,6 @@ public class CSVUtils extends TestService{
 	   * @param args
 	 * @throws FssException 
 	   */
-	  @Test
 	  public  void get() throws FssException {
 		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
 	    List exportData = new ArrayList<Map>();
