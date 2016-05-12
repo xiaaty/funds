@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sftp.mapper.read.FssSftpRecordReadMapper">
+	<select id="getRecordList" parameterType="java.util.Map"  resultType="com.gqhmt.sftp.entity.FssSftpRecordEntity" >
+		SELECT 
+			t.id id,
+			t.title title,
+			t.count count,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.type type,
+			t.status status
+		FROM `t_gq_fss_sftp_project_callback` t
+	</select>
+ </mapper>

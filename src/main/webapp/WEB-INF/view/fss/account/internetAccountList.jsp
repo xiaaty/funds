@@ -56,7 +56,7 @@
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="Form">
+                                <form class="smart-form" action="${contextPath}/account/${map.type}/list"  method="post" id="accForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -74,19 +74,19 @@
                                                         <td class="tr">客户账号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:250px" name="accNo" value="${bussaccount.accNo}" />
+                                                                <input type="text" style="width:250px" name="accNo" value="${map.accNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">客户姓名:</td>
                                                         <td>
                                                             <label class="input"  style="width:250px" >
-                                                                <input type="text" name="custName" value="${bussaccount.custName}"/>
+                                                                <input type="text" name="custName" value="${map.custName}"/>
                                                             </label>
                                                         </td>
                                                         <td class="tr">证件号码:</td>
                                                         <td>
                                                             <label class="input"  style="width:250px" >
-                                                                <input type="text" name="certNo" value="${bussaccount.certNo}"/>
+                                                                <input type="text" name="certNo" value="${map.certNo}"/>
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -191,7 +191,7 @@
  <script type="text/javascript" charset="utf-8">
 	 $(document).ready(function () {
 	     pageSetUp();
-	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
+	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#accForm"));
 	 }); 
  
 </script>

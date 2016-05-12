@@ -20,9 +20,7 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -82,23 +80,16 @@ public class FssAccountService {
      * @return
      * @throws FssException
      */
-    public List<BussAndAccountBean> queryAccountList(BussAndAccountBean bussaccount,String accType)throws FssException {
+    public List<BussAndAccountBean> queryAccountList(Map<String,String> map)throws FssException {
     	List<BussAndAccountBean> bussaccountlist=null;
-    	
-    	Map map=new HashMap();
-    	if(StringUtils.isNotEmptyString(accType)){
-    		map.put("accType",accType);
-    	}
-    	if(StringUtils.isNotEmptyString(bussaccount.getAccNo())){//业务编号
-    		map.put("accNo",bussaccount.getAccNo());
-    	}
-    	if(StringUtils.isNotEmptyString(bussaccount.getCustName())){
-    		map.put("custName",bussaccount.getCustName());
-    	}
-    	if(StringUtils.isNotEmptyString(bussaccount.getCertNo())){
-    		map.put("certNo",bussaccount.getCertNo());
-    	}
-	    bussaccountlist=this.accountReadMapper.getBussinessAccountList(map);
+    	Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			map2.put("accType",map.get("type"));
+			map2.put("accNo", map.get("accNo"));
+			map2.put("custName", map.get("custName"));
+			map2.put("certNo", map.get("certNo"));
+		}
+	    bussaccountlist=this.accountReadMapper.getBussinessAccountList(map2);
         return bussaccountlist;
     }
 /*
