@@ -3,11 +3,6 @@ import java.io.File;
 import java.io.IOException;  
 import java.util.List;
 
-
-import com.gqhmt.sftp.cvss.CVSFileLoader;
-import com.gqhmt.sftp.cvss.Loader;
-  
-
 public class ReadCSVFile {
 	
 	 /** 
