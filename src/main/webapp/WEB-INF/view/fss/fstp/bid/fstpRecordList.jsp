@@ -111,8 +111,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1200px;">
-                                    	<col width="150" />
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1050px;">
                                     	<col width="150" />
                                     	<col width="150" />
                                     	<col width="150" />
@@ -122,8 +121,7 @@
                                     	<col width="150" />
                                     	<thead>
                                     	<tr>
-	                                    	<td>编号</td>
-	                                    	<td>文件名</td>
+	                                    	<td align="left">文件名</td>
 	                                    	<td>总条数</td>
 	                                    	<td>创建时间</td>
 	                                    	<td>修改时间</td>
@@ -135,14 +133,13 @@
                                         <tbody>
                                          <c:forEach items="${page.list}" var="t">
                                          <tr>
-	                                    	<td>${t.id}</td>
-	                                    	<td>${t.title}</td>
+	                                    	<td  align="left">${t.title}</td>
 	                                    	<td>${t.count}</td>
-	                                    	<td>${t.createTime}</td>
-	                                    	<td>${t.modifyTime}</td>
+	                                    	<td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	                                    	<td>${t.type}</td>
 	                                    	<td>${t.status}</td>
-	                                    	<td><a href="#">查看详细</a></td>
+	                                    	<td><a href="${contextPath}/fstp/impRecordDetail/${t.type}">查看详细</a></td>
                                         </tr>
                                         </c:forEach>
                                         </tbody> 

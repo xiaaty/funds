@@ -111,7 +111,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:3300px;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:3450px;">
                                     	<col width="150" />
                                     	<col width="150" />
                                     	<col width="150" />
@@ -141,6 +141,7 @@
 	                                    	<td>放款客户号</td>
 	                                    	<td>客户姓名</td>
 	                                    	<td>客户身份证号</td>
+	                                    	<td>证件类型</td>
 	                                    	<td>标的状态</td>
 	                                    	<td>发标日期</td>
 	                                    	<td>实际满标日期</td>
@@ -168,6 +169,12 @@
 	                                    	<td>${t.custNo}</td>
 	                                    	<td>${t.custName}</td>
 	                                    	<td>${t.certNo}</td>
+	                                    	<td>
+	                                    		<c:if test="${t.certType==0}">居民身份证</c:if>
+		                                    	<c:if test="${t.certType==1}">护照</c:if>
+		                                    	<c:if test="${t.certType==2}">军官证</c:if>
+		                                    	<c:if test="${t.certType==7}">其他</c:if>
+	                                    	</td>
 	                                    	<td>${t.targetState}</td>
 	                                    	<td>${t.tenderTime}</td>
 	                                    	<td>${t.fullScaleTime}</td>

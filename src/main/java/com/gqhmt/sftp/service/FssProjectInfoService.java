@@ -19,6 +19,11 @@ public class FssProjectInfoService {
 	@Resource
 	private FssProjectInfoWriteMapper fssProjectInfoWriteMapper;
 	
+	/**
+	 * 项目信息列表
+	 * @param map
+	 * @return
+	 */
 	public List<FssProjectInfoEntity> queryFssProjectList(Map<String,String> map){
 		Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
@@ -28,33 +33,13 @@ public class FssProjectInfoService {
 		}
 		return fssProjectInfoReadMapper.queryFssProjectInfoList(map2);
 	}
-	
+	/**
+	 * 批量插入项目信息
+	 * @param projectlist
+	 * @throws FssException
+	 */
 	public void createProjectInfo(List<FssProjectInfoEntity> projectlist) throws FssException{
-		fssProjectInfoWriteMapper.insert(projectlist);
+		fssProjectInfoWriteMapper.insertList(projectlist);
 	}
-	
-	
-	
-	
-	
-	
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年5月6日
-	 * function：查找所有项目信息
-	 */
-//	public List<FssProjectInfoEntity> queryItemsInfos()throws FssException {
-//		return fssItemInfoReadMapper.selectAll();
-//	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年5月6日
-	 * function：把回盘信息添加进项目信息回盘表
-	 */
-//	public void insetItemCallback(List<FssProjectCallbackEntity> itemsCallbacks){
-//		fssFssItemsCallbackWriteMapper.insertList(itemsCallbacks);
-//	}
 	
 }

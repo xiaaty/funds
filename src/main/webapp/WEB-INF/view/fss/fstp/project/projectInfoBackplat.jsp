@@ -134,7 +134,14 @@
 	                                    	<td>${t.itemName}</td>
 	                                    	<td>${t.payChannel}</td>
 	                                    	<td>${t.status}</td>
-	                                    	<td>${t.respCode}</td>
+	                                    	<td>
+		                                    	<c:if test="${t.respCode==0}">成功</c:if>
+		                                    	<c:if test="${t.respCode==1}">失败</c:if>
+		                                    	<c:if test="${t.respCode==112115}">借款人证件号码不能为空</c:if>
+		                                    	<c:if test="${t.respCode==112110}">项目信息已存在</c:if>
+		                                    	<c:if test="${t.respCode==112111}">平台信息不存在</c:if>
+		                                    	<c:if test="${t.respCode==112112}">系统信息不存在</c:if>
+	                                    	</td>
 	                                    	<td>${t.respMsg}</td>
 	                                    	<td>${t.bidId}</td>
 	                                    	<td>${t.failedMsg}</td>

@@ -11,7 +11,7 @@ import com.gqhmt.sftp.entity.FssProjectInfoEntity;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/3/14 10:15
- * Description:
+ * Description:项目信息
  * <p/>
  * Modification History:
  * Date    Author      Version     Description

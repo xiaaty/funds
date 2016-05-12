@@ -15,6 +15,7 @@ import com.gqhmt.sftp.service.FssSftpRecordService;
 import com.gqhmt.sftp.service.FssSumAuditService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -139,7 +140,6 @@ public class FssFstpController {
     	return "fss/fstp/bid/bidSumAudit";
     }
     
-    
     /**
      * sftp数据上传记录列表
      * @param request
@@ -156,5 +156,33 @@ public class FssFstpController {
     	model.put("map", map);
     	return "fss/fstp/bid/fstpRecordList";
     }
+    
+    /**
+     * 查看数据上传数据详细
+     * @param request
+     * @param model
+     * @param map
+     * @param type
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/fstp/impRecordDetail/{type}",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryImpRecordDetail(HttpServletRequest request, ModelMap model,@PathVariable Integer  type) throws FssException {
+    	if(type==1){//项目信息列表
+    		return "redirect:/fstp/projectInfo";  
+    	}else if(type==2){//项目回盘信息列表
+    		return "redirect:/fstp/projectcallback";  
+    	}else if(type==3){//标的财务汇总文件列表
+    		return "redirect:/fstp/bidFinanceTotals";  
+    	}else if(type==4){//标的放款明细文件列表
+    		return "redirect:/fstp/bidLoanDetails";  
+    	}else if(type==5){//标的财务汇总审核回盘文件表
+    		return "redirect:/fstp/bidFinanceSumAudit";  
+    	}else{
+    		return "fss/fstp/bid/fstpRecordList";
+    	}
+    }
+    
     
 }

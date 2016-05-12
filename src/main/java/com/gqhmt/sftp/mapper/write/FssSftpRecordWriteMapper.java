@@ -14,7 +14,7 @@ import com.gqhmt.sftp.entity.FssSftpRecordEntity;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年5月11日
- * Description:
+ * Description:ftp上传下载数据
  * <p>
  * Modification History:
  * Date    Author      Version     Description

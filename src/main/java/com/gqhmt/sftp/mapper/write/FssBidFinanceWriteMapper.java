@@ -11,7 +11,7 @@ import com.gqhmt.sftp.entity.FssFinanceSumEntity;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/3/14 10:15
- * Description:
+ * Description:标的财务汇总
  * <p/>
  * Modification History:
  * Date    Author      Version     Description

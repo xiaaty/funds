@@ -179,14 +179,27 @@
                                         	<td>${t.mchn}</td>
 	                                    	<td>${t.seqNo}</td>
 	                                    	<td>${t.itemNo}</td>
-	                                    	<td>${t.loanType}</td>
+	                                    	<td>
+		                                    	<c:if test="${t.loanType==0}">抵押标</c:if>
+		                                    	<c:if test="${t.loanType==1}">担保标</c:if>
+		                                    	<c:if test="${t.loanType==2}">信用标</c:if>
+		                                    	<c:if test="${t.loanType==3}">净值标</c:if>
+		                                    	<c:if test="${t.loanType==4}">扭转标</c:if>
+		                                    	<c:if test="${t.loanType==5}">秒标</c:if>
+		                                    	<c:if test="${t.loanType==6}">其他</c:if>
+	                                    	</td>
 	                                    	<td>${t.loanTittle}</td>
 	                                    	<td>${t.organization}</td>
 	                                    	<td>${t.description}</td>
 	                                    	<td>${t.loanAmt}</td>
 	                                    	<td>${t.expectedReturn}</td>
 	                                    	<td>${t.productName}</td>
-	                                    	<td>${t.repaymentType}</td>
+	                                    	<td>
+	                                    		<c:if test="${t.repaymentType==0}">一次性还本付息</c:if>
+		                                    	<c:if test="${t.repaymentType==1}">先息后本</c:if>
+		                                    	<c:if test="${t.repaymentType==2}">等额本息/等额本金</c:if>
+		                                    	<c:if test="${t.repaymentType==3}">其他</c:if>
+	                                    	</td>
 	                                    	<td>${t.loanTime}</td>
 	                                    	<td>${t.startDate}</td>
 	                                    	<td>${t.eachBidAmount}</td>
@@ -202,7 +215,12 @@
 	                                    	<td>${t.payChannel}</td>
 	                                    	<td>${t.bidYearIrr}</td>
 	                                    	<td>${t.custName}</td>
-	                                    	<td>${t.certType}</td>
+	                                    	<td>
+	                                    		<c:if test="${t.certType==0}">居民身份证</c:if>
+		                                    	<c:if test="${t.certType==1}">护照</c:if>
+		                                    	<c:if test="${t.certType==2}">军官证</c:if>
+		                                    	<c:if test="${t.certType==7}">其他</c:if>
+	                                    	</td>
 	                                    	<td>${t.certNo}</td>
                                         </tr>
                                         </c:forEach>
