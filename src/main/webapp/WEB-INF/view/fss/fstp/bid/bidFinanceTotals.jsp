@@ -141,7 +141,7 @@
 	                                    	<td>放款客户号</td>
 	                                    	<td>客户姓名</td>
 	                                    	<td>客户身份证号</td>
-	                                    	<td>证件类型</td>
+	                                    	<td>借款人证件类型</td>
 	                                    	<td>标的状态</td>
 	                                    	<td>发标日期</td>
 	                                    	<td>实际满标日期</td>
@@ -170,18 +170,23 @@
 	                                    	<td>${t.custName}</td>
 	                                    	<td>${t.certNo}</td>
 	                                    	<td>
-	                                    		<c:if test="${t.certType==0}">居民身份证</c:if>
-		                                    	<c:if test="${t.certType==1}">护照</c:if>
-		                                    	<c:if test="${t.certType==2}">军官证</c:if>
-		                                    	<c:if test="${t.certType==7}">其他</c:if>
+	                                    		<c:if test="${t.certType==00}">身份证</c:if>
+		                                    	<c:if test="${t.certType==01}">护照</c:if>
+		                                    	<c:if test="${t.certType==02}">军官证</c:if>
+		                                    	<c:if test="${t.certType==07}">其他</c:if>
 	                                    	</td>
-	                                    	<td>${t.targetState}</td>
-	                                    	<td>${t.tenderTime}</td>
-	                                    	<td>${t.fullScaleTime}</td>
+	                                    	<td>
+	                                    		<c:if test="${t.targetState==1}">筹款中</c:if>
+		                                    	<c:if test="${t.targetState==2}">还款中</c:if>
+		                                    	<c:if test="${t.targetState==3}">已到期未结清</c:if>
+		                                    	<c:if test="${t.targetState==4}">已结清</c:if>
+	                                    	</td>
+	                                    	<td><fmt:formatDate value="${t.tenderTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${t.fullScaleTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	                                    	<td>${t.tReCaptical}</td>
 	                                    	<td>${t.tReInterest}</td>
-	                                    	<td>${t.lRepaymentTime}</td>
-	                                    	<td>${t.aSquareTime}</td>
+	                                    	<td><fmt:formatDate value="${t.lRepaymentTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${t.aSquareTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	                                    	<td>${t.aReCaptical}</td>
 	                                    	<td>${t.aReInterest}</td>
 	                                    	<td>${t.todayReCaptical}</td>

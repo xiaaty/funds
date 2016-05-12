@@ -111,7 +111,8 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:3600px;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:3750px;">
+                                    	<col width="150" />
                                     	<col width="150" />
                                     	<col width="150" />
                                     	<col width="150" />
@@ -141,6 +142,7 @@
 	                                    	<td>支付机构标的ID</td>
 	                                    	<td>支付机构平台ID</td>
 	                                    	<td>放款客户号</td>
+	                                    	<td>借款人证件类型</td>
 	                                    	<td>客户姓名</td>
 	                                    	<td>客户身份证号</td>
 	                                    	<td>标的状态</td>
@@ -170,15 +172,16 @@
 	                                    	<td>${t.orgTargetId}</td>
 	                                    	<td>${t.orgTerraceId}</td>
 	                                    	<td>${t.custNo}</td>
+	                                    	<td>${t.certType}</td>
 	                                    	<td>${t.custName}</td>
 	                                    	<td>${t.certNo}</td>
 	                                    	<td>${t.targetState}</td>
-	                                    	<td>${t.tenderTime}</td>
-	                                    	<td>${t.fullScaleTime}</td>
+	                                    	<td><fmt:formatDate value="${t.tenderTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${t.fullScaleTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	                                    	<td>${t.tReCaptical}</td>
 	                                    	<td>${t.tReInterest}</td>
-	                                    	<td>${t.lRepaymentTime}</td>
-	                                    	<td>${t.aSquareTime}</td>
+	                                    	<td><fmt:formatDate value="${t.lRepaymentTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${t.aSquareTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	                                    	<td>${t.aReCaptical}</td>
 	                                    	<td>${t.aReInterest}</td>
 	                                    	<td>${t.todayReCaptical}</td>
