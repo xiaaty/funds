@@ -33,6 +33,9 @@ public class FssFinanceSumEntity implements Serializable {
 
     @Column(name = "cert_no")
     private String certNo;                          //客户身份证号
+    
+    @Column(name = "cert_type")
+    private String certType;                          //证件类型
 
     @Column(name = "target_state")
     private String targetState;                    //标的状态  
@@ -269,4 +272,12 @@ public class FssFinanceSumEntity implements Serializable {
 		this.tCreditSum = tCreditSum;
 	}
 
+	public String getCertType() {
+		return certType;
+	}
+
+	public void setCertType(String certType) {
+		this.certType = certType;
+	}
+	
 }

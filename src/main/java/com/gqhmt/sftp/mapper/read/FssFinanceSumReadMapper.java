@@ -1,9 +1,8 @@
 package com.gqhmt.sftp.mapper.read;
 
 import java.util.List;
-
+import java.util.Map;
 import org.apache.ibatis.annotations.Param;
-
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sftp.entity.FssFinanceSumEntity;
 
@@ -15,4 +14,8 @@ public interface FssFinanceSumReadMapper extends ReadMapper<FssFinanceSumEntity>
 	 * function：通过parent_id得到对象列表
 	 */
 	public List<FssFinanceSumEntity> getByParentId(@Param("parentId") Long parentId);
+	
+	
+	public List<FssFinanceSumEntity> queryFssFinanceSumList(Map map);
+	
 }

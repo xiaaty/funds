@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>资金清结算系统--项目信息回盘--冠群驰骋投资管理(北京)有限公司</title>
+    <title>资金清结算系统--主表数据信息--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -34,7 +34,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
            <li>入账管理</li>
-            <li>项目信息回盘</li>
+            <li>主表数据信息</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -45,12 +45,12 @@
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
  				<!-- NEW WIDGET START -->
-                      <div class="jarviswidget" id="wid-id-269"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="wid-id-299"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action="${contextPath}/fstp/projectcallback"  method="post" id="projectForm">
+                                <form class="smart-form" action="${contextPath}/fstp/mainRecordInfo"  method="post" id="mainrecordForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -63,20 +63,25 @@
                                                 <col width="100" />
                                                 <col />
                                                 <tbody>
-                                                     <tr>
-                                                      <td class="tr" nowrap="nowrap">项目编号:</td>
+                                                   <tr>
+                                                      <td class="tr" nowrap="nowrap">标题:</td>
+                                                      <td nowrap="nowrap">
+                                                          <label class="input"  style="width:250px" >
+                                                            <input type="text" name="title" value="${map.title}">
+                                                          </label>
+                                                      </td>
+                                                      <td class="tr" nowrap="nowrap">类型:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:250px" >
-                                                              <input type="text" name="itemNo" value="${map.itemNo}">
+                                                              <input type="text" name="type" value="${map.type}">
                                                             </label>
                                                         </td>
-                                                        
-                                                        <td class="tr" nowrap="nowrap">项目名称:</td>
+                                                      <td class="tr" nowrap="nowrap">状态:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:250px" >
-                                                              <input type="text" name="itemName" value="${map.itemName}">
+                                                              <input type="text" name="status" value="${map.status}">
                                                             </label>
-                                                        </td>
+                                                      </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -92,10 +97,10 @@
                 
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-478"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-058"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>项目信息回盘</h2>
+                            <h2>主表数据信息列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -106,45 +111,35 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:900px;">
-                                    	<col width="100" />
-                                    	<col width="100" />
-                                    	<col width="100" />
-                                    	<col width="100" />
-                                    	<col width="100" />
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1050px;">
                                     	<col width="150" />
                                     	<col width="150" />
-                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="150" />
+                                    	<col width="150" />
                                     	<thead>
                                     	<tr>
-	                                    	<td>项目编号</td>
-	                                    	<td>项目名称</td>
-	                                    	<td>支付机构平台ID</td>
-	                                    	<td>审核状态</td>
-	                                    	<td>应答码</td>
-	                                    	<td>应答描述</td>
-	                                    	<td>银行标的ID</td>
-	                                    	<td>拒绝原因</td>
+	                                    	<td align="left">文件名</td>
+	                                    	<td>总条数</td>
+	                                    	<td>创建时间</td>
+	                                    	<td>修改时间</td>
+	                                    	<td>类型</td>
+	                                    	<td>状态</td>
+	                                    	<td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                          <c:forEach items="${page.list}" var="t">
                                          <tr>
-	                                    	<td>${t.itemNo}</td>
-	                                    	<td>${t.itemName}</td>
-	                                    	<td>${t.payChannel}</td>
+	                                    	<td  align="left">${t.title}</td>
+	                                    	<td>${t.count}</td>
+	                                    	<td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+	                                    	<td>${t.type}</td>
 	                                    	<td>${t.status}</td>
-	                                    	<td>
-		                                    	<c:if test="${t.respCode==0}">成功</c:if>
-		                                    	<c:if test="${t.respCode==1}">失败</c:if>
-		                                    	<c:if test="${t.respCode==112115}">借款人证件号码不能为空</c:if>
-		                                    	<c:if test="${t.respCode==112110}">项目信息已存在</c:if>
-		                                    	<c:if test="${t.respCode==112111}">平台信息不存在</c:if>
-		                                    	<c:if test="${t.respCode==112112}">系统信息不存在</c:if>
-	                                    	</td>
-	                                    	<td>${t.respMsg}</td>
-	                                    	<td>${t.bidId}</td>
-	                                    	<td>${t.failedMsg}</td>
+	                                    	<td><a href="${contextPath}/fstp/impRecordDetail/${t.type}">查看详细</a></td>
                                         </tr>
                                         </c:forEach>
                                         </tbody> 
@@ -165,7 +160,7 @@
  <script type="text/javascript" charset="utf-8">
 	 $(document).ready(function () {
 	     pageSetUp();
-	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#projectForm"));
+	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mainrecordForm"));
 	 });
 	 $('.selectdate').datetimepicker({
 	        language:  'zh-CN',
@@ -178,7 +173,7 @@
 	        forceParse: 0
 	    });
 	    function verify(){
-   			$("#projectForm").submit();
+   			$("#mainrecordForm").submit();
 	    }
 	     
 </script>

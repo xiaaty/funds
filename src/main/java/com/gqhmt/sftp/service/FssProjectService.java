@@ -2,11 +2,8 @@ package com.gqhmt.sftp.service;
 
 import java.util.Date;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssCreditInfoEntity;
 import com.gqhmt.sftp.entity.FssFinanceSumEntity;
@@ -20,7 +17,7 @@ import com.gqhmt.sftp.mapper.read.FssFinanceSumReadMapper;
 import com.gqhmt.sftp.mapper.read.FssProjectCallbackReadMapper;
 import com.gqhmt.sftp.mapper.read.FssProjectInfoReadMapper;
 import com.gqhmt.sftp.mapper.read.FssSftpRecordReadMapper;
-import com.gqhmt.sftp.mapper.write.FssItemsCallbackWriteMapper;
+import com.gqhmt.sftp.mapper.write.FssPorjectCallbackWriteMapper;
 import com.gqhmt.sftp.mapper.write.FssSftpRecordWriteMapper;
 
 /**
@@ -45,7 +42,7 @@ public class FssProjectService {
 	@Resource
 	private FssProjectInfoReadMapper fssProjectInfoReadMapper;
 	@Resource
-	private FssItemsCallbackWriteMapper fssItemsCallbackWriteMapper;
+	private FssPorjectCallbackWriteMapper fssPorjectCallbackWriteMapper;
 	@Resource
 	private FssFinanceSumAuditReadMapper fssFinanceSumAuditReadMapper;
 	@Resource
@@ -103,7 +100,7 @@ public class FssProjectService {
 	 * function：把回盘信息添加进项目信息回盘表
 	 */
 	public void insetItemCallback(List<FssProjectCallbackEntity> itemsCallbacks){
-		fssItemsCallbackWriteMapper.insertList(itemsCallbacks);
+		fssPorjectCallbackWriteMapper.insertList(itemsCallbacks);
 	}
 	/**
 	 * 
