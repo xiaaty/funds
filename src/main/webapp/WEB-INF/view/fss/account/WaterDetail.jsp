@@ -8,9 +8,6 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <%@include file= "../../../view/include/common_css_js.jsp"%>
-     <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     <style>
         .table-nobg-btn {
@@ -56,14 +53,14 @@
                 <div class="row">
                     <!-- NEW WIDGET START -->
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="jarviswidget" id="wid-id-71"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                        <div class="jarviswidget" id="WaterDetail"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="waterDetailForm" action="${contextPath}/fss/account/waterDetail/${id}" method="post" >
+                                <form class="smart-form" id="waterDetailForm" action="${contextPath}/accounts/${type}/list/${id}/water" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">

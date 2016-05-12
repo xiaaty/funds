@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
@@ -160,7 +161,7 @@ public class BidRepaymentService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
             //产品名称，如果产品名称为空，则去标的title
-            title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
             throw  e;
@@ -180,7 +181,8 @@ public class BidRepaymentService {
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay);
-
+        //修改订单信息
+        paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
 
         //回盘处理
         fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());

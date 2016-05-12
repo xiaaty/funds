@@ -46,4 +46,11 @@ public interface FssTradeRecordReadMapper extends ReadMapper<FssTradeRecordEntit
 	 * function：根据申请编号得到该批次实际交易总金额
 	 */
 	BigDecimal getSuccessAmt(@Param("applyNo")String applyNo);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月4日
+	 * function：通过申请编号得到交易记录表信息
+	 */
+	List<FssTradeRecordEntity> getByApplyNo(@Param("applyNo")String applyNo);
 }
