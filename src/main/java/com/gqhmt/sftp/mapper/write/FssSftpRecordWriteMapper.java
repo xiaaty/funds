@@ -1,10 +1,7 @@
-package com.gqhmt.sftp.mapper.read;
-
-import java.util.List;
-import java.util.Map;
+package com.gqhmt.sftp.mapper.write;
 
 
-import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.sftp.entity.FssSftpRecordEntity;
 
 /**
@@ -24,14 +21,6 @@ import com.gqhmt.sftp.entity.FssSftpRecordEntity;
  * -----------------------------------------------------------------
  * 2016年5月11日  jhz      1.0     1.0 Version
  */
-public interface FssSftpRecordReadMapper extends ReadMapper<FssSftpRecordEntity> {
-	
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年5月10日
-	 * function：通过条件得到对象列表
-	 */
-	public List<FssSftpRecordEntity> getRecordList(Map map);
+public interface FssSftpRecordWriteMapper extends ReadAndWriteMapper<FssSftpRecordEntity> {
 	
 }

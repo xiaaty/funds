@@ -13,7 +13,6 @@ import com.gqhmt.sftp.service.FssProjectInfoCallBackService;
 import com.gqhmt.sftp.service.FssProjectInfoService;
 import com.gqhmt.sftp.service.FssSftpRecordService;
 import com.gqhmt.sftp.service.FssSumAuditService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -157,12 +156,5 @@ public class FssFstpController {
     	model.put("map", map);
     	return "fss/fstp/bid/fstpRecordList";
     }
-    
-    
-    
-    
-    
-    
-    
     
 }

@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.cvs;
+package com.gqhmt.sftp.cvss;
 import java.io.BufferedReader;  
 import java.io.File;  
 import java.io.FileNotFoundException;  
@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;  
 import java.io.RandomAccessFile;  
 import java.util.ArrayList;  
-import java.util.List; 
+import java.util.List;
+
+import com.gqhmt.sftp.cvss.Loader; 
 /** 
  * 逗号分割文件数据加载类 
  * @version 1.0 
