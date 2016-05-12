@@ -66,24 +66,43 @@
                                                 <col width="200" />
                                                 <col />
                                                 <tbody>
-                                                    <tr></tr>
                                                     <tr>
+                                                     	<td class="tr">客户编号：</td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:200px" name="custNo" value="${map.custNo}" />
+                                                            </label>
+                                                        </td>
                                                         <td class="tr">客户账号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:250px" name="accNo" value="${map.accNo}" />
+                                                                <input type="text" style="width:200px" name="accNo" value="${map.accNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">客户姓名:</td>
                                                         <td>
-                                                            <label class="input"  style="width:250px" >
+                                                            <label class="input"  style="width:200px" >
                                                                 <input type="text" name="custName" value="${map.custName}"/>
                                                             </label>
                                                         </td>
+                                                   </tr>
+                                                   <tr>
                                                         <td class="tr">证件号码:</td>
                                                         <td>
-                                                            <label class="input"  style="width:250px" >
+                                                            <label class="input"  style="width:200px" >
                                                                 <input type="text" name="certNo" value="${map.certNo}"/>
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">业务编号:</td>
+                                                        <td>
+                                                            <label class="input"  style="width:200px" >
+                                                                <input type="text" name="busiNo" value="${map.busiNo}"/>
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">移动电话:</td>
+                                                        <td>
+                                                            <label class="input"  style="width:200px" >
+                                                                <input type="text" name="mobile" value="${map.mobile}"/>
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -115,8 +134,9 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2450px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2600px;">
                                         <col width="200" />
+                                        <col width="150" />
                                         <col width="150" />
                                         <col width="200" />
                                         <col width="150" />
@@ -135,6 +155,7 @@
                                         <tr>
                                               <td>资金账号</td>
                                               <td>客户姓名</td>
+                                              <td>客户编号</td>
                                               <td>账户类型</td>
                                               <td>证件号码</td>
                                               <td>移动电话</td> 
@@ -155,6 +176,7 @@
                                                 <tr>
                                                     <td>${bussaccount.accNo}</td>
                                                     <td>${bussaccount.custName}</td>
+                                                    <td>${bussaccount.custNo}</td>
                                                     <td> <fss:dictView key="${bussaccount.accType}" /></td>
                                                     <td><fss:fmtData value="${bussaccount.certNo}"/></td>
                                                     <td><fss:fmtData value="${bussaccount.mobile}"/></td>
