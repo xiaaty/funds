@@ -65,6 +65,9 @@
 	   <if test="accType!=null and accType!=''">
        	  AND a.acc_type = #{accType}
        </if>
+	   <if test="custNo!=null and custNo!=''">
+       	  AND a.cust_no Like CONCAT(CONCAT('%',#{custNo}),'%')
+       </if>
 	   <if test="accNo!=null and accNo!=''">
        	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
        </if>
@@ -73,6 +76,12 @@
        </if>
 	   <if test="certNo!=null and certNo!=''">
 	      AND c.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
+	   </if> 
+	   <if test="busiNo!=null and busiNo!=''">
+	      AND a.busi_no Like CONCAT(CONCAT('%',#{busiNo}),'%')
+	   </if> 
+	   <if test="mobile!=null and mobile!=''">
+	      AND c.mobile Like CONCAT(CONCAT('%',#{mobile}),'%')
 	   </if> 
 	   order by c.create_time desc
 	</select>

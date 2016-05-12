@@ -85,9 +85,12 @@ public class FssAccountService {
     	Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
 			map2.put("accType",map.get("type"));
+			map2.put("custNo", map.get("custNo"));
 			map2.put("accNo", map.get("accNo"));
 			map2.put("custName", map.get("custName"));
 			map2.put("certNo", map.get("certNo"));
+			map2.put("busiNo", map.get("busiNo"));
+			map2.put("mobile", map.get("mobile"));
 		}
 	    bussaccountlist=this.accountReadMapper.getBussinessAccountList(map2);
         return bussaccountlist;
