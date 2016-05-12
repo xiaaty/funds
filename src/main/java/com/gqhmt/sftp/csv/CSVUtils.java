@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.cvs;
+package com.gqhmt.sftp.csv;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  
 import org.apache.commons.beanutils.BeanUtils;
 import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.cvs.CSVUtils;
+import com.gqhmt.sftp.csv.CSVUtils;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
 import com.gqhmt.sftp.service.FssProjectService;
 import com.gqhmt.util.CommonUtil;

@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.cvs;
+package com.gqhmt.sftp.csv;
 
 import java.io.File;
 import java.util.ArrayList;
