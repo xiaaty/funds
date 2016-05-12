@@ -1,12 +1,14 @@
 package com.gqhmt.controller.fss.fstp;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
+import com.gqhmt.sftp.entity.FssAccountFileEntity;
 import com.gqhmt.sftp.entity.FssCreditInfoEntity;
 import com.gqhmt.sftp.entity.FssFinanceSumEntity;
 import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
 import com.gqhmt.sftp.entity.FssSftpRecordEntity;
 import com.gqhmt.sftp.entity.FssSumAuditEntity;
+import com.gqhmt.sftp.service.FssAccountFileService;
 import com.gqhmt.sftp.service.FssBidFinanceService;
 import com.gqhmt.sftp.service.FssCreditInfoService;
 import com.gqhmt.sftp.service.FssProjectInfoCallBackService;
@@ -54,6 +56,8 @@ public class FssFstpController {
     private FssSumAuditService fssSumAuditService;
     @Resource
     private FssSftpRecordService fssSftpRecordService;
+    @Resource
+    private FssAccountFileService fssAccountFileService;
 
     /**
      * 项目信息列表
@@ -184,5 +188,21 @@ public class FssFstpController {
     	}
     }
     
+    /**
+     * P2P个人平台开户文件列表
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/fstp/p2pAccountFile",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryAccountFileList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+        List<FssAccountFileEntity> accfilelist = fssAccountFileService.queryItemsInfos(map);
+        model.addAttribute("page", accfilelist);
+        model.put("map", map);
+    	return "fss/fstp/acc/p2pAccountFile";
+    }
     
 }

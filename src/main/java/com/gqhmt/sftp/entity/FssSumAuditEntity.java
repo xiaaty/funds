@@ -31,6 +31,9 @@ public class FssSumAuditEntity implements Serializable {
 
     @Column(name = "cust_no")                     
     private String custNo;                           //放款客户号
+    
+    @Column(name = "cert_type")                     
+    private String certType;                           //借款人证件类型
 
     @Column(name = "cust_name")       
     private String custName;                        //客户姓名
