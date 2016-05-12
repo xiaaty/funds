@@ -6,9 +6,6 @@
     <title>资金清结算系统--项目信息回盘--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
    <%@include file="../../../../view/include/common_css_js.jsp"%>
@@ -45,7 +42,7 @@
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
  				<!-- NEW WIDGET START -->
-                      <div class="jarviswidget" id="wid-id-269"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="projectInFoback"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>

@@ -45,7 +45,7 @@
     <div id="content">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget" id="wid-id-71"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget" id="bankCustChoose"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
