@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
@@ -165,7 +166,7 @@ public class BidAbortService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
             //产品名称，如果产品名称为空，则去标的title
-            //title  = fetchDataService.featchDataSingle(String.class,"findProductName",paramMap);
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
             return;

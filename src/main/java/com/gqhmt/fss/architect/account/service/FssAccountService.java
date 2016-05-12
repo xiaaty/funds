@@ -179,10 +179,10 @@ public class FssAccountService {
         }
 
         try{
-        	if(!"11020012".equals(tradeType) && !"11020011".equals(tradeType)){
+        	if(!"11020012".equals(tradeType) && !"11020011".equals(tradeType) && !"11020006".equals(tradeType) && !"11020007".equals(tradeType)){
         		busiNo=fssCustomerinfo.getCustNo();
         	}
-            fssAccountEntity = this.createNewFssAccountEntity(fssCustomerinfo,tradeType,busiNo,mchn,fssFuiouAccountEntity.getAccNo());
+            fssAccountEntity = this.createNewFssAccountEntity(fssCustomerinfo,tradeType,busiNo,mchn,fssFuiouAccountEntity == null ?"":fssFuiouAccountEntity.getAccNo());
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
             if(e != null && e.getMessage().contains("busi_no_uk")){

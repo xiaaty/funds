@@ -381,6 +381,16 @@ public class FssTradeRecordService {
 		// TODO Auto-generated method stub
 		return fssTradeRecordReadMapper.getSuccessAmt(applyNo);
 	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月4日
+	 * function：通过申请编号得到交易记录表信息
+	 */
+	public List<FssTradeRecordEntity> getByApplyNo(String applyNo) throws FssException{
+		return fssTradeRecordReadMapper.getByApplyNo(applyNo);
+		
+	}
 	
 	
 }

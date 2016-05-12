@@ -48,6 +48,11 @@ public class CommonUtil {
 
     public static String getBankCardNo(){return commonUtil.executeBankCardNo();}
 
+
+    public static String getRandomString(int length){
+        return commonUtil.getRandom(length);
+    }
+
     public  String  executeAcconutNo(String tradeType){
         StringBuffer acc_no= new StringBuffer();
         acc_no.append(GlobalConstants.ACCOUNT_TYPE_MAPPING.get(tradeType));
