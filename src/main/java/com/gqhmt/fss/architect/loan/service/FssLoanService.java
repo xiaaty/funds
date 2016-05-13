@@ -180,17 +180,18 @@ public class FssLoanService {
 		map.put("seqNo", seqNo);
 		LendingResponse response=new LendingResponse();
 		FssLoanEntity loan = fssLoanReadMapper.getResponse(map);
-		response.setAcc_no(loan.getAccNo());
-		response.setContract_amt(loan.getContractAmt());
-		response.setContract_id(loan.getContractId());
-		response.setContract_interest(loan.getContractInterest());
-		response.setContract_no(loan.getContractNo());
-		response.setLoan_platform(loan.getLoanPlatform());
 		response.setMchn(loan.getMchnChild());
-		response.setMortgagee_acc_no(loan.getMortgageeAccNo());
-		response.setPay_amt(loan.getPayAmt());
 		response.setSeq_no(loan.getSeqNo());
 		response.setTrade_type(loan.getTradeType());
+		response.setContract_id(loan.getContractId());
+		response.setContract_no(loan.getContractNo());
+		response.setMortgagee_acc_no(loan.getMortgageeAccNo());
+		response.setContract_amt(loan.getContractAmt());
+		response.setContract_interest(loan.getContractInterest());
+		response.setAcc_no(loan.getAccNo());
+		response.setPay_amt(loan.getPayAmt());
+		response.setResp_code(loan.getRepCode());
+		response.setLoan_platform(loan.getLoanPlatform());
 		List<LendingFeeListDto> feeListDto = getFeeListDto(this.getFeeList(loan.getId()));
 		if(feeListDto!=null){
 			response.setFee_list(feeListDto);
