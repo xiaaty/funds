@@ -41,7 +41,7 @@ public class BidDao extends SuperGqDao {
 
     public boolean isContractNo(String contractNo) throws Exception{
 
-        String  sql = "SELECT * FROM `t_gq_bid` t1 WHERE t1.contract_no = "+contractNo;
+        String  sql = "SELECT * FROM `t_gq_bid` t1 WHERE t1.contract_no = "+contractNo +" and t.contract_no IS NOT NULL  ";
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -111,6 +111,8 @@ public class BidDao extends SuperGqDao {
                 bid.setId(rs.getInt("id"));
                 bid.setCustomerId(rs.getInt("customer_id"));
                 bid.setContractNo(rs.getString("contract_no"));
+                bid.setCreateTime(rs.getTimestamp("create_time"));
+
                 list.add(bid);
 
             }

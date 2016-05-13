@@ -41,7 +41,7 @@ public class FundAccountDao extends SuperGqDao {
 
     public CachedRowSet findOnlineAccount() throws Exception{
 
-        String  sql = "SELECT * FROM `t_gq_fund_account` t1 WHERE t1.busi_type=0 AND t1.`has_Third_Account` = 2 order by id ";
+        String  sql = "SELECT * FROM `t_gq_fund_account` t1 WHERE t1.busi_type=0 AND t1.`has_Third_Account` = 2 order by cust_id ";
 
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);

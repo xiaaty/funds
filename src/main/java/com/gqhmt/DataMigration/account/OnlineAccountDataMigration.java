@@ -73,12 +73,12 @@ public class OnlineAccountDataMigration {
             CachedRowSet cs = fundAccountDao.findOnlineAccount();
 
             while (cs.next()){
-                FundAccountEntity entity = fundAccountDao.findFundAccountPrimay(cs.getLong("id"));
+                FundAccountEntity entity = parseFundAccount(cs);
                 Long custId = cs.getLong("cust_id");
 
                 CustomerInfoEntity customerInfoEntity = fundAccountDao.findCustom(custId);
 
-                System.out.println(custId+"|"+(customerInfoEntity == null?"客户不存在":customerInfoEntity.getCustomerName()));
+                LogUtil.info(getClass(),custId+"|"+(customerInfoEntity == null?"客户不存在":customerInfoEntity.getCustomerName()));
 
                 if(customerInfoEntity == null){
                     continue;
@@ -91,7 +91,7 @@ public class OnlineAccountDataMigration {
                     cardInfoEntity = fundAccountDao.findBankCardInfo(0,custId);
                 }
 
-                System.out.println((cardInfoEntity != null ?cardInfoEntity.getBankNo():""));
+                LogUtil.info(getClass(),(cardInfoEntity != null ?cardInfoEntity.getBankNo():""));
 
 //                String  contractNo  = cs.getString(1);          //合同号
 //                String  bankNo= cs.getString(2);                //银行卡号
@@ -134,6 +134,16 @@ public class OnlineAccountDataMigration {
 
     }
 
+    private FundAccountEntity parseFundAccount(CachedRowSet rs) throws SQLException {
+        FundAccountEntity fundAccountEntity  = new FundAccountEntity();
+        fundAccountEntity.setId(rs.getLong("id"));
+        fundAccountEntity.setUserName(rs.getString("user_name"));
+        fundAccountEntity.setCustName(rs.getString("cust_name"));
+        fundAccountEntity.setCreateTime(rs.getTimestamp("create_time"));
+
+        return fundAccountEntity;
+    }
+
 
     public void companyAccountDataMig(FundAccountEntity entity,CustomerInfoEntity customerInfoEntity,BankCardInfoEntity bankCardInfoEntity){
 
@@ -162,7 +172,7 @@ public class OnlineAccountDataMigration {
         String i = CommonUtil.getRandomString(4);
 
         try{
-            fssAccountService.createAccount(tradeType,gqgetFrontMchn,mobile ,certNo+"_"+i,name,bankId,bankNo,area,"",customerInfoEntity.getId());
+            fssAccountService.createAccount(tradeType,gqgetFrontMchn,mobile ,certNo+"_"+i,name,bankId,bankNo,area,"",customerInfoEntity.getId(),entity.getCreateTime());
 
         }catch (Exception e){
 
@@ -194,7 +204,7 @@ public class OnlineAccountDataMigration {
 
 
         try{
-            fssAccountService.createAccount(custType == 7 ?"11020009":"11020014",gqgetFrontMchn,mobile ,certNo,name,bankId,bankNo,area,"",customerInfoEntity.getId());
+            fssAccountService.createAccount(custType == 7 ?"11020009":"11020014",gqgetFrontMchn,mobile ,certNo,name,bankId,bankNo,area,"",customerInfoEntity.getId(),entity.getCreateTime());
 
         }catch (Exception e){
 
@@ -206,6 +216,12 @@ public class OnlineAccountDataMigration {
 
     }
 
+    /**
+     * 互联网账户开户迁移
+     * @param entity
+     * @param customerInfoEntity
+     * @param bankCardInfoEntity
+     */
     public void onlineAccountDataMig(FundAccountEntity entity,CustomerInfoEntity customerInfoEntity,BankCardInfoEntity bankCardInfoEntity){
         String  bankNo= bankCardInfoEntity != null ? bankCardInfoEntity.getBankNo():"0000";                //银行卡号
         String  name= entity.getCustName() == null ? customerInfoEntity.getCustomerName():entity.getCustName();                  //主借人姓名
@@ -215,7 +231,7 @@ public class OnlineAccountDataMigration {
         String  area = bankCardInfoEntity != null ? bankCardInfoEntity.getCityId():"0000";
 
         try{
-            fssAccountService.createAccount("11020002",gqgetFrontMchn,mobile ,certNo,name,bankId,bankNo,area,"",customerInfoEntity.getId());
+            fssAccountService.createAccount("11020002",gqgetFrontMchn,mobile ,certNo,name,bankId,bankNo,area,"",customerInfoEntity.getId(),entity.getCreateTime());
 
         }catch (Exception e){
 
@@ -237,7 +253,14 @@ public class OnlineAccountDataMigration {
         BidDao bidDao = BidDao.getBidDao();
 
         List<Bid> bids = bidDao.findAllBid(customerInfoEntity.getId());
-        if(bids == null && bids .size() ==0){
+
+        if (customerInfoEntity.getId()<5227){
+            return;
+        }
+        if(bids.size() ==0 ){
+            return;
+        }
+        if(bids == null || bids.size() ==0){
             return;
         }
         LogUtil.info(getClass(),"执行借款人合同开户:"+customerInfoEntity.getId());
@@ -256,13 +279,15 @@ public class OnlineAccountDataMigration {
                 continue;
             }
             try{
-                fssAccountService.createAccount("11020007",gqgetBackendMchn,mobile ,certNo,name,bankId,bankNo,area,contractNo,customerInfoEntity.getId());
+                fssAccountService.createAccount("11020007",gqgetBackendMchn,mobile ,certNo,name,bankId,bankNo,area,contractNo,customerInfoEntity.getId(),entity.getCreateTime());
 
             }catch (Exception e){
+
 
                 if("90002017".equals(e.getMessage())){
                     System.out.println("重复合同号:"+contractNo);
                 }
+                LogUtil.error(getClass(),e);
                 continue;
             }
         }
@@ -299,7 +324,7 @@ public class OnlineAccountDataMigration {
                 continue;
             }
             try{
-                fssAccountService.createAccount("11020006",gqgetBackendMchn,mobile,certNo,name,bankId,bankNo,area,contractNo,customerInfoEntity.getId());
+                fssAccountService.createAccount("11020006",gqgetBackendMchn,mobile,certNo,name,bankId,bankNo,area,contractNo,customerInfoEntity.getId(),investmentInfo.getCreateTime());
 
             }catch (Exception e){
 
