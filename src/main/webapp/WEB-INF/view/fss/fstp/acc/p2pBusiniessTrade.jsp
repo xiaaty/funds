@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>资金清结算系统--P2P个人平台开户文件--冠群驰骋投资管理(北京)有限公司</title>
+    <title>资金清结算系统--P2P商户交易--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
@@ -31,7 +31,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
            <li>入账管理</li>
-            <li>P2P个人平台开户文件</li>
+            <li>P2P商户交易</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -42,12 +42,12 @@
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
  				<!-- NEW WIDGET START -->
-                      <div class="jarviswidget" id="wid-id-054"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="wid-id-024"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action="${contextPath}/fstp/projectInfo"  method="post" id="accountFileForm">
+                                <form class="smart-form" action="${contextPath}/fstp/p2pBusinessTrade"  method="post" id="mchnForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -68,10 +68,10 @@
                                                             </label>
                                                         </td>
                                                         
-                                                        <td class="tr" nowrap="nowrap">平台用户名:</td>
+                                                        <td class="tr" nowrap="nowrap">项目编号:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:250px" >
-                                                              <input type="text" name="itemNo" value="${map.platformUsername}">
+                                                              <input type="text" name="itemNo" value="${map.itemNo}">
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -89,10 +89,10 @@
                 
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-510"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-711"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>P2P个人平台开户文件</h2>
+                            <h2>P2P商户交易列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -103,16 +103,21 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1700px;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2900px;">
+                                    	<col width="100" />
+                                    	<col width="200" />
                                     	<col width="100" />
                                     	<col width="100" />
                                     	<col width="100" />
                                     	<col width="100" />
+                                    	<col width="200" />
+                                    	<col width="200" />
                                     	<col width="100" />
                                     	<col width="100" />
                                     	<col width="100" />
                                     	<col width="100" />
-                                    	<col width="100" />
+                                    	<col width="200" />
+                                    	<col width="200" />
                                     	<col width="100" />
                                     	<col width="100" />
                                     	<col width="100" />
@@ -120,60 +125,71 @@
                                     	<col width="200" />
                                     	<col width="100" />
                                     	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="100" />
                                     	<thead>
                                     	<tr>
                                     		<td>商户号</td>
-	                                    	<td>平台注册流水</td>
-	                                    	<td>平台用户名</td>
-	                                    	<td>登陆用户名</td>
-	                                    	<td>年龄</td>
-	                                    	<td>户名</td>
-	                                    	<td>证件类型</td>
-	                                    	<td>证件号</td>
-	                                    	<td>性别</td>
-	                                    	<td>银行预留手机号</td>
-	                                    	<td>地址</td>
-	                                    	<td>用户属性</td>
-	                                    	<td>注册日期</td>
 	                                    	<td>第三方支付公司ID</td>
-	                                    	<td>操作类型</td>
-	                                    	<td>备注</td>
+	                                    	<td>交易日期</td>
+	                                    	<td>金账户交易类型</td>
+	                                    	<td>项目编号</td>
+	                                    	<td>合同编号</td>
+	                                    	<td>出账人富友用户名</td>
+	                                    	<td>出账人平台用户名</td>
+	                                    	<td>金额</td>
+	                                    	<td>手续费 </td>
+	                                    	<td>该笔还款本金</td>
+	                                    	<td>该笔还款利息</td>
+	                                    	<td>入账人富友用户名 </td>
+	                                    	<td>入账人平台用户名</td>
+	                                    	<td>借款人姓名</td>
+	                                    	<td>借款人证件类型</td>
+	                                    	<td>借款人证件号码 </td>
+	                                    	<td>投资人用户名</td>
+	                                    	<td>投资人富友登陆用户名</td>
+	                                    	<td>投资人姓名</td>
+	                                    	<td>投资人证件类型</td>
+	                                    	<td>投资人证件号码</td>
+	                                    	<td>业务类型</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                          <c:forEach items="${page.list}" var="t">
                                          <tr>
                                         	<td>${t.mchn}</td>
-	                                    	<td>${t.registeredSeqNo}</td>
-	                                    	<td>${t.platformUsername}</td>
-	                                    	<td>${t.loginUsername}</td>
-	                                    	<td>${t.age}</td>
-	                                    	<td>${t.accName}</td>
-	                                    	<td>
-	                                    		<c:if test="${t.certType==0}">居民身份证</c:if>
-		                                    	<c:if test="${t.certType==1}">护照</c:if>
-		                                    	<c:if test="${t.certType==2}">军官证</c:if>
-		                                    	<c:if test="${t.certType==7}">其他</c:if>
-	                                    	</td>
-	                                    	<td>${t.certNo}</td>
-	                                    	<td>
-	                                    		<c:if test="${t.sex==0}">男</c:if>
-		                                    	<c:if test="${t.sex==1}">女</c:if>
-	                                    	</td>
-	                                    	<td>${t.mobile}</td>
-	                                    	<td>${t.address}</td>
-	                                    	<td>
-	                                    		<c:if test="${t.userProperties==1}">借款人</c:if>
-		                                    	<c:if test="${t.userProperties==2}">贷款人</c:if>
-	                                    	</td>
-	                                    	<td>${t.registrationDate}</td>
 	                                    	<td>${t.thirdPartyPaymentId}</td>
+	                                    	<td>${t.tradeDate}</td>
+	                                    	<td>${t.tradeType}</td>
+	                                    	<td>${t.itemNo}</td>
+	                                    	<td>${t.contractNo}</td>
+	                                    	<td>${t.outFuiouUsername}</td>
+	                                    	<td>${t.outPlatformUsername}</td>
+	                                    	<td>${t.amt}</td>
+	                                    	<td>${t.charge}</td>
+	                                    	<td>${t.thisRepaymentPrincipal}</td>
+	                                    	<td>${t.thisRepaymentInterest}</td>
+	                                    	<td>${t.comeFuiouUsername}</td>
+	                                    	<td>${t.comePlatformUsername}</td>
+	                                    	<td>${t.loanUsername}</td>
 	                                    	<td>
-	                                    		<c:if test="${t.actionType=='ADD'}">增加</c:if>
-		                                    	<c:if test="${t.actionType=='MOD'}">修改</c:if>
-		                                    	<c:if test="${t.actionType=='DEL'}">删除</c:if>
+	                                    		<c:if test="${t.loanCertType==0}">居民身份证</c:if>
+		                                    	<c:if test="${t.loanCertType==1}">护照</c:if>
+		                                    	<c:if test="${t.loanCertType==2}">军官证</c:if>
+		                                    	<c:if test="${t.loanCertType==7}">其他</c:if>
 	                                    	</td>
-	                                    	<td>${t.remark}</td>
+	                                    	<td>${t.loanCertNo}</td>
+	                                    	<td>${t.lendUsername}</td>
+	                                    	<td>${t.lendFuiouUsername}</td>
+	                                    	<td>${t.lendName}</td>
+	                                    	<td>
+	                                    		<c:if test="${t.lendCertType==0}">居民身份证</c:if>
+		                                    	<c:if test="${t.lendCertType==1}">护照</c:if>
+		                                    	<c:if test="${t.lendCertType==2}">军官证</c:if>
+		                                    	<c:if test="${t.lendCertType==7}">其他</c:if>
+	                                    	</td>
+	                                    	<td>${t.lendCertNo}</td>
+	                                    	<td>${t.busiType}</td>
                                         </tr>
                                         </c:forEach>
                                         </tbody> 
@@ -194,7 +210,7 @@
  <script type="text/javascript" charset="utf-8">
 	 $(document).ready(function () {
 	     pageSetUp();
-	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#accountFileForm"));
+	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mchnForm"));
 	 });
 	 $('.selectdate').datetimepicker({
 	        language:  'zh-CN',
@@ -207,7 +223,7 @@
 	        forceParse: 0
 	    });
 	    function verify(){
-	    	$("#accountFileForm").submit();
+	    	$("#mchnForm").submit();
 	    }
 	     
 </script>
