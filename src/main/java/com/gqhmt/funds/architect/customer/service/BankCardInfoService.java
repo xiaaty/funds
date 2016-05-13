@@ -471,6 +471,10 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
 		bankCardInfoEntity.setCityId(Application.getInstance().getFourCode(loanAccountDto.getCity_id()));
+		String bank_id = loanAccountDto.getBank_id();
+		if(bank_id.length()==3){
+			bank_id="0"+bank_id;
+		}
 		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
 		bankCardInfoEntity.setCreateTime(new Date());
 		bankCardInfoEntity.setCreateUserId(1);
