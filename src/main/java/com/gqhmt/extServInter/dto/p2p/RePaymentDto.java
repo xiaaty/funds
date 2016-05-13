@@ -37,6 +37,8 @@ public class RePaymentDto extends SuperDto{
 	
 	private BigDecimal payment_amt;	//回款金额
 	
+	private BigDecimal contract_amt;	//借款人实际还款金额
+	
 	private String remark;	//备注
 	
 	private String payment_type;	//回款类型
@@ -111,6 +113,14 @@ public class RePaymentDto extends SuperDto{
 
 	public void setPayment_type(String payment_type) {
 		this.payment_type = payment_type;
+	}
+
+	public BigDecimal getContract_amt() {
+		return contract_amt;
+	}
+
+	public void setContract_amt(BigDecimal contract_amt) {
+		this.contract_amt = contract_amt;
 	}	
 	
 }

@@ -410,6 +410,7 @@ public class FssLoanService {
 		fssLoanEntity.setContractNo(rePaymentDto.getContract_no());
 		fssLoanEntity.setUserNo(rePaymentDto.getPeriod());  	//期数
 		fssLoanEntity.setPayAmt(rePaymentDto.getPayment_amt());//回款金额
+		fssLoanEntity.setContractAmt(rePaymentDto.getContract_amt());//借款人实际回款金额
 		fssLoanEntity.setRepMsg(rePaymentDto.getRemark());	//备注
 		fssLoanEntity.setTradeTypeParent(rePaymentDto.getTrade_type());//交易类型
 		String parentMchn = Application.getInstance().getParentMchn(rePaymentDto.getMchn());

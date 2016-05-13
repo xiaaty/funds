@@ -206,18 +206,14 @@
                                                     <td>
                                                         <fss:dictView key="${t.loanPlatform}" />
                                                     </td>
-                                                    <td>
-	                                                    <fss:dictOrder var="order" dictOrder="tradeStatus">
-	                                                    	<c:if test="${t.status == order.key}">${order.value}</c:if>
-	                                                     </fss:dictOrder>
+                                                     <td>
+	                                                    <fss:dictView key="${t.status}" />
                                                     </td>
 <!--                                                     <td> -->
 <%--                                                         <fss:dictView key="${t.result}" /> --%>
 <!--                                                     </td> -->
                                                     <td>
-                                                      <fss:dictOrder var="order" dictOrder="tradeType">
-                                                    <c:if test="${t.tradeType == order.key}">${order.value}</c:if>
-                                                   	 </fss:dictOrder>
+                                                    <fss:dictView key="${t.tradeType}" />
                                                     </td>
                                                     <td>${t.mchnParent}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
