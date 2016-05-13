@@ -78,10 +78,10 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">商户号：</td>
+                                                        <td class="tr" nowrap="nowrap">客户编号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="mchnChild" value="${map.mchnChild}">
+                                                                <input type="text" style="width:210px" name="custNo" value="${map.custNo}">
                                                             </label>
                                                         </td>
                                                         <td class="tr" nowrap="nowrap">合同编号：</td>
@@ -96,27 +96,27 @@
                                                         <td nowrap="nowrap">
                                                             <label class="select">
 							                                <select class="select02" style="width:202px;" name="status" id="status">
-                                                                <option value="">所有</option>
+                                                                   <option value="">所有</option>
 							                                   <fss:dictOrder var="order" dictOrder="tradeStatus">
-                                                                            <option value="${order.key}">${order.value}</option>
-                                                                        </fss:dictOrder>
+                                                                   <option value="${order.key}">${order.value}</option>
+                                                               </fss:dictOrder>
 							                                </select>
                                                                 </label>
                                                         </td>
                                                          <td class="tr">交易日期：</td>
-                                            <td colspan="3">
-                                                <section class="fl">
-                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
-                                                    </label>
-                                                </section>
-                                                <span class="fl">&nbsp;至&nbsp;</span>
-                                                <section class="fl">
-                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
-                                                    </label>
-                                                </section>
-                                            </td>
+			                                            <td colspan="3">
+			                                                <section class="fl">
+			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+			                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
+			                                                    </label>
+			                                                </section>
+			                                                <span class="fl">&nbsp;至&nbsp;</span>
+			                                                <section class="fl">
+			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+			                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
+			                                                    </label>
+			                                                </section>
+			                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -153,17 +153,16 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
                                         <col width="50" />
-                                        <col width="100" />
                                         <col width="200" />
+                                        <col width="200" /> 
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
-<%--                                         <col width="200" /> --%>
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
@@ -171,17 +170,16 @@
                                         <col width="300"/>
                                         <thead>
                                         <tr>
-                                            <td></td>
+                                            <td></td> 
                                             <td>抵押权人资金平台账号</td>
                                             <td>借款人资金平台账号</td>
-                                            <td>客户姓名</td>
+                                            <td>客户编号</td>
                                             <td>合同编号</td>
                                             <td>合同金额  </td>
                                             <td>放款金额   </td>
                                             <td>借款平台</td>
-                                            <td>交易状态 </td>
-<!--                                             <td>交易结果</td> -->
-                                            <td>交易类型</td>
+                                            <td>交易状态 </td> 
+                                            <td>交易类型</td> 
                                             <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
@@ -189,13 +187,12 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:forEach items="${page.list}" var="t" varStatus="l">
+                                        <c:forEach items="${page.list}" var="t"  varStatus="l">
                                                 <tr>
                                                     <td>${l.index+1}</td>
-                                                    
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.accNo}</td>
-                                                    <td>${t.userNo}</td>
+                                                    <td>${t.custNo}</td>
                                                     <td>${t.contractNo}</td>
                                                     <td>
                                                         <fss:money money="${t.contractAmt}"/>
@@ -211,18 +208,15 @@
 	                                                    	<c:if test="${t.status == order.key}">${order.value}</c:if>
 	                                                     </fss:dictOrder>
                                                     </td>
-<!--                                                     <td> -->
-<%--                                                         <fss:dictView key="${t.result}" /> --%>
-<!--                                                     </td> -->
-                                                    <td>
-                                                      <fss:dictOrder var="order" dictOrder="tradeType">
-                                                    <c:if test="${t.tradeType == order.key}">${order.value}</c:if>
-                                                   	 </fss:dictOrder>
-                                                    </td>
+                                                     <td>
+	                                                      <fss:dictOrder var="order" dictOrder="tradeType">
+	                                                    	<c:if test="${t.tradeType == order.key}">${order.value}</c:if>
+	                                                   	 </fss:dictOrder>
+                                                    </td> 
                                                     <td>${t.mchnParent}</td>
-                                                  <td> <fss:fmtDate value="${t.createTime}"/></td>
-                                                    <td> <fss:fmtDate value="${t.modifyTime}"/></td>
-                                                <td >
+                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                <td>
                                                     <c:if test="${t.tradeType != '11092001'}">
                                                     <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
                                                     </c:if>
