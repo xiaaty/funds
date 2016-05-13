@@ -2,6 +2,7 @@ package com.gqhmt.controller.fss.fstp;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssAccountFileEntity;
+import com.gqhmt.sftp.entity.FssBusinessTradeEntity;
 import com.gqhmt.sftp.entity.FssCreditInfoEntity;
 import com.gqhmt.sftp.entity.FssFinanceSumEntity;
 import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
@@ -10,6 +11,7 @@ import com.gqhmt.sftp.entity.FssSftpRecordEntity;
 import com.gqhmt.sftp.entity.FssSumAuditEntity;
 import com.gqhmt.sftp.service.FssAccountFileService;
 import com.gqhmt.sftp.service.FssBidFinanceService;
+import com.gqhmt.sftp.service.FssBusiTradeService;
 import com.gqhmt.sftp.service.FssCreditInfoService;
 import com.gqhmt.sftp.service.FssProjectInfoCallBackService;
 import com.gqhmt.sftp.service.FssProjectInfoService;
@@ -58,6 +60,8 @@ public class FssFstpController {
     private FssSftpRecordService fssSftpRecordService;
     @Resource
     private FssAccountFileService fssAccountFileService;
+    @Resource
+    private FssBusiTradeService fssBusiTradeService;
 
     /**
      * 项目信息列表
@@ -183,6 +187,10 @@ public class FssFstpController {
     		return "redirect:/fstp/bidLoanDetails";  
     	}else if(type==5){//标的财务汇总审核回盘文件表
     		return "redirect:/fstp/bidFinanceSumAudit";  
+    	}else if(type==6){//P2P个人平台开户文件列表
+    		return "redirect:/fstp/p2pAccountFile";  
+    	}else if(type==7){//p2p商户交易
+    		return "redirect:/fstp/p2pBusinessTrade";  
     	}else{
     		return "fss/fstp/bid/fstpRecordList";
     	}
@@ -203,6 +211,23 @@ public class FssFstpController {
         model.addAttribute("page", accfilelist);
         model.put("map", map);
     	return "fss/fstp/acc/p2pAccountFile";
+    }
+    
+    /**
+     * p2p商户交易
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/fstp/p2pBusinessTrade",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryBusinessTradeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    	List<FssBusinessTradeEntity> busitradelist = fssBusiTradeService.queryBusinessTrade(map);
+    	model.addAttribute("page", busitradelist);
+    	model.put("map", map);
+    	return "fss/fstp/acc/p2pBusiniessTrade";
     }
     
 }
