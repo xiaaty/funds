@@ -364,6 +364,7 @@ public class FssTradeApplyService {
 				 if("11090001".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 fssLoanEntityById.setResult("98060002");
+					 fssLoanEntityById.setModifyTime(new Date());
 					 fssLoanService.update(fssLoanEntityById);
 				 }else{
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
@@ -379,10 +380,11 @@ public class FssTradeApplyService {
 			   }
 			 }
 			 fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
-				//创建回盘信息
-				
+			//抵押标放款 11090001 抵押权人代扣无回盘
+			 if(!"11090001".equals(applyEntity.getBusiType())){
+					//创建回盘信息
 					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
-					
+			 }
 				} catch (FssException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

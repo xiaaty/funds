@@ -38,5 +38,14 @@ public class FssBusiTradeService {
 		}
 		return fssBusiTradeReadMapper.queryBusiTradeList(map);
 	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月13日
+	 * function：查询所有商户交易对象
+	 */
+	public List<FssBusinessTradeEntity> queryBusinessTrade()throws FssException {
+		return fssBusiTradeReadMapper.selectAll();
+	}
 	
 }

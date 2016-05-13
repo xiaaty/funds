@@ -40,5 +40,8 @@ public class FssAccountFileService {
 		}
 		return fssAccountFileReadMapper.queryAccountFileList(map);
 	}
+	public List<FssAccountFileEntity> queryAccountFiles()throws FssException {
+		return fssAccountFileReadMapper.selectAll();
+	}
 	
 }
