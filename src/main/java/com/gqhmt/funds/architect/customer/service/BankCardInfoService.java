@@ -475,7 +475,7 @@ public class BankCardInfoService {
 		if(bank_id.length()==3){
 			bank_id="0"+bank_id;
 		}
-		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+		bankCardInfoEntity.setParentBankId(bank_id);
 		bankCardInfoEntity.setCreateTime(new Date());
 		bankCardInfoEntity.setCreateUserId(1);
 		bankCardInfoEntity.setModifyTime(new Date());
