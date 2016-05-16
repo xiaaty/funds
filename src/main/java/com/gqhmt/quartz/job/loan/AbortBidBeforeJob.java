@@ -59,12 +59,13 @@ public class AbortBidBeforeJob extends SupperJob {
             } catch (FssException e) {
                 LogUtil.error(getClass(),e);
                 continue;
+            }finally{
+            	isRunning = false;
             }
         }
 
 
 
-        isRunning = false;
 
 
         endtLog();
