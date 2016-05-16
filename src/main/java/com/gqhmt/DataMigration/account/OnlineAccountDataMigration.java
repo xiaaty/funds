@@ -167,6 +167,8 @@ public class OnlineAccountDataMigration {
             tradeType = "11028002";
         }else if(customerInfoEntity.getId() == 13 || customerInfoEntity.getId() == 14){
             tradeType = "11028004";
+        }else if(customerInfoEntity.getId() == 4){
+            tradeType = "11028005";
         }
 
         String i = CommonUtil.getRandomString(4);
@@ -279,7 +281,7 @@ public class OnlineAccountDataMigration {
                 continue;
             }
             try{
-                fssAccountService.createAccount("11020007",gqgetBackendMchn,mobile ,certNo,name,bankId,bankNo,area,contractNo,customerInfoEntity.getId(),entity.getCreateTime());
+                fssAccountService.createAccount("11020007",gqgetBackendMchn,mobile ,certNo,name,bankId,bankNo,area,contractNo,customerInfoEntity.getId(),bid.getCreateTime());
 
             }catch (Exception e){
 

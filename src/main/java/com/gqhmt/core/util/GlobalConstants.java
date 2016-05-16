@@ -248,6 +248,9 @@ public class GlobalConstants {
     //业务类型与交易类型匹配
     public static Map<Integer,Integer> TRADE_BUSINESS_TYPE__MAPPING = new ConcurrentHashMap<>();
 
+    public static Map<Long,String> COMPANY_ACCOUNT_NAME =  new ConcurrentHashMap<>();
+    public static Map<Long,String> COMPANY_ACCOUNT_REAL_NAME =  new ConcurrentHashMap<>();
+
 
 	
 	public static Object getSession(HttpServletRequest request,String name){
@@ -621,7 +624,7 @@ public class GlobalConstants {
 
         //对公账户
         // 10018001 公司收费账户          11028001
-        // 10018002 保证金账户           11028002
+        // 10018002 保证金账户            11028002
         // 10018003 逆服务费账户          11028003
         // 10018004 保理公司账户          11028004
         // 10018005 运营红包账户          11028005
@@ -676,7 +679,40 @@ public class GlobalConstants {
 
         
         TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);
-        
+
+
+
+        COMPANY_ACCOUNT_NAME.put(1L,"北京冠群_管理费账户");
+        COMPANY_ACCOUNT_NAME.put(2L,"北京冠群_保证金账户");
+        COMPANY_ACCOUNT_NAME.put(3L,"北京冠群_补差额账户");
+        COMPANY_ACCOUNT_NAME.put(4L,"北京冠群_红包账户");
+        COMPANY_ACCOUNT_NAME.put(5L,"北京冠群_咨询费账户");
+        COMPANY_ACCOUNT_NAME.put(6L,"天津冠群_管理费账户");
+        COMPANY_ACCOUNT_NAME.put(7L,"天津冠群_保证金账户");
+        COMPANY_ACCOUNT_NAME.put(8L,"天津冠群_咨询费账户");
+        COMPANY_ACCOUNT_NAME.put(9L,"上海冠群_管理费账户");
+        COMPANY_ACCOUNT_NAME.put(10L,"上海冠群_保证金账户");
+        COMPANY_ACCOUNT_NAME.put(11L,"上海冠群_咨询费账户");
+        COMPANY_ACCOUNT_NAME.put(12L,"北京冠群_风险备用金账户");
+        COMPANY_ACCOUNT_NAME.put(13L,"冠群_冠中国际商业保理有限公司(一般用)");
+        COMPANY_ACCOUNT_NAME.put(14L,"冠群_冠中国际商业保理有限公司(代偿用)");
+        COMPANY_ACCOUNT_NAME.put(99L,"冠群商户");
+
+        COMPANY_ACCOUNT_REAL_NAME.put(1L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(2L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(3L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(4L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(5L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(6L,"冠群驰骋商务信息咨询（天津）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(7L,"冠群驰骋商务信息咨询（天津）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(8L,"冠群驰骋商务信息咨询（天津）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(9L,"冠群驰骋金融信息服务（上海）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(10L,"冠群驰骋金融信息服务（上海）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(11L,"冠群驰骋金融信息服务（上海）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(12L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(13L,"冠群_冠中国际商业保理有限公司(一般用)");
+        COMPANY_ACCOUNT_REAL_NAME.put(14L,"冠群_冠中国际商业保理有限公司(代偿用)");
+        COMPANY_ACCOUNT_REAL_NAME.put(99L,"冠群商户");
 
         
 

@@ -260,7 +260,11 @@ public class FssAccountService {
 			fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
 			fssFuiouAccountEntity.setUserNo(fssCustomerEntity.getUserId());
 			fssFuiouAccountEntity.setAccNo(fssCustomerEntity.getMobile());
-			fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
+            if(fssCustomerEntity.getCustId()<100){
+                fssFuiouAccountEntity.setAccUserName(GlobalConstants.COMPANY_ACCOUNT_REAL_NAME.get(fssCustomerEntity.getCustId()));
+            }else {
+                fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
+            }
 			fssFuiouAccountEntity.setBankCardNo(fssCustBankCardEntity.getBankCardNo());
             fssFuiouAccountEntity.setMchnChild(mchn);
 			fssFuiouAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));

@@ -120,7 +120,6 @@ public class FundAccountDao extends SuperGqDao {
 
                 customerInfoEntity.setSendMsgTransferAllFouyou(rs.getInt("send_msg_transfer_all_fouyou"));  //汇总是否发短信0-发送；1-不发送
 
-
             }
         } catch (SQLException e) {
             LogUtil.error(getClass(),e);
