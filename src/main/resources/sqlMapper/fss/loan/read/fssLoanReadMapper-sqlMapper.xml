@@ -42,19 +42,20 @@
 	<select id="getResponse"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
 		SELECT 
 			t.id,
-		    t.mchn_child mchn,
-		    t.seq_no seq_no,
-		    t.trade_type trade_type,
-		    t.contract_id contract_id,
-		    t.contract_no contract_no,
-		    t.mortgagee_acc_no mortgagee_acc_no,
-		    t.acc_no acc_no,
-			t.contract_amt contract_amt,
-			t.pay_amt pay_amt,
+		    t.mchn_child mchnChild,
+		    t.seq_no seqNo,
+		    t.trade_type tradeType,
+		    t.contract_id contractId,
+		    t.contract_no contractNo,
+		    t.mortgagee_acc_no mortgageeAccNo,
+		    t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.contract_interest contractInterest,
+			t.pay_amt payAmt,
 		    case when 
 			t.status='10050007' then '0000' 
-			else '0001'  end resp_code,
-			t.loan_platform loan_platform
+			else '0001'  end repCode,
+			t.loan_platform loanPlatform
 			FROM t_gq_fss_loan t
 			where 1=1
 			<include refid="whereSql" />
@@ -62,7 +63,6 @@
 	<!-- 抵押权人提现回盘 -->
 	<select id="getMortgageeWithDrawRespons"  parameterType="java.util.Map" resultType="com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons" >
 		SELECT 
-			t.id id,
 		    t.seq_no seq_no,
 		    t.mchn_child mchn,
 		    t.trade_type trade_type,

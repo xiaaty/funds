@@ -319,7 +319,8 @@ public class CustomerInfoService {
 	 * @return
 	 */
 	public CustomerInfoEntity queryCustomerById(int id) {
-		return customerInfoReadMapper.selectByPrimaryKey(id);
+		Long id1=Long.valueOf(String.valueOf(id));
+		return customerInfoReadMapper.selectByPrimaryKey(id1);
 	}
 	public CustomerInfoEntity getCustomerById(Long id) {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
@@ -1093,7 +1094,7 @@ public class CustomerInfoService {
 		customerInfoEntity.setHasThirdAgreement(0);
 		customerInfoEntity.setHasAcount(0);
 		customerInfoEntity.setPayChannel(2);
-		customerInfoEntity.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
+//		customerInfoEntity.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
 		customerInfoEntity.setIsBatchSendmsgCalled(0);
 		customerInfoEntity.setCreateTime((new Timestamp(new Date().getTime())));
 		customerInfoEntity.setCreateUserId(0);
