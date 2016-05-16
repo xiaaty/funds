@@ -54,7 +54,7 @@ public class CallbackJob extends SupperJob {
         if(isRunning) return;
 
         startLog("业务执行完成回盘");
-
+        isRunning = true;
         List<FssBackplateEntity> backplateEntities = fssBackplateService.findBackAll();
         for(FssBackplateEntity entity:backplateEntities){
             try {
@@ -62,6 +62,8 @@ public class CallbackJob extends SupperJob {
             } catch (FssException e) {
                 LogUtil.error(getClass(),e);
                 continue;
+            }finally{
+            	isRunning = false;
             }
         }
 

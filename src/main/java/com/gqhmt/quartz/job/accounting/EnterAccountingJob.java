@@ -1,6 +1,7 @@
 package com.gqhmt.quartz.job.accounting;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.quartz.job.SupperJob;
@@ -44,6 +45,7 @@ public class EnterAccountingJob extends SupperJob {
 		startLog("入账");
 
         isRunning = true;
+        try {
     	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
     	if(enterAccountParentByState.size()>0) {
 			for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
@@ -51,7 +53,12 @@ public class EnterAccountingJob extends SupperJob {
 			}
 		}
 
-    	isRunning=false;
+        }catch (Exception e){
+            LogUtil.error(this.getClass(),e);
+
+        }finally {
+            isRunning = false;
+        }
 
 		endtLog();
     }
