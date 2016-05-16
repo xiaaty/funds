@@ -114,6 +114,7 @@ public class UrlConnectUtil {
     public static <T> T sendJsonDataReturnObjectUrl(Class<T> tClass, String url, String param) throws FssException {
         InputStream inputStream = urlConnectUtil.sendJsonData(url,param);
         String result = urlConnectUtil.parseResponse(inputStream);
+
         return JsonUtil.getInstance().parseJson(result,tClass);
     }
 
@@ -135,6 +136,8 @@ public class UrlConnectUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        LogUtil.info(getClass(),"返回值:"+result);
         return result;
     }
 

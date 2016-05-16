@@ -71,7 +71,7 @@ public class InvementDao extends SuperGqDao {
                 investmentInfo.setId(rs.getInt("id"));
                 investmentInfo.setInvestId(rs.getString("invest_id"));
                 investmentInfo.setCustId(rs.getInt("cust_id"));
-
+                investmentInfo.setCreateTime(rs.getTimestamp("CREATE_TIME"));
 
                 list.add(investmentInfo);
             }

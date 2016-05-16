@@ -199,8 +199,8 @@ public class FundSequenceService {
         list.add(fromFundSequenceEntity);
         list.add(toFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,  accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
-        this.fundTradeService.addFundTrade(toEntiry,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
+//        this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,  accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
+//        this.fundTradeService.addFundTrade(toEntiry,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
     }
     
     /**
@@ -502,7 +502,7 @@ public class FundSequenceService {
             if (bean.getCustomerId() < GlobalConstants.RESERVED_CUSTOMERID_LIMIT) {
                 if (bean.getRepaymentAmount().compareTo(BigDecimal.ZERO) > 0) {
                     try {
-                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,null,thirdPartyType.FUIOU, fundOrderEntity);
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,"",thirdPartyType.FUIOU, fundOrderEntity);
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }

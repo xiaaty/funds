@@ -1,31 +1,19 @@
-package com.gqhmt.sftp.csv;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
- 
-import org.apache.commons.beanutils.BeanUtils;
+package com.gqhmt.sftp.csv;
+
 import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.csv.CSVUtils;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
 import com.gqhmt.sftp.service.FssProjectService;
 import com.gqhmt.util.CommonUtil;
+import org.apache.commons.beanutils.BeanUtils;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.*;
 public class CSVUtils {
+
 	
 	
 	 @Resource
@@ -179,8 +167,7 @@ public class CSVUtils {
 	 
 	  /**
 	   * 测试数据
-	   * @param args
-	 * @throws FssException 
+	 * @throws FssException
 	   */
 	  public  void get() throws FssException {
 		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
