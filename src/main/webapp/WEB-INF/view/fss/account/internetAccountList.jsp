@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
    <%@include file="../../../view/include/common_css_js.jsp"%>
@@ -51,12 +48,12 @@
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
  				<!-- NEW WIDGET START -->
-                      <div class="jarviswidget" id="wid-id-11"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="internetAccountList"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="Form">
+                                <form class="smart-form" action="${contextPath}/account/${map.type}/list"  method="post" id="accForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -69,24 +66,43 @@
                                                 <col width="200" />
                                                 <col />
                                                 <tbody>
-                                                    <tr></tr>
                                                     <tr>
+                                                     	<td class="tr">客户编号：</td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:200px" name="custNo" value="${map.custNo}" />
+                                                            </label>
+                                                        </td>
                                                         <td class="tr">客户账号：</td>
                                                         <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:250px" name="accNo" value="${bussaccount.accNo}" />
+                                                                <input type="text" style="width:200px" name="accNo" value="${map.accNo}" />
                                                             </label>
                                                         </td>
                                                         <td class="tr">客户姓名:</td>
                                                         <td>
-                                                            <label class="input"  style="width:250px" >
-                                                                <input type="text" name="custName" value="${bussaccount.custName}"/>
+                                                            <label class="input"  style="width:200px" >
+                                                                <input type="text" name="custName" value="${map.custName}"/>
                                                             </label>
                                                         </td>
+                                                   </tr>
+                                                   <tr>
                                                         <td class="tr">证件号码:</td>
                                                         <td>
-                                                            <label class="input"  style="width:250px" >
-                                                                <input type="text" name="certNo" value="${bussaccount.certNo}"/>
+                                                            <label class="input"  style="width:200px" >
+                                                                <input type="text" name="certNo" value="${map.certNo}"/>
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">业务编号:</td>
+                                                        <td>
+                                                            <label class="input"  style="width:200px" >
+                                                                <input type="text" name="busiNo" value="${map.busiNo}"/>
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">移动电话:</td>
+                                                        <td>
+                                                            <label class="input"  style="width:200px" >
+                                                                <input type="text" name="mobile" value="${map.mobile}"/>
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -118,8 +134,9 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2450px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2600px;">
                                         <col width="200" />
+                                        <col width="150" />
                                         <col width="150" />
                                         <col width="200" />
                                         <col width="150" />
@@ -138,6 +155,7 @@
                                         <tr>
                                               <td>资金账号</td>
                                               <td>客户姓名</td>
+                                              <td>客户编号</td>
                                               <td>账户类型</td>
                                               <td>证件号码</td>
                                               <td>移动电话</td> 
@@ -158,6 +176,7 @@
                                                 <tr>
                                                     <td>${bussaccount.accNo}</td>
                                                     <td>${bussaccount.custName}</td>
+                                                    <td>${bussaccount.custNo}</td>
                                                     <td> <fss:dictView key="${bussaccount.accType}" /></td>
                                                     <td><fss:fmtData value="${bussaccount.certNo}"/></td>
                                                     <td><fss:fmtData value="${bussaccount.mobile}"/></td>
@@ -191,7 +210,7 @@
  <script type="text/javascript" charset="utf-8">
 	 $(document).ready(function () {
 	     pageSetUp();
-	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
+	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#accForm"));
 	 }); 
  
 </script>

@@ -123,23 +123,23 @@
 		<!-- 借款人放款列表 -->
 	<select id="findBorrowerLoan"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
 		<include refid="selectSql" />
-			where 1=1
-<!-- 			<if test="contractNo != null and contractNo != ''"> -->
-<!-- 				and t.contract_no like concat('%',#{contractNo},'%') -->
-<!-- 			</if> -->
-<!-- 			<if test="status != null and status != ''"> -->
-<!-- 				and t.status like concat('%',#{status},'%') -->
-<!-- 			</if> -->
-<!-- 			<if test="mchnChild != null and mchnChild != ''"> -->
-<!-- 				and t.mchn_child like concat('%',#{mchnChild},'%') -->
-<!-- 			</if> -->
-			<if test="startTime != null and startTime != '' ">
+			where 1=1 
+ 			<if test="contractNo!=null and contractNo!=''"> 
+				and t.contract_no like concat('%',#{contractNo},'%') 
+ 			</if> 
+ 			<if test="status!=null and status!=''"> 
+ 				and t.status = #{status}
+			</if> 
+			<if test="custNo!=null and custNo!=''">
+				and t.cust_no like concat('%',#{custNo},'%')
+ 			</if> 
+			<if test="startTime!=null and startTime!=''">
 				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>
 			<if test="endTime != null and endTime != '' ">
 				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
-			<if test="type !=null and type != '' ">
+			<if test="type!=null and type!=''">
 				AND t.trade_type = #{type}
 			</if>
 			

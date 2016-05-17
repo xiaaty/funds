@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sftp.mapper.read.FssCreditInfoReadMapper">
+	
+	<select id="getParentId"  resultType="com.gqhmt.sftp.entity.FssCreditInfoEntity">
+	  SELECT 
+			t.id id,
+			t.parent_id  parentId,              
+   			t.total_number totalNumber,
+   			t.target_id targetId,
+   			t.trade_time tradeTime,
+    		t.trade_type tradeType,
+    		t.cust_name custName,
+		    t.cert_type certType,
+		    t.cert_no certNo,
+		    t.loan_id loanId,
+		    t.loan_name loanName,
+		    t.loan_cert_no loanCertN,
+		    t.pay_amount payAmount,
+		    t.repayment_capital repaymentCapital,
+		    t.repayment_interest repaymentInterest
+		FROM 
+			t_gq_fss_sftp_credit_info t 
+		WHERE t.parent_id=${parentId} 
+	</select>
+		
+	<select  id="queryCreditInfoList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssCreditInfoEntity" >
+		SELECT
+		  `id` id,
+		  `parent_id` parentId,
+		  `total_number` totalNumber,
+		  `target_id` targetId,
+		  `trade_time` tradeTime,
+		  `trade_type` tradeType,
+		  `cust_name` custName,
+		  `cert_type` certType,
+		  `cert_no` certNo,
+		  `loan_id` loanId,
+		  `loan_name` loanName,
+		  `loan_cert_no` loanCertNo,
+		  `pay_amount` payAmount,
+		  `repayment_capital` repaymentCapital,
+		  `repayment_interest` repaymentInterest
+	    FROM `t_gq_fss_sftp_credit_info` t
+	 <where>
+		<if test="custName!=null and custName!=''">
+			AND t.`cust_name` like CONCAT('%',#{custName},'%')
+		</if>
+		<if test="certNo!=null and certNo!=''">
+			AND t.`cert_no` like CONCAT('%',#{certNo},'%')
+		</if>
+	</where>
+</select>	
+		
+		
+</mapper>

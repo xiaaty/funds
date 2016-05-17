@@ -94,29 +94,22 @@ public class FssLoanTradeController {
 	@AutoPage
 	public Object loanList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map,
 			@PathVariable String type) throws FssException {
-		if (map != null) {
-			String startTime = map.get("startTime");
-			String endTime = map.get("endTime");
-			map.put("startTime", startTime != null ? startTime.replace("-", "") : null);
-			map.put("endTime", endTime != null ? endTime.replace("-", "") : null);
-
-		} else {
-			map = new HashMap<>();
-
-		}
+		String status=request.getParameter("status");
 		map.put("type", type);
+		map.put("status", status);
 		List<FssLoanEntity> list = fssLoanService.findBorrowerLoan(map);
-		List<FssLoanEntity> list2 =new ArrayList<>();
+	/*	List<FssLoanEntity> list2 =new ArrayList<>();
 		for (FssLoanEntity fssLoanEntity : list) {
 			String custNo = fssLoanEntity.getCustNo();
 			if(custNo!=null&&!"".equals(custNo)){
-				
 			FssCustomerEntity customerNameByCustNo = fssCustomerService.getCustomerNameByCustNo(custNo);
 			fssLoanEntity.setUserNo(customerNameByCustNo.getName());
 			}
 			list2.add(fssLoanEntity);
 		}
 		model.addAttribute("page", list2);
+		*/
+		model.addAttribute("page", list);
 		model.put("map", map);
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";

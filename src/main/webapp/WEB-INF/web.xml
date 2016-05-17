@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>funds</display-name>
-
   <listener>
     <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
   </listener>
-
-
   <filter>
     <filter-name>characterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -19,8 +16,6 @@
     <filter-name>characterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
-  <!--该过滤器用于实现单点登出功能，可选配置。 -->
   <filter>
     <filter-name>CAS Single Sign Out Filter</filter-name>
     <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
@@ -29,8 +24,6 @@
     <filter-name>CAS Single Sign Out Filter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
-
   <filter>
     <filter-name>casFilter</filter-name>
     <filter-class>com.gqhmt.sys.web.DelegatingFilterProxy</filter-class>
@@ -43,7 +36,6 @@
     <filter-name>casFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
   <filter>
     <filter-name>casValidationFilter</filter-name>
     <filter-class>com.gqhmt.sys.web.DelegatingFilterProxy</filter-class>
@@ -56,7 +48,6 @@
     <filter-name>casValidationFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
   <filter>
     <filter-name>CAS Assertion Thread Local Filter</filter-name>
     <filter-class>org.jasig.cas.client.util.AssertionThreadLocalFilter</filter-class>
@@ -65,12 +56,6 @@
     <filter-name>CAS Assertion Thread Local Filter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-<!--  <filter>
-    <filter-name>loginFilter</filter-name>
-    <filter-class>com.gqhmt.sys.web.LoginFilter</filter-class>
-  </filter>-->
-
-
   <filter>
     <filter-name>loginFilter</filter-name>
     <filter-class>com.gqhmt.sys.web.DelegatingFilterProxy</filter-class>
@@ -83,7 +68,6 @@
     <filter-name>loginFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -91,9 +75,6 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:spring/spring-*.xml</param-value>
   </context-param>
-
-
-
   <servlet>
     <servlet-name>dispatcher</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -107,11 +88,6 @@
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-
-
-
-
-
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>*.otf</url-pattern>
@@ -172,5 +148,4 @@
     <servlet-name>default</servlet-name>
     <url-pattern>*.swf</url-pattern>
   </servlet-mapping>
-
 </web-app>

@@ -46,7 +46,7 @@
         <!-- end breadcrumb -->
     </div>
 
-    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
+    <div class="jarviswidget" id="menuAdd"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <h2>添加菜单</h2>
                         </header>

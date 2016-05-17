@@ -309,5 +309,6 @@ public class DefaultHandlerExceptionResolver extends SimpleMappingExceptionResol
         request.setAttribute("errorMsg",ex.getMessage());
         request.setAttribute("errorException",ex);
 
+
     }
 }

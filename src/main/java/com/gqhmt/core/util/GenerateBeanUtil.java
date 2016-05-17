@@ -184,7 +184,6 @@ public class GenerateBeanUtil {
     private static void fieldMethod(Class tClass,Field field,Object targetObj){
         Annotation [] annotations = field.getAnnotations();
         for(Annotation annotation:annotations){
-//            System.out.println("注解:"+annotation.annotationType().getName());
             if(annotation.annotationType().getName().equals("com.gqhmt.annotations.AutoDate")){
                 AutoDate autoDate = (AutoDate) annotation;
                 fieldMethodAutoDate(tClass,field,targetObj,autoDate.type());
@@ -203,8 +202,7 @@ public class GenerateBeanUtil {
      * @param type
      */
     private static void fieldMethodAutoDate(Class tClass, Field field, Object targetObj, AutoDateType type){
-        System.out.println(type);
-
+        LogUtil.debug(GenerateBeanUtil.class,type.name());
         try{
 
             Date date = new Date();

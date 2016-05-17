@@ -136,12 +136,15 @@
 		</property>
 	</bean>
 
-        <!-- 公共异常转向错误页面-->
+	<bean id="handlerExceptionResolver" class="com.gqhmt.sys.handleException.DefaultHandlerExceptionResolver">
+		<property name="errorView">
+			<value>/common/error</value>
+		</property>
+	</bean>
+       <!-- &lt;!&ndash; 公共异常转向错误页面&ndash;&gt;
 		<bean id="defaultHandlerExceptionResolver" class="com.gqhmt.sys.handleException.DefaultHandlerExceptionResolver">
-            <property name="errorView">
-                <value>/common/error</value>
-            </property>
-        </bean>
+
+        </bean>-->
 
 	<!--<bean id="exceptionResolver" class="com.gq.core.exception.DefaultHandlerExceptionResolver">
 		<property name="errorView">

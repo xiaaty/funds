@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sftp.mapper.read.FssProjectCallbackReadMapper">
+	<select id="getByParentId"  resultType="com.gqhmt.sftp.entity.FssProjectCallbackEntity" >
+		SELECT 
+			t.id id,
+			t.item_name itemName,
+			t.item_no itemNo,
+			t.pay_channel payChannel,
+			t.resp_code respCode,
+			t.resp_msg respMsg,
+			t.bid_id bidId,
+			t.failed_msg failedMsg,
+			t.status status
+		FROM `t_gq_fss_sftp_project_callback` t
+			where t.parent_id=#{parentId}
+	</select>
+	
+	<select  id="queryFssProjectCallBackList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssProjectCallbackEntity" >
+	  SELECT 
+	      t.`id` id,
+		  t.`item_name` itemName,
+		  t.`item_no` itemNo,
+		  t.`pay_channel` payChannel,
+		  t.`status` status,
+		  t.`resp_code` respCode,
+		  t.`resp_msg` respMsg,
+		  t.`bid_id` bidId,
+		  t.`failed_msg` failedMsg
+	  From t_gq_fss_sftp_project_callback t
+	 <where>
+		<if test="itemNo!=null and itemNo!=''">
+			AND t.`item_no` like CONCAT('%',#{itemNo},'%')
+		</if>
+		<if test="itemName!=null and itemName!=''">
+			AND t.`item_name` like CONCAT('%',#{itemName},'%')
+		</if>
+	</where>
+</select>
+	
+ </mapper>

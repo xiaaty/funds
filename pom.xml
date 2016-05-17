@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>funds</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 
 
 	<name>funds</name>
@@ -69,7 +69,12 @@
 	</properties>
 
 	<dependencies>
-
+	<!-- 	jcraft -->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.53</version>
+		</dependency>
 		<!-- temp -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>

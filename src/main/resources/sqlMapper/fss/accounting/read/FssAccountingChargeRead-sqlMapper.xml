@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssAccountingChargeReadMapper">
+
+ <select  id="queryFssAccountingServiceCharge" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.accounting.entity.FssAccountingServiceCharge" >
+	  SELECT 
+		  t.`id` id,
+		  t.`cust_no` custNo,
+		  t.`cust_name` custName,
+		  t.`acc_no` accNo,
+		  t.`accounting_no` accountingNo,
+		  t.`fund_type` fundType,
+		  t.`spending` spending,
+		  t.`send_back` sendBack,
+		  t.`create_time` createTime,
+		  t.`modify_time` modifyTime,
+		  t.`summary` summary,
+		  t.`trade_date` tradeDate,
+		  t.`trade_time` tradeTime
+	  From t_gq_fss_accounting_service_charge t
+	 <where>
+		<if test="accountingNo!=null and accountingNo!=''">
+			AND t.`accounting_no` like CONCAT('%',#{accountingNo},'%')
+		</if>
+		<if test="accNo!=null and accNo!=''">
+			AND t.`acc_no` like CONCAT('%',#{accNo},'%')
+		</if>
+		<if test="loanNo!=null and loanNo!=''">
+			AND t.`loan_no` like CONCAT('%',#{loanNo},'%')
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+	</where>
+</select>
+</mapper>
+
+
