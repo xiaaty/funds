@@ -225,7 +225,7 @@
                                                     </c:if>
                                                     &nbsp; &nbsp;
                                                       <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
-                                                      		<c:if test="${t.status== '10050001'}">
+                                                      		<c:if test="${t.status== '10050001' || t.result=='98060003'}">
 																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
 																&nbsp; &nbsp;
 															</c:if>
