@@ -5,6 +5,7 @@ import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.FssException;
@@ -564,5 +565,13 @@ public class FundSequenceService {
         }
     }
    
+    /**
+     * 充值、提现统计
+     * @return
+     * @throws FssException
+     */
+    public FssStatisticsEntity getStatisticsByType(String custId) throws FssException{
+    	return fundSequenceReadMapper.queryMonthTotal(custId);
+    }
    
 }
