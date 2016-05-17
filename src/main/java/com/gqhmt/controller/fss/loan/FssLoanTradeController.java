@@ -157,7 +157,7 @@ public class FssLoanTradeController {
 	 */
 	@RequestMapping("/loan/trade/{type}/withHold/{id}")
 	@ResponseBody
-	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt) throws InterruptedException{
+	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt) {
 		Map<String, String> map = new HashMap<String, String>();
 		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
 		fssLoanEntity.setStatus("10050002");
@@ -169,7 +169,6 @@ public class FssLoanTradeController {
 			fssLoanEntity.setPayAmt(payAmt);
 			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001",type);
 			//1 代扣，2 提现
-			fssTradeRecordService.insertTradeRecord(1);
 			map.put("code", "0000");
 	        map.put("message", "success");
 		} catch (FssException e) {
