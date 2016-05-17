@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.account.mapper.read;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -64,4 +65,7 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	public List<FundSequenceEntity> getSumByDay();
 	
 	public  List<FundFlowBean> selectAllFundFlow(FundFlowBean fundflow);
+	
+	public FssStatisticsEntity queryMonthTotal(@Param("custId") String custId);
+	
 }
