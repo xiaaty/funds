@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>funds</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.5-4</version>
+	<version>1.0.6-SNAPSHOT</version>
 
 
 	<name>funds</name>
@@ -16,7 +16,7 @@
 	<scm>
 		<connection>scm:git:http://git-jk:git-jk@git.gqihome.com/scm/gqi/funds.git</connection>
 		<developerConnection>scm:git:http://git-jk:git-jk@git.gqihome.com/scm/gqi/funds.git</developerConnection>
-		<tag>funds-1.0.5-4</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
 		<site>
