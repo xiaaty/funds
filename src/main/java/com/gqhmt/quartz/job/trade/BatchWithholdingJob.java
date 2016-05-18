@@ -43,7 +43,7 @@ public class BatchWithholdingJob extends SupperJob{
     private IFundsBatchTrade fundsBatchTrade;
 
     private static boolean isRunning = false;
-    @Scheduled(cron="0 0/1 * * * * ")
+    @Scheduled(cron="7 0/1 * * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
