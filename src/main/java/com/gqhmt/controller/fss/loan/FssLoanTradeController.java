@@ -159,7 +159,7 @@ public class FssLoanTradeController {
 //		if(token.equals(server_token)){
 		try {
 			fssLoanService.update(fssLoanEntity);
-			fssLoanEntity.setPayAmt(payAmt);
+			fssLoanEntity.setContractAmt(payAmt);;
 			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001",type);
 			//1 代扣，2 提现
 			map.put("code", "0000");
@@ -185,7 +185,7 @@ public class FssLoanTradeController {
 
 		try {
 			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
-					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
+					fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 					GlobalConstants.NEW_BUSINESS_MT);
 			fssLoanEntityById.setStatus("10050005");
 			fssLoanService.update(fssLoanEntityById);
