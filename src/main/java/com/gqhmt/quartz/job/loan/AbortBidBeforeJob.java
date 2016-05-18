@@ -38,7 +38,7 @@ public class AbortBidBeforeJob extends SupperJob {
     private BidAbortService abortService;
 
     private static boolean isRunning = false;
-    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="19 0/5 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
         if(!isIp("upload")){
@@ -51,18 +51,20 @@ public class AbortBidBeforeJob extends SupperJob {
         startLog("借款业务流标 执行流标前置");
         isRunning = true;
 
-        List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
 
-        for (FssLoanEntity loanEntity:loanEntities){
-            try {
+
+
+        try {
+            List<FssLoanEntity> loanEntities = fssLoanService.findAbortBid();
+            for (FssLoanEntity loanEntity:loanEntities){
                 abortService.bidAbort(loanEntity);
-            } catch (FssException e) {
-                LogUtil.error(getClass(),e);
-                continue;
-            }finally{
-            	isRunning = false;
             }
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+        }finally{
+            isRunning = false;
         }
+
 
 
 

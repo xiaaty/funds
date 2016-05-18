@@ -37,7 +37,7 @@ public class SettleBeforeJob extends SupperJob {
     private BidSettleService settleService;
     
     private static boolean isRunning = false;
-    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="53 0/2 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
         if(!isIp("upload")){
@@ -46,22 +46,18 @@ public class SettleBeforeJob extends SupperJob {
 
         if(isRunning) return;
         startLog("满标放款 ");
-        
         isRunning = true;
 
-        List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();
-
-        for (FssLoanEntity loanEntity:loanEntities){
-            try {
+        try {
+            List<FssLoanEntity> loanEntities = fssLoanService.findLoanBySettle();
+            for (FssLoanEntity loanEntity:loanEntities){
                 settleService.settle(loanEntity);
-            } catch (FssException e) {
-                LogUtil.error(getClass(),e);
-                continue;
-            }finally{
-            	isRunning = false;
             }
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+        }finally{
+            isRunning = false;
         }
-
 
 
         endtLog();
