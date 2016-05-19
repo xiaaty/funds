@@ -6,7 +6,6 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
-import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
 import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
 import com.gqhmt.extServInter.dto.trade.GET_PrePaymentDto;
 import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;

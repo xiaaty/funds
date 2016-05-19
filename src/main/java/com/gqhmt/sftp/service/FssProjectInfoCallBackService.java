@@ -22,7 +22,7 @@ public class FssProjectInfoCallBackService {
 	 * @param map
 	 * @return
 	 */
-	public List<FssProjectCallbackEntity> queryFssProjectCallBackList(Map<String,String> map){
+	public List<FssProjectCallbackEntity> queryFssProjectCallBackList(Map<String,String> map) throws FssException{
 		Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
 			map2.put("itemNo",map.get("itemNo"));

@@ -28,9 +28,8 @@ public class SFTPuploadTest {
 	        sftpDetails.put(SFTPConstants.SFTP_REQ_PASSWORD, "root");
 	        sftpDetails.put(SFTPConstants.SFTP_REQ_PORT, "26");
 	        
-	        String src = "F:\\DTLFolder\\666.csv"; // 本地文件名
-	        String dst = "/DriversBackup/6666666.csv"; // 目标文件名
-	              
+	        String src = "F:\\P2P_PW10_20160516.txt.tmp"; // 本地文件名
+	        String dst = "/"; // 目标文件名
 	        SFTPChannel channel = test.getSFTPChannel();
 	        ChannelSftp chSftp = channel.getChannel(sftpDetails, 60000);
 	        
@@ -57,7 +56,7 @@ public class SFTPuploadTest {
 	        **/
 	        
 	        chSftp.put(src, dst, new FileProgressMonitor(fileSize), ChannelSftp.OVERWRITE); // 代码段2
-	        
+	        chSftp.rename(dst+src.substring(2), dst+src.substring(2,src.length()-4));
 	        // chSftp.put(new FileInputStream(src), dst, new FileProgressMonitor(fileSize), ChannelSftp.OVERWRITE); // 代码段3
 	        
 	        chSftp.quit();
