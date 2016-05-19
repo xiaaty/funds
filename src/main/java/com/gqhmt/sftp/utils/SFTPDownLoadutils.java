@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpATTRS;
 /**
@@ -24,31 +26,35 @@ import com.jcraft.jsch.SftpATTRS;
  * -----------------------------------------------------------------
  * 2016年5月10日  jhz      1.0     1.0 Version
  */
+@Service
 public class SFTPDownLoadutils {
 	 public SFTPChannel getSFTPChannel() {
 	        return new SFTPChannel();
 	    }
-
-	    public static void main(String[] args) throws Exception {
+	 	/**
+	 	 * 
+	 	 * author:jhz
+	 	 * time:2016年5月16日
+	 	 * function：
+	 	 * downPath：上传到服务器的目录，filePath：本地文件路径
+	 	 */
+	    public void downLoadFile(String downPath,String filePath) throws Exception {
 	        SFTPDownLoadutils test=new SFTPDownLoadutils();
 
 	        Map<String, String> sftpDetails = new HashMap<String, String>();
 	        // 设置主机ip，端口，用户名，密码
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_HOST, "127.0.0.1");
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_USERNAME, "root");
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_PASSWORD, "root");
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_PORT, "26");
+	        sftpDetails.put(SFTPConstants.SFTP_REQ_HOST, "ftp-1.fuiou.com");
+	        sftpDetails.put(SFTPConstants.SFTP_REQ_USERNAME, "gqjmsftp");
+	        sftpDetails.put(SFTPConstants.SFTP_REQ_PASSWORD, "8GHBR3bvpasCHRT5");
+	        sftpDetails.put(SFTPConstants.SFTP_REQ_PORT, "9022");
 	        
 	        SFTPChannel channel = test.getSFTPChannel();
 	        ChannelSftp chSftp = channel.getChannel(sftpDetails, 60000);
-	        String filename = "/DriversBackup/6666666.csv";
-	        SftpATTRS attr = chSftp.stat(filename);
+	        SftpATTRS attr = chSftp.stat(downPath);
 	        long fileSize = attr.getSize();
-	        
-	        String dst = "F:\\DTLFolder\\33333333.csv";
-	        OutputStream out = new FileOutputStream(dst);
+	        OutputStream out = new FileOutputStream(filePath);
 	        try {
-	            chSftp.get(filename, dst, new FileProgressMonitor(fileSize)); // 代码段1
+	            chSftp.get(downPath, filePath, new FileProgressMonitor(fileSize)); // 代码段1
 	            
 	            // chSftp.get(filename, out, new FileProgressMonitor(fileSize)); // 代码段2
 	            

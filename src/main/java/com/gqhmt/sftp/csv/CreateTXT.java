@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.http.HttpResponse;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.FssException;
@@ -40,7 +39,6 @@ import com.gqhmt.util.CommonUtil;
  */
 @Service
 public class CreateTXT  {
-	private static int num=1000;
 	@Resource
 	private FssProjectService fssProjectService;
 	@Resource
@@ -51,53 +49,53 @@ public class CreateTXT  {
 	 * 
 	 * author:jhz
 	 * time:2016年5月11日
-	 * function：生成项目信息txt文件
+	 * function：生成项目信息txt文件返回文件生成路径
 	 * @throws FssException 
 	 */
-	public void createProjectInfoTXT() throws FssException{
+	public String createProjectInfoTXT() throws FssException{
 			
 		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
 		  if(queryItemsInfos==null) throw new FssException("没找到项目信息文件");
 		  //文件名
-		  String fileName="P2P_PWXM_"+CommonUtil.dateTostring(new Date());
+		  String fileName="F:\\"+"P2P_PWXM_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
 		  BufferedOutputStream buff = null;   
 		  StringBuffer write = new StringBuffer();   
 		  String enter = "\r\n";   
 		  OutputStream outSTr = null;   
 		  try {   
-		    outSTr = new FileOutputStream("F:\\"+fileName+".txt"); // 建立   
+		    outSTr = new FileOutputStream(fileName); // 建立   
 		    buff = new BufferedOutputStream(outSTr); 
 		  //把内容写入文件 
 		    if(queryItemsInfos.size()>0){ 
-		    	write.append("商户号"+"|");
-				    write.append("平台流水号"+"|");
-				    write.append("项目编号"+"|");
-				    write.append("借款类型"+"|");
-				    write.append("借款标题"+"|");
-				    write.append("推荐机构"+"|");
-				    write.append("借款用途"+"|");
-				    write.append("借款金额"+"|");
-				    write.append("预期收益"+"|");
-				    write.append("产品名称"+"|");
-				    write.append("还款方式"+"|");
-				    write.append("借款期限"+"|");
-				    write.append("筹标起始日"+"|");
-				    write.append("每份投标金额"+"|");
-				    write.append("最低投标份数"+"|");
-				    write.append("最多投标金额"+"|");
-				    write.append("借款人平台用户"+"|");
-				    write.append("借款人金账户用户名"+"|");
-				    write.append("借款人项目概述"+"|");
-				    write.append("费用项"+"|");
-				    write.append("筹集情况"+"|");
-				    write.append("还款期数"+"|");
-				    write.append("备用金额"+"|");
-				    write.append("第三方支付公司ID"+"|");
-				    write.append("发标年化利率"+"|");
-				    write.append("借款人名称"+"|");
-				    write.append( "借款人证件类型"+"|");
-				    write.append( "借款人证件号码"+"|");
-				    write.append(enter);  
+//		    	write.append("商户号"+"|");
+//				    write.append("平台流水号"+"|");
+//				    write.append("项目编号"+"|");
+//				    write.append("借款类型"+"|");
+//				    write.append("借款标题"+"|");
+//				    write.append("推荐机构"+"|");
+//				    write.append("借款用途"+"|");
+//				    write.append("借款金额"+"|");
+//				    write.append("预期收益"+"|");
+//				    write.append("产品名称"+"|");
+//				    write.append("还款方式"+"|");
+//				    write.append("借款期限"+"|");
+//				    write.append("筹标起始日"+"|");
+//				    write.append("每份投标金额"+"|");
+//				    write.append("最低投标份数"+"|");
+//				    write.append("最多投标金额"+"|");
+//				    write.append("借款人平台用户"+"|");
+//				    write.append("借款人金账户用户名"+"|");
+//				    write.append("借款人项目概述"+"|");
+//				    write.append("费用项"+"|");
+//				    write.append("筹集情况"+"|");
+//				    write.append("还款期数"+"|");
+//				    write.append("备用金额"+"|");
+//				    write.append("第三方支付公司ID"+"|");
+//				    write.append("发标年化利率"+"|");
+//				    write.append("借款人名称"+"|");
+//				    write.append( "借款人证件类型"+"|");
+//				    write.append( "借款人证件号码"+"|");
+//				    write.append(enter);  
 		    for (FssProjectInfoEntity info : queryItemsInfos) {
 		    		write.append(info.getMchn()+"|");
 				    write.append(info.getSeqNo()+"|");
@@ -126,7 +124,7 @@ public class CreateTXT  {
 				    write.append(info.getBidYearIrr()+"|");
 				    write.append(info.getCustName()+"|");
 				    write.append(info.getCertType()+"|");
-				    write.append(info.getCertNo()+"|");
+				    write.append(info.getCertNo());
 				    write.append(enter);  
 			}
 		    }
@@ -142,7 +140,8 @@ public class CreateTXT  {
 		   } catch (Exception e) {   
 		    e.printStackTrace();   
 		   }   
-		  } 
+		  }
+		return fileName; 
 	  }
 	/**
 	 * 
@@ -151,21 +150,21 @@ public class CreateTXT  {
 	 * function：标的财务汇总文件 txt文件
 	 * @throws FssException 
 	 */
-	public void createFinanceSumTXT() throws FssException{
+	public String createFinanceSumTXT() throws FssException{
 		 List<FssFinanceSumEntity> queryFinaSum = fssProjectService.queryFinaSum();
 		if(queryFinaSum==null) throw new FssException("标的财务汇总文件不存在");
 		 //文件名
-		  String fileName="P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date());
+		  String fileName="F:\\"+"sum.txt";
 		  BufferedOutputStream buff = null;   
 		  StringBuffer write = new StringBuffer();   
 		  String enter = "\r\n";   
 		  OutputStream outSTr = null;   
 		  try {   
-		    outSTr = new FileOutputStream("F:\\"+fileName+".txt"); // 建立   
+		    outSTr = new FileOutputStream(fileName); // 建立   
 		    buff = new BufferedOutputStream(outSTr); 
 		  //把内容写入文件 
 		    if(queryFinaSum.size()>0){
-		 write.append("数据总数："+queryFinaSum.size()+"|"+enter);
+		 write.append("数据总数："+"|"+queryFinaSum.size()+enter);
 		 write.append("支付机构标的ID"+"|");
 		 write.append("支付机构平台ID"+"|");
 		 write.append("放款客户号"+"|");
@@ -187,7 +186,7 @@ public class CreateTXT  {
 		 write.append("已垫资总金额"+"|");
 		 write.append("剩余未偿垫资"+"|");
 		 write.append("放款金额"+"|");
-		 write.append("截止当日累计放款"+"|");
+		 write.append("截止当日累计放款");
 		 write.append(enter);  
 		for (FssFinanceSumEntity info : queryFinaSum) {
 			 write.append(info.getOrgTargetId()+"|");
@@ -211,7 +210,7 @@ public class CreateTXT  {
 			 write.append(info.getPaidSum()+"|");
 			 write.append(info.getDebtSum()+"|");
 			 write.append(info.getCreditSum()+"|");
-			 write.append(info.gettCreditSum()+"|");
+			 write.append(info.gettCreditSum());
 			 write.append(enter);  
 			}
 		  } 
@@ -227,7 +226,8 @@ public class CreateTXT  {
 		   } catch (Exception e) {   
 		    e.printStackTrace();   
 		   }   
-		  } 
+		  }
+		  return fileName;
 	}
 	/**
 	 * 
@@ -236,37 +236,37 @@ public class CreateTXT  {
 	 * function：P2P个人平台开户文件 txt文件
 	 * @throws FssException 
 	 */
-	public void createAccountFileTXT(HttpResponse response) throws FssException{
+	public String createAccountFileTXT() throws FssException{
 		List<FssAccountFileEntity> queryAccountFiles = fssAccountFileService.queryAccountFiles();
 		if(queryAccountFiles==null) throw new FssException("P2P个人平台开户文件不存在");
 		//文件名
-		String fileName="P2P_PW10_"+CommonUtil.dateTostring(new Date());
+		String fileName="F:\\"+"P2P_PW10_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
 		BufferedOutputStream buff = null;   
 		StringBuffer write = new StringBuffer();   
 		String enter = "\r\n";   
 		OutputStream outSTr = null;   
 		try {   
-			outSTr = new FileOutputStream("F:\\"+fileName+".txt"); // 建立   
+			outSTr = new FileOutputStream(fileName); // 建立   
 			buff = new BufferedOutputStream(outSTr); 
 			//把内容写入文件 
 			if(queryAccountFiles.size()>0){
-				write.append("商户号"+"|");
-				write.append("平台注册流水"+"|");
-				write.append("平台用户名"+"|");
-				write.append("JZH登陆用户名"+"|");
-				write.append("年龄"+"|");
-				write.append("用户名"+"|");
-				write.append("证件类型"+"|");
-				write.append("证件号"+"|");
-				write.append("性别"+"|");
-				write.append("银行预留手机号"+"|");
-				write.append("地址"+"|");
-				write.append("用户属性"+"|");
-				write.append("注册日期"+"|");
-				write.append("第三方支付公司ID"+"|");
-				write.append("操作类型"+"|");
-				write.append("备注"+"|");
-				write.append(enter);  
+//				write.append("商户号"+"|");
+//				write.append("平台注册流水"+"|");
+//				write.append("平台用户名"+"|");
+//				write.append("JZH登陆用户名"+"|");
+//				write.append("年龄"+"|");
+//				write.append("用户名"+"|");
+//				write.append("证件类型"+"|");
+//				write.append("证件号"+"|");
+//				write.append("性别"+"|");
+//				write.append("银行预留手机号"+"|");
+//				write.append("地址"+"|");
+//				write.append("用户属性"+"|");
+//				write.append("注册日期"+"|");
+//				write.append("第三方支付公司ID"+"|");
+//				write.append("操作类型"+"|");
+//				write.append("备注"+"|");
+//				write.append(enter);  
 				for (FssAccountFileEntity info: queryAccountFiles) {
 					write.append(info.getMchn()+"|");
 					write.append(info.getRegisteredSeqNo()+"|");
@@ -283,7 +283,7 @@ public class CreateTXT  {
 					write.append(info.getRegistrationDate()+"|");
 					write.append(info.getThirdPartyPaymentId()+"|");
 					write.append(info.getActionType()+"|");
-					write.append(info.getRemark()+"|");
+					write.append(info.getRemark());
 					write.append(enter);  
 				}
 			} 
@@ -299,7 +299,8 @@ public class CreateTXT  {
 			} catch (Exception e) {   
 				e.printStackTrace();   
 			}   
-		} 
+		}
+		return fileName;
 	}
 	/**
 	 * 
@@ -308,45 +309,44 @@ public class CreateTXT  {
 	 * function:P2P商户交易（包括冻结，动账，解冻）TXT文件
 	 * @throws FssException 
 	 */
-	public void createCreditInfoCVS() throws FssException{
+	public String createCreditInfoTXT() throws FssException{
 		List<FssBusinessTradeEntity> queryBusinessTrade = fssBusiTradeService.queryBusinessTrade();
 		if(queryBusinessTrade==null) throw new FssException("P2P商户交易文件不存在");
 		//文件名
-		String fileName="P2P_PWJY_"+CommonUtil.dateTostring(new Date());
+		String fileName="F:\\"+"P2P_PWJY_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
 		BufferedOutputStream buff = null;   
 		StringBuffer write = new StringBuffer();   
 		String enter = "\r\n";   
 		OutputStream outSTr = null;  
 		try {   
-			outSTr = new FileOutputStream("F:\\"+fileName+"_"+num+".txt"); // 建立   
-			num++;
+			outSTr = new FileOutputStream(fileName); // 建立   
 			buff = new BufferedOutputStream(outSTr); 
 			//把内容写入文件 
 			if(queryBusinessTrade.size()>0){
-		write.append("商户号"+"|");
-		write.append("第三方支付公司ID"+"|");
-		write.append("交易日期"+"|");
-		write.append("金账户交易类型"+"|");
-		write.append("项目编号"+"|");
-		write.append("合同编号"+"|");
-		write.append("出账人富友用户名"+"|");
-		write.append("出账人平台用户名"+"|");
-		write.append("金额"+"|");
-		write.append("手续费"+"|");
-		write.append("该笔还款本金"+"|");
-		write.append("该笔还款利息"+"|");
-		write.append("入账人富友用户名"+"|");
-		write.append("入账人平台用户名"+"|");
-		write.append("借款人姓名"+"|");
-		write.append("借款人证件类型"+"|");
-		write.append("借款人证件号码"+"|");
-		write.append("投资人用户名"+"|");
-		write.append("投资人富友登陆用户名"+"|");
-		write.append("投资人姓名"+"|");
-		write.append("投资人证件类型"+"|");
-		write.append("投资人证件号码"+"|");
-		write.append("业务类型"+"|");
-		write.append(enter);
+//		write.append("商户号"+"|");
+//		write.append("第三方支付公司ID"+"|");
+//		write.append("交易日期"+"|");
+//		write.append("金账户交易类型"+"|");
+//		write.append("项目编号"+"|");
+//		write.append("合同编号"+"|");
+//		write.append("出账人富友用户名"+"|");
+//		write.append("出账人平台用户名"+"|");
+//		write.append("金额"+"|");
+//		write.append("手续费"+"|");
+//		write.append("该笔还款本金"+"|");
+//		write.append("该笔还款利息"+"|");
+//		write.append("入账人富友用户名"+"|");
+//		write.append("入账人平台用户名"+"|");
+//		write.append("借款人姓名"+"|");
+//		write.append("借款人证件类型"+"|");
+//		write.append("借款人证件号码"+"|");
+//		write.append("投资人用户名"+"|");
+//		write.append("投资人富友登陆用户名"+"|");
+//		write.append("投资人姓名"+"|");
+//		write.append("投资人证件类型"+"|");
+//		write.append("投资人证件号码"+"|");
+//		write.append("业务类型"+"|");
+//		write.append(enter);
 		for (FssBusinessTradeEntity info : queryBusinessTrade) {
 			write.append(info.getMchn()+"|");
 			write.append(info.getThirdPartyPaymentId()+"|");
@@ -370,7 +370,7 @@ public class CreateTXT  {
 			write.append(info.getLendName()+"|");
 			write.append(info.getLendCertType()+"|");
 			write.append(info.getLendCertNo()+"|");
-			write.append(info.getBusiType()+"|");
+			write.append(info.getBusiType());
 			write.append(enter);
 		}
 		} 
@@ -386,7 +386,8 @@ public class CreateTXT  {
 		} catch (Exception e) {   
 			e.printStackTrace();   
 		}   
-	} 
+	}
+		return fileName; 
 	}
 	
 }

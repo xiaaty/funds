@@ -1,10 +1,13 @@
 package com.gqhmt.sftp.service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssFinanceSumEntity;
 import com.gqhmt.sftp.mapper.read.FssFinanceSumReadMapper;
 import com.gqhmt.sftp.mapper.write.FssBidFinanceWriteMapper;
@@ -25,6 +28,51 @@ public class FssBidFinanceService {
 			map2.put("certNo", map.get("certNo"));
 		}
 		return fssBidFinanceReadMapper.queryFssFinanceSumList(map2);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月19日
+	 * function：
+	 */
+	public void insertFinanceSum(FssFinanceSumEntity fssFinanceSumEntity){
+		fssBidFinanceWriteMapper.insertSelective(fssFinanceSumEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月18日
+	 * function：创建标的财务汇总文件对象并添加金数据库
+	 */
+	public void creatAccountFile(String orgTargetId,String orgTerraceId,
+			String custNo,String custName,String certType,String certNo,String targetState,
+			String tenderTime,String fullScaleTime,BigDecimal tReCaptical,BigDecimal tReInterest,String lReTime,
+			String aSquareTime ,BigDecimal aReCaptical,BigDecimal aReInterest,BigDecimal todayReCaptical,BigDecimal todayReInterest,
+			BigDecimal eReCaptical,BigDecimal eReInterest,BigDecimal paidSum,BigDecimal debtSum,BigDecimal tCreditSum) throws FssException{
+		FssFinanceSumEntity financeSum=new FssFinanceSumEntity();
+		financeSum.setOrgTargetId(orgTargetId);
+		financeSum.setOrgTerraceId(orgTerraceId);
+		financeSum.setCustNo(custNo);
+		financeSum.setCustName(custName);
+		financeSum.setCertType(certType);
+		financeSum.setCertNo(certNo);
+		financeSum.setTargetState(targetState);
+		financeSum.setTenderTime(tenderTime);
+		financeSum.setFullScaleTime(fullScaleTime);
+		financeSum.settReCaptical(tReCaptical);
+		financeSum.settReInterest(tReInterest);
+		financeSum.setlReTime(lReTime);
+		financeSum.setaSquareTime(aSquareTime);
+		financeSum.setaReCaptical(aReCaptical);
+		financeSum.setaReInterest(aReInterest);
+		financeSum.setTodayReCaptical(todayReCaptical);
+		financeSum.setTodayReInterest(todayReInterest);
+		financeSum.seteReCaptical(eReCaptical);
+		financeSum.seteReInterest(eReInterest);
+		financeSum.setPaidSum(paidSum);
+		financeSum.setDebtSum(debtSum);
+		financeSum.settCreditSum(tCreditSum);
+		this.insertFinanceSum(financeSum);
 	}
 	
 }

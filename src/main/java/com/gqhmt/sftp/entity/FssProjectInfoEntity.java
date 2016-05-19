@@ -89,7 +89,7 @@ public class FssProjectInfoEntity implements Serializable{
     private String loanItemDescription;		//借款人项目概述
     
     @Column(name = "fee_type")
-    private String feeType;			//费用项
+    private Long feeType;			//费用项
     
     @Column(name = "status")
     private String status;		//筹集情况
@@ -275,11 +275,11 @@ public class FssProjectInfoEntity implements Serializable{
 		this.loanItemDescription = loanItemDescription;
 	}
 
-	public String getFeeType() {
+	public Long getFeeType() {
 		return feeType;
 	}
 
-	public void setFeeType(String feeType) {
+	public void setFeeType(Long feeType) {
 		this.feeType = feeType;
 	}
 

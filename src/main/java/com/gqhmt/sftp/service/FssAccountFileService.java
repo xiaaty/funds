@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssAccountFileEntity;
 import com.gqhmt.sftp.mapper.read.FssAccountFileReadMapper;
+import com.gqhmt.sftp.mapper.write.FssAccountFileWriteMapper;
 
 /**
  * 
@@ -30,6 +31,8 @@ import com.gqhmt.sftp.mapper.read.FssAccountFileReadMapper;
 public class FssAccountFileService {
 	@Resource
 	private FssAccountFileReadMapper fssAccountFileReadMapper;
+	@Resource
+	private FssAccountFileWriteMapper fssAccountFileWriteMapper;
 	
 	
 	public List<FssAccountFileEntity> queryItemsInfos(Map<String,String> map)throws FssException {
@@ -43,5 +46,41 @@ public class FssAccountFileService {
 	public List<FssAccountFileEntity> queryAccountFiles()throws FssException {
 		return fssAccountFileReadMapper.selectAll();
 	}
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月18日
+	 * function：添加
+	 */
+	public void insertAccountFile(FssAccountFileEntity fileEntity){
+		fssAccountFileWriteMapper.insertSelective(fileEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月18日
+	 * function：创建开户文件对象并添加金数据库
+	 */
+	public void creatAccountFile(String registeredSeqNo,String platformUsername,
+			String loginUsername,Integer age,String accName,String certType,String certNo,Integer sex,
+			String mobile,String address,Integer userProperties,String registrationDate ,String thirdPartyPaymentId,String actionType,String remark) throws FssException{
+		FssAccountFileEntity fileEntity=new FssAccountFileEntity();
+		fileEntity.setMchn("0001000F0279762");
+		fileEntity.setRegisteredSeqNo(registeredSeqNo);
+		fileEntity.setPlatformUsername(platformUsername);
+		fileEntity.setLoginUsername(loginUsername);
+		fileEntity.setAge(age);
+		fileEntity.setAccName(accName);
+		fileEntity.setCertType(certType);
+		fileEntity.setCertNo(certNo);
+		fileEntity.setSex(sex);
+		fileEntity.setMobile(mobile);
+		fileEntity.setAddress(address);
+		fileEntity.setUserProperties(userProperties);
+		fileEntity.setRegistrationDate(registrationDate);
+		fileEntity.setThirdPartyPaymentId(thirdPartyPaymentId);
+		fileEntity.setActionType(actionType);
+		fileEntity.setRemark(remark);
+		this.insertAccountFile(fileEntity);
+	}
 }

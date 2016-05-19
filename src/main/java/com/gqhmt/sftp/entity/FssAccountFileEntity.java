@@ -34,19 +34,19 @@ public class FssAccountFileEntity implements Serializable{
     private String  mchn;  //商户号
     
     @Column(name = "registered_seq_no") 
-    private String registeredSeqNo;		
+    private String registeredSeqNo;			//平台注册流水，持续唯一',
 
     @Column(name = "platform_username")
-    private String  platformUsername;   
+    private String  platformUsername;   	//'平台用户名',
     
     @Column(name = "login_username")
-    private String loginUsername;		
+    private String loginUsername;		//登陆用户名
     
     @Column(name = "age")
     private Integer age;		
     
     @Column(name = "acc_name")
-    private String accName;		
+    private String accName;		//户名
     
     @Column(name = "cert_type")
     private String certType;			
