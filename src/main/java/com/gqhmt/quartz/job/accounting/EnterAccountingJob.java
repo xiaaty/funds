@@ -35,7 +35,7 @@ public class EnterAccountingJob extends SupperJob {
 	private FssEnterAccountService fssEnterAccountService;
 	
 	 private static boolean isRunning = false;
-	@Scheduled(cron="0 0/1 *  * * * ")
+	@Scheduled(cron="3 0/7 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
         if(!isIp("upload")){
             return;
@@ -46,12 +46,12 @@ public class EnterAccountingJob extends SupperJob {
 
         isRunning = true;
         try {
-    	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
-    	if(enterAccountParentByState.size()>0) {
-			for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
-				fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
+			List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
+			if(enterAccountParentByState.size()>0) {
+				for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
+					fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
+				}
 			}
-		}
 
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);

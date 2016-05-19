@@ -210,15 +210,15 @@
                                                     <fss:dictView key="${t.tradeType}" />
                                                     </td>
                                                     <td>${t.mchnParent}</td>
-                                                    <td><fss:fmtDate value="${t.createTime}" /></td>
-                                                    <td><fss:fmtDate value="${t.modifyTime}" /></td>
-                                                <td>
+                                                    <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>
                                                     <c:if test="${t.tradeType != '11092001'}">
                                                     <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
                                                     </c:if>
                                                     &nbsp; &nbsp;
                                                       <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
-                                                      		<c:if test="${t.status== '10050001' || t.result=='98060003'}">
+                                                      		<c:if test="${t.status== '10050001'}">
 																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
 																&nbsp; &nbsp;
 															</c:if>
@@ -234,7 +234,6 @@
                                                       <c:if test="${t.tradeType == '11090002'}">
 															<c:if test="${t.status == '10050009'}">
 																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
@@ -242,12 +241,10 @@
                                                       		<c:if test="${t.status=='10050010'}">
 																<a href="${contextPath}/loan/trade/${type}/recharge/${t.id}">退费 </a>
                                                       		</c:if>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															<c:if test="${t.tradeType == '11090010'}">
 															<c:if test="${t.status=='10050010' ||t.status=='10050099'}">
 																<a href="${contextPath}/loan/trade/${type}/retransfer/${t.id}" >转账</a>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 																</c:if>
 															</c:if>
@@ -255,7 +252,6 @@
 															<c:if test="${t.status!='10050100' && t.status!='11050011'}">
 																<a href="${contextPath}/loan/trade/${type}/abort/${t.id}">退款 </a>
 																</c:if>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															</c:if>
 															
