@@ -91,7 +91,6 @@ public class FssRepaymentService {
 		return fssRepaymentParentReadMapper.queryFssRepaymentParent(repayment);
 	}
 	/**
-	 * 
 	 * author:jhz
 	 * time:2016年4月25日
 	 * function：根据商户号流水号查询对象信息
@@ -276,7 +275,7 @@ public class FssRepaymentService {
     	repaymentResponse.setRepay_list(repaymentChilds);
     	repaymentResponse.setMchn(mchn);
     	repaymentResponse.setSeq_no(seqNo);
-    	repaymentResponse.setTrade_type(repaymentlist.get(0).getTradeType());
+    	repaymentResponse.setTrade_type(queryByMchnAndSeqNo.getTradeType());
     	return repaymentResponse;
     }
 	
