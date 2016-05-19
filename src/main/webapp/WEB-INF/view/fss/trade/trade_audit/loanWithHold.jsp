@@ -101,10 +101,10 @@
 												</td>
                                             </tr>
                                             <tr class="lh32">
-                                                <td align="left">放款金额(<span style="color:blue">可修改</span>)：</td>
+                                                <td align="left">金额(<span style="color:blue">可修改</span>)：</td>
                                                 <td>
 												            <label class="input" style="width:210px">
-												             <input type="text" name="payAmt" value="${loan.payAmt }">
+												             <input type="text" name="payAmt" value="${loan.contractAmt }">
 												            </label>
 												        </td>
                                             </tr>

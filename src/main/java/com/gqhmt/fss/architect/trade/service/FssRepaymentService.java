@@ -91,7 +91,6 @@ public class FssRepaymentService {
 		return fssRepaymentParentReadMapper.queryFssRepaymentParent(repayment);
 	}
 	/**
-	 * 
 	 * author:jhz
 	 * time:2016年4月25日
 	 * function：根据商户号流水号查询对象信息
@@ -155,19 +154,11 @@ public class FssRepaymentService {
 	 public Response createRefundDraw(RepaymentDto repaymentDto) throws FssException {
 		Response response=new Response();
 		List<FssRepaymentEntity> fssRepaymentlist=new ArrayList<FssRepaymentEntity>();
-    	List<RepaymentChildDto> repaymentlist=null;
-    	repaymentlist=repaymentDto.getRepay_list();
-    	BigDecimal amtSum=new BigDecimal("0");
-    	for(RepaymentChildDto r:repaymentlist){//还款总额
-    		amtSum=amtSum.add(r.getAmt());
-    	}
+    	
     	try {
     		//创建主表信息
-			FssRepaymentParentEntity repaymentParent = this.createRepaymentParentEntity(repaymentDto,amtSum);
-			for(RepaymentChildDto repyament:repaymentlist){
-	    		FssRepaymentEntity repaymentEntity = this.createFssRepaymentEntity(repyament,repaymentDto,repaymentParent);
-	    		fssRepaymentlist.add(repaymentEntity);
-	    	}
+			FssRepaymentParentEntity repaymentParent = this.createRepaymentParentEntity(repaymentDto);
+
 	    	try {
 				this.createRepayments(fssRepaymentlist);
 				response.setMchn(repaymentDto.getMchn());
@@ -180,7 +171,6 @@ public class FssRepaymentService {
 				LogUtil.info(this.getClass(), e.getMessage());
 				throw new FssException("还款划扣失败！");
 			}
-	    	fssTradeApplyService.insertTradeApply(repaymentParent, fssRepaymentlist);
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
 			throw new FssException("还款划扣主表创建失败！");
@@ -218,7 +208,12 @@ public class FssRepaymentService {
 	/**
 	 * 创建还款代扣主表信息
 	 */
-	public FssRepaymentParentEntity createRepaymentParentEntity(RepaymentDto repaymentDto,BigDecimal amtSum) throws FssException{
+	public FssRepaymentParentEntity createRepaymentParentEntity(RepaymentDto repaymentDto) throws FssException{
+		List<RepaymentChildDto> repaymentlist=repaymentDto.getRepay_list();
+    	BigDecimal amtSum=new BigDecimal("0");
+    	for(RepaymentChildDto r:repaymentlist){//还款总额
+    		amtSum=amtSum.add(r.getAmt());
+    	}
 		FssRepaymentParentEntity repaymentParent=new FssRepaymentParentEntity();
 		repaymentParent.setSeqNo(repaymentDto.getSeq_no());
 		repaymentParent.setTradeType(repaymentDto.getTrade_type());
@@ -235,6 +230,11 @@ public class FssRepaymentService {
 		repaymentParent.setMchnParent(Application.getInstance().getParentMchn(repaymentDto.getMchn()));
 		repaymentParent.setRemark("");
 		fssRepaymentParentWriteMapper.insertSelective(repaymentParent);
+		for(RepaymentChildDto repyament:repaymentlist){
+			FssRepaymentEntity repaymentEntity = this.createFssRepaymentEntity(repyament,repaymentDto,repaymentParent);
+			this.fssRepaymentWriteMapper.insertSelective(repaymentEntity);
+			fssTradeApplyService.insertTradeApply(repaymentEntity);
+		}
 		return repaymentParent;
 	}
 	
@@ -275,7 +275,7 @@ public class FssRepaymentService {
     	repaymentResponse.setRepay_list(repaymentChilds);
     	repaymentResponse.setMchn(mchn);
     	repaymentResponse.setSeq_no(seqNo);
-    	repaymentResponse.setTrade_type(repaymentlist.get(0).getTradeType());
+    	repaymentResponse.setTrade_type(queryByMchnAndSeqNo.getTradeType());
     	return repaymentResponse;
     }
 	

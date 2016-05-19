@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -7,6 +7,8 @@
     <title>交易审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
@@ -19,13 +21,6 @@
         .dt-wrapper {
             overflow: auto;
         }
-        .button-icon i{
-            line-height:32px;
-        }
-        #footer{position: absolute;bottom: 10px;z-index: 100px;}
-        .footer-bottom{font-size:13px}
-        .footer-bottom ul>li{padding:0}
-        .footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
     </style>
 
 </head>
@@ -53,7 +48,7 @@
                 <div class="row">
                     <!-- NEW WIDGET START -->
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="jarviswidget" id="borrowLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                        <div class="jarviswidget" id="borrowLoana"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -80,10 +75,10 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">商户号：</td>
+                                                        <td class="tr" nowrap="nowrap">客户编号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="mchnChild" value="${map.mchnChild}">
+                                                                <input type="text" style="width:210px" name="custNo" value="${map.custNo}">
                                                             </label>
                                                         </td>
                                                         <td class="tr" nowrap="nowrap">合同编号：</td>
@@ -140,14 +135,14 @@
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-312"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>纯线下放款列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form" id="">
+                            <form class="smart-form">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                     <!-- This area used as dropdown edit box -->
@@ -159,9 +154,9 @@
                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_exp"><i class="fa fa-plus"></i>&nbsp;导出</button>
                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_imp"><i class="fa fa-plus"></i>&nbsp;导入</button>
                                     </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
                                         <col width="50" />
-                                        <col width="100" />
+                                        <col width="200" />
                                         <col width="200" />
                                         <col width="150" />
                                         <col width="100" />
@@ -180,7 +175,7 @@
                                             <td></td>
                                             <td>抵押权人资金平台账号</td>
                                             <td>借款人资金平台账号</td>
-                                            <td>客户姓名</td>
+                                            <td>客户编号</td>
                                             <td>合同编号</td>
                                             <td>合同金额  </td>
                                             <td>放款金额   </td>

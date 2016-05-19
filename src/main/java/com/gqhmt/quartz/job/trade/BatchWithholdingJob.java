@@ -43,7 +43,7 @@ public class BatchWithholdingJob extends SupperJob{
     private IFundsBatchTrade fundsBatchTrade;
 
     private static boolean isRunning = false;
-    @Scheduled(cron="0 0/1 * * * * ")
+    @Scheduled(cron="7 0/1 * * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
@@ -51,16 +51,22 @@ public class BatchWithholdingJob extends SupperJob{
         if(isRunning) return;
         startLog("还款代扣");
         isRunning = true;
-        List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
+        try {
+			List<FssTradeRecordEntity>  recordEntities = this.recordService.findNotExecuteRecodes();
 
-        for(FssTradeRecordEntity entity:recordEntities){
-            long startTime = Calendar.getInstance().getTimeInMillis();
-            fundsBatchTrade.batchTrade(entity);
-            long endTime = Calendar.getInstance().getTimeInMillis();
-            LogUtil.info(getClass(),"代扣执行完成,共耗时:"+(endTime-startTime));
-        }
+			for(FssTradeRecordEntity entity:recordEntities){
+			    long startTime = Calendar.getInstance().getTimeInMillis();
+			    fundsBatchTrade.batchTrade(entity);
+			    long endTime = Calendar.getInstance().getTimeInMillis();
+			    LogUtil.info(getClass(),"代扣执行完成,共耗时:"+(endTime-startTime));
+			}
+		} catch (Exception e) {
+			  LogUtil.error(getClass(),e);
+			  e.printStackTrace();
+		}finally{
+			isRunning = false;
+		}
         endtLog();
-        isRunning = false;
     }
 
 

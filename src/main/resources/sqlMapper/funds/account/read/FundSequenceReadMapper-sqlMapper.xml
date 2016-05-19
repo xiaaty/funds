@@ -121,4 +121,24 @@
 		GROUP BY a.ACCOUNT_ID 
 	</select>
 	 -->
+	 
+	 <!-- 统计当月充值、提现总金额 -->
+	 <select id="queryMonthTotal" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity">
+		select 
+		(select 
+			IFNULL(SUM(t.amount),0.00) from t_gq_fund_sequence t,t_gq_fund_account a 
+			where t.ACCOUNT_ID=a.id 
+			and a.cust_id=#{custId} 
+			and a.busi_type=3
+			and t.fund_type in(1001,1002) 
+			and date_format(t.CREATE_TIME,'%Y-%m') = date_format(now(),'%Y-%m')) rechargeTotal,
+		(select 
+			IFNULL(-SUM(t.`amount`),0.00) from t_gq_fund_sequence t,t_gq_fund_account a 
+			where t.ACCOUNT_ID=a.id 
+			and a.cust_id=#{custId} 
+			and a.busi_type=3
+			and t.fund_type =2003 
+			and date_format(t.CREATE_TIME,'%Y-%m') = date_format(now(),'%Y-%m')) withdrawTotal
+	</select>
+	 
 </mapper>

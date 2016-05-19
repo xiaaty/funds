@@ -45,7 +45,7 @@ public class CallbackJob extends SupperJob {
 
     @Resource
     private ApplicationContext context;
-    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="0 0/2 *  * * * ")
     public void execute() throws JobExecutionException, FssException {
         if(!isIp("upload")){
             return;
@@ -54,15 +54,17 @@ public class CallbackJob extends SupperJob {
         if(isRunning) return;
 
         startLog("业务执行完成回盘");
-
+        isRunning = true;
         List<FssBackplateEntity> backplateEntities = fssBackplateService.findBackAll();
-        for(FssBackplateEntity entity:backplateEntities){
-            try {
+
+        try {
+            for(FssBackplateEntity entity:backplateEntities){
                 this.callback(entity);
-            } catch (FssException e) {
-                LogUtil.error(getClass(),e);
-                continue;
             }
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+        }finally{
+            isRunning = false;
         }
 
         endtLog();

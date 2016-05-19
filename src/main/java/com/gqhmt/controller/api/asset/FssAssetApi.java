@@ -10,13 +10,20 @@ import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.service.asset.*;
+import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 /**
@@ -47,11 +54,14 @@ public class FssAssetApi {
     private IFundSeqence fundSeqenceImpl;
 	@Resource
 	private IFundTrade fundTradeImpl;
-
     @Resource
     private IRechargeAndWithdrawOrder rechargeAndWithdrawOrder;
     @Resource
     private  BankCardInfoService bankCardInfoService;
+    @Resource
+    private FundSequenceService fundSequenceService;
+    
+    
     /**
      * 账户余额查询
      * @param dto
@@ -134,7 +144,20 @@ public class FssAssetApi {
         return response;
     }
 
-
+    /**
+     * 统计客户当月充值、提现总金额
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/statistics",method = {RequestMethod.POST,RequestMethod.GET})
+    public Map<String, BigDecimal> getStatisticsByType(String custId) throws FssException{
+    	FssStatisticsEntity  fssStatisticsEntity= fundSequenceService.getStatisticsByType(custId);
+    	Map<String, BigDecimal> map=new HashMap<String, BigDecimal>();
+    	map.put("sumRecharge", fssStatisticsEntity.getRechargeTotal().setScale(2, BigDecimal.ROUND_HALF_UP));//充值总金额
+    	map.put("sumWithdraw", fssStatisticsEntity.getWithdrawTotal().setScale(2, BigDecimal.ROUND_HALF_UP));//提现总金额
+    	return map;
+    }
+    
     /**
      *
      * @param dto

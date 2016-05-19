@@ -138,7 +138,7 @@ public class BankCardInfoService {
 	 * @return
 	 */
 	public BankCardInfoEntity queryBankCardinfoById(int id){
-		return bankCardinfoReadMapper.selectByPrimaryKey(id);
+		return bankCardinfoReadMapper.selectByPrimaryKey(Integer.valueOf(id));
 	}
 
 	
@@ -159,7 +159,7 @@ public class BankCardInfoService {
 		
 		BankCardInfoEntity bankCard = queryBankCardinfoById(entity.getId());
 		//客户信息bean
-		CustomerInfoEntity customerInfo = customerInfoService.queryCustomerById(bankCard.getCustId());
+		CustomerInfoEntity customerInfo = customerInfoService.queryCustomerById(bankCard.getCustId().intValue());
         
 		//是否需要掉用富友银行卡变更接口
 		boolean bankChangeFlg = false;
@@ -470,7 +470,11 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
 		bankCardInfoEntity.setCityId(Application.getInstance().getFourCode(loanAccountDto.getCity_id()));
-		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+		String bank_id = loanAccountDto.getBank_id();
+		if(bank_id.length()==3){
+			bank_id="0"+bank_id;
+		}
+		bankCardInfoEntity.setParentBankId(bank_id);
 		bankCardInfoEntity.setCreateTime(new Date());
 		bankCardInfoEntity.setCreateUserId(1);
 		bankCardInfoEntity.setModifyTime(new Date());

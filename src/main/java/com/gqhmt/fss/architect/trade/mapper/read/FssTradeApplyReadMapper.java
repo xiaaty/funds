@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 
@@ -73,4 +74,14 @@ public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity>
 	 * function：根据商户号流水号查询
 	 */
 	public FssTradeApplyEntity selectBySeqNoAndMchn(@Param("seqNo")String seqNo,@Param("mchn")String mchn);
+	
+	/**
+	 * 
+	 * author:柯禹来
+	 * time:2016年5月19日
+	 * function：查询冠E通代扣申请回盘数据
+	 */
+	public WithHoldApplyResponse selectTradeApplyData(@Param("mchn")String mchn,@Param("seqNo")String seqNo);
+	
+	
 }

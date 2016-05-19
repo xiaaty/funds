@@ -38,7 +38,7 @@ public class RepaymentBeforeJob extends SupperJob {
     private BidRepaymentService repaymentService;
     
     private static boolean isRunning = false;
-    @Scheduled(cron="0 0/1 *  * * * ")
+    @Scheduled(cron="17 0/2 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
@@ -49,18 +49,21 @@ public class RepaymentBeforeJob extends SupperJob {
         startLog("回款");
         isRunning = true;
 
-        List<FssLoanEntity> loanEntities = fssLoanService.findLoanRepayment();
 
-        for (FssLoanEntity loanEntity:loanEntities){
-            try {
+
+
+        try {
+            List<FssLoanEntity> loanEntities = fssLoanService.findLoanRepayment();
+            for (FssLoanEntity loanEntity:loanEntities){
                 repaymentService.BidRepayment(loanEntity);
-            } catch (FssException e) {
-                LogUtil.error(getClass(),e);
-                continue;
             }
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+        }finally{
+            isRunning = false;
         }
 
-        isRunning = false;
+
 
         endtLog();
 

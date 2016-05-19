@@ -89,6 +89,9 @@ public class FundsAccountImpl implements IFundsAccount {
 
 		try {
 			primaryAccount = this.getPrimaryAccount(cusId);
+			if(primaryAccount == null){
+				primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
+			}
 		} catch (FssException e) {
 			if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
 				primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
@@ -105,6 +108,9 @@ public class FundsAccountImpl implements IFundsAccount {
 				fundAccountService.update(primaryAccount);
 		}
 		return true;
+
+
+
 	}
 
 	/**

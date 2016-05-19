@@ -21,8 +21,10 @@ import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +137,12 @@ public class FssAccountService {
         return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(),custId);
     }
 
-	public FssAccountEntity createAccount(String tradeType,String mchn,String mobile,String certNo,String name,String bankType,String bankNo,String area,String busiNo,Long custId) throws FssException {
+
+    public FssAccountEntity createAccount(String tradeType,String mchn,String mobile,String certNo,String name,String bankType,String bankNo,String area,String busiNo,Long custId) throws FssException {
+        return createAccount(tradeType,mchn,mobile,certNo,name,bankType,bankNo,area,busiNo,custId,null);
+    }
+
+        public FssAccountEntity createAccount(String tradeType,String mchn,String mobile,String certNo,String name,String bankType,String bankNo,String area,String busiNo,Long custId,Date createTime) throws FssException {
 		FssCustomerEntity fssCustomerinfo= fssCustomerService.getFssCustomerEntityByCertNo(certNo);
 		FssCustBankCardEntity  fssCustBankCardEntity = null;
         FssFuiouAccountEntity fssFuiouAccountEntity = null;
@@ -185,7 +192,7 @@ public class FssAccountService {
         	if(!"11020012".equals(tradeType) && !"11020011".equals(tradeType) && !"11020006".equals(tradeType) && !"11020007".equals(tradeType)){
         		busiNo=fssCustomerinfo.getCustNo();
         	}
-            fssAccountEntity = this.createNewFssAccountEntity(fssCustomerinfo,tradeType,busiNo,mchn,fssFuiouAccountEntity == null ?"":fssFuiouAccountEntity.getAccNo());
+            fssAccountEntity = this.createNewFssAccountEntity(fssCustomerinfo,tradeType,busiNo,mchn,fssFuiouAccountEntity == null ?"":fssFuiouAccountEntity.getAccNo(),createTime);
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
             if(e != null && e.getMessage().contains("busi_no_uk")){
@@ -193,6 +200,7 @@ public class FssAccountService {
             }else{
                 throw new FssException("90099005");
             }
+
         }
 
         return fssAccountEntity;
@@ -212,7 +220,7 @@ public class FssAccountService {
     
 
 
-    public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo)  throws FssException{
+    public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo,Date createTime)  throws FssException{
     	FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class);
     	fssAccountEntity.setAccBalance(BigDecimal.ZERO);
     	fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
@@ -233,6 +241,9 @@ public class FssAccountService {
         fssAccountEntity.setTradeType(tradeType);
     	fssAccountEntity.setMchnChild(mchn);
     	fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
+        if(createTime != null){
+            fssAccountEntity.setCreateTime(createTime);
+        }
     	fssAccountWriteMapper.insert(fssAccountEntity);
     	return fssAccountEntity;
     }
@@ -252,7 +263,11 @@ public class FssAccountService {
 			fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
 			fssFuiouAccountEntity.setUserNo(fssCustomerEntity.getUserId());
 			fssFuiouAccountEntity.setAccNo(fssCustomerEntity.getMobile());
-			fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
+            if(fssCustomerEntity.getCustId()<100){
+                fssFuiouAccountEntity.setAccUserName(GlobalConstants.COMPANY_ACCOUNT_REAL_NAME.get(fssCustomerEntity.getCustId()));
+            }else {
+                fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
+            }
 			fssFuiouAccountEntity.setBankCardNo(fssCustBankCardEntity.getBankCardNo());
             fssFuiouAccountEntity.setMchnChild(mchn);
 			fssFuiouAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
