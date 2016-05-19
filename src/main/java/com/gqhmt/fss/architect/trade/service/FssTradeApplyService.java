@@ -326,7 +326,7 @@ public class FssTradeApplyService {
 					 if("11090001".equals(applyEntity.getBusiType())){
 						 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 						 fssLoanEntityById.setResult("98060001");	//成功
-						 fssLoanEntityById.setStatus("10050003");//划扣成功
+						 fssLoanEntityById.setStatus("10030002");//交易成功
 						 fssLoanEntityById.setModifyTime(new Date());
 						 fssLoanService.update(fssLoanEntityById);
 					 }else{
@@ -345,13 +345,13 @@ public class FssTradeApplyService {
 				 if("11090001".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 fssLoanEntityById.setResult("98060003");
-					 fssLoanEntityById.setStatus("10050004");
+					 fssLoanEntityById.setStatus("10030003");
 					 fssLoanEntityById.setModifyTime(new Date());
 					 fssLoanService.update(fssLoanEntityById);
 					
 				 }else{
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-					 queryRepayment.setState("10090003");	//10090003划扣完成
+					 queryRepayment.setState("10030004");	//10030004交易关闭
 					 queryRepayment.setResultState("10080010");	//失败
 					 queryRepayment.setMotifyTime(new Date());
 					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
@@ -362,11 +362,12 @@ public class FssTradeApplyService {
 				 if("11090001".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 fssLoanEntityById.setResult("98060002");
+					 fssLoanEntityById.setStatus("98060002");
 					 fssLoanEntityById.setModifyTime(new Date());
 					 fssLoanService.update(fssLoanEntityById);
 				 }else{
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-					 queryRepayment.setState("10090003");	//10090003划扣完成
+					 queryRepayment.setState("10030004");	//10090003划扣完成
 					 queryRepayment.setResultState("10080003");	//部分成功
 					 queryRepayment.setMotifyTime(new Date());
 					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
