@@ -207,20 +207,12 @@
 	                                                    <fss:dictView key="${t.status}" />
                                                     </td>
                                                     <td>
-	                                                      <fss:dictOrder var="order" dictOrder="tradeType">
-	                                                    	<c:if test="${t.tradeType == order.key}">${order.value}</c:if>
-	                                                   	 </fss:dictOrder>
-                                                    </td> 
-<!--                                                     <td> -->
-<%--                                                         <fss:dictView key="${t.result}" /> --%>
-<!--                                                     </td> -->
-                                                    <td>
                                                     <fss:dictView key="${t.tradeType}" />
                                                     </td>
                                                     <td>${t.mchnParent}</td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                <td>
+                                                    <td>
                                                     <c:if test="${t.tradeType != '11092001'}">
                                                     <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
                                                     </c:if>
@@ -242,7 +234,6 @@
                                                       <c:if test="${t.tradeType == '11090002'}">
 															<c:if test="${t.status == '10050009'}">
 																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
@@ -250,12 +241,10 @@
                                                       		<c:if test="${t.status=='10050010'}">
 																<a href="${contextPath}/loan/trade/${type}/recharge/${t.id}">退费 </a>
                                                       		</c:if>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															<c:if test="${t.tradeType == '11090010'}">
 															<c:if test="${t.status=='10050010' ||t.status=='10050099'}">
 																<a href="${contextPath}/loan/trade/${type}/retransfer/${t.id}" >转账</a>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 																</c:if>
 															</c:if>
@@ -263,7 +252,6 @@
 															<c:if test="${t.status!='10050100' && t.status!='11050011'}">
 																<a href="${contextPath}/loan/trade/${type}/abort/${t.id}">退款 </a>
 																</c:if>
-<%-- 																<a href="javaScript:void(0)" onclick="recharg(${type},${t.id});">收费 </a> --%>
 																&nbsp; &nbsp;
 															</c:if>
 															
