@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.service.account.impl;
 
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -32,6 +33,17 @@ public class CreateAccountImpl implements ICreateAccount{
 	@Resource
 	private IFundsAccount fundsAccountImpl;
 	
+	/**
+	 * 11020001:wap开户
+	 * 11020002:web开户
+	 * 11020003:安卓开户
+	 * 11020004:微信开户
+	 * 11020005:ios开户
+	 * 11020006:委托出借开户
+	 * 11020007:借款人开户（冠e通）
+	 * 11020014:开互联网账户
+	 */
+	@APITradeTypeValid(value = "11020001,11020002,11020003,11020004,11020005,11020006,11020007,11020014")
     @Override
     public Response execute(SuperDto dto) {
     	CreateAccountResponse response = new CreateAccountResponse();

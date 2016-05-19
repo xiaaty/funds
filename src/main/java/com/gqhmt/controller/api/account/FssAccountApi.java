@@ -8,6 +8,7 @@ import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,6 +72,7 @@ public class FssAccountApi {
 //        return "0000";
 //
 //    }
+    
    /**
     * 
     * author:jhz
@@ -78,7 +80,7 @@ public class FssAccountApi {
     * function：创建账户
     */
     @RequestMapping(value = "/createAccount",method = {RequestMethod.GET,RequestMethod.POST})
-    public Object ceeateAccount(CreateAccountDto createAccountByFuiou){
+    public Object ceeateAccount(@RequestBody CreateAccountDto createAccountByFuiou){
     	Response response= new Response();
         try {
              response = createAccountImpl.execute(createAccountByFuiou);

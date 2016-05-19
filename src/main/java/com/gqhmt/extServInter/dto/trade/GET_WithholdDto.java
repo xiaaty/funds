@@ -28,20 +28,19 @@ import java.math.BigDecimal;
 public class GET_WithholdDto extends SuperDto {
 
 	@APIValidNull(errorCode = "90002006")
-	private String cust_id;		//客户编号
+	private String cust_no;		//客户编号
 	private String cust_type;	//客户类型
-	@APIValidNull(errorCode = "90002016")
-	private String contract_id;//合同ID
 	@APIValidNull(errorCode = "90002022")
 	private String contract_no;//合同号
 	@APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;	//代扣金额
-	public String getCust_id() {
-		return cust_id;
+	
+	public String getCust_no() {
+		return cust_no;
 	}
-	public void setCust_id(String cust_id) {
-		this.cust_id = cust_id;
+	public void setCust_no(String cust_no) {
+		this.cust_no = cust_no;
 	}
 	public String getCust_type() {
 		return cust_type;
@@ -54,12 +53,6 @@ public class GET_WithholdDto extends SuperDto {
 	}
 	public void setAmt(BigDecimal amt) {
 		this.amt = amt;
-	}
-	public String getContract_id() {
-		return contract_id;
-	}
-	public void setContract_id(String contract_id) {
-		this.contract_id = contract_id;
 	}
 	public String getContract_no() {
 		return contract_no;
