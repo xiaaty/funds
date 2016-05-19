@@ -1,21 +1,20 @@
 package com.gqhmt.controller.api.trade;
 
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.callback.p2p.WithHoldApplyCallback;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.extServInter.service.trade.*;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.awt.List;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -61,17 +60,18 @@ public class FssGetTradeApi {
 	@Resource
 	private FundsBatchTradeImpl fundsBatchTradeImpl;
 	
+	@Resource
+	private WithHoldApplyCallback withHoldApplyCallback;
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
 	@RequestMapping(value = "/careateWithholdApply",method = RequestMethod.POST)
-	public Object careateWithholdApply(GET_WithholdDto dto){
+	public Object careateWithholdApply(@RequestBody GET_WithholdDto dto){
 		Response response=new Response();
 		try {
 			response = withHoldApplyImpl.execute(dto);
 		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
+			response = this.execute(e);
 		}
 		return response;
 	}
@@ -150,7 +150,7 @@ public class FssGetTradeApi {
 		return response;
 	}
 	
-	private Response excute(Exception e){
+	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
 		response.setResp_code(e.getMessage());

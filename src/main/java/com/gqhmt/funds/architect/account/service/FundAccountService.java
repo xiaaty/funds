@@ -159,6 +159,9 @@ public class FundAccountService {
         entity.setParentBankId(customerInfoEntity.getParentBankCode());
         entity.setCustName(customerInfoEntity.getCustomerName());
         entity.setCreateTime(new Date());
+        entity.setModifyTime(new Date());
+        entity.setCreateUserId(1);
+        entity.setModifyUserId(1);
         return entity;
     }
     

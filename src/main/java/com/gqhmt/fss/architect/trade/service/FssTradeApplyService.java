@@ -6,6 +6,8 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
+import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
+import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
 import com.gqhmt.extServInter.dto.trade.GET_PrePaymentDto;
 import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -15,7 +17,6 @@ import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper;
@@ -24,6 +25,8 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.util.CommonUtil;
+import com.gqhmt.util.LogUtil;
+
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -434,16 +437,17 @@ public class FssTradeApplyService {
 	 * 冠E通后台发起代扣申请
 	 * 
 	 */
-	public Response careateWithholdApplyEntity(GET_WithholdDto dto) throws FssException{
+	public boolean careateWithholdApplyEntity(GET_WithholdDto dto) throws FssException{
 		Response respon=new Response();
 		FssTradeApplyEntity fssTradeApplyEntity=this.CreateNewFssTradeApplyEntity(dto);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
-			respon.setResp_code("00000000");
+			respon.setResp_code("0000");
 		} catch (Exception e) {
+			LogUtil.info(this.getClass(), e.getMessage());
 			respon.setResp_code("91009804");
 		}
-		return respon;
+		return true;
 	}
 	
 	/**
@@ -511,11 +515,11 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setCreateTime((new Date()));
 		fssTradeApplyEntity.setModifyTime((new Date()));
 		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
-		fssTradeApplyEntity.setContractId(dto.getContract_id());//合同Id
+		fssTradeApplyEntity.setContractId("");//合同Id
 		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type()));//交易渠道
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
-		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_id()));
+		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_no()));
 		fssTradeApplyEntity.setCustType(Integer.valueOf(dto.getCust_type()));
 		return fssTradeApplyEntity;
 	}
@@ -545,6 +549,16 @@ public class FssTradeApplyService {
     		return 1;
     	}
     }
-	
+    
+    /**
+	 * author:柯禹来
+	 * time:2016年4月25日
+	 * function：得到冠e通回调对象
+	 */
+	public WithHoldApplyResponse getWhithHoldApplyResponse(String mchn, String seqNo)throws FssException {
+		WithHoldApplyResponse response=new WithHoldApplyResponse();
+		response=fssTradeApplyReadMapper.selectTradeApplyData(mchn,seqNo);
+		return response;
+	}
 	
 }
