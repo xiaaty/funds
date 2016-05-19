@@ -91,7 +91,9 @@ public class FssRepaymentService {
 		return fssRepaymentParentReadMapper.queryFssRepaymentParent(repayment);
 	}
 	/**
-	 * 根据商户号流水号查询对象信息
+	 * author:jhz
+	 * time:2016年4月25日
+	 * function：根据商户号流水号查询对象信息
 	 */
 	public FssRepaymentParentEntity queryByMchnAndSeqNo(String mchn,String seqNo) throws FssException{
 		Map<String, String> map=new HashMap<>();
