@@ -64,6 +64,15 @@ public class FssBusiTradeService {
 	 * 
 	 * author:jhz
 	 * time:2016年5月18日
+	 * function：修改商户交易对象
+	 */
+	public void updateBusitrade(FssBusinessTradeEntity fssBusinessTradeEntity){
+		fssBusiTradeWriteMapper.updateByPrimaryKey(fssBusinessTradeEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月18日
 	 * function：创建商户交易对象并添加进数据库
 	 */
 	public void creatBusiTrade(String thirdPartyPaymentId,String tradeDate,String tradeType,String itemNo,String contractNo,String outFuiouUsername,String outPlatformUsername,BigDecimal amt,BigDecimal charge,BigDecimal thisRepaymentPrincipal,BigDecimal thisRepaymentInterest,

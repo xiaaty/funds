@@ -1,6 +1,7 @@
 package com.gqhmt.sftp.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.csv.CreateTXT;
 import com.gqhmt.sftp.csv.ReadTXTFile;
+import com.gqhmt.sftp.entity.FssAccountFileEntity;
+import com.gqhmt.sftp.entity.FssSftpRecordEntity;
 import com.gqhmt.sftp.utils.SFTPDownLoadutils;
 import com.gqhmt.sftp.utils.SFTPuploadUtils;
 import com.gqhmt.util.CommonUtil;
@@ -39,7 +42,10 @@ public class FssSftpService {
 	private SFTPDownLoadutils sftpDownLoadutils;
 	@Resource
 	private ReadTXTFile readTXTFile;
-	
+	@Resource
+	private FssSftpRecordService fssSftpRecordService;
+	@Resource
+	private FssAccountFileService fssAccountFileService;
 	/**
 	 * 
 	 * author:jhz
@@ -47,9 +53,16 @@ public class FssSftpService {
 	 * function：1.P2P个人平台开户文件
 	 */
 	    public  void createAccount() throws FssException {
-			String createAccountFileTXT = createTXT.createAccountFileTXT();
+	    	List<FssAccountFileEntity> queryAccountFiles =fssAccountFileService.queryByStatus("10100001");
+	    	if(queryAccountFiles==null) throw new FssException("不存在未报备的个人开户文件");
+			String createAccountFileTXT = createTXT.createAccountFileTXT(queryAccountFiles);
 			try {
 				sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check", createAccountFileTXT);
+				FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("P2P个人平台开户文件", queryAccountFiles.size(), "11120001");
+				for (FssAccountFileEntity fssAccountFileEntity : queryAccountFiles) {
+					fssAccountFileEntity.setStatus("10110002"); //10110001未报备,10110002已报备
+					fssAccountFileService.updateAccountFile(fssAccountFileEntity);
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,7 +124,7 @@ public class FssSftpService {
 		 * function：P2P项目信息回盘
 		 * @throws Exception 
 		 */
-		public  void downBidback() throws Exception {
+		public  void downBidback() throws FssException,Exception {
 		String	filePath="F:\\bidBack"+CommonUtil.dateTostring(new Date())+".txt";
 			sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date())+".txt",filePath );
 			readTXTFile.insertProjectCallBacks(filePath);

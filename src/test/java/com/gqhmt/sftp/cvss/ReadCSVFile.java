@@ -1,20 +1,12 @@
 package com.gqhmt.sftp.cvss;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.swing.plaf.synth.SynthStyle;
-
-import com.gqhmt.sftp.cvss.CVSFileLoader;
-import com.gqhmt.sftp.cvss.Loader;
 import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
-import com.gqhmt.sftp.service.FssProjectService;  
   
 /** 测试类 */ 
 public class ReadCSVFile {

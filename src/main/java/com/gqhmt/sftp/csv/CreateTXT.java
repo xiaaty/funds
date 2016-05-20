@@ -15,9 +15,9 @@ import com.gqhmt.sftp.entity.FssAccountFileEntity;
 import com.gqhmt.sftp.entity.FssBusinessTradeEntity;
 import com.gqhmt.sftp.entity.FssFinanceSumEntity;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.sftp.service.FssAccountFileService;
+import com.gqhmt.sftp.service.FssBidFinanceService;
 import com.gqhmt.sftp.service.FssBusiTradeService;
-import com.gqhmt.sftp.service.FssProjectService;
+import com.gqhmt.sftp.service.FssProjectInfoService;
 import com.gqhmt.util.CommonUtil;
 
 /**
@@ -40,11 +40,11 @@ import com.gqhmt.util.CommonUtil;
 @Service
 public class CreateTXT  {
 	@Resource
-	private FssProjectService fssProjectService;
-	@Resource
-	private FssAccountFileService fssAccountFileService;
-	@Resource
 	private FssBusiTradeService fssBusiTradeService;
+	@Resource
+	private FssProjectInfoService fssProjectInfoService;
+	@Resource
+	private FssBidFinanceService fssBidFinanceService;
 	/**
 	 * 
 	 * author:jhz
@@ -54,7 +54,7 @@ public class CreateTXT  {
 	 */
 	public String createProjectInfoTXT() throws FssException{
 			
-		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
+		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectInfoService.queryItemsInfos();
 		  if(queryItemsInfos==null) throw new FssException("没找到项目信息文件");
 		  //文件名
 		  String fileName="F:\\"+"P2P_PWXM_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
@@ -151,7 +151,7 @@ public class CreateTXT  {
 	 * @throws FssException 
 	 */
 	public String createFinanceSumTXT() throws FssException{
-		 List<FssFinanceSumEntity> queryFinaSum = fssProjectService.queryFinaSum();
+		 List<FssFinanceSumEntity> queryFinaSum = fssBidFinanceService.queryFinaSum();
 		if(queryFinaSum==null) throw new FssException("标的财务汇总文件不存在");
 		 //文件名
 		  String fileName="F:\\"+"sum.txt";
@@ -236,9 +236,7 @@ public class CreateTXT  {
 	 * function：P2P个人平台开户文件 txt文件
 	 * @throws FssException 
 	 */
-	public String createAccountFileTXT() throws FssException{
-		List<FssAccountFileEntity> queryAccountFiles = fssAccountFileService.queryAccountFiles();
-		if(queryAccountFiles==null) throw new FssException("P2P个人平台开户文件不存在");
+	public String createAccountFileTXT(List<FssAccountFileEntity> queryAccountFiles) throws FssException{
 		//文件名
 		String fileName="F:\\"+"P2P_PW10_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
 		BufferedOutputStream buff = null;   

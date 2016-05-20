@@ -25,12 +25,12 @@ import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.cvss.CSVUtils;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.sftp.service.FssProjectService;
+import com.gqhmt.sftp.service.FssProjectInfoService;
 public class CSVUtils extends TestService{
 	
 	
 	 @Resource
-		private FssProjectService fssProjectService;
+	 private FssProjectInfoService fssProjectInfoService;
 	 /**
 	   * 生成为CVS文件 
 	   * @param exportData
@@ -185,7 +185,7 @@ public class CSVUtils extends TestService{
 	   */
 	  @Test
 	  public  void get() throws FssException {
-		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
+		List<FssProjectInfoEntity> queryItemsInfos = fssProjectInfoService.queryItemsInfos();
 	    List exportData = new ArrayList<Map>();
 	    Map row1 = new LinkedHashMap<String, String>();
 //	    row1.put("1", "");
