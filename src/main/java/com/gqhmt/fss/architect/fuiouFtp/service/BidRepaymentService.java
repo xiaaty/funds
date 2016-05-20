@@ -223,10 +223,11 @@ public class BidRepaymentService {
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
         fuiouFtpOrderService.addOrder(fundOrderEntity, 8);
+        paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 
     }
 
-    public void refundsCallBack(FundOrderEntity fundOrderEntity){
+    public void refundsCallBack(FundOrderEntity fundOrderEntity) throws FssException {
         if (fundOrderEntity.getOrderState() != 6 && fundOrderEntity.getOrderState() != 1001) {
             return;
         }
@@ -247,9 +248,10 @@ public class BidRepaymentService {
             FundAccountEntity toAxAccountEntity = fundAccountService.getFundAccount(3l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
             this.fundSequenceService.repaymentSequenceRefund(list,toAxAccountEntity,fundOrderEntity);
             //修改订单信息
-
+            paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
+            throw e;
         }
     }
 

@@ -572,14 +572,14 @@ public class FundSequenceService {
         for (RepaymentBean bean : list) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
 
-            if (bean.getRepaymentExtrinterest().compareTo(BigDecimal.ZERO) > 0) {
+            if (bean.getToPublicAmount().compareTo(BigDecimal.ZERO) > 0) {
                 try {
-                    this.transfer(toEntity,toAxAccount, bean.getRepaymentExtrinterest(), 7, 4014,null,thirdPartyType, fundOrderEntity);
+                    this.transfer(toEntity,toAxAccount, bean.getToPublicAmount(), 7, 4014,null,thirdPartyType, fundOrderEntity);
                 } catch (FssException e) {
                     LogUtil.error(this.getClass(), e);
                 }
                 try {
-                    fundTradeService.addFundTrade(toEntity, bean.getRepaymentExtrinterest(), BigDecimal.ZERO, 4014, " 逆服务费代偿退回 " + bean.getRepaymentInterest() + "元");
+                    fundTradeService.addFundTrade(toEntity, bean.getToPublicAmount(), BigDecimal.ZERO, 4014, " 逆服务费代偿退回 " + bean.getToPublicAmount() + "元");
                 } catch (FssException e) {
                     LogUtil.error(this.getClass(), e);
                 }
