@@ -494,7 +494,7 @@ public class FundSequenceService {
     }
 
 
-    public void repaymentSequence(List<RepaymentBean> list,String title,FundAccountEntity fromEntity,FundOrderEntity fundOrderEntity,BigDecimal sumRepay){
+    public void repaymentSequence(List<RepaymentBean> list,String title,FundAccountEntity fromEntity,FundOrderEntity fundOrderEntity,BigDecimal sumRepay) throws FssException {
         //产品名称，如果产品名称为空，则去标的title
         ThirdPartyType thirdPartyType = ThirdPartyType.FUIOU;
         for (RepaymentBean bean : list) {
@@ -503,7 +503,7 @@ public class FundSequenceService {
             if (bean.getCustomerId() < GlobalConstants.RESERVED_CUSTOMERID_LIMIT) {
                 if (bean.getRepaymentAmount().compareTo(BigDecimal.ZERO) > 0) {
                     try {
-                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,"",thirdPartyType.FUIOU, fundOrderEntity);
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,"",thirdPartyType, fundOrderEntity);
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
@@ -562,9 +562,32 @@ public class FundSequenceService {
             fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, sumRepay, 3003, title + " 还款成功，扣除还款金额 " + sumRepay + "元");
         } catch (FssException e) {
             LogUtil.error(this.getClass(), e);
+            throw e;
         }
     }
-   
+
+
+    public void repaymentSequenceRefund(List<RepaymentBean> list,FundAccountEntity toAxAccount,FundOrderEntity fundOrderEntity){
+        ThirdPartyType thirdPartyType = ThirdPartyType.FUIOU;
+        for (RepaymentBean bean : list) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
+
+            if (bean.getToPublicAmount().compareTo(BigDecimal.ZERO) > 0) {
+                try {
+                    this.transfer(toEntity,toAxAccount, bean.getToPublicAmount(), 7, 4014,null,thirdPartyType, fundOrderEntity);
+                } catch (FssException e) {
+                    LogUtil.error(this.getClass(), e);
+                }
+                try {
+                    fundTradeService.addFundTrade(toEntity, bean.getToPublicAmount(), BigDecimal.ZERO, 4014, " 逆服务费代偿退回 " + bean.getToPublicAmount() + "元");
+                } catch (FssException e) {
+                    LogUtil.error(this.getClass(), e);
+                }
+            }
+
+
+        }
+    }
     /**
      * 充值、提现统计
      * @return

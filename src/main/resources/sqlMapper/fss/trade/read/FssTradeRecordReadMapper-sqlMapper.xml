@@ -6,6 +6,7 @@
 	SELECT 
 			t.id id,
 			t.cust_no custNo,
+			t.cust_id custId,
 			t.user_no userNo,
 			t.acc_no accNo,
 			t.trade_type tradeType,

@@ -25,13 +25,17 @@ import java.math.BigDecimal;
  * -----------------------------------------------------------------
  * 2016年2月20日  柯禹来      1.0     1.0 Version
  */
-public class GET_WithholdDto extends SuperDto {
+public class GETWithholdAndDrawDto extends SuperDto {
 
 	@APIValidNull(errorCode = "90002006")
 	private String cust_no;		//客户编号
+	private String busi_no;     //合同号id
 	private String cust_type;	//客户类型
-	@APIValidNull(errorCode = "90002022")
-	private String contract_no;//合同号
+	private String apply_type;	//申请类型（充值：1103,提现：1104）
+//	@APIValidNull(errorCode = "90002022")
+	//直接代扣的没有合同编号
+	private String contract_no;//合同编号
+	
 	@APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;	//代扣金额
@@ -59,5 +63,17 @@ public class GET_WithholdDto extends SuperDto {
 	}
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
+	}
+	public String getBusi_no() {
+		return busi_no;
+	}
+	public void setBusi_no(String busi_no) {
+		this.busi_no = busi_no;
+	}
+	public String getApply_type() {
+		return apply_type;
+	}
+	public void setApply_type(String apply_type) {
+		this.apply_type = apply_type;
 	}
 }

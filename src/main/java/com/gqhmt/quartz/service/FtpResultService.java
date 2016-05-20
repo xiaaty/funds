@@ -197,8 +197,9 @@ public class FtpResultService {
             } else if (type == GlobalConstants.ORDER_REPAYMENT_NEW) {
                bidRepaymentService.BidRepaymentCallback(orderEntity);
             }else if (type == GlobalConstants.ORDER_ABORT_BID_NEW) {
-//
                abortService.bidAbortCallback(orderEntity);
+           }else if(type == GlobalConstants.ORDER_REPAYMENT_REFUND){
+               bidRepaymentService.refundsCallBack(orderEntity);
            }
             fuiouFtpOrder.setRetrunResultStatus(1);
         }catch (RuntimeException e){

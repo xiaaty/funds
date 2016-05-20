@@ -6,10 +6,12 @@ public class RepaymentBean {
 
 	// 1:A0,2:AX
 	private int customerId;
-	private BigDecimal repaymentPrincipal;              //本金
-	private BigDecimal repaymentInterest;               //利息
-	private BigDecimal repaymentAmount;                 //本息
-	private BigDecimal repaymentExtrinterest;			//额外利息
+	private BigDecimal repaymentPrincipal = BigDecimal.ZERO;             //本金
+	private BigDecimal repaymentInterest = BigDecimal.ZERO;              //利息
+	private BigDecimal repaymentAmount = BigDecimal.ZERO;               //本息
+	private BigDecimal repaymentExtrinterest = BigDecimal.ZERO;		//额外利息
+
+
 	// 投标类型(1.线上,2.线下)
 	private int investType;
 	
@@ -21,6 +23,8 @@ public class RepaymentBean {
 	
 	//往线下出借应付款账户打钱的金额
 	private BigDecimal  payableAmount = BigDecimal.ZERO;
+
+	private BigDecimal toPublicAmount  = BigDecimal.ZERO;
 
 	private Integer tenderId;
 	
@@ -135,5 +139,13 @@ public class RepaymentBean {
 
 	public void setRepaymentExtrinterest(BigDecimal repaymentExtrinterest) {
 		this.repaymentExtrinterest = repaymentExtrinterest;
+	}
+
+	public BigDecimal getToPublicAmount() {
+		return toPublicAmount;
+	}
+
+	public void setToPublicAmount(BigDecimal toPublicAmount) {
+		this.toPublicAmount = toPublicAmount;
 	}
 }

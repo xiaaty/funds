@@ -105,6 +105,8 @@ public class GlobalConstants {
 
     public static final int ORDER_REPAYMENT_NEW = 11990049;
 
+    public static final int ORDER_REPAYMENT_REFUND = 11990080;
+
     public static final int ORDER_ABORT_NEW = 11990050;
 
     public static final int ORDER_ABORT_BID_NEW = 11990060;
@@ -519,6 +521,7 @@ public class GlobalConstants {
         fundsType.put(4011,"抵押标借款人扣除账户管理费");
         fundsType.put(4012,"风险备用金");
         fundsType.put(4013,"归还风险备用金");
+        fundsType.put(4014,"归还逆服务费");
 
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");
@@ -647,19 +650,35 @@ public class GlobalConstants {
 
 
 
-        TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
-        TRADE_APPLY_NO__MAPPING.put("11030005","GTHK");
-        TRADE_APPLY_NO__MAPPING.put("11030006","GTDY");
-        TRADE_APPLY_NO__MAPPING.put("11030007","DCKK");
-        TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
-        TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+//        TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
+//        TRADE_APPLY_NO__MAPPING.put("11030005","GTHK");
+//        TRADE_APPLY_NO__MAPPING.put("11030006","GTDY");
+//        TRADE_APPLY_NO__MAPPING.put("11030007","DCKK");
+//        TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
+//        TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+		  TRADE_APPLY_NO__MAPPING.put("11030006","CJKK");
+		  TRADE_APPLY_NO__MAPPING.put("11030007","GTHK");
+		  TRADE_APPLY_NO__MAPPING.put("11030008","GTDY");
+		  TRADE_APPLY_NO__MAPPING.put("11030009","DCKK");
+		  TRADE_APPLY_NO__MAPPING.put("11030014","ZJKK");
+		  TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
+		  TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
 
 
+//        TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
+//        TRADE_APPLY_NO__MAPPING.put("11040005","GTFK");
+//        TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
+//        TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
+//        TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
+		  
         TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
-        TRADE_APPLY_NO__MAPPING.put("11040005","GTFK");
+        TRADE_APPLY_NO__MAPPING.put("11091002","GTFK");
         TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
         TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
-        TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
+//      TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
+        TRADE_APPLY_NO__MAPPING.put("11040006","CJSH");
+        TRADE_APPLY_NO__MAPPING.put("11040012","ZJTX");//账户直接提现
+        
         
         //根据账户类型匹配    1，2，3，99
         TRADE_BUSINESS_TYPE__MAPPING.put(10010001,3);
@@ -678,6 +697,7 @@ public class GlobalConstants {
         TRADE_BUSINESS_TYPE__MAPPING.put(10012003,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(10019001,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(10019002,0);
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040012,0);
 
         
         TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);

@@ -297,7 +297,7 @@ public class FundsAccountImpl implements IFundsAccount {
 					throw new FssException("90002038");//该银行卡号已经存在
 				}
 				
-				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity);
+				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,createAccountDto.getTrade_type());
 			}else{
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			}
