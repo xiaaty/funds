@@ -206,7 +206,7 @@
                                                      <td>
 	                                                    <fss:dictView key="${t.status}" />
                                                     </td>
-                                                    <td>
+                                                   g <td>
                                                     <fss:dictView key="${t.tradeType}" />
                                                     </td>
                                                     <td>${t.mchnParent}</td>
