@@ -1,23 +1,34 @@
-
-package com.gqhmt.sftp.csv;
-
-import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.sftp.service.FssProjectService;
-import com.gqhmt.util.CommonUtil;
-import org.apache.commons.beanutils.BeanUtils;
-
+package com.gqhmt.sftp.txt;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.URLEncoder;
-import java.util.*;
-public class CSVUtils {
-
+import org.apache.commons.beanutils.BeanUtils;
+import org.junit.Test;
+import com.gqhmt.TestService;
+import com.gqhmt.core.FssException;
+import com.gqhmt.sftp.csv.CreateTXT;
+import com.gqhmt.sftp.entity.FssProjectInfoEntity;
+import com.gqhmt.sftp.service.FssProjectService;
+public class TXTUtils extends TestService{
 	
 	
 	 @Resource
-		private FssProjectService fssProjectService;
+	private FssProjectService fssProjectService;
+	 @Resource
+	 private CreateTXT createTxt;
 	 /**
 	   * 生成为CVS文件 
 	   * @param exportData
@@ -167,35 +178,58 @@ public class CSVUtils {
 	 
 	  /**
 	   * 测试数据
-	 * @throws FssException
+	   * @param args
+	 * @throws FssException 
 	   */
-	  public  void get() throws FssException {
-		  List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
-	    List exportData = new ArrayList<Map>();
-	    Map row1 = new LinkedHashMap<String, String>();
-//	    row1.put("1", "");
-	    row1.put("1", "平台账号");
-	    row1.put("2", "身份证号");
-	    row1.put("3", "身份证类型");
-	    exportData.add(row1);
-	    for (FssProjectInfoEntity info : queryItemsInfos) {
-	    	
-	    	row1=new LinkedHashMap<String, String>();
-	    	row1.put("1",info.getAccNo() );
-	    	row1.put("2", info.getCertNo());
-	    	row1.put("3", info.getCertType());
-	    	exportData.add(row1);
-		}
-	    LinkedHashMap map = new LinkedHashMap();
-	    map.put("1", "总数据数");
-	    map.put("2",String.valueOf(queryItemsInfos.size()));
-	    map.put("3", "");
-	 
-	    String path = "F:/";
-	    String fileName = "文件导出";
-	    File file = CSVUtils.createCSVFile(exportData, map, path, fileName);
-	    file.renameTo(new File("F:/P2P_PWXM_"+CommonUtil.dateTostring(new Date())+".csv"));
-	    String fileName2 = file.getName();
-	    System.out.println("文件名称：" + fileName2);
+	  @Test
+	  public  void getsss() throws FssException {
+		  
+		    List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
+		  //导出txt文件 
+		  String fileName="123333"; 
+		  BufferedOutputStream buff = null;   
+		  StringBuffer write = new StringBuffer();   
+		  String enter = "\r\n";   
+		  OutputStream outSTr = null;   
+		  try {   
+		    outSTr = new FileOutputStream("F:\\"+fileName+".txt"); // 建立   
+		    buff = new BufferedOutputStream(outSTr); 
+		    //把内容写入文件 
+		    if(queryItemsInfos.size()>0){ 
+		    	write.append("数据总数："+queryItemsInfos.size()+"|"+enter);
+		     for (int i = 0; i < queryItemsInfos.size(); i++) { 
+		      write.append(queryItemsInfos.get(i).getAccNo()+"|"); 
+		      write.append(queryItemsInfos.get(i).getCertNo()+"|"); 
+		      write.append(queryItemsInfos.get(i).getCertType()+"|"); 
+		      write.append(queryItemsInfos.get(i).getCustName()+"|"); 
+		      write.append(queryItemsInfos.get(i).getBidYearIrr()+"|"); 
+		      write.append(queryItemsInfos.get(i).getDescription()+"|"); 
+		      write.append(enter);   
+		     } 
+		    } 
+		    System.out.println(fileName+"3333333333333");
+		    buff.write(write.toString().getBytes("UTF-8"));   
+		    buff.flush();   
+		    buff.close();   
+		  } catch (Exception e) {   
+		   e.printStackTrace();   
+		  } finally {   
+		   try {   
+		    buff.close();   
+		    outSTr.close();   
+		   } catch (Exception e) {   
+		    e.printStackTrace();   
+		   }   
+		  } 
+	  }
+	  
+	  
+	  @Test
+	  public void testCreateTXT() throws FssException{
+		  createTxt.createProjectInfoTXT();
+	  }
+	  @Test
+	  public void createFinanceSumTXT() throws FssException{
+		  createTxt.createFinanceSumTXT();
 	  }
 }

@@ -3,7 +3,6 @@ package com.gqhmt.sftp.utils;
 import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.jcraft.jsch.SftpProgressMonitor;
 
 public class FileProgressMonitor extends TimerTask implements SftpProgressMonitor{

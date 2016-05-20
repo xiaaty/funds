@@ -306,6 +306,14 @@ public class FssSumAuditEntity implements Serializable {
 		this.parentId = parentId;
 	}
 
+	public String getCertType() {
+		return certType;
+	}
+
+	public void setCertType(String certType) {
+		this.certType = certType;
+	}
+
 	}
 
 

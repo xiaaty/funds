@@ -251,7 +251,19 @@ public class CommonUtil {
     	String pioDate = new SimpleDateFormat("yyyyMMdd").format(date);
     	return pioDate;
     }
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月18日
+	 * function：把时间返回string HHmm
+	 */
+	public static String timeToString(Date date){
+		if (date == null || date.equals("")) {
+			return "";
+		}
+    	String pioDate = new SimpleDateFormat("HHmm").format(date);
+    	return pioDate;
+    }
 	
 	public static String dateToMonthDay(Date date){
 		if (date == null || date.equals("")) {
