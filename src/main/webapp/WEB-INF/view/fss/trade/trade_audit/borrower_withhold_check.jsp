@@ -85,7 +85,7 @@
                                                             <td>
                                                                 <label class="input">
 <%--                                                                 <input type="hidden" name="token" value="${sessionScope.token}"/>  --%>
-                                                                <input type="text" maxlength="50" readonly="readonly" name="contractId" value="${tradeapply.contractId}" style="width:256px;" />
+                                                                <input type="text" maxlength="50" readonly="readonly" name="businessNo" value="${tradeapply.businessNo}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>

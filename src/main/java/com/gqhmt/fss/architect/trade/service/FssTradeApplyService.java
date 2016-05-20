@@ -515,7 +515,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setCreateTime((new Date()));
 		fssTradeApplyEntity.setModifyTime((new Date()));
 		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
-		fssTradeApplyEntity.setContractId("");//合同Id
+		fssTradeApplyEntity.setContractId(dto.getBusi_no());//合同Id
 		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type()));//交易渠道
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);

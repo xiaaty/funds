@@ -176,7 +176,7 @@
                                                     <td><fss:dictView key="${tradeapply.channelNo}"/></td>
                                                     <td>
                                                     	<c:choose>
-                                                    		<c:when test="${tradeapply.busiType==11030004}">
+                                                    		<c:when test="${tradeapply.busiType!=11030004}">
 	                                                    	 	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
 		                                                    	&nbsp;&nbsp;&nbsp;&nbsp;
                                                     		</c:when>

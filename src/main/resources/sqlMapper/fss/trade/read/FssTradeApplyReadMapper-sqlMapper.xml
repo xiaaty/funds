@@ -110,11 +110,14 @@
 		t.mchn_child mchn,
 		t.seq_no seq_no,
 		t.busi_type trade_type,
-		t.business_no busi_no,
+		t.contract_id busi_no,
 		t.real_trade_amount real_trade_amount,
-		case when 
-		t.trade_state=10080002 or t.trade_state=10080003
-		then '0000'	else '0001'  end resp_code
+		case  
+			when t.trade_state=10080002 then '10080002'<!-- 交易成功 -->
+			when t.trade_state=10080003 then '10080003'<!-- 交易部分成功 -->
+			when t.trade_state=10080011 then '10080011'<!-- 交易取消 -->
+			else '10080010'	<!-- 交易失败 -->
+		end resp_code
 		FROM t_gq_fss_trade_apply t
 		WHERE t.mchn_child=#{mchn} and t.seq_no=#{seqNo} 
 	</select>

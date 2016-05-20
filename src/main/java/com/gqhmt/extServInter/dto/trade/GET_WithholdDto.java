@@ -29,6 +29,7 @@ public class GET_WithholdDto extends SuperDto {
 
 	@APIValidNull(errorCode = "90002006")
 	private String cust_no;		//客户编号
+	private String busi_no;     //
 	private String cust_type;	//客户类型
 	@APIValidNull(errorCode = "90002022")
 	private String contract_no;//合同号
@@ -60,4 +61,11 @@ public class GET_WithholdDto extends SuperDto {
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
 	}
+	public String getBusi_no() {
+		return busi_no;
+	}
+	public void setBusi_no(String busi_no) {
+		this.busi_no = busi_no;
+	}
+	
 }
