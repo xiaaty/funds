@@ -7,7 +7,7 @@ import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
+import com.gqhmt.extServInter.dto.trade.GETWithholdAndDrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;

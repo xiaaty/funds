@@ -5,16 +5,12 @@ import com.gqhmt.extServInter.callback.p2p.WithHoldApplyCallback;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.extServInter.service.trade.*;
-import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import java.math.BigDecimal;
-import java.util.Date;
-
 import javax.annotation.Resource;
 
 /**
@@ -53,7 +49,7 @@ public class FssGetTradeApi {
 	@Resource
 	private IWithHoldApply withHoldApplyImpl;
 	@Resource
-	private IPrePaymentApply prePaymentApplyImpl;
+	private IGetWithDrawApply getWithDrawApplyImpl;
 	
 	@Resource
 	private FundsBatchTradeImpl fundsBatchTradeImpl;
@@ -64,7 +60,7 @@ public class FssGetTradeApi {
 	 * 冠E通后台--代扣申请接口
 	 */
 	@RequestMapping(value = "/careateWithholdApply",method = RequestMethod.POST)
-	public Object careateWithholdApply(@RequestBody GET_WithholdDto dto){
+	public Object careateWithholdApply(@RequestBody GETWithholdAndDrawDto dto){
 		Response response=new Response();
 		try {
 			response = withHoldApplyImpl.execute(dto);
@@ -78,69 +74,10 @@ public class FssGetTradeApi {
 	 * 冠E通后台--代付申请接口
 	 */
 	@RequestMapping(value = "/careateWithDrawApply",method = RequestMethod.POST)
-	public Object careateWithholdApply(GET_PrePaymentDto dto){
+	public Object careateWithDrawApply(@RequestBody GETWithholdAndDrawDto dto){
 		Response response=new Response();
 		try {
-			response = prePaymentApplyImpl.execute(dto);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
-		}
-		return response;
-	}
-	
-	
-	/**
-	 * 测试批量代扣
-	 * @param dto
-	 * @return
-	 */
-	@RequestMapping(value = "/batchTrade",method = RequestMethod.POST)
-	public Object batchTrade(){
-		Response response=new Response();
-		try {
-			FssTradeRecordEntity entity=new FssTradeRecordEntity();
-			entity.setId(new Long(6005));
-			entity.setApplyNo("DYKK2016040116673667");
-			entity.setTradeType(1103);
-			entity.setTradeTypeChild(11090001);
-			entity.setAmount(new BigDecimal("6666.00"));
-			entity.setCustId(new Long(10));
-			entity.setTradeState(98070001);
-			entity.setCreateTime(new Date());
-			entity.setMchnParent("42592543ZVNC");
-			entity.setMchnChild("88721657SUKQ");
-			entity.setChannelNo("97010001");
-			
-			fundsBatchTradeImpl.batchTrade(entity);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
-		}
-		return response;
-	}
-	
-	/**
-	 * 测试批量代付
-	 * @param dto
-	 * @return
-	 */
-	@RequestMapping(value = "/batchWithdraw",method = RequestMethod.POST)
-	public Object batchWithdraw(){
-		Response response=new Response();
-		try {
-			FssTradeRecordEntity entity=new FssTradeRecordEntity();
-			entity.setId(new Long(6020));
-			entity.setBespokeDate(new Date());
-			entity.setCustId(new Long(611797));
-			entity.setTradeType(1104);
-			entity.setTradeTypeChild(11091001);
-			entity.setAmount(new BigDecimal("4444.00"));
-			entity.setApplyNo("JKTX2016040140206608");
-			entity.setTradeState(98070001);
-			entity.setChannelNo("97010001");
-			
-			fundsBatchTradeImpl.batchTrade(entity);
+			response = getWithDrawApplyImpl.execute(dto);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

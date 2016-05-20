@@ -19,7 +19,7 @@ import com.gqhmt.extServInter.service.ExtService;
  * -----------------------------------------------------------------
  * 2016年3月23日   柯禹来     1.0     1.0 Version
  */
-public interface IPrePaymentApply extends ExtService {
+public interface IGetWithDrawApply extends ExtService {
 
 
 }

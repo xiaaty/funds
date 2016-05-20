@@ -182,7 +182,7 @@ public class FssTradeApplyController {
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}
 		//不通过，添加回盘记录
-		fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+//		fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		map.put("code", "0000");
         map.put("message", "success");
 		return map;
