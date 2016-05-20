@@ -16,7 +16,7 @@ import com.gqhmt.sftp.mapper.write.FssBidFinanceWriteMapper;
 public class FssBidFinanceService {
 	
 	@Resource
-	private FssFinanceSumReadMapper fssBidFinanceReadMapper;
+	private FssFinanceSumReadMapper fssFinanceReadMapper;
 	@Resource
 	private FssBidFinanceWriteMapper fssBidFinanceWriteMapper;
 	
@@ -27,16 +27,25 @@ public class FssBidFinanceService {
 			map2.put("custName", map.get("custName"));
 			map2.put("certNo", map.get("certNo"));
 		}
-		return fssBidFinanceReadMapper.queryFssFinanceSumList(map2);
+		return fssFinanceReadMapper.queryFssFinanceSumList(map2);
 	}
 	/**
 	 * 
 	 * author:jhz
 	 * time:2016年5月19日
-	 * function：
+	 * function：添加
 	 */
 	public void insertFinanceSum(FssFinanceSumEntity fssFinanceSumEntity){
 		fssBidFinanceWriteMapper.insertSelective(fssFinanceSumEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月19日
+	 * function：修改
+	 */
+	public void updateFinanceSum(FssFinanceSumEntity fssFinanceSumEntity){
+		fssBidFinanceWriteMapper.updateByPrimaryKey(fssFinanceSumEntity);
 	}
 	/**
 	 * 
@@ -74,5 +83,13 @@ public class FssBidFinanceService {
 		financeSum.settCreditSum(tCreditSum);
 		this.insertFinanceSum(financeSum);
 	}
-	
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月11日
+	 * function：标的财务汇总文件表
+	 */
+	public List<FssFinanceSumEntity> queryFinaSum()throws FssException {
+		return fssFinanceReadMapper.selectAll();
+	}
 }

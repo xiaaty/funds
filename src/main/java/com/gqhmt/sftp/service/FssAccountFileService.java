@@ -1,5 +1,6 @@
 package com.gqhmt.sftp.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssAccountFileEntity;
 import com.gqhmt.sftp.mapper.read.FssAccountFileReadMapper;
 import com.gqhmt.sftp.mapper.write.FssAccountFileWriteMapper;
+import com.gqhmt.util.CommonUtil;
 
 /**
  * 
@@ -59,11 +61,20 @@ public class FssAccountFileService {
 	 * 
 	 * author:jhz
 	 * time:2016年5月18日
+	 * function：修改
+	 */
+	public void updateAccountFile(FssAccountFileEntity fileEntity){
+		fssAccountFileWriteMapper.updateByPrimaryKey(fileEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月18日
 	 * function：创建开户文件对象并添加金数据库
 	 */
 	public void creatAccountFile(String registeredSeqNo,String platformUsername,
-			String loginUsername,Integer age,String accName,String certType,String certNo,Integer sex,
-			String mobile,String address,Integer userProperties,String registrationDate ,String thirdPartyPaymentId,String actionType,String remark) throws FssException{
+			String loginUsername,Integer age,String accName,Integer certType,String certNo,Integer sex,
+			String mobile,String address,Integer userProperties,Date registrationDate ,String thirdPartyPaymentId,String actionType,String remark) throws FssException{
 		FssAccountFileEntity fileEntity=new FssAccountFileEntity();
 		fileEntity.setMchn("0001000F0279762");
 		fileEntity.setRegisteredSeqNo(registeredSeqNo);
@@ -71,16 +82,42 @@ public class FssAccountFileService {
 		fileEntity.setLoginUsername(loginUsername);
 		fileEntity.setAge(age);
 		fileEntity.setAccName(accName);
-		fileEntity.setCertType(certType);
+		if (1==certType) {
+		fileEntity.setCertType("0");
+		}else if(2==certType){
+		fileEntity.setCertType("1");
+		}else if(4==certType){
+		fileEntity.setCertType("2");
+		}else{
+		fileEntity.setCertType("7");
+		}
 		fileEntity.setCertNo(certNo);
-		fileEntity.setSex(sex);
+		if(1==sex){
+			fileEntity.setSex(0);
+		}else{
+			fileEntity.setSex(1);
+		}
 		fileEntity.setMobile(mobile);
 		fileEntity.setAddress(address);
-		fileEntity.setUserProperties(userProperties);
-		fileEntity.setRegistrationDate(registrationDate);
+		if(1==userProperties||2==userProperties){
+			fileEntity.setUserProperties(1);
+		}else{
+			fileEntity.setUserProperties(2);
+		}
+		fileEntity.setRegistrationDate(CommonUtil.dateTostring(registrationDate));
 		fileEntity.setThirdPartyPaymentId(thirdPartyPaymentId);
 		fileEntity.setActionType(actionType);
 		fileEntity.setRemark(remark);
+		fileEntity.setStatus("10100001");
 		this.insertAccountFile(fileEntity);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月20日
+	 * function：根据交易状态查询文件列表
+	 */
+	public List<FssAccountFileEntity> queryByStatus(String status){
+		return fssAccountFileReadMapper.queryByStatus(status);
 	}
 }

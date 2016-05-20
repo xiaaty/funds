@@ -50,9 +50,6 @@ public class FssSftpRecordEntity implements Serializable {
     @Column(name = "type")
     private String type;                          //类型
 
-    @Column(name = "status")
-    private String status;                    //'状态
-
 	public Long getId() {
 		return id;
 	}
@@ -100,14 +97,5 @@ public class FssSftpRecordEntity implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 
 }

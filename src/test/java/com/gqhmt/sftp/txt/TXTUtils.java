@@ -21,12 +21,12 @@ import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.csv.CreateTXT;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.sftp.service.FssProjectService;
+import com.gqhmt.sftp.service.FssProjectInfoService;
 public class TXTUtils extends TestService{
 	
 	
 	 @Resource
-	private FssProjectService fssProjectService;
+	 private FssProjectInfoService fssProjectInfoService;
 	 @Resource
 	 private CreateTXT createTxt;
 	 /**
@@ -184,7 +184,7 @@ public class TXTUtils extends TestService{
 	  @Test
 	  public  void getsss() throws FssException {
 		  
-		    List<FssProjectInfoEntity> queryItemsInfos = fssProjectService.queryItemsInfos();
+		    List<FssProjectInfoEntity> queryItemsInfos = fssProjectInfoService.queryItemsInfos();
 		  //导出txt文件 
 		  String fileName="123333"; 
 		  BufferedOutputStream buff = null;   

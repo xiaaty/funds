@@ -2,6 +2,9 @@ package com.gqhmt.sftp.mapper.read;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sftp.entity.FssAccountFileEntity;
 
@@ -25,4 +28,11 @@ import com.gqhmt.sftp.entity.FssAccountFileEntity;
 public interface FssAccountFileReadMapper extends ReadMapper<FssAccountFileEntity> {
 	
 	public List<FssAccountFileEntity> queryAccountFileList(Map map);
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月20日
+	 * function：根据交易状态查询文件列表
+	 */
+	public List<FssAccountFileEntity> queryByStatus(@Param("status")String status);
 }

@@ -54,6 +54,15 @@ public class FssProjectInfoService {
 	 * 
 	 * author:jhz
 	 * time:2016年5月18日
+	 * function：添加
+	 */
+	public void updateProjectInfo(FssProjectInfoEntity projectInfo) throws FssException{
+		fssProjectInfoWriteMapper.updateByPrimaryKey(projectInfo);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月18日
 	 * function：创建项目信息并添加进数据库
 	 */
 	public void createProjectInfo(String seqNo,String itemNo,String loanType,String loanTittle,String organization,String description,
@@ -89,5 +98,14 @@ public class FssProjectInfoService {
 		projectInfo.setCertType(certType);
 		projectInfo.setCertNo(certNo);
 		this.insertProjectInfo(projectInfo);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月6日
+	 * function：查找所有项目信息
+	 */
+	public List<FssProjectInfoEntity> queryItemsInfos()throws FssException {
+		return fssProjectInfoReadMapper.selectAll();
 	}
 }

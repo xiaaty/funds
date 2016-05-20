@@ -77,6 +77,9 @@ public class FssAccountFileEntity implements Serializable{
     
     @Column(name = "remark")
     private String remark;
+    
+    @Column(name = "status")
+    private String status;
 
 	public Long getId() {
 		return id;
@@ -212,6 +215,14 @@ public class FssAccountFileEntity implements Serializable{
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}		
     
 }

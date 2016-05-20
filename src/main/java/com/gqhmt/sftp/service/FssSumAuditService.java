@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
 import com.gqhmt.sftp.entity.FssSumAuditEntity;
 import com.gqhmt.sftp.mapper.read.FssFinanceSumAuditReadMapper;
 import com.gqhmt.sftp.mapper.write.FssSumAuditWriteMapper;
@@ -36,6 +37,15 @@ public class FssSumAuditService {
 	 */
 	public void createSumAudit(List<FssSumAuditEntity> sumAudits) throws FssException{
 		fssSumAuditWriteMapper.insertList(sumAudits);
+	}
+	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月11日
+	 * function：标的财务汇总审核回盘文件 
+	 */
+	public List<FssSumAuditEntity> querySumAudit()throws FssException {
+		return fssFinanceSumAuditReadMapper.selectAll();
 	}
 	
 }
