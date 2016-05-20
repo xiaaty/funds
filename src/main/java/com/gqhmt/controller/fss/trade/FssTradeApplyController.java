@@ -3,13 +3,13 @@ package com.gqhmt.controller.fss.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
-import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,7 +53,7 @@ public class FssTradeApplyController {
     @Resource
 	private FssBackplateService fssBackplateService;
     @Resource
-    private FssCustomerService fssCustomerService;
+    private CustomerInfoService customerInfoService;
     /**
 	 * author:柯禹来
 	 * function:交易管理---交易审核--代扣审核
@@ -113,7 +113,7 @@ public class FssTradeApplyController {
     	if(tradeapplyentity==null){
     		throw new FssException("未查到交易申请记录！");
     	}
-		FssCustomerEntity  fssCustomerEntity=fssCustomerService.getCustomerNameById(tradeapplyentity.getCustId());
+    	CustomerInfoEntity  customerInfo=customerInfoService.getCustomerById(tradeapplyentity.getCustId());
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		model.addAttribute("tradeapply",tradeapplyentity);
 		if(tradeapplyentity.getBespokedate()!=null){
@@ -121,13 +121,13 @@ public class FssTradeApplyController {
 		}else{
 			model.addAttribute("bespokedate",null);
 		}
-		if(null!=fssCustomerEntity && StringUtils.isNotEmptyString(fssCustomerEntity.getName())){
-			model.addAttribute("custName",fssCustomerEntity.getName());
+		if(null!=customerInfo && StringUtils.isNotEmptyString(customerInfo.getCustomerName())){
+			model.addAttribute("custName",customerInfo.getCustomerName());
 		}else{
 			model.addAttribute("custName","");
 		}
-		if(null!=fssCustomerEntity && StringUtils.isNotEmptyString(fssCustomerEntity.getMobile())){
-			model.addAttribute("custMobile",fssCustomerEntity.getMobile());
+		if(null!=customerInfo && StringUtils.isNotEmptyString(customerInfo.getMobilePhone())){
+			model.addAttribute("custMobile",customerInfo.getMobilePhone());
 		}else{
 			model.addAttribute("custMobile","");
 		}
@@ -173,22 +173,18 @@ public class FssTradeApplyController {
 				e.printStackTrace();
 			}
 			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
-			tradeapply.setApplyState("10100002");
+			tradeapply.setApplyState("10100002");//申请状态
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
-//			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
-		}else{//不通过，添加回盘记录
+		}else{
 			tradeapply.setApplyState("10100005");
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
-			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		}
+		//不通过，添加回盘记录
+		fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		map.put("code", "0000");
         map.put("message", "success");
-//		}else{
-//			map.put("code", "0001");
-//	        map.put("message", "defeat");
-//		}
 		return map;
 	}
 	

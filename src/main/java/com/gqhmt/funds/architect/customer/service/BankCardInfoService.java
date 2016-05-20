@@ -496,7 +496,7 @@ public class BankCardInfoService {
 	 	 * @return
 	 	 * @throws FssException
 	 	 */
-		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity) throws FssException{
+		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity,String tradeType) throws FssException{
 			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
 			String bankCode=customerInfoEntity.getParentBankCode();
 			bankCardInfoEntity.setCustId(customerInfoEntity.getId().intValue());
@@ -514,6 +514,7 @@ public class BankCardInfoService {
 			bankCardInfoEntity.setModifyTime(new Date());
 			bankCardInfoEntity.setModifyUserId(1);
 			bankCardInfoEntity.setCardIndex("fuyou");
+			bankCardInfoEntity.setSource(tradeType);//存交易类型
 			bankCardinfoWriteMapper.insertSelective(bankCardInfoEntity);
 			return bankCardInfoEntity;
 		}
