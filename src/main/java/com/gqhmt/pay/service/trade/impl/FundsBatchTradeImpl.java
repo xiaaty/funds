@@ -111,7 +111,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         		custId = String.valueOf(entity.getCustId());//新版通过custId获取
         		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType, entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
         	}else{
-        		throw new FssException("未得到CustId");
+        		throw new FssException("90002006");
         	}
     	}
         return  orderEntity;
