@@ -34,7 +34,6 @@ import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +110,7 @@ public class FssLoanTradeController {
 		*/
 		model.addAttribute("page", list);
 		model.put("map", map);
+		model.put("status", status);
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";
 		}
@@ -158,13 +158,15 @@ public class FssLoanTradeController {
 //		request.getSession().removeAttribute("token");
 //		if(token.equals(server_token)){
 		try {
-			fssLoanService.update(fssLoanEntity);
 			fssLoanEntity.setContractAmt(payAmt);;
 			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001",type);
 			//1 代扣，2 提现
 			map.put("code", "0000");
-	        map.put("message", "success");
+	        map.put("message", "成功");
+	        fssLoanService.update(fssLoanEntity);
 		} catch (FssException e) {
+			map.put("code", "0001");
+	        map.put("message", e.getMessage());
 			LogUtil.info(this.getClass(), e.getMessage());
 		}
 //		}else{
