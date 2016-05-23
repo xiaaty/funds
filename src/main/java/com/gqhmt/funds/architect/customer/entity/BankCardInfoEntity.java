@@ -1,6 +1,10 @@
 package com.gqhmt.funds.architect.customer.entity;
 
 import javax.persistence.*;
+
+import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
+
 import java.util.Date;
 
 /**
@@ -106,7 +110,15 @@ public class BankCardInfoEntity implements java.io.Serializable {
 	}
 
 	public void setBankSortName(String bankSortName) {
-		this.bankSortName = bankSortName;
+		if(null!=bankSortName && !"".equals(bankSortName)){
+			this.bankSortName = bankSortName;
+		}else{
+			try {
+				this.bankSortName = Application.getInstance().getBankShortName(this.getParentBankId());
+			} catch (FssException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public String getBankNo() {
