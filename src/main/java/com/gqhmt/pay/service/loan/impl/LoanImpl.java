@@ -19,7 +19,6 @@ import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.pay.service.cost.impl.CostImpl;
 import com.gqhmt.pay.service.loan.ILoan;
-import com.gqhmt.sftp.service.FssAccountFileService;
 
 import org.springframework.stereotype.Service;
 
@@ -60,8 +59,8 @@ public class LoanImpl implements ILoan {
 	private FssCustomerService fssCustomerService;
 	@Resource
 	private CostImpl costImpl;
-	@Resource
-	private FssAccountFileService fssAccountFileService;
+//	@Resource
+//	private FssAccountFileService fssAccountFileService;
 	
 	/**
 	 * 借款系统开户
@@ -107,7 +106,7 @@ public class LoanImpl implements ILoan {
     	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
     	 if(fundAccount!=null&&customerInfoEntity!=null){
     	 //创建需要报备的 P2P个人平台开户文件
-    	 fssAccountFileService.creatAccountFile(dto.getSeq_no(), fundAccount.getUserName(), fundAccount.getUserName(), 0, customerInfoEntity.getCustomerName(), customerInfoEntity.getCertType(), customerInfoEntity.getCertNo(), customerInfoEntity.getSex(), customerInfoEntity.getMobilePhone(), customerInfoEntity.getAddress(), customerInfoEntity.getCustomerType(), customerInfoEntity.getCreateTime(), "0", "ADD", customerInfoEntity.getRemark());
+//    	 fssAccountFileService.creatAccountFile(dto.getSeq_no(), fundAccount.getUserName(), fundAccount.getUserName(), 0, customerInfoEntity.getCustomerName(), customerInfoEntity.getCertType(), customerInfoEntity.getCertNo(), customerInfoEntity.getSex(), customerInfoEntity.getMobilePhone(), customerInfoEntity.getAddress(), customerInfoEntity.getCustomerType(), customerInfoEntity.getCreateTime(), "0", "ADD", customerInfoEntity.getRemark());
     	 }
     	 return accNo;
     }

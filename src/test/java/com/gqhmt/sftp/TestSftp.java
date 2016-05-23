@@ -39,9 +39,9 @@ public class TestSftp extends TestService{
 	 */
 		@Test
 	    public  void createAccount() throws FssException {
-			String createAccountFileTXT = createTXT.createAccountFileTXT();
+//			String createAccountFileTXT = createTXT.createAccountFileTXT();
 			try {
-				sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check", createAccountFileTXT);
+//				sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check", createAccountFileTXT);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
