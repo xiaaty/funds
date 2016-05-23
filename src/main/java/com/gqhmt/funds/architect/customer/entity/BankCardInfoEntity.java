@@ -1,9 +1,7 @@
 package com.gqhmt.funds.architect.customer.entity;
 
 import javax.persistence.*;
-
 import com.gqhmt.core.util.Application;
-
 import java.util.Date;
 
 /**

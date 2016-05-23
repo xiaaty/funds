@@ -359,7 +359,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 //        }
     }
 
-    private FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException {
+    public FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException {
         FundAccountEntity entity = null;
         if (cusID < 100) {
             entity = fundAccountService.getFundAccount(Long.valueOf(cusID), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
