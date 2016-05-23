@@ -38,7 +38,7 @@ public class WithdrawDto extends SuperDto{
     private BigDecimal amt;			//合同金额
 
 	@APIValidNull(errorCode = "90004032")
-	@APIValid(type = APIValidType.MONEY,errorCode = "90004032")
+	@APIValid(type = APIValidType.MONEY_ZERO,errorCode = "90004032")
     private BigDecimal charge_amt;		//交易手续费
 
 
