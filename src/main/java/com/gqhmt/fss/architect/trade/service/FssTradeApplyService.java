@@ -19,9 +19,13 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeApplyReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeApplyWriteMapper;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.CommonUtil;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
@@ -75,9 +79,10 @@ public class FssTradeApplyService {
 	private FssLoanService fssLoanService;
 	@Resource
     private FundOrderService fundOrderService;
-	
-	
-	
+	@Resource
+	private FundsTradeImpl fundsTradeImpl;
+	@Resource
+    private TradeRecordService tradeRecordService;
 	/**
 	 * 创建借款人提现申请
 	 * @param fssTradeApplyEntity
@@ -448,6 +453,21 @@ public class FssTradeApplyService {
 	 * 冠E通后台代扣申请和提现申请
 	 */
 	public boolean careateTradeApply(GETWithholdAndDrawDto dto) throws FssException{
+		//对提现申请金额进行资金冻结
+		if("1104".equals(dto.getApply_type())){
+			Integer busiType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(dto.getTrade_type());//获取业务类型
+	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),Integer.valueOf(busiType));
+	        if (fromEntity == null) {
+	            throw new FssException("90004006");
+	        }
+	        //判断提现金额是否大于账户余额
+	        BigDecimal bigDecimal = fromEntity.getAmount();
+	        if (bigDecimal.compareTo(dto.getAmt()) < 0) {
+	            throw new FssException("90004007");
+	        }
+	        FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+			tradeRecordService.frozen(fromEntity,toEntity,dto.getAmt(),1007,null,"",BigDecimal.ZERO);//资金冻结
+		}
 		FssTradeApplyEntity fssTradeApplyEntity=this.CreateFssTradeApplyEntity(dto);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
@@ -480,9 +500,6 @@ public class FssTradeApplyService {
 	 * @throws FssException
 	 */
 	public FssTradeApplyEntity CreateFssTradeApplyEntity(GETWithholdAndDrawDto dto) throws FssException{
-		
-		//todo 冠E通代扣时需判断账户余额是否充足..
-		
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(dto.getTrade_type()));
 		fssTradeApplyEntity.setApplyType(Integer.valueOf(dto.getApply_type()));
