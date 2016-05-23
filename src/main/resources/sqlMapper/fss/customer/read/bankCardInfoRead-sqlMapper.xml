@@ -96,7 +96,8 @@
 		SELECT 
 			cert_Name certName,
 			bank_no bankNo,
-			bank_long_name bankLongName,
+			bank_sort_name bankLongName,
+			parent_bank_id parentBankId,
 			change_state changeState
 		FROM 
 			t_gq_bank_info t 
