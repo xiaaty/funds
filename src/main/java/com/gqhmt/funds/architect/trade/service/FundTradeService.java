@@ -137,7 +137,7 @@ public class FundTradeService {
     	StringBuffer types = new StringBuffer();
     	if(tradeFilters!=null && !"".equals(tradeFilters)){
     			if(tradeFilters.indexOf("c")>=0){//充值
-    				types.append("1001,");		
+    				types.append("1001,1002,");		
     			}
     			if(tradeFilters.indexOf("w")>=0){//提现	
     				types.append("1003,1004,1012,2001,2002,2003,");
@@ -149,7 +149,7 @@ public class FundTradeService {
     				types.append("3005,3006,3012");
 				}
     			if(tradeFilters.indexOf("o")>=0){//其他
-    				types.append("1002,1005,1006,1007,1008,1009,1010,1011,1013,2005,2007,2008,2009,2010,3003,3004,3007,3008,3010,3011,4001,4002,4003,4004,4005,4006,4007,4010,");
+    				types.append("1005,1006,1007,1008,1009,1010,1011,1013,2005,2007,2008,2009,2010,3003,3004,3007,3008,3010,3011,4001,4002,4003,4004,4005,4006,4007,4010,");
 				}
     			types.deleteCharAt(types.length()-1);
     		}else{//当tradeFilters为空的默认查询所有状态
