@@ -166,7 +166,7 @@ public class FssTradeApplyService {
 		}
 		withDrawApplyResponse.setMchn(fssTradeApplyEntity.getMchnChild());
 		withDrawApplyResponse.setSeq_no(fssTradeApplyEntity.getSeqNo());
-		withDrawApplyResponse.setTrade_type(fssTradeApplyEntity.getTradeState());
+		withDrawApplyResponse.setTrade_type(fssTradeApplyEntity.getBusiType());
 		withDrawApplyResponse.setContract_id(fssTradeApplyEntity.getContractId());
 		withDrawApplyResponse.setContract_no(fssTradeApplyEntity.getBusinessNo());
 		withDrawApplyResponse.setAcc_no(fssTradeApplyEntity.getAccNo());
