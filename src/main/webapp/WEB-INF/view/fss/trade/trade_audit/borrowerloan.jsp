@@ -81,7 +81,7 @@
                                                         <td class="tr" nowrap="nowrap">客户编号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="custNo" value="${map.status}">
+                                                                <input type="text" style="width:210px" name="custNo" value="${map.custNo}">
                                                             </label>
                                                         </td>
                                                         <td class="tr" nowrap="nowrap">合同编号：</td>
