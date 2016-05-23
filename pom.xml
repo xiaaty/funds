@@ -27,6 +27,12 @@
 
 	<modules>
 		<module>funds-web</module>
+        <module>funds-account</module>
+        <module>funds-accounting</module>
+        <module>funds-pay</module>
+        <module>funds-apiService</module>
+        <module>funds-business</module>
+        <module>funds-common</module>
 	</modules>
 
 	<properties>
