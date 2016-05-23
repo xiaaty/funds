@@ -105,6 +105,8 @@ public class GlobalConstants {
 
     public static final int ORDER_REPAYMENT_NEW = 11990049;
 
+    public static final int ORDER_REPAYMENT_REFUND = 11990080;
+
     public static final int ORDER_ABORT_NEW = 11990050;
 
     public static final int ORDER_ABORT_BID_NEW = 11990060;
@@ -519,6 +521,7 @@ public class GlobalConstants {
         fundsType.put(4011,"抵押标借款人扣除账户管理费");
         fundsType.put(4012,"风险备用金");
         fundsType.put(4013,"归还风险备用金");
+        fundsType.put(4014,"归还逆服务费");
 
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");
