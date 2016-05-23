@@ -147,7 +147,7 @@ public class FundAccountService {
     private FundAccountEntity getFundAccount(CustomerInfoEntity customerInfoEntity,Integer userID,Integer accountType,Integer busiType){
         FundAccountEntity entity = new FundAccountEntity();
         entity.setCustId(customerInfoEntity.getId());
-//        entity.setUserName(customerInfoEntity.getMobilePhone());
+        entity.setUserName(customerInfoEntity.getMobilePhone());
         entity.setAmount(BigDecimal.ZERO);
         entity.setFreezeAmount(BigDecimal.ZERO);
         entity.setAccountType(accountType);
@@ -159,6 +159,9 @@ public class FundAccountService {
         entity.setParentBankId(customerInfoEntity.getParentBankCode());
         entity.setCustName(customerInfoEntity.getCustomerName());
         entity.setCreateTime(new Date());
+        entity.setModifyTime(new Date());
+        entity.setCreateUserId(1);
+        entity.setModifyUserId(1);
         return entity;
     }
     

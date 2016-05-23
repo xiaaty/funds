@@ -189,7 +189,70 @@ public class BidRepaymentService {
         loanEntity.setStatus("10050013");
         loanEntity.setModifyTime(new Date());
         fssLoanService.update(loanEntity);
+        this.refunds(loanEntity,list);
 
+    }
+
+    public void refunds(FssLoanEntity loanEntity,List<RepaymentBean> list) throws FssException {
+        List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
+
+
+        BigDecimal sumRepay = BigDecimal.ZERO;
+        for (RepaymentBean bean : list) {
+            if (bean.getToPublicAmount().multiply(new BigDecimal("100")).longValue() <= 0) {
+                continue;
+            }
+            sumRepay = sumRepay.add(bean.getToPublicAmount());
+        }
+
+        if(sumRepay.compareTo(BigDecimal.ZERO)<=0){
+            return;
+        }
+
+        FundAccountEntity toAxAccountEntity = fundAccountService.getFundAccount(3l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toAxAccountEntity, sumRepay, GlobalConstants.ORDER_REPAYMENT_REFUND, loanEntity.getId(), GlobalConstants.BUSINESS_REPAYMENT,"2");
+        for (RepaymentBean bean : list) {
+            FundAccountEntity toEntity = fundAccountService.getFundAccount((long)bean.getCustomerId(), bean.getInvestType());
+            if (bean.getToPublicAmount().multiply(new BigDecimal("100")).longValue() <= 0) {
+                continue;
+            }
+//            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(toEntity,toAxAccountEntity, fundOrderEntity, bean.getToPublicAmount(), 3, "", ""));
+        }
+
+        fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
+        fuiouFtpOrderService.addOrder(fundOrderEntity, 8);
+        paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
+
+    }
+
+    public void refundsCallBack(FundOrderEntity fundOrderEntity) throws FssException {
+        if (fundOrderEntity.getOrderState() != 6 && fundOrderEntity.getOrderState() != 1001) {
+            return;
+        }
+        FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
+
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id",loanEntity.getContractId());
+        if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
+            paramMap.put("type","2");
+        }else{
+            paramMap.put("type","1");
+        }
+        Map<String,String > repParamMap = new HashMap<>();
+        repParamMap.put("id",loanEntity.getBusiNo());
+        List<RepaymentBean> list  = null;
+        try {
+            list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
+            FundAccountEntity toAxAccountEntity = fundAccountService.getFundAccount(3l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+            this.fundSequenceService.repaymentSequenceRefund(list,toAxAccountEntity,fundOrderEntity);
+            //修改订单信息
+            paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+            throw e;
+        }
     }
 
 

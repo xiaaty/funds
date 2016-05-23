@@ -81,7 +81,6 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
 	 public BankCardInfoEntity	queryBankCardByBankNo(@Param("bankNo") String bankNo);
 		
 		
-	
-	
+	 public List<BankCardInfoEntity> findBankCardByCustNo(@Param("custNo") String custNo);
 	
 }

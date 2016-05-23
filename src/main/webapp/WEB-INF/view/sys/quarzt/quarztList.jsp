@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -9,9 +7,6 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
     <%@include file= "../../../view/include/common_css_js.jsp"%>
@@ -59,7 +54,7 @@
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="quarztList"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>定时器列表</h2>

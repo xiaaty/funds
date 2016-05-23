@@ -41,7 +41,7 @@ public class FundAccountDao extends SuperGqDao {
 
     public CachedRowSet findOnlineAccount() throws Exception{
 
-        String  sql = "SELECT * FROM `t_gq_fund_account` t1 WHERE t1.busi_type=0 AND t1.`has_Third_Account` = 2 order by id ";
+        String  sql = "SELECT * FROM `t_gq_fund_account` t1 WHERE t1.busi_type=0 AND t1.`has_Third_Account` = 2 order by cust_id ";
 
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -74,6 +74,8 @@ public class FundAccountDao extends SuperGqDao {
             if(rs.next()){
                 fundAccountEntity  = new FundAccountEntity();
                 fundAccountEntity.setId(rs.getLong("id"));
+                fundAccountEntity.setUserName(rs.getString("user_name"));
+                fundAccountEntity.setCustName(rs.getString("cust_name"));
             }
 
         }catch (Exception e){
@@ -118,7 +120,6 @@ public class FundAccountDao extends SuperGqDao {
 
                 customerInfoEntity.setSendMsgTransferAllFouyou(rs.getInt("send_msg_transfer_all_fouyou"));  //汇总是否发短信0-发送；1-不发送
 
-
             }
         } catch (SQLException e) {
             LogUtil.error(getClass(),e);
@@ -132,9 +133,12 @@ public class FundAccountDao extends SuperGqDao {
         return  customerInfoEntity;
     }
 
-    public BankCardInfoEntity findBankCardInfo(Integer id) throws Exception{
-        String  sql = "SELECT * FROM `t_gq_bank_info` t1 WHERE t1.id = "+id;
+    public BankCardInfoEntity findBankCardInfo(Integer id,Long cust_id) throws Exception{
 
+        String  sql = "SELECT * FROM `t_gq_bank_info` t1 WHERE t1.id = "+id;
+        if(id == null || id == 0){
+            sql = "SELECT * FROM `t_gq_bank_info` t1 WHERE t1.cust_id = "+cust_id;
+        }
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -146,14 +150,14 @@ public class FundAccountDao extends SuperGqDao {
             conn = getConnection();
 
             ps = conn.prepareStatement(sql);
-
-
             rs = ps.executeQuery();
 
             if(rs.next()){
                 bankCardInfoEntity  = new BankCardInfoEntity();
                 bankCardInfoEntity.setId(rs.getInt("id"));
                 bankCardInfoEntity.setBankNo(rs.getString("bank_no"));
+                bankCardInfoEntity.setParentBankId(rs.getString("parent_bank_id"));
+                bankCardInfoEntity.setCityId(rs.getString("city_id"));
 
             }
 

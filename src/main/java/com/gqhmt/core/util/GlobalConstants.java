@@ -105,6 +105,8 @@ public class GlobalConstants {
 
     public static final int ORDER_REPAYMENT_NEW = 11990049;
 
+    public static final int ORDER_REPAYMENT_REFUND = 11990080;
+
     public static final int ORDER_ABORT_NEW = 11990050;
 
     public static final int ORDER_ABORT_BID_NEW = 11990060;
@@ -247,6 +249,9 @@ public class GlobalConstants {
 
     //业务类型与交易类型匹配
     public static Map<Integer,Integer> TRADE_BUSINESS_TYPE__MAPPING = new ConcurrentHashMap<>();
+
+    public static Map<Long,String> COMPANY_ACCOUNT_NAME =  new ConcurrentHashMap<>();
+    public static Map<Long,String> COMPANY_ACCOUNT_REAL_NAME =  new ConcurrentHashMap<>();
 
 
 	
@@ -516,6 +521,7 @@ public class GlobalConstants {
         fundsType.put(4011,"抵押标借款人扣除账户管理费");
         fundsType.put(4012,"风险备用金");
         fundsType.put(4013,"归还风险备用金");
+        fundsType.put(4014,"归还逆服务费");
 
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");
@@ -541,45 +547,62 @@ public class GlobalConstants {
 
         ACCOUNT_TYPE_MAPPING.put("10010005","2481");            //借款账户（冠e通）
 
-        /*//借款系统开户
+        /*//借款系统开户*/
         ACCOUNT_TYPE_MAPPING.put("11020010","2346");//借款人开户
-        ACCOUNT_TYPE_MAPPING.put("11020009","5231");//纯线下借款账户*/
+        ACCOUNT_TYPE_MAPPING.put("10019002","5231");//纯线下借款账户
 
-        ACCOUNT_TYPE_MAPPING.put("10011000","9180");            //公司收费账户
-        ACCOUNT_TYPE_MAPPING.put("10011001","8246");            //保证金账户
-        ACCOUNT_TYPE_MAPPING.put("10011002","8248");            //逆服务费账户
+        //出借账户
+        ACCOUNT_TYPE_MAPPING.put("10019001","5531");//纯线下借款账户
+
+
+        ACCOUNT_TYPE_MAPPING.put("10018001","9180");            //公司收费账户
+        ACCOUNT_TYPE_MAPPING.put("10018002","8246");            //保证金账户
+        ACCOUNT_TYPE_MAPPING.put("10018003","8248");            //逆服务费账户
+        ACCOUNT_TYPE_MAPPING.put("10018004","8268");            //保理账户
+        ACCOUNT_TYPE_MAPPING.put("10018005","8288");            //运营红包账户
+
+
         ACCOUNT_TYPE_MAPPING.put("10012001","6601");            //代偿人账户
         ACCOUNT_TYPE_MAPPING.put("10012002","6635");            //抵押权人账户
         ACCOUNT_TYPE_MAPPING.put("10012003","6663");            //借款代还账户
+        ACCOUNT_TYPE_MAPPING.put("10012004","6896");            //紧急接标人账户
+        //对公账户
 
+        // 10018001 公司收费账户          11028001
+        // 10018002 保证金账户           11028002
+        // 10018003 逆服务费账户          11028003
 
         //线上开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020001","10010001");//web开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020002","10010001");//wap开户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//app开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020015","10010001");//app开户
         //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//ios开户
         //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//andriod开户
         //TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//微信开户
 
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020015","97010001");
+
+        //11020014
 //        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020001","97010001");
 //        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020002","97010001");
 //        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020003","97010001");
 
         //冠e通
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020004","10010002");//委托出借开户
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020005","10010005");//借款账户（冠e通）
-
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020004","97010001");
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020005","97010001");
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020006","10010002");//委托出借开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020007","10010003");//借款账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020014","10010001");//代开互联网账户
+        
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020006","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020007","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020014","97010001");
 
 
         //保理
-        TRADE_ACCOUNT_TYPE_MAPPING.put("11020008","10010004");//保理账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020010","10010004");//保理账户
 
-        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020008","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020010","97010001");
 
 
         //借款系统开户
@@ -594,26 +617,68 @@ public class GlobalConstants {
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020008","10012001");//代偿人账户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020009","10012002");//抵押权人开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020013","10012003");//借款代还账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020014","10012004");//线下紧急赎回接标账户
+        //
 
 
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020008","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020009","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020013","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020014","97010001");
 
 
-        TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
-        TRADE_APPLY_NO__MAPPING.put("11030005","GTHK");
-        TRADE_APPLY_NO__MAPPING.put("11030006","GTDY");
-        TRADE_APPLY_NO__MAPPING.put("11030007","DCKK");
-        TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
-        TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+        //对公账户
+        // 10018001 公司收费账户          11028001
+        // 10018002 保证金账户            11028002
+        // 10018003 逆服务费账户          11028003
+        // 10018004 保理公司账户          11028004
+        // 10018005 运营红包账户          11028005
+
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028001","10018001");//公司收费账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028002","10018002");//保证金账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028003","10018003");//逆服务费账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028004","10018004");//保理账户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11028005","10018005");//运营红包账户
+        //
 
 
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028001","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028002","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028003","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028004","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11028005","97010001");
+
+
+
+//        TRADE_APPLY_NO__MAPPING.put("11030004","CJKK");
+//        TRADE_APPLY_NO__MAPPING.put("11030005","GTHK");
+//        TRADE_APPLY_NO__MAPPING.put("11030006","GTDY");
+//        TRADE_APPLY_NO__MAPPING.put("11030007","DCKK");
+//        TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
+//        TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+		  TRADE_APPLY_NO__MAPPING.put("11030006","CJKK");
+		  TRADE_APPLY_NO__MAPPING.put("11030007","GTHK");
+		  TRADE_APPLY_NO__MAPPING.put("11030008","GTDY");
+		  TRADE_APPLY_NO__MAPPING.put("11030009","DCKK");
+		  TRADE_APPLY_NO__MAPPING.put("11030014","ZJKK");
+		  TRADE_APPLY_NO__MAPPING.put("11093001","JKHK");
+		  TRADE_APPLY_NO__MAPPING.put("11090001","DYKK");
+
+
+//        TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
+//        TRADE_APPLY_NO__MAPPING.put("11040005","GTFK");
+//        TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
+//        TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
+//        TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
+		  
         TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
-        TRADE_APPLY_NO__MAPPING.put("11040005","GTFK");
+        TRADE_APPLY_NO__MAPPING.put("11091002","GTFK");
         TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
         TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
-        TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
+//      TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
+        TRADE_APPLY_NO__MAPPING.put("11040006","CJSH");
+        TRADE_APPLY_NO__MAPPING.put("11040012","ZJTX");//账户直接提现
+        
         
         //根据账户类型匹配    1，2，3，99
         TRADE_BUSINESS_TYPE__MAPPING.put(10010001,3);
@@ -632,24 +697,54 @@ public class GlobalConstants {
         TRADE_BUSINESS_TYPE__MAPPING.put(10012003,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(10019001,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(10019002,0);
+        TRADE_BUSINESS_TYPE__MAPPING.put(11040012,0);
 
         
         TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);
+
+
+
+        COMPANY_ACCOUNT_NAME.put(1L,"北京冠群_管理费账户");
+        COMPANY_ACCOUNT_NAME.put(2L,"北京冠群_保证金账户");
+        COMPANY_ACCOUNT_NAME.put(3L,"北京冠群_补差额账户");
+        COMPANY_ACCOUNT_NAME.put(4L,"北京冠群_红包账户");
+        COMPANY_ACCOUNT_NAME.put(5L,"北京冠群_咨询费账户");
+        COMPANY_ACCOUNT_NAME.put(6L,"天津冠群_管理费账户");
+        COMPANY_ACCOUNT_NAME.put(7L,"天津冠群_保证金账户");
+        COMPANY_ACCOUNT_NAME.put(8L,"天津冠群_咨询费账户");
+        COMPANY_ACCOUNT_NAME.put(9L,"上海冠群_管理费账户");
+        COMPANY_ACCOUNT_NAME.put(10L,"上海冠群_保证金账户");
+        COMPANY_ACCOUNT_NAME.put(11L,"上海冠群_咨询费账户");
+        COMPANY_ACCOUNT_NAME.put(12L,"北京冠群_风险备用金账户");
+        COMPANY_ACCOUNT_NAME.put(13L,"冠群_冠中国际商业保理有限公司(一般用)");
+        COMPANY_ACCOUNT_NAME.put(14L,"冠群_冠中国际商业保理有限公司(代偿用)");
+        COMPANY_ACCOUNT_NAME.put(99L,"冠群商户");
+
+        COMPANY_ACCOUNT_REAL_NAME.put(1L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(2L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(3L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(4L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(5L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(6L,"冠群驰骋商务信息咨询（天津）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(7L,"冠群驰骋商务信息咨询（天津）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(8L,"冠群驰骋商务信息咨询（天津）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(9L,"冠群驰骋金融信息服务（上海）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(10L,"冠群驰骋金融信息服务（上海）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(11L,"冠群驰骋金融信息服务（上海）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(12L,"冠群驰骋投资管理（北京）有限公司");
+        COMPANY_ACCOUNT_REAL_NAME.put(13L,"冠群_冠中国际商业保理有限公司(一般用)");
+        COMPANY_ACCOUNT_REAL_NAME.put(14L,"冠群_冠中国际商业保理有限公司(代偿用)");
+        COMPANY_ACCOUNT_REAL_NAME.put(99L,"冠群商户");
+
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+//        --------------冠E通代扣申请配置交易渠道---------------------------------
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11030006","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11030007","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11030008","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11030009","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11093001","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11090001","97010001");
+        TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11030013","97010001");
 
 	}
 }

@@ -1,10 +1,12 @@
 package com.gqhmt.core.util;
 
-import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.extServInter.dto.Response;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.core.util.UrlConnectionTest
@@ -22,7 +24,7 @@ import org.junit.Test;
  * -----------------------------------------------------------------
  * 16/3/22  于泳      1.0     1.0 Version
  */
-public class UrlConnectionTest extends TestService  {
+public class UrlConnectionTest  {
 
     @Test
     public void test() throws FssException {
@@ -42,5 +44,16 @@ public class UrlConnectionTest extends TestService  {
 
         assert response.getResp_code().equals("0000");
 
+    }
+
+
+
+    @Test
+    public void testUrlString() throws FssException {
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id","19986");
+        paramMap.put("type","2");
+        String tt = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
+        System.out.println(tt);
     }
 }

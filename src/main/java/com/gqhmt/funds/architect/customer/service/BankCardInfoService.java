@@ -7,7 +7,6 @@ import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
@@ -471,7 +470,11 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setMobile(loanAccountDto.getMobile());
 		bankCardInfoEntity.setCertName(customer.getCustomerName());
 		bankCardInfoEntity.setCityId(Application.getInstance().getFourCode(loanAccountDto.getCity_id()));
-		bankCardInfoEntity.setParentBankId(loanAccountDto.getBank_id());
+		String bank_id = loanAccountDto.getBank_id();
+		if(bank_id.length()==3){
+			bank_id="0"+bank_id;
+		}
+		bankCardInfoEntity.setParentBankId(bank_id);
 		bankCardInfoEntity.setCreateTime(new Date());
 		bankCardInfoEntity.setCreateUserId(1);
 		bankCardInfoEntity.setModifyTime(new Date());
@@ -492,7 +495,7 @@ public class BankCardInfoService {
 	 	 * @return
 	 	 * @throws FssException
 	 	 */
-		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity) throws FssException{
+		public BankCardInfoEntity createBankCardInfo(CustomerInfoEntity customerInfoEntity,String tradeType) throws FssException{
 			BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
 			String bankCode=customerInfoEntity.getParentBankCode();
 			bankCardInfoEntity.setCustId(customerInfoEntity.getId().intValue());
@@ -509,6 +512,8 @@ public class BankCardInfoService {
 			bankCardInfoEntity.setCreateUserId(1);
 			bankCardInfoEntity.setModifyTime(new Date());
 			bankCardInfoEntity.setModifyUserId(1);
+			bankCardInfoEntity.setCardIndex("fuyou");
+			bankCardInfoEntity.setSource(tradeType);//存交易类型
 			bankCardinfoWriteMapper.insertSelective(bankCardInfoEntity);
 			return bankCardInfoEntity;
 		}
@@ -518,5 +523,16 @@ public class BankCardInfoService {
 			return bankCardinfoReadMapper.queryBankCardByBankNo(cardNo);
 		}
 	 
+		/**
+		 * 查询客户银行卡信息
+		 * @param custNo
+		 * @return
+		 * @throws FssException
+		 */
+		public List<BankCardInfoEntity> findBankCardByCustNo(String custNo) throws FssException{
+			return bankCardinfoReadMapper.findBankCardByCustNo(custNo);
+		}
+		
+		
 	 
 }

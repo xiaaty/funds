@@ -11,9 +11,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 /**
  * Filename:    com.gqhmt.sys.controller.MenuController
  * Copyright:   Copyright (c)2015
@@ -63,12 +66,12 @@ public class FssAccountController {
      */
     @RequestMapping(value = "/account/{type}/list",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-    public Object intenetAccountList(HttpServletRequest request,ModelMap model,BussAndAccountBean bussaccount,@PathVariable String type) throws FssException {
-    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(bussaccount,type);
+    public Object intenetAccountList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map,@PathVariable String type) throws FssException {
+    	map.put("type", type);
+    	List<BussAndAccountBean> accountList = fssAccountService.queryAccountList(map);
 		model.addAttribute("page", accountList);
-		model.addAttribute("bussaccount", bussaccount);
+		 model.put("map", map);
 		return "fss/account/internetAccountList";
     }
-    
     
 }

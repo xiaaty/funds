@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssWaterReadMapper;
-import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 
 /**
  * Filename:    com.gqhmt.fss.architect.account.service.FssWaterService

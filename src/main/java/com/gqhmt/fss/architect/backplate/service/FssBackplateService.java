@@ -96,8 +96,12 @@ public class FssBackplateService {
     	if(list==null && list.size()==0){
     		list=new ArrayList<FssBackplateEntity>();
     	}
-    	list.addAll(this.findBackAllByTime(1, 2));
-    	list.addAll(this.findBackAllByTime(2, 6));
+    	list.addAll(this.findBackAllByTime(1, 10));
+    	list.addAll(this.findBackAllByTime(2, 30));
+    	list.addAll(this.findBackAllByTime(3, 60));
+    	list.addAll(this.findBackAllByTime(4, 120));
+    	list.addAll(this.findBackAllByTime(5, 360));
+    	list.addAll(this.findBackAllByTime(6, 1440));
         return list;
     }
 

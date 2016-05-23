@@ -104,4 +104,21 @@
 	  WHERE t.seq_no=#{seqNo} and t.mchn_child=#{mchn}
 	</select>
 	
+	<!-- 查询冠E通代扣申请回盘数据 -->
+	<select id="selectTradeApplyData" resultType="com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse" >
+		SELECT 
+		t.mchn_child mchn,
+		t.seq_no seq_no,
+		t.busi_type trade_type,
+		t.contract_id busi_no,
+		t.real_trade_amount real_trade_amount,
+		case  
+			when t.trade_state=10080002 then '10080002'<!-- 交易成功 -->
+			when t.trade_state=10080003 then '10080003'<!-- 交易部分成功 -->
+			when t.trade_state=10080011 then '10080011'<!-- 交易取消 -->
+			else '10080010'	<!-- 交易失败 -->
+		end resp_code
+		FROM t_gq_fss_trade_apply t
+		WHERE t.mchn_child=#{mchn} and t.seq_no=#{seqNo} 
+	</select>
 </mapper>

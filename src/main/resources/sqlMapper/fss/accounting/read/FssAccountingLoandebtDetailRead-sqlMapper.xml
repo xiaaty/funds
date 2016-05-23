@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssAccountingLoandebtDetailReadMapper">
+
+ <select  id="queryFssAccountingLoandebtDetail" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebtDetail" >
+	 SELECT 
+	  t.`id` id,
+	  t.`cust_no` custNo,
+	  t.`cust_name` custName,
+	  t.`acc_no` accNo,
+	  t.`accounting_no` accountingNo,
+	  t.`loan_no` loanNo,
+	  t.`fund_type` fundType,
+	  t.`amount_received` amountReceived,
+	  t.`amount_actually` amountActually,
+	  t.`amount_debt` amountDebt,
+	  t.`repayment_periods` repaymentPeriods,
+	  t.`create_time` createTime,
+	  t.`modify_time` modifyTime,
+	  t.`summary` summary,
+	  t.`trade_date` tradeDate,
+	  t.`trade_time` tradeTime
+	  From t_gq_fss_accounting_loan_debt_detail t
+	  <where>
+		<if test="accountingNo!=null and accountingNo!=''">
+				AND t.`accounting_no` = #{accountingNo}
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				AND date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				AND date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+	</where>
+</select>
+</mapper>
+
+

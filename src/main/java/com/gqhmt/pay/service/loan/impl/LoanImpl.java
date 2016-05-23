@@ -2,6 +2,7 @@ package com.gqhmt.pay.service.loan.impl;
 
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
@@ -10,12 +11,15 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
 import com.gqhmt.pay.service.cost.impl.CostImpl;
 import com.gqhmt.pay.service.loan.ILoan;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,9 +54,13 @@ public class LoanImpl implements ILoan {
 	@Resource
 	private FssAccountService fssAccountService;
 	@Resource
+	private FundAccountService fundAccountService;
+	@Resource
 	private FssCustomerService fssCustomerService;
 	@Resource
 	private CostImpl costImpl;
+//	@Resource
+//	private FssAccountFileService fssAccountFileService;
 	
 	/**
 	 * 借款系统开户
@@ -95,7 +103,12 @@ public class LoanImpl implements ILoan {
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
     	fssAccount=fssAccountService.createAccount(dto, custId);
     	accNo=fssAccount.getAccNo();
-    	return accNo;
+    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+    	 if(fundAccount!=null&&customerInfoEntity!=null){
+    	 //创建需要报备的 P2P个人平台开户文件
+//    	 fssAccountFileService.creatAccountFile(dto.getSeq_no(), fundAccount.getUserName(), fundAccount.getUserName(), 0, customerInfoEntity.getCustomerName(), customerInfoEntity.getCertType(), customerInfoEntity.getCertNo(), customerInfoEntity.getSex(), customerInfoEntity.getMobilePhone(), customerInfoEntity.getAddress(), customerInfoEntity.getCustomerType(), customerInfoEntity.getCreateTime(), "0", "ADD", customerInfoEntity.getRemark());
+    	 }
+    	 return accNo;
     }
     
     /**

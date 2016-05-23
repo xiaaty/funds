@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.sftp.mapper.read.FssAccountFileReadMapper">
+	<sql id="selectSql">
+	SELECT 
+		  `id` id,
+		  `mchn` mchn,
+		  `registered_seq_no` registeredSeqNo,
+		  `platform_username` platformUsername,
+		  `login_username` loginUsername,
+		  `age` age,
+		  `acc_name` accName,
+		  `cert_type` certType,
+		  `cert_no` certNo,
+		  `sex` sex,
+		  `mobile` mobile,
+		  `address` address,
+		  `user_properties` userProperties,
+		  `registration_date` registrationDate,
+		  `third_party_payment_id` thirdPartyPaymentId,
+		  `action_type` actionType,
+		  `remark` remark,
+		  `status` status
+	 	 From `t_gq_fss_sftp_account_file` t
+	  </sql>
+	<select id="queryAccountFileList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssAccountFileEntity" >
+	  <include refid="selectSql"/>
+	 <where>
+		<if test="mchn!=null and mchn!=''">
+			AND t.`mchn` like CONCAT('%',#{mchn},'%')
+		</if>
+		<if test="platformUsername!=null and platformUsername!=''">
+			AND t.`platform_username` like CONCAT('%',#{platformUsername},'%')
+		</if>
+	</where>
+	</select>
+	<select id="queryByStatus" parameterType="java.lang.String" resultType="com.gqhmt.sftp.entity.FssAccountFileEntity" >
+	  <include refid="selectSql"/>
+	  	where 
+	</select>
+	
+</mapper>

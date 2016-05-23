@@ -230,7 +230,7 @@ public class FssTradeRecordService {
 			//限额
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
 			tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
-			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getRealTradeAmount());
+			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
 			//更新申请表该条数据拆分总条数
 			fssTradeApplyEntity.setCount(moneySplit);
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
@@ -279,6 +279,7 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setTradeType(fssTradeApplyEntity.getApplyType());
 		tradeRecordEntity.setTradeTypeChild(Integer.valueOf(fssTradeApplyEntity.getBusiType()));
 		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
+		tradeRecordEntity.setAmount(fssTradeApplyEntity.getTradeAmount());
 		tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
 		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
 		tradeRecordEntity.setTradeDate("0");

@@ -1,10 +1,11 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.trade.GET_WithholdDto;
+import com.gqhmt.extServInter.dto.trade.GETWithholdAndDrawDto;
 import com.gqhmt.extServInter.service.trade.IWithHoldApply;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import org.springframework.stereotype.Service;
@@ -33,12 +34,19 @@ public class WithHoldApplyImpl implements IWithHoldApply{
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
 	
+	/**
+	 * 委托出借充值:11030006
+	 * 借款人充值:11030007
+	 * 抵押权人充值:11030008
+	 * 直接代扣:11030014
+	 */
+	@APITradeTypeValid(value = "11030006,11030007,11030008,11030014")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
-    		fssTradeApplyService.careateWithholdApplyEntity((GET_WithholdDto)dto);
-			 response.setResp_code("00000000");
+    		fssTradeApplyService.careateTradeApply((GETWithholdAndDrawDto)dto);
+			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
