@@ -115,6 +115,8 @@ public class TradeRecordService {
     public void chargeAmount(FundAccountEntity entity, FundAccountEntity toEntity, FundOrderEntity fundOrderEntity, FundOrderEntity fundOrderEntityCharge) throws FssException {
         sequenceService.transfer(entity, toEntity, fundOrderEntity.getChargeAmount(), 22,4010,"收取提现手续费", ThirdPartyType.FUIOU, fundOrderEntityCharge);
         this.fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(),3);
+        this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),  4010, "收取手续费",BigDecimal.ZERO);
+        this.fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4010,"收取手续费");
     }
     
     /**
