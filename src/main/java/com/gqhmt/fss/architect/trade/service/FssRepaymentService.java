@@ -153,27 +153,18 @@ public class FssRepaymentService {
 	 */
 	 public Response createRefundDraw(RepaymentDto repaymentDto) throws FssException {
 		Response response=new Response();
-		List<FssRepaymentEntity> fssRepaymentlist=new ArrayList<FssRepaymentEntity>();
-    	
     	try {
     		//创建主表信息
 			FssRepaymentParentEntity repaymentParent = this.createRepaymentParentEntity(repaymentDto);
-
-	    	try {
-				this.createRepayments(fssRepaymentlist);
 				response.setMchn(repaymentDto.getMchn());
 				response.setSeq_no(repaymentDto.getSeq_no());
 				response.setTrade_type(repaymentDto.getTrade_type());
 				response.setSignature(repaymentDto.getSignature());
 				response.setResp_code("0000");
 				response.setResp_msg("执行成功！");
-			} catch (FssException e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("还款划扣失败！");
-			}
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-			throw new FssException("还款划扣主表创建失败！");
+			throw new FssException("还款划扣失败！");
 		}
     	return response;
 	 }
@@ -231,6 +222,7 @@ public class FssRepaymentService {
 		repaymentParent.setRemark("");
 		fssRepaymentParentWriteMapper.insertSelective(repaymentParent);
 		for(RepaymentChildDto repyament:repaymentlist){
+			//创建子表信息
 			FssRepaymentEntity repaymentEntity = this.createFssRepaymentEntity(repyament,repaymentDto,repaymentParent);
 			this.fssRepaymentWriteMapper.insertSelective(repaymentEntity);
 			fssTradeApplyService.insertTradeApply(repaymentEntity);
