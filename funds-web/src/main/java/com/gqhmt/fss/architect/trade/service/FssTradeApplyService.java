@@ -116,8 +116,8 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setBusinessNo(wthDrawApplyDto.getContract_no());
 			fssTradeApplyEntity.setBusiType(wthDrawApplyDto.getTrade_type());
 			fssTradeApplyEntity.setAccNo(wthDrawApplyDto.getAcc_no());
-			fssTradeApplyEntity.setTradeAmount(wthDrawApplyDto.getContract_amt());
-			fssTradeApplyEntity.setRealTradeAmount(wthDrawApplyDto.getPay_amt());
+			fssTradeApplyEntity.setTradeAmount(wthDrawApplyDto.getPay_amt());
+			fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setTradeState(wthDrawApplyDto.getTrade_type());
 			fssTradeApplyEntity.setApplyState("10100001");
