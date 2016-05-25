@@ -54,7 +54,7 @@
 			t.pay_amt payAmt,
 		    case when 
 			t.status='10050007' then '0000' 
-			else '0001'  end repCode,
+			else t.status  end repCode,
 			t.loan_platform loanPlatform
 			FROM t_gq_fss_loan t
 			where 1=1
@@ -95,7 +95,7 @@
 			t.status='10050013' then '0000'
 			WHEN 
 			t.status='10050100' then '0000'
-			else '0001'  end resp_code
+			else t.status  end resp_code
 			FROM t_gq_fss_loan t 
 			where 1=1 
 			<include refid="whereSql" />
@@ -114,7 +114,7 @@
 			t.pay_amt pay_amt,
 		   	case when 
 			t.status='10050100' then '0000' 
-			else '0001'  end resp_code,
+			else t.status  end resp_code,
 			t.loan_platform loan_platform
 			FROM t_gq_fss_loan t
 			where 1=1
@@ -142,27 +142,31 @@
 			<if test="type!=null and type!=''">
 				AND t.trade_type = #{type}
 			</if>
-			
+			order by t.create_time desc
 	</select>
 <!-- 	通过tradeType查询得到列表数据 -->
 	<select id="findByType"  parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
 		<include refid="selectSql" />
 			where  t.trade_type = #{type}
+			order by t.create_time desc
 	</select>
 <!-- 	满标放款  11090002 ，信用标放款      11092001， 抵押权人提现     11090004，冠e通满标-->
 	<select id="findLoanBySettle" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
 		WHERE (t.trade_type = 11090002 OR t.trade_type = 11092001 OR t.trade_type = 11090004 ) AND t.status = 10050010
+		order by t.create_time desc
 	</select>
 <!-- 	回款  11100001 ，提前回款     11100002， 正常回款    11100003，逾期回款-->
 	<select id="findLoanRepayment" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
 		WHERE (t.trade_type = 11100001 OR t.trade_type = 11100002 OR t.trade_type = 11100003) AND t.status = 10050011
+		order by t.create_time desc
 	</select>
 <!-- 	流标  11090011 ，信用标流标           11090012，冠e通流标-->
 	<select id="findAbortBid" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />
 		WHERE (t.trade_type = 11090011 or t.trade_type=11090012 ) AND t.status = 10050103
+		order by t.create_time desc
 	</select>
 	
 	<!-- 用来导出线下数据 -->

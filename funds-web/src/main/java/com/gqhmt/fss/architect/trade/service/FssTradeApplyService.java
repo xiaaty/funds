@@ -3,7 +3,6 @@ package com.gqhmt.fss.architect.trade.service;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
 import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
@@ -23,11 +22,9 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
-import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.CommonUtil;
-import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -157,12 +154,11 @@ public class FssTradeApplyService {
 		if(fssTradeApplyEntity==null){
 			throw new FssException("90004002");
 		}
-		if("10090003".equals(fssTradeApplyEntity.getTradeState())){
+		if("10080002".equals(fssTradeApplyEntity.getTradeState())){
 			withDrawApplyResponse.setResp_code("0000");
 			withDrawApplyResponse.setResp_msg("成功");
 		}else{
-			withDrawApplyResponse.setResp_code("0001");
-			withDrawApplyResponse.setResp_msg("失败");
+			withDrawApplyResponse.setResp_code(fssTradeApplyEntity.getTradeState());
 		}
 		withDrawApplyResponse.setMchn(fssTradeApplyEntity.getMchnChild());
 		withDrawApplyResponse.setSeq_no(fssTradeApplyEntity.getSeqNo());
@@ -322,86 +318,40 @@ public class FssTradeApplyService {
 			try {
 			 int successCount = fssTradeRecordService.getSuccessCount(applyNo);
 			 BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
-			 applyEntity.setTradeState("10090003");
-			 applyEntity.setModifyTime(new Date());
-			 applyEntity.setRealTradeAmount(realTradeAmt);
-			 if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
 				 //划扣成功
+			 String tradeStatus=null;
 			 if(successCount==applyEntity.getCount()){
-					 if("11090001".equals(applyEntity.getBusiType())){
-						 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-						 fssLoanEntityById.setResult("98060001");	//成功
-						 fssLoanEntityById.setStatus("10030002");//交易成功
-						 fssLoanEntityById.setModifyTime(new Date());
-						 fssLoanService.update(fssLoanEntityById);
-					 }else{
-						 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-						 queryRepayment.setState("10090003");	//10090003划扣完成
-							queryRepayment.setResultState("10080002");	//10080002 成功
-							queryRepayment.setMotifyTime(new Date());
-							fssRepaymentService.updateRepaymentEntity(queryRepayment);
-							queryRepayment.setAmt(realTradeAmt);
-							//更新主表执行成功条数
-							fssRepaymentService.updateSuccessCount(queryRepayment);
-							fssRepaymentService.changeRepaymentParentStatus(queryRepayment);
-					 }
+				 tradeStatus="10080002";
 			 //划扣失败
 			 }else if(successCount==0){
-				 if("11090001".equals(applyEntity.getBusiType())){
-					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-					 fssLoanEntityById.setResult("98060003");
-					 fssLoanEntityById.setStatus("10030003");
-					 fssLoanEntityById.setModifyTime(new Date());
-					 fssLoanService.update(fssLoanEntityById);
-					
-				 }else{
-					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-					 queryRepayment.setState("10030004");	//10030004交易关闭
-					 queryRepayment.setResultState("10080010");	//失败
-					 queryRepayment.setMotifyTime(new Date());
-					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
-					 fssRepaymentService.changeRepaymentParentStatus(queryRepayment);
-				 }
+				 tradeStatus="10080010";
 			 //部分成功
 			 }else{
+				 tradeStatus="10080003";
+			 }
+			 
+			 if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
 				 if("11090001".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-					 fssLoanEntityById.setResult("98060002");
-					 fssLoanEntityById.setStatus("98060002");
-					 fssLoanEntityById.setModifyTime(new Date());
-					 fssLoanService.update(fssLoanEntityById);
-				 }else{
+					 //98060001成功 //10080002交易成功
+					 fssLoanService.update(fssLoanEntityById,tradeStatus);
+				 }else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
+					 //还款代扣
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-					 queryRepayment.setState("10030004");	//10090003划扣完成
-					 queryRepayment.setResultState("10080003");	//部分成功
-					 queryRepayment.setMotifyTime(new Date());
-					 fssRepaymentService.updateRepaymentEntity(queryRepayment);
-					 queryRepayment.setAmt(realTradeAmt);
-					 //更新主表执行成功条数
-					 fssRepaymentService.updateSuccessCount(queryRepayment);
-					 fssRepaymentService.changeRepaymentParentStatus(queryRepayment);
-				 }
-			   }
-			 }else{//没有form_id 冠E通后台
-				 if(successCount==applyEntity.getCount()){
-					 applyEntity.setApplyState("10100003");//申请状态(已交易)
-					 applyEntity.setTradeState("10080002");//成功
-				 }else if(0<successCount && successCount<applyEntity.getCount()){
-					 applyEntity.setApplyState("10100003");//申请状态(已交易)
-					 applyEntity.setTradeState("10080003");//部分成功
-				 }else if(successCount==0){
-					 applyEntity.setApplyState("10100003");//申请状态(已交易)
-					 applyEntity.setTradeState("10080010");//交易失败
+					 fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
 				 }else{
-					 applyEntity.setTradeState("10080011");//交易取消
+					 //创建回盘信息
+					 fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
 				 }
+			 }else{
+				 //创建回盘信息
+				 fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
 			 }
-			 fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
-			 //抵押标放款 11090001 抵押权人代扣无回盘
-			 if(!"11090001".equals(applyEntity.getBusiType())){
-					//创建回盘信息
-					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
-			 }
+				 applyEntity.setModifyTime(new Date());
+				 applyEntity.setRealTradeAmount(realTradeAmt);
+				 applyEntity.setApplyState("10100003");//申请状态(已交易)
+				 applyEntity.setTradeState(tradeStatus);
+				 fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 				} catch (FssException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -455,8 +405,8 @@ public class FssTradeApplyService {
 	public boolean careateTradeApply(GETWithholdAndDrawDto dto) throws FssException{
 		//对提现申请金额进行资金冻结
 		if("1104".equals(dto.getApply_type())){
-			Integer busiType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(dto.getTrade_type()));//获取业务类型
-	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),busiType);
+			Integer busiType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(dto.getTrade_type());//获取业务类型
+	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),Integer.valueOf(busiType));
 	        if (fromEntity == null) {
 	            throw new FssException("90004006");
 	        }

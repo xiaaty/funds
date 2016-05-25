@@ -156,17 +156,16 @@ public class FssTradeRecordService {
 	 * @param state	
 	 * TradeResult: 98060001交易成功,98060003交易失败					
      */
-	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String respCode) {
-		
+	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String errCode) {
 		Date date=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
 		String time=sdf.format(date);
 		fssTradeRecordEntity.setTradeResult((state == 1?98060001:98060003));//(state == 1?"":"")
 		fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
+		fssTradeRecordEntity.setSumary(errCode);
 		fssTradeRecordEntity.setModifyTime(new Date());
 		fssTradeRecordEntity.setTradeDate(time.substring(0,8));
 		fssTradeRecordEntity.setTradeTime(time.substring(8));
-		fssTradeRecordEntity.setRespCode(respCode);
 		fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
 		//Apply 执行数量更新
 		try {
