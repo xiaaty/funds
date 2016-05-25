@@ -1,8 +1,10 @@
 package com.gqhmt.pay.service.trade.impl;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
@@ -53,7 +55,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         try {
 
             if(entity.getTradeType() != 1103 && entity.getTradeType() != 1104){
-                this.recordService.updateTradeRecordExecuteState(entity,2,"90099011");//
+                this.recordService.updateTradeRecordExecuteState(entity,2,"90099011");
                 return;
             }
 
@@ -63,7 +65,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
                 orderEntity = this.batchWithdraw(entity);
             }
             entity.setOrderNo(orderEntity.getOrderNo());
-            this.recordService.updateTradeRecordExecuteState(entity,1,null);
+            this.recordService.updateTradeRecordExecuteState(entity,1,"0000");
 
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e);

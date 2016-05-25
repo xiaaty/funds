@@ -104,18 +104,18 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                               		 <div class="mb20" id="wid-id-713">
+                               		  <div id="wid-id-713">
                                             <button class="btn btn-default table-nobg-btn" type="button" onclick="javascript:history.back(-1);"><i class="fa fa-minus"></i>返回</button>
                                       </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1100px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1160px;">
                                     	<col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
+                                        <col width="80" />
+                                        <col width="80" />
                                         <col width="100" />
-                                        <col width="100" />
-                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
                                         <thead>

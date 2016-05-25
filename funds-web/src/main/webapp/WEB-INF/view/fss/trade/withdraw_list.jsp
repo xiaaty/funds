@@ -236,7 +236,6 @@
     		}
     	}
     }
-
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

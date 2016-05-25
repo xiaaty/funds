@@ -7,7 +7,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>funds</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.6-SNAPSHOT</version>
+	<version>1.0.7-SNAPSHOT</version>
+
 
 
 	<name>funds</name>
