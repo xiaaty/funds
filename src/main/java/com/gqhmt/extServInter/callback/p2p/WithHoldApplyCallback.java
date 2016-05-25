@@ -3,6 +3,7 @@ package com.gqhmt.extServInter.callback.p2p;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.callback.loan.GetCallBack;
 import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
@@ -36,6 +37,8 @@ public class WithHoldApplyCallback implements GetCallBack{
 			WithHoldApplyResponse response =new WithHoldApplyResponse();
 			 try {
 				 response=fssTradeApplyService.getWhithHoldApplyResponse(mchn, seqNo);
+//				 String resp_msg = Application.getInstance().getDictName(response.getResp_code());
+//				 response.setResp_msg(resp_msg);
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 				response.setResp_code(e.getMessage());
