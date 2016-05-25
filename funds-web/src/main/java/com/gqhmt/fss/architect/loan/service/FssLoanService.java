@@ -374,6 +374,19 @@ public class FssLoanService {
 	public void update(FssLoanEntity fssLoanEntity) {
 		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntity);
 	}
+	/**.
+	 * 
+	 * author:jhz
+	 * time:2016年3月16日
+	 * function：修改
+	 */
+	public void update(FssLoanEntity fssLoanEntity,String tradeStatus) {
+		//成功
+			fssLoanEntity.setResult(tradeStatus);
+			fssLoanEntity.setStatus(tradeStatus);
+		fssLoanEntity.setModifyTime(new Date());
+		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntity);
+	}
 	/**
 	 * 
 	 * author:jhz

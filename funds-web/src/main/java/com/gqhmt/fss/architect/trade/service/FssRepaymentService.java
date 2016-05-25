@@ -146,6 +146,27 @@ public class FssRepaymentService {
 		return fssRepaymentWriteMapper.updateByPrimaryKey(repayment);
 	}
 	/**
+	 * 
+	 * author:jhz
+	 * time:2016年5月25日
+	 * function：修改借款代扣交易状态
+	 * @throws FssException 
+	 */
+	public void updateRepaymentEntity(FssRepaymentEntity repayment,String tradeStatus,BigDecimal amt,String sqNo,String mchn,String tradeType) throws FssException{
+		repayment.setState(tradeStatus);
+		repayment.setResultState(tradeStatus);
+		repayment.setMotifyTime(new Date());
+		fssRepaymentWriteMapper.updateByPrimaryKey(repayment);
+		if(!"10080010".equals(tradeStatus)){
+		repayment.setAmt(amt);
+		//更新主表执行成功条数
+		this.updateSuccessCount(repayment);
+		//修改主表状态
+		this.changeRepaymentParentStatus(repayment,sqNo,mchn,tradeType);
+		}
+		
+	}
+	/**
 	 * 还款划扣
 	 * @param repaymentDto
 	 * @return
@@ -321,9 +342,10 @@ public class FssRepaymentService {
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：修改主表状态
+	 * @throws FssException 
 	 */
 	//todo
-	public void changeRepaymentParentStatus(FssRepaymentEntity queryRepayment){
+	public void changeRepaymentParentStatus(FssRepaymentEntity queryRepayment,String seqNo,String mchn,String tradeType) throws FssException{
 		FssRepaymentParentEntity queryRepaymentParentById = this.queryRepaymentParentById(queryRepayment.getParentId());
 		if(queryRepaymentParentById.getTradeCount()<=queryRepaymentParentById.getSuccessCount()){
 			int successCount = getSuccessCount(queryRepayment.getParentId());
@@ -347,6 +369,9 @@ public class FssRepaymentService {
 				 queryRepaymentParentById.setMotifyTime(new Date());
 				this.updateRepaymentParent(queryRepaymentParentById);
 			}
+			
+			//创建回盘信息
+			fssBackplateService.createFssBackplateEntity(seqNo,mchn,tradeType);
 		}
 	}
 	

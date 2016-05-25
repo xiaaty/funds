@@ -223,7 +223,7 @@
 																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
 																&nbsp; &nbsp;
 															</c:if>
-															<c:if test="${t.status == '10050003'|| t.status=='10050001'}">
+															<c:if test="${t.status == '10080002'|| t.status=='10050001'}">
 																<a href="${contextPath}/loan/trade/${type}/transfer/${t.id}">转给借款人</a>
 																&nbsp; &nbsp;
 															</c:if>
