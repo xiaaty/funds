@@ -39,6 +39,6 @@
 	</select>
 	<select id="queryByMchnAndSeqNo" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity">
 	 <include refid="selectSql"/>
-	 where mchnChild=#{mchn} and seqNo=#{seqNo}
+	 where mchn_child=#{mchn} and seq_no=#{seqNo}
 	</select>
 </mapper>

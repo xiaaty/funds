@@ -680,7 +680,7 @@ public class GlobalConstants {
         TRADE_APPLY_NO__MAPPING.put("11040012","ZJTX");//账户直接提现
         
         
-        //根据账户类型匹配    1，2，3，99
+        //根据账户类型匹配    1:借款账户，2:线下出借账户，3:线上出借账户，99:冻结金账户
         TRADE_BUSINESS_TYPE__MAPPING.put(10010001,3);
         TRADE_BUSINESS_TYPE__MAPPING.put(10010002,2);
         TRADE_BUSINESS_TYPE__MAPPING.put(10010003,1);
@@ -698,7 +698,11 @@ public class GlobalConstants {
         TRADE_BUSINESS_TYPE__MAPPING.put(10019001,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(10019002,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(11040012,0);
+        TRADE_BUSINESS_TYPE__MAPPING.put(11091001,0);
+        
+        TRADE_BUSINESS_TYPE__MAPPING.put(11030008,0);
 
+        
         
         TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);
 

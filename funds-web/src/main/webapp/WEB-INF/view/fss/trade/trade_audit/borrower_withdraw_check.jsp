@@ -93,7 +93,7 @@
                                                             <td align="left">金额：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                <input type="text" maxlength="50" readonly="readonly" name="tradeAmount" value="${tradeapply.realTradeAmount}" style="width:256px;" />
+                                                                <input type="text" maxlength="50" readonly="readonly" name="tradeAmount" value="${tradeapply.tradeAmount}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>

@@ -80,7 +80,7 @@ public class FssAccountApi {
     * function：创建账户
     */
     @RequestMapping(value = "/createAccount",method = {RequestMethod.GET,RequestMethod.POST})
-    public Object ceeateAccount(@RequestBody CreateAccountDto createAccountByFuiou){
+    public Object createAccount(CreateAccountDto createAccountByFuiou){
     	Response response= new Response();
         try {
              response = createAccountImpl.execute(createAccountByFuiou);

@@ -44,7 +44,7 @@ public class CreateAccountDto extends SuperDto {
     @APIValidNull(errorCode = "90002014")
     private String city_id;			//开户地区
     
-    
+    private String contract_no;		//合同编号
     
     public String getMobile() {
         return mobile;
@@ -118,6 +118,12 @@ public class CreateAccountDto extends SuperDto {
 		this.busi_no = busi_no;
 	}
 
-	
+	public String getContract_no() {
+		return contract_no;
+	}
+
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
+	}
     
 }

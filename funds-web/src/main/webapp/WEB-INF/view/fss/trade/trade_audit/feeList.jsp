@@ -95,7 +95,7 @@
                                         <tbody>
                                             <c:forEach items="${feeList}" var="t">
                                                 <tr>
-                                                    <td>${t.feeType}</td>
+                                                    <td><fss:dictView key="${t.feeType}"/></td>
                                                     <td>${t.feeAmt}</td>
                                                     <td>${t.loanPlatform}</td>
                                                     <td>${t.tradeStatus}</td>

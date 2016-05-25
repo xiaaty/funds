@@ -98,7 +98,8 @@
 							                                <select class="select02" style="width:202px;" name="status" id="status">
                                                                    <option value="">所有</option>
 							                                   <fss:dictOrder var="order" dictOrder="tradeStatus">
-                                                                   <option value="${order.key}">${order.value}</option>
+							                                   	
+                                                                   <option value="${order.key}"  <c:if test="${order.key==map.status}">selected</c:if> >${order.value}</option>
                                                                </fss:dictOrder>
 							                                </select>
                                                                 </label>
@@ -138,7 +139,7 @@
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>借款流程</h2>
@@ -206,7 +207,7 @@
                                                      <td>
 	                                                    <fss:dictView key="${t.status}" />
                                                     </td>
-                                                   g <td>
+                                                    <td>
                                                     <fss:dictView key="${t.tradeType}" />
                                                     </td>
                                                     <td>${t.mchnParent}</td>
@@ -280,7 +281,6 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortgageePayment"));
-    	$("#status").val($("#tradeStatus").val());
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',
