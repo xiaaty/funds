@@ -15,8 +15,8 @@
 	<url>http://maven.apache.org</url>
 	<description>Fund settlement system</description>
 	<scm>
-		<connection>scm:git:http://git-jk:git-jk@git.gqihome.com/scm/gqi/funds.git</connection>
-		<developerConnection>scm:git:http://git-jk:git-jk@git.gqihome.com/scm/gqi/funds.git</developerConnection>
+		<connection>scm:git:http://git-jk:git-jk@bitbucket.gqihome.com/scm/fss/fund.git</connection>
+		<developerConnection>scm:git:http://git-jk:git-jk@bitbucket.gqihome.com/scm/fss/fund.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
