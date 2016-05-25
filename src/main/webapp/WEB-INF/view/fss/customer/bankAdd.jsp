@@ -6,9 +6,6 @@
     <title>系统管理--添加银行信息--冠群驰骋投资管理(北京)有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@ taglib prefix="page" uri="/WEB-INF/pagetag.tld"%>
-    <%@ taglib prefix="func" uri="/WEB-INF/func.tld"%>
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
    <%@include file="../../include/common_css_js.jsp"%>
@@ -51,7 +48,7 @@
                     <form id="bankAddForm" action="${contextPath}/fund/savebank" method="post">
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
-                            <div class="jarviswidget" id="wid-id-711" data-widget-deletebutton="false" data-widget-editbutton="false">
+                            <div class="jarviswidget" id="bankAdd" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
                                     <h2><i class="fa fa-edit pr10"></i>添加银行信息<font class="pl10 f12 color07"></font></h2>
                                     <span class="tip02 color03">”*“为必填项</span>

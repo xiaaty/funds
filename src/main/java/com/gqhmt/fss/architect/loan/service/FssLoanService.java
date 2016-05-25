@@ -180,17 +180,18 @@ public class FssLoanService {
 		map.put("seqNo", seqNo);
 		LendingResponse response=new LendingResponse();
 		FssLoanEntity loan = fssLoanReadMapper.getResponse(map);
-		response.setAcc_no(loan.getAccNo());
-		response.setContract_amt(loan.getContractAmt());
-		response.setContract_id(loan.getContractId());
-		response.setContract_interest(loan.getContractInterest());
-		response.setContract_no(loan.getContractNo());
-		response.setLoan_platform(loan.getLoanPlatform());
 		response.setMchn(loan.getMchnChild());
-		response.setMortgagee_acc_no(loan.getMortgageeAccNo());
-		response.setPay_amt(loan.getPayAmt());
 		response.setSeq_no(loan.getSeqNo());
 		response.setTrade_type(loan.getTradeType());
+		response.setContract_id(loan.getContractId());
+		response.setContract_no(loan.getContractNo());
+		response.setMortgagee_acc_no(loan.getMortgageeAccNo());
+		response.setContract_amt(loan.getContractAmt());
+		response.setContract_interest(loan.getContractInterest());
+		response.setAcc_no(loan.getAccNo());
+		response.setPay_amt(loan.getPayAmt());
+		response.setResp_code(loan.getRepCode());
+		response.setLoan_platform(loan.getLoanPlatform());
 		List<LendingFeeListDto> feeListDto = getFeeListDto(this.getFeeList(loan.getId()));
 		if(feeListDto!=null){
 			response.setFee_list(feeListDto);
@@ -321,8 +322,19 @@ public class FssLoanService {
 	 * time:2016年3月11日
 	 * function：借款人付款列表
 	 */
-	public List<FssLoanEntity> findBorrowerLoan(Map map) {
-		return fssLoanReadMapper.findBorrowerLoan(map);
+	public List<FssLoanEntity> findBorrowerLoan(Map<String,String> map) {
+		Map<String, String> map2=new HashMap<String, String>();
+		if (map != null) {
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("type",map.get("type"));
+			map2.put("status",map.get("status"));
+			map2.put("custNo",map.get("custNo"));
+			map2.put("contractNo", map.get("contractNo"));
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+		return fssLoanReadMapper.findBorrowerLoan(map2);
 	}
 	/**
 	 * 

@@ -5,6 +5,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.extServInter.service.trade.*;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -164,7 +165,7 @@ public class FssTradeApi {
      * function：提现
      */
     @RequestMapping(value = "/withdraw",method = {RequestMethod.POST,RequestMethod.GET})
-    public Object withdraw(WithdrawDto withdrawDto){
+    public Object withdraw(@RequestBody WithdrawDto withdrawDto){
     	Response response=new Response();
     	try {
     		response = withdrawImpl.execute(withdrawDto);
@@ -181,7 +182,7 @@ public class FssTradeApi {
      * function：代扣充值
      */
     @RequestMapping(value = "/recharge",method = {RequestMethod.POST,RequestMethod.GET})
-    public Object withhold(WithholdDto withholdDto){
+    public Object withhold(@RequestBody WithholdDto withholdDto){
     	Response response=new Response();
     	try {
     		response = rechargeImpl.execute(withholdDto);
@@ -315,6 +316,7 @@ public class FssTradeApi {
     	return response;
     }
     */
+	
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();

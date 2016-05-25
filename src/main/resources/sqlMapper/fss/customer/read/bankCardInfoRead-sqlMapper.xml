@@ -92,5 +92,19 @@
 		FROM t_gq_bank_info t where t.bank_no=#{bankNo}
 	</select>
 	
+	<select id="findBankCardByCustNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity">
+		SELECT 
+			cert_Name certName,
+			bank_no bankNo,
+			bank_sort_name bankLongName,
+			parent_bank_id parentBankId,
+			change_state changeState
+		FROM 
+			t_gq_bank_info t 
+		WHERE t.cust_id=#{custNo}
+	</select>
+	
+	
+	
 	
 </mapper>

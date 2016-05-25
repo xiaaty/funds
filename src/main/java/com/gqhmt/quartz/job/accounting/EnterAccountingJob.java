@@ -1,6 +1,7 @@
 package com.gqhmt.quartz.job.accounting;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;
 import com.gqhmt.quartz.job.SupperJob;
@@ -34,7 +35,7 @@ public class EnterAccountingJob extends SupperJob {
 	private FssEnterAccountService fssEnterAccountService;
 	
 	 private static boolean isRunning = false;
-	@Scheduled(cron="0 0/1 *  * * * ")
+	@Scheduled(cron="3 0/7 *  * * * ")
     public void execute( ) throws JobExecutionException, FssException {
         if(!isIp("upload")){
             return;
@@ -44,14 +45,20 @@ public class EnterAccountingJob extends SupperJob {
 		startLog("入账");
 
         isRunning = true;
-    	List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
-    	if(enterAccountParentByState.size()>0) {
-			for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
-				fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
+        try {
+			List<FssEnterAccountParentEntity> enterAccountParentByState = fssEnterAccountService.getEnterAccountParentByState();
+			if(enterAccountParentByState.size()>0) {
+				for (FssEnterAccountParentEntity fssEnterAccountParentEntity : enterAccountParentByState) {
+					fssEnterAccountService.enterAccounting(fssEnterAccountParentEntity);
+				}
 			}
-		}
 
-    	isRunning=false;
+        }catch (Exception e){
+            LogUtil.error(this.getClass(),e);
+
+        }finally {
+            isRunning = false;
+        }
 
 		endtLog();
     }

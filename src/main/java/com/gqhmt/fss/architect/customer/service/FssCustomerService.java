@@ -2,10 +2,7 @@ package com.gqhmt.fss.architect.customer.service;
 
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.CommonUtil;
-import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
@@ -139,6 +136,9 @@ public class FssCustomerService {
     
 	   public FssCustomerEntity createFssCustomerEntity(String  name,String  mobile,String certNo,Long custId,String mchn) throws FssException {
 			FssCustomerEntity fssCustomerEntity = GenerateBeanUtil.GenerateClassInstance(FssCustomerEntity.class);
+            if(custId != null && custId<100){
+                name = GlobalConstants.COMPANY_ACCOUNT_NAME.get(custId);
+            }
 			fssCustomerEntity.setName(name);
 			fssCustomerEntity.setMobile(mobile);
 			fssCustomerEntity.setCertType(1);
@@ -146,7 +146,7 @@ public class FssCustomerService {
 			fssCustomerEntity.setCreateTime(new Date());
 			fssCustomerEntity.setModifyTime(new Date());
 			fssCustomerEntity.setCustNo(CommonUtil.getCustNo());
-		   fssCustomerEntity.setCustId(custId);
+		    fssCustomerEntity.setCustId(custId);
 			fssCustomerEntity.setMchnChild(mchn);
 			fssCustomerEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
 			fssCustomerEntity.setUserId("1");

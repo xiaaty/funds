@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssLendAssetDetailReadMapper">
+	 <sql id="field">
+		SELECT 
+			t.id id,
+		  	t.cust_no custNo, 
+		  	t.parent_id parentId, 
+		  	t.acc_no accNo,
+		  	t.accounting_no accountingNo,
+		  	t.receive_balance receiveBalance,
+		  	t.receive_funds receiveFunds,
+		  	t.return_funds returnFunds,
+		  	t.trade_date tradeDate,
+		  	t.trade_time tradeTime,
+		  	t.capital_type capital_type,
+		  	t.lend_no lendNo,
+		  	t.loan_no loanNo,
+		  	t.create_time createTime,
+		  	t.modify_time modifyTime
+		FROM t_gq_fss_accounting_lend_asset_detail t
+	 </sql>
+	
+	 <select id="getDetailByParentId" parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity" >
+		<include refid="field"/>
+		WHERE t.parent_id=#{parentId}
+	</select>
+
+
+</mapper>
+
+

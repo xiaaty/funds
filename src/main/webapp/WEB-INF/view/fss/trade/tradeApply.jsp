@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib prefix="c0" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +46,7 @@
         <!-- end breadcrumb -->
     </div>
 
-    <div class="jarviswidget" id="wid-id-641"  data-widget-deletebutton="false" data-widget-editbutton="false">
+    <div class="jarviswidget" id="tradeApply"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <h2>交易申请</h2>
                         </header>

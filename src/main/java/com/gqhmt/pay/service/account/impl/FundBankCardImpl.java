@@ -24,13 +24,15 @@ public class FundBankCardImpl implements IFundBankCard {
 	 */
 	@Override
 	public List<BankCardInfoEntity> getBankCardInfo(BankCardDto bankcard) throws FssException {
-		List<BankCardInfoEntity> list=bankCardInfoService.findAllbankCards(null);
+		List<BankCardInfoEntity> list=bankCardInfoService.findBankCardByCustNo(bankcard.getCust_no());
 		if(list==null && list.size()==0){
-			throw new FssException("没有查到到银卡行信息");
+			throw new FssException("90002036");
 		}
 		return list;
 	}
 
+	
+	
 	
 	
 }

@@ -89,6 +89,9 @@ public class FundsAccountImpl implements IFundsAccount {
 
 		try {
 			primaryAccount = this.getPrimaryAccount(cusId);
+			if(primaryAccount == null){
+				primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
+			}
 		} catch (FssException e) {
 			if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
 				primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
@@ -105,6 +108,9 @@ public class FundsAccountImpl implements IFundsAccount {
 				fundAccountService.update(primaryAccount);
 		}
 		return true;
+
+
+
 	}
 
 	/**
@@ -178,9 +184,6 @@ public class FundsAccountImpl implements IFundsAccount {
 
 	private FundAccountEntity getPrimaryAccount(Long cusId) throws FssException{
 		FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-		if (primaryAccount == null) {
-			throw new FssException("90002003");
-		}
 		return primaryAccount;
 	}
 
@@ -294,7 +297,7 @@ public class FundsAccountImpl implements IFundsAccount {
 					throw new FssException("90002038");//该银行卡号已经存在
 				}
 				
-				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity);
+				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,createAccountDto.getTrade_type());
 			}else{
 				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			}

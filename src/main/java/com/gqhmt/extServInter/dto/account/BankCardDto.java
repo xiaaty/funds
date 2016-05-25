@@ -18,6 +18,15 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class BankCardDto extends SuperDto {
 
+	private String cust_no;
 
+	public String getCust_no() {
+		return cust_no;
+	}
+
+	public void setCust_no(String cust_no) {
+		this.cust_no = cust_no;
+	}
+	
     
 }
