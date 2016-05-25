@@ -59,7 +59,7 @@ public class FssGetTradeApi {
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
-	@RequestMapping(value = "/careateWithholdApply",method = RequestMethod.POST)
+	@RequestMapping(value = "/careateWithholdApply",method = {RequestMethod.POST,RequestMethod.GET})
 	public Object careateWithholdApply(@RequestBody GETWithholdAndDrawDto dto){
 		Response response=new Response();
 		try {
@@ -73,17 +73,33 @@ public class FssGetTradeApi {
 	/*
 	 * 冠E通后台--代付申请接口
 	 */
-	@RequestMapping(value = "/careateWithDrawApply",method = RequestMethod.POST)
+	@RequestMapping(value = "/careateWithDrawApply",method = {RequestMethod.POST,RequestMethod.GET})
 	public Object careateWithDrawApply(@RequestBody GETWithholdAndDrawDto dto){
 		Response response=new Response();
 		try {
 			response = getWithDrawApplyImpl.execute(dto);
 		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
+			response = this.execute(e);
 		}
 		return response;
 	}
+	
+	/*
+	 * 测试回盘
+	 * @RequestMapping(value = "/withHoldApplyCallback",method = RequestMethod.POST)
+	public Object careateWithDrawApplyCallBack(String mchn,String seqNo){
+		Response response=new Response();
+		try {
+			response = withHoldApplyCallback.getCallBack(mchn, seqNo);
+		} catch (Exception e) {
+			 response = this.execute(e);
+		}
+		return response;
+	}
+	*/
+	
+	
+	
 	
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);

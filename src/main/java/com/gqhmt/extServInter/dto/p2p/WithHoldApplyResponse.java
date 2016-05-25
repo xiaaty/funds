@@ -1,7 +1,5 @@
 package com.gqhmt.extServInter.dto.p2p;
 import java.math.BigDecimal;
-import java.util.List;
-
 import com.gqhmt.extServInter.dto.Response;
 
 /**
