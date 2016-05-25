@@ -405,8 +405,8 @@ public class FssTradeApplyService {
 	public boolean careateTradeApply(GETWithholdAndDrawDto dto) throws FssException{
 		//对提现申请金额进行资金冻结
 		if("1104".equals(dto.getApply_type())){
-			Integer busiType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(dto.getTrade_type());//获取业务类型
-	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),Integer.valueOf(busiType));
+			Integer busiType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(dto.getTrade_type()));//获取业务类型
+	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),busiType);
 	        if (fromEntity == null) {
 	            throw new FssException("90004006");
 	        }
