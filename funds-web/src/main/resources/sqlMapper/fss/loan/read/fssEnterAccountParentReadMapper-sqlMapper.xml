@@ -52,6 +52,6 @@
 			<if test="mchnChild != null and mchnChild != ''">
 				and t.mchn_child like concat('%',#{mchnChild},'%')
 			</if>
-		group by t.create_time desc
+		ORDER by t.create_time desc
 	</select>
 </mapper>
