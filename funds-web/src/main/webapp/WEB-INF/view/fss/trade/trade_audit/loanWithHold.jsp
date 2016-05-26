@@ -161,7 +161,7 @@
 	                success: function (data) {
 	                    if (data.code == '0000') {
 	                        jAlert("代扣已提交!", '确认信息');
-	                        return;
+                            parent.location.href="${contextPath}/loan/trade/11090001";
 	                    } else if(data.code == '0001'){
 	                    	jAlert(data.message, '确认信息');
 	                        return;
