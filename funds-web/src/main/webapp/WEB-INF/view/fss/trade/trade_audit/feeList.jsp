@@ -96,7 +96,8 @@
                                                     <td><fss:dictView key="${t.loanPlatform}" /></td>
                                                     <td><fss:dictView key="${t.tradeStatus}" /></td>
                                                     <td>
-                                                    <c:if test="${t.repCode=='0000'}">成功</c:if><c:if test="${t.repCode！='0000'}"><fss:dictView key="${t.repCode}" /></c:if>
+                                                    <c:if test="${t.repCode=='0000'}">成功</c:if>
+                                                    <c:if test="${t.repCode!='0000'}"><fss:dictView key="${t.repCode}" /></c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
