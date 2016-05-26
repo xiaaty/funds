@@ -121,6 +121,7 @@
 	<select id="getFundsAccountByBusiType" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
 		<include refid="fieldSql" />
 		where busi_type = #{busi_type}
+		order by CREATE_TIME desc
 	</select>
 	
 	

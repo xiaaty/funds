@@ -92,7 +92,7 @@
                                                 <tr>
                                                     <td><fss:dictView key="${t.accountType}"/></td>
                                                     <td>${t.settleAmt}</td>
-                                                    <td>${t.tradeStatus}</td>
+                                                    <td><fss:dictView key="${t.tradeStatus}" /></td>
                                                     <td>${t.result=='98060001'?'成功':'失败'}</td>
 <%--                                                     <td>${t.repCode}</td> --%>
 <%--                                                     <td>${t.repMsg}</td> --%>

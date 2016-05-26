@@ -15,5 +15,6 @@
 		WHERE t.cust_no=${cust_no} 
 		AND t.user_no=${user_no} 
 		AND t.acc_no=${acc_no}
+		order by create_time desc
 	</select>
 </mapper>

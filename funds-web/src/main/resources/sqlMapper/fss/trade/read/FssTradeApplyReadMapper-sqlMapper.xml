@@ -76,6 +76,7 @@
 			<if test="endTime != null and endTime != '' ">
 				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
+		order by t.create_time desc
 	</select>
 	
 	<!-- 根据applyNo查询对象 -->
@@ -98,6 +99,7 @@
 	<select id="selectByTradeState" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 	 <include refid="selectSql" />
 	  WHERE t.trade_state=#{tradeState}
+		order by t.create_time desc
 	</select>
 	<select id="selectBySeqNoAndMchn" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 	 <include refid="selectSql" />

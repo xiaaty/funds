@@ -31,11 +31,13 @@
 			<include refid="fileSql" />
 			where 1=1
 			<include refid="whereSql" />
+		order by t.create_time desc
 	</select>
 <!-- 	根据交易状态查询主表列表 -->
 	<select id="getEnterAccountParentByState"   resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
 			<include refid="fileSql" />
 			where t.result_state=10080001
+		order by t.create_time desc
 	</select>
 		<!-- 得到入账表 -->
 	<select id="getEnterAccountParentList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
@@ -50,6 +52,6 @@
 			<if test="mchnChild != null and mchnChild != ''">
 				and t.mchn_child like concat('%',#{mchnChild},'%')
 			</if>
-			group by t.create_time desc
+		group by t.create_time desc
 	</select>
 </mapper>
