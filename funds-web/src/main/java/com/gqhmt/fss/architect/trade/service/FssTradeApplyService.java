@@ -369,6 +369,15 @@ public class FssTradeApplyService {
 		fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 	}
 	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月26日
+	 * function：通过fromId和budiType查询申请表信息
+	 */
+	public FssTradeApplyEntity queryForFromId(Long fromId ,String busiType){
+		return fssTradeApplyReadMapper.queryForFromId(fromId,busiType);
+	}
+	/**
 	 * 查询抵押权人代扣信息
 	 * @param map
 	 * @return
