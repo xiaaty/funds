@@ -267,6 +267,7 @@ public class FssRepaymentService {
     		repaymentChild=new RepaymentChildDto();
     		repaymentChild.setAcc_no(fssRepaymentEntity.getAccNo());
     		repaymentChild.setAmt(fssRepaymentEntity.getAmt());
+			repaymentChild.setReal_repay_amt(fssRepaymentEntity.getAmt());
     		repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
     		repaymentChild.setContract_no(fssRepaymentEntity.getContractNo());
     		repaymentChild.setRemark(fssRepaymentEntity.getRemark());
@@ -277,14 +278,9 @@ public class FssRepaymentService {
     	if("10080002".equals(queryByMchnAndSeqNo.getResultState())){
     		repaymentResponse.setResp_code("0000");
     		repaymentResponse.setResp_msg("成功");
-    	}else if("10080003".equals(queryByMchnAndSeqNo.getResultState())){
-    		repaymentResponse.setResp_code("0001");
-    		repaymentResponse.setResp_msg("部分成功");
-    	}else{
-    		repaymentResponse.setResp_code("0002");
-    		repaymentResponse.setResp_msg("失败");
+    	}else {
+    		repaymentResponse.setResp_code(queryByMchnAndSeqNo.getResultState());
     	}
-    	
     	repaymentResponse.setRepay_list(repaymentChilds);
     	repaymentResponse.setMchn(mchn);
     	repaymentResponse.setSeq_no(seqNo);
@@ -310,7 +306,16 @@ public class FssRepaymentService {
 	public int getSuccessCount(Long parentId) {
 		return fssRepaymentReadMapper.getSuccessCount(parentId);
 	}
-	
+
+	/**
+	 * 根据parent_id查询子表信息
+	 * @param parentId
+	 * @return
+     */
+	public List<FssRepaymentEntity> searchRepaymentByParentId(Long parentId) {
+		return fssRepaymentReadMapper.searchRepaymentByParentId(parentId);
+	}
+
 	/**
 	 * 
 	 * author:jhz
