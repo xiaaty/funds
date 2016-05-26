@@ -312,9 +312,9 @@ public class FssRepaymentService {
 	 * @param parentId
 	 * @return
      */
-	public List<FssRepaymentEntity> searchRepaymentByParentId(Long parentId) {
-		return fssRepaymentReadMapper.searchRepaymentByParentId(parentId);
-	}
+	//public List<FssRepaymentEntity> searchRepaymentByParentId(Long parentId) {
+	//	return fssRepaymentReadMapper.searchRepaymentByParentId(parentId);
+	//}
 
 	/**
 	 * 
