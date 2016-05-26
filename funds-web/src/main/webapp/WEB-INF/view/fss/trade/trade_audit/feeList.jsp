@@ -75,11 +75,9 @@
                                       </div>
                                      <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
                                     	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
-                                    	<col width="300" />
+                                    	<col width="500" />
+                                    	<col width="500" />
+                                    	<col width="500" />
                                     	<col width="500" />
                                         <thead>
                                         <tr>
@@ -87,8 +85,6 @@
                                             <td>费用金额</td>
                                             <td>费用平台</td>
                                             <td>交易状态</td>
-                                            <td>最终结果</td>
-                                            <td>返回码</td>
                                             <td>返回消息</td>
                                         </tr>
                                         </thead>
@@ -97,14 +93,11 @@
                                                 <tr>
                                                     <td><fss:dictView key="${t.feeType}"/></td>
                                                     <td>${t.feeAmt}</td>
-                                                    <td>${t.loanPlatform}</td>
-                                                    <td>${t.tradeStatus}</td>
+                                                    <td><fss:dictView key="${t.loanPlatform}" /></td>
+                                                    <td><fss:dictView key="${t.tradeStatus}" /></td>
                                                     <td>
-                                                    <c:if test="${t.result == '98060001'}"><span style="color: green">成功</span></c:if>
-										   			 <c:if test="${t.result == '98060003'}"><span style="color: red">失败</span></c:if>
+                                                    <c:if test="${t.repCode=='0000'}">成功</c:if><c:if test="${t.repCode！='0000'}"><fss:dictView key="${t.repCode}" /></c:if>
                                                     </td>
-                                                    <td>${t.repCode}</td>
-                                                    <td>${t.repMsg}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

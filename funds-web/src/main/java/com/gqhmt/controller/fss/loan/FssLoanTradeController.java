@@ -271,14 +271,16 @@ public class FssLoanTradeController {
 
 			try {
 			for (FssFeeList fssFeeList : fssFeeLists) {
-					if(!"10050007".equals(fssFeeList.getTradeStatus())){
-						if(fssFeeList.getFeeAmt().compareTo(BigDecimal.ZERO)>0){
+					if(!"10050007".equals(fssFeeList.getTradeStatus())&&!"10050015".equals(fssFeeList.getTradeStatus())){
+						if(fssFeeList.getFeeAmt().compareTo(BigDecimal.ZERO)>0&&!"10990004".equals(fssFeeList.getFeeType())){
 						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
 								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
 								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+							// 修改费用状态	收取成功
+							fssFeeList.setTradeStatus("10050007");
+						}else{
+							fssFeeList.setTradeStatus("10050015");
 						}
-						// 修改费用状态	收取成功
-						fssFeeList.setTradeStatus("10050007");
 						fssLoanService.updateFeeList(fssFeeList);
 					}
 			}

@@ -29,6 +29,7 @@
 	<select id="findCustomerAccountByParams" parameterType="fssAccountEntity" resultType="fssAccountEntity">
 		<include refid="selectSql"/>
 		WHERE t.cust_no = #{custNo}
+		order by t.create_time desc
 	</select>
 	
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">
@@ -89,12 +90,13 @@
 	<select id="findAccountByAccNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
 		<include refid="selectSql"/>
 		where t.acc_no = #{accNo}
-
+		order by t.create_time desc
 	</select>
 	
 	<select id="findAccountByCustId" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
 		<include refid="selectSql"/>
 		where t.cust_id = #{custId}
+		order by t.create_time desc
 	</select>
 	
 </mapper>

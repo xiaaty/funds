@@ -36,6 +36,7 @@
 			 	and result_state = #{resultState}
 			</if>
 		</where>
+		order by create_time desc
 	</select>
 	<select id="queryByMchnAndSeqNo" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity">
 	 <include refid="selectSql"/>

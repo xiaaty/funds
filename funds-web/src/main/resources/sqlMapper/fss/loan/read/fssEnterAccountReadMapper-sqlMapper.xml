@@ -23,7 +23,8 @@
 		SELECT 
 			count(*)
 			FROM t_gq_fss_enter_account t
-			where t,result='10080002' t.parent_id=#{parentId} 
+			where t,result='10080002' t.parent_id=#{parentId}
+			order by customer.create_time desc
 	</select>
 	
 	

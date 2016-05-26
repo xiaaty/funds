@@ -26,6 +26,7 @@
 		c.cust_id custId
 	FROM t_gq_fss_fuiou_account f,t_gq_fss_customer c 
 	WHERE f.cus_no=c.cust_no and c.cert_no=#{certNo}
+	order by f.create_time desc
 </select>
  <select id="getByAccNo" parameterType="java.lang.String"  resultType="com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity">
 	SELECT
@@ -42,6 +43,7 @@
 		f.has_open_acc_fuiou hasOpenAccFuiou
 	FROM t_gq_fss_fuiou_account f 
 	where  f.acc_no=#{accNo}
+	order by f.create_time desc
 </select>
 </mapper>
 
