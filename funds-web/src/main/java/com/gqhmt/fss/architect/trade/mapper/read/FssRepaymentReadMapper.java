@@ -38,5 +38,13 @@ public interface FssRepaymentReadMapper extends ReadMapper<FssRepaymentEntity> {
 	 * function：查询该批次交易成功数
 	 */
 	public int getSuccessCount(Long parentId);
-	
+
+	/**
+	 *
+	 * @param parentId
+	 * @return
+	 * 根据parent_id查询子表对象信息
+     */
+	public List<FssRepaymentEntity> searchRepaymentByParentId(Long parentId);
+
 }

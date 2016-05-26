@@ -34,7 +34,14 @@ public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity>
 	 * function：借款人提现
 	 */
 	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map);
-	
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年3月11日
+	 * function：借款人提现
+	 */
+	public FssTradeApplyEntity queryForFromId(@Param("fromId") Long fromId,@Param("busiType") String busiType);
+
 	/**
 	 * 抵押权人代扣
 	 * @param map

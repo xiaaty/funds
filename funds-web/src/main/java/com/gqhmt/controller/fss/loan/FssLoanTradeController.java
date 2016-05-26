@@ -283,13 +283,13 @@ public class FssLoanTradeController {
 							fssFeeList.setRepCode("10050015");
 							fssFeeList.setTradeStatus("10050015");
 						}
-						fssLoanService.updateFeeList(fssFeeList);
 					}
 					} catch (FssException e) {
 						fssFeeList.setRepCode(e.getMessage());
 						map.put("msg", "0003");
 
 					}
+					fssLoanService.updateFeeList(fssFeeList);
 					if("10050007".equals(fssFeeList.getTradeStatus())||"10050015".equals(fssFeeList.getTradeStatus())){
 						i++;
 					}
