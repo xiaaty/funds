@@ -94,11 +94,6 @@ public class AbortBidService {
             //数据回盘
 //			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
         } catch (FssException e) {
-        	loanEntity.setStatus("10050014");
-        	loanEntity.setModifyTime(new Date());
-        	fssLoanService.update(loanEntity);
-        	//数据回盘
-			fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(), loanEntity.getMchnChild(), loanEntity.getTradeType());
             LogUtil.error(getClass(),e);
             return;
         }
