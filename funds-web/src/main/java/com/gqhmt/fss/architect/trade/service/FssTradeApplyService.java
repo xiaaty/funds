@@ -208,6 +208,7 @@ public class FssTradeApplyService {
 		//修改状态
 		tradeApplyEntity=new FssTradeApplyEntity();
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssRepaymentEntity.getAccNo());
+		if (fssAccountByAccNo==null) throw new FssException("90002001");
 		//修改状态
 		fssRepaymentEntity.setState("10090002");
 		fssRepaymentEntity.setMotifyTime(new Date());

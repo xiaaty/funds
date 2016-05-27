@@ -39,7 +39,7 @@ public class RepaymentChildDto{
     
     private String remark;    //还款备注
     
-    private Date complete_time;		//完成时间
+    private String complete_time;		//完成时间
     
     private String accounting_no;	//账务流水号
     
@@ -80,12 +80,15 @@ public class RepaymentChildDto{
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
 	}
-	public Date getComplete_time() {
+
+	public String getComplete_time() {
 		return complete_time;
 	}
-	public void setComplete_time(Date complete_time) {
+
+	public void setComplete_time(String complete_time) {
 		this.complete_time = complete_time;
 	}
+
 	public String getAccounting_no() {
 		return accounting_no;
 	}
