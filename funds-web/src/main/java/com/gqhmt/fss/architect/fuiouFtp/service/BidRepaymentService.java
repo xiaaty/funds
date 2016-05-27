@@ -91,9 +91,9 @@ public class BidRepaymentService {
                 loanEntity.setModifyTime(new Date());
                 fssLoanService.update(loanEntity);
                 fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+                return;
             }
         } catch (FssException e) {
-
             LogUtil.error(getClass(),e);
             return;
         }
