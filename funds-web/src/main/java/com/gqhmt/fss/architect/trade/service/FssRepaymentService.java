@@ -272,6 +272,7 @@ public class FssRepaymentService {
     		repaymentChild.setAmt(fssRepaymentEntity.getAmt());
 			fssTradeApplyEntity=fssTradeApplyService.queryForFromId(fssRepaymentEntity.getId(),fssRepaymentEntity.getTradeType());
 			repaymentChild.setReal_repay_amt(fssTradeApplyEntity.getRealTradeAmount());
+			repaymentChild.setAccounting_no(fssTradeApplyEntity.getApplyNo());
 			repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
     		repaymentChild.setContract_no(fssRepaymentEntity.getContractNo());
     		repaymentChild.setRemark(fssRepaymentEntity.getRemark());
