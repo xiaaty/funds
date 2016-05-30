@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.card.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
+import com.gqhmt.fss.architect.card.entiry.FssCardBinEntity;
 
 /**
  * 
@@ -12,7 +12,7 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年3月19日
+ * Create at:   2016年5月27日
  * Description:
  * <p>
  * Modification History:
@@ -20,5 +20,5 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
  * -----------------------------------------------------------------
  * 2016年3月19日  jhz      1.0     1.0 Version
  */
-public interface FssCardBinWriteMapper extends ReadAndWriteMapper<FssBackplateEntity> {
+public interface FssCardBinWriteMapper extends ReadAndWriteMapper<FssCardBinEntity> {
 }
