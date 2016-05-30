@@ -364,7 +364,25 @@ public class FssLoanService {
 		// TODO Auto-generated method stub
 		return fssLoanReadMapper.selectByPrimaryKey(id);
 	}
-	
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月27日
+	 * function：交易类型.标的Id查询满标信息是否存在
+	 */
+	public FssLoanEntity getFssLoanEntityByBidBusiNo(String tradeType,String busiBidNo) {
+		return fssLoanReadMapper.getFssLoanEntityByBidBusiNo(tradeType,busiBidNo);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月30日
+	 * function：（回款编号，交易类型，回款类型）查询回款信息是否存在
+	 */
+	public FssLoanEntity getLoanRepayment(String repayNo,String tradeType,String repayType) {
+		return fssLoanReadMapper.getLoanRepayment(repayNo,tradeType,repayType);
+	}
+
 	/**.
 	 * 
 	 * author:jhz
@@ -403,6 +421,10 @@ public class FssLoanService {
 	 */
 	public void insertFullBidApply(BidApplyDto bidApplyDto) throws FssException{
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		FssLoanEntity fssLoanEntity1=this.getFssLoanEntityByBidBusiNo(bidApplyDto.getTrade_type(),bidApplyDto.getBusi_bid_no());
+		if(fssLoanEntity1!=null) {
+			if(!"10050014".equals(fssLoanEntity1.getStatus())) throw  new FssException("90004011");
+		}
 		fssLoanEntity.setContractId(bidApplyDto.getBusi_bid_no());
 		fssLoanEntity.setContractAmt(bidApplyDto.getContract_amt());
 		fssLoanEntity.setPayAmt(bidApplyDto.getPayment_amt());
@@ -428,6 +450,11 @@ public class FssLoanService {
 	 */
 	public void insertRepaymentDto(RePaymentDto rePaymentDto) throws FssException {
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		//不允许重复提交（回款编号，交易类型，回款类型）
+		FssLoanEntity fssLoanEntity1=this.getLoanRepayment(rePaymentDto.getRepayment_no(),rePaymentDto.getTrade_type(),rePaymentDto.getPayment_type());
+		if(fssLoanEntity1!=null) {
+			if(!"10050014".equals(fssLoanEntity1.getStatus())) throw  new FssException("90004011");
+		}
 		fssLoanEntity.setContractId(rePaymentDto.getBusi_bid_no());	//标的编号
 		fssLoanEntity.setBusiNo(rePaymentDto.getRepayment_no());	//回款编号	
 		fssLoanEntity.setAccNo(rePaymentDto.getUser_id());	//借款人客户id
@@ -457,6 +484,10 @@ public class FssLoanService {
 	 */
 	public void insertBidRepayApply(BidApplyDto BidApplyDto) throws FssException {
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		FssLoanEntity fssLoanEntity1=this.getFssLoanEntityByBidBusiNo(BidApplyDto.getTrade_type(),BidApplyDto.getBusi_bid_no());
+		if(fssLoanEntity1!=null) {
+			if(!"10050014".equals(fssLoanEntity1.getStatus())) throw  new FssException("90004011");
+		}
 		fssLoanEntity.setContractId(BidApplyDto.getBusi_bid_no());
 		fssLoanEntity.setMchnChild(BidApplyDto.getMchn());
 		fssLoanEntity.setContractAmt(BidApplyDto.getContract_amt());
