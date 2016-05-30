@@ -228,7 +228,7 @@ public class CommonUtil {
 	}
 	
 	 /**
-     * 时间格式转换(Date to String) 
+     * 时间格式转换(Date to String“yyyy-MM-dd”)
      * @return
      */
 	public static String dateToString(Date date){
@@ -241,7 +241,7 @@ public class CommonUtil {
     	return pioDate;
     }
 	 /**
-     * 时间格式转换(Date to String) 
+     * 时间格式转换(Date to String"yyyyMMdd")
      * @return
      */
 	public static String dateTostring(Date date){

@@ -15,6 +15,7 @@ import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentParentWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.util.CommonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -271,9 +272,11 @@ public class FssRepaymentService {
     		repaymentChild.setAmt(fssRepaymentEntity.getAmt());
 			fssTradeApplyEntity=fssTradeApplyService.queryForFromId(fssRepaymentEntity.getId(),fssRepaymentEntity.getTradeType());
 			repaymentChild.setReal_repay_amt(fssTradeApplyEntity.getRealTradeAmount());
+			repaymentChild.setAccounting_no(fssTradeApplyEntity.getApplyNo());
 			repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
     		repaymentChild.setContract_no(fssRepaymentEntity.getContractNo());
     		repaymentChild.setRemark(fssRepaymentEntity.getRemark());
+			repaymentChild.setComplete_time(CommonUtil.dateToString(fssRepaymentEntity.getMotifyTime()));
     		repaymentChild.setSerial_number(fssRepaymentEntity.getSerialNumber());
     		repaymentChilds.add(repaymentChild);
 		}
