@@ -85,7 +85,21 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * function：根据交易类型得到放款列表
 	 */
 	List<FssLoanEntity> findByType(String type);
-	
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月27日
+	 * function：交易类型.标的Id查询满标信息是否存在
+	 */
+	FssLoanEntity getFssLoanEntityByBidBusiNo(@Param("tradeType") String tradeType,@Param("busiBidNo") String busiBidNo);
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月30日
+	 * function：（回款编号，交易类型，回款类型）查询回款信息是否存在
+	 */
+	FssLoanEntity getLoanRepayment(@Param("repayNo") String repayNo,@Param("tradeType") String tradeType,@Param("repayType") String repayType);
+
 //    public List<FssLoanBean> findBorrowerLoanOffline(@Param("type") String type);	
     public List<FssLoanBean> findBorrowerLoanOffline();
 	/**

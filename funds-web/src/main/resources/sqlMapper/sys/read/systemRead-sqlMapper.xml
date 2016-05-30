@@ -31,7 +31,6 @@
 		<if test="dictName != null and dictName !=''">
 			and t.dict_name like  concat('%',#{dictName},'%')
 		</if>
-		order by t.create_time desc
 	</select>
 	
 	
@@ -47,7 +46,6 @@
            open="(" close=")" separator=",">
            ${dictId}
        </foreach>
-		order by t.create_time desc
 	</select>
 	
 	<select id="selectDictOrderList" parameterType="java.util.List" resultType="com.gqhmt.sys.entity.DictEntity">
@@ -57,8 +55,7 @@
            open="(" close=")" separator=",">
            #{dictId}
        </foreach>
-		order by t.create_time desc
-		
+
 	</select>
 	
 	
