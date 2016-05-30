@@ -115,8 +115,8 @@ public class LoanAccountApi {
     
     /**
      * 保证金退还
-     * @param seqNo
-     * @param mchn
+     * @param
+     * @param
      * @return
      */
     @RequestMapping(value = "/marginSendBack",method = RequestMethod.POST)

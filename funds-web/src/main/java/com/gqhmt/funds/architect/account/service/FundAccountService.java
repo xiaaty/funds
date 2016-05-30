@@ -66,6 +66,7 @@ public class FundAccountService {
     
     @Resource
     private FssAccountReadMapper fssAccountReadMapper;
+
     @Resource
 	private FssTradeApplyService fssTradeApplyService;
 

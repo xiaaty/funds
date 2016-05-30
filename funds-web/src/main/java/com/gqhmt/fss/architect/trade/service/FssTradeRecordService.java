@@ -209,7 +209,7 @@ public class FssTradeRecordService {
 	
 	/**
 	 * 根据申请单好查询抵押权人详细列表
-	 * @param map
+	 * @param 
 	 * @return
 	 */
 	public  List<FssTradeRecordEntity> queryFssTradeRecordList(String applyNo,Integer tradeState){

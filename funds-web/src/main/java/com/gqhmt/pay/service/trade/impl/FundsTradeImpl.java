@@ -533,12 +533,12 @@ public class FundsTradeImpl  implements IFundsTrade {
     	      if (fssAccountEntity == null){
     	           throw new CommandParmException("90004006");
     	       }
-    	      int accType = fssAccountEntity.getAccType();
-    	      businessType = this.tradeRecordService.parseBusinessType(accType);
+
+                businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(fssAccountEntity.getAccType());
     	      custID=String.valueOf(fssAccountEntity.getCustId());
     	}
     	FundAccountEntity entity = this.getFundAccount(Integer.valueOf(custID).intValue(), businessType);
-        this.hasEnoughBanlance(entity,amount);
+//        this.hasEnoughBanlance(entity,amount);
         checkwithholdingOrWithDraw(entity,2,businessType);
         this.cashWithSetReq(entity.getCustId(),selletType);
         fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);

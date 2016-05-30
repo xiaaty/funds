@@ -101,7 +101,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     	FundOrderEntity orderEntity = null;
     	String  accNo = entity.getAccNo();//旧版通过账户号获取
     	int	selletType=0;//获取结算类型
-    	Integer businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(entity.getTradeTypeChild());//获取业务类型
+    	Integer businessType = 0;//获取业务类型
         if(entity.getBespokeDate()!=null){
     		selletType=fssTradeApplyService.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
     	}
@@ -111,7 +111,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     		String custId=null;
         	if(entity.getCustId()!=null && !"".equals(entity.getCustId())){
         		custId = String.valueOf(entity.getCustId());//新版通过custId获取
-        		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, businessType, entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+        		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, entity.getCustType(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
         	}else{
         		throw new FssException("90002006");
         	}
