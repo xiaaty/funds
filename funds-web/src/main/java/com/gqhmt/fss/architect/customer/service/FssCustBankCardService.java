@@ -93,8 +93,11 @@ public class FssCustBankCardService {
 			fssbankcardInfo.setBankCardNo(CommonUtil.getBankCardNo());
 			fssbankcardInfo.setMchnChild(mchn);
 			fssbankcardInfo.setMchnParent(Application.getInstance().getParentMchn(mchn));
-
-			this.fssBankCardInfoWriteMapper.insertSelective(fssbankcardInfo);
+			try {
+				this.fssBankCardInfoWriteMapper.insertSelective(fssbankcardInfo);
+			} catch (Exception e) {
+				  throw new FssException("90002028");
+			}
 			return fssbankcardInfo;
 	}
 	

@@ -103,7 +103,8 @@ public class FssTradeApplyEntity implements Serializable {
     
     @Column(name = "cust_type",updatable = false)	//客户类型
     private Integer custType;
-    
+	@Column(name = "settle_type")	//提现时效
+	private Integer settleType;
 	public Long getId() {
 		return id;
 	}
@@ -312,5 +313,11 @@ public class FssTradeApplyEntity implements Serializable {
 	public void setCustType(Integer custType) {
 		this.custType = custType;
 	}
-	
+	public Integer getSettleType() {
+		return settleType;
+	}
+
+	public void setSettleType(Integer settleType) {
+		this.settleType = settleType;
+	}
 }

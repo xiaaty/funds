@@ -1,6 +1,7 @@
 package com.gqhmt.pay.service.cost;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 import java.math.BigDecimal;
@@ -59,6 +60,6 @@ public interface ICost {
 
     public FundOrderEntity costReturn(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException;
 
-
+    public boolean charge(CostDto dto) throws FssException;
 
 }

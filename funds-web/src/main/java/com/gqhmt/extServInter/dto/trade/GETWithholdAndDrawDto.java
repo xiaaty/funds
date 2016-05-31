@@ -35,7 +35,7 @@ public class GETWithholdAndDrawDto extends SuperDto {
 //	@APIValidNull(errorCode = "90002022")
 	//直接代扣的没有合同编号
 	private String contract_no;//合同编号
-	
+	private String settle_type;//提现时效0：T+0，1：T+1
 	@APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;	//代扣金额
@@ -75,5 +75,11 @@ public class GETWithholdAndDrawDto extends SuperDto {
 	}
 	public void setApply_type(String apply_type) {
 		this.apply_type = apply_type;
+	}
+	public String getSettle_type() {
+		return settle_type;
+	}
+	public void setSettle_type(String settle_type) {
+		this.settle_type = settle_type;
 	}
 }

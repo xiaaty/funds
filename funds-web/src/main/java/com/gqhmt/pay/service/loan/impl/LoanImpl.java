@@ -13,7 +13,9 @@ import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
@@ -61,7 +63,8 @@ public class LoanImpl implements ILoan {
 	private CostImpl costImpl;
 //	@Resource
 //	private FssAccountFileService fssAccountFileService;
-	
+	@Resource
+	private BankCardInfoService bankCardInfoService;
 	/**
 	 * 借款系统开户
 	 */
@@ -71,30 +74,82 @@ public class LoanImpl implements ILoan {
     	FssAccountEntity  fssAccount=null; //新版账户体系
     	CustomerInfoEntity customerInfoEntity=null;//旧版客户信息
     	FssCustomerEntity fssCustomerEntity=null;//新版客户信息
+		BankCardInfoEntity bankCardInfoEntity=null;
     	String accNo=null;
     	Long custId=null;
-    	/**
-    	 * 借款人（纯线下）开户  ：11020011
-    	 * 放款(纯线下) ：11090003
-    	 * 还款代扣（纯线下）：11093002
-    	 * 入账清结算（纯线下）：11099002
-    	 */
-
+		/**
+		 * 11020001:wap开户
+		 * 11020002:web开户
+		 * 11020003:安卓开户
+		 * 11020004:微信开户
+		 * 11020005:ios开户
+		 * 11020006:委托出借开户
+		 * 11020007:借款人开户（冠e通）
+		 * 11020008:代偿人开户
+		 * 11020009:抵押权人开户
+		 * 11020010:保理合同开户
+		 * 11020011:借款人（纯线下）开户
+		 * 11020012:借款人开户（借款系统）
+		 * 11020013:借款代还人开户
+		 * 11020014:开互联网账户
+		 * 11020015:app开户
+		 */
 		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
 		try{
-		if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
-			customerInfoEntity=customerInfoService.createLoanAccount(dto);
-			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
-			customerInfoEntity.setParentBankCode(dto.getBank_id());
-			customerInfoEntity.setBankLongName("");
-			customerInfoEntity.setBankNo(dto.getBank_card());
-			try {
-				fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
-			} catch (FssException e) {
-				LogUtil.error(this.getClass(), e);
-				throw e;
+			if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
+				customerInfoEntity=customerInfoService.createLoanAccount(dto);
+				customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
+				customerInfoEntity.setParentBankCode(dto.getBank_id());
+				customerInfoEntity.setBankLongName("");
+				customerInfoEntity.setBankNo(dto.getBank_card());
+				try {
+					fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
+				} catch (FssException e) {
+					LogUtil.error(this.getClass(), e);
+					throw e;
+				}
+			}else{
+				if(customerInfoEntity == null) throw new FssException("90002007");
+				customerInfoEntity.setParentBankCode(dto.getBank_id());
+				customerInfoEntity.setBankNo(dto.getBank_card());
+				customerInfoEntity.setCityCode(dto.getCity_id());
+				customerInfoEntity.setCertNo(dto.getCert_no());
+				customerInfoEntity.setMobilePhone(dto.getMobile());
+				customerInfoEntity.setCustomerName(dto.getName());
+				//判断
+				Long cusId = customerInfoEntity.getId();
+				Integer userId = customerInfoEntity.getUserId();
+				FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId,GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+				if(primaryAccount == null){
+					try {
+						primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
+					} catch (FssException e) {
+						throw new FssException("90002002");
+					}
+				}
+				primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+				//富友
+				if (primaryAccount.getHasThirdAccount()==1){//未开通第三方账户
+					paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+					primaryAccount.setHasThirdAccount(2);
+					primaryAccount.setCustName(customerInfoEntity.getCustomerName());
+					fundAccountService.update(primaryAccount);
+				}
+				//跟新所有与该cust_id相同的账户名称
+				fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
+				//创建银行卡信息
+				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
+				if(bankCardInfoEntity==null){
+					//判断输入的银行卡号是否已经存在
+					bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
+					if(bankCardInfoEntity!=null){
+						throw new FssException("90002038");//该银行卡号已经存在
+					}
+					bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,dto.getTrade_type());
+				}else{
+					bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
+				}
 			}
-		}
 		}catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			throw e;

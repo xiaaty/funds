@@ -6,6 +6,7 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
@@ -404,10 +405,17 @@ public class FssLoanTradeController {
 			throw new FssException("Io异常");
 		}    
 	}
-	
-	
-	
-	
+
+
+
+	@RequestMapping("/loan/trade/backplat")
+	@AutoPage
+	public String queryBackPlat(HttpServletRequest request, ModelMap model,FssBackplateEntity fssBackplateEntity) {
+		List<FssBackplateEntity> backplateList = fssBackplateService.getBackPlate(fssBackplateEntity);
+		model.addAttribute("page", backplateList);
+		model.addAttribute("fssBackplateEntity",fssBackplateEntity);
+		return "fss/trade/backplateList";
+	}
 	
 	
 

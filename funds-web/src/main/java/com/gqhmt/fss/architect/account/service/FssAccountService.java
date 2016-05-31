@@ -134,7 +134,7 @@ public class FssAccountService {
     }*/
 
     public FssAccountEntity createAccount(CreateLoanAccountDto dto,Long custId) throws FssException {
-        return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(),custId);
+        return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getBusi_no(),custId);
     }
 
 
@@ -142,7 +142,7 @@ public class FssAccountService {
         return createAccount(tradeType,mchn,mobile,certNo,name,bankType,bankNo,area,busiNo,custId,null);
     }
 
-        public FssAccountEntity createAccount(String tradeType,String mchn,String mobile,String certNo,String name,String bankType,String bankNo,String area,String busiNo,Long custId,Date createTime) throws FssException {
+    public FssAccountEntity createAccount(String tradeType,String mchn,String mobile,String certNo,String name,String bankType,String bankNo,String area,String busiNo,Long custId,Date createTime) throws FssException {
 		FssCustomerEntity fssCustomerinfo= fssCustomerService.getFssCustomerEntityByCertNo(certNo);
 		FssCustBankCardEntity  fssCustBankCardEntity = null;
         FssFuiouAccountEntity fssFuiouAccountEntity = null;

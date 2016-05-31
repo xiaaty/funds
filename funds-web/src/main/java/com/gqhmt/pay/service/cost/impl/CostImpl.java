@@ -1,7 +1,9 @@
 package com.gqhmt.pay.service.cost.impl;
 
 import com.gqhmt.core.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -127,8 +129,6 @@ public class CostImpl  implements ICost{
         map.put("21992103_10040003",3l);
         map.put("21992103_10040099",3l);
 
-
-
         map.put("21992105_10040001",12l);//风险备用金
         map.put("21992105_10040002",12l);
         map.put("21992105_10040003",12l);
@@ -138,19 +138,18 @@ public class CostImpl  implements ICost{
         map.put("21992105_10040002",4l);
         map.put("21992105_10040003",4l);
         map.put("21992105_10040099",4l);
-
-
     }
 
     @Override
     public void cost(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
-
-        this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType);
-
-
-
-
+        if (fromAccountEntity == null) throw new FssException("90004006");
+        //需要判断账户余额是否充足
+        BigDecimal bigDecimal = fromAccountEntity.getAmount();
+        if (bigDecimal.compareTo(decimal) < 0) {
+            throw new FssException("90004007");
+        }
+        this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,bustType);
     }
 
     @Override
@@ -163,32 +162,26 @@ public class CostImpl  implements ICost{
         int bustType = this.tradeRecordService.parseBusinessType(accType);
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(accountEntity.getCustId(),bustType);
 
-        return this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType);
+        return this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType,null);
 
 
     }
-
+    /**
+     * 非平台收费
+     */
     @Override
     public void cost(String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         this.cost("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
     }
-
-
-
-    private FundOrderEntity cost(FundAccountEntity fromAccountEntity,BigDecimal decimal,String fundsType,Long busiId,Integer busiType,String loanType) throws FssException {
-
+    private FundOrderEntity cost(FundAccountEntity fromAccountEntity,BigDecimal decimal,String fundsType,Long busiId,Integer busiType,String loanType,Integer bustType) throws FssException {
         Long toCustId = this.map.get(fundsType+"_"+loanType);
-        if (toCustId == null) throw new FssException("");
-
-        FundAccountEntity  toAccountEntity= fundAccountService.getFundAccount(toCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-
-        if (fromAccountEntity == null) throw new FssException("90004006");
+        if (toCustId == null) throw new FssException("90002001");
+        FundAccountEntity toAccountEntity= fundAccountService.getFundAccount(toCustId,bustType.intValue());
+        if (toAccountEntity == null) throw new FssException("90002001");
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType);
-        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
-
+        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,bustType);
         return  fundOrderEntity;
     }
-
 
     @Override
     public FundOrderEntity costReturn(String loanType, String fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
@@ -220,13 +213,19 @@ public class CostImpl  implements ICost{
 
         if (fromAccountEntity == null) throw new FssException("90004006");
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType);
-        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,null);
         return  fundOrderEntity;
     }
 
-
-
-
-
+    /**
+     * 费用收取
+     * @param dto
+     * @return
+     * @throws FssException
+     */
+    public boolean charge(CostDto dto) throws FssException{
+        this.cost(dto.getPlatform(), dto.getTrade_type(), Long.valueOf(dto.getCust_no()), Integer.valueOf(dto.getBusi_type()),dto.getAmt(),Long.valueOf(dto.getAccounts_type()),Integer.valueOf(GlobalConstants.ORDER_COST));
+        return true;
+    }
 
 }

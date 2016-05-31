@@ -421,6 +421,7 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity fssTradeApplyEntity=this.CreateFssTradeApplyEntity(dto);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
+			fssTradeApplyEntity.setSettleType(Integer.valueOf(dto.getSettle_type()));
 		} catch (Exception e) {
 			throw new FssException("91009804");
 		}
