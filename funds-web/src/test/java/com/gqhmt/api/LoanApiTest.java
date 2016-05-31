@@ -3,17 +3,13 @@ package com.gqhmt.api;
 import com.gqhmt.core.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.JsonUtil;
+import com.gqhmt.extServInter.callback.loan.PaymentCallback;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
-import com.gqhmt.extServInter.dto.loan.FailedBidDto;
-import com.gqhmt.extServInter.dto.loan.LendingDto;
-import com.gqhmt.extServInter.dto.loan.LendingFeeListDto;
-import com.gqhmt.extServInter.dto.loan.LoanAccountResponse;
-import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
-import com.gqhmt.extServInter.dto.loan.RepaymentDto;
+import com.gqhmt.extServInter.dto.loan.*;
 
 import org.junit.Test;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +31,8 @@ import java.util.List;
  * 16/3/26  于泳      1.0     1.0 Version
  */
 public class LoanApiTest extends SupperAPI {
-
+    @Resource
+   private PaymentCallback paymentCallback;
     @Test
     public  void createAccount() {
         try {
@@ -209,8 +206,18 @@ public class LoanApiTest extends SupperAPI {
     		e.printStackTrace();
     	}
     }
+    @Test
+    public void dyWithdraw() {
+        try {
+            RepaymentResponse re= paymentCallback.getCallBack("15651537LYPV","2016052618081399201");
+            List<RepaymentChildDto> repay_list= re.getRepay_list();
+            for (RepaymentChildDto epaymentChildDto:repay_list) {
+                System.out.println(epaymentChildDto.getReal_repay_amt()+"*******"+re.getMchn()+epaymentChildDto.getAmt());
 
-    public void dyWithdraw(){
+            }
+        } catch (FssException e) {
+            e.printStackTrace();
+        }
 
     }
 }

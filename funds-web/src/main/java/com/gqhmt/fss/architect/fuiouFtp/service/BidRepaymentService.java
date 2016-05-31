@@ -85,16 +85,18 @@ public class BidRepaymentService {
         try {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
+            if(list == null || list.size() == 0 ){
+                //回盘处理
+                loanEntity.setStatus("10050014");
+                loanEntity.setModifyTime(new Date());
+                fssLoanService.update(loanEntity);
+                fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+                return;
+            }
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
-            loanEntity.setStatus("10050014");
-            loanEntity.setModifyTime(new Date());
-            fssLoanService.update(loanEntity);
-            fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
-
             return;
         }
-
 
         Integer cusId = bid.getCustomerId();
         //抵押标, 处理custId为抵押权人id

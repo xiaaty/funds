@@ -21,6 +21,7 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.pay.exception.CommandParmException;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.util.LogUtil;
 import com.gqhmt.util.StringUtils;
 import org.springframework.stereotype.Service;
@@ -65,9 +66,13 @@ public class FundAccountService {
     
     @Resource
     private FssAccountReadMapper fssAccountReadMapper;
+
     @Resource
 	private FssTradeApplyService fssTradeApplyService;
-    
+
+    @Resource
+	private IFundsTrade iFundsTrade;
+
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
 	}
@@ -453,10 +458,15 @@ public class FundAccountService {
 		 	FssAccountEntity fssAccountEntity= this.getFssFundAccountInfo(wthDrawApplyDto.getAcc_no());
 		 	if(fssAccountEntity==null){
 		 		throw new FssException("90004006");
-		 	}else{//账户余额小于提现金额
-	 			//创建提现申请信息
+		 	}else{
+				//账户余额小于提现金额
+				FundAccountEntity fundAccountEntity=getFundsAccount(fssAccountEntity.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN);
+				if(fundAccountEntity.getAmount().compareTo(wthDrawApplyDto.getPay_amt())<0) throw new FssException("90004007");
+				//冻结资金
+				iFundsTrade.froze(fssAccountEntity.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN,wthDrawApplyDto.getPay_amt());
 	 			try {
-	 			    fssTradeApplyEntity = fssTradeApplyService.createTradeApplyEntity(fssAccountEntity,wthDrawApplyDto);
+					//创建提现申请信息
+					fssTradeApplyEntity = fssTradeApplyService.createTradeApplyEntity(fssAccountEntity,wthDrawApplyDto);
 					fssTradeApplyService.createTradeApply(fssTradeApplyEntity);
 				} catch (FssException e) {
 					LogUtil.info(this.getClass(), e.getMessage());

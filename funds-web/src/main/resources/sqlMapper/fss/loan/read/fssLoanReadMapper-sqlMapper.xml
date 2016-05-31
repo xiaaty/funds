@@ -150,6 +150,16 @@
 			where  t.trade_type = #{type}
 			order by t.create_time desc
 	</select>
+<!-- 	交易类型.标的Id查询满标信息是否存在 -->
+	<select id="getFssLoanEntityByBidBusiNo" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
+		<include refid="selectSql" />
+			where  t.trade_type = #{tradeType} AND  t.contract_id=#{busiBidNo} AND t.status!='10050014'
+	</select>
+<!--（回款编号，交易类型，回款类型）查询回款信息是否存在-->
+	<select id="getLoanRepayment" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity" >
+		<include refid="selectSql" />
+			where  t.trade_type = #{repayType} AND t.trade_type_parent = #{tradeType} AND t.busi_no =#{repayNo} AND t.status!='10050014'
+	</select>
 <!-- 	满标放款  11090002 ，信用标放款      11092001， 抵押权人提现     11090004，冠e通满标-->
 	<select id="findLoanBySettle" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
 		<include refid="selectSql" />

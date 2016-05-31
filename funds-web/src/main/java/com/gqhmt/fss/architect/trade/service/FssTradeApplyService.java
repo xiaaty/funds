@@ -208,6 +208,7 @@ public class FssTradeApplyService {
 		//修改状态
 		tradeApplyEntity=new FssTradeApplyEntity();
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssRepaymentEntity.getAccNo());
+		if (fssAccountByAccNo==null) throw new FssException("90002001");
 		//修改状态
 		fssRepaymentEntity.setState("10090002");
 		fssRepaymentEntity.setMotifyTime(new Date());
@@ -369,6 +370,15 @@ public class FssTradeApplyService {
 		fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 	}
 	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月26日
+	 * function：通过fromId和budiType查询申请表信息
+	 */
+	public FssTradeApplyEntity queryForFromId(Long fromId ,String busiType){
+		return fssTradeApplyReadMapper.queryForFromId(fromId,busiType);
+	}
+	/**
 	 * 查询抵押权人代扣信息
 	 * @param map
 	 * @return
@@ -405,8 +415,7 @@ public class FssTradeApplyService {
 	public boolean careateTradeApply(GETWithholdAndDrawDto dto) throws FssException{
 		//对提现申请金额进行资金冻结
 		if("1104".equals(dto.getApply_type())){
-			Integer busiType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(dto.getTrade_type()));//获取业务类型
-	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),busiType);
+	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),Integer.parseInt(dto.getCust_type()));
 	        if (fromEntity == null) {
 	            throw new FssException("90004006");
 	        }

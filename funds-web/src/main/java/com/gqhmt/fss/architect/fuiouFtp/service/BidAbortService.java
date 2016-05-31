@@ -88,12 +88,6 @@ public class BidAbortService {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
         } catch (FssException e) {
-            loanEntity.setStatus("10050014");
-//            loanEntity.setRepCode("98060003");
-//            loanEntity.setRepMsg("获取标的信息或投标人信息列表失败");
-            loanEntity.setModifyTime(new Date());
-            fssLoanService.update(loanEntity);
-            fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
             LogUtil.error(getClass(),e);
             return;
         }

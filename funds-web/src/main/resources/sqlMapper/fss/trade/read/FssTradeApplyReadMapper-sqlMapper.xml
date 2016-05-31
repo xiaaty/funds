@@ -84,7 +84,12 @@
 		<include refid="field"/>
 		WHERE t.apply_no=#{applyNo}
 	</select>
-	
+	<!-- 根据fromId和busiType查询对象 -->
+	<select id="queryForFromId"  resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+		<include refid="selectSql"/>
+		WHERE t.form_id=#{fromId} AND t.busi_type=#{busiType}
+	</select>
+
 	<select id="selectFssTradeApplyEntityByApplyNo" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 		 <include refid="selectSql" />
 			WHERE t.apply_no=#{applyNo}

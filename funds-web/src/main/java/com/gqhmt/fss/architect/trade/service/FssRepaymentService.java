@@ -14,6 +14,8 @@ import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentParentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentParentWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
+import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.util.CommonUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -263,13 +265,18 @@ public class FssRepaymentService {
     	}
     	List<RepaymentChildDto>repaymentChilds=new ArrayList<>();
     	RepaymentChildDto repaymentChild=null;
+		FssTradeApplyEntity fssTradeApplyEntity=null;
     	for (FssRepaymentEntity fssRepaymentEntity : repaymentlist) {
     		repaymentChild=new RepaymentChildDto();
     		repaymentChild.setAcc_no(fssRepaymentEntity.getAccNo());
     		repaymentChild.setAmt(fssRepaymentEntity.getAmt());
-    		repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
+			fssTradeApplyEntity=fssTradeApplyService.queryForFromId(fssRepaymentEntity.getId(),fssRepaymentEntity.getTradeType());
+			repaymentChild.setReal_repay_amt(fssTradeApplyEntity.getRealTradeAmount());
+			repaymentChild.setAccounting_no(fssTradeApplyEntity.getApplyNo());
+			repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
     		repaymentChild.setContract_no(fssRepaymentEntity.getContractNo());
     		repaymentChild.setRemark(fssRepaymentEntity.getRemark());
+			repaymentChild.setComplete_time(CommonUtil.dateToString(fssRepaymentEntity.getMotifyTime()));
     		repaymentChild.setSerial_number(fssRepaymentEntity.getSerialNumber());
     		repaymentChilds.add(repaymentChild);
 		}
@@ -277,14 +284,9 @@ public class FssRepaymentService {
     	if("10080002".equals(queryByMchnAndSeqNo.getResultState())){
     		repaymentResponse.setResp_code("0000");
     		repaymentResponse.setResp_msg("成功");
-    	}else if("10080003".equals(queryByMchnAndSeqNo.getResultState())){
-    		repaymentResponse.setResp_code("0001");
-    		repaymentResponse.setResp_msg("部分成功");
-    	}else{
-    		repaymentResponse.setResp_code("0002");
-    		repaymentResponse.setResp_msg("失败");
+    	}else {
+    		repaymentResponse.setResp_code(queryByMchnAndSeqNo.getResultState());
     	}
-    	
     	repaymentResponse.setRepay_list(repaymentChilds);
     	repaymentResponse.setMchn(mchn);
     	repaymentResponse.setSeq_no(seqNo);
@@ -310,7 +312,16 @@ public class FssRepaymentService {
 	public int getSuccessCount(Long parentId) {
 		return fssRepaymentReadMapper.getSuccessCount(parentId);
 	}
-	
+
+	/**
+	 * 根据parent_id查询子表信息
+	 * @param parentId
+	 * @return
+     */
+	//public List<FssRepaymentEntity> searchRepaymentByParentId(Long parentId) {
+	//	return fssRepaymentReadMapper.searchRepaymentByParentId(parentId);
+	//}
+
 	/**
 	 * 
 	 * author:jhz

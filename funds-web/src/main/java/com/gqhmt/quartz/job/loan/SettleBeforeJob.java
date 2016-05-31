@@ -37,7 +37,7 @@ public class SettleBeforeJob extends SupperJob {
     private BidSettleService settleService;
     
     private static boolean isRunning = false;
-    @Scheduled(cron="53 0/2 *  * * * ")
+    @Scheduled(cron="53 0/1 *  * * * ")
     public void execute() throws PayChannelNotSupports {
 
         if(!isIp("upload")){

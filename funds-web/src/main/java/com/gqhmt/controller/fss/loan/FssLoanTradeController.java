@@ -270,41 +270,41 @@ public class FssLoanTradeController {
 			map.put("msg", "0002");
 		} else {
 
-			try {
-			for (FssFeeList fssFeeList : fssFeeLists) {
+				for (FssFeeList fssFeeList : fssFeeLists) {
+					try {
 					if(!"10050007".equals(fssFeeList.getTradeStatus())&&!"10050015".equals(fssFeeList.getTradeStatus())){
 						if(fssFeeList.getFeeAmt().compareTo(BigDecimal.ZERO)>0&&!"10990004".equals(fssFeeList.getFeeType())){
-						FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
-								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
-								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+							FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
+									fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
+									fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
 							// 修改费用状态	收取成功
+							fssFeeList.setRepCode("0000");
 							fssFeeList.setTradeStatus("10050007");
 						}else{
+							fssFeeList.setRepCode("10050015");
 							fssFeeList.setTradeStatus("10050015");
 						}
-						fssLoanService.updateFeeList(fssFeeList);
 					}
-			}
-			} catch (FssException e) {
-				e.printStackTrace();
-				map.put("msg", "0003");
-				
-			}
-			fssLoanEntityById.setStatus("10050007");
-			fssLoanService.update(fssLoanEntityById);
-			// 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
-			for (FssFeeList fssFeeList : fssFeeLists) {
-				if("10050007".equals(fssFeeList.getTradeStatus())){
-					i++;
+					} catch (FssException e) {
+						fssFeeList.setRepCode(e.getMessage());
+						map.put("msg", "0003");
+
+					}
+					fssLoanService.updateFeeList(fssFeeList);
+					if("10050007".equals(fssFeeList.getTradeStatus())||"10050015".equals(fssFeeList.getTradeStatus())){
+						i++;
+					}
 				}
-			}
 			if(i==fssFeeLists.size()){
+				// 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
+				fssLoanEntityById.setStatus("10050007");
 				fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
 				map.put("msg", "0000");
-				//todo 成功之后取消收费按钮
 			}else{
+				//收取失败继续收取费用
 				map.put("msg", "0003");
 			}
+			fssLoanService.update(fssLoanEntityById);
 		}
 
 		return "redirect:/loan/trade/"+type;

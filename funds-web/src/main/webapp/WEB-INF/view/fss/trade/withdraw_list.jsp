@@ -182,6 +182,9 @@
                                                     	<c:if test="${tradeapply.applyState==10100001}">
                                                     	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
                                                     	</c:if>
+                                                    	<c:if test="${tradeapply.busiType==11092001 && tradeapply.applyState==10050009}">
+                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
+                                                    	</c:if>
                                                         &nbsp;&nbsp;&nbsp;
                                                         <a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
                                                     </td>

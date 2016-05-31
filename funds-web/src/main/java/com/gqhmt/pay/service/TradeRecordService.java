@@ -73,7 +73,7 @@ public class TradeRecordService {
     }
 
     public void withdrawByFroze(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
-        sequenceService.refund(entity,fundType,amount,ThirdPartyType.FUIOU,fundOrderEntity);
+        sequenceService.refundByFroze(entity,fundType,amount,ThirdPartyType.FUIOU,fundOrderEntity);
     }
 
 
