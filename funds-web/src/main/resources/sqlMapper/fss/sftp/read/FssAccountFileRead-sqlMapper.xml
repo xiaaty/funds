@@ -21,7 +21,7 @@
 		  `action_type` actionType,
 		  `remark` remark,
 		  `status` status
-	 	 From `t_gq_fss_sftp_account_file` t
+	 	 From `t_gq_fss_depos_fuiou_account` t
 	  </sql>
 	<select id="queryAccountFileList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssAccountFileEntity" >
 	  <include refid="selectSql"/>
@@ -36,7 +36,7 @@
 	</select>
 	<select id="queryByStatus" parameterType="java.lang.String" resultType="com.gqhmt.sftp.entity.FssAccountFileEntity" >
 	  <include refid="selectSql"/>
-	  	where 
+	  	where t.status=#{status}
 	</select>
 	
 </mapper>

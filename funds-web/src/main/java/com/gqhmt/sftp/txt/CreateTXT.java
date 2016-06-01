@@ -92,22 +92,22 @@ public class CreateTXT  {
 					write.append(info.getLoanTittle()+"|");
 					write.append(info.getOrganization()+"|");
 					write.append(info.getDescription()+"|");
-					write.append(info.getLoanAmt().+"|");
+					write.append(info.getLoanAmt()*100+"|");
 					write.append(info.getExpectedReturn()+"|");
 					write.append(info.getProductName()+"|");
 					write.append(info.getRepaymentType()+"|");
 					write.append(info.getLoanTime()+"|");
 					write.append(info.getStartDate()+"|");
-					write.append(info.getEachBidAmount()+"|");
+					write.append(info.getEachBidAmount()*100+"|");
 					write.append(info.getMinNum()+"|");
-					write.append(info.getMaxAmount()+"|");
+					write.append(info.getMaxAmount()*100+"|");
 					write.append(info.getAccNo()+"|");
 					write.append(info.getAccGoldNo()+"|");
 					write.append(info.getLoanItemDescription()+"|");
-					write.append(info.getFeeType()+"|");
+					write.append(info.getFeeType()*100+"|");
 					write.append(info.getStatus()+"|");
 					write.append(info.getPeriod()+"|");
-					write.append(info.getPrepareAmount()+"|");
+					write.append(info.getPrepareAmount()*100+"|");
 					write.append(info.getPayChannel()+"|");
 					write.append(info.getBidYearIrr()+"|");
 					write.append(info.getCustName()+"|");
@@ -116,7 +116,7 @@ public class CreateTXT  {
 					write.append(enter);
 				}
 			}
-			buff.write(write.toString().getBytes("UTF-8"));
+			buff.write(write.toString().getBytes("GBK"));
 			buff.flush();
 			buff.close();
 		} catch (Exception e) {
@@ -201,7 +201,7 @@ public class CreateTXT  {
 					write.append(enter);
 				}
 			}
-			buff.write(write.toString().getBytes("UTF-8"));
+			buff.write(write.toString().getBytes("GBK"));
 			buff.flush();
 			buff.close();
 		} catch (Exception e) {
@@ -273,7 +273,7 @@ public class CreateTXT  {
 					write.append(enter);
 				}
 			}
-			buff.write(write.toString().getBytes("UTF-8"));
+			buff.write(write.toString().getBytes("GBK"));
 			buff.flush();
 			buff.close();
 		} catch (Exception e) {
@@ -361,7 +361,7 @@ public class CreateTXT  {
 					write.append(enter);
 				}
 			}
-			buff.write(write.toString().getBytes("UTF-8"));
+			buff.write(write.toString().getBytes("GBK"));
 			buff.flush();
 			buff.close();
 		} catch (Exception e) {

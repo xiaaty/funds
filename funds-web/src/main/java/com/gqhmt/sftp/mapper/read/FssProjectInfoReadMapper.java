@@ -9,7 +9,7 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sftp.entity.FssProjectInfoEntity;
 
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -27,14 +27,22 @@ import com.gqhmt.sftp.entity.FssProjectInfoEntity;
  */
 public interface FssProjectInfoReadMapper extends ReadMapper<FssProjectInfoEntity> {
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月10日
 	 * function：通过parent_id得到对象列表
 	 */
 	public List<FssProjectInfoEntity> getByParentId(@Param("parentId") Long parentId);
-	
-	
-	
+
+
+
 	public List<FssProjectInfoEntity> queryFssProjectInfoList(Map map);
+
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月24日
+	 * function：根据状态查询项目信息列表
+	 */
+	public List<FssProjectInfoEntity> queryItemsInfosByStatus(@Param("status")String status);
 }

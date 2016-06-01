@@ -1,6 +1,7 @@
 package com.gqhmt.sftp.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,9 +11,10 @@ import com.gqhmt.core.FssException;
 import com.gqhmt.sftp.entity.FssBusinessTradeEntity;
 import com.gqhmt.sftp.mapper.read.FssBusiTradeReadMapper;
 import com.gqhmt.sftp.mapper.write.FssBusiTradeWriteMapper;
+import com.gqhmt.util.CommonUtil;
 
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -33,7 +35,7 @@ public class FssBusiTradeService {
 	private FssBusiTradeReadMapper fssBusiTradeReadMapper;
 	@Resource
 	private FssBusiTradeWriteMapper fssBusiTradeWriteMapper;
-	
+
 	public List<FssBusinessTradeEntity> queryBusinessTrade(Map<String,String> map)throws FssException {
 		Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
@@ -43,7 +45,7 @@ public class FssBusiTradeService {
 		return fssBusiTradeReadMapper.queryBusiTradeList(map);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月13日
 	 * function：查询所有商户交易对象
@@ -52,7 +54,7 @@ public class FssBusiTradeService {
 		return fssBusiTradeReadMapper.selectAll();
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：添加商户交易对象
@@ -61,7 +63,7 @@ public class FssBusiTradeService {
 		fssBusiTradeWriteMapper.insertSelective(fssBusinessTradeEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：修改商户交易对象
@@ -70,17 +72,17 @@ public class FssBusiTradeService {
 		fssBusiTradeWriteMapper.updateByPrimaryKey(fssBusinessTradeEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：创建商户交易对象并添加进数据库
 	 */
-	public void creatBusiTrade(String thirdPartyPaymentId,String tradeDate,String tradeType,String itemNo,String contractNo,String outFuiouUsername,String outPlatformUsername,BigDecimal amt,BigDecimal charge,BigDecimal thisRepaymentPrincipal,BigDecimal thisRepaymentInterest,
-			String comeFuiouUsername,String comePlatformUsername,String loanUsername,String loanCertType,String loanCertNo,String lendUsername,String lendFuiouUsername,String lendName,String lendCertType,String lendCertNo,String busiType){
+	public void creatBusiTrade(String thirdPartyPaymentId,Date tradeDate,String tradeType,String itemNo,String contractNo,String outFuiouUsername,String outPlatformUsername,BigDecimal amt,BigDecimal charge,BigDecimal thisRepaymentPrincipal,BigDecimal thisRepaymentInterest,
+							   String comeFuiouUsername,String comePlatformUsername,String loanUsername,Integer loanCertType,String loanCertNo,String lendUsername,String lendFuiouUsername,String lendName,Integer lendCertType,String lendCertNo,String busiType){
 		FssBusinessTradeEntity busiTrade=new FssBusinessTradeEntity();
 		busiTrade.setMchn("0001000F0279762");
 		busiTrade.setThirdPartyPaymentId(thirdPartyPaymentId);
-		busiTrade.setTradeDate(tradeDate);
+		busiTrade.setTradeDate(CommonUtil.dateTostring(tradeDate));
 		busiTrade.setTradeType(tradeType);
 		busiTrade.setItemNo(itemNo);
 		busiTrade.setContractNo(contractNo);
@@ -93,14 +95,40 @@ public class FssBusiTradeService {
 		busiTrade.setComeFuiouUsername(comeFuiouUsername);
 		busiTrade.setComePlatformUsername(comePlatformUsername);
 		busiTrade.setLoanUsername(loanUsername);
-		busiTrade.setLoanCertType(loanCertType);
+		if (1==loanCertType) {
+			busiTrade.setLoanCertType("0");
+		}else if(2==loanCertType){
+			busiTrade.setLoanCertType("1");
+		}else if(4==loanCertType){
+			busiTrade.setLoanCertType("2");
+		}else{
+			busiTrade.setLoanCertType("7");
+		}
 		busiTrade.setLoanCertNo(loanCertNo);
 		busiTrade.setLendUsername(lendUsername);
 		busiTrade.setLendFuiouUsername(lendFuiouUsername);
 		busiTrade.setLendName(lendName);
-		busiTrade.setLendCertType(lendCertType);
+		if (1==lendCertType) {
+			busiTrade.setLendCertType("0");
+		}else if(2==lendCertType){
+			busiTrade.setLendCertType("1");
+		}else if(4==lendCertType){
+			busiTrade.setLendCertType("2");
+		}else{
+			busiTrade.setLendCertType("7");
+		}
 		busiTrade.setLendCertNo(lendCertNo);
 		busiTrade.setBusiType(busiType);
+		busiTrade.setStatus("10110001");
 		this.insertBusitrade(busiTrade);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月24日
+	 * function：根据状态查询文件列表
+	 */
+	public List<FssBusinessTradeEntity> queryByStatus(String status) {
+		return fssBusiTradeReadMapper.queryByStatus(status);
 	}
 }

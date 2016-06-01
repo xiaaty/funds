@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.sftp.mapper.read.FssProjectInfoReadMapper">
-	<select id="getParentId" resultType="com.gqhmt.sftp.entity.FssProjectInfoEntity">
-		SELECT 
+	<sql id="selectSql">
+	SELECT 
     		t.id id,
 		    t.parent_id parentId,
 		    t.mchn mchn,
@@ -25,17 +25,26 @@
 		    t.acc_gold_no accGoldNo,
 		    t.loan_item_description loanItemDescription,
 		    t.fee_type feeType,
-		    t.status status,
+		    t.trade_status tradeStatus,
 		    t.period period,
 		    t.prepare_amount prepareAmount,
 		    t.pay_channel payChannel,
 		    t.bid_year_irr bidYearIrr,
 		    t.cust_name custName,
 		    t.cert_type certType,
-		    t.cert_no certNo
+		    t.cert_no certNo,
+		    t.status status
 		FROM 
-			t_gq_fss_sftp_project_info t 
+			t_gq_fss_depos_fuiou_project_info t 
+			</sql>
+	<select id="getParentId" resultType="com.gqhmt.sftp.entity.FssProjectInfoEntity">
+		<include refid="selectSql"/>
 		WHERE t.parent_id=${parentId} 
+	</select>
+	
+	<select id="queryItemsInfosByStatus" resultType="com.gqhmt.sftp.entity.FssProjectInfoEntity">
+		<include refid="selectSql"/>
+		WHERE t.status=${status} 
 	</select>
 	
 	<select  id="queryFssProjectInfoList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssProjectInfoEntity" >
@@ -69,7 +78,7 @@
 		  t.`cust_name` custName,
 		  t.`cert_type` certType,
 		  t.`cert_no` certNo
-	  From t_gq_fss_sftp_project_info t
+	  From t_gq_fss_depos_fuiou_project_info t
 	 <where>
 		<if test="mchn!=null and mchn!=''">
 			AND t.`mchn` like CONCAT('%',#{mchn},'%')

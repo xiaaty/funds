@@ -9,84 +9,107 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+/**
+ *
+ * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
+ * Copyright:   Copyright (c)2016
+ * Company:     冠群驰骋投资管理(北京)有限公司
+ *
+ * @author jhz
+ * @version: 1.0
+ * @since: JDK 1.7
+ * Create at:   2016年5月24日
+ * Description:
+ * <p>标的财务汇总文件
+ * Modification History:
+ * Date    Author      Version     Description
+ * -----------------------------------------------------------------
+ * 2016年5月24日  jhz      1.0     1.0 Version
+ */
 
 @Entity
-@Table(name = "t_gq_fss_sftp_finance_sum")
+@Table(name = "t_gq_fss_depos_fuiou_finance_sum")
 public class FssFinanceSumEntity implements Serializable {
 	@Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                 //主键id
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;                                 //主键id
 
-    @Column(name="org_target_id")
-    private String orgTargetId;                      //支付机构标的id
+	@Column(name="parent_id")
+	private Long parentId;
 
-    @Column(name = "org_terrace_id")
-    private String orgTerraceId;                     //支付机构平台id
+	@Column(name="org_target_id")
+	private String orgTargetId;                      //支付机构标的id
 
-    @Column(name = "cust_no")                     
-    private String custNo;                           //放款客户号
+	@Column(name = "org_terrace_id")
+	private String orgTerraceId;                     //支付机构平台id
 
-    @Column(name = "cust_name")       
-    private String custName;                        //客户姓名
+	@Column(name = "cust_no")
+	private String custNo;                           //放款客户号
 
-    @Column(name = "cert_no")
-    private String certNo;                          //客户身份证号
-    
-    @Column(name = "cert_type")
-    private String certType;                          //证件类型
+	@Column(name = "cust_name")
+	private String custName;                        //客户姓名
 
-    @Column(name = "target_state")
-    private String targetState;                    //标的状态  
+	@Column(name = "cert_no")
+	private String certNo;                          //客户身份证号
 
-    @Column(name = "tender_time")
-    private String tenderTime;                     //发标日期
-    
-    @Column(name = "full_scale_time")
-    private String fullScaleTime;                  //实际满标日期
+	@Column(name = "cert_type")
+	private String certType;                          //证件类型
 
-    @Column(name = "t_re_captical")
-    private BigDecimal tReCaptical;                 //应还款总本金
+	@Column(name = "target_state")
+	private String targetState;                    //标的状态
 
-    @Column(name = "t_re_interest")
-    private BigDecimal tReInterest;                 //应还款总利息          
+	@Column(name = "tender_time")
+	private String tenderTime;                     //发标日期
+
+	@Column(name = "full_scale_time")
+	private String fullScaleTime;                  //实际满标日期
+
+	@Column(name = "t_re_captical")
+	private BigDecimal tReCaptical;                 //应还款总本金
+
+	@Column(name = "t_re_interest")
+	private BigDecimal tReInterest;                 //应还款总利息
 
 	@Column(name = "l_re_time")
-    private String lReTime;                  //最后还款日期
-    
-    @Column(name = "a_square_time")
-    private String aSquareTime;                      //实际结清日期
-    
-    @Column(name = "a_re_captical")
-    private BigDecimal aReCaptical;                 //至结清日累计已还款日期           
+	private String lReTime;                  //最后还款日期
 
-    @Column(name = "a_re_interest")
-    private BigDecimal aReInterest;                  //至结清日累计已还款利息          
+	@Column(name = "a_square_time")
+	private String aSquareTime;                      //实际结清日期
 
-    @Column(name="today_re_captical")
-    private BigDecimal todayReCaptical;             //本日还款本金
+	@Column(name = "a_re_captical")
+	private BigDecimal aReCaptical;                 //至结清日累计已还款日期
 
-    @Column(name="today_re_interest")
-    private BigDecimal todayReInterest;             //本日还款利息
-    
-    @Column(name="e_re_captical")
-    private BigDecimal eReCaptical;                //截止当日累计已还款本金
+	@Column(name = "a_re_interest")
+	private BigDecimal aReInterest;                  //至结清日累计已还款利息
+
+	@Column(name="today_re_captical")
+	private BigDecimal todayReCaptical;             //本日还款本金
+
+	@Column(name="today_re_interest")
+	private BigDecimal todayReInterest;             //本日还款利息
+
+	@Column(name="e_re_captical")
+	private BigDecimal eReCaptical;                //截止当日累计已还款本金
 
 	@Column(name="e_re_interest")
 	private BigDecimal eReInterest;		           //截止当日累计已还款利息
 
 	@Column(name = "paid_sum")
 	private BigDecimal paidSum;                    //已垫资总金额
-	
+
 	@Column(name="credit_sum")
 	private BigDecimal creditSum;			       //剩余未偿垫资金额
 
-	@Column(name = "debt_sum")                     
+	@Column(name = "debt_sum")
 	private BigDecimal debtSum;                      //放款金额
 
 	@Column(name="t_credit_sum")
 	private BigDecimal tCreditSum;                  //截止当日累计放款
+
+	@Column(name="status")
+	private String status;                  //截止当日累计放款
+
 
 	public Long getId() {
 		return id;
@@ -279,5 +302,22 @@ public class FssFinanceSumEntity implements Serializable {
 	public void setCertType(String certType) {
 		this.certType = certType;
 	}
-	
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
 }

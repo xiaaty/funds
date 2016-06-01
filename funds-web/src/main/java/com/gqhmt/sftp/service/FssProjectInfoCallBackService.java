@@ -12,7 +12,7 @@ import com.gqhmt.sftp.mapper.write.FssPorjectCallbackWriteMapper;
 
 @Service
 public class FssProjectInfoCallBackService {
-	
+
 	@Resource
 	private FssProjectCallbackReadMapper fssProjectInfoCallBackReadMapper;
 	@Resource
@@ -30,7 +30,7 @@ public class FssProjectInfoCallBackService {
 		}
 		return fssProjectInfoCallBackReadMapper.queryFssProjectCallBackList(map2);
 	}
-	
+
 	/**
 	 * 批量插入项目回盘信息
 	 * @param projectlist
@@ -38,5 +38,14 @@ public class FssProjectInfoCallBackService {
 	 */
 	public void createProjectInfo(List<FssProjectCallbackEntity> projectlist) throws FssException{
 		fssPorjectCallbackWriteMapper.insertList(projectlist);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月24日
+	 * function：修改项目信息回盘
+	 */
+	public void update(FssProjectCallbackEntity projectCallback) throws FssException{
+		fssPorjectCallbackWriteMapper.updateByPrimaryKey(projectCallback);
 	}
 }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import javax.persistence.*;
 
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -23,61 +23,61 @@ import javax.persistence.*;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_sftp_credit_info")
+@Table(name = "t_gq_fss_depos_fuiou_credit_info")
 public class FssCreditInfoEntity implements Serializable{
 
 
-    /**
-	 * 
+	/**
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "id",updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-	
+	@Column(name = "id",updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	@Column(name="parent_id")
 	private Long parentId;                      //parent_id
 
-    @Column(name = "total_number") 
-    private int  totalNumber;  //总笔数',
-    
-    @Column(name = "target_id") 
-    private Long targetId;	//标的号(项目id)',
+	@Column(name = "total_number")
+	private int  totalNumber;  //总笔数',
 
-    @Column(name = "trade_time")
-    private String  tradeTime;   //交易时间
-    
-    @Column(name = "trade_type")
-    private String tradeType;		//交易类型
-    
-    @Column(name = "cust_name")
-    private String custName;		//投资人姓名,
-    
-    @Column(name = "cert_type")
-    private String certType;		//投资人证件类型
-    
-    @Column(name = "cert_no")
-    private String certNo;			//投资人证件号码
-    
-    @Column(name = "loan_id")
-    private String loanId;		//支付机构借款人ID
-    
-    @Column(name = "loan_name")
-    private String loanName;		//借款人姓名
-    
-    @Column(name = "loan_cert_no")
-    private String loanCertNo;			//借款人身份证号码
-    
-    @Column(name = "pay_amount")
-    private BigDecimal payAmount;		//该笔放款金额'
-    
-    @Column(name = "repayment_capital")
-    private BigDecimal repaymentCapital;		//该笔还款本金，单位：元（保留两位小数）'
-    
-    @Column(name = "repayment_interest")
-    private BigDecimal repaymentInterest;		//该笔还款利息，单位：元（保留两位小数）'
+	@Column(name = "target_id")
+	private Long targetId;	//标的号(项目id)',
+
+	@Column(name = "trade_time")
+	private String  tradeTime;   //交易时间
+
+	@Column(name = "trade_type")
+	private String tradeType;		//交易类型
+
+	@Column(name = "cust_name")
+	private String custName;		//投资人姓名,
+
+	@Column(name = "cert_type")
+	private String certType;		//投资人证件类型
+
+	@Column(name = "cert_no")
+	private String certNo;			//投资人证件号码
+
+	@Column(name = "loan_id")
+	private String loanId;		//支付机构借款人ID
+
+	@Column(name = "loan_name")
+	private String loanName;		//借款人姓名
+
+	@Column(name = "loan_cert_no")
+	private String loanCertNo;			//借款人身份证号码
+
+	@Column(name = "pay_amount")
+	private BigDecimal payAmount;		//该笔放款金额'
+
+	@Column(name = "repayment_capital")
+	private BigDecimal repaymentCapital;		//该笔还款本金，单位：元（保留两位小数）'
+
+	@Column(name = "repayment_interest")
+	private BigDecimal repaymentInterest;		//该笔还款利息，单位：元（保留两位小数）'
 
 	public Long getId() {
 		return id;
@@ -198,7 +198,7 @@ public class FssCreditInfoEntity implements Serializable{
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
-    
-    
-    
+
+
+
 }

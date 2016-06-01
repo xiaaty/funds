@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "t_gq_fss_sftp_finance_sum_audit")
+@Table(name = "t_gq_fss_depos_fuiou_finance_sum_callback")
 public class FssSumAuditEntity implements Serializable {
 
 	@Id
@@ -22,31 +22,31 @@ public class FssSumAuditEntity implements Serializable {
 
 	@Column(name="parent_id")
 	private Long parentId;                      //parent_id
-	
+
     @Column(name="org_target_id")
     private String orgTargetId;                      //支付机构标的id
 
     @Column(name = "org_terrace_id")
     private String orgTerraceId;                     //支付机构平台id
 
-    @Column(name = "cust_no")                     
+    @Column(name = "cust_no")
     private String custNo;                           //放款客户号
-    
-    @Column(name = "cert_type")                     
+
+    @Column(name = "cert_type")
     private String certType;                           //借款人证件类型
 
-    @Column(name = "cust_name")       
+    @Column(name = "cust_name")
     private String custName;                        //客户姓名
 
     @Column(name = "cert_no")
     private String certNo;                          //客户身份证号
 
     @Column(name = "target_state")
-    private String targetState;                    //标的状态  
+    private String targetState;                    //标的状态
 
     @Column(name = "tender_time")
     private String tenderTime;                     //发标日期
-    
+
     @Column(name = "full_scale_time")
     private String fullScaleTime;                  //实际满标日期
 
@@ -54,26 +54,26 @@ public class FssSumAuditEntity implements Serializable {
     private BigDecimal tReCaptical;                 //应还款总本金
 
     @Column(name = "t_re_interest")
-    private BigDecimal tReInterest;                 //应还款总利息          
+    private BigDecimal tReInterest;                 //应还款总利息
 
 	@Column(name = "l_rep_time")
     private String lRepaymentTime;                  //最后还款日期
-    
+
     @Column(name = "a_square_time")
     private String aSquareTime;                      //实际结清日期
-    
+
     @Column(name = "a_re_captical")
-    private BigDecimal aReCaptical;                 //至结清日累计已还款日期           
+    private BigDecimal aReCaptical;                 //至结清日累计已还款日期
 
     @Column(name = "a_re_interest")
-    private BigDecimal aReInterest;                  //至结清日累计已还款利息          
+    private BigDecimal aReInterest;                  //至结清日累计已还款利息
 
     @Column(name="today_re_captical")
     private BigDecimal todayReCaptical;             //本日还款本金
 
     @Column(name="today_re_interest")
     private BigDecimal todayReInterest;             //本日还款利息
-    
+
     @Column(name="e_re_captical")
     private BigDecimal eReCaptical;                //截止当日累计已还款本金
 
@@ -82,17 +82,17 @@ public class FssSumAuditEntity implements Serializable {
 
 	@Column(name = "paid_sum")
 	private BigDecimal paidSum;                    //已垫资总金额
-	
+
 	@Column(name="credit_sum")
 	private BigDecimal creditSum;			       //剩余未偿垫资金额
 
-	@Column(name = "debt_sum")                     
+	@Column(name = "debt_sum")
 	private BigDecimal debtSum;                      //放款金额
 
 	@Column(name="t_credit_sum")
 	private BigDecimal tCreditSum;                 //截止当日累计放款
-	
-	@Column(name = "audit_state")                 
+
+	@Column(name = "audit_state")
 	private String auditState;                      //放款审核状态
 
 	@Column(name="freeze_sum")

@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
     
-   <%@include file="../../include/common_css_js.jsp"%>
+   <%@include file="../../../include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -27,7 +27,7 @@
 </head>
 <body>
     
-<%@include file="../../include/menu.jsp"%>
+<%@include file="../../../include/menu.jsp"%>
 
     <div id="main" role="main">
 
@@ -47,13 +47,13 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="dictForm" action="${contextPath}/sys/dictionary/${parent_id}/add/save" method="post">
+                    <form id="cardBInForm" action="${contextPath}/fss/customer/saveCardBin" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
-                            <div class="jarviswidget" id="dictAdd" data-widget-deletebutton="false" data-widget-editbutton="false">
+                            <div class="jarviswidget" id="cardBinAdd" data-widget-deletebutton="false" data-widget-editbutton="false">
                                <header>
-                                    <h2><i class="fa fa-edit pr10"></i>新增字典信息<font class="pl10 f12 color07"></font></h2>
+                                    <h2><i class="fa fa-edit pr10"></i>新增银行卡bin信息<font class="pl10 f12 color07"></font></h2>
                                 </header>
                                 <div>
                                     <div class="smart-form">
@@ -68,61 +68,58 @@
                                                     <col />
                                                     <tbody>
                                                         <tr>
-                                                            <td align="left">上级目录：</td>
+                                                            <td align="left">发卡行名称：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" readonly="readonly" name="parentId" value="${dict.parentId}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50"  name="bankName"  style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</td>
+                                                            <td align="left">机构代码：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="8" name="dictId" value="${dict.dictId}" style="width:256px;" />
+                                                                    <input type="text" maxlength="8" name="organCode"  style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</td>
+                                                            <td align="left">卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" name="dictName" value="${dict.dictName}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" name="cardName" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">是否有效：</td>
+                                                            <td align="left">长&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;度：</td>
                                                             <td>
-                                                                <label class="select">
-                                                                    <select style="width:256px;" name="isValid" value="${dict.isValid}">
-                                                                    <%--
-                                                                        <option value="0">是</option>
-                                                                        <option value="1">否</option>
-                                                                     --%>
-                                                                        <fss:dictOrder var="order" dictOrder="isValid">
-                                                                            <option value="${order.key}">${order.value}</option>
-                                                                        </fss:dictOrder>
-                                                                    </select>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" name="length" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">是否最后一级：</td>
+                                                            <td align="left">取&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;值：</td>
                                                             <td>
-                                                                <label class="select">
-                                                                    <fss:dictOrder var="order" dictOrder="yesOrNo">
-                                                                        <%--<option value="${order.key}">${order.value}</option>--%>
-                                                                        <input type="radio" name="isEnd" value="${order.key}" id="t_${order.key}" <c:if test="${order.key == 98010002}">checked</c:if> ><label for="t_${order.key}">${order.value}</label>
-                                                                        &nbsp;&nbsp;&nbsp;
-                                                                    </fss:dictOrder>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" name="takeValue" style="width:256px;" />
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left">卡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;种：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" name="cardType" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                                 <div class="mb20" id="wid-id-713">
-                                                    <button class="btn btn-default table-nobg-btn" type="button" id="adddictmain">保存</button>
+                                                    <button class="btn btn-default table-nobg-btn" type="button" id="addCardBin">保存</button>
+                                                    <button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/customer/cardBinList'">返&nbsp;&nbsp;&nbsp;回</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -137,24 +134,23 @@
         </div>
     </div>
 
-<%@include file="../../include/common_footer_css_js.jsp"%>
+<%@include file="../../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-    	    $("#adddictmain").click(function () {
+    	    $("#addCardBin").click(function () {
     	        if (validateCheck()) {
-    	            $("#dictForm").ajaxSubmit({
+    	            $("#cardBInForm").ajaxSubmit({
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
     	                dataType: "json",
     	                success: function (data) {
     	                    if (data.code == '0000') {
     	                        jAlert("添加成功!", '信息提示');
     	                        //自动跳转
-    	                        var parent_id=data.parentid;
-    	                        parent.location.href="${contextPath}/sys/dictionary/${parent_id}";
+    	                        parent.location.href="${contextPath}/fss/customer/cardBinList";
     	                    } else {
-    	                    	jAlert("添加失败,该编号已经存在,请勿重复添加!", '消息提示');
+    	                    	jAlert("添加失败", '消息提示');
     	                        return;
     	                    }
     	                }

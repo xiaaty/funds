@@ -28,8 +28,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
-//import com.gqhmt.sftp.txt.CreateTXT;
-//import com.gqhmt.sftp.txt.ReadTXTFile;
+import com.gqhmt.sftp.txt.CreateTXT;
+import com.gqhmt.sftp.txt.ReadTXTFile;
 import com.gqhmt.sftp.utils.SFTPDownLoadutils;
 import com.gqhmt.sftp.utils.SFTPuploadUtils;
 import com.gqhmt.util.CommonUtil;
@@ -37,12 +37,12 @@ import com.gqhmt.util.CommonUtil;
 public class TestSftp extends TestService {
     @Resource
     private SFTPuploadUtils sFTPuploadUtils;
-//    @Resource
-//    private CreateTXT createTXT;
+    @Resource
+    private CreateTXT createTXT;
     @Resource
     private SFTPDownLoadutils sftpDownLoadutils;
-//    @Resource
-//    private ReadTXTFile readTXTFile;
+    @Resource
+    private ReadTXTFile readTXTFile;
     @Resource
     private PaymentCallback paymentCallback;
     private static int num = 1000;
@@ -122,9 +122,9 @@ public class TestSftp extends TestService {
      */
     @Test
     public void downBidback() throws Exception {
-//        String filePath = "F:\\bidBack" + CommonUtil.dateTostring(new Date()) + ".txt";
-//        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/" + "P2P_PWXM_BACK_" + CommonUtil.dateTostring(new Date()) + ".txt", filePath);
-//        readTXTFile.insertProjectCallBacks(filePath);
+        String	filePath="F:\\P2P_PWXM_BACK_20160601.txt";
+        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_20160601.txt",filePath );
+        readTXTFile.insertProjectCallBacks(filePath);
 
     }
 

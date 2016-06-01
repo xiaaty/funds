@@ -20,66 +20,69 @@ import javax.persistence.*;
  * 2016年5月6日  柯禹来      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_sftp_account_file")
+@Table(name = "t_gq_fss_depos_fuiou_account")
 public class FssAccountFileEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "id",updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Column(name = "id",updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "mchn") 
-    private String  mchn;  //商户号
-    
-    @Column(name = "registered_seq_no") 
-    private String registeredSeqNo;			//平台注册流水，持续唯一',
+	@Column(name = "parent_id")
+	private Long parentId;
 
-    @Column(name = "platform_username")
-    private String  platformUsername;   	//'平台用户名',
-    
-    @Column(name = "login_username")
-    private String loginUsername;		//登陆用户名
-    
-    @Column(name = "age")
-    private Integer age;		
-    
-    @Column(name = "acc_name")
-    private String accName;		//户名
-    
-    @Column(name = "cert_type")
-    private String certType;			
-    
-    @Column(name = "cert_no")
-    private String certNo;		
-    
-    @Column(name = "sex")
-    private Integer sex;		
-    
-    @Column(name = "mobile")
-    private String mobile;			
-    
-    @Column(name = "address")
-    private String address;		
-    
-    @Column(name = "user_properties")
-    private Integer userProperties;		
-    
-    @Column(name = "registration_date")
-    private String registrationDate;		
-    
-    @Column(name = "third_party_payment_id")
-    private String thirdPartyPaymentId;			
-    
-    @Column(name = "action_type")
-    private String actionType;			
-    
-    @Column(name = "remark")
-    private String remark;
-    
-    @Column(name = "status")
-    private String status;
+	@Column(name = "mchn")
+	private String  mchn;  //商户号
+
+	@Column(name = "registered_seq_no")
+	private String registeredSeqNo;			//平台注册流水，持续唯一',
+
+	@Column(name = "platform_username")
+	private String  platformUsername;   	//'平台用户名',
+
+	@Column(name = "login_username")
+	private String loginUsername;		//登陆用户名
+
+	@Column(name = "age")
+	private Integer age;
+
+	@Column(name = "acc_name")
+	private String accName;		//户名
+
+	@Column(name = "cert_type")
+	private String certType;
+
+	@Column(name = "cert_no")
+	private String certNo;
+
+	@Column(name = "sex")
+	private Integer sex;
+
+	@Column(name = "mobile")
+	private String mobile;
+
+	@Column(name = "address")
+	private String address;
+
+	@Column(name = "user_properties")
+	private Integer userProperties;
+
+	@Column(name = "registration_date")
+	private String registrationDate;
+
+	@Column(name = "third_party_payment_id")
+	private String thirdPartyPaymentId;
+
+	@Column(name = "action_type")
+	private String actionType;
+
+	@Column(name = "remark")
+	private String remark;
+
+	@Column(name = "status")
+	private String status;
 
 	public Long getId() {
 		return id;
@@ -223,6 +226,14 @@ public class FssAccountFileEntity implements Serializable{
 
 	public void setStatus(String status) {
 		this.status = status;
-	}		
-    
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
 }
