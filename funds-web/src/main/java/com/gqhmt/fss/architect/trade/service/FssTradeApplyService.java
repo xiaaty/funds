@@ -430,7 +430,6 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity fssTradeApplyEntity=this.CreateFssTradeApplyEntity(dto);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
-			fssTradeApplyEntity.setSettleType(Integer.valueOf(dto.getSettle_type()));
 		} catch (Exception e) {
 			throw new FssException("91009804");
 		}
@@ -491,6 +490,7 @@ public class FssTradeApplyService {
 		//提现添加预约到账日期
 		if(dto.getApply_type().equals("1104")){//提现
 			fssTradeApplyEntity.setBespokedate(new Date());
+			fssTradeApplyEntity.setSettleType(Integer.valueOf(dto.getSettle_type()));
 		}
 		return fssTradeApplyEntity;
 	}

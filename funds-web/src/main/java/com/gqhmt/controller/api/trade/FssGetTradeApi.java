@@ -107,7 +107,7 @@ public class FssGetTradeApi {
 	 * @return
      */
 	@RequestMapping(value = "/chargeAmount",method = {RequestMethod.POST,RequestMethod.GET})
-	public Object getCost(CostDto dto){
+	public Object getCost(@RequestBody CostDto dto){
 		Response response=new Response();
 		try {
 			response = chargesImpl.execute(dto);

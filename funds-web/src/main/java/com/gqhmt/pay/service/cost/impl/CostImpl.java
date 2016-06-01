@@ -1,7 +1,6 @@
 package com.gqhmt.pay.service.cost.impl;
 
 import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -54,25 +53,25 @@ public class CostImpl  implements ICost{
     private  final Map<String,Long> map = new ConcurrentHashMap<>();
 
     private CostImpl(){
-        map.put("10990003_10040001",5l); //服务费(咨询费)   北京
-        map.put("10990003_10040002",8l); //               天津
-        map.put("10990003_10040003",11l); //              上海
-        map.put("10990003_10040099",5l); //             其他城市
+        map.put("10990003_10040001",611901l); //服务费(咨询费)   北京
+        map.put("10990003_10040002",611901l); //               天津
+        map.put("10990003_10040003",611901l); //              上海
+        map.put("10990003_10040099",611901l); //             其他城市
 
-        map.put("10990004_10040001",1l);//账户管理费
-        map.put("10990004_10040002",6l);
-        map.put("10990004_10040003",9l);
-        map.put("10990004_10040099",1l);
+        map.put("10990004_10040001",611901l);//账户管理费
+        map.put("10990004_10040002",611901l);
+        map.put("10990004_10040003",611901l);
+        map.put("10990004_10040099",611901l);
         
         map.put("10990005_10040001",5l);//特殊服务费
         map.put("10990005_10040002",8l);
         map.put("10990005_10040003",11l);
         map.put("10990005_10040099",5l);
         
-        map.put("10990006_10040001",1l);//准时还款保证金
-        map.put("10990006_10040002",1l);
-        map.put("10990006_10040003",1l);
-        map.put("10990006_10040099",1l);
+        map.put("10990006_10040001",611901l);//准时还款保证金
+        map.put("10990006_10040002",611901l);
+        map.put("10990006_10040003",611901l);
+        map.put("10990006_10040099",611901l);
         
         map.put("10990007_10040001",1l);//实收罚息滞纳金
         map.put("10990007_10040002",6l);
@@ -138,6 +137,11 @@ public class CostImpl  implements ICost{
         map.put("21992105_10040002",4l);
         map.put("21992105_10040003",4l);
         map.put("21992105_10040099",4l);
+
+        map.put("11060005_10040001",1l);//风险备用金扣除
+        map.put("11060005_10040002",6l);
+        map.put("11060005_10040003",9l);
+        map.put("11060005_10040099",1l);
     }
 
     @Override
@@ -179,7 +183,7 @@ public class CostImpl  implements ICost{
         FundAccountEntity toAccountEntity= fundAccountService.getFundAccount(toCustId,bustType.intValue());
         if (toAccountEntity == null) throw new FssException("90002001");
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType);
-        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,bustType);
+        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,bustType,loanType);
         return  fundOrderEntity;
     }
 
@@ -213,7 +217,7 @@ public class CostImpl  implements ICost{
 
         if (fromAccountEntity == null) throw new FssException("90004006");
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType);
-        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,null);
+        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,null,loanType);
         return  fundOrderEntity;
     }
 
