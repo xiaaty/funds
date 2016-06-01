@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssFuiouAccountReadMapper">
+
+ <select id="getAccountByCentNo" parameterType="java.lang.String"  resultType="com.gqhmt.fss.architect.account.bean.FssFuiouAccountBean">
+	SELECT
+		f.id id,
+		f.cus_no cusNo,
+		f.user_no userNo,
+		f.acc_no accNo,
+		f.acc_user_name accUserName,
+		f.bank_card_no bankCardNo,
+		f.create_time createTime,
+		f.modify_time modifyTime,
+		f.mchn_parent mchnParent,
+		f.mchn_child mchnChild,
+		f.has_open_acc_fuiou hasOpenAccFuiou,
+		c.name name,
+  		c.mobile mobile,
+		c.cert_type certType,
+		c.cert_no certNo,
+		c.user_id userId,
+		c.is_auth_real_name isAuthRealName,
+		c.create_user_id createUserId,
+		c.modify_user_id modifyUserId,
+		c.cust_id custId
+	FROM t_gq_fss_fuiou_account f,t_gq_fss_customer c 
+	WHERE f.cus_no=c.cust_no and c.cert_no=#{certNo}
+	order by f.create_time desc
+</select>
+ <select id="getByAccNo" parameterType="java.lang.String"  resultType="com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity">
+	SELECT
+		f.id id,
+		f.cus_no cusNo,
+		f.user_no userNo,
+		f.acc_no accNo,
+		f.acc_user_name accUserName,
+		f.bank_card_no bankCardNo,
+		f.create_time createTime,
+		f.modify_time modifyTime,
+		f.mchn_parent mchnParent,
+		f.mchn_child mchnChild,
+		f.has_open_acc_fuiou hasOpenAccFuiou
+	FROM t_gq_fss_fuiou_account f 
+	where  f.acc_no=#{accNo}
+	order by f.create_time desc
+</select>
+</mapper>
+
+

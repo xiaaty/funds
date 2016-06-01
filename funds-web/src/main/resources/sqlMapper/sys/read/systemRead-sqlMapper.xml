@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.gqhmt.sys.mapper.read.SystemReadMapper">
+
+	<sql id="field">
+		SELECT
+		t.dict_id dictId,
+		t.dict_name dictName,
+		t.create_user_id careateUserId,
+		t.create_time createTime,
+		t.modify_user_id modifyUserId,
+		t.modify_time modifyTime,
+		t.sort sort,
+		t.is_valid isValid,
+		t.is_end isEnd,
+		t.parent_id parentId
+		FROM `t_gq_fss_dict` t
+	</sql>
+
+	<select id="selectDictmain" parameterType="com.gqhmt.sys.entity.DictEntity"  resultType="com.gqhmt.sys.entity.DictEntity">
+
+		<include refid="field"/>
+		where 1=1
+		<if test="dictId!= null and dictId !='' ">
+		  and t.dict_id like  concat('%',#{dictId},'%')
+		</if>
+		<if test="parentId!=null and parentId !='' ">
+		  and t.parent_id =#{parentId}
+		</if>
+		<if test="dictName != null and dictName !=''">
+			and t.dict_name like  concat('%',#{dictName},'%')
+		</if>
+	</select>
+	
+	
+	<select id="getDictMainById" parameterType="java.lang.String" resultType="com.gqhmt.sys.entity.DictEntity">
+		<include refid="field"/>
+	   where t.dict_id=#{dictId}
+	</select>
+	
+	<select id="selectDictByOrderList" parameterType="java.util.List" resultType="com.gqhmt.sys.entity.DictEntity">
+		<include refid="field"/>
+	   where t.dict_id  NOT IN
+	    <foreach collection="list" item="dictId" index="index"
+           open="(" close=")" separator=",">
+           ${dictId}
+       </foreach>
+	</select>
+	
+	<select id="selectDictOrderList" parameterType="java.util.List" resultType="com.gqhmt.sys.entity.DictEntity">
+		<include refid="field"/>
+		 where t.dict_id IN
+	    <foreach collection="list" item="dictId" index="index"
+           open="(" close=")" separator=",">
+           #{dictId}
+       </foreach>
+
+	</select>
+	
+	
+
+</mapper>

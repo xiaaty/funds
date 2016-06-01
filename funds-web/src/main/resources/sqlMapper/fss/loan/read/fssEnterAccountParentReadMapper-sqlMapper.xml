@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.loan.mapper.read.FssEnterAccountParentReadMapper">
+
+	<sql id="whereSql">
+			<if test="mchnNo != null and mchnNo != ''">
+				and t.mchn_child = #{mchnNo}
+			</if>
+			<if test="seqNo != null and seqNo != '' ">
+				and t.seq_no = #{seqNo}
+			</if>
+	</sql>
+	<sql id="fileSql">
+			 SELECT 
+			t.id,
+		    t.seq_no seqNo,
+		    t.trade_type tradeType,
+		    t.trade_count tradeCount,
+		    t.success_count successCount,
+		    t.filed_count filedCount,
+		    t.state state,
+		    t.result_state resultState,
+		    t.create_time createTime,
+		    t.motify_time motifyTime,
+		    t.mchn_parent mchnParent,
+		    t.mchn_child mchnChild
+			FROM t_gq_fss_enter_account_parent t
+	</sql>
+	<!-- 入账回盘-->
+	<select id="getEnterAccountParent"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+			<include refid="fileSql" />
+			where 1=1
+			<include refid="whereSql" />
+		order by t.create_time desc
+	</select>
+<!-- 	根据交易状态查询主表列表 -->
+	<select id="getEnterAccountParentByState"   resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+			<include refid="fileSql" />
+			where t.result_state=10080001
+		order by t.create_time desc
+	</select>
+		<!-- 得到入账表 -->
+	<select id="getEnterAccountParentList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity" >
+			<include refid="fileSql" />
+			where 1=1
+			<if test="resultState != null and resultState != ''">
+				and t.result_state like concat('%',#{resultState},'%')
+			</if>
+			<if test="tradeType != null and tradeType != ''">
+				and t.trade_type like concat('%',#{tradeType},'%')
+			</if>
+			<if test="mchnChild != null and mchnChild != ''">
+				and t.mchn_child like concat('%',#{mchnChild},'%')
+			</if>
+		ORDER by t.create_time desc
+	</select>
+</mapper>
