@@ -8,6 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
+    <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -27,7 +28,6 @@
         .footer-bottom ul>li{padding:0}
         .footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
     </style>
-
 </head>
 
 <body>
@@ -42,7 +42,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>交易管理</li>
-              <li>借款流程</li>
+            <li>借款流程</li>
             <li>抵押标满标</li>
         </ol>
         <!-- end breadcrumb -->
@@ -52,15 +52,15 @@
                 <div class="row">
                     <!-- NEW WIDGET START -->
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="jarviswidget" id="MWithDraw"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                        <div class="jarviswidget" id="mo_WithDraw"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
                             <!-- widget div-->
                             <div>
-                           
-                                <form class="smart-form" id="borrowWithDraw" action="${contextPath}/fss/loan/trade/borrowWithDraw" method="post" >
-                              
+
+                                <form class="smart-form" id="borrowWithDraw" action="${contextPath}/loan/trade/${type}" method="post" >
+
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
                                         <!-- This area used as dropdown edit box -->
@@ -130,15 +130,15 @@
                         </div>
 
                         </div>
-    <div id="content">
+    <div id="contents">
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-30"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="mwithDraw"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>借款人提现列表</h2>
+                            <h2>抵押权人提现列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -150,12 +150,12 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="100" />
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2200px;">
+                                    	<col width="50" />
                                     	<col width="200" />
                                     	<col width="200" />
                                     	<col width="200" />
-                                    	<col width="200" />
+                                    	<col width="150" />
                                     	<col width="200" />
                                     	<col width="200" />
                                     	<col width="200" />
@@ -166,12 +166,11 @@
                                         <thead>
                                         <tr>
                                             <td>序号</td>
-                                            <td>借款人资金平台账号</td>
+                                            <td>抵押权人人资金平台账号</td>
                                             <td>交易流水号</td>
                                             <td>合同ID</td>
-                                            <td>放款金额   </td>
+                                            <td>提现金额 </td>
                                             <td>交易状态 </td>
-                                            <td>交易结果</td>
                                             <td>商户号</td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
@@ -182,19 +181,21 @@
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${t.id}</td>
-                                                    <td>${t.accNo}</td>
+                                                    <td>${l.index+1}</td>
+                                                    <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.seqNo}</td>
                                                     <td>${t.contractId}</td>
-                                                    <td>${t.tradeAmount}</td>
-                                                    <td> <fss:dictView key="${t.applyState}" /></td>
-                                                    <td> <fss:dictView key="${t.tradeState}" /></td>
+                                                    <td>${t.contractAmt}</td>
+                                                    <td> <fss:dictView key="${t.status}" /></td>
                                                     <td>${t.mchnChild}</td>
                                                     <td><fss:fmtDate value="${t.createTime}"/></td>
                                                     <td><fss:fmtDate value="${t.modifyTime}"/></td>
-                                                    <td><fss:fmtDate value="${t.bespokedate}"/></td>
+                                                    <td><fss:fmtDate value="${t.bespokeDate}"/></td>
                                                     <%-- <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td> --%>
-                                                	<td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td>
+                                                	<td>
+                                                        <c:if test="${t.status=='10050009'}">
+                                                            <a href="${contextPath}/fss/loan/trade/${type}/${t.id}">抵押权人提现</a></td>
+                                                         </c:if>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -218,36 +219,8 @@
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#borrowWithDraw"));
     });
-    $('.selectdate').datetimepicker({
-        language:  'zh-CN',
-        weekStart: 1,
-        autoclose: 1,
-        format:'yyyy-mm-dd',
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    });
-    function verify(){
-    	var a=document.getElementsByName("creatTime");
-    	var b=document.getElementsByName("modifyTime");
-    	if(b[0].value!=null&&b[0].value!=''){
-    		
-    		if(a[0].value>b[0].value){
-    			JAlert("请检查您输入的日期","提示消息");
-    		}else{
-    			$("#borrowWithDraw").submit();
-    		}
-    	}else{
-    		var d = new Date();
-    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
-    		if(a[0].value>str){
-    			JAlert("请检查您输入的日期","提示消息");
-    		}else{
-    			$("#borrowWithDraw").submit();
-    		}
-    	}
-    }
+
+
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>
