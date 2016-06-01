@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.csv;
+package com.gqhmt.sftp.txt;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.math.BigDecimal;
