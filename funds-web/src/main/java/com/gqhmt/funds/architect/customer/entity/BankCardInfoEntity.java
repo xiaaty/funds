@@ -191,7 +191,6 @@ public class BankCardInfoEntity implements java.io.Serializable {
         this.certName = certName;
     }
     
-    
     public String getCityId() {
         return cityId;
     }
