@@ -278,7 +278,7 @@ public class PaySuperByFuiou {
             return "9100"+code;
         }else if(code.length() == 5){
             return "910"+code;
-        }else if(code.length() == 4){
+        }else if(code.length() == 6){
             return "91"+code;
         }
 

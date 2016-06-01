@@ -110,7 +110,7 @@ public class APIValidAop {
         }
 
         String resCode = response.getResp_code();
-        if(resCode != null && Integer.parseInt(resCode) == 0){
+        if(resCode != null){
             resCode = "0000";
             response.setResp_code(resCode);
         }

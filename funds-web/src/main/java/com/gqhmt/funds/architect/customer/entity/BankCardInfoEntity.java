@@ -107,11 +107,7 @@ public class BankCardInfoEntity implements java.io.Serializable {
 	}
 
 	public void setBankSortName(String bankSortName) {
-		if(null!=bankSortName && !"".equals(bankSortName)){
-			this.bankSortName = bankSortName;
-		}else{
-			this.bankSortName = Application.getInstance().getDictName("9703"+this.getParentBankId());
-		}
+		this.bankSortName = Application.getInstance().getDictName("9703"+this.getParentBankId());
 	}
 
 	public String getBankNo() {
