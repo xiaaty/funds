@@ -4,10 +4,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>交易审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>借款流程--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
@@ -150,13 +149,12 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2200px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2000px;">
                                     	<col width="50" />
                                     	<col width="200" />
                                     	<col width="200" />
                                     	<col width="200" />
                                     	<col width="150" />
-                                    	<col width="200" />
                                     	<col width="200" />
                                     	<col width="200" />
                                     	<col width="200" />
@@ -174,7 +172,6 @@
                                             <td>商户号</td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
-                                            <td>预约到账日期</td>
 											<td>操作</td>
                                         </tr>
                                         </thead>
@@ -190,7 +187,6 @@
                                                     <td>${t.mchnChild}</td>
                                                     <td><fss:fmtDate value="${t.createTime}"/></td>
                                                     <td><fss:fmtDate value="${t.modifyTime}"/></td>
-                                                    <td><fss:fmtDate value="${t.bespokeDate}"/></td>
                                                     <%-- <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td> --%>
                                                 	<td>
                                                         <c:if test="${t.status=='10050009'}">
