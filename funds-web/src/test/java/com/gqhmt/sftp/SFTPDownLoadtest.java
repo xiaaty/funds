@@ -24,11 +24,11 @@ public class SFTPDownLoadtest {
 	        
 	        SFTPChannel channel = test.getSFTPChannel();
 	        ChannelSftp chSftp = channel.getChannel(sftpDetails, 60000);
-	        String filename = "/DriversBackup/6666666.csv";
+	        String filename = "/DriversBackup/6666666.txt";
 	        SftpATTRS attr = chSftp.stat(filename);
 	        long fileSize = attr.getSize();
 	        
-	        String dst = "F:\\DTLFolder\\33333333.csv";
+	        String dst = "F:\\DTLFolder\\33333333.txt";
 	        OutputStream out = new FileOutputStream(dst);
 	        try {
 	            chSftp.get(filename, dst, new FileProgressMonitor(fileSize)); // 代码段1

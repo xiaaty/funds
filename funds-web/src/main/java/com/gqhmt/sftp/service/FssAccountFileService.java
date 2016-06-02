@@ -14,7 +14,7 @@ import com.gqhmt.sftp.mapper.write.FssAccountFileWriteMapper;
 import com.gqhmt.util.CommonUtil;
 
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -35,8 +35,8 @@ public class FssAccountFileService {
 	private FssAccountFileReadMapper fssAccountFileReadMapper;
 	@Resource
 	private FssAccountFileWriteMapper fssAccountFileWriteMapper;
-	
-	
+
+
 	public List<FssAccountFileEntity> queryItemsInfos(Map<String,String> map)throws FssException {
 		Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
@@ -49,7 +49,7 @@ public class FssAccountFileService {
 		return fssAccountFileReadMapper.selectAll();
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：添加
@@ -58,7 +58,7 @@ public class FssAccountFileService {
 		fssAccountFileWriteMapper.insertSelective(fileEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：修改
@@ -67,14 +67,14 @@ public class FssAccountFileService {
 		fssAccountFileWriteMapper.updateByPrimaryKey(fileEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：创建开户文件对象并添加金数据库
 	 */
 	public void creatAccountFile(String registeredSeqNo,String platformUsername,
-			String loginUsername,Integer age,String accName,Integer certType,String certNo,Integer sex,
-			String mobile,String address,Integer userProperties,Date registrationDate ,String thirdPartyPaymentId,String actionType,String remark) throws FssException{
+								 String loginUsername,Integer age,String accName,Integer certType,String certNo,Integer sex,
+								 String mobile,String address,Integer userProperties,Date registrationDate ,String thirdPartyPaymentId,String actionType,String remark) throws FssException{
 		FssAccountFileEntity fileEntity=new FssAccountFileEntity();
 		fileEntity.setMchn("0001000F0279762");
 		fileEntity.setRegisteredSeqNo(registeredSeqNo);
@@ -83,13 +83,13 @@ public class FssAccountFileService {
 		fileEntity.setAge(age);
 		fileEntity.setAccName(accName);
 		if (1==certType) {
-		fileEntity.setCertType("0");
+			fileEntity.setCertType("0");
 		}else if(2==certType){
-		fileEntity.setCertType("1");
+			fileEntity.setCertType("1");
 		}else if(4==certType){
-		fileEntity.setCertType("2");
+			fileEntity.setCertType("2");
 		}else{
-		fileEntity.setCertType("7");
+			fileEntity.setCertType("7");
 		}
 		fileEntity.setCertNo(certNo);
 		if(1==sex){
@@ -108,11 +108,11 @@ public class FssAccountFileService {
 		fileEntity.setThirdPartyPaymentId(thirdPartyPaymentId);
 		fileEntity.setActionType(actionType);
 		fileEntity.setRemark(remark);
-		fileEntity.setStatus("10100001");
+		fileEntity.setStatus("10110001");//10110001未报备，10110002已报备
 		this.insertAccountFile(fileEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月20日
 	 * function：根据交易状态查询文件列表

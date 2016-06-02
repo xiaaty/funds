@@ -13,12 +13,12 @@ import com.gqhmt.sftp.mapper.write.FssProjectInfoWriteMapper;
 
 @Service
 public class FssProjectInfoService {
-	
+
 	@Resource
 	private FssProjectInfoReadMapper fssProjectInfoReadMapper;
 	@Resource
 	private FssProjectInfoWriteMapper fssProjectInfoWriteMapper;
-	
+
 	/**
 	 * 项目信息列表
 	 * @param map
@@ -42,7 +42,7 @@ public class FssProjectInfoService {
 		fssProjectInfoWriteMapper.insertList(projectlist);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：添加
@@ -51,7 +51,7 @@ public class FssProjectInfoService {
 		fssProjectInfoWriteMapper.insertSelective(projectInfo);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：添加
@@ -60,14 +60,14 @@ public class FssProjectInfoService {
 		fssProjectInfoWriteMapper.updateByPrimaryKey(projectInfo);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：创建项目信息并添加进数据库
 	 */
 	public void createProjectInfo(String seqNo,String itemNo,String loanType,String loanTittle,String organization,String description,
-			Long loanAmt,Long expectedReturn,String productName,String repaymentType,String loanTime,String startDate,Long eachBidAmount,Integer minNum,
-			Long maxAmount,String accNo,String accGoldNo,String loanItemDescription,Long feeType,String status,Integer period,Long prepareAmount,String payChannel,String bidYearIrr,String custName,String certType,String certNo)throws FssException{
+								  Long loanAmt,Long expectedReturn,String productName,String repaymentType,String loanTime,String startDate,Long eachBidAmount,Integer minNum,
+								  Long maxAmount,String accNo,String accGoldNo,String loanItemDescription,Long feeType,String status,Integer period,Long prepareAmount,String payChannel,String bidYearIrr,String custName,String certType,String certNo)throws FssException{
 		FssProjectInfoEntity projectInfo=new FssProjectInfoEntity();
 		projectInfo.setMchn("0001000F0279762");
 		projectInfo.setSeqNo(seqNo);
@@ -100,12 +100,21 @@ public class FssProjectInfoService {
 		this.insertProjectInfo(projectInfo);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月6日
 	 * function：查找所有项目信息
 	 */
 	public List<FssProjectInfoEntity> queryItemsInfos()throws FssException {
 		return fssProjectInfoReadMapper.selectAll();
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月24日
+	 * function：根据状态查询项目信息列表
+	 */
+	public List<FssProjectInfoEntity> queryItemsInfosByStatus(String status)throws FssException {
+		return fssProjectInfoReadMapper.queryItemsInfosByStatus(status);
 	}
 }

@@ -60,12 +60,29 @@ public class FssCardBinService {
     public void insetList(List<FssCardBinEntity> cardBinEntities) throws FssException{
 		fssCardBinWriteMapper.insertList(cardBinEntities);
     }
+
+	/**
+	 * 通过id查询
+	 * @param id
+	 * @return
+	 * @throws FssException
+     */
+    public FssCardBinEntity selectedById(Long id) throws FssException{
+		return fssCardBinReadMapper.selectByPrimaryKey(id);
+    }
 	/**
 	 * 查询全部
 	 * @throws FssException
      */
     public List<FssCardBinEntity> findAll() throws FssException{
 		return fssCardBinReadMapper.selectAll();
+    }
+	/**
+	 * 条件查询
+	 * @throws FssException
+     */
+    public List<FssCardBinEntity> findList(FssCardBinEntity fssCardBinEntity) throws FssException{
+		return fssCardBinReadMapper.findList(fssCardBinEntity);
     }
 
 

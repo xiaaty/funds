@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -28,27 +28,27 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "t_gq_fss_sftp_record")
+@Table(name = "t_gq_fss_depos_fuiou_record")
 public class FssSftpRecordEntity implements Serializable {
 	@Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;                                 //主键id
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;                                 //主键id
 
-    @Column(name="title")
-    private String title;                      //文件名
+	@Column(name="title")
+	private String title;                      //文件名
 
-    @Column(name = "count")
-    private int count;                     //总条数
+	@Column(name = "count")
+	private int count;                     //总条数
 
-    @Column(name = "create_time")                     
-    private Date createTime;                           //创建时间
+	@Column(name = "create_time")
+	private Date createTime;                           //创建时间
 
-    @Column(name = "modify_time")       
-    private Date modifyTime;                        //修改时间',
+	@Column(name = "modify_time")
+	private Date modifyTime;                        //修改时间',
 
-    @Column(name = "type")
-    private String type;                          //类型
+	@Column(name = "type")
+	private String type;                          //类型
 
 	public Long getId() {
 		return id;
@@ -73,7 +73,7 @@ public class FssSftpRecordEntity implements Serializable {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
 	public Date getCreateTime() {
 		return createTime;
 	}

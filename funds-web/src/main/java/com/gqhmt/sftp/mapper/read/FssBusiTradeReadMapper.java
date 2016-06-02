@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.sftp.entity.FssBusinessTradeEntity;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -25,4 +26,11 @@ import com.gqhmt.sftp.entity.FssBusinessTradeEntity;
 public interface FssBusiTradeReadMapper extends ReadMapper<FssBusinessTradeEntity> {
 	
 	public List<FssBusinessTradeEntity> queryBusiTradeList(Map map);
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月24日
+	 * function：根据状态查询文件列表
+	 */
+	public List<FssBusinessTradeEntity> queryByStatus(@Param("status")String status);
 }

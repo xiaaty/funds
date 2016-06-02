@@ -18,6 +18,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

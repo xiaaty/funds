@@ -673,6 +673,7 @@ public class GlobalConstants {
 		  
         TRADE_APPLY_NO__MAPPING.put("11091001","JKTX");
         TRADE_APPLY_NO__MAPPING.put("11091002","GTFK");
+        TRADE_APPLY_NO__MAPPING.put("11092001","DCTX");
         TRADE_APPLY_NO__MAPPING.put("11040006","DYTX");
         TRADE_APPLY_NO__MAPPING.put("11040007","DCTX");
 //      TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");

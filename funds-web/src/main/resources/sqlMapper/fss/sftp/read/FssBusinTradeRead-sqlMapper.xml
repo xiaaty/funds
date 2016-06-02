@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.sftp.mapper.read.FssBusiTradeReadMapper">
-	<select id="queryBusiTradeList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssBusinessTradeEntity" >
-	  SELECT 
+	<sql id="selectSql">
+	 SELECT 
 		  `id` id,
 		  `mchn` mchn,
 		  `third_party_payment_id` thirdPartyPaymentId,
@@ -26,8 +26,12 @@
 		  `lend_name` lendName,
 		  `lend_cert_type` lendCertType,
 		  `lend_cert_no` lendCertNo,
-		  `busi_type` busiType
-	  From `t_gq_fss_sftp_busi_trade` t
+		  `busi_type` busiType,
+		  `status` status
+	  From `t_gq_fss_depos_fuiou_busi_trade` t
+	  </sql>
+	<select id="queryBusiTradeList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssBusinessTradeEntity" >
+	 <include refid="selectSql" />
 	 <where>
 		<if test="mchn!=null and mchn!=''">
 			AND t.`mchn` like CONCAT('%',#{mchn},'%')
@@ -36,6 +40,10 @@
 			AND t.`item_no` like CONCAT('%',#{itemNo},'%')
 		</if>
 	</where>
-</select>
+	</select>
+	<select id="queryByStatus" parameterType="java.lang.String" resultType="com.gqhmt.sftp.entity.FssBusinessTradeEntity" >
+	 <include refid="selectSql" />
+	 where t.status=#{status}
+	</select>
 	
 </mapper>

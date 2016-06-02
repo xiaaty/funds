@@ -10,7 +10,7 @@
 			t.modify_time modifyTime,
 			t.type type,
 			t.status status
-		FROM `t_gq_fss_sftp_record` t
+		FROM `t_gq_fss_depos_fuiou_record` t
 		<where>
 			<if test="title!=null and title!=''">
 				AND t.`title` like CONCAT('%',#{title},'%')
