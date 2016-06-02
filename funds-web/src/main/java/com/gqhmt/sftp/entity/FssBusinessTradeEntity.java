@@ -20,84 +20,92 @@ import javax.persistence.*;
  * 2016年5月6日  柯禹来      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_sftp_busi_trade")
+@Table(name = "t_gq_fss_depos_fuiou_busi_trade")
 public class FssBusinessTradeEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "id",updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Column(name = "id",updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "mchn") 
-    private String  mchn;  //商户号
-    
-    @Column(name = "third_party_payment_id")
-    private String thirdPartyPaymentId;		
 
-    @Column(name = "trade_date")
-    private String  tradeDate;   
-    
-    @Column(name = "trade_type")
-    private String tradeType;		
-    
-    @Column(name = "item_no")
-    private String itemNo;		
-    
-    @Column(name = "contract_no")
-    private String contractNo;		
-    
-    @Column(name = "out_fuiou_username")
-    private String outFuiouUsername;			
-    
-    @Column(name = "out_platform_username")
-    private String outPlatformUsername;		
-   
-    @Column(name = "amt")
-    private BigDecimal amt;			
-    
-    @Column(name = "charge")
-    private BigDecimal charge;		
-    
-    @Column(name = "this_repayment_principal")
-    private BigDecimal thisRepaymentPrincipal;		
-    
-    @Column(name = "this_repayment_interest")
-    private BigDecimal thisRepaymentInterest;		
-    
-    @Column(name = "come_fuiou_username")
-    private String comeFuiouUsername;		
-    
-    @Column(name = "come_platform_username")
-    private String comePlatformUsername;			
-    
-    @Column(name = "loan_username")
-    private String loanUsername;		
-    
-    @Column(name = "loan_cert_type")
-    private String loanCertType;		
-    
-    @Column(name = "loan_cert_no")
-    private String loanCertNo;	
-    
-    @Column(name = "lend_username")
-    private String lendUsername;	
-    
-    @Column(name = "lend_fuiou_username")
-    private String lendFuiouUsername;		
-    
-    @Column(name = "lend_name")
-    private String lendName;		
-    
-    @Column(name = "lend_cert_type")
-    private String lendCertType;	
-    
-    @Column(name = "lend_cert_no")
-    private String lendCertNo;	
-    
-    @Column(name = "busi_type")
-    private String busiType;
+	@Column(name = "parent_id")
+	private Long  parentId;
+
+
+	@Column(name = "mchn")
+	private String  mchn;  //商户号
+
+	@Column(name = "third_party_payment_id")
+	private String thirdPartyPaymentId;
+
+	@Column(name = "trade_date")
+	private String  tradeDate;
+
+	@Column(name = "trade_type")
+	private String tradeType;
+
+	@Column(name = "item_no")
+	private String itemNo;
+
+	@Column(name = "contract_no")
+	private String contractNo;
+
+	@Column(name = "out_fuiou_username")
+	private String outFuiouUsername;
+
+	@Column(name = "out_platform_username")
+	private String outPlatformUsername;
+
+	@Column(name = "amt")
+	private BigDecimal amt;
+
+	@Column(name = "charge")
+	private BigDecimal charge;
+
+	@Column(name = "this_repayment_principal")
+	private BigDecimal thisRepaymentPrincipal;
+
+	@Column(name = "this_repayment_interest")
+	private BigDecimal thisRepaymentInterest;
+
+	@Column(name = "come_fuiou_username")
+	private String comeFuiouUsername;
+
+	@Column(name = "come_platform_username")
+	private String comePlatformUsername;
+
+	@Column(name = "loan_username")
+	private String loanUsername;
+
+	@Column(name = "loan_cert_type")
+	private String loanCertType;
+
+	@Column(name = "loan_cert_no")
+	private String loanCertNo;
+
+	@Column(name = "lend_username")
+	private String lendUsername;
+
+	@Column(name = "lend_fuiou_username")
+	private String lendFuiouUsername;
+
+	@Column(name = "lend_name")
+	private String lendName;
+
+	@Column(name = "lend_cert_type")
+	private String lendCertType;
+
+	@Column(name = "lend_cert_no")
+	private String lendCertNo;
+
+	@Column(name = "busi_type")
+	private String busiType;
+
+	@Column(name = "status")
+	private String status;
 
 	public Long getId() {
 		return id;
@@ -289,6 +297,22 @@ public class FssBusinessTradeEntity implements Serializable{
 
 	public void setBusiType(String busiType) {
 		this.busiType = busiType;
-	}	
-    
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
 }

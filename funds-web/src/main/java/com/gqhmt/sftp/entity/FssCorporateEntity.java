@@ -20,75 +20,75 @@ import javax.persistence.*;
  * 2016年5月6日  柯禹来      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_sftp_corporate")
+@Table(name = "t_gq_fss_depos_fuiou_corporate")
 public class FssCorporateEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "id",updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Column(name = "id",updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "mchn") 
-    private String  mchn;  
-    
-    @Column(name = "seq_no") 
-    private String seqNo;		
+	@Column(name = "mchn")
+	private String  mchn;
 
-    @Column(name = "company_name")
-    private String  companyName;   
-    
-    @Column(name = "registered_date")
-    private String registeredDate;		
-    
-    @Column(name = "legalperson_name") 
-    private String legalpersonName;
-    
-    @Column(name = "cert_no")
-    private Integer certNo;		
-    
-    @Column(name = "mobile")
-    private String mobile;			
-    
-    @Column(name = "email")
-    private String email;		
-    
-    @Column(name = "third_party_payment_id")
-    private String thirdPartyPaymentId;		
-    
-    @Column(name = "action_type")
-    private String actionType;			
-    
-    @Column(name = "license_number")
-    private String licenseNumber;		
-    
-    @Column(name = "tax_no")
-    private String taxNo;		
-    
-    @Column(name = "organization_code")
-    private String organizationCode;		
-    
-    @Column(name = "platform_username")
-    private String platformUsername;		
-    
-    @Column(name = "gold_acc_login_name")
-    private String goldAccLoginName;		
-    
-    @Column(name = "remark")
-    private String remark;
-    
-    @Column(name = "user_attributes")
-    private String userAttributes;
-    
-    @Column(name = "bank_license")
-    private String bankLicense;
-    
-    @Column(name = "org_credit_code")
-    private String orgCreditCode;
-    
-    @Column(name = "unite_credit_code")
-    private String uniteCreditCode;
+	@Column(name = "seq_no")
+	private String seqNo;
+
+	@Column(name = "company_name")
+	private String  companyName;
+
+	@Column(name = "registered_date")
+	private String registeredDate;
+
+	@Column(name = "legalperson_name")
+	private String legalpersonName;
+
+	@Column(name = "cert_no")
+	private Integer certNo;
+
+	@Column(name = "mobile")
+	private String mobile;
+
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "third_party_payment_id")
+	private String thirdPartyPaymentId;
+
+	@Column(name = "action_type")
+	private String actionType;
+
+	@Column(name = "license_number")
+	private String licenseNumber;
+
+	@Column(name = "tax_no")
+	private String taxNo;
+
+	@Column(name = "organization_code")
+	private String organizationCode;
+
+	@Column(name = "platform_username")
+	private String platformUsername;
+
+	@Column(name = "gold_acc_login_name")
+	private String goldAccLoginName;
+
+	@Column(name = "remark")
+	private String remark;
+
+	@Column(name = "user_attributes")
+	private String userAttributes;
+
+	@Column(name = "bank_license")
+	private String bankLicense;
+
+	@Column(name = "org_credit_code")
+	private String orgCreditCode;
+
+	@Column(name = "unite_credit_code")
+	private String uniteCreditCode;
 
 	public Long getId() {
 		return id;
@@ -257,5 +257,5 @@ public class FssCorporateEntity implements Serializable{
 	public void setPlatformUsername(String platformUsername) {
 		this.platformUsername = platformUsername;
 	}
-	
+
 }

@@ -14,12 +14,12 @@ import com.gqhmt.sftp.mapper.write.FssBidFinanceWriteMapper;
 
 @Service
 public class FssBidFinanceService {
-	
+
 	@Resource
 	private FssFinanceSumReadMapper fssFinanceReadMapper;
 	@Resource
 	private FssBidFinanceWriteMapper fssBidFinanceWriteMapper;
-	
+
 	public List<FssFinanceSumEntity> queryBidFinanceList(Map<String,String> map){
 		Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
@@ -30,7 +30,7 @@ public class FssBidFinanceService {
 		return fssFinanceReadMapper.queryFssFinanceSumList(map2);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月19日
 	 * function：添加
@@ -39,7 +39,7 @@ public class FssBidFinanceService {
 		fssBidFinanceWriteMapper.insertSelective(fssFinanceSumEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月19日
 	 * function：修改
@@ -48,16 +48,16 @@ public class FssBidFinanceService {
 		fssBidFinanceWriteMapper.updateByPrimaryKey(fssFinanceSumEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月18日
 	 * function：创建标的财务汇总文件对象并添加金数据库
 	 */
 	public void creatAccountFile(String orgTargetId,String orgTerraceId,
-			String custNo,String custName,String certType,String certNo,String targetState,
-			String tenderTime,String fullScaleTime,BigDecimal tReCaptical,BigDecimal tReInterest,String lReTime,
-			String aSquareTime ,BigDecimal aReCaptical,BigDecimal aReInterest,BigDecimal todayReCaptical,BigDecimal todayReInterest,
-			BigDecimal eReCaptical,BigDecimal eReInterest,BigDecimal paidSum,BigDecimal debtSum,BigDecimal tCreditSum) throws FssException{
+								 String custNo,String custName,String certType,String certNo,String targetState,
+								 String tenderTime,String fullScaleTime,BigDecimal tReCaptical,BigDecimal tReInterest,String lReTime,
+								 String aSquareTime ,BigDecimal aReCaptical,BigDecimal aReInterest,BigDecimal todayReCaptical,BigDecimal todayReInterest,
+								 BigDecimal eReCaptical,BigDecimal eReInterest,BigDecimal paidSum,BigDecimal debtSum,BigDecimal tCreditSum) throws FssException{
 		FssFinanceSumEntity financeSum=new FssFinanceSumEntity();
 		financeSum.setOrgTargetId(orgTargetId);
 		financeSum.setOrgTerraceId(orgTerraceId);
@@ -84,12 +84,21 @@ public class FssBidFinanceService {
 		this.insertFinanceSum(financeSum);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年5月11日
 	 * function：标的财务汇总文件表
 	 */
 	public List<FssFinanceSumEntity> queryFinaSum()throws FssException {
 		return fssFinanceReadMapper.selectAll();
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月24日
+	 * function：根据交易状态查询文件列表
+	 */
+	public List<FssFinanceSumEntity> queryFinaSumByStatus(String status)throws FssException {
+		return fssFinanceReadMapper.queryFinaSumByStatus(status);
 	}
 }

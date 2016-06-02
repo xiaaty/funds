@@ -24,7 +24,7 @@
 		  `bank_license` bankLicense,
 		  `org_credit_code` orgCreditCode,
   		  `unite_credit_code` uniteCreditCode
-	  From `t_gq_fss_sftp_corporate` t
+	  From `t_gq_fss_depos_fuiou_corporate` t
 	 <where>
 		<if test="mchn!=null and mchn!=''">
 			AND t.`mchn` like CONCAT('%',#{mchn},'%')

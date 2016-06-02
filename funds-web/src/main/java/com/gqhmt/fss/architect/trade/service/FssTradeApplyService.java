@@ -270,13 +270,19 @@ public class FssTradeApplyService {
 			tradeApplyEntity.setTradeAmount(fssLoanEntity.getContractAmt());
 			tradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 			tradeApplyEntity.setBusiType(fssLoanEntity.getTradeType());
-			tradeApplyEntity.setApplyType(1103);
 			tradeApplyEntity.setFormId(fssLoanEntity.getId());
 			tradeApplyEntity.setApplyState(applyStatus);
-			tradeApplyEntity.setTradeState("10090004");
 			tradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getApplyNo(tradeType));
-			fssTradeApplyWriteMapper.insertSelective(tradeApplyEntity);
-			fssTradeRecordService.insertRecord(tradeApplyEntity,1);
+			if ("11092001".equals(tradeType)){//提现申请
+				tradeApplyEntity.setApplyType(1104);
+				tradeApplyEntity.setTradeState("10090001");
+				fssTradeApplyWriteMapper.insertSelective(tradeApplyEntity);
+			}else {//代扣充值
+				tradeApplyEntity.setTradeState("10090004");
+				tradeApplyEntity.setApplyType(1103);
+				fssTradeApplyWriteMapper.insertSelective(tradeApplyEntity);
+				fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
+			}
 	}
 	
 	/**
@@ -332,7 +338,7 @@ public class FssTradeApplyService {
 			 }
 			 
 			 if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-				 if("11090001".equals(applyEntity.getBusiType())){
+				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 //98060001成功 //10080002交易成功
 					 fssLoanService.update(fssLoanEntityById,tradeStatus);

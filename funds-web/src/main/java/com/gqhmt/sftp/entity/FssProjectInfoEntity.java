@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -22,98 +22,104 @@ import javax.persistence.*;
  * 2016年5月6日  jhz      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_sftp_project_info")
+@Table(name = "t_gq_fss_depos_fuiou_project_info")
 public class FssProjectInfoEntity implements Serializable{
 
 
-    @Id
-    @Column(name = "id",updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Column(name = "id",updatable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "mchn") 
-    private String  mchn;  //商户号
-    
-    @Column(name = "seq_no") 
-    private String seqNo;		//平台流水号
+	@Column(name = "parent_id")
+	private Long  parentId;
 
-    @Column(name = "item_no")
-    private String  itemNo;   //项目编号
-    
-    @Column(name = "loan_type")
-    private String loanType;		//借款类型(0.抵押标   1.担保标  2.信用标  3.净值标 4.流转标  5.秒标 6.其他)
-    
-    @Column(name = "loan_tittle")
-    private String loanTittle;		//借款标题
-    
-    @Column(name = "organization")
-    private String organization;		//推荐机构
-    
-    @Column(name = "description")
-    private String description;			//借款用途
-    
-    @Column(name = "loan_amt")
-    private Long loanAmt;		//借款金额
-    
-    @Column(name = "expected_return")
-    private Long expectedReturn;		//预期收益
-    
-    @Column(name = "product_name")
-    private String productName;			//产品名称
-    
-    @Column(name = "repayment_type")
-    private String repaymentType;		//还款方式(0.一次性还本付息 1.先息后本 2.等额本息/等额本金 3.其他)
-    
-    @Column(name = "loan_time")
-    private String loanTime;		//借款期限
-    
-    @Column(name = "start_date")
-    private String startDate;		//筹标起始日
-    
-    @Column(name = "each_bid_amount")
-    private Long eachBidAmount;			//每份投标金额
-    
-    @Column(name = "min_num")
-    private int minNum;			//最低投标份数
-    
-    @Column(name = "max_amount")
-    private Long maxAmount;			//最多投标金额
-    
-    @Column(name = "acc_no")
-    private String accNo;		//借款人平台用户名
-    
-    @Column(name = "acc_gold_no")
-    private String accGoldNo;		//借款人金账户用户名
-    
-    @Column(name = "loan_item_description")
-    private String loanItemDescription;		//借款人项目概述
-    
-    @Column(name = "fee_type")
-    private Long feeType;			//费用项
-    
-    @Column(name = "status")
-    private String status;		//筹集情况
-    
-    @Column(name = "period")
-    private int period;			//还款期数
-    
-    @Column(name = "prepare_amount")
-    private Long prepareAmount; 		//备用金额
-    
-    @Column(name = "pay_channel")
-    private String payChannel;		//第三方支付公司ID
-    
-    @Column(name = "bid_year_irr")
-    private String bidYearIrr;			//发标年化利率
-    
-    @Column(name = "cust_name")
-    private String custName;		//借款人名称',
-    
-    @Column(name = "cert_type")
-    private String certType;		//借款人证件类型
-    
-    @Column(name = "cert_no")
-    private String certNo;			//借款人证件号码
+	@Column(name = "mchn")
+	private String  mchn;  //商户号
+
+	@Column(name = "seq_no")
+	private String seqNo;		//平台流水号
+
+	@Column(name = "item_no")
+	private String  itemNo;   //项目编号
+
+	@Column(name = "loan_type")
+	private String loanType;		//借款类型(0.抵押标   1.担保标  2.信用标  3.净值标 4.流转标  5.秒标 6.其他)
+
+	@Column(name = "loan_tittle")
+	private String loanTittle;		//借款标题
+
+	@Column(name = "organization")
+	private String organization;		//推荐机构
+
+	@Column(name = "description")
+	private String description;			//借款用途
+
+	@Column(name = "loan_amt")
+	private Long loanAmt;		//借款金额
+
+	@Column(name = "expected_return")
+	private Long expectedReturn;		//预期收益
+
+	@Column(name = "product_name")
+	private String productName;			//产品名称
+
+	@Column(name = "repayment_type")
+	private String repaymentType;		//还款方式(0.一次性还本付息 1.先息后本 2.等额本息/等额本金 3.其他)
+
+	@Column(name = "loan_time")
+	private String loanTime;		//借款期限
+
+	@Column(name = "start_date")
+	private String startDate;		//筹标起始日
+
+	@Column(name = "each_bid_amount")
+	private Long eachBidAmount;			//每份投标金额
+
+	@Column(name = "min_num")
+	private int minNum;			//最低投标份数
+
+	@Column(name = "max_amount")
+	private Long maxAmount;			//最多投标金额
+
+	@Column(name = "acc_no")
+	private String accNo;		//借款人平台用户名
+
+	@Column(name = "acc_gold_no")
+	private String accGoldNo;		//借款人金账户用户名
+
+	@Column(name = "loan_item_description")
+	private String loanItemDescription;		//借款人项目概述
+
+	@Column(name = "fee_type")
+	private Long feeType;			//费用项
+
+	@Column(name = "trade_status")
+	private String tradeStatus;		//筹集情况
+
+	@Column(name = "period")
+	private int period;			//还款期数
+
+	@Column(name = "prepare_amount")
+	private Long prepareAmount; 		//备用金额
+
+	@Column(name = "pay_channel")
+	private String payChannel;		//第三方支付公司ID
+
+	@Column(name = "bid_year_irr")
+	private String bidYearIrr;			//发标年化利率
+
+	@Column(name = "cust_name")
+	private String custName;		//借款人名称',
+
+	@Column(name = "cert_type")
+	private String certType;		//借款人证件类型
+
+	@Column(name = "cert_no")
+	private String certNo;			//借款人证件号码
+
+	@Column(name = "status")
+	private String status;			//借款人证件号码
 
 	public Long getId() {
 		return id;
@@ -346,6 +352,22 @@ public class FssProjectInfoEntity implements Serializable{
 	public void setCertNo(String certNo) {
 		this.certNo = certNo;
 	}
-    
-    
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getTradeStatus() {
+		return tradeStatus;
+	}
+
+	public void setTradeStatus(String tradeStatus) {
+		this.tradeStatus = tradeStatus;
+	}
+
+
 }

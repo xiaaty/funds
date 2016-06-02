@@ -54,7 +54,7 @@ public class CSVUtils extends TestService{
 	        file.mkdir();
 	      }
 	      //定义文件名格式并创建
-	      csvFile = File.createTempFile(fileName, ".csv", new File(outPutPath));
+	      csvFile = File.createTempFile(fileName, ".txt", new File(outPutPath));
 	      System.out.println("csvFile：" + csvFile);
 	      // UTF-8使正确读取分隔符"," 
 	      csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
@@ -111,7 +111,7 @@ public class CSVUtils extends TestService{
 	   */
 	  public static void exportFile(HttpServletResponse response, String csvFilePath, String fileName)
 	                                                  throws IOException {
-	    response.setContentType("application/csv;charset=UTF-8");
+	    response.setContentType("application/txt;charset=UTF-8");
 	    response.setHeader("Content-Disposition",
 	      "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8"));
 	 

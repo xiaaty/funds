@@ -20,7 +20,7 @@
 		    t.repayment_capital repaymentCapital,
 		    t.repayment_interest repaymentInterest
 		FROM 
-			t_gq_fss_sftp_credit_info t 
+			t_gq_fss_depos_fuiou_credit_info t 
 		WHERE t.parent_id=${parentId} 
 	</select>
 		
