@@ -103,11 +103,11 @@ public class LoanImpl implements ILoan {
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
     	fssAccount=fssAccountService.createAccount(dto, custId);
     	accNo=fssAccount.getAccNo();
-    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
-    	 if(fundAccount!=null&&customerInfoEntity!=null){
+//    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+//    	 if(fundAccount!=null&&customerInfoEntity!=null){
     	 //创建需要报备的 P2P个人平台开户文件
 //    	 fssAccountFileService.creatAccountFile(dto.getSeq_no(), fundAccount.getUserName(), fundAccount.getUserName(), 0, customerInfoEntity.getCustomerName(), customerInfoEntity.getCertType(), customerInfoEntity.getCertNo(), customerInfoEntity.getSex(), customerInfoEntity.getMobilePhone(), customerInfoEntity.getAddress(), customerInfoEntity.getCustomerType(), customerInfoEntity.getCreateTime(), "0", "ADD", customerInfoEntity.getRemark());
-    	 }
+//    	 }
     	 return accNo;
     }
     

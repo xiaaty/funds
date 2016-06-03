@@ -24,16 +24,9 @@ import com.gqhmt.extServInter.dto.Response;
 public class BidApplyResponse extends Response {
 
 	
-	private String busi_bid_no;	//标的编号
+	private String busi__no;	//标的编号
 
-	public String getBusi_bid_no() {
-		return busi_bid_no;
-	}
 
-	public void setBusi_bid_no(String busi_bid_no) {
-		this.busi_bid_no = busi_bid_no;
-	}
-	
 	
 	
 	

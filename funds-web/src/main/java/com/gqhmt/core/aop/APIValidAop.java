@@ -91,7 +91,7 @@ public class APIValidAop {
         } catch (Throwable throwable) {
             LogUtil.debug(this.getClass(),throwable);
             String codeTmp = throwable.getMessage();
-            if(codeTmp != null ){
+            if(codeTmp != null && codeTmp.length()>8){
                 String codeValue = Application.getInstance().getDictName(codeTmp == null?"":codeTmp);
                 if(codeValue != null && !"".equals(codeValue)){
                     code = codeTmp;
