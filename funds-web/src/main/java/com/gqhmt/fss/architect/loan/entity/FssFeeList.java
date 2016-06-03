@@ -97,6 +97,9 @@ public class FssFeeList implements Serializable {
 	}
 
 	public void setFeeAmt(BigDecimal feeAmt) {
+		if(null==feeAmt||"".equals(feeAmt)){
+			feeAmt=BigDecimal.ZERO;
+		}
 		this.feeAmt = feeAmt;
 	}
 

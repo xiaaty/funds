@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.sftp.mapper.read.FssFinanceSumAuditReadMapper">
+<mapper namespace="com.gqhmt.fss.architect.depos.mapper.read.FssFinanceSumAuditReadMapper">
 	<sql id="selectSql">
 	SELECT 
 			t.id id,
@@ -32,13 +32,13 @@
 		FROM `t_gq_fss_depos_fuiou_finance_sum_callback` t
 	</sql>
 	
-	<select id="getByParentId"  resultType="com.gqhmt.sftp.entity.FssSumAuditEntity" >
+	<select id="getByParentId"  resultType="com.gqhmt.fss.architect.depos.entity.FssSumAuditEntity" >
 			<include refid="selectSql" />
 			where t.parent_id=#{parentId}
 	</select>
 	
 	
-	<select id="querySumAuditList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssSumAuditEntity">
+	<select id="querySumAuditList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.depos.entity.FssSumAuditEntity">
 		 SELECT 
 	 	  t.`id` id,
 		  t.`parent_id` parentId,
