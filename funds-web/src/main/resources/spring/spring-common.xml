@@ -124,7 +124,7 @@
 		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
 	</bean>
 	<bean id="sftpReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.sftp.mapper.read" />
+		<property name="basePackage" value="com.gqhmt.fss.architect.depos.mapper.read" />
 		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
 	</bean>
 	<bean id="sysReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -140,7 +140,7 @@
 		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
 	</bean>
 	<bean id="sftpWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.sftp.mapper.write" />
+		<property name="basePackage" value="com.gqhmt.fss.architect.depos.mapper.write" />
 		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
 	</bean>
 	<bean id="sysWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">

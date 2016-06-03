@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gqhmt.sftp.entity.FssProjectCallbackEntity;
+import com.gqhmt.fss.architect.depos.entity.FssProjectCallbackEntity;
   
 /** 测试类 */ 
 public class ReadCSVFile {
