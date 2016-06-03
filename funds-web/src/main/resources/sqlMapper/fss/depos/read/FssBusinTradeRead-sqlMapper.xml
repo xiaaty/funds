@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.sftp.mapper.read.FssBusiTradeReadMapper">
+<mapper namespace="com.gqhmt.fss.architect.depos.mapper.read.FssBusiTradeReadMapper">
 	<sql id="selectSql">
 	 SELECT 
 		  `id` id,
@@ -30,7 +30,7 @@
 		  `status` status
 	  From `t_gq_fss_depos_fuiou_busi_trade` t
 	  </sql>
-	<select id="queryBusiTradeList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssBusinessTradeEntity" >
+	<select id="queryBusiTradeList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.depos.entity.FssBusinessTradeEntity" >
 	 <include refid="selectSql" />
 	 <where>
 		<if test="mchn!=null and mchn!=''">
@@ -41,7 +41,7 @@
 		</if>
 	</where>
 	</select>
-	<select id="queryByStatus" parameterType="java.lang.String" resultType="com.gqhmt.sftp.entity.FssBusinessTradeEntity" >
+	<select id="queryByStatus" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.depos.entity.FssBusinessTradeEntity" >
 	 <include refid="selectSql" />
 	 where t.status=#{status}
 	</select>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.sftp.mapper.read.FssProjectInfoReadMapper">
+<mapper namespace="com.gqhmt.fss.architect.depos.mapper.read.FssProjectInfoReadMapper">
 	<sql id="selectSql">
 	SELECT 
     		t.id id,
@@ -37,17 +37,17 @@
 		FROM 
 			t_gq_fss_depos_fuiou_project_info t 
 			</sql>
-	<select id="getParentId" resultType="com.gqhmt.sftp.entity.FssProjectInfoEntity">
+	<select id="getParentId" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity">
 		<include refid="selectSql"/>
 		WHERE t.parent_id=${parentId} 
 	</select>
 	
-	<select id="queryItemsInfosByStatus" resultType="com.gqhmt.sftp.entity.FssProjectInfoEntity">
+	<select id="queryItemsInfosByStatus" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity">
 		<include refid="selectSql"/>
 		WHERE t.status=${status} 
 	</select>
 	
-	<select  id="queryFssProjectInfoList" parameterType="java.util.Map" resultType="com.gqhmt.sftp.entity.FssProjectInfoEntity" >
+	<select  id="queryFssProjectInfoList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity" >
 	  SELECT 
 		  t.`id` id,
 		  t.`mchn` mchn,

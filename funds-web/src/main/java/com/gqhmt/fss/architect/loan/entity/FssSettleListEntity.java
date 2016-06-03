@@ -94,6 +94,9 @@ public class FssSettleListEntity implements Serializable {
 	}
 
 	public void setSettleAmt(BigDecimal settleAmt) {
+		if(null==settleAmt||"".equals(settleAmt)){
+			settleAmt=BigDecimal.ZERO;
+		}
 		this.settleAmt = settleAmt;
 	}
 
