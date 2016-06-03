@@ -23,33 +23,26 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class RePaymentDto extends SuperDto{
 	
-	private String busi_bid_no;	//标的编号
+	private String busi_no;	//标的编号
 	
 	private String repayment_no;	//回款编号
 	
 	private String user_id;	//借款人客户id
-	
+
 	private String mortgagee_user_id;	//抵押权人客户id
-	
+
 	private String contract_no;	//合同号
-	
-	private String period;	//期数
-	
-	private BigDecimal payment_amt;	//回款金额
-	
+
 	private BigDecimal contract_amt;	//借款人实际还款金额
-	
+
+	private BigDecimal payment_amt;	//回款金额
+
+	private String period;	//期数
+
 	private String remark;	//备注
 	
 	private String payment_type;	//回款类型
 
-	public String getBusi_bid_no() {
-		return busi_bid_no;
-	}
-
-	public void setBusi_bid_no(String busi_bid_no) {
-		this.busi_bid_no = busi_bid_no;
-	}
 
 	public String getRepayment_no() {
 		return repayment_no;

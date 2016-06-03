@@ -1,4 +1,4 @@
-package com.gqhmt.sftp.txt;
+package com.gqhmt.fss.architect.depos.txt;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,8 +19,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
 import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.sftp.service.FssProjectInfoService;
+import com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity;
+import com.gqhmt.fss.architect.depos.service.FssProjectInfoService;
 public class TXTUtils extends TestService{
 	
 	

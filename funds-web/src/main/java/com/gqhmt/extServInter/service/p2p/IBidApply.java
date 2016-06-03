@@ -13,13 +13,13 @@ import com.gqhmt.extServInter.service.ExtService;
  * @since: JDK 1.7
  * Create at:   2016年3月23日
  * Description:
- * <p>	冠e通对接 满标
+ * <p>	冠e通对接 流标申请
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016年3月23日  jhz      1.0     1.0 Version
  */
-public interface IFullBidApply extends ExtService {
+public interface IBidApply extends ExtService {
 
 
 }
