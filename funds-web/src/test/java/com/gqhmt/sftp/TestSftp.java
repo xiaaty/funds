@@ -18,6 +18,7 @@ import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
 import com.gqhmt.fss.architect.card.entiry.FssCardBinEntity;
 import com.gqhmt.fss.architect.card.service.FssCardBinService;
+import com.gqhmt.fss.architect.depos.service.FssSftpService;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -28,10 +29,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.txt.CreateTXT;
-import com.gqhmt.sftp.txt.ReadTXTFile;
-import com.gqhmt.sftp.utils.SFTPDownLoadutils;
-import com.gqhmt.sftp.utils.SFTPuploadUtils;
+import com.gqhmt.fss.architect.depos.txt.CreateTXT;
+import com.gqhmt.fss.architect.depos.txt.ReadTXTFile;
+import com.gqhmt.fss.architect.depos.utils.SFTPDownLoadutils;
+import com.gqhmt.fss.architect.depos.utils.SFTPuploadUtils;
 import com.gqhmt.util.CommonUtil;
 
 public class TestSftp extends TestService {
@@ -45,6 +46,8 @@ public class TestSftp extends TestService {
     private ReadTXTFile readTXTFile;
     @Resource
     private PaymentCallback paymentCallback;
+    @Resource
+    private FssSftpService fssSftpService;
     private static int num = 1000;
 
     /**
@@ -105,14 +108,7 @@ public class TestSftp extends TestService {
      */
     @Test
     public void createProjectInfoTXT() throws FssException {
-//        String createProjectInfoTXT = createTXT.createProjectInfoTXT();
-//        try {
-//            sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check/", createProjectInfoTXT);
-//        } catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-
+        fssSftpService.createFinanceSumTXT();
     }
 
     /**
@@ -122,9 +118,11 @@ public class TestSftp extends TestService {
      */
     @Test
     public void downBidback() throws Exception {
-        String	filePath="F:\\P2P_PWXM_BACK_20160601.txt";
-        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_20160601.txt",filePath );
-        readTXTFile.insertProjectCallBacks(filePath);
+        String	filePath="F:\\P2P_PWXM_BACK_20160602.txt";
+        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date())+".txt",filePath );
+//        filePathsftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/P2P_PWXM_BACK_20160601.txt",filePath );
+//        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160602_P2P_PWXM_20160602_1041.txt",filePath );
+//        readTXTFile.insertProjectCallBacks(filePath);
 
     }
 
