@@ -1,6 +1,6 @@
 package com.gqhmt.api;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.extServInter.callback.loan.PaymentCallback;

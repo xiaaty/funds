@@ -2,7 +2,7 @@ package com.gqhmt.core.aop;
 
 import com.github.pagehelper.PageHelper;
 import com.gqhmt.annotations.*;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.PageSuperDto;

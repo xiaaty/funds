@@ -1,6 +1,6 @@
 package com.gqhmt.extServInter.callback.loan;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 
 /**
  * 

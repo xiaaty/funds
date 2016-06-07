@@ -1,6 +1,6 @@
 package com.gqhmt.core.util;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
 import com.gqhmt.fss.architect.customer.service.FssAreaMappingService;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;

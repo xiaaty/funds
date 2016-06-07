@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.entity.FssAccountFileEntity;
 import com.gqhmt.fss.architect.depos.entity.FssBusinessTradeEntity;
 import com.gqhmt.fss.architect.depos.entity.FssFinanceSumEntity;

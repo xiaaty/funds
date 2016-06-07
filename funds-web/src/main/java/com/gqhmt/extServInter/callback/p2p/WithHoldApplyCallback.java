@@ -2,8 +2,7 @@ package com.gqhmt.extServInter.callback.p2p;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.Application;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.callback.loan.GetCallBack;
 import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;

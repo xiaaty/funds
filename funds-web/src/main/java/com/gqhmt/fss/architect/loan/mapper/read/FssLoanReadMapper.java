@@ -1,9 +1,8 @@
 package com.gqhmt.fss.architect.loan.mapper.read;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.extServInter.dto.loan.FailedBidResponse;
-import com.gqhmt.extServInter.dto.loan.LendingResponse;
 import com.gqhmt.extServInter.dto.loan.MortgageeWithDrawRespons;
 import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
 import com.gqhmt.fss.architect.loan.bean.FssLoanBean;

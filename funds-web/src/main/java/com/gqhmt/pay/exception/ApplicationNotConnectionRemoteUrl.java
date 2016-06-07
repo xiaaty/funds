@@ -1,6 +1,6 @@
 package com.gqhmt.pay.exception;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 
 import java.io.IOException;
 

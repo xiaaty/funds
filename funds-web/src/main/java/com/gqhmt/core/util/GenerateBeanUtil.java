@@ -4,7 +4,7 @@ package com.gqhmt.core.util;
 import com.gqhmt.annotations.AutoDate;
 import com.gqhmt.annotations.AutoDateType;
 import com.gqhmt.annotations.AutoMapping;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

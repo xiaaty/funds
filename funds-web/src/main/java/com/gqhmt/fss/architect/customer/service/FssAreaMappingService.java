@@ -3,7 +3,7 @@ package com.gqhmt.fss.architect.customer.service;
 
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssAreaMappingReadMapper;
 
