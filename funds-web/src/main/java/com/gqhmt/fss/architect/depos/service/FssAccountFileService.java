@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.entity.FssAccountFileEntity;
 import com.gqhmt.fss.architect.depos.mapper.read.FssAccountFileReadMapper;
 import com.gqhmt.fss.architect.depos.mapper.write.FssAccountFileWriteMapper;

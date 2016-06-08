@@ -1,6 +1,6 @@
 package com.gqhmt.quartz.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;

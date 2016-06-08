@@ -1,9 +1,8 @@
 package com.gqhmt.pay.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.core.factory.ThirdpartyFactory;

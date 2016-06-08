@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.loan.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;

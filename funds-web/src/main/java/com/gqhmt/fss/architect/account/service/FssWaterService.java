@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssWaterReadMapper;
 

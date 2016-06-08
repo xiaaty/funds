@@ -1,7 +1,7 @@
 package com.gqhmt.controller.fss.loan;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountEntity;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;

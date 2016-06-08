@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FundOrder;

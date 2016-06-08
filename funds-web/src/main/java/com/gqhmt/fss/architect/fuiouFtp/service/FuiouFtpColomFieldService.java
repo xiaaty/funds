@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper;

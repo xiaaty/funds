@@ -5,7 +5,7 @@ import com.gqhmt.core.util.ImageUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.IConstants;
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;

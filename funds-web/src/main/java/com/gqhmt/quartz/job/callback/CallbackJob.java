@@ -1,6 +1,6 @@
 package com.gqhmt.quartz.job.callback;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.FssBeanUtil;
 import com.gqhmt.core.util.LogUtil;

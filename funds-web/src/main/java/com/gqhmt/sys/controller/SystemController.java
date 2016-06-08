@@ -2,7 +2,7 @@ package com.gqhmt.sys.controller;
 
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;

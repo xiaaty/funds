@@ -1,5 +1,5 @@
 package com.gqhmt.controller.api.loan;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;

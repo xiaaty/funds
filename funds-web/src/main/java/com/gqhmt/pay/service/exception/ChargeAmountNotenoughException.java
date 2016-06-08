@@ -1,6 +1,6 @@
 package com.gqhmt.pay.service.exception;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 
 /**
  * Filename:    com.gq.p2p.account.exception

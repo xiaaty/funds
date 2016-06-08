@@ -1,12 +1,11 @@
 package com.gqhmt.fss.architect.loan.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.*;
 import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
 import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
-import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;

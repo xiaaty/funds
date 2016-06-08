@@ -2,7 +2,7 @@ package com.gqhmt.pay.exception;/**
  * Created by yuyonf on 15/11/28.
  */
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 
 /**
  * Filename:    com.gqhmt.pay.exception.PayChannelNotSupports

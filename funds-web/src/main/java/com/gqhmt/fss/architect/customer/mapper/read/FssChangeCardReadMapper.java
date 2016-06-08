@@ -5,8 +5,9 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Filename:    com.gq.funds.dao.ChangeCardDao

@@ -1,6 +1,6 @@
 package com.gqhmt.quartz.job.bid;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.AbortBidService;

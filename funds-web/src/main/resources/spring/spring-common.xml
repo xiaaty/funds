@@ -181,7 +181,7 @@
 	<!-- 通知器(把事务通知绑定到切入点) -->
 	<aop:config proxy-target-class="true">
 		<aop:advisor advice-ref="tx_advice"
-					 pointcut="execution(* com.gqhmt.*.*.*.service..*(..) throws com.gqhmt.core.FssException ) " />
+					 pointcut="execution(* com.gqhmt.*.*.*.service..*(..) throws com.gqhmt.core.exception.FssException ) " />
 	</aop:config>
 
 	<aop:aspectj-autoproxy />

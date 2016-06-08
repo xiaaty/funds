@@ -1,7 +1,7 @@
 package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;

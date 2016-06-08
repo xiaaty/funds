@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.account;
 
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;

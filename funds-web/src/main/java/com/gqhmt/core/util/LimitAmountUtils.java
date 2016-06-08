@@ -1,11 +1,5 @@
 package com.gqhmt.core.util;
 
-import java.math.BigDecimal;
-
-import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
-
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou

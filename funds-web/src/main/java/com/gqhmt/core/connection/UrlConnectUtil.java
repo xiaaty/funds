@@ -1,6 +1,6 @@
 package com.gqhmt.core.connection;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.ResourceUtil;
