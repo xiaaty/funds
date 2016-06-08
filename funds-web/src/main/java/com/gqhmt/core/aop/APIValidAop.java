@@ -91,7 +91,7 @@ public class APIValidAop {
         } catch (Throwable throwable) {
             LogUtil.debug(this.getClass(),throwable);
             String codeTmp = throwable.getMessage();
-            if(codeTmp != null && codeTmp.matches("[0-9]*")){
+            if(codeTmp != null && codeTmp.length()>8){
                 String codeValue = Application.getInstance().getDictName(codeTmp == null?"":codeTmp);
                 if(codeValue != null && !"".equals(codeValue)){
                     code = codeTmp;
@@ -110,7 +110,7 @@ public class APIValidAop {
         }
 
         String resCode = response.getResp_code();
-        if(resCode != null){
+        if(resCode != null && Integer.parseInt(resCode) == 0){
             resCode = "0000";
             response.setResp_code(resCode);
         }

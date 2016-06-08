@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.depos.mapper.read.FssCorporateReadMapper">
+	<select id="queryCorporateList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.depos.entity.FssCorporateEntity" >
+	  SELECT 
+		  `id` id,
+		  `mchn` mchn,
+		  `seq_no` seqNo,
+		  `company_name` companyName,
+		  `registered_date` registeredDate,
+		  `legalperson_name` legalpersonName,
+		  `cert_no` certNo,
+		  `mobile` mobile,
+		  `email` email,
+		  `third_party_payment_id` thirdPartyPaymentId,
+		  `actionType` actionType,
+		  `license_number` licenseNumber,
+		  `tax_no` taxNo,
+		  `organization_code` organizationCode,
+		  `platform_username` platformUsername,
+		  `gold_acc_login_name` goldAccLoginName,
+		  `remark` remark,
+		  `user_attributes` userAttributes,
+		  `bank_license` bankLicense,
+		  `org_credit_code` orgCreditCode,
+  		  `unite_credit_code` uniteCreditCode
+	  From `t_gq_fss_depos_fuiou_corporate` t
+	 <where>
+		<if test="mchn!=null and mchn!=''">
+			AND t.`mchn` like CONCAT('%',#{mchn},'%')
+		</if>
+		<if test="companyName!=null and companyName!=''">
+			AND t.`company_name` like CONCAT('%',#{companyName},'%')
+		</if>
+	</where>
+</select>
+	
+</mapper>

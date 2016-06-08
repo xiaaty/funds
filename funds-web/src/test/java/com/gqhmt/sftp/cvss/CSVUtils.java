@@ -23,9 +23,8 @@ import org.junit.Test;
 
 import com.gqhmt.TestService;
 import com.gqhmt.core.FssException;
-import com.gqhmt.sftp.cvss.CSVUtils;
-import com.gqhmt.sftp.entity.FssProjectInfoEntity;
-import com.gqhmt.sftp.service.FssProjectInfoService;
+import com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity;
+import com.gqhmt.fss.architect.depos.service.FssProjectInfoService;
 public class CSVUtils extends TestService{
 	
 	
