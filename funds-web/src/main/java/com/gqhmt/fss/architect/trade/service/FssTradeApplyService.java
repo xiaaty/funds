@@ -253,8 +253,13 @@ public class FssTradeApplyService {
 	public void insertLoanTradeApply(FssLoanEntity fssLoanEntity,String applyStatus,String tradeType) throws FssException {
 			FssTradeApplyEntity tradeApplyEntity=new FssTradeApplyEntity();
 			//添加代扣申请
-			FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
-			tradeApplyEntity.setAccNo(fssLoanEntity.getMortgageeAccNo());
+		FssAccountEntity fssAccountByAccNo =null;
+		if("11090005".equals(tradeType)){
+			fssAccountByAccNo=fssAccountService.getFssAccountByCustId(Long.valueOf(fssLoanEntity.getMortgageeAccNo()));
+		}else{
+			fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
+		}
+			tradeApplyEntity.setAccNo(fssAccountByAccNo.getAccNo());
 			tradeApplyEntity.setContractId(fssLoanEntity.getContractId());
 			tradeApplyEntity.setBusinessNo(fssLoanEntity.getContractNo());
 			tradeApplyEntity.setMchnChild(fssLoanEntity.getMchnChild());
@@ -284,7 +289,7 @@ public class FssTradeApplyService {
 				fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
 			}
 	}
-	
+
 	/**
 	 * 
 	 * author:jhz
@@ -338,7 +343,7 @@ public class FssTradeApplyService {
 			 }
 			 
 			 if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())){
+				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 //98060001成功 //10080002交易成功
 					 fssLoanService.update(fssLoanEntityById,tradeStatus);

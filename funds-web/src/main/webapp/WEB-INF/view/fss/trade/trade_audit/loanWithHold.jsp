@@ -82,7 +82,13 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
+                                                <c:if test="${loan.tradeType=='11090005'}">
+
+                                                    <td align="left">抵押权人客户id：</td>
+                                                </c:if>
+                                                <c:if test="${loan.tradeType=='11090001'}">
                                                 <td align="left">抵押权人资金平台账号：</td>
+                                                </c:if>
                                                 <td>
                                                  <section style="width:210px">
                                                         <label class="input">
@@ -95,7 +101,7 @@
                                                 <td align="left">客户姓名：</td>
                                                 <td>
 												            <label class="input" style="width:210px">
-												            <input type="hidden" name="userNo" value="${loan.userNo }">
+												            <input type="hidden" name="userNo" readonly value="${userName}">
 <%-- 												             <input type="text" name="" readonly="readonly" value="${userName }"> --%>
 												            </label>
 												</td>
@@ -113,12 +119,8 @@
                                                 <td>
                                                 <section style="width:210px">
                                                 <label class="input" >
-                                                    <fss:dictOrder var="order" dictOrder="tradeType">
-                                                    <c:if test="${loan.tradeType == order.key}">
-                                                     <input type="text" name="" readonly="readonly" value="${order.value}">
+                                                     <input type="text" name="" readonly="readonly" value=" <fss:dictView key='${loan.tradeType}' />">
                                                      <input type="hidden" name="tradeType" readonly="readonly" value="${order.key}">
-                                                     </c:if>
-                                                   	 </fss:dictOrder>
                                                    	 </label>
                                                    	  </section>
                                                 </td>

@@ -1,4 +1,4 @@
-package com.gqhmt.controller.fss.customer;
+package com.gqhmt.sys.controller;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.FssException;
@@ -26,7 +26,7 @@ import java.util.Map;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/5/31
- * Description:还款划扣
+ * Description:
  * <p>
  * Modification History:
  * Date    Author      Version     Description

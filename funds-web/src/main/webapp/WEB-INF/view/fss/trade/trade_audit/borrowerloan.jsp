@@ -218,7 +218,7 @@
                                                     <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
                                                     </c:if>
                                                     &nbsp; &nbsp;
-                                                      <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
+                                                      <c:if test="${t.tradeType == '11090001' ||t.tradeType=='11090005' && t.status != '10050002'}">
                                                       		<c:if test="${t.status== '10050001'||t.status== '10080003'||t.status== '10080010'}">
 																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
 																&nbsp; &nbsp;
@@ -232,7 +232,7 @@
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
-                                                      <c:if test="${t.tradeType == '11090002'}">
+                                                      <c:if test="${t.tradeType == '11090002' || t.tradeType == '11090004'}">
 															<c:if test="${t.status == '10050009'}">
 																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
 																&nbsp; &nbsp;

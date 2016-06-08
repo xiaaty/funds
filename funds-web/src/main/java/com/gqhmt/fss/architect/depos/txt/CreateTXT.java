@@ -44,7 +44,9 @@ public class CreateTXT  {
 	 */
 	public String createProjectInfoTXT(List<FssProjectInfoEntity> queryItemsInfos) throws FssException{
 		String path = getClassPath();
-		File filepath  = new File(path);
+//		File filepath  = new File(path);
+		new File(path+"/projectInfo/check").mkdirs();
+		String filepath=path+"/projectInfo/check";
 		System.out.println(filepath+"***********************");
 		String fileName=filepath+"/"+"P2P_PWXM_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
 		BufferedOutputStream buff = null;
@@ -106,7 +108,7 @@ public class CreateTXT  {
 					write.append(info.getAccGoldNo()+"|");
 					write.append(info.getLoanItemDescription()+"|");
 					write.append(info.getFeeType()*100+"|");
-					write.append(info.getStatus()+"|");
+					write.append(info.getTradeStatus()+"|");
 					write.append(info.getPeriod()+"|");
 					write.append(info.getPrepareAmount()*100+"|");
 					write.append(info.getPayChannel()+"|");
