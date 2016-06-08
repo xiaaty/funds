@@ -99,7 +99,7 @@ public class LoanImpl implements ILoan {
 		}
 		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
-    	fssAccount=fssAccountService.createAccount(dto, custId);
+    	fssAccount=fssAccountService.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(), custId);
     	accNo=fssAccount.getAccNo();
 //    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
 //    	 if(fundAccount!=null&&customerInfoEntity!=null){

@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.gqhmt.funds</groupId>
             <artifactId>funds-common</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
