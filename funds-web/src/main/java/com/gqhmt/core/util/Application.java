@@ -5,8 +5,6 @@ import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
 import com.gqhmt.fss.architect.customer.service.FssAreaMappingService;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
-import com.gqhmt.funds.architect.customer.entity.BankEntity;
-import com.gqhmt.funds.architect.customer.service.BankService;
 import com.gqhmt.sys.entity.BankDealamountLimitEntity;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
@@ -51,7 +49,7 @@ public class Application {
     private final Map<String,String>   fourCodemap = new ConcurrentHashMap<>();
     private final Map<String,String>   sixCodemap = new ConcurrentHashMap<>();
     private final Map<String,String>   eightCodemap = new ConcurrentHashMap<>();
-    private final Map<String,BankEntity>   bankEntitymap = new ConcurrentHashMap<>(); //银行列表
+//    private final Map<String,BankEntity>   bankEntitymap = new ConcurrentHashMap<>(); //银行列表
 
     private void init() throws FssException{
         synchronized (this){
@@ -65,7 +63,7 @@ public class Application {
         LogUtil.debug(this.getClass(),eightCodemap.toString());
         LogUtil.debug(this.getClass(),sixCodemap.toString());
         LogUtil.debug(this.getClass(),fourCodemap.toString());
-        LogUtil.debug(this.getClass(),bankEntitymap.toString());
+//        LogUtil.debug(this.getClass(),bankEntitymap.toString());
     }
 
     public void reload() throws FssException{
@@ -77,7 +75,7 @@ public class Application {
             fourCodemap.clear();
             sixCodemap.clear();
             eightCodemap.clear();
-            bankEntitymap.clear();
+//            bankEntitymap.clear();
             update();
         }
     }
@@ -87,7 +85,7 @@ public class Application {
         initMerchant();
         initBankDealamountLimit();
         iniBankArea();
-        initBankList();
+//        initBankList();
     }
 
     /*======================================数据字典初始化及应用========================================================*/
@@ -260,34 +258,34 @@ public class Application {
     }
     
 //    =============================银行列表初始化及应用=====================start===========================
-    private void initBankList(){
-    	BankService bankService = ServiceLoader.get(BankService.class);
-        List<BankEntity> banks = bankService.findAll();
-        if(banks == null) return;
-
-        for(BankEntity bankEntity:banks){
-            this.dict.put(bankEntity.getBankCode(),bankEntity.getBankName());
-            bankEntitymap.put(bankEntity.getBankCode(),bankEntity);
-        }
-    }
-    public boolean  existsBank(String  bankCode){
-        return bankEntitymap.containsKey(bankCode);
-    }
-
-    public String getBankName(String bankCode) throws FssException {
-    	BankEntity bankEntity = bankEntitymap.get(bankCode);
-        if(bankEntity == null){
-            throw new FssException("90002012");
-        }
-        return bankEntity.getBankName();
-    }
-    public String getBankShortName(String bankCode) throws FssException {
-    	BankEntity bankEntity = bankEntitymap.get(bankCode);
-    	if(bankEntity == null){
-    		throw new FssException("90002012");
-    	}
-    	return bankEntity.getSortName();
-    }
+//    private void initBankList(){
+//    	BankService bankService = ServiceLoader.get(BankService.class);
+//        List<BankEntity> banks = bankService.findAll();
+//        if(banks == null) return;
+//
+//        for(BankEntity bankEntity:banks){
+//            this.dict.put(bankEntity.getBankCode(),bankEntity.getBankName());
+//            bankEntitymap.put(bankEntity.getBankCode(),bankEntity);
+//        }
+//    }
+//    public boolean  existsBank(String  bankCode){
+//        return bankEntitymap.containsKey(bankCode);
+//    }
+//
+//    public String getBankName(String bankCode) throws FssException {
+//    	BankEntity bankEntity = bankEntitymap.get(bankCode);
+//        if(bankEntity == null){
+//            throw new FssException("90002012");
+//        }
+//        return bankEntity.getBankName();
+//    }
+//    public String getBankShortName(String bankCode) throws FssException {
+//    	BankEntity bankEntity = bankEntitymap.get(bankCode);
+//    	if(bankEntity == null){
+//    		throw new FssException("90002012");
+//    	}
+//    	return bankEntity.getSortName();
+//    }
 //    =============================银行列表初始化及应用=====================end===========================
     
     /*======================================菜单初始化及应用========================================================*/

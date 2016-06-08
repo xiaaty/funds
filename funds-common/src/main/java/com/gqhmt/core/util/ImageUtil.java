@@ -1,38 +1,22 @@
 package com.gqhmt.core.util;
 
-import java.awt.Image;
-import java.awt.Transparency;
-import java.awt.color.ColorSpace;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
-
 import com.gqhmt.core.exception.FssException;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import org.w3c.dom.NodeList;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
-import org.w3c.dom.NodeList;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import java.awt.*;
+import java.awt.color.ColorSpace;
+import java.awt.image.*;
+import java.io.*;
+import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("restriction")
 public class ImageUtil {
@@ -66,7 +50,7 @@ public class ImageUtil {
 	 * @param localFullPathFileName 文件路径 
 	 * @param width
 	 * @param height
-	 * @throws SystemException
+	 * @throws Exception
 	 */
 	public static byte[] compactImage(String localFullPathFileName,int width, int height) throws Exception{
 		return compactImage(new File(localFullPathFileName),width,height);
@@ -130,7 +114,7 @@ public class ImageUtil {
 	 * @param width  宽度
 	 * @param height 高度
 	 * @return byte[]
-	 * @throws SystemException
+	 * @throws FssException
 	 */
 	public static byte[] compactImage(byte[] image,int width, int height) throws FssException{
 
