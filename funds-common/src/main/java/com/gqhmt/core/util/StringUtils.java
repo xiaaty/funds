@@ -1,4 +1,4 @@
-package com.gqhmt.util;
+package com.gqhmt.core.util;
 
 import java.math.BigDecimal;
 import java.net.URLEncoder;

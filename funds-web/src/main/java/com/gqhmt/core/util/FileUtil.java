@@ -8,8 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,9 +21,6 @@ import org.apache.commons.io.filefilter.FileFileFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.gqhmt.util.StringUtils;
-
 
 
 public class FileUtil {

@@ -1,12 +1,12 @@
 package com.gqhmt.sys.service;
 
+import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.mapper.read.DictOrderReadMapper;
 import com.gqhmt.sys.mapper.read.SystemReadMapper;
 import com.gqhmt.sys.mapper.write.DictOrderWriteMapper;
 import com.gqhmt.sys.mapper.write.SystemWriteMapper;
-import com.gqhmt.util.StringUtils;
 
 import org.springframework.stereotype.Service;
 

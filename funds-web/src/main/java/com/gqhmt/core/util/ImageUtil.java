@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.util.StringUtils;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
