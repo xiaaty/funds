@@ -1,4 +1,4 @@
-package com.gqhmt.util;
+package com.gqhmt.core.util;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

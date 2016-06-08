@@ -1,11 +1,11 @@
-package com.gqhmt.util;
-
-import javax.servlet.ServletContext;
+package com.gqhmt.core.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.ServletContext;
 
 /**
  * @Description Spring工具类

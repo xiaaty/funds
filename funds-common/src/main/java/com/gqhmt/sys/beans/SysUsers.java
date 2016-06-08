@@ -2,9 +2,6 @@ package com.gqhmt.sys.beans;
 
 import java.util.Date;
 
-import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.util.StringUtils;
-
 public class SysUsers {
 	private String id;
     private long createId;
@@ -118,42 +115,8 @@ public class SysUsers {
     public void setAddPassword(String addPassword) {
         this.addPassword = addPassword;
     }
-    public String getSexName(){
-        if(GlobalConstants.empSexMap.containsKey(sex))
-            return GlobalConstants.empSexMap.get(sex);
-        return "";
-    }
 
-    public long getRoleId(){
-        if(StringUtils.isEmpty(roleIds))
-            return 0;
-        for(String rid:roleIds.split(",")){
-            rid=rid.trim();
-            if(rid.length()>0)
-                return Long.parseLong(rid);
-        }
-        return 0;
-    }
 
-    public String getNickName(){
-        String name= userName.substring(0,1);
-        if(name.matches("[\u4E00-\u9FA5]+")){
-            return name+(sex==1?"先生":"女士");
-        }
-        return userName;
-    }
-
-    public String getRoleName(){
-        if(StringUtils.isEmpty(roleIds))
-            return "";
-        StringBuffer sb=new StringBuffer();
-        for(String s:roleIds.split(",")){
-            if(StringUtils.isNotEmptyString(s)){
-                sb.append(GlobalConstants.roleMap.get(Long.parseLong(s))).append(",");
-            }
-        }
-        return sb.substring(0,sb.length()-1).toString();
-    }
 
     public String getId() {
         return id;

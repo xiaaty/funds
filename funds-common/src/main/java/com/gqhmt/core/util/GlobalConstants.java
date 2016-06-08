@@ -1,10 +1,8 @@
 package com.gqhmt.core.util;
 
 import com.gqhmt.sys.beans.SysUsers;
-import com.gqhmt.util.Pager;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -262,17 +260,8 @@ public class GlobalConstants {
 	public static void setSession(HttpServletRequest request,String name,Object value){
 		request.getSession(true).setAttribute(name,value);
 	}
-	
-	public static void addSearchCondition(Pager page, Object object, String[] fields){
-		Class<? extends Object> targetClass=object.getClass();
-		Method meth=null;
-		for(String f:fields){
-			try {
-				meth= targetClass.getDeclaredMethod("get"+f.substring(0, 1).toUpperCase() + f.substring(1));
-				page.addCondition(f,meth.invoke(object)+"");
-			} catch (Exception e) {}
-		}
-	}
+
+
 	static{
 		empStatusMap.put(1,"正式员工");
 		empStatusMap.put(2,"试用期间");
