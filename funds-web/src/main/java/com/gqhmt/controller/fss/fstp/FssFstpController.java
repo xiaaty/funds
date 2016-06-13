@@ -1,6 +1,6 @@
 package com.gqhmt.controller.fss.fstp;
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.entity.FssAccountFileEntity;
 import com.gqhmt.fss.architect.depos.entity.FssBusinessTradeEntity;
 import com.gqhmt.fss.architect.depos.entity.FssCorporateEntity;

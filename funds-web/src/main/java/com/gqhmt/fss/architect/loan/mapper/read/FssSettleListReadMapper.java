@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.loan.mapper.read;
 
 import java.util.List;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.loan.entity.FssSettleListEntity;
 

@@ -1,7 +1,7 @@
 package com.gqhmt.controller.fss.accounting;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingCompanyIncome;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreeze;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreezeDetail;

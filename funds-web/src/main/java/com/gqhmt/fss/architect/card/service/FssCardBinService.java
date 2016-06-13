@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.card.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.card.entiry.FssCardBinEntity;
 import com.gqhmt.fss.architect.card.mapper.read.FssCardBinReadMapper;
 import com.gqhmt.fss.architect.card.mapper.write.FssCardBinWriteMapper;

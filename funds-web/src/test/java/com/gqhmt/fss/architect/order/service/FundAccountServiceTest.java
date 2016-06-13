@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.order.service;
 
 import com.gqhmt.TestService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import org.junit.Before;

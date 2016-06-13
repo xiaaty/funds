@@ -1,7 +1,7 @@
 package com.gqhmt.callback;
 
 import com.gqhmt.TestService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.quartz.job.callback.CallbackJob;

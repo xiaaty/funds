@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.depos.entity.FssAccountFileEntity;
 import com.gqhmt.fss.architect.depos.entity.FssBusinessTradeEntity;

@@ -1,7 +1,7 @@
 package com.gqhmt.controller.funds.account;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;

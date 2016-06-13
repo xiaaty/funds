@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;

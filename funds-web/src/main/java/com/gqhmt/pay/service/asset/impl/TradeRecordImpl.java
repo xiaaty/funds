@@ -1,6 +1,6 @@
 package com.gqhmt.pay.service.asset.impl;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.pay.service.asset.ITradeRecord;
 import javax.annotation.Resource;

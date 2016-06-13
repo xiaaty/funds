@@ -28,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gqhmt.TestService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.txt.CreateTXT;
 import com.gqhmt.fss.architect.depos.txt.ReadTXTFile;
 import com.gqhmt.fss.architect.depos.utils.SFTPDownLoadutils;

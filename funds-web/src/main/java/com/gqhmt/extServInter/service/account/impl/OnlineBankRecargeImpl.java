@@ -1,6 +1,6 @@
 package com.gqhmt.extServInter.service.account.impl;
 
-import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.core.exception.APIExcuteErrorException;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.service.account.IOnlineBankRecarge;

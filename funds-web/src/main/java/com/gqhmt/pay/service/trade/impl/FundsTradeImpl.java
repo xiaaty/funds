@@ -1,6 +1,6 @@
 package com.gqhmt.pay.service.trade.impl;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;

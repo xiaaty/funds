@@ -1,7 +1,7 @@
 package com.gqhmt.funds.architect.account.mapper.read;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;

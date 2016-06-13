@@ -2,7 +2,7 @@ package com.gqhmt.core.aop;
 
 import com.github.pagehelper.PageHelper;
 import com.gqhmt.annotations.*;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.GqPageInfo;
 import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.PageSuperDto;
@@ -91,7 +91,7 @@ public class APIValidAop {
         } catch (Throwable throwable) {
             LogUtil.debug(this.getClass(),throwable);
             String codeTmp = throwable.getMessage();
-            if(codeTmp != null && codeTmp.length()>8){
+            if(codeTmp != null && codeTmp.length()<=8){
                 String codeValue = Application.getInstance().getDictName(codeTmp == null?"":codeTmp);
                 if(codeValue != null && !"".equals(codeValue)){
                     code = codeTmp;
@@ -110,7 +110,11 @@ public class APIValidAop {
         }
 
         String resCode = response.getResp_code();
-        if(resCode != null && Integer.parseInt(resCode) == 0){
+
+
+
+
+        if(resCode != null && resCode.matches("[0-9]*") &&  Integer.parseInt(resCode) == 0){
             resCode = "0000";
             response.setResp_code(resCode);
         }
@@ -358,7 +362,7 @@ public class APIValidAop {
         }
         fssSeqOrderEntity.setRespCode(response.getResp_code());
         fssSeqOrderEntity.setRespMsg(response.getResp_msg());
-        fssSeqOrderEntity.setState(Integer.parseInt(response.getResp_code())==0 ? 10030002:10030003);
+        fssSeqOrderEntity.setState(response.getResp_code().matches("[0-9]*") && Integer.parseInt(response.getResp_code())==0 ? 10030002:10030003);
         try {
             fssSeqOrderService.update(fssSeqOrderEntity);
         } catch (FssException e) {
