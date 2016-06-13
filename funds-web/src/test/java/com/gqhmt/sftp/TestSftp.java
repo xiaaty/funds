@@ -108,7 +108,7 @@ public class TestSftp extends TestService {
      */
     @Test
     public void createProjectInfoTXT() throws FssException {
-        fssSftpService.createFinanceSumTXT();
+        fssSftpService.createProjectInfoTXT();
     }
 
     /**
@@ -118,8 +118,22 @@ public class TestSftp extends TestService {
      */
     @Test
     public void downBidback() throws Exception {
-        String	filePath="F:\\P2P_PWXM_BACK_20160602.txt";
+        String	filePath="F:\\P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date())+".txt";
         sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date())+".txt",filePath );
+//        filePathsftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/P2P_PWXM_BACK_20160601.txt",filePath );
+//        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160602_P2P_PWXM_20160602_1041.txt",filePath );
+//        readTXTFile.insertProjectCallBacks(filePath);
+
+    }
+    /**
+     * author:jhz
+     * time:2016年5月16日
+     * function：P2P项目信息回盘
+     */
+    @Test
+    public void downBidbacks() throws Exception {
+        String	filePath="F:\\20160606_P2P_PWXM_20160606_1132.txt";
+        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160606_P2P_PWXM_20160606_1132.txt",filePath );
 //        filePathsftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/P2P_PWXM_BACK_20160601.txt",filePath );
 //        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160602_P2P_PWXM_20160602_1041.txt",filePath );
 //        readTXTFile.insertProjectCallBacks(filePath);
@@ -200,7 +214,10 @@ public class TestSftp extends TestService {
                                     case HSSFCell.CELL_TYPE_FORMULA:
                                         break;
                                     case HSSFCell.CELL_TYPE_NUMERIC:
-                                        value += cell.getNumericCellValue() + ",";
+                                        int p=(int)cell.getNumericCellValue();
+                                        String a=String.valueOf(p);
+                                        value += a+ ",";
+
                                         break;
                                     case HSSFCell.CELL_TYPE_STRING:
                                         value += cell.getStringCellValue() + ",";

@@ -427,6 +427,7 @@ public class FssLoanService {
 		if(fssLoanEntity1!=null) throw  new FssException("90004011");
 		fssLoanEntity.setContractId(bidRepayApplyDto.getBusi_no());
 		fssLoanEntity.setContractAmt(bidRepayApplyDto.getContract_amt());
+		fssLoanEntity.setPayAmt(bidRepayApplyDto.getContract_amt());
 		fssLoanEntity.setContractInterest(bidRepayApplyDto.getContract_interest());
 		fssLoanEntity.setAccNo(bidRepayApplyDto.getUser_id());
 		fssLoanEntity.setMortgageeAccNo(bidRepayApplyDto.getMortgagee_user_id());
