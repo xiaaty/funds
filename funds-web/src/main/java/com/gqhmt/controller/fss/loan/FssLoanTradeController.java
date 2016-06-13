@@ -19,6 +19,8 @@ import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
@@ -82,6 +84,8 @@ public class FssLoanTradeController {
 	private FundAccountService fundAccountService;
 	@Resource
 	private IFundsTrade iFundsTrade;
+	@Resource
+	private CustomerInfoService customerInfoService;
 	/**
 	 * 
 	 * author:jhz time:2016年3月11日 function：借款人放款
@@ -129,12 +133,23 @@ public class FssLoanTradeController {
 //		System.out.println("在FormServlet中生成的token："+token);
 //		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
 		// 通过id查询交易对象
+		String userName=null;
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
-		//通过custNo查询用户对象
-		FssCustomerEntity customerNameByCustNo = fssCustomerService.getCustomerNameByCustNo(fssLoanEntityById.getCustNo());
-		// 把交易状态 修改为‘代扣中’
+		if("11090005".equals(type)){//冠e通抵押标放款
+			CustomerInfoEntity customerInfoEntity=customerInfoService.getCustomerById(Long.valueOf(fssLoanEntityById.getMortgageeAccNo()));
+			if(customerInfoEntity!=null){
+				userName=customerInfoEntity.getCustomerName();
+				model.addAttribute("userName",userName);
+			}
+		}else { //借款系统抵押标放款
+			//通过custNo查询用户对象
+			FssCustomerEntity customerNameByCustNo = fssCustomerService.getCustomerNameByCustNo(fssLoanEntityById.getCustNo());
+			if(customerNameByCustNo!=null) {
+				userName=customerNameByCustNo.getName();
+				model.addAttribute("userName", userName);
+			}
+		}
 		model.addAttribute("loan", fssLoanEntityById);
-		model.addAttribute("user", customerNameByCustNo);
 		return "fss/trade/trade_audit/loanWithHold";
 	}
 
@@ -151,6 +166,7 @@ public class FssLoanTradeController {
 	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt) {
 		Map<String, String> map = new HashMap<String, String>();
 		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
+		// 把交易状态 修改为‘代扣中’
 		fssLoanEntity.setStatus("10050002");
 //		String server_token  = (String) request.getSession().getAttribute("token");
 //		request.getSession().removeAttribute("token");
@@ -182,11 +198,18 @@ public class FssLoanTradeController {
 	public String transfer(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
-
 		try {
-			fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
-					fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
-					GlobalConstants.NEW_BUSINESS_MT);
+			if("11090005".equals(type)){//冠e通抵押标转账
+				FssAccountEntity fromEntity=fssAccountService.getFssAccountByCustId(Long.parseLong(fssLoanEntityById.getMortgageeAccNo()));
+				FssAccountEntity toEntity=fssAccountService.getFssAccountByCustId(Long.parseLong(fssLoanEntityById.getAccNo()));
+				fundsTradeImpl.transefer(fromEntity.getAccNo(), toEntity.getAccNo(),
+						fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
+						GlobalConstants.NEW_BUSINESS_MT);
+			}else {//借款系统抵押标转账
+				fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
+						fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
+						GlobalConstants.NEW_BUSINESS_MT);
+			}
 			fssLoanEntityById.setStatus("10050005");
 			fssLoanService.update(fssLoanEntityById);
 		} catch (FssException e) {
@@ -256,6 +279,7 @@ public class FssLoanTradeController {
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 
+
 		if (fssLoanEntityById == null) {
 			// 处理前台页面消息提示内容
 			map.put("msg", "0001");
@@ -271,9 +295,17 @@ public class FssLoanTradeController {
 					try {
 					if(!"10050007".equals(fssFeeList.getTradeStatus())&&!"10050015".equals(fssFeeList.getTradeStatus())){
 						if(fssFeeList.getFeeAmt().compareTo(BigDecimal.ZERO)>0&&!"10990004".equals(fssFeeList.getFeeType())){
-							FundOrderEntity fundOrderEntity = cost.cost(fssLoanEntityById.getLoanPlatform(),
-									fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
-									fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+							if("11090005".equals(type) || "11090004".equals(type)){//冠e通收费
+								//借款人资金平台账号
+								FssAccountEntity toEntity=fssAccountService.getFssAccountByCustId(Long.parseLong(fssLoanEntityById.getAccNo()));
+								cost.cost(fssLoanEntityById.getLoanPlatform(),
+										fssFeeList.getFeeType(),toEntity.getAccNo(), fssFeeList.getFeeAmt(),
+										fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+							}else {
+								cost.cost(fssLoanEntityById.getLoanPlatform(),
+										fssFeeList.getFeeType(), fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
+										fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+							}
 							// 修改费用状态	收取成功
 							fssFeeList.setRepCode("0000");
 							fssFeeList.setTradeStatus("10050007");

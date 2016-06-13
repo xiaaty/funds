@@ -1,9 +1,13 @@
 package com.gqhmt.extServInter.dto.p2p;
 
 
-import java.math.BigDecimal;
-
+import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.loan.LendingFeeListDto;
+
+import java.math.BigDecimal;
+import java.util.List;
+
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -15,48 +19,38 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * @since: JDK 1.7
  * Create at:   2016年3月23日
  * Description:
- * <p>	冠e通后台 回款
+ * <p>	冠e通后台 满标,流标
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016年3月23日  jhz      1.0     1.0 Version
  */
-public class RePaymentDto extends SuperDto{
-
-	private String busi_bid_no;	//标的编号
+public class FullBidApplyDto extends SuperDto{
 	
-	private String repayment_no;	//回款编号
+	private String busi_no;	//标的编号
 	
 	private String user_id;	//借款人客户id
-
-	private String mortgagee_user_id;	//抵押权人客户id
-
-	private String contract_no;	//合同号
-
-	private String period;	//期数
-
-	private BigDecimal payment_amt;	//回款金额
-
-	private BigDecimal contract_amt;	//借款人实际还款金额
-
-	private String remark;	//备注
 	
-	private String payment_type;	//回款类型
+	private String mortgagee_user_id;	//抵押权人客户id
+	
+	private String contract_no;	//合同号
+	
+	private BigDecimal contract_amt;	//合同金额
+	
+	private BigDecimal contract_interest;	//合同利息
 
-	public String getBusi_bid_no() {
-		return busi_bid_no;
+	private List<LendingFeeListDto> fee_list;			//收费列表
+
+	@APIValidNull(errorCode = "90004025")
+	private String loan_platform;			//借款平台
+
+
+	public String getBusi_no() {
+		return busi_no;
 	}
 
-	public void setBusi_bid_no(String busi_bid_no) {
-		this.busi_bid_no = busi_bid_no;
-	}
-
-	public String getRepayment_no() {
-		return repayment_no;
-	}
-
-	public void setRepayment_no(String repayment_no) {
-		this.repayment_no = repayment_no;
+	public void setBusi_no(String busi_no) {
+		this.busi_no = busi_no;
 	}
 
 	public String getUser_id() {
@@ -83,22 +77,6 @@ public class RePaymentDto extends SuperDto{
 		this.contract_no = contract_no;
 	}
 
-	public String getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(String period) {
-		this.period = period;
-	}
-
-	public BigDecimal getPayment_amt() {
-		return payment_amt;
-	}
-
-	public void setPayment_amt(BigDecimal payment_amt) {
-		this.payment_amt = payment_amt;
-	}
-
 	public BigDecimal getContract_amt() {
 		return contract_amt;
 	}
@@ -107,19 +85,27 @@ public class RePaymentDto extends SuperDto{
 		this.contract_amt = contract_amt;
 	}
 
-	public String getRemark() {
-		return remark;
+	public BigDecimal getContract_interest() {
+		return contract_interest;
 	}
 
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setContract_interest(BigDecimal contract_interest) {
+		this.contract_interest = contract_interest;
 	}
 
-	public String getPayment_type() {
-		return payment_type;
+	public List<LendingFeeListDto> getFee_list() {
+		return fee_list;
 	}
 
-	public void setPayment_type(String payment_type) {
-		this.payment_type = payment_type;
+	public void setFee_list(List<LendingFeeListDto> fee_list) {
+		this.fee_list = fee_list;
+	}
+
+	public String getLoan_platform() {
+		return loan_platform;
+	}
+
+	public void setLoan_platform(String loan_platform) {
+		this.loan_platform = loan_platform;
 	}
 }

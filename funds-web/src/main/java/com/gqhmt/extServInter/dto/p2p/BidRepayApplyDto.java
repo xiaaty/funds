@@ -21,7 +21,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * -----------------------------------------------------------------
  * 2016年3月23日  jhz      1.0     1.0 Version
  */
-public class BidApplyDto extends SuperDto{
+public class BidRepayApplyDto extends SuperDto{
 	
 	private String busi_bid_no;	//标的编号
 	
@@ -37,13 +37,6 @@ public class BidApplyDto extends SuperDto{
 	
 	private BigDecimal contract_interest;	//合同利息
 
-	private String repayment_no;	//回款编号
-
-	private String period;	//期数
-
-	private String remark;	//备注
-
-	private String payment_type;	//回款类型
 
 	public String getBusi_bid_no() {
 		return busi_bid_no;
@@ -101,35 +94,4 @@ public class BidApplyDto extends SuperDto{
 		this.contract_interest = contract_interest;
 	}
 
-	public String getRepayment_no() {
-		return repayment_no;
-	}
-
-	public void setRepayment_no(String repayment_no) {
-		this.repayment_no = repayment_no;
-	}
-
-	public String getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(String period) {
-		this.period = period;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
-	public String getPayment_type() {
-		return payment_type;
-	}
-
-	public void setPayment_type(String payment_type) {
-		this.payment_type = payment_type;
-	}
 }

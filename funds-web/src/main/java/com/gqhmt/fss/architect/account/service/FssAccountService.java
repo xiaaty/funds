@@ -160,7 +160,15 @@ public class FssAccountService {
     public FssAccountEntity getFssAccountByAccNo(String accNo)throws FssException{
     	return this.accountReadMapper.findAccountByAccNo(accNo);
     }
-    
+    /**
+     *
+     * author:jhz
+     * time:2016年6月6日
+     * function：根据cust_id查询账户
+     */
+    public FssAccountEntity getFssAccountByCustId(Long custId)throws FssException{
+    	return this.accountReadMapper.findAccountByCustId(custId);
+    }
 
 
     public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo,Date createTime)  throws FssException{

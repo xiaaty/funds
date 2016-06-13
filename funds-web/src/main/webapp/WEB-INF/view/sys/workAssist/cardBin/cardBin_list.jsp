@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fss" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -14,7 +12,7 @@
     
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
-        .table-nobg-btn {
+        .borrow-rep-table12 {
             font: 15/29px;
             height: 31px;
             line-height: 31px;
@@ -56,6 +54,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
+
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="jarviswidget" id="cardBinList"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
@@ -105,7 +104,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <footer>
+                                        <footer><button type="button" class="btn btn-default " id="btn_add">添&nbsp;&nbsp;&nbsp;加</button>
                                              <button class="btn btn-primary" onclick="verify();">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
@@ -117,7 +116,7 @@
                         </div>
 
                         </div>
-    <div id="content">
+                <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
@@ -130,13 +129,10 @@
                         <!-- widget div-->
                         <div>
                             <form class="smart-form" id="">
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
-                                </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                    <!-- widget edit box -->
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1400px;">
                                     	<col width="50" />
                                         <col width="200" />
