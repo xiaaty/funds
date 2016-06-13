@@ -10,8 +10,9 @@ import com.gqhmt.extServInter.service.cost.ICharges;
 import com.gqhmt.pay.service.cost.ICost;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+
 /**
- * Created by 57627 on 2016/5/27.
+ * 费用接口
  */
 @Service
 public class ChargesImpl implements ICharges {

@@ -241,7 +241,12 @@ public interface IFundsTrade {
     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
 */
    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
-    
-    
+
+    /**
+     * 线下充值
+     * @param dto
+     * @return
+     */
+    public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException;
     
 }

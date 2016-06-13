@@ -62,12 +62,12 @@ public class CustomerInfoService {
 		return null;
 	}
 	*/
-	
+
 	public CustomerInfoEntity searchCustomerInfoByMobile(CreateLoanAccountDto loanAccountDto) throws FssException {
 		CustomerInfoEntity customerInfoEntity = searchCustomerInfoByCertNo(loanAccountDto.getCert_no());
 		return customerInfoEntity;
 	}
-	
+
 	/**
 	 * 添加客户信息
 	 *
@@ -444,7 +444,7 @@ public class CustomerInfoService {
 		// bean的copy
 //		ClassReflection.reflectionAttr(customerInfoDetialBean, customerInfo);
 		BeanUtils.copyProperties(customerInfoDetialBean, customerInfo);
-		
+
 		customerInfo.setCertNo(customerInfoDetialBean.getCertNo().trim().toUpperCase());
 		customerInfo.setCustomerName(customerInfoDetialBean.getCustomerName().trim());
 		customerInfo.setMobilePhone(customerInfoDetialBean.getMobilePhone().trim());
@@ -1005,7 +1005,7 @@ public class CustomerInfoService {
 		this.customerInfoWriteMapper.updateByPrimaryKeySelective(entity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年2月15日
 	 * function：根据id查询客户信息
@@ -1013,7 +1013,7 @@ public class CustomerInfoService {
 	public CustomerInfoEntity queryCustomeById(Long id) {
 		return customerInfoReadMapper.selectByPrimaryKey(id);
 	}
-	
+
 	/**
 	 * 查询账户信息
 	 * @param bankId
@@ -1024,15 +1024,15 @@ public class CustomerInfoService {
 		entity.setBankId(bankId);
 		return customerInfoReadMapper.selectOne(entity);
 	}
-	
-	
+
+
 	/**
 	 * 开户
 	 * @param loanAccountDto
 	 * @throws FssException
 	 */
 	public CustomerInfoEntity createLoanAccount(CreateLoanAccountDto loanAccountDto) throws FssException {
-//			1.创建账户	t_gq_customer_info 
+//			1.创建账户	t_gq_customer_info
 			CustomerInfoEntity customerInfoEntity;
 			try {
 				customerInfoEntity = this.createCustomerInfo(loanAccountDto);
@@ -1045,7 +1045,7 @@ public class CustomerInfoService {
 				LogUtil.error(this.getClass(), e);
 				throw new FssException("90002024");
 			}
-			//2.创建用户         t_gq_user	
+			//2.创建用户         t_gq_user
 			UserEntity userEntity;
 			try {
 				userEntity = gqUserService.createUser(loanAccountDto,customerInfoEntity);
@@ -1072,7 +1072,7 @@ public class CustomerInfoService {
 			}
 		return customerInfoEntity;
 	}
-	
+
 	/**
 	 * 创建账户
 	 * @param loanAccountDto
@@ -1102,17 +1102,17 @@ public class CustomerInfoService {
 		customerInfoEntity.setModifyUserId(0);
 		return customerInfoEntity;
 	}
-	
+
 	/**
 	 * 生成UUid
 	 * @return
 	 */
-	 public String getUUID() {  
+	 public String getUUID() {
 		  String str=UUID.randomUUID().toString();
-	      String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);  
-	      return temp;  
-	    } 
-	 
+	      String temp = str.substring(0, 8) + str.substring(9, 13) + str.substring(14, 18) + str.substring(19, 23) + str.substring(24);
+	      return temp;
+	    }
+
 	 public void updateCustomer(Long id,String custName,String certNo,String bankId){
 		 Map map=new HashMap();
 		 map.put("id", id);

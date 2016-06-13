@@ -72,7 +72,7 @@ public class FssAccountService {
     private FssCustomerWriteMapper customerWriteMapper;
     @Resource
 	private FssBankCardInfoWriteMapper fssBankCardInfoWriteMapper;
-    
+
     public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity)throws FssException{
         return this.accountReadMapper.findCustomerAccountByParams(fssAccountEntity);
     }
@@ -134,7 +134,7 @@ public class FssAccountService {
     }*/
 
     public FssAccountEntity createAccount(CreateLoanAccountDto dto,Long custId) throws FssException {
-        return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getBusi_no(),custId);
+        return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(),custId);
     }
 
 
@@ -209,7 +209,7 @@ public class FssAccountService {
 
 
     /**
-     * 
+     *
      * author:jhz
      * time:2016年3月17日
      * function：根据acc_no查询账户
@@ -217,7 +217,7 @@ public class FssAccountService {
     public FssAccountEntity getFssAccountByAccNo(String accNo)throws FssException{
     	return this.accountReadMapper.findAccountByAccNo(accNo);
     }
-    
+
 
 
     public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo,Date createTime)  throws FssException{
@@ -279,6 +279,6 @@ public class FssAccountService {
 			throw new FssException("90002029");
 		}
 	}
-    
-    
+
+
 }

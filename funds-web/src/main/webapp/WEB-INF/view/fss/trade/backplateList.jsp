@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <!-- <meta charset="UTF-8"> -->
-    <title>资金清结算系统--回盘信息列表--冠群驰骋投资管理(北京)有限公司</title>
+    <title>资金清结算系统--回盘记录列表--冠群驰骋投资管理(北京)有限公司</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../view/include/common_css_js.jsp"%>
@@ -43,7 +43,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>系统配置</li>
-            <li>回盘信息</li>
+            <li>回盘记录</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -101,7 +101,7 @@
                         <div class="jarviswidget jarviswidget-color-darken" id="menu-id-256"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                                <h2>回盘信息列表</h2>
+                                <h2>回盘记录列表</h2>
                             </header>
                             <!-- widget div-->
                             <div>
@@ -121,7 +121,7 @@
                                             <col width="100" />
                                             <thead>
                                                 <tr>
-                                                    <td>流水号</td>
+                                                    <td align="left">流水号</td>
                                                     <td>商户号</td>
                                                     <td>交易类型</td>
                                                     <td>创建时间</td>
@@ -133,7 +133,7 @@
                                             <tbody>
                                             <c:forEach items="${page.list}" var="fssBackplateEntity">
                                                 <tr>
-                                                    <td>${fssBackplateEntity.seqNo}</td>
+                                                    <td align="left">${fssBackplateEntity.seqNo}</td>
                                                     <td>${fssBackplateEntity.mchn}</td>
                                                     <td><fss:dictView key="${fssBackplateEntity.tradeType}"/></td>
                                                     <td><fss:fmtDate value="${fssBackplateEntity.createTime}"/></td>

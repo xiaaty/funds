@@ -108,47 +108,6 @@ public class LoanImpl implements ILoan {
 					LogUtil.error(this.getClass(), e);
 					throw e;
 				}
-			}else{
-				if(customerInfoEntity == null) throw new FssException("90002007");
-				customerInfoEntity.setParentBankCode(dto.getBank_id());
-				customerInfoEntity.setBankNo(dto.getBank_card());
-				customerInfoEntity.setCityCode(dto.getCity_id());
-				customerInfoEntity.setCertNo(dto.getCert_no());
-				customerInfoEntity.setMobilePhone(dto.getMobile());
-				customerInfoEntity.setCustomerName(dto.getName());
-				//判断
-				Long cusId = customerInfoEntity.getId();
-				Integer userId = customerInfoEntity.getUserId();
-				FundAccountEntity primaryAccount = fundAccountService.getFundAccount(cusId,GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-				if(primaryAccount == null){
-					try {
-						primaryAccount =  fundAccountService.createAccount(customerInfoEntity,userId);
-					} catch (FssException e) {
-						throw new FssException("90002002");
-					}
-				}
-				primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-				//富友
-				if (primaryAccount.getHasThirdAccount()==1){//未开通第三方账户
-					paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-					primaryAccount.setHasThirdAccount(2);
-					primaryAccount.setCustName(customerInfoEntity.getCustomerName());
-					fundAccountService.update(primaryAccount);
-				}
-				//跟新所有与该cust_id相同的账户名称
-				fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
-				//创建银行卡信息
-				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
-				if(bankCardInfoEntity==null){
-					//判断输入的银行卡号是否已经存在
-					bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
-					if(bankCardInfoEntity!=null){
-						throw new FssException("90002038");//该银行卡号已经存在
-					}
-					bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,dto.getTrade_type());
-				}else{
-					bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
-				}
 			}
 		}catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
@@ -158,14 +117,14 @@ public class LoanImpl implements ILoan {
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
     	fssAccount=fssAccountService.createAccount(dto, custId);
     	accNo=fssAccount.getAccNo();
-    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
-    	 if(fundAccount!=null&&customerInfoEntity!=null){
+//    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+//    	 if(fundAccount!=null&&customerInfoEntity!=null){
     	 //创建需要报备的 P2P个人平台开户文件
 //    	 fssAccountFileService.creatAccountFile(dto.getSeq_no(), fundAccount.getUserName(), fundAccount.getUserName(), 0, customerInfoEntity.getCustomerName(), customerInfoEntity.getCertType(), customerInfoEntity.getCertNo(), customerInfoEntity.getSex(), customerInfoEntity.getMobilePhone(), customerInfoEntity.getAddress(), customerInfoEntity.getCustomerType(), customerInfoEntity.getCreateTime(), "0", "ADD", customerInfoEntity.getRemark());
-    	 }
+//    	 }
     	 return accNo;
     }
-    
+
     /**
      * 保证金退还
      */
@@ -177,6 +136,6 @@ public class LoanImpl implements ILoan {
 		costImpl.costReturn("10040001","10990006",dto.getAcc_no(),dto.getRefund_amt(),0l,0);
 		return true;
 		}
-		
+
 	}
-  
+

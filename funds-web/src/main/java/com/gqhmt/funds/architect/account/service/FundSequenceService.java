@@ -168,7 +168,7 @@ public class FundSequenceService {
             throw new AmountFailException("传入金额不能小于0");
         }
         int toActionType = accountType;
-        /*if(accountType == 1005){
+        if(accountType == 1005){
             toActionType = 1006;
         }else if(accountType == 3007){
             toActionType = 3008;
@@ -188,7 +188,7 @@ public class FundSequenceService {
             toActionType = 4004;
         }else if(accountType == 4005){
             toActionType = 1009;
-        }*/
+        }
         FundSequenceEntity fromFundSequenceEntity =this.getFundSequenceEntity(fromEntity.getId(), actionType, accountType, new BigDecimal("-" + amount.toPlainString()), thirdPartyType, orderEntity, toEntiry.getId());
         fromFundSequenceEntity.setSumary("转账转出  转给"+toEntiry.getCustName()+"("+toEntiry.getId()+") ");
         FundSequenceEntity toFundSequenceEntity = this.getFundSequenceEntity(toEntiry.getId(), actionType, toActionType, amount, thirdPartyType, orderEntity, fromEntity.getId());
@@ -202,7 +202,7 @@ public class FundSequenceService {
         fundAccountService.updateFundAccount(fromEntity,1,amount);
         fundAccountService.updateFundAccount(toEntiry,2,amount);
         //手续费收入记账
-        fundChargeRecordService.addChargeRecord(fromEntity,toEntiry,amount,memo,actionType,accountType,loanType,bustType);
+        fundChargeRecordService.addChargeRecord(fromEntity,toEntiry,amount,memo,actionType,accountType,loanType,bustType,fromFundSequenceEntity);
     }
     
     /**
