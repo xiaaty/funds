@@ -24,7 +24,11 @@ import java.util.Map;
  * 2016年3月19日  jhz      1.0     1.0 Version
  */
 public interface FssCardBinReadMapper extends ReadMapper<FssCardBinEntity>{
-
-    public List<FssCardBinEntity> findCardBins(Map map);
+    /**
+     *
+     * @param fssCardBinEntity
+     * @return
+     */
+    public List<FssCardBinEntity> findList(FssCardBinEntity fssCardBinEntity);
 	
 }

@@ -10,6 +10,20 @@
     <packaging>war</packaging>
 
 
+
+    <dependencies>
+        <dependency>
+            <groupId>com.gqhmt.funds</groupId>
+            <artifactId>funds-account</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gqhmt.funds</groupId>
+            <artifactId>funds-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <resources>

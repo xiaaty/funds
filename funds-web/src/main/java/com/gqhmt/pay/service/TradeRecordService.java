@@ -1,6 +1,6 @@
 package com.gqhmt.pay.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;

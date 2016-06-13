@@ -1,8 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
-import com.gqhmt.annotations.APISignature;
 import com.gqhmt.annotations.APITradeTypeValid;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;

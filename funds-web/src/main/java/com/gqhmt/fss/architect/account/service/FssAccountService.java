@@ -1,8 +1,7 @@
 package com.gqhmt.fss.architect.account.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.*;
-import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity;
@@ -12,14 +11,8 @@ import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssFuiouAccountWriteMapper;
 import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
-import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
-import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
 import com.gqhmt.fss.architect.customer.service.FssCustBankCardService;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
-import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
-import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -59,14 +52,6 @@ public class FssAccountService {
     @Resource
     private FssFuiouAccountReadMapper fssFuiouAccountReadMapper;
     @Resource
-    private CustomerInfoService customerInfoService;
-    @Resource
-   	private CustomerInfoWriteMapper customerInfoWriteMapper;
-    @Resource
-	private GqUserWriteMapper gqUserWriteMapper;
-    @Resource
-	private FundAccountService fundAccountService;
-    @Resource
     private FssCustBankCardService fssCustBankCardService;
     @Resource
     private FssCustomerWriteMapper customerWriteMapper;
@@ -96,45 +81,6 @@ public class FssAccountService {
 		}
 	    bussaccountlist=this.accountReadMapper.getBussinessAccountList(map2);
         return bussaccountlist;
-    }
-/*
-    *//**
-     * 创建本地账户信息
-     * @param dto
-     * @throws FssException
-     *//*
-    public FssCustomerEntity createAccount(CreateLoanAccountDto dto,String accNo) throws FssException {
-    	FssCustomerEntity fssCustomerinfo=null;
-    	FssCustBankCardEntity fssCustBankCardEntity=null;
-    	FssFuiouAccountBean fssFuiouAccountBean=fssFuiouAccountReadMapper.getAccountByCentNo(dto.getCert_no());
-    	if(fssFuiouAccountBean==null){//不存在
-			try {
-				fssCustomerinfo = fssCustomerService.createFssCustomerEntity(dto);//生成客户信息
-				customerWriteMapper.insertSelective(fssCustomerinfo);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("90002027");
-			}
-			try {
-				fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(dto,fssCustomerinfo);
-				fssBankCardInfoWriteMapper.insertSelective(fssCustBankCardEntity);
-			} catch (Exception e) {
-				LogUtil.info(this.getClass(), e.getMessage());
-				throw new FssException("90002028");
-			}
-	        if(!dto.getTrade_type().equals()){//线下开户不走富友
-	        	//生成第三方开户账户信息,纯线下,次开户,不开,线上需要开户.
-	        	this.createFuiouAccount(dto,fssCustomerinfo,fssCustBankCardEntity,accNo);
-	        }
-    	}else{
-    		fssCustomerinfo=fssCustomerService.getFssCustomerEntityByCertNo(dto.getCert_no());
-
-    	}
-        return fssCustomerinfo;
-    }*/
-
-    public FssAccountEntity createAccount(CreateLoanAccountDto dto,Long custId) throws FssException {
-        return this.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(),custId);
     }
 
 

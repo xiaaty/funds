@@ -1,9 +1,8 @@
 package com.gqhmt.pay.service.cost;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-
 import java.math.BigDecimal;
 
 /**

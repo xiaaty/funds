@@ -1,6 +1,6 @@
 package com.gqhmt.pay.service.asset;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import java.util.List;

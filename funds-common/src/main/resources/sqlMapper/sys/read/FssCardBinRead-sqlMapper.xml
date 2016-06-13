@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.card.mapper.read.FssCardBinReadMapper">
+	<sql id="fieldSql">
+		SELECT
+   		t.id id,
+		t.bank_name bankName,
+		t.card_name cardName,
+		t.card_type cardType,
+		t.create_time creatTime,
+		t.length length,
+		t.modify_time modifyTime,
+		t.organ_code organCode,
+		t.take_value takeValue
+	 FROM `t_gq_fss_card_bin` t
+
+	</sql>
+	<sql id="whereSql">
+	</sql>
+	<select id="findList" parameterType="com.gqhmt.fss.architect.card.entiry.FssCardBinEntity" resultType="com.gqhmt.fss.architect.card.entiry.FssCardBinEntity">
+		<include refid="fieldSql" />
+		  WHERE 1=1
+		<if test="bankName !=null and bankName != ''">
+			AND  t.bank_name like CONCAT('%',#{bankName},'%')
+		</if>
+		<if test="takeValue !=null and takeValue != ''">
+			AND  t.take_value like CONCAT('%',#{takeValue},'%')
+		</if>
+		<if test="organCode !=null and organCode != ''">
+			AND  t.organ_code like CONCAT('%',#{organCode},'%')
+		</if>
+	</select>
+</mapper>

@@ -1,6 +1,6 @@
 package com.gqhmt.extServInter.fetchService;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;

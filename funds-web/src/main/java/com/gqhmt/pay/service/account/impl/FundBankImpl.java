@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.account.impl;
 
 import org.springframework.stereotype.Service;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.service.BankService;
 import com.gqhmt.pay.service.account.IFundBank;

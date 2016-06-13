@@ -1,6 +1,6 @@
 package com.gqhmt.quartz.job.accounting;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.loan.entity.FssEnterAccountParentEntity;
 import com.gqhmt.fss.architect.loan.service.FssEnterAccountService;

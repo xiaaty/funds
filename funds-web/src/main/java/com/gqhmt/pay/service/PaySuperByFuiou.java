@@ -1,9 +1,8 @@
 package com.gqhmt.pay.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.core.factory.ThirdpartyFactory;
@@ -135,7 +134,7 @@ public class PaySuperByFuiou {
 
     public FundOrderEntity withholding(FundAccountEntity entity,BigDecimal amount,int orderType,long busiId,int  busiType) throws FssException {
         LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
-        FundOrderEntity fundOrderEntity = this.createOrder(entity,amount,orderType,busiId,busiType,thirdPartyType);
+        FundOrderEntity fundOrderEntity = this.createOrder(entity,amount,orderType,busiId,busiType,"2");
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_WITHHOLDING, fundOrderEntity, entity, amount,"充值 "+amount.toPlainString()+"元");
         execExction(response,fundOrderEntity);
         return fundOrderEntity;
@@ -147,7 +146,7 @@ public class PaySuperByFuiou {
     /*=============================================提   现==============================================*/
     public FundOrderEntity withdraw(FundAccountEntity entity,BigDecimal amount,BigDecimal chargeAmount,int orderType,Long busiId,int busiType) throws FssException {
         LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+chargeAmount+":"+orderType+":"+busiId+":"+busiType);
-        FundOrderEntity fundOrderEntity = fundOrderService.createOrder(entity,null,amount,chargeAmount,orderType,busiId,busiType,thirdPartyType);
+        FundOrderEntity fundOrderEntity = fundOrderService.createOrder(entity,null,amount,chargeAmount,orderType,busiId,busiType,"2");
         //提现手续费记录
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_AGENT_WITHDRAW, fundOrderEntity, entity,amount,"提现 "+amount.toPlainString()+"元");
         execExction(response,fundOrderEntity);
@@ -217,7 +216,7 @@ public class PaySuperByFuiou {
             return false;
         }
         //订单号
-        FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,0,0,thirdPartyType);
+        FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_UPDATE_CARD,0,0,"2");
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CASHWITHSET, fundOrderEntity, primaryAccount,String.valueOf(cashWithSet));
         return execExction(response,fundOrderEntity);
     }
@@ -299,15 +298,15 @@ public class PaySuperByFuiou {
      */
 
     public final FundOrderEntity createOrder(final FundAccountEntity primaryAccount, final BigDecimal amount, final int orderType, final long sourceID, final Integer sourceType,final String thirdPartyType) throws CommandParmException, FssException {
-        return this.createOrder(primaryAccount, null, amount, orderType, sourceID, sourceType, thirdPartyType);
+        return this.createOrder(primaryAccount, null, amount, orderType, sourceID, sourceType, "2");
     }
 
     private final FundOrderEntity createOrder(final FundAccountEntity primaryAccount,final  FundAccountEntity toAccountEntity,final BigDecimal amount,final int orderType,final long sourceID, final int sourceType, final String thirdPartyType) throws CommandParmException, FssException {
-        return fundOrderService.createOrder(primaryAccount,toAccountEntity,amount,BigDecimal.ZERO,orderType,sourceID,sourceType,thirdPartyType);
+        return fundOrderService.createOrder(primaryAccount,toAccountEntity,amount,BigDecimal.ZERO,orderType,sourceID,sourceType,"2");
     }
 
     public final FundOrderEntity createOrderByRefund(final FundAccountEntity primaryAccount,final BigDecimal amount,final BigDecimal chargeAmt,final int orderType,final long sourceID, final int sourceType, final String thirdPartyType) throws CommandParmException, FssException {
-        return fundOrderService.createOrder(primaryAccount,null,amount,chargeAmt,orderType,sourceID,sourceType,thirdPartyType);
+        return fundOrderService.createOrder(primaryAccount,null,amount,chargeAmt,orderType,sourceID,sourceType,"2");
     }
 
     /**

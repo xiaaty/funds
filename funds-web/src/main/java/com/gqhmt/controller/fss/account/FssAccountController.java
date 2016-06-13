@@ -1,11 +1,9 @@
 package com.gqhmt.controller.fss.account;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
-import com.gqhmt.fss.architect.account.entity.FssWaterEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.account.service.FssWaterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,26 +35,8 @@ import java.util.Map;
 public class FssAccountController {
 	@Resource
     private FssAccountService fssAccountService;
-	@Resource
-	private FssWaterService fssWaterService;
 
-    /**
-     * 
-     * author:jhz
-     * time:2016年1月26日
-     * function：查看流水详情
-     * @throws FssException 
-     */
-    @RequestMapping(value = "/accounts/{type}/list/{id}/water",method = {RequestMethod.GET,RequestMethod.POST})
- 	@AutoPage
-     public Object waterDetail(HttpServletRequest request,ModelMap model,@PathVariable Long id,@PathVariable Integer type,String startDate,String endDate) throws FssException{
-    	List<FssWaterEntity> waterDetails = fssWaterService.queryWaterDetail(id,startDate,endDate);
- 		model.addAttribute("startDate", startDate);
- 		model.addAttribute("endDate", endDate);
- 		model.addAttribute("page", waterDetails);
- 		model.addAttribute("id",id);
- 		return "fss/account/WaterDetail";
-     }
+
     
     /**
      * 账户信息

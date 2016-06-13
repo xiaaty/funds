@@ -1,6 +1,6 @@
 package com.gqhmt.sys.web;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.AuthMenu;
 import com.gqhmt.core.util.GlobalConstants;

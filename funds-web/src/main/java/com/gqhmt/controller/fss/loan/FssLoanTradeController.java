@@ -1,7 +1,7 @@
 package com.gqhmt.controller.fss.loan;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -10,17 +10,17 @@ import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.fss.architect.loan.bean.FssLoanBean;
 import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,12 +80,9 @@ public class FssLoanTradeController {
 	@Resource
 	private ExportAndImpService exportAndImpService;
 	@Resource
-	private FuiouFtpOrderService fuiouFtpOrderService;
-	@Resource
 	private FundAccountService fundAccountService;
 	@Resource
-	private FundOrderService fundOrderService;
-
+	private IFundsTrade iFundsTrade;
 	/**
 	 * 
 	 * author:jhz time:2016年3月11日 function：借款人放款
@@ -115,9 +113,9 @@ public class FssLoanTradeController {
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";
 		}
-//		else if("11092001".equals(type)){//抵押标满标
-//			return "fss/trade/trade_audit/motegreeWithDraw";
-//		}
+		else if("11092001".equals(type)){//抵押标权人提现
+			return "fss/trade/trade_audit/motegreeWithDraw";
+		}
 		return "fss/trade/trade_audit/borrowerloan";
 	}
 
@@ -405,6 +403,7 @@ public class FssLoanTradeController {
 			throw new FssException("Io异常");
 		}    
 	}
+<<<<<<< HEAD
 
 
 
@@ -418,5 +417,32 @@ public class FssLoanTradeController {
 	}
 	
 	
+=======
+	/**
+	 * 点击提现跳转到抵押权人提现页面
+	 */
+	@RequestMapping(value = "/fss/loan/trade/{type}/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+	public String queryMortgageeDetail(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeapply, @PathVariable Long  id,@PathVariable String  type) throws Exception {
+		//账户余额小于提现金额
+		FssLoanEntity loanEntity= fssLoanService.getFssLoanEntityById(id);
+		FssAccountEntity fssAccount=fssAccountService.getFssAccountByAccNo(loanEntity.getMortgageeAccNo());
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(fssAccount.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN);
+		if(fundAccountEntity.getAmount().compareTo(loanEntity.getContractAmt())<0) throw new FssException("90004007");
+		//冻结资金
+		iFundsTrade.froze(fssAccount.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN,loanEntity.getContractAmt());
+		fssTradeApplyService.insertLoanTradeApply(loanEntity, "10100001",type);
+		loanEntity.setModifyTime(new Date());
+		loanEntity.setStatus("10030001");
+		fssLoanService.update(loanEntity);
+		return "redirect:/trade/tradeApply/1104/11092001";
+	}
+
+
+
+
+
+
+
+>>>>>>> 5dda60f377e8ef528f2ae56950efa895e6882d07
 
 }

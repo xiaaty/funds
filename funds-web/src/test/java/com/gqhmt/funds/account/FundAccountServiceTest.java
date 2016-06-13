@@ -1,7 +1,7 @@
 package com.gqhmt.funds.account;
 
 import com.gqhmt.TestService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;

@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.customer.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;

@@ -2,7 +2,7 @@ package com.gqhmt.extServInter.fetchService;
 
 import com.gqhmt.TestService;
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import org.junit.Test;
 
 import javax.annotation.Resource;

@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.holiday.entity.FssHolidayEntity;
 import com.gqhmt.fss.architect.holiday.mapper.read.FssHolidayReaderMapper;
 //import com.gqhmt.fss.architect.holiday.mapper.writer.FssHolidayWriterMapper;

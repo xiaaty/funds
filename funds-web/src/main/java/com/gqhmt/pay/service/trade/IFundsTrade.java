@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.trade;
 
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;

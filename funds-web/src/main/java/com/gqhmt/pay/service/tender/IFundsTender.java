@@ -3,7 +3,7 @@ package com.gqhmt.pay.service.tender;
 
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.tender.BidDto;
 
 /**

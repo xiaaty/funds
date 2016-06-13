@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.backplate.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.mapper.read.FssFssBackplateReadMapper;
 import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper;

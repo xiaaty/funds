@@ -1,8 +1,8 @@
 package com.gqhmt.extServInter.service.account.impl;
 
 import com.gqhmt.annotations.APITradeTypeValid;
-import com.gqhmt.core.APIExcuteErrorException;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.APIExcuteErrorException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;

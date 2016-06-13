@@ -1,8 +1,7 @@
 package com.gqhmt.pay.service.loan.impl;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
@@ -11,7 +10,6 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
@@ -115,7 +113,7 @@ public class LoanImpl implements ILoan {
 		}
 		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
-    	fssAccount=fssAccountService.createAccount(dto, custId);
+    	fssAccount=fssAccountService.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(), custId);
     	accNo=fssAccount.getAccNo();
 //    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
 //    	 if(fundAccount!=null&&customerInfoEntity!=null){
