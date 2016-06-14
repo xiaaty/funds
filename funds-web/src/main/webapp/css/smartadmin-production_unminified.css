@@ -8438,7 +8438,7 @@ button.DTTT_button_print span {
 }
 
 
-button.DTTT_button_csv span { background: url(../img/csv.png) no-repeat bottom right; }
+button.DTTT_button_csv span { background: url(../img/txt.png) no-repeat bottom right; }
 button.DTTT_button_csv:hover span { background: url(../img/csv_hover.png) no-repeat center right; }
 
 button.DTTT_button_xls span { background: url(../img/xls.png) no-repeat center right; }
