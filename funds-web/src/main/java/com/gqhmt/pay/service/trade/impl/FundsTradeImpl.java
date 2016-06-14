@@ -589,22 +589,39 @@ public class FundsTradeImpl  implements IFundsTrade {
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004009");
         }
-        CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,dto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0);
+       //创建充值记录信息
+        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(dto.getTrade_type()), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()),"", "", dto.getAmt(), "", "", null, dto.getTrade_type(), dto.getSeq_no(), dto.getMchn(), "9701", null, "","",primaryAccount.getCustName(),"","","");
+        CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,dto.getAmt(),GlobalConstants.ORDER_RECHARGE_OFFLINE,0,0);
         //根据返回码判断是否成功，修改线下充值记录状态
         if("0000".equals(response.getCode())){//成功
-            //将返回信息添加到线下充值记录表
-            fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(dto.getTrade_type()), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), primaryAccount.getBankNo(), response.getFundOrderEntity().getOrderNo(), dto.getAmt(), "10100003", "10080002", null, dto.getTrade_type(), dto.getSeq_no(), dto.getMchn(), "9701", null, "充值码","充值码时间",primaryAccount.getCustName(),"入账银行","支行信息",response.getCode());
-        }else{
-            fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(dto.getTrade_type()), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), primaryAccount.getBankNo(), response.getFundOrderEntity().getOrderNo(), dto.getAmt(), "10100003", "10080010", null, dto.getTrade_type(), dto.getSeq_no(), dto.getMchn(), "9701", null, "充值码","充值码时间",primaryAccount.getCustName(),"入账银行","支行信息",response.getCode());
+            fssOfflineRechargeEntity.setFyAccNo(String.valueOf(response.getMap().get("fy_acc_no")));
+            fssOfflineRechargeEntity.setFyAccNm(String.valueOf(response.getMap().get("fy_acc_nm")));
+            fssOfflineRechargeEntity.setFyBank(String.valueOf(response.getMap().get("fy_bank")));
+            fssOfflineRechargeEntity.setFyBankBranch(String.valueOf(response.getMap().get("fy_bank_branch")));
+            fssOfflineRechargeEntity.setChgCd(String.valueOf(response.getMap().get("chg_cd")));
+            fssOfflineRechargeEntity.setChgDt(String.valueOf(response.getMap().get("chg_dt")));
+            fssOfflineRechargeEntity.setApplyState("10100003");
+            fssOfflineRechargeEntity.setTradeState("10030002");
+            fssOfflineRechargeEntity.setResultState("10080002");
+        }else{//失败
+            fssOfflineRechargeEntity.setFyAccNo(String.valueOf(response.getMap().get("fy_acc_no")));
+            fssOfflineRechargeEntity.setFyAccNm(String.valueOf(response.getMap().get("fy_acc_nm")));
+            fssOfflineRechargeEntity.setFyBank(String.valueOf(response.getMap().get("fy_bank")));
+            fssOfflineRechargeEntity.setFyBankBranch(String.valueOf(response.getMap().get("fy_bank_branch")));
+            fssOfflineRechargeEntity.setChgCd(String.valueOf(response.getMap().get("chg_cd")));
+            fssOfflineRechargeEntity.setChgDt(String.valueOf(response.getMap().get("chg_dt")));
+            fssOfflineRechargeEntity.setApplyState("10100003");
+            fssOfflineRechargeEntity.setTradeState("10030003");
+            fssOfflineRechargeEntity.setResultState("10080010");
         }
-        fssOfflineRechargeService.insert(fssOfflineRechargeEntity);
-        offlineRechargeResponse.setChg_cd("0000861");
-        offlineRechargeResponse.setAmt(new BigDecimal(1000));
-        offlineRechargeResponse.setChg_dt("2016-05-31");
-        offlineRechargeResponse.setFy_acc_nm("柯禹来");
-        offlineRechargeResponse.setFy_acc_no("6217000830000121191");
-        offlineRechargeResponse.setFy_bank("中国建设银行");
-        offlineRechargeResponse.setFy_bank_branch("中国建设银行广州同福中路支行");
+        fssOfflineRechargeService.update(fssOfflineRechargeEntity);
+        offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
+        offlineRechargeResponse.setAmt(new BigDecimal(String.valueOf(response.getMap().get("amt"))));
+        offlineRechargeResponse.setChg_dt(String.valueOf(response.getMap().get("chg_dt")));
+        offlineRechargeResponse.setFy_acc_nm(String.valueOf(response.getMap().get("fy_acc_nm")));
+        offlineRechargeResponse.setFy_acc_no(String.valueOf(response.getMap().get("fy_acc_no")));
+        offlineRechargeResponse.setFy_bank(String.valueOf(response.getMap().get("fy_bank")));
+        offlineRechargeResponse.setFy_bank_branch(String.valueOf(response.getMap().get("fy_bank_branch")));
         return offlineRechargeResponse;
     }
 
