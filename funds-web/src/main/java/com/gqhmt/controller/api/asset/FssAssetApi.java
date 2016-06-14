@@ -137,7 +137,7 @@ public class FssAssetApi {
      * time:2016年3月1日
      * function：交易记录查询
      */
-    @RequestMapping(value = "/queryFundTrade",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryFundTrade",method = {RequestMethod.POST,RequestMethod.GET})
     public Object queryFundTrade(FundTradeDto fundTradeDto){
     	Response response=null;
     	try {

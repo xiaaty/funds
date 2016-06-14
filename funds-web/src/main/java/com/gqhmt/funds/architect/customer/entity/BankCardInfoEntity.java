@@ -103,11 +103,11 @@ public class BankCardInfoEntity implements java.io.Serializable {
 	}
 
 	public String getBankSortName() {
-		return this.bankSortName;
+		return this.bankSortName = Application.getInstance().getDictName("9703"+this.getParentBankId());
 	}
 
 	public void setBankSortName(String bankSortName) {
-		this.bankSortName = Application.getInstance().getDictName("9703"+this.getParentBankId());
+		this.bankSortName=bankSortName;
 	}
 
 	public String getBankNo() {
@@ -190,7 +190,6 @@ public class BankCardInfoEntity implements java.io.Serializable {
     public void setCertName(String certName) {
         this.certName = certName;
     }
-    
     
     public String getCityId() {
         return cityId;

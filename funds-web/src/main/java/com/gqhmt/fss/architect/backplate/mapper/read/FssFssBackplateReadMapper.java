@@ -30,5 +30,6 @@ public interface FssFssBackplateReadMapper extends ReadMapper<FssBackplateEntity
 
 
     public List<FssBackplateEntity> findBackAllByTime(@Param("repayCount") int repayCount,@Param("timeType") int timeType);
-	
+
+    public List<FssBackplateEntity> selectBackPlateByParam(FssBackplateEntity fssBackplateEntity);
 }

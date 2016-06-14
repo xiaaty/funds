@@ -506,15 +506,14 @@ public class FundAccountService {
 	    	map.put("bankNo", bankNo);
 	    	fundAccountWriteMapper.updateCustNameByCustId(map);
 	    }
-	    
-	    
+
 	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{
 	        return fundsAccountReadMapper.selectFundAccountEntity(accNo);
 	    }
-		  
 
-	public List<FundAccountEntity> getFundsAccountByBusiType( String busi_type){
-		return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);
-	}
+		public List<FundAccountEntity> getFundsAccountByBusiType( String busi_type){
+			return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);
+		}
+
 }
 

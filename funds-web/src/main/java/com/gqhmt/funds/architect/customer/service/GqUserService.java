@@ -6,6 +6,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.GqUserReadMapper;
 
+import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,6 +37,9 @@ public class GqUserService {
 
     @Resource
     private GqUserReadMapper gqUserReadMapper;
+
+	@Resource
+	private GqUserWriteMapper gqUserWriteMapper;
 
 	/**
 	 * 根据id查询用户信息
@@ -71,6 +75,34 @@ public class GqUserService {
 		userEntity.setIsVerify(0);
 		return userEntity;
 	}
+
+
+	/**
+	 * 创建用户
+	 * @param name
+	 * @param mobile
+	 * @param id
+	 * @return
+	 * @throws FssException
+	 */
+	public UserEntity createUser(String name,String mobile,Long id) throws FssException{
+		UserEntity userEntity=new UserEntity();
+		userEntity.setUserUuid(this.getUUID());
+		userEntity.setUserName(name);
+		userEntity.setMobilePhone(mobile);
+		userEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		userEntity.setModifyTime((new Timestamp(new Date().getTime())));
+		userEntity.setIntegral(0);
+		userEntity.setCreditLevel(0);
+		userEntity.setCustId(id!= null ? id.intValue():0);
+		userEntity.setUserFrom(0);
+		userEntity.setIsFirstDebt(0);
+		userEntity.setUserType(1);
+		userEntity.setIsVerify(0);
+		this.gqUserWriteMapper.insertSelective(userEntity);
+		return userEntity;
+	}
+
 	
 	/**
 	 * 生成UUid

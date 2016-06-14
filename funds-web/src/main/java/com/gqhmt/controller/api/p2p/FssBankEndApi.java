@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -32,7 +32,7 @@ import javax.annotation.Resource;
  * <p>流标
  * <p>冠e通后台
  * <p>冠e通后台
- * 
+ *
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
@@ -60,61 +60,61 @@ public class FssBankEndApi {
 	@ResponseBody
 	public Object fullBidApply(@RequestBody FullBidApplyDto fullBidRepayApplyDto){
 
-			Response response=new Response();
-			try {
+		Response response=new Response();
+		try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-				response = fullBidApplyImpl.execute(fullBidRepayApplyDto);
-			} catch (Exception e) {
-				LogUtil.error(this.getClass(), e);
-				response.setResp_code(e.getMessage());
-			}
-			return response;
+			response = fullBidApplyImpl.execute(fullBidRepayApplyDto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
 		}
-		/**
-		 *
-		 * author:jhz
-		 * time:2016年3月23日
-		 * function：流标
-		 */
-		@RequestMapping(value = "/p2p/bidRepayApply",method = RequestMethod.POST)
-		@ResponseBody
-		public Object bidRepayApply(@RequestBody BidRepayApplyDto bidRepayApplyDto){
-			Response response=new Response();
-			try {
+		return response;
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：流标
+	 */
+	@RequestMapping(value = "/p2p/bidRepayApply",method = RequestMethod.POST)
+	@ResponseBody
+	public Object bidRepayApply(@RequestBody BidRepayApplyDto bidRepayApplyDto){
+		Response response=new Response();
+		try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-				response = bidRepayApplyImpl.execute(bidRepayApplyDto);
-			} catch (Exception e) {
-				LogUtil.error(this.getClass(), e);
-				response.setResp_code(e.getMessage());
-			}
-			return response;
+			response = bidRepayApplyImpl.execute(bidRepayApplyDto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
 		}
-		/**
-		 *
-		 * author:jhz
-		 * time:2016年3月23日
-		 * function：回款
-		 */
-		@RequestMapping(value = "/p2p/rePayments",method = RequestMethod.POST)
-		@ResponseBody
-		public Object rePayments(@RequestBody RePaymentDto rePaymentDto){
-			Response response=new Response();
-			try {
+		return response;
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：回款
+	 */
+	@RequestMapping(value = "/p2p/rePayments",method = RequestMethod.POST)
+	@ResponseBody
+	public Object rePayments(@RequestBody RePaymentDto rePaymentDto){
+		Response response=new Response();
+		try {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
-				response = rePaymentsImpl.execute(rePaymentDto);
-			} catch (Exception e) {
-				LogUtil.error(this.getClass(), e);
-				response.setResp_code(e.getMessage());
-			}
-			return response;
+			response = rePaymentsImpl.execute(rePaymentDto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
 		}
+		return response;
+	}
 
 
 
-		@SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	private Response excute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
