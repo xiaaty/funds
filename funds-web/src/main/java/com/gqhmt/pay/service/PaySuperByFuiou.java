@@ -327,4 +327,23 @@ public class PaySuperByFuiou {
             throw new CommandParmException(e.getMessage(),e);
         }
     }
+
+    /**
+     * 线下充值
+     * @param entity
+     * @param amount
+     * @param orderType
+     * @param busiId
+     * @param busiType
+     * @return
+     * @throws FssException
+     */
+    public CommandResponse offlineRecharge(FundAccountEntity entity,BigDecimal amount,int orderType,long busiId,int  busiType) throws FssException {
+        LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
+        FundOrderEntity fundOrderEntity = this.createOrder(entity,amount,orderType,busiId,busiType,thirdPartyType);
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_OFFLINE_RECHARGE_REFUND, fundOrderEntity, entity, amount,"充值 "+amount.toPlainString()+"元");
+        execExction(response,fundOrderEntity);
+        response.setFundOrderEntity(fundOrderEntity);
+        return response;
+    }
 }

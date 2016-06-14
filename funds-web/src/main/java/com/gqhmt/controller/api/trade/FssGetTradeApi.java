@@ -3,7 +3,9 @@ package com.gqhmt.controller.api.trade;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.callback.p2p.WithHoldApplyCallback;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.extServInter.service.cost.ICharges;
 import com.gqhmt.extServInter.service.trade.*;
 import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
 import org.springframework.context.ApplicationContext;
@@ -53,9 +55,10 @@ public class FssGetTradeApi {
 	
 	@Resource
 	private FundsBatchTradeImpl fundsBatchTradeImpl;
-	
 	@Resource
 	private WithHoldApplyCallback withHoldApplyCallback;
+	@Resource
+	private ICharges chargesImpl;
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
@@ -97,10 +100,23 @@ public class FssGetTradeApi {
 		return response;
 	}
 	*/
-	
-	
-	
-	
+
+	/**
+	 * 费用收取接口
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/chargeAmount",method = {RequestMethod.POST,RequestMethod.GET})
+	public Object getCost(@RequestBody CostDto dto){
+		Response response=new Response();
+		try {
+			response = chargesImpl.execute(dto);
+		} catch (Exception e) {
+			response = this.execute(e);
+		}
+		return response;
+	}
+
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();

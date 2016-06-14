@@ -69,7 +69,7 @@ public class FssSftpService {
 		String createAccountFileTXT = createTXT.createAccountFileTXT(queryAccountFiles);
 		try {
 			sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check", createAccountFileTXT);
-			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("P2P个人平台开户文件", queryAccountFiles.size(), "11120001");
+			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("个人平台开户文件", queryAccountFiles.size(), "11120001");
 			for (FssAccountFileEntity fssAccountFileEntity : queryAccountFiles) {
 				fssAccountFileEntity.setParentId(insertSftpRecord.getId());
 				fssAccountFileEntity.setStatus("10110002"); //10110001未报备,10110002已报备
@@ -142,7 +142,7 @@ public class FssSftpService {
 		String createProjectInfoTXT = createTXT.createProjectInfoTXT(queryItemsInfosByStatus);
 		try {
 			sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check/", createProjectInfoTXT);
-			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("标的财务汇总", queryItemsInfosByStatus.size(), "11120004");
+			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("项目信息", queryItemsInfosByStatus.size(), "11120004");
 			for (FssProjectInfoEntity fssProjectInfoEntity : queryItemsInfosByStatus) {
 				fssProjectInfoEntity.setParentId(insertSftpRecord.getId());
 				fssProjectInfoEntity.setStatus("10110002"); //10110001未报备,10110002已报备

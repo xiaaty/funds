@@ -67,7 +67,7 @@ public class FssAccountFileEntity implements Serializable{
 	private String address;
 
 	@Column(name = "user_properties")
-	private Integer userProperties;
+	private Integer userProperties;  //'用户属性（1:借款人，2：贷款人）',
 
 	@Column(name = "registration_date")
 	private String registrationDate;
@@ -76,7 +76,7 @@ public class FssAccountFileEntity implements Serializable{
 	private String thirdPartyPaymentId;
 
 	@Column(name = "action_type")
-	private String actionType;
+	private String actionType;			//'操作类型ADD增加 ，MOD修改 ，DEL删除',
 
 	@Column(name = "remark")
 	private String remark;

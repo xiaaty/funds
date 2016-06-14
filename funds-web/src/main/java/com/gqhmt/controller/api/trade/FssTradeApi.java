@@ -83,7 +83,9 @@ public class FssTradeApi {
 	
 	@Resource
 	private ISsdkTrade ssdkTradeImpl;
-	
+
+	@Resource
+	private IOfflineRechargeApply offRechargeApplyImpl;
     /**
      * 
      * author:jhz
@@ -316,7 +318,25 @@ public class FssTradeApi {
     	return response;
     }
     */
-	
+
+	/**
+	 * 线下充值接口
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/offlineRechargeApply",method = RequestMethod.POST)
+	public Object offlineRechargeApply(OfflineRechargeApplyDto dto){
+		Response response=new Response();
+		try {
+			response = offRechargeApplyImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+
+
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();

@@ -116,7 +116,7 @@ public class ConnectionFuiou {
         String result = "";
         String line;
         try {
-            in = new BufferedReader(new InputStreamReader(is));
+            in = new BufferedReader(new InputStreamReader(is,"utf-8"));
             while ((line = in.readLine()) != null) {
                 result += line;
             }

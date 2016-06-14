@@ -27,7 +27,8 @@
 			t.mchn_parent mchnParent,
 			t.mchn_child mchnChild,
 			t.order_no orderNo,
-			t.channel_no channelNo
+			t.channel_no channelNo,
+			t.cust_type custType
 		FROM t_gq_fss_trade_record t 
 	</sql>
 	

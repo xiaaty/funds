@@ -27,6 +27,7 @@
 			t.mchn_parent mchnParent,
 			t.count count,
 			t.success_count successCount,
+			t.cust_type custType,
 			t.channel_no channelNo
 			FROM t_gq_fss_trade_apply t
 	</sql>

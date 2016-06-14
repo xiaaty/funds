@@ -23,10 +23,16 @@ import com.gqhmt.extServInter.dto.Response;
  */
 public class BidApplyResponse extends Response {
 
-	
-	private String busi__no;	//标的编号
 
+	private String busi_no;	//标的编号
 
+	public String getBusi_no() {
+		return busi_no;
+	}
+
+	public void setBusi_no(String busi_no) {
+		this.busi_no = busi_no;
+	}
 	
 	
 	
