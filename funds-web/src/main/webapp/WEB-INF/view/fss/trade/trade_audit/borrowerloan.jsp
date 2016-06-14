@@ -154,14 +154,13 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2200px;">
                                         <col width="50" />
-                                        <col width="200" />
-                                        <col width="200" /> 
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
+                                        <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
@@ -172,8 +171,8 @@
                                         <thead>
                                         <tr>
                                             <td></td> 
-                                            <td>抵押权人资金平台账号</td>
-                                            <td>借款人资金平台账号</td>
+                                            <%--<td>抵押权人资金平台账号</td>
+                                            <td>借款人资金平台账号</td>--%>
                                             <td>客户编号</td>
                                             <td>合同编号</td>
                                             <td>合同金额  </td>
@@ -181,6 +180,7 @@
                                             <td>借款平台</td>
                                             <td>交易状态 </td> 
                                             <td>交易类型</td> 
+                                            <td>交易流水号</td>
                                             <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
@@ -191,8 +191,8 @@
                                         <c:forEach items="${page.list}" var="t"  varStatus="l">
                                                 <tr>
                                                     <td>${l.index+1}</td>
-                                                    <td>${t.mortgageeAccNo}</td>
-                                                    <td>${t.accNo}</td>
+                                                    <%--<td>${t.mortgageeAccNo}</td>
+                                                    <td>${t.accNo}</td>--%>
                                                     <td>${t.custNo}</td>
                                                     <td>${t.contractNo}</td>
                                                     <td>

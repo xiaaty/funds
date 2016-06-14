@@ -1,7 +1,6 @@
 package com.gqhmt.funds.architect.trade.entity;
 
 import javax.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
 

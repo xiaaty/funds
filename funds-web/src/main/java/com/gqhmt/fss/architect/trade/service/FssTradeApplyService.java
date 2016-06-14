@@ -501,6 +501,7 @@ public class FssTradeApplyService {
 		//提现添加预约到账日期
 		if(dto.getApply_type().equals("1104")){//提现
 			fssTradeApplyEntity.setBespokedate(new Date());
+			fssTradeApplyEntity.setSettleType(Integer.valueOf(dto.getSettle_type()));
 		}
 		return fssTradeApplyEntity;
 	}
