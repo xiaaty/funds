@@ -5,11 +5,13 @@ import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.exception.APIExcuteErrorException;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.event.account.CreateAccountEvent;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.LoanAccountResponse;
 import com.gqhmt.extServInter.service.loan.ICreateLoan;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.pay.service.loan.ILoan;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,13 @@ import javax.annotation.Resource;
  */
 @Service
 public class CreateLoanImpl implements ICreateLoan{
-	@Resource
-	private ILoan loanImpl;
+//	@Resource
+//	private ILoan loanImpl;
+
+
+	@Resource(mappedName="event.account.create")
+	private CreateAccountEvent createAccountEvent;
+
 
 	/**
 	 * 11020001:wap开户
@@ -47,8 +54,11 @@ public class CreateLoanImpl implements ICreateLoan{
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	LoanAccountResponse response = new LoanAccountResponse();
     	try {
-    		String accNo=loanImpl.createLoanAccount((CreateLoanAccountDto)dto);
-    		response.setAccNo(accNo);
+			CreateLoanAccountDto loanDto = 	(CreateLoanAccountDto)dto;
+    		//String accNo=loanImpl.createLoanAccount((CreateLoanAccountDto)dto);
+			FssAccountEntity fssAccountEntity = createAccountEvent.createAccount(loanDto.getTrade_type(),loanDto.getName(),loanDto.getMobile(),loanDto.getCert_no(),
+					null,loanDto.getMchn(),loanDto.getBank_id(),loanDto.getBank_card(),loanDto.getCity_id(),loanDto.getContract_no(),null);
+    		response.setAccNo(fssAccountEntity.getAccNo());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

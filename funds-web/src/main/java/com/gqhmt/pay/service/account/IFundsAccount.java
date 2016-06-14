@@ -44,25 +44,25 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 public interface IFundsAccount {
 
 
-    /**
-     * 创建账户
-     *
-     * @param createAccountDto 参数
-     * @throws FssException
-     */
-    public boolean createAccount(CreateAccountDto createAccountDto) throws FssException;
+//    /**
+//     * 创建账户
+//     *
+//     * @param createAccountDto 参数
+//     * @throws FssException
+//     */
+//    public boolean createAccount(CreateAccountDto createAccountDto) throws FssException;
 
 
-    /**
-     * 创建账户
-     *
-     * @param customerInfoEntity 客户实体
-     * @param pwd                支付渠道登陆密码
-     * @param taradPwd           支付渠道交易密码
-     * @throws FssException
-     */
-    public boolean createAccount(CustomerInfoEntity customerInfoEntity,
-			String pwd, String taradPwd) throws FssException;
+//    /**
+//     * 创建账户
+//     *
+//     * @param customerInfoEntity 客户实体
+//     * @param pwd                支付渠道登陆密码
+//     * @param taradPwd           支付渠道交易密码
+//     * @throws FssException
+//     */
+//    public boolean createAccount(CustomerInfoEntity customerInfoEntity,
+//			String pwd, String taradPwd) throws FssException;
 
 
     /**
@@ -139,7 +139,7 @@ public interface IFundsAccount {
 	 */
     public ChangeCardResponse bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
     
-    
-    public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException;
+//
+//    public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException;
     
 }

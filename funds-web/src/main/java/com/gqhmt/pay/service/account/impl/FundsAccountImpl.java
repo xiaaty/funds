@@ -250,7 +250,6 @@ public class FundsAccountImpl implements IFundsAccount {
 	    /**
 	     * app开户、冠E通前台开户
 	     */
-		@Override
 		public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException {
 			CustomerInfoEntity customerInfoEntity =  customerInfoService.getCustomerById(Long.valueOf(createAccountDto.getCust_no()));
 			if(customerInfoEntity == null) throw new FssException("90002007");
