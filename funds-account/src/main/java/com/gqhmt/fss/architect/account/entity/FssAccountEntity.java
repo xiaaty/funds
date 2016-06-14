@@ -87,9 +87,6 @@ public class FssAccountEntity implements Serializable {
 
 	@Column(name = "trade_type")
 	private String tradeType;
-
-	@Transient
-	private Long bankId;
     
 	public Long getId() {
 		return id;
@@ -242,13 +239,5 @@ public class FssAccountEntity implements Serializable {
 
 	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
-	}
-
-	public Long getBankId() {
-		return bankId;
-	}
-
-	public void setBankId(Long bankId) {
-		this.bankId = bankId;
 	}
 }

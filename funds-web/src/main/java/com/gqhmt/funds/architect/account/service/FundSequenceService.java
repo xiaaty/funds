@@ -7,7 +7,6 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
-import com.gqhmt.fss.architect.trade.service.FssChargeRecordService;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
@@ -57,8 +56,6 @@ public class FundSequenceService {
     private FundAccountService fundAccountService;
     @Resource
     private FundTradeService fundTradeService;
-    @Resource
-    private FssChargeRecordService fundChargeRecordService;
 
     /**
      * 查询流水
@@ -160,10 +157,10 @@ public class FundSequenceService {
     /**
      * 转账
      * @param fromEntity    转出账户
-     * @param toEntiry      转入账户
+     * @param toEntiry      转入转换
      * @param amount        转账金额
      */
-    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,Integer bustType,String loanType) throws FssException {
+    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntiry,BigDecimal amount,int actionType,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
         if(amount.multiply(new BigDecimal("100")).longValue()<0){
             throw new AmountFailException("传入金额不能小于0");
         }
@@ -189,20 +186,18 @@ public class FundSequenceService {
         }else if(accountType == 4005){
             toActionType = 1009;
         }
+
         FundSequenceEntity fromFundSequenceEntity =this.getFundSequenceEntity(fromEntity.getId(), actionType, accountType, new BigDecimal("-" + amount.toPlainString()), thirdPartyType, orderEntity, toEntiry.getId());
         fromFundSequenceEntity.setSumary("转账转出  转给"+toEntiry.getCustName()+"("+toEntiry.getId()+") ");
+
         FundSequenceEntity toFundSequenceEntity = this.getFundSequenceEntity(toEntiry.getId(), actionType, toActionType, amount, thirdPartyType, orderEntity, fromEntity.getId());
         toFundSequenceEntity.setSumary("转账转入 "+fromEntity.getCustName()+"("+fromEntity.getId()+")转入");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(fromFundSequenceEntity);
         list.add(toFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
-        this.fundTradeService.addFundTrade(toEntiry,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
-        fundAccountService.updateFundAccount(fromEntity,1,amount);
-        fundAccountService.updateFundAccount(toEntiry,2,amount);
-        //手续费收入记账
-        fundChargeRecordService.addChargeRecord(fromEntity,toEntiry,amount,memo,actionType,accountType,loanType,bustType,fromFundSequenceEntity);
+//        this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
+//        this.fundTradeService.addFundTrade(toEntiry,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
     }
     
     /**
@@ -441,7 +436,7 @@ public class FundSequenceService {
       for (Tender tender : list) {
           FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
           try {
-              this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null, ThirdPartyType.FUIOU, fundOrderEntity,GlobalConstants.ACCOUNT_TYPE_FREEZE,"10040001");
+              this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null, ThirdPartyType.FUIOU, fundOrderEntity);
           } catch (FssException e) {
               LogUtil.error(this.getClass(), e.getMessage());
           }
@@ -457,7 +452,7 @@ public class FundSequenceService {
       //红包账户出账，使用红包汇总 2015.07.31 于泳
       if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
           FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-          this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity,GlobalConstants.ACCOUNT_TYPE_FREEZE,"10040001");
+          this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
           this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
       }
 
@@ -472,7 +467,7 @@ public class FundSequenceService {
         for (Tender tender : list) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
             try {
-                this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2011,null, ThirdPartyType.FUIOU, fundOrderEntity,GlobalConstants.ACCOUNT_TYPE_FREEZE,"10040001");
+                this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2011,null, ThirdPartyType.FUIOU, fundOrderEntity);
             } catch (FssException e) {
                 LogUtil.error(this.getClass(), e.getMessage());
             }
@@ -488,7 +483,7 @@ public class FundSequenceService {
         //红包账户出账，使用红包汇总 2015.07.31 于泳
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity,GlobalConstants.ACCOUNT_TYPE_FREEZE,"10040001");
+            this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
             this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
         }
 
@@ -504,7 +499,7 @@ public class FundSequenceService {
             if (bean.getCustomerId() < GlobalConstants.RESERVED_CUSTOMERID_LIMIT) {
                 if (bean.getRepaymentAmount().compareTo(BigDecimal.ZERO) > 0) {
                     try {
-                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,"",thirdPartyType, fundOrderEntity,bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2,"10040001");
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,"",thirdPartyType, fundOrderEntity);
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
@@ -512,7 +507,7 @@ public class FundSequenceService {
             } else {
                 if (bean.getRepaymentPrincipal().compareTo(BigDecimal.ZERO) > 0) {
                     try {
-                        this.transfer(fromEntity, toEntity, bean.getRepaymentPrincipal(), 7, 3003,null,thirdPartyType, fundOrderEntity,bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2,"10040001");
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentPrincipal(), 7, 3003,null,thirdPartyType, fundOrderEntity);
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
@@ -524,7 +519,7 @@ public class FundSequenceService {
                 }
                 if (bean.getRepaymentInterest().compareTo(BigDecimal.ZERO) > 0) {
                     try {
-                        this.transfer(fromEntity, toEntity, bean.getRepaymentInterest(), 7, 3004,null,thirdPartyType, fundOrderEntity,bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2,"10040001");
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentInterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
@@ -536,7 +531,7 @@ public class FundSequenceService {
                 }
                 if (bean.getRepaymentExtrinterest().compareTo(BigDecimal.ZERO) > 0) {
                     try {
-                        this.transfer(fromEntity, toEntity, bean.getRepaymentExtrinterest(), 7, 3004,null,thirdPartyType, fundOrderEntity,bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2,"10040001");
+                        this.transfer(fromEntity, toEntity, bean.getRepaymentExtrinterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
@@ -553,7 +548,7 @@ public class FundSequenceService {
             if (amount.compareTo(BigDecimal.ZERO) > 0) {
                 FundAccountEntity toA0Account = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
                 try {
-                    this.transfer(toEntity, toA0Account, amount, 7, 1005,null,thirdPartyType, fundOrderEntity,bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2,"10040001");
+                    this.transfer(toEntity, toA0Account, amount, 7, 1005,null,thirdPartyType, fundOrderEntity);
                 } catch (FssException e) {
                     LogUtil.error(this.getClass(), e);
                 }
@@ -575,7 +570,7 @@ public class FundSequenceService {
 
             if (bean.getToPublicAmount().compareTo(BigDecimal.ZERO) > 0) {
                 try {
-                    this.transfer(toEntity,toAxAccount, bean.getToPublicAmount(), 7, 4014,null,thirdPartyType, fundOrderEntity,bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2,"10040001");
+                    this.transfer(toEntity,toAxAccount, bean.getToPublicAmount(), 7, 4014,null,thirdPartyType, fundOrderEntity);
                 } catch (FssException e) {
                     LogUtil.error(this.getClass(), e);
                 }

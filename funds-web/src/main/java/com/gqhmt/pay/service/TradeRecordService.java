@@ -98,8 +98,8 @@ public class TradeRecordService {
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
-    public void transfer(FundAccountEntity fromAcc,FundAccountEntity toAcc,BigDecimal amount,Integer  fundType,FundOrderEntity fundOrderEntity,Integer bustType,String loanType) throws FssException {
-        sequenceService.transfer(fromAcc,toAcc,amount,8,fundType,null,ThirdPartyType.FUIOU,fundOrderEntity,bustType,loanType);
+    public void transfer(FundAccountEntity fromAcc,FundAccountEntity toAcc,BigDecimal amount,Integer  fundType,FundOrderEntity fundOrderEntity) throws FssException {
+        sequenceService.transfer(fromAcc,toAcc,amount,8,fundType,null,ThirdPartyType.FUIOU,fundOrderEntity);
     }
     /**
      * 交易记录查询
@@ -113,7 +113,7 @@ public class TradeRecordService {
 
 
     public void chargeAmount(FundAccountEntity entity, FundAccountEntity toEntity, FundOrderEntity fundOrderEntity, FundOrderEntity fundOrderEntityCharge) throws FssException {
-        sequenceService.transfer(entity, toEntity, fundOrderEntity.getChargeAmount(), 22,4010,"收取提现手续费", ThirdPartyType.FUIOU, fundOrderEntityCharge,null,null);
+        sequenceService.transfer(entity, toEntity, fundOrderEntity.getChargeAmount(), 22,4010,"收取提现手续费", ThirdPartyType.FUIOU, fundOrderEntityCharge);
         this.fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(),3);
         this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),  4010, "收取手续费",BigDecimal.ZERO);
         this.fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4010,"收取手续费");

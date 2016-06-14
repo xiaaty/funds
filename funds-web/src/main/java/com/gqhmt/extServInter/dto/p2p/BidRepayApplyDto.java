@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 import com.gqhmt.extServInter.dto.SuperDto;
 /**
- * 
+ *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
@@ -22,19 +22,19 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 2016年3月23日  jhz      1.0     1.0 Version
  */
 public class BidRepayApplyDto extends SuperDto{
-	
+
 	private String busi_bid_no;	//标的编号
-	
+
 	private String user_id;	//借款人客户id
-	
+
 	private String mortgagee_user_id;	//抵押权人客户id
-	
+
 	private String contract_no;	//合同号
-	
+
 	private BigDecimal contract_amt;	//合同金额
-	
+
 	private BigDecimal payment_amt;	//放款金额
-	
+
 	private BigDecimal contract_interest;	//合同利息
 
 

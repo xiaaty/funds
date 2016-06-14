@@ -515,27 +515,5 @@ public class FundAccountService {
 			return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);
 		}
 
-		/**
-		 * 修改账户金额
-		 * @param Entity
-		 * @param bustType
-		 * @param flag
-		 */
-		public void updateFundAccount(FundAccountEntity entity,int flag,BigDecimal amount) throws FssException{
-			BigDecimal newamount=new BigDecimal(0);
-			if(flag==1){//出账账户
-				newamount=entity.getAmount().subtract(amount);
-			}else{//入账账户
-				newamount=entity.getAmount().add(amount);
-			}
-			entity.setAmount(newamount);
-			try {
-			fundAccountWriteMapper.updateByPrimaryKey(entity);
-			} catch (Exception e) {
-				throw  new FssException("90002039");
-			}
-		}
-
-
 }
 
