@@ -62,12 +62,12 @@ public class CustomerInfoService {
 		return null;
 	}
 	*/
-
+	
 	public CustomerInfoEntity searchCustomerInfoByMobile(CreateLoanAccountDto loanAccountDto) throws FssException {
 		CustomerInfoEntity customerInfoEntity = searchCustomerInfoByCertNo(loanAccountDto.getCert_no());
 		return customerInfoEntity;
 	}
-
+	
 	/**
 	 * 添加客户信息
 	 *
@@ -444,7 +444,7 @@ public class CustomerInfoService {
 		// bean的copy
 //		ClassReflection.reflectionAttr(customerInfoDetialBean, customerInfo);
 		BeanUtils.copyProperties(customerInfoDetialBean, customerInfo);
-
+		
 		customerInfo.setCertNo(customerInfoDetialBean.getCertNo().trim().toUpperCase());
 		customerInfo.setCustomerName(customerInfoDetialBean.getCustomerName().trim());
 		customerInfo.setMobilePhone(customerInfoDetialBean.getMobilePhone().trim());
@@ -1045,7 +1045,7 @@ public class CustomerInfoService {
 				LogUtil.error(this.getClass(), e);
 				throw new FssException("90002024");
 			}
-			//2.创建用户         t_gq_user
+			//2.创建用户         t_gq_user	
 			UserEntity userEntity;
 			try {
 				userEntity = gqUserService.createUser(loanAccountDto,customerInfoEntity);
@@ -1071,6 +1071,23 @@ public class CustomerInfoService {
 
 			}
 		return customerInfoEntity;
+	}
+
+
+	public CustomerInfoEntity createCustomer(String certNo,String name,String mobile) throws FssException{
+		try{
+			CustomerInfoEntity customerInfoEntity = this.createCustomer(certNo,name,mobile);
+			UserEntity userEntity = gqUserService.createUser(customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getId());
+			customerInfoEntity.setBankId(userEntity.getId());
+			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
+			return customerInfoEntity;
+		}catch (Exception e){
+			String  tmp = e.getMessage();
+			if(tmp != null && tmp.contains("mobile_uk")){
+				throw new FssException("90002030");
+			}
+			throw new FssException("90099005");
+		}
 	}
 
 	/**
