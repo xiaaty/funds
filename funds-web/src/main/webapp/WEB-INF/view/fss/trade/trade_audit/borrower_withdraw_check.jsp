@@ -135,10 +135,12 @@
 <%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
     <script type="text/javascript" charset="utf-8">
          $(document).ready(function () {
         	/***************************审核通过*********************************************/ 
         	  $("#passbtn").click(function () {
+                  wait("正在审核中，请耐心等待...");
     	        if (validateCheck()) {
     	            $("#withdrawForm").ajaxSubmit({
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -147,7 +149,8 @@
     	                    if (data.code == '0000') {
     	                       jAlert("审核完成!", '信息提示');
     	                        //自动跳转
-    	                    	parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records";
+    	                    	/*parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records";*/
+                                parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}";
     	                    } else if(data.code == '0001') {
     	                    	jAlert("请勿重复审核!", '消息提示');
     	                        return;
@@ -290,7 +293,27 @@
     	    $("#btn_cancel").button().click(function() {
             	window.history.back();
             });
-    	    
+         /**
+          * 遮罩栏
+          * @param msg
+          */
+         function wait(msg){
+             $.blockUI({
+                 css: {
+                     border: 'none',
+                     padding: '15px',
+                     // backgroundColor: '#000',
+                     '-webkit-border-radius': '10px',
+                     '-moz-border-radius': '10px',
+                     //   opacity: .7,
+                     bindEvents: true,
+                     constrainTabKey: false,
+                     color: '#000'
+
+                 },baseZ:999999,
+                 message: '<img src="${contextPath}/img/loading.gif" />&nbsp;' + msg
+             });
+         }
     	    
         </script>
 </body>

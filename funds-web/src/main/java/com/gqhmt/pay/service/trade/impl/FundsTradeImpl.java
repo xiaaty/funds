@@ -1,11 +1,7 @@
 package com.gqhmt.pay.service.trade.impl;
 
-<<<<<<< HEAD
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.CommonUtil;
-=======
 import com.gqhmt.core.exception.FssException;
->>>>>>> 5dda60f377e8ef528f2ae56950efa895e6882d07
+import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
@@ -600,7 +596,6 @@ public class FundsTradeImpl  implements IFundsTrade {
             fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(dto.getTrade_type()), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), primaryAccount.getBankNo(), response.getFundOrderEntity().getOrderNo(), dto.getAmt(), "10100003", "10080002", null, dto.getTrade_type(), dto.getSeq_no(), dto.getMchn(), "9701", null, "充值码","充值码时间",primaryAccount.getCustName(),"入账银行","支行信息",response.getCode());
         }else{
             fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(dto.getTrade_type()), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), primaryAccount.getBankNo(), response.getFundOrderEntity().getOrderNo(), dto.getAmt(), "10100003", "10080010", null, dto.getTrade_type(), dto.getSeq_no(), dto.getMchn(), "9701", null, "充值码","充值码时间",primaryAccount.getCustName(),"入账银行","支行信息",response.getCode());
-
         }
         fssOfflineRechargeService.insert(fssOfflineRechargeEntity);
         offlineRechargeResponse.setChg_cd("0000861");

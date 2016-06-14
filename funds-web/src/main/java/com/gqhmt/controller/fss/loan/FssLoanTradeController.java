@@ -403,7 +403,6 @@ public class FssLoanTradeController {
 			throw new FssException("Io异常");
 		}    
 	}
-<<<<<<< HEAD
 
 
 
@@ -417,9 +416,8 @@ public class FssLoanTradeController {
 	}
 	
 	
-=======
-	/**
-	 * 点击提现跳转到抵押权人提现页面
+	 /*
+	  点击提现跳转到抵押权人提现页面
 	 */
 	@RequestMapping(value = "/fss/loan/trade/{type}/{id}",method = {RequestMethod.GET,RequestMethod.POST})
 	public String queryMortgageeDetail(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeapply, @PathVariable Long  id,@PathVariable String  type) throws Exception {
@@ -443,6 +441,5 @@ public class FssLoanTradeController {
 
 
 
->>>>>>> 5dda60f377e8ef528f2ae56950efa895e6882d07
 
 }

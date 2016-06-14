@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssOfflineRechargeWriteMapper;

@@ -179,10 +179,12 @@ public class FssTradeApplyController {
 			}
 			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
+			tradeapply.setTradeState("10030001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
 			tradeapply.setApplyState("10100005");
+			tradeapply.setTradeState("10030004");//交易取消
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}
@@ -198,8 +200,6 @@ public class FssTradeApplyController {
 	 * @param request
 	 * @param model
 	 * @param map
-	 * @param type
-	 * @param bus
 	 * @return
      * @throws Exception
      */
