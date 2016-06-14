@@ -255,20 +255,21 @@ public class FssTradeApplyService {
 			//添加代扣申请
 		FssAccountEntity fssAccountByAccNo =null;
 		if("11090005".equals(tradeType)){
-			fssAccountByAccNo=fssAccountService.getFssAccountByCustId(Long.valueOf(fssLoanEntity.getMortgageeAccNo()));
+			tradeApplyEntity.setCustId(Long.valueOf(fssLoanEntity.getMortgageeAccNo()));
+			tradeApplyEntity.setChannelNo("97010001");
 		}else{
 			fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
-		}
 			tradeApplyEntity.setAccNo(fssAccountByAccNo.getAccNo());
+			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
+			tradeApplyEntity.setCustNo(fssAccountByAccNo.getCustNo());
+			tradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
+			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
+		}
 			tradeApplyEntity.setContractId(fssLoanEntity.getContractId());
 			tradeApplyEntity.setBusinessNo(fssLoanEntity.getContractNo());
 			tradeApplyEntity.setMchnChild(fssLoanEntity.getMchnChild());
 			tradeApplyEntity.setMchnParent(fssLoanEntity.getMchnParent());
 			tradeApplyEntity.setSeqNo(fssLoanEntity.getSeqNo());
-			tradeApplyEntity.setCustNo(fssAccountByAccNo.getCustNo());
-			tradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
-			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
-			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
 			tradeApplyEntity.setCreateTime(new Date());
 			tradeApplyEntity.setModifyTime(new Date());
 			tradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
@@ -286,7 +287,11 @@ public class FssTradeApplyService {
 				tradeApplyEntity.setTradeState("10090004");
 				tradeApplyEntity.setApplyType(1103);
 				fssTradeApplyWriteMapper.insertSelective(tradeApplyEntity);
-				fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
+				if("11090005".equals(tradeType)){
+					fssTradeRecordService.moneySplit(tradeApplyEntity);
+				}else {
+					fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
+				}
 			}
 	}
 

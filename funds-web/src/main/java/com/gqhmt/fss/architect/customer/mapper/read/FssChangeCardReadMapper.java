@@ -52,6 +52,6 @@ public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity>
 	 * time:2016年4月14日
 	 * function：根据custId查询银行卡变更账户
 	 */
-	public FssChangeCardEntity queryByChangeCardBankInfoId(@Param("bBankInfoId")Long bBankInfoId);
+	public List<FssChangeCardEntity> queryByChangeCardBankInfoId(@Param("bBankInfoId")Long bBankInfoId);
 
 }

@@ -546,18 +546,20 @@ public class BankCardInfoService {
 			if(bankCardInfos==null) throw new FssException("90002036");
 			for (BankCardInfoEntity bankCardInfo:bankCardInfos) {
 				if(1==bankCardInfo.getChangeState()){
-					FssChangeCardEntity changeCardResponse=	bankCardChangeReadMapper.queryByChangeCardBankInfoId(Long.valueOf(bankCardInfo.getId().toString()));
-					if(changeCardResponse!=null) {
-						changecard = new ChangeCardBean();
-						changecard.setBankName(changeCardResponse.getBankName());
-						changecard.setBankAdd(changeCardResponse.getBankAdd());
-						changecard.setBankCity(changeCardResponse.getBankCity());
-						changecard.setBankType(changeCardResponse.getBankType());
-						changecard.setCardNo(changeCardResponse.getCardNo());
-						changeCards.add(changecard);
+					List<FssChangeCardEntity> changeCardResponse=	bankCardChangeReadMapper.queryByChangeCardBankInfoId(Long.valueOf(bankCardInfo.getId().toString()));
+					if(changeCardResponse!=null &&changeCardResponse.size()>0) {
+						for (FssChangeCardEntity changeCard:changeCardResponse){
+							changecard = new ChangeCardBean();
+							changecard.setBankName(changeCard.getBankName());
+							changecard.setBankAdd(changeCard.getBankAdd());
+							changecard.setBankCity(changeCard.getBankCity());
+							changecard.setBankType(changeCard.getBankType());
+							changecard.setCardNo(changeCard.getCardNo());
+							changeCards.add(changecard);
+							}
+						}
 					}
 				}
-			}
 			return  changeCards;
 		}
 
