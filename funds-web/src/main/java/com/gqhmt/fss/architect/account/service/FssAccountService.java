@@ -103,7 +103,7 @@ public class FssAccountService {
 			fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerinfo);
             //生成富友庄户
             if(!"11020011".equals(tradeType)){
-                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo,fssCustBankCardEntity);
+                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo);
             }
 
 		}else{
@@ -123,7 +123,7 @@ public class FssAccountService {
                 }
                 //生成银行卡信息
                 fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerinfo);
-                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo,fssCustBankCardEntity);
+                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo);
             }else{
                 //验证银行信息.....    todo
             }
@@ -204,11 +204,10 @@ public class FssAccountService {
 	 * 创建富友账户
 	 * @param mchn
 	 * @param fssCustomerEntity
-	 * @param fssCustBankCardEntity
 	 * @return
 	 * @throws FssException
 	 */
-	private FssFuiouAccountEntity createFuiouAccount(String mchn,FssCustomerEntity fssCustomerEntity,FssCustBankCardEntity fssCustBankCardEntity) throws FssException {
+	public FssFuiouAccountEntity createFuiouAccount(String mchn,FssCustomerEntity fssCustomerEntity) throws FssException {
 		try {
 			FssFuiouAccountEntity fssFuiouAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssFuiouAccountEntity.class);
 			fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
@@ -219,7 +218,7 @@ public class FssAccountService {
             }else {
                 fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
             }
-			fssFuiouAccountEntity.setBankCardNo(fssCustBankCardEntity.getBankCardNo());
+//			fssFuiouAccountEntity.setBankCardNo(fssCustBankCardEntity.getBankCardNo());
             fssFuiouAccountEntity.setMchnChild(mchn);
 			fssFuiouAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
 			fssFuiouAccountEntity.setHasOpenAccFuiou(2);

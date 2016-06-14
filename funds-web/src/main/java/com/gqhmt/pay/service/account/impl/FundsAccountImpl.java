@@ -99,7 +99,6 @@ public class FundsAccountImpl implements IFundsAccount {
 				throw e;
 			}
 
-
 		}
 		primaryAccount.setCustomerInfoEntity(customerInfoEntity);
 		if (primaryAccount.getHasThirdAccount() ==1){//富友

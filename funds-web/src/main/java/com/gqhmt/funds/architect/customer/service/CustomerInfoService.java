@@ -1072,6 +1072,23 @@ public class CustomerInfoService {
 			}
 		return customerInfoEntity;
 	}
+
+
+	public CustomerInfoEntity createCustomer(String certNo,String name,String mobile) throws FssException{
+		try{
+			CustomerInfoEntity customerInfoEntity = this.createCustomer(certNo,name,mobile);
+			UserEntity userEntity = gqUserService.createUser(customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getId());
+			customerInfoEntity.setBankId(userEntity.getId());
+			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
+			return customerInfoEntity;
+		}catch (Exception e){
+			String  tmp = e.getMessage();
+			if(tmp != null && tmp.contains("mobile_uk")){
+				throw new FssException("90002030");
+			}
+			throw new FssException("90099005");
+		}
+	}
 	
 	/**
 	 * 创建账户
