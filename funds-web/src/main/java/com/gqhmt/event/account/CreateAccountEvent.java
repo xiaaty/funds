@@ -36,7 +36,7 @@ import java.util.Date;
  * -----------------------------------------------------------------
  * 2016/6/13  于泳      1.0     1.0 Version
  */
-@Service("event.account.create")
+@Service
 public class CreateAccountEvent {
 
 

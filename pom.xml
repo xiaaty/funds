@@ -70,7 +70,7 @@
 
 		<cglib.version>2.2.2</cglib.version>
 
-		<quartz.varsion>2.2.1</quartz.varsion>
+		<quartz.varsion>2.2.3</quartz.varsion>
 
 		<shiro.version>1.2.4</shiro.version>
 	</properties>
@@ -415,7 +415,12 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.2</version>
+			<version>${quartz.varsion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>${quartz.varsion}</version>
 		</dependency>
 
 

@@ -27,7 +27,7 @@ public class CreateLoanImpl implements ICreateLoan{
 //	private ILoan loanImpl;
 
 
-	@Resource(mappedName="event.account.create")
+	@Resource
 	private CreateAccountEvent createAccountEvent;
 
 

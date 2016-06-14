@@ -32,7 +32,7 @@ import javax.annotation.Resource;
  */
 @Service
 public class CreateAccountImpl implements ICreateAccount{
-	@Resource(mappedName="event.account.create")
+	@Resource
 	private CreateAccountEvent createAccountEvent;
 	
 	/**
