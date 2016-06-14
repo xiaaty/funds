@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.exception.FssException;
@@ -17,9 +18,8 @@ import com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity;
 import com.gqhmt.fss.architect.depos.entity.FssSftpRecordEntity;
 import com.gqhmt.fss.architect.depos.txt.CreateTXT;
 import com.gqhmt.fss.architect.depos.txt.ReadTXTFile;
-import com.gqhmt.fss.architect.depos.utils.SFTPDownLoadutils;
-import com.gqhmt.fss.architect.depos.utils.SFTPuploadUtils;
-import com.gqhmt.util.CommonUtil;
+import com.gqhmt.fss.architect.depos.utils.DeposDownLoadutils;
+import com.gqhmt.fss.architect.depos.utils.DeposuploadUtils;
 /**
  *
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -38,17 +38,17 @@ import com.gqhmt.util.CommonUtil;
  * 2016年5月18日  jhz      1.0     1.0 Version
  */
 @Service
-public class FssSftpService {
+public class FssDeposService {
 	@Resource
-	private SFTPuploadUtils sFTPuploadUtils;
+	private DeposuploadUtils sFTPuploadUtils;
 	@Resource
 	private CreateTXT createTXT;
 	@Resource
-	private SFTPDownLoadutils sftpDownLoadutils;
+	private DeposDownLoadutils deposDownLoadutils;
 	@Resource
 	private ReadTXTFile readTXTFile;
 	@Resource
-	private FssSftpRecordService fssSftpRecordService;
+	private FssDeposRecordService fssDeposRecordService;
 	@Resource
 	private FssAccountFileService fssAccountFileService;
 	@Resource
@@ -69,7 +69,7 @@ public class FssSftpService {
 		String createAccountFileTXT = createTXT.createAccountFileTXT(queryAccountFiles);
 		try {
 			sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check", createAccountFileTXT);
-			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("个人平台开户文件", queryAccountFiles.size(), "11120001");
+			FssSftpRecordEntity insertSftpRecord = fssDeposRecordService.insertSftpRecord("个人平台开户文件", queryAccountFiles.size(), "11120001");
 			for (FssAccountFileEntity fssAccountFileEntity : queryAccountFiles) {
 				fssAccountFileEntity.setParentId(insertSftpRecord.getId());
 				fssAccountFileEntity.setStatus("10110002"); //10110001未报备,10110002已报备
@@ -94,7 +94,7 @@ public class FssSftpService {
 		String createCreditInfoCVS = createTXT.createCreditInfoTXT(queryByStatus);
 		try {
 			sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check", createCreditInfoCVS);
-			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("商户交易", queryByStatus.size(), "11120003");
+			FssSftpRecordEntity insertSftpRecord = fssDeposRecordService.insertSftpRecord("商户交易", queryByStatus.size(), "11120003");
 			for (FssBusinessTradeEntity fssBusinessTradeEntity : queryByStatus) {
 				fssBusinessTradeEntity.setParentId(insertSftpRecord.getId());
 				fssBusinessTradeEntity.setStatus("10110002"); //10110001未报备,10110002已报备
@@ -117,8 +117,8 @@ public class FssSftpService {
 		if(queryFinaSumByStatus==null||queryFinaSumByStatus.size()==0) throw new FssException("标的财务汇总不存在未报备文件");
 		String createFinanceSumTXT = createTXT.createFinanceSumTXT(queryFinaSumByStatus);
 		try {
-			sFTPuploadUtils.upLoadFile("/check/"+CommonUtil.dateTostring(new Date())+"/", createFinanceSumTXT);
-			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("标的财务汇总", queryFinaSumByStatus.size(), "11120006");
+			sFTPuploadUtils.upLoadFile("/check/"+ DateUtil.dateTostring(new Date())+"/", createFinanceSumTXT);
+			FssSftpRecordEntity insertSftpRecord = fssDeposRecordService.insertSftpRecord("标的财务汇总", queryFinaSumByStatus.size(), "11120006");
 			for (FssFinanceSumEntity fssFinanceSumEntity : queryFinaSumByStatus) {
 				fssFinanceSumEntity.setParentId(insertSftpRecord.getId());
 				fssFinanceSumEntity.setStatus("10110002"); //10110001未报备,10110002已报备
@@ -142,7 +142,7 @@ public class FssSftpService {
 		String createProjectInfoTXT = createTXT.createProjectInfoTXT(queryItemsInfosByStatus);
 		try {
 			sFTPuploadUtils.upLoadFile("/projectInfo/0001000F0279762/check/", createProjectInfoTXT);
-			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("项目信息", queryItemsInfosByStatus.size(), "11120004");
+			FssSftpRecordEntity insertSftpRecord = fssDeposRecordService.insertSftpRecord("项目信息", queryItemsInfosByStatus.size(), "11120004");
 			for (FssProjectInfoEntity fssProjectInfoEntity : queryItemsInfosByStatus) {
 				fssProjectInfoEntity.setParentId(insertSftpRecord.getId());
 				fssProjectInfoEntity.setStatus("10110002"); //10110001未报备,10110002已报备
@@ -163,9 +163,9 @@ public class FssSftpService {
 	 */
 	public  void downBidback() throws FssException,Exception {
 		String path = getClassPath();
-		File filepath  = new File(path+"/txt/callback/"+CommonUtil.dateTostring(new Date()));
-		String fileName=filepath+"/"+"bidBack"+CommonUtil.dateTostring(new Date())+".txt";
-		sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date())+".txt",fileName );
+		File filepath  = new File(path+"/txt/callback/"+DateUtil.dateTostring(new Date()));
+		String fileName=filepath+"/"+"bidBack"+DateUtil.dateTostring(new Date())+".txt";
+		deposDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_"+DateUtil.dateTostring(new Date())+".txt",fileName );
 		readTXTFile.insertProjectCallBacks(fileName);
 	}
 	/**

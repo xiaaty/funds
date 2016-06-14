@@ -91,10 +91,15 @@
 		<include refid="selectSql"/>
 		where t.acc_no = #{accNo}
 	</select>
-	
+	<!--通过cust_id查询抵押权人账户-->
 	<select id="findAccountByCustId" parameterType="java.lang.Long" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
 		<include refid="selectSql"/>
-		where t.cust_id = #{custId}
+		where t.cust_id = #{custId} and a.acc_type=10012002
 	</select>
-	
+	<!--通过合同号查询资金平台账号信息-->
+	<select id="findAccountByContractNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+		<include refid="selectSql"/>
+		where t.busi_no = #{contractNo}
+	</select>
+
 </mapper>

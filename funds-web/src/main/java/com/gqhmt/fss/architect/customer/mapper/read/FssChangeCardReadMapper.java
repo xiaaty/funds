@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.customer.mapper.read;/**
  * Created by yuyonf on 15/11/30.
  */
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
@@ -32,19 +33,25 @@ public interface FssChangeCardReadMapper extends ReadMapper<FssChangeCardEntity>
     
     public ChangeCardResponse getChangeCardByParam(@Param("seq_no") String seq_no,@Param("mchn") String mchn);
 
-    /**
-     * 
-     * author:jhz
-     * time:2016年4月13日
-     * function：根据状态查询对象
-     */
+	/**
+	 * 根据custId查询银行卡变更账户
+	 * @param custId
+	 * @return
+	 */
+	public FssChangeCardEntity selectByCustId(@Param("custId")Long custId);
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年4月13日
+	 * function：根据状态查询对象
+	 */
 	public List<FssChangeCardEntity> queryByTradeState(@Param("tradeState")int tradeState);
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年4月14日
 	 * function：根据custId查询银行卡变更账户
 	 */
-	public FssChangeCardEntity selectByCustId(@Param("custId")Long custId);
+	public FssChangeCardEntity queryByChangeCardBankInfoId(@Param("bBankInfoId")Long bBankInfoId);
 
 }

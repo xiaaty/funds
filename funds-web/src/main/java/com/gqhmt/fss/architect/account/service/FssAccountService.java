@@ -164,11 +164,21 @@ public class FssAccountService {
      *
      * author:jhz
      * time:2016年6月6日
-     * function：根据cust_id查询账户
+     * function：根据cust_id查询抵押权人账户（acc_type=10012002）
      */
     public FssAccountEntity getFssAccountByCustId(Long custId)throws FssException{
     	return this.accountReadMapper.findAccountByCustId(custId);
     }
+    /**
+     *
+     * author:jhz
+     * time:2016年6月6日
+     * function：根据contractNo查询账户(busi_no)
+     */
+    public FssAccountEntity findAccountByContractNo(String contractNo){
+        return this.accountReadMapper.findAccountByContractNo(contractNo);
+    }
+
 
 
     public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo,Date createTime)  throws FssException{

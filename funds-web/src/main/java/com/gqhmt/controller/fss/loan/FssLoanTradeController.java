@@ -201,7 +201,7 @@ public class FssLoanTradeController {
 		try {
 			if("11090005".equals(type)){//冠e通抵押标转账
 				FssAccountEntity fromEntity=fssAccountService.getFssAccountByCustId(Long.parseLong(fssLoanEntityById.getMortgageeAccNo()));
-				FssAccountEntity toEntity=fssAccountService.getFssAccountByCustId(Long.parseLong(fssLoanEntityById.getAccNo()));
+				FssAccountEntity toEntity=fssAccountService.findAccountByContractNo(fssLoanEntityById.getContractNo());
 				fundsTradeImpl.transefer(fromEntity.getAccNo(), toEntity.getAccNo(),
 						fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
 						GlobalConstants.NEW_BUSINESS_MT);
@@ -297,7 +297,7 @@ public class FssLoanTradeController {
 						if(fssFeeList.getFeeAmt().compareTo(BigDecimal.ZERO)>0&&!"10990004".equals(fssFeeList.getFeeType())){
 							if("11090005".equals(type) || "11090004".equals(type)){//冠e通收费
 								//借款人资金平台账号
-								FssAccountEntity toEntity=fssAccountService.getFssAccountByCustId(Long.parseLong(fssLoanEntityById.getAccNo()));
+								FssAccountEntity toEntity=fssAccountService.findAccountByContractNo(fssLoanEntityById.getContractNo());
 								cost.cost(fssLoanEntityById.getLoanPlatform(),
 										fssFeeList.getFeeType(),toEntity.getAccNo(), fssFeeList.getFeeAmt(),
 										fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);

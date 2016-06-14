@@ -11,7 +11,7 @@ import com.gqhmt.fss.architect.depos.mapper.read.FssSftpRecordReadMapper;
 import com.gqhmt.fss.architect.depos.mapper.write.FssSftpRecordWriteMapper;
 
 @Service
-public class FssSftpRecordService {
+public class FssDeposRecordService {
 	
 	@Resource
 	private FssSftpRecordReadMapper fssSftpRecordReadMapper;

@@ -11,12 +11,5 @@ import java.util.Date;
  */
 public class ToDateUtils {
 	
-	public static Date toDate(String stringDate) throws ParseException{
-		
-		String pattern = "yyy-MM-dd HH:mm:ss"; //首先定义时间格式
-		SimpleDateFormat format = new SimpleDateFormat(pattern);//然后创建一个日期格式化类
-		Date date = format.parse(stringDate);
-		return date;
-		
-	}
+
 }

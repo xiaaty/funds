@@ -11,6 +11,7 @@ import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.service.asset.*;
 import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
+import com.gqhmt.fss.architect.customer.bean.ChangeCardBean;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
@@ -105,7 +106,17 @@ public class FssAssetApi {
     	if(list==null) throw new FssException("90002036");
     	return list;
     }
-  
+    /**
+     * author:jhz
+     * time:2016年6月1日
+     * function：变更银行卡信息查询
+     */
+    @RequestMapping(value = "/getChangeCardInfo/{custNo}",method = {RequestMethod.POST,RequestMethod.GET})
+    public List<ChangeCardBean> getChangeCardInfo(@PathVariable String custNo) throws FssException{
+        List<ChangeCardBean> list = bankCardInfoService.findChangeCardInfo(custNo);
+    	return list;
+    }
+
     /**
      * author:柯禹来
      * time:2016年3月1日

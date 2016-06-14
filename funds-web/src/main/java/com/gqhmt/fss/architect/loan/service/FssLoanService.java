@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.loan.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.*;
@@ -125,7 +125,7 @@ public class FssLoanService {
      * time:2016年3月7日
      * function：借款人放款接口
      */
-    public void insertLending(LendingDto dto)throws FssException{
+    public void insertLending(LendingDto dto)throws FssException {
     	FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
     	FssLoanEntity fssLoanEntity=new FssLoanEntity();
     	fssLoanEntity.setCustNo(fssAccountByAccNo.getCustNo());
@@ -496,11 +496,11 @@ public class FssLoanService {
 		fssLoanWriteMapper.insert(fssLoanEntity);
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月23日
 	 * function：冠e通后台 流标
-	 * @throws FssException 
+	 * @throws FssException
 	 */
 	public void insertBidRepayApply(BidRepayApplyDto BidRepayApplyDto) throws FssException {
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
@@ -523,7 +523,63 @@ public class FssLoanService {
 		fssLoanWriteMapper.insertAbortBid(fssLoanEntity);
 		this.abort(fssLoanEntity);
 	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月13日
+	 * function：冠e通后台 回款
+	 */
+	public void insertRepaymentDto(String mchn,String seqNo,String tradeType,String paymentType,String busiBidNo,String contractNo,BigDecimal contractAmt,BigDecimal contractInterest,BigDecimal paymentAmt,String userId,String mortgageeUserId,String repaymentNo,String period,String remark) throws FssException {
+		//不允许重复提交（回款编号，交易类型，回款类型）
+		FssLoanEntity fssLoanEntity1=this.getLoanRepayment(repaymentNo,tradeType,paymentType);
+		if(fssLoanEntity1!=null) throw  new FssException("90004011");
+		FssLoanEntity fssLoanEntity=this.creatLoanEntity(mchn,seqNo,tradeType,paymentType,busiBidNo,contractNo,contractAmt,contractInterest,paymentAmt,userId,mortgageeUserId,repaymentNo);
+		fssLoanEntity.setUserNo(period);  	//期数
+		fssLoanEntity.setRepMsg(remark);	//备注
+		fssLoanEntity.setStatus("10050011");
+		fssLoanWriteMapper.insert(fssLoanEntity);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月13日
+	 * function：冠e通后台 流标
+	 * @throws FssException
+	 */
+	public void insertBidRepayApply(String mchn,String seqNo,String signature,String tradeType,String contractNo,String busiBidNo,BigDecimal contractAmt,BigDecimal contractInterest,BigDecimal paymentAmt,String userId,String mortgageeUserId ) throws FssException {
+		FssLoanEntity fssLoanEntity1=this.getFssLoanEntityByBidBusiNo(tradeType, busiBidNo);
+		if(fssLoanEntity1!=null)  throw  new FssException("90004011");
+		FssLoanEntity fssLoanEntity=this.creatLoanEntity(mchn,seqNo,null,tradeType,busiBidNo,contractNo,contractAmt,contractInterest,paymentAmt,userId,mortgageeUserId,null);
+		this.abort(fssLoanEntity);
+	}
 
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月13日
+	 * function：创建fssLoanEntity
+	 * @throws FssException
+	 */
+	public FssLoanEntity creatLoanEntity(String mchnChild,String seqNo,String tradeTypeparent,String tradeType,String contractId,String contractNo,BigDecimal contractAmt,BigDecimal contractInterest,BigDecimal paymentAmt,String accNo,String mortgageeAccNo,String busiNo) throws FssException{
+		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		fssLoanEntity.setContractId(contractId);
+		fssLoanEntity.setMchnChild(mchnChild);
+		fssLoanEntity.setContractAmt(contractAmt);
+		fssLoanEntity.setPayAmt(paymentAmt);
+		fssLoanEntity.setContractInterest(contractInterest);
+		fssLoanEntity.setContractNo(contractNo);
+		fssLoanEntity.setAccNo(accNo);
+		fssLoanEntity.setTradeTypeParent(tradeTypeparent);
+		fssLoanEntity.setMortgageeAccNo(mortgageeAccNo);
+		String parentMchn = Application.getInstance().getParentMchn(mchnChild);
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(seqNo);
+		fssLoanEntity.setTradeType(tradeType);
+		fssLoanEntity.setBusiNo(busiNo);
+		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setModifyTime(new Date());
+		return  fssLoanEntity;
+	}
 	/**
 	 * 获取需要满标转账的数据列表(信用标,抵押权人提现,新增状态)
 	 * @return
