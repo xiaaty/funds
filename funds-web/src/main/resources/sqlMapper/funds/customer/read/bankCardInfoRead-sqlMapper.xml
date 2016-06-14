@@ -93,7 +93,8 @@
 	</select>
 	
 	<select id="findBankCardByCustNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity">
-		SELECT 
+		SELECT
+			id id,
 			cert_Name certName,
 			bank_no bankNo,
 			bank_sort_name bankLongName,

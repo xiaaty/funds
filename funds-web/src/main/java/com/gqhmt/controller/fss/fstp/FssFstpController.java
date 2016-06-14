@@ -17,7 +17,7 @@ import com.gqhmt.fss.architect.depos.service.FssCorporateService;
 import com.gqhmt.fss.architect.depos.service.FssCreditInfoService;
 import com.gqhmt.fss.architect.depos.service.FssProjectInfoCallBackService;
 import com.gqhmt.fss.architect.depos.service.FssProjectInfoService;
-import com.gqhmt.fss.architect.depos.service.FssSftpRecordService;
+import com.gqhmt.fss.architect.depos.service.FssDeposRecordService;
 import com.gqhmt.fss.architect.depos.service.FssSumAuditService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,7 +59,7 @@ public class FssFstpController {
     @Resource
     private FssSumAuditService fssSumAuditService;
     @Resource
-    private FssSftpRecordService fssSftpRecordService;
+    private FssDeposRecordService fssDeposRecordService;
     @Resource
     private FssAccountFileService fssAccountFileService;
     @Resource
@@ -163,7 +163,7 @@ public class FssFstpController {
     @RequestMapping(value = "/fstp/mainRecordInfo",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMainRecordInfo(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-    	List<FssSftpRecordEntity>creditInfolist = fssSftpRecordService.findSftpRecordList(map);
+    	List<FssSftpRecordEntity>creditInfolist = fssDeposRecordService.findSftpRecordList(map);
     	model.addAttribute("page", creditInfolist);
     	model.put("map", map);
     	return "fss/fstp/bid/fstpRecordList";

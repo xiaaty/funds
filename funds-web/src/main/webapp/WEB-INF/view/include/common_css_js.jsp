@@ -18,6 +18,6 @@
 <link rel="icon" href="${contextPath}/img/favicon.ico" type="image/x-icon">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fss" uri="/WEB-INF/fssCore.tld"%>
+<%@ taglib prefix="fss" uri="/WEB-INF/fssCore.tld" %>
 
 

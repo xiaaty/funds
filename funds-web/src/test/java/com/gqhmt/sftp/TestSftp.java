@@ -18,7 +18,8 @@ import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
 import com.gqhmt.fss.architect.card.entiry.FssCardBinEntity;
 import com.gqhmt.fss.architect.card.service.FssCardBinService;
-import com.gqhmt.fss.architect.depos.service.FssSftpService;
+import com.gqhmt.fss.architect.depos.service.FssDeposService;
+import com.gqhmt.util.DateUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -31,23 +32,22 @@ import com.gqhmt.TestService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.txt.CreateTXT;
 import com.gqhmt.fss.architect.depos.txt.ReadTXTFile;
-import com.gqhmt.fss.architect.depos.utils.SFTPDownLoadutils;
-import com.gqhmt.fss.architect.depos.utils.SFTPuploadUtils;
-import com.gqhmt.util.CommonUtil;
+import com.gqhmt.fss.architect.depos.utils.DeposDownLoadutils;
+import com.gqhmt.fss.architect.depos.utils.DeposuploadUtils;
 
 public class TestSftp extends TestService {
     @Resource
-    private SFTPuploadUtils sFTPuploadUtils;
+    private DeposuploadUtils sFTPuploadUtils;
     @Resource
     private CreateTXT createTXT;
     @Resource
-    private SFTPDownLoadutils sftpDownLoadutils;
+    private DeposDownLoadutils deposDownLoadutils;
     @Resource
     private ReadTXTFile readTXTFile;
     @Resource
     private PaymentCallback paymentCallback;
     @Resource
-    private FssSftpService fssSftpService;
+    private FssDeposService fssDeposService;
     private static int num = 1000;
 
     /**
@@ -108,7 +108,7 @@ public class TestSftp extends TestService {
      */
     @Test
     public void createProjectInfoTXT() throws FssException {
-        fssSftpService.createProjectInfoTXT();
+        fssDeposService.createProjectInfoTXT();
     }
 
     /**
@@ -118,8 +118,8 @@ public class TestSftp extends TestService {
      */
     @Test
     public void downBidback() throws Exception {
-        String	filePath="F:\\P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date())+".txt";
-        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_"+CommonUtil.dateTostring(new Date())+".txt",filePath );
+        String	filePath="F:\\P2P_PWXM_BACK_"+ DateUtil.dateTostring(new Date())+".txt";
+        deposDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/"+"P2P_PWXM_BACK_"+DateUtil.dateTostring(new Date())+".txt",filePath );
 //        filePathsftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/P2P_PWXM_BACK_20160601.txt",filePath );
 //        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160602_P2P_PWXM_20160602_1041.txt",filePath );
 //        readTXTFile.insertProjectCallBacks(filePath);
@@ -133,7 +133,7 @@ public class TestSftp extends TestService {
     @Test
     public void downBidbacks() throws Exception {
         String	filePath="F:\\20160606_P2P_PWXM_20160606_1132.txt";
-        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160606_P2P_PWXM_20160606_1132.txt",filePath );
+        deposDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160606_P2P_PWXM_20160606_1132.txt",filePath );
 //        filePathsftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/backcheck/P2P_PWXM_BACK_20160601.txt",filePath );
 //        sftpDownLoadutils.downLoadFile("/projectInfo/0001000F0279762/overcheck/20160602_P2P_PWXM_20160602_1041.txt",filePath );
 //        readTXTFile.insertProjectCallBacks(filePath);

@@ -12,7 +12,7 @@ import com.gqhmt.funds.architect.trade.bean.WithholdApplyFormBean;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.WithholdApplyReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.WithholdApplyWriteMapper;
-import com.gqhmt.util.CommonUtil;
+import com.gqhmt.util.DateUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -99,7 +99,7 @@ public class WithholdApplyService {
 	/**
 	 * 更新取代扣对象
 	 * 
-	 * @param entity
+	 * @param
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -126,7 +126,7 @@ public class WithholdApplyService {
 		//withholdApplyFormBean.setId(String.valueOf(withholdApplyEntity.getId()));
 
 		// 申请日期
-		withholdApplyFormBean.setApplyTimeForm((CommonUtil.dateToString(withholdApplyEntity.getApplyTime())));
+		withholdApplyFormBean.setApplyTimeForm((DateUtil.dateToString(withholdApplyEntity.getApplyTime())));
 		/*TODO BankCardinfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(withholdApplyEntity.getBankId());
 		BankDealamountLimitEntity bankDealamountLimitEntity = bankDealamountLimitService.queryBankLimitInfo(withholdApplyEntity.getThirdPartyType(), 1, bankCardinfoEntity.getParentBankId());
 		// 上限额度

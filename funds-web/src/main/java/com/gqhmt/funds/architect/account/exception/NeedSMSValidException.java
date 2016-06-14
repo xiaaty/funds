@@ -1,5 +1,6 @@
 package com.gqhmt.funds.architect.account.exception;
 
+
 import com.gqhmt.core.exception.FssException;
 
 /**
@@ -18,5 +19,5 @@ import com.gqhmt.core.exception.FssException;
  * -----------------------------------------------------------------
  * 16/2/17  于泳      1.0     1.0 Version
  */
-public class NeedSMSValidException extends FssException{
+public class NeedSMSValidException extends FssException {
 }
