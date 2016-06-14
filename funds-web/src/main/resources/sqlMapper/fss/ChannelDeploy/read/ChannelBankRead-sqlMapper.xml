@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelBankReadMapper">
+    <select id="getChannelBankEntityListByOrgId" parameterType="java.lang.Integer" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelBankEntity">
+        SELECT
+            t.id id,
+            t.option_name optionName,
+            t.option_value optionValue,
+            t.org_id orgId,
+            t.conf_of_people confOfPeople,
+            t.create_time createTime,
+            t.modify_time modifyTime
+        FROM t_gq_fss_channel_bank t
+        WHERE t.org_id = #{orgId }
+    </select>
+
+    <select id="getChannelBankEntity" parameterType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelBankEntity" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelBankEntity">
+        SELECT
+            t.id id,
+            t.option_name optionName,
+            t.option_value optionValue,
+            t.org_id orgId,
+            t.conf_of_people confOfPeople,
+            t.create_time createTime,
+            t.modify_time modifyTime
+        FROM t_gq_fss_channel_bank t
+        WHERE 1 = 1
+        <if test="optionName != null and optionName != ''">
+            AND t.option_name = #{optionName}
+        </if>
+        <if test="optionValue !=null and optionName != ''">
+            AND  t.option_value = #{optionValue}
+        </if>
+        <if test="orgId!=null and orgId!= ''">
+            AND t.org_id = #{orgId}
+        </if>
+        order by t.create_time desc;
+    </select>
+</mapper>

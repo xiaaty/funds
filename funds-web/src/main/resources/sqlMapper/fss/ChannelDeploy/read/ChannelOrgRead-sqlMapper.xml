@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelOrgReadMapper">
+    <select id="getChannelOrgEntityList" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelOrgEntity">
+		SELECT
+				t.`id` id,
+				t.`channel_code` channelCode,
+				t.`channel_name` channelName,
+				t.`channel_condition` channelCondition,
+				t.`channel_type` channelType,
+				t.`channel_payment_mode` channelPaymentMode,
+				t.`create_time` createTime,
+				t.`modify_time` modifyTime
+		FROM t_gq_fss_channel_org t
+    </select>
+
+	<select id="getChannelOrgEntityById" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelOrgEntity" parameterType="java.lang.Integer">
+		SELECT
+			t.id id,
+			t.channel_code channelCode,
+			t.channel_name channelName,
+			t.channel_condition channelCondition,
+			t.channel_type channelType,
+			t.channel_payment_mode channelPaymentMode,
+			t.create_time createTime,
+			t.modify_time modifyTime
+		  FROM t_gq_fss_channel_org t
+		  WHERE
+		  	t.id = #{id }
+	</select>
+</mapper>
