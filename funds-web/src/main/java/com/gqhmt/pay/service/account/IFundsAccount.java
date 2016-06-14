@@ -140,6 +140,6 @@ public interface IFundsAccount {
     public ChangeCardResponse bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
     
     
-    public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException;
-    
+    public Integer createFundAccount(CreateAccountDto dto) throws FssException;
+
 }
