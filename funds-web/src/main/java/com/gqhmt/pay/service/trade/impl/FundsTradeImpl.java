@@ -268,7 +268,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         //第三方交易
         FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,transferDto.getAmt(),transferDto.getBusi_type(),transferDto.getBusi_id(),transferDto.getBusi_type());
         //资金处理
-        this.tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),transferDto.getFunds_type(),fundOrderEntity,transferDto.getBusi_type(),"10040001");
+        this.tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),transferDto.getFunds_type(),fundOrderEntity);
         return true;
     }
 
@@ -284,7 +284,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity toEntity = this.getFundAccount(toCusID, to);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType);
         //资金处理
-        tradeRecordService.transfer(fromEntity,toEntity,amount,busiType,fundOrderEntity,busiType,"10040001");
+        tradeRecordService.transfer(fromEntity,toEntity,amount,busiType,fundOrderEntity);
         return fundOrderEntity;
     }
 

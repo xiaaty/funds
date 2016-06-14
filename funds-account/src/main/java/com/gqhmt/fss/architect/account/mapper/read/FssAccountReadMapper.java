@@ -40,6 +40,6 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 
 	public FssAccountEntity findAccountByAccNo(@Param("accNo") String accNo);
 
-//	public FssAccountEntity findAccountByCustId(@Param("custId") Long custId);
+	public FssAccountEntity findAccountByCustId(@Param("custId") Long custId);
 
 }
