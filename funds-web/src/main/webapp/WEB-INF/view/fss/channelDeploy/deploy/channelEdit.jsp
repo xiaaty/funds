@@ -189,6 +189,8 @@
 <%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
+<script src="${contextPath}/js/util/lock.js"></script>
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         pageSetUp();
@@ -211,7 +213,7 @@
 
     //异步检查值是否存在
     function sumList (){
-        alert("保存");
+        bilocUtil("保存...");
         var ajax_type = "POST";
         var id = ${channelOrgEntity.id};
         var channelCondition = $("#channelCondition").val();
@@ -229,9 +231,13 @@
             error:errorFnt
         });
         function successFnt(data){
+            $.unblockUI();
+            //closeBlock();
             jAlert('保存成功', '信息提示');
         }
         function errorFnt() {
+            $.unblockUI();
+            //closeBlock();
             jAlert('保存失败', '信息提示');
         }
     }
