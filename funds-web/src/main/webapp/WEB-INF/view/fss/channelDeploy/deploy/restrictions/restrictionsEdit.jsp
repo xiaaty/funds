@@ -151,6 +151,8 @@
             <%@include file= "../../../../../view/include/common_footer_css_js.jsp"%>
             <script src="${contextPath}/js/jquery.form.js" ></script>
             <script src="${contextPath}/js/jquery.alerts.js" ></script>
+            <script src="${contextPath}/js/jquery.blockUI.js"></script>
+            <script src="${contextPath}/js/util/lock.js"></script>
     </div>
 
 
@@ -214,6 +216,7 @@
                     if(oName!="" ){
                         asynchronization(oName,null);
                     }else{
+                        $.unblockUI();
                         jAlert("配置项,不能为空!", '信息提示');
                         return;
                     }
@@ -251,6 +254,9 @@
             });
             function successFnt(data){
                 if(data.message == "配置项已存在!"){
+                    if(isSave){
+                        $.unblockUI();
+                    }
                     jAlert(data.message, '信息提示');
                     return;
                 }else{
@@ -262,13 +268,14 @@
                         $("#typeSubm").val(data.optionType);
                         $("#valueSubm").val(data.optionValue);
                         $("#sumRestrictions").submit();
+                        $.unblockUI();
                     }else{
                     }
                     //       jAlert("添加成功!", '信息提示');
                 };
             }
             function errorFnt() {
-                alert("error")
+                $.unblockUI();
                 alert(arguments[1]);
             }
             //return false; //阻止表单的默认提交事件
@@ -282,6 +289,7 @@
 
         //保存
         function saveOption(){
+            bilocUtil("保存...");
             var optionName = $("#optionName").val();
             var optionValue = $("#optionValue").val();
 
@@ -293,6 +301,7 @@
             if(oName!="" && oValue != ""){
                 asynchronization(oName,oValue,true);
             }else{
+                $.unblockUI();
                 jAlert("配置项/值,不能为空!", '信息提示');
                 return;
             }
