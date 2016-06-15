@@ -134,7 +134,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2600px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15  table-striped table-hover" style="min-width:2600px;">
                                         <col width="200" />
                                         <col width="150" />
                                         <col width="150" />
@@ -158,7 +158,7 @@
                                               <td>客户编号</td>
                                               <td>账户类型</td>
                                               <td>证件号码</td>
-                                              <td>移动电话</td> 
+                                              <td>移动电话</td>
                                               <td>账户状态</td>
                                               <td>账户余额</td>
                                               <td>可用余额</td>
@@ -167,8 +167,8 @@
                                               <td>子商户号</td>
                                               <td>父商户号</td>
                                               <td>创建日期</td>
-                                              <td>修改日期</td> 
-                                              <td>操作</td> 
+                                              <td>修改日期</td>
+                                              <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
