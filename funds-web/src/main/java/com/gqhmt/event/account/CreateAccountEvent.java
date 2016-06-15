@@ -16,7 +16,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import javax.annotation.Resource;
 import java.util.Date;
 
@@ -159,19 +159,19 @@ public class CreateAccountEvent {
         //银行卡信息生成
         //旧版银行卡信息生成
         //创建银行卡信息
-       BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId.toString()));
-        if(bankCardInfoEntity==null){
+       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
+        BankCardInfoEntity bankCardInfoEntity=null;
+        if(listbankcard.size()==0){
             //判断输入的银行卡号是否已经存在
             bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
             if(bankCardInfoEntity!=null){
                 throw new FssException("90002038");//该银行卡号已经存在
             }
-
             bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
+        }else{
+            bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
         }
-
         fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
-
         //新版银行卡信息生成  增加判断，是否存在
         FssCustBankCardEntity fssCustBankCardEntity=null;
         fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());

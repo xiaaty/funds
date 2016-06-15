@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 账户相关api
@@ -289,8 +290,8 @@ public class FundsAccountImpl implements IFundsAccount {
 			fundAccountService.updateAccountCustomerName(cusId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
 //			customerInfoService.updateCustomer(cusId, createAccountDto.getName(), createAccountDto.getCert_no(),createAccountDto.getBank_id());
 			//创建银行卡信息
-			bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
-			if(bankCardInfoEntity==null){
+			List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(Integer.valueOf(cusId.intValue()));
+			if(listbankcard.size()==0){
 				//判断输入的银行卡号是否已经存在
 				bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
 				if(bankCardInfoEntity!=null){
@@ -298,8 +299,6 @@ public class FundsAccountImpl implements IFundsAccount {
 				}
 				
 				bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,createAccountDto.getTrade_type());
-			}else{
-				bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(cusId.toString()));
 			}
 			return bankCardInfoEntity.getId();
 	}
