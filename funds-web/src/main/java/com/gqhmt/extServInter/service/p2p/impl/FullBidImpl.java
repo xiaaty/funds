@@ -6,7 +6,6 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
 import com.gqhmt.extServInter.dto.p2p.FullBidApplyDto;
 import com.gqhmt.extServInter.service.p2p.IFullBidApply;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;

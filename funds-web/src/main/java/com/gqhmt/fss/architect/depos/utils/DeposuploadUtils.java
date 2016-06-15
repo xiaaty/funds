@@ -26,9 +26,9 @@ import com.jcraft.jsch.SftpException;
  * 2016年5月10日  jhz      1.0     1.0 Version
  */
 @Service
-public class SFTPuploadUtils {
-	 public SFTPChannel getSFTPChannel() {
-	        return new SFTPChannel();
+public class DeposuploadUtils {
+	 public DeposChannel getSFTPChannel() {
+	        return new DeposChannel();
 	    }
 
 	    /**
@@ -39,16 +39,16 @@ public class SFTPuploadUtils {
 	     * upPath：上传到富有的路径，filePath：本地文件路径
 	     */
 	    public void upLoadFile(String upPath,String filePath) throws Exception {
-	        SFTPuploadUtils test = new SFTPuploadUtils();
+	        DeposuploadUtils test = new DeposuploadUtils();
 
 	        Map<String, String> sftpDetails = new HashMap<String, String>();
 	        // 设置主机ip，端口，用户名，密码
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_HOST, "ftp-1.fuiou.com");
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_USERNAME, "gqjmsftp");
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_PASSWORD, "8GHBR3bvpasCHRT5");
-	        sftpDetails.put(SFTPConstants.SFTP_REQ_PORT, "9022");
+	        sftpDetails.put(DeposConstants.SFTP_REQ_HOST, "ftp-1.fuiou.com");
+	        sftpDetails.put(DeposConstants.SFTP_REQ_USERNAME, "gqjmsftp");
+	        sftpDetails.put(DeposConstants.SFTP_REQ_PASSWORD, "8GHBR3bvpasCHRT5");
+	        sftpDetails.put(DeposConstants.SFTP_REQ_PORT, "9022");
 	        
-	        SFTPChannel channel = test.getSFTPChannel();
+	        DeposChannel channel = test.getSFTPChannel();
 	        ChannelSftp chSftp = channel.getChannel(sftpDetails, 60000);
 	        
 	        File file = new File(filePath);

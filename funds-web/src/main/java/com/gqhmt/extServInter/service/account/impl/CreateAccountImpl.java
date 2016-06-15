@@ -10,8 +10,8 @@ import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
-import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 
 /**
@@ -35,6 +35,7 @@ public class CreateAccountImpl implements ICreateAccount{
 	@Resource
 	private CreateAccountEvent createAccountEvent;
 	
+
 	/**
 	 * 11020001:wap开户
 	 * 11020002:web开户
@@ -65,4 +66,5 @@ public class CreateAccountImpl implements ICreateAccount{
 		}
         return response;
     }
+
 }

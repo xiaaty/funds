@@ -170,11 +170,21 @@ public class FssAccountService {
      *
      * author:jhz
      * time:2016年6月6日
-     * function：根据cust_id查询账户
+     * function：根据cust_id查询抵押权人账户（acc_type=10012002）
      */
     public FssAccountEntity getFssAccountByCustId(Long custId)throws FssException{
     	return this.accountReadMapper.findAccountByCustId(custId);
     }
+    /**
+     *
+     * author:jhz
+     * time:2016年6月6日
+     * function：根据contractNo查询账户(busi_no)
+     */
+    public FssAccountEntity findAccountByContractNo(String contractNo){
+        return this.accountReadMapper.findAccountByContractNo(contractNo);
+    }
+
 
     public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo,Date createTime)  throws FssException{
     	FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class);
@@ -190,6 +200,14 @@ public class FssAccountService {
     	String channelNo=GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(tradeType);//渠道编号
     	fssAccountEntity.setAccType(Integer.parseInt(accType));
     	fssAccountEntity.setState(10020001);//默认为有效账户
+        //验证业务编号 如果账户类型不是 线下出借,借款,保理,则设定业务编号为 客户编号,以此保证 其他类型账户唯一
+        if(!"10010002".equals(accType) && !"10010003".equals(accType) &&  !"10010004".equals(accType) ){
+            busiNo = fssCustomerEntity.getCustNo();
+        }else{//如果,线下出借,借款,保理,则业务编号不能为空
+            if(busiNo == null || "".equals(busiNo)){
+                throw new FssException("");   //todo  未设定error类型  抛出业务编号为空
+            }
+        }
         fssAccountEntity.setBusiNo(busiNo);
     	fssAccountEntity.setCustId(fssCustomerEntity.getCustId());
     	fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配

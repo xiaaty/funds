@@ -3,7 +3,7 @@ package com.gqhmt.controller.fss.merchant;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.merchant.entity.ApiAddrEntity;
 import com.gqhmt.fss.architect.merchant.service.*;
-import com.gqhmt.util.ToDateUtils;
+import com.gqhmt.util.DateUtil;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -86,7 +86,7 @@ public class FssApiController {
     @ResponseBody
     public Object updateBusinessApi(HttpServletRequest request,ModelMap model,ApiAddrEntity apiAddrEntity) throws ParseException{
     	String creatTime = request.getParameter("creatTime");
-    	apiAddrEntity.setCreateTime(ToDateUtils.toDate(creatTime));
+    	apiAddrEntity.setCreateTime(DateUtil.toDate(creatTime));
     	apiAddrEntity.setModifyTime(new Date());
     	merchantService.updateApiAddr(apiAddrEntity);
     	Map<String, String> map = new HashMap<String, String>();

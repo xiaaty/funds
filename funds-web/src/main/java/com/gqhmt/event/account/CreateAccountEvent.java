@@ -98,6 +98,10 @@ public class CreateAccountEvent {
                         //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                         customerInfoEntity =  customerInfoService.getCustomerById(custId);
                     }
+
+
+
+
                     //生成旧版账户
                     primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
                     if(primaryAccount == null){

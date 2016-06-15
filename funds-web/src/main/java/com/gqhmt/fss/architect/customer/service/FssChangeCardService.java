@@ -592,7 +592,14 @@ public class FssChangeCardService {
        }
        return true;
    }
-   
-   
-   
+
+    /**
+     *
+     * author:jhz
+     * time:2016年6月13日
+     * function：根据变更前银行卡id查询银行卡变更对象
+     */
+    public List<FssChangeCardEntity> getChangeCardBankInfoId(Long bBankInfoId) throws FssException{
+        return  changeCardReadMapper.queryByChangeCardBankInfoId(bBankInfoId);
+    }
 }
