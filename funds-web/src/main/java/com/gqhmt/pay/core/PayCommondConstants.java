@@ -75,6 +75,10 @@ public class PayCommondConstants {
     public static final String COMMAND_TRADE_WITHDRAW_REFUND = "0212";                  //提现退票
     public static final String COMMAND_TRADE_RECHARGE_REFUND = "0213";                  //充值退票
 
+    public static final String COMMAND_OFFLINE_RECHARGE_REFUND = "0221";                //线下转账充值
+
+
+
 
     //指令配置  03开头 表示 出借投资指令
 

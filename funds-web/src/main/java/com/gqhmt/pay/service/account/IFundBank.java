@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.account;
 
 import java.util.List;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.funds.architect.customer.entity.BankEntity;
 /**
  * Filename:    com.gq.funds.interaction.IFundsTender

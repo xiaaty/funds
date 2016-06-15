@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 
 import com.gqhmt.TestService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
 
 /**

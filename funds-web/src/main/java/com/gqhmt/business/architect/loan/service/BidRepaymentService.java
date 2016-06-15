@@ -5,7 +5,7 @@ import com.gqhmt.business.architect.invest.mapper.read.ReceivedPaymentReadMapper
 import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.business.architect.loan.entity.BidRepayment;
 import com.gqhmt.business.architect.loan.mapper.read.BidRepaymentReadMapper;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

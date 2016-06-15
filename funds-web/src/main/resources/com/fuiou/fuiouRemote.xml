@@ -162,4 +162,11 @@
         <login_id source="string" paramIndex="1"/>
         <txn_ssn source="string" paramIndex="2"/>
     </api>
+
+    <!-- 线下转账充值-->
+    <api api_name="500014.action" >
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName"/>
+        <amt source="amountToLong100"/>
+        <page_notify_url source="properties">${page_notify_url.url}</page_notify_url>
+    </api>
 </root>

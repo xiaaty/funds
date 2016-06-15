@@ -1,11 +1,12 @@
 package com.gqhmt.fss.architect.loan.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.*;
-import com.gqhmt.extServInter.dto.p2p.BidApplyDto;
+import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
 import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
+import com.gqhmt.extServInter.dto.p2p.FullBidApplyDto;
 import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
@@ -124,7 +125,7 @@ public class FssLoanService {
      * time:2016年3月7日
      * function：借款人放款接口
      */
-    public void insertLending(LendingDto dto)throws FssException{
+    public void insertLending(LendingDto dto)throws FssException {
     	FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
     	FssLoanEntity fssLoanEntity=new FssLoanEntity();
     	fssLoanEntity.setCustNo(fssAccountByAccNo.getCustNo());
@@ -414,56 +415,171 @@ public class FssLoanService {
 	public void insert(FssLoanEntity fssLoanEntity) {
 		fssLoanWriteMapper.insert(fssLoanEntity);
 	}
-
 	/**
-	 * 
 	 * author:jhz
 	 * time:2016年3月23日
-	 * function：冠e通后台 满标，流标，回款
-	 * @throws FssException 
+	 * function：冠e通后台 满标
+	 * @param bidRepayApplyDto
 	 */
-	public void insertBidApply(BidApplyDto dto) throws FssException {
+	public void insertFullBidApply(FullBidApplyDto bidRepayApplyDto) throws FssException{
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
-		if("11090004".equals(dto.getTrade_type())||"11090012".equals(dto.getTrade_type())){
-			FssLoanEntity	fssLoanEntity1=this.getFssLoanEntityByBidBusiNo(dto.getTrade_type(),dto.getBusi_bid_no());
-			if(fssLoanEntity1!=null)  throw  new FssException("90004011");
-			fssLoanEntity.setTradeType(dto.getTrade_type());//交易类型
-		}else {
-			//不允许重复提交（回款编号，交易类型，回款类型）
-			FssLoanEntity	fssLoanEntity1 = this.getLoanRepayment(dto.getRepayment_no(), dto.getTrade_type(), dto.getPayment_type());
-			if(fssLoanEntity1!=null)  throw  new FssException("90004011");
-			fssLoanEntity.setTradeType(dto.getPayment_type());//交易类型
-		}
-		fssLoanEntity.setContractId(dto.getBusi_bid_no());//标的编号
-		fssLoanEntity.setMchnChild(dto.getMchn());//商户号
-		fssLoanEntity.setContractAmt(dto.getContract_amt());//合同金额
-		fssLoanEntity.setPayAmt(dto.getPayment_amt());//金额
-		fssLoanEntity.setContractInterest(dto.getContract_interest());//合同利息
-		fssLoanEntity.setContractNo(dto.getContract_no());
-		fssLoanEntity.setAccNo(dto.getUser_id());//借款人客户id
-		fssLoanEntity.setMortgageeAccNo(dto.getMortgagee_user_id());//抵押权人客户id
-		String parentMchn = Application.getInstance().getParentMchn(dto.getMchn());
-		fssLoanEntity.setMchnParent(parentMchn);//父商户号
-		fssLoanEntity.setSeqNo(dto.getSeq_no());//流水号
-
-		fssLoanEntity.setUserNo(dto.getPeriod());  	//期数
-		fssLoanEntity.setRepMsg(dto.getRemark());	//备注
-		fssLoanEntity.setTradeTypeParent(dto.getTrade_type());//交易类型
-		fssLoanEntity.setBusiNo(dto.getRepayment_no());	//回款编号
+		FssLoanEntity fssLoanEntity1=this.getFssLoanEntityByBidBusiNo(bidRepayApplyDto.getTrade_type(), bidRepayApplyDto.getBusi_no());
+		if(fssLoanEntity1!=null) throw  new FssException("90004011");
+		fssLoanEntity.setContractId(bidRepayApplyDto.getBusi_no());
+		fssLoanEntity.setContractAmt(bidRepayApplyDto.getContract_amt());
+		fssLoanEntity.setPayAmt(bidRepayApplyDto.getContract_amt());
+		fssLoanEntity.setContractInterest(bidRepayApplyDto.getContract_interest());
+		fssLoanEntity.setAccNo(bidRepayApplyDto.getUser_id());
+		fssLoanEntity.setMortgageeAccNo(bidRepayApplyDto.getMortgagee_user_id());
+		fssLoanEntity.setContractNo(bidRepayApplyDto.getContract_no());
+		fssLoanEntity.setMchnChild(bidRepayApplyDto.getMchn());
+		String parentMchn = Application.getInstance().getParentMchn(bidRepayApplyDto.getMchn());
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(bidRepayApplyDto.getSeq_no());
+		fssLoanEntity.setTradeType(bidRepayApplyDto.getTrade_type());
 		fssLoanEntity.setCreateTime(new Date());
 		fssLoanEntity.setModifyTime(new Date());
-		if ("11090012".equals(dto.getTrade_type())){//流标
+		fssLoanEntity.setLoanPlatform(bidRepayApplyDto.getLoan_platform());
+		if ("11090005".equals(bidRepayApplyDto.getTrade_type())){//
+			fssLoanEntity.setStatus("10050001");
+		}else{
+			fssLoanEntity.setStatus("10050010");
+		}
+		fssLoanWriteMapper.insert(fssLoanEntity);
+		List<LendingFeeListDto> feeLists = bidRepayApplyDto.getFee_list();
+
+		if(feeLists==null){
+			return;
+		}
+
+		List<FssFeeList> fssFeeLists = new ArrayList<>();
+
+		for (LendingFeeListDto feeListEntity: feeLists) {
+			FssFeeList fssFeeList = new FssFeeList();
+			fssFeeList.setLoanId(fssLoanEntity.getId());
+			fssFeeList.setLoanPlatform(bidRepayApplyDto.getLoan_platform());
+			fssFeeList.setFeeAmt(feeListEntity.getFee_amt());
+			fssFeeList.setFeeType(feeListEntity.getFee_type());
+			fssFeeLists.add(fssFeeList);
+		}
+		this.fssFeeListWriteMapper.insertList(fssFeeLists);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：冠e通后台 回款
+	 */
+	public void insertRepaymentDto(RePaymentDto rePaymentDto) throws FssException {
+		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		//不允许重复提交（回款编号，交易类型，回款类型）
+		FssLoanEntity fssLoanEntity1=this.getLoanRepayment(rePaymentDto.getRepayment_no(),rePaymentDto.getTrade_type(),rePaymentDto.getPayment_type());
+		if(fssLoanEntity1!=null) throw  new FssException("90004011");
+		fssLoanEntity.setContractId(rePaymentDto.getBusi_bid_no());	//标的编号
+		fssLoanEntity.setBusiNo(rePaymentDto.getRepayment_no());	//回款编号
+		fssLoanEntity.setAccNo(rePaymentDto.getUser_id());	//借款人客户id
+		fssLoanEntity.setMortgageeAccNo(rePaymentDto.getMortgagee_user_id());	//抵押权人客户id
+		fssLoanEntity.setContractNo(rePaymentDto.getContract_no());
+		fssLoanEntity.setUserNo(rePaymentDto.getPeriod());  	//期数
+		fssLoanEntity.setPayAmt(rePaymentDto.getPayment_amt());//回款金额
+		fssLoanEntity.setContractAmt(rePaymentDto.getContract_amt());//借款人实际回款金额
+		fssLoanEntity.setRepMsg(rePaymentDto.getRemark());	//备注
+		fssLoanEntity.setTradeTypeParent(rePaymentDto.getTrade_type());//交易类型
+		String parentMchn = Application.getInstance().getParentMchn(rePaymentDto.getMchn());
+		fssLoanEntity.setMchnChild(rePaymentDto.getMchn());
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(rePaymentDto.getSeq_no());
+		fssLoanEntity.setTradeType(rePaymentDto.getPayment_type());
+		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setModifyTime(new Date());
+		fssLoanEntity.setStatus("10050011");
+		fssLoanWriteMapper.insert(fssLoanEntity);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年3月23日
+	 * function：冠e通后台 流标
+	 * @throws FssException
+	 */
+	public void insertBidRepayApply(BidRepayApplyDto BidRepayApplyDto) throws FssException {
+		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		FssLoanEntity fssLoanEntity1=this.getFssLoanEntityByBidBusiNo(BidRepayApplyDto.getTrade_type(), BidRepayApplyDto.getBusi_bid_no());
+		if(fssLoanEntity1!=null)  throw  new FssException("90004011");
+		fssLoanEntity.setContractId(BidRepayApplyDto.getBusi_bid_no());
+		fssLoanEntity.setMchnChild(BidRepayApplyDto.getMchn());
+		fssLoanEntity.setContractAmt(BidRepayApplyDto.getContract_amt());
+		fssLoanEntity.setPayAmt(BidRepayApplyDto.getPayment_amt());
+		fssLoanEntity.setContractInterest(BidRepayApplyDto.getContract_interest());
+		fssLoanEntity.setContractNo(BidRepayApplyDto.getContract_no());
+		fssLoanEntity.setAccNo(BidRepayApplyDto.getUser_id());
+		fssLoanEntity.setMortgageeAccNo(BidRepayApplyDto.getMortgagee_user_id());
+		String parentMchn = Application.getInstance().getParentMchn(BidRepayApplyDto.getMchn());
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(BidRepayApplyDto.getSeq_no());
+		fssLoanEntity.setTradeType(BidRepayApplyDto.getTrade_type());
+		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setModifyTime(new Date());
 		fssLoanWriteMapper.insertAbortBid(fssLoanEntity);
 		this.abort(fssLoanEntity);
-		}else if("11090004".equals(dto.getTrade_type())){//满标
-			fssLoanEntity.setStatus("10050010");
-			fssLoanWriteMapper.insert(fssLoanEntity);
-		}else{//回款
-			fssLoanEntity.setStatus("10050011");
-			fssLoanWriteMapper.insert(fssLoanEntity);
-		}
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月13日
+	 * function：冠e通后台 回款
+	 */
+	public void insertRepaymentDto(String mchn,String seqNo,String tradeType,String paymentType,String busiBidNo,String contractNo,BigDecimal contractAmt,BigDecimal contractInterest,BigDecimal paymentAmt,String userId,String mortgageeUserId,String repaymentNo,String period,String remark) throws FssException {
+		//不允许重复提交（回款编号，交易类型，回款类型）
+		FssLoanEntity fssLoanEntity1=this.getLoanRepayment(repaymentNo,tradeType,paymentType);
+		if(fssLoanEntity1!=null) throw  new FssException("90004011");
+		FssLoanEntity fssLoanEntity=this.creatLoanEntity(mchn,seqNo,tradeType,paymentType,busiBidNo,contractNo,contractAmt,contractInterest,paymentAmt,userId,mortgageeUserId,repaymentNo);
+		fssLoanEntity.setUserNo(period);  	//期数
+		fssLoanEntity.setRepMsg(remark);	//备注
+		fssLoanEntity.setStatus("10050011");
+		fssLoanWriteMapper.insert(fssLoanEntity);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月13日
+	 * function：冠e通后台 流标
+	 * @throws FssException
+	 */
+	public void insertBidRepayApply(String mchn,String seqNo,String signature,String tradeType,String contractNo,String busiBidNo,BigDecimal contractAmt,BigDecimal contractInterest,BigDecimal paymentAmt,String userId,String mortgageeUserId ) throws FssException {
+		FssLoanEntity fssLoanEntity1=this.getFssLoanEntityByBidBusiNo(tradeType, busiBidNo);
+		if(fssLoanEntity1!=null)  throw  new FssException("90004011");
+		FssLoanEntity fssLoanEntity=this.creatLoanEntity(mchn,seqNo,null,tradeType,busiBidNo,contractNo,contractAmt,contractInterest,paymentAmt,userId,mortgageeUserId,null);
+		this.abort(fssLoanEntity);
 	}
 
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月13日
+	 * function：创建fssLoanEntity
+	 * @throws FssException
+	 */
+	public FssLoanEntity creatLoanEntity(String mchnChild,String seqNo,String tradeTypeparent,String tradeType,String contractId,String contractNo,BigDecimal contractAmt,BigDecimal contractInterest,BigDecimal paymentAmt,String accNo,String mortgageeAccNo,String busiNo) throws FssException{
+		FssLoanEntity fssLoanEntity=new FssLoanEntity();
+		fssLoanEntity.setContractId(contractId);
+		fssLoanEntity.setMchnChild(mchnChild);
+		fssLoanEntity.setContractAmt(contractAmt);
+		fssLoanEntity.setPayAmt(paymentAmt);
+		fssLoanEntity.setContractInterest(contractInterest);
+		fssLoanEntity.setContractNo(contractNo);
+		fssLoanEntity.setAccNo(accNo);
+		fssLoanEntity.setTradeTypeParent(tradeTypeparent);
+		fssLoanEntity.setMortgageeAccNo(mortgageeAccNo);
+		String parentMchn = Application.getInstance().getParentMchn(mchnChild);
+		fssLoanEntity.setMchnParent(parentMchn);
+		fssLoanEntity.setSeqNo(seqNo);
+		fssLoanEntity.setTradeType(tradeType);
+		fssLoanEntity.setBusiNo(busiNo);
+		fssLoanEntity.setCreateTime(new Date());
+		fssLoanEntity.setModifyTime(new Date());
+		return  fssLoanEntity;
+	}
 	/**
 	 * 获取需要满标转账的数据列表(信用标,抵押权人提现,新增状态)
 	 * @return

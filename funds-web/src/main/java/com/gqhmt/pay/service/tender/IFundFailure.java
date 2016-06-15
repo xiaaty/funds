@@ -1,6 +1,6 @@
 package com.gqhmt.pay.service.tender;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.tender.FailureBidDto;
 /**
  * Filename:    com.gq.funds.interaction.IFundsTender

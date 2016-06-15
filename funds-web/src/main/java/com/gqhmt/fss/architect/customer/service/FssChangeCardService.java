@@ -20,7 +20,7 @@ import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.pay.fuiou.util.HttpClientUtil;
 import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.business.architect.invest.service.InvestmentService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.ResourceUtil;
@@ -592,7 +592,14 @@ public class FssChangeCardService {
        }
        return true;
    }
-   
-   
-   
+
+    /**
+     *
+     * author:jhz
+     * time:2016年6月13日
+     * function：根据变更前银行卡id查询银行卡变更对象
+     */
+    public List<FssChangeCardEntity> getChangeCardBankInfoId(Long bBankInfoId) throws FssException{
+        return  changeCardReadMapper.queryByChangeCardBankInfoId(bBankInfoId);
+    }
 }

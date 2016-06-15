@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -15,7 +15,7 @@ import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentParentWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
-import com.gqhmt.util.CommonUtil;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -276,7 +276,7 @@ public class FssRepaymentService {
 			repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
     		repaymentChild.setContract_no(fssRepaymentEntity.getContractNo());
     		repaymentChild.setRemark(fssRepaymentEntity.getRemark());
-			repaymentChild.setComplete_time(CommonUtil.dateToString(fssRepaymentEntity.getMotifyTime()));
+			repaymentChild.setComplete_time(DateUtil.dateToString(fssRepaymentEntity.getMotifyTime()));
     		repaymentChild.setSerial_number(fssRepaymentEntity.getSerialNumber());
     		repaymentChilds.add(repaymentChild);
 		}

@@ -2,19 +2,9 @@ package com.gqhmt.fss.architect.holiday;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.junit.Test;
 
 import com.gqhmt.TestService;
-import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.fetchService.FetchDataService;
-import com.gqhmt.util.CommonUtil;
-import com.gqhmt.util.ToDateUtils;
+import com.gqhmt.util.DateUtil;
 
 /**
  * 
@@ -38,7 +28,7 @@ public class DateTest extends TestService {
 		
     	String date="2016-03-23 12:25:30";
     	Date d=new Date();
-    	Date date2 = CommonUtil.stringToDate(date);
+    	Date date2 = DateUtil.stringToDate(date);
     	if(date2.before(d)){
     		System.out.println(d+"------"+date2);
     	}else{

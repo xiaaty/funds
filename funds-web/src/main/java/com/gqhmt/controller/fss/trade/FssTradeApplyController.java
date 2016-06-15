@@ -1,16 +1,18 @@
 package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
+import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.util.StringUtils;
+import com.gqhmt.core.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +28,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Filename:    com.gqhmt.controller.fss.trade.FssTradeApplyController
  * Copyright:   Copyright (c)2015
@@ -54,6 +55,10 @@ public class FssTradeApplyController {
 	private FssBackplateService fssBackplateService;
     @Resource
     private CustomerInfoService customerInfoService;
+    @Resource
+    private FssOfflineRechargeService fssOfflineRechargeService;
+
+
     /**
 	 * author:柯禹来
 	 * function:交易管理---交易审核--代扣审核
@@ -131,7 +136,7 @@ public class FssTradeApplyController {
 		}else{
 			model.addAttribute("custMobile","");
 		}
-		
+
 		if(type==1103){//充值
 			return "fss/trade/trade_audit/borrower_withhold_check";
 		}else{
@@ -174,10 +179,12 @@ public class FssTradeApplyController {
 			}
 			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
+			tradeapply.setTradeState("10030001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
 			tradeapply.setApplyState("10100005");
+			tradeapply.setTradeState("10030004");//交易取消
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}
@@ -187,5 +194,26 @@ public class FssTradeApplyController {
         map.put("message", "success");
 		return map;
 	}
-	
+
+	/**
+	 *线下充值记录
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/offlineRecharge",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getOfflineRechargeApply(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
+		model.addAttribute("page", offlineRechargeList);
+		model.put("map", map);
+		return "fss/trade/offlineRecharge_list";
+	}
+
+
+
+
+
 }

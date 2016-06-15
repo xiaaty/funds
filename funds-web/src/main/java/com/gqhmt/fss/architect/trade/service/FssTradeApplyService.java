@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.trade.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
@@ -24,7 +24,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
-import com.gqhmt.util.CommonUtil;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -124,7 +124,7 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
 			fssTradeApplyEntity.setSeqNo(wthDrawApplyDto.getSeq_no());
 			Date date=new Date();
-	    	Date BespokeDate = CommonUtil.stringToDate(wthDrawApplyDto.getBespoke_date());
+	    	Date BespokeDate = DateUtil.stringToDate(wthDrawApplyDto.getBespoke_date());
 	    	if(BespokeDate.before(date)){
 	    		fssTradeApplyEntity.setBespokedate(date);
 	    	}else{
@@ -177,7 +177,7 @@ public class FssTradeApplyService {
 				withDrawApplyResponse.setWithDraw_date(format);
 			}
 		}
-		withDrawApplyResponse.setBespoke_date(CommonUtil.dateTostring(fssTradeApplyEntity.getBespokedate()));
+		withDrawApplyResponse.setBespoke_date(DateUtil.dateTostring(fssTradeApplyEntity.getBespokedate()));
 		return withDrawApplyResponse;
 	}
 	/**
@@ -253,17 +253,23 @@ public class FssTradeApplyService {
 	public void insertLoanTradeApply(FssLoanEntity fssLoanEntity,String applyStatus,String tradeType) throws FssException {
 			FssTradeApplyEntity tradeApplyEntity=new FssTradeApplyEntity();
 			//添加代扣申请
-			FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
-			tradeApplyEntity.setAccNo(fssLoanEntity.getMortgageeAccNo());
+		FssAccountEntity fssAccountByAccNo =null;
+		if("11090005".equals(tradeType)){
+			tradeApplyEntity.setCustId(Long.valueOf(fssLoanEntity.getMortgageeAccNo()));
+			tradeApplyEntity.setChannelNo("97010001");
+		}else{
+			fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
+			tradeApplyEntity.setAccNo(fssAccountByAccNo.getAccNo());
+			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
+			tradeApplyEntity.setCustNo(fssAccountByAccNo.getCustNo());
+			tradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
+			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
+		}
 			tradeApplyEntity.setContractId(fssLoanEntity.getContractId());
 			tradeApplyEntity.setBusinessNo(fssLoanEntity.getContractNo());
 			tradeApplyEntity.setMchnChild(fssLoanEntity.getMchnChild());
 			tradeApplyEntity.setMchnParent(fssLoanEntity.getMchnParent());
 			tradeApplyEntity.setSeqNo(fssLoanEntity.getSeqNo());
-			tradeApplyEntity.setCustNo(fssAccountByAccNo.getCustNo());
-			tradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
-			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
-			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
 			tradeApplyEntity.setCreateTime(new Date());
 			tradeApplyEntity.setModifyTime(new Date());
 			tradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
@@ -281,10 +287,14 @@ public class FssTradeApplyService {
 				tradeApplyEntity.setTradeState("10090004");
 				tradeApplyEntity.setApplyType(1103);
 				fssTradeApplyWriteMapper.insertSelective(tradeApplyEntity);
-				fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
+				if("11090005".equals(tradeType)){
+					fssTradeRecordService.moneySplit(tradeApplyEntity);
+				}else {
+					fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
+				}
 			}
 	}
-	
+
 	/**
 	 * 
 	 * author:jhz
@@ -338,7 +348,7 @@ public class FssTradeApplyService {
 			 }
 			 
 			 if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())){
+				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 //98060001成功 //10080002交易成功
 					 fssLoanService.update(fssLoanEntityById,tradeStatus);
@@ -496,6 +506,7 @@ public class FssTradeApplyService {
 		//提现添加预约到账日期
 		if(dto.getApply_type().equals("1104")){//提现
 			fssTradeApplyEntity.setBespokedate(new Date());
+			fssTradeApplyEntity.setSettleType(Integer.valueOf(dto.getSettle_type()));
 		}
 		return fssTradeApplyEntity;
 	}

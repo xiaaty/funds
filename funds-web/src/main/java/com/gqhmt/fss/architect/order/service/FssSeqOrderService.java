@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.order.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.order.entity.FssSeqOrderEntity;
 import com.gqhmt.fss.architect.order.mapper.write.FssSeqOrderWriteMapper;

@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.entity.FssAccountFileEntity;
 import com.gqhmt.fss.architect.depos.mapper.read.FssAccountFileReadMapper;
 import com.gqhmt.fss.architect.depos.mapper.write.FssAccountFileWriteMapper;
-import com.gqhmt.util.CommonUtil;
 
 /**
  *
@@ -104,7 +105,7 @@ public class FssAccountFileService {
 		}else{
 			fileEntity.setUserProperties(2);
 		}
-		fileEntity.setRegistrationDate(CommonUtil.dateTostring(registrationDate));
+		fileEntity.setRegistrationDate(DateUtil.dateTostring(registrationDate));
 		fileEntity.setThirdPartyPaymentId(thirdPartyPaymentId);
 		fileEntity.setActionType(actionType);
 		fileEntity.setRemark(remark);

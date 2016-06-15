@@ -1,8 +1,8 @@
 package com.gqhmt.controller.fss.customer;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
-import com.gqhmt.fss.architect.customer.bean.CustomerAndUser;
+import com.gqhmt.core.exception.FssException;
+import com.gqhmt.fss.architect.customer.bean.CustomerBankcardView;
 import com.gqhmt.fss.architect.customer.service.FssCustBankCardService;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
@@ -45,9 +45,9 @@ public class FssCustBankCardController {
 	@RequestMapping(value = "/fss/customer/bankCards", method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public Object bankCardList(HttpServletRequest request, ModelMap model,
-			@ModelAttribute(value = "customer") CustomerAndUser customerAndUser) throws FssException {
+			@ModelAttribute(value = "customer") CustomerBankcardView customerAndUser) throws FssException {
 		// 得到银行卡、客户信息列表
-		List<CustomerAndUser> bankCards = bankCardService.findbankCardAll(customerAndUser);
+		List<CustomerBankcardView> bankCards = bankCardService.findbankCardAll(customerAndUser);
 		//得到银行列表
 		List<BankCardBean> banks=bankCardInfoService.queryBankList();
 		
@@ -68,7 +68,7 @@ public class FssCustBankCardController {
 	@AutoPage
 	public Object bankCardChange(HttpServletRequest request, ModelMap model, Long id) throws FssException {
 		// 得到银行卡、客户信息列表
-		CustomerAndUser customer = bankCardService.findCustomerAndUser(id);
+		CustomerBankcardView customer = bankCardService.findCustomerAndUser(id);
 		
 		model.addAttribute("customer", customer);
 		

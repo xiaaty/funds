@@ -29,46 +29,33 @@ public class FreezeDto extends SuperDto{
 
 	@APIValidNull(errorCode = "90002006")
 	private String cust_no;		//客户编号
-	
 	private String user_no;		//用户编号
-
 	@APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
-	private BigDecimal amt;			//冻结金额
-	
+	private BigDecimal amt;		//冻结金额
 	private int busi_type;		//账户类型
 	
-	
-
 	public String getCust_no() {
 		return cust_no;
 	}
-
 	public void setCust_no(String cust_no) {
 		this.cust_no = cust_no;
 	}
-
 	public String getUser_no() {
 		return user_no;
 	}
-
 	public void setUser_no(String user_no) {
 		this.user_no = user_no;
 	}
-
 	public BigDecimal getAmt() {
 		return amt;
 	}
-
 	public void setAmt(BigDecimal amt) {
 		this.amt = amt;
 	}
-
-
 	public int getBusi_type() {
 		return busi_type;
 	}
-
 	public void setBusi_type(int busi_type) {
 		this.busi_type = busi_type;
 	}

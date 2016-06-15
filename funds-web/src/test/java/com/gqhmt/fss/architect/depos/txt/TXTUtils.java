@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
 import com.gqhmt.TestService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity;
 import com.gqhmt.fss.architect.depos.service.FssProjectInfoService;
 public class TXTUtils extends TestService{

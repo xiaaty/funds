@@ -8,7 +8,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
@@ -196,7 +196,7 @@ public class FundSequenceService {
         list.add(fromFundSequenceEntity);
         list.add(toFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-//        this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,  accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
+//        this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
 //        this.fundTradeService.addFundTrade(toEntiry,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
     }
     

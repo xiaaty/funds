@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 	    <!-- 交易相关 -->
 	    <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity" alias="withdrawApplyEntity"/>
         <typeAlias type="com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity" alias="withholdApplyEntity"/>
-        <typeAlias type="com.gqhmt.fss.architect.customer.bean.CustomerAndUser" alias="CustomerAndUser"/>
+        <typeAlias type="com.gqhmt.fss.architect.customer.bean.CustomerBankcardView" alias="CustomerAndUser"/>
         <typeAlias type="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder" alias="FuiouFtpOrder"/>
         <typeAlias type="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField" alias="FuiouFtpColomField"/>
 	    <!-- 交易相关 end-->

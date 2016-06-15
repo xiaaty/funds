@@ -5,18 +5,14 @@ import com.gqhmt.pay.service.exception.NeedSMSValidException;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.LazyDealException;
 import com.gqhmt.pay.exception.ThirdpartyErrorAsyncException;
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.trade.GETWithholdAndDrawDto;
 import com.gqhmt.extServInter.dto.trade.WithholdDto;
-import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.trade.bean.WithholdApplyBean;
 import com.gqhmt.funds.architect.trade.bean.WithholdApplyFormBean;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.mapper.read.WithholdApplyReadMapper;
 import com.gqhmt.funds.architect.trade.mapper.write.WithholdApplyWriteMapper;
-import com.gqhmt.util.CommonUtil;
+import com.gqhmt.util.DateUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -103,7 +99,7 @@ public class WithholdApplyService {
 	/**
 	 * 更新取代扣对象
 	 * 
-	 * @param entity
+	 * @param
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -130,7 +126,7 @@ public class WithholdApplyService {
 		//withholdApplyFormBean.setId(String.valueOf(withholdApplyEntity.getId()));
 
 		// 申请日期
-		withholdApplyFormBean.setApplyTimeForm((CommonUtil.dateToString(withholdApplyEntity.getApplyTime())));
+		withholdApplyFormBean.setApplyTimeForm((DateUtil.dateToString(withholdApplyEntity.getApplyTime())));
 		/*TODO BankCardinfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(withholdApplyEntity.getBankId());
 		BankDealamountLimitEntity bankDealamountLimitEntity = bankDealamountLimitService.queryBankLimitInfo(withholdApplyEntity.getThirdPartyType(), 1, bankCardinfoEntity.getParentBankId());
 		// 上限额度

@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.account;
 
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
@@ -140,6 +140,6 @@ public interface IFundsAccount {
     public ChangeCardResponse bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
     
     
-    public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException;
-    
+    public Integer createFundAccount(CreateAccountDto dto) throws FssException;
+
 }

@@ -21,7 +21,7 @@
 	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
 
 
-	<context:component-scan base-package="com.gqhmt.fss.listener.*;com.gqhmt.funds.architect;com.gqhmt.fss.architect;com.gqhmt.sftp;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter;com.gqhmt.extSe;com.gqhmt.business.architect;com.gqhmt.quartz;com.gqhmt.DataMigration">
+	<context:component-scan base-package="com.gqhmt.*.architect;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter;com.gqhmt.extSe;com.gqhmt.quartz;com.gqhmt.DataMigration">
 
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
 
@@ -88,6 +88,7 @@
 				<value>classpath:sqlMapper/fss/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/read/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/fssAccount/*/read/*-sqlMapper.xml</value>
 			</list>
 		</property>
 		<property name="plugins">
@@ -111,49 +112,26 @@
 		<property name="configLocation" value="classpath:jdbc/mybatis-config.xml" />
 		<property name="mapperLocations">
 			<list>
-				<!---->
 				<value>classpath:sqlMapper/fss/*/write/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/funds/*/write/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/write/*-sqlMapper.xml</value>
+				<value>classpath:sqlMapper/fssAccount/*/write/*-sqlMapper.xml</value>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="fssReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper.read" />
+	<bean id="fssMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper.*" />
 		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
 	</bean>
-	<bean id="sftpReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.fss.architect.depos.mapper.read" />
+
+	<bean id="ortherMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.gqhmt.*.mapper.*" />
 		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
-	</bean>
-	<bean id="sysReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.sys.mapper.read" />
-		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
-	</bean>
-	<bean id="quarztReadMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.quartz.mapper.read" />
-		<property name="sqlSessionFactoryBeanName" value="readSqlSessionFactory" />
-	</bean>
-	<bean id="fssWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper.write" />
-		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
-	</bean>
-	<bean id="sftpWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.fss.architect.depos.mapper.write" />
-		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
-	</bean>
-	<bean id="sysWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.sys.mapper.write" />
-		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
-	</bean>
-	<bean id="quarztWriteMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.quartz.mapper.write" />
-		<property name="sqlSessionFactoryBeanName" value="writeSqlSessionFactory" />
 	</bean>
 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.fss.architect.*.mapper;com.gqhmt.sys.mapper"/>
+		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper;com.gqhmt.*.mapper.*"/>
 		<property name="properties">
 			<value>
 				mappers=com.gqhmt.core.mybatis.ReadAndWriteMapper,com.gqhmt.core.mybatis.ReadMapper
@@ -181,7 +159,7 @@
 	<!-- 通知器(把事务通知绑定到切入点) -->
 	<aop:config proxy-target-class="true">
 		<aop:advisor advice-ref="tx_advice"
-					 pointcut="execution(* com.gqhmt.*.*.*.service..*(..) throws com.gqhmt.core.FssException ) " />
+					 pointcut="execution(* com.gqhmt.*.*.*.service..*(..) throws com.gqhmt.core.exception.FssException ) " />
 	</aop:config>
 
 	<aop:aspectj-autoproxy />

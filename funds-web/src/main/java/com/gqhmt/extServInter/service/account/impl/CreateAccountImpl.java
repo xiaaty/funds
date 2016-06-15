@@ -1,7 +1,7 @@
 package com.gqhmt.extServInter.service.account.impl;
 
 import com.gqhmt.annotations.APITradeTypeValid;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
@@ -32,7 +32,7 @@ import javax.annotation.Resource;
 public class CreateAccountImpl implements ICreateAccount{
 	@Resource
 	private IFundsAccount fundsAccountImpl;
-	
+
 	/**
 	 * 11020001:wap开户
 	 * 11020002:web开户
@@ -61,4 +61,5 @@ public class CreateAccountImpl implements ICreateAccount{
 		}
         return response;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.trade;
 
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -241,7 +241,12 @@ public interface IFundsTrade {
     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
 */
    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
-    
-    
+
+    /**
+     * 线下充值
+     * @param dto
+     * @return
+     */
+    public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException;
     
 }

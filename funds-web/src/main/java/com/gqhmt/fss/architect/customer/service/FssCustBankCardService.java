@@ -1,10 +1,9 @@
 package com.gqhmt.fss.architect.customer.service;
-
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.fss.architect.customer.bean.CustomerAndUser;
+import com.gqhmt.fss.architect.customer.bean.CustomerBankcardView;
 import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssBankCardInfoReadMapper;
@@ -51,7 +50,7 @@ public class FssCustBankCardService {
 	 * time:2016年2月16日
 	 * function：得到银行卡和用户信息列表
 	 */
-	public List<CustomerAndUser> findbankCardAll(CustomerAndUser customerAndUser) throws FssException{
+	public List<CustomerBankcardView> findbankCardAll(CustomerBankcardView customerAndUser) throws FssException{
 		return fssCustomerReadMapper.findbankCardAll(customerAndUser);
 	}
 
@@ -61,7 +60,7 @@ public class FssCustBankCardService {
 	 * time:2016年2月16日
 	 * function：查询要申请变更银行卡用户信息
 	 */
-	public CustomerAndUser findCustomerAndUser(Long id)throws FssException {
+	public CustomerBankcardView findCustomerAndUser(Long id)throws FssException {
 		// TODO Auto-generated method stub
 		return fssCustomerReadMapper.findCustomerAndUser(id);
 	}
@@ -77,7 +76,7 @@ public class FssCustBankCardService {
 	 * @return
      * @throws FssException
      */
-	public FssCustBankCardEntity createFssBankCardEntity(String bankType,String bankNo,String area,String mchn,FssCustomerEntity fssCustomerEntity) throws FssException{
+	public FssCustBankCardEntity createFssBankCardEntity(String bankType, String bankNo, String area, String mchn, FssCustomerEntity fssCustomerEntity) throws FssException{
 			FssCustBankCardEntity fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class);
 			fssbankcardInfo.setCust_no(String.valueOf(fssCustomerEntity.getCustNo()));
 			fssbankcardInfo.setCertType(fssCustomerEntity.getCertType());
@@ -93,8 +92,11 @@ public class FssCustBankCardService {
 			fssbankcardInfo.setBankCardNo(CommonUtil.getBankCardNo());
 			fssbankcardInfo.setMchnChild(mchn);
 			fssbankcardInfo.setMchnParent(Application.getInstance().getParentMchn(mchn));
-
-			this.fssBankCardInfoWriteMapper.insertSelective(fssbankcardInfo);
+			try {
+				this.fssBankCardInfoWriteMapper.insertSelective(fssbankcardInfo);
+			} catch (Exception e) {
+				  throw new FssException("90002028");
+			}
 			return fssbankcardInfo;
 	}
 	
