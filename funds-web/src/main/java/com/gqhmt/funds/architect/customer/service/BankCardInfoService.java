@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.fss.architect.customer.bean.ChangeCardBean;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
@@ -390,7 +391,7 @@ public class BankCardInfoService {
 
 	/**
 	 * 根据id得到银行信息
-	 * @param bankinfo
+	 * @param
 	 * @return
 	 */
 	public BankEntity getBankById(Long id){
@@ -407,7 +408,7 @@ public class BankCardInfoService {
 	
 	/**
 	 * 银行卡管理
-	 * @param bankcard
+	 * @param
 	 * @return
 	 */
 	public List<BankCardInfoEntity> findAllbankCards(Map<String,String> map){
@@ -531,7 +532,37 @@ public class BankCardInfoService {
 		public List<BankCardInfoEntity> findBankCardByCustNo(String custNo) throws FssException{
 			return bankCardinfoReadMapper.findBankCardByCustNo(custNo);
 		}
-		
+
+		/**
+		 * 查询客户银行卡信息
+		 * @param custNo
+		 * @return
+		 * @throws FssException
+		 */
+		public List<ChangeCardBean> findChangeCardInfo(String custNo) throws FssException{
+			List<ChangeCardBean> changeCards=new ArrayList<>();
+			ChangeCardBean changecard=null;
+			List<BankCardInfoEntity> bankCardInfos=this.findBankCardByCustNo(custNo);
+			if(bankCardInfos==null) throw new FssException("90002036");
+			for (BankCardInfoEntity bankCardInfo:bankCardInfos) {
+				if(1==bankCardInfo.getChangeState()){
+					List<FssChangeCardEntity> changeCardResponse=	bankCardChangeReadMapper.queryByChangeCardBankInfoId(Long.valueOf(bankCardInfo.getId().toString()));
+					if(changeCardResponse!=null &&changeCardResponse.size()>0) {
+						for (FssChangeCardEntity changeCard:changeCardResponse){
+							changecard = new ChangeCardBean();
+							changecard.setBankName(changeCard.getBankName());
+							changecard.setBankAdd(changeCard.getBankAdd());
+							changecard.setBankCity(changeCard.getBankCity());
+							changecard.setBankType(changeCard.getBankType());
+							changecard.setCardNo(changeCard.getCardNo());
+							changeCards.add(changecard);
+							}
+						}
+					}
+				}
+			return  changeCards;
+		}
+
 		
 	 
 }

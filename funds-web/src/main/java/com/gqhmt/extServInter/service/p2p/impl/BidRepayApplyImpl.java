@@ -44,6 +44,8 @@ public class BidRepayApplyImpl implements IBidRepayApply {
         Response response = new Response();
         try {
             loanService.insertBidRepayApply((BidRepayApplyDto)dto);
+//            BidRepayApplyDto bidRepayApplyDto=(BidRepayApplyDto)dto;
+//            loanService.insertBidRepayApply(bidRepayApplyDto.getMchn(),bidRepayApplyDto.getSeq_no(),bidRepayApplyDto.getSignature(),bidRepayApplyDto.getTrade_type(),bidRepayApplyDto.getContract_no(),bidRepayApplyDto.getBusi_bid_no(),bidRepayApplyDto.getContract_amt(),bidRepayApplyDto.getContract_interest(),bidRepayApplyDto.getPayment_amt(),bidRepayApplyDto.getUser_id(),bidRepayApplyDto.getMortgagee_user_id());
             response.setResp_code("00000000");
         } catch (FssException e) {
             LogUtil.error(this.getClass(), e);

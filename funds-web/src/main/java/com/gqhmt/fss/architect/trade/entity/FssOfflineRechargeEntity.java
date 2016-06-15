@@ -78,8 +78,8 @@ public class FssOfflineRechargeEntity implements Serializable {
     @Column(name = "channel_no")
     private String channelNo;
 
-    @Column(name = "contract_no")
-    private String contractNo;
+    @Column(name = "cust_no")
+    private String custNo;
 	@Column(name = "chg_cd")
     private String chgCd;
     @Column(name = "chg_dt")
@@ -92,6 +92,10 @@ public class FssOfflineRechargeEntity implements Serializable {
     private String descCode;
 	@Column(name = "fy_acc_nm")
     private String fyAccNm;
+	@Column(name = "acc_no")
+	private String accNo;
+	@Column(name = "result_state")
+	private String resultState;
 
 	public Long getId() {
 		return id;
@@ -220,14 +224,6 @@ public class FssOfflineRechargeEntity implements Serializable {
 		this.custType = custType;
 	}
 
-	public String getContractNo() {
-		return contractNo;
-	}
-
-	public void setContractNo(String contractNo) {
-		this.contractNo = contractNo;
-	}
-
 	public String getBusiNo() {
 		return busiNo;
 	}
@@ -288,5 +284,29 @@ public class FssOfflineRechargeEntity implements Serializable {
 
 	public void setFyAccNm(String fyAccNm) {
 		this.fyAccNm = fyAccNm;
+	}
+
+	public String getCustNo() {
+		return custNo;
+	}
+
+	public void setCustNo(String custNo) {
+		this.custNo = custNo;
+	}
+
+	public String getAccNo() {
+		return accNo;
+	}
+
+	public void setAccNo(String accNo) {
+		this.accNo = accNo;
+	}
+
+	public String getResultState() {
+		return resultState;
+	}
+
+	public void setResultState(String resultState) {
+		this.resultState = resultState;
 	}
 }

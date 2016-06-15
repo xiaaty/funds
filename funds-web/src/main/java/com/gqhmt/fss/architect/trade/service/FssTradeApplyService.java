@@ -24,9 +24,10 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
-import com.gqhmt.util.CommonUtil;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import javax.jnlp.IntegrationService;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -76,8 +77,7 @@ public class FssTradeApplyService {
 	private FssLoanService fssLoanService;
 	@Resource
     private FundOrderService fundOrderService;
-	@Resource
-	private FundsTradeImpl fundsTradeImpl;
+
 	@Resource
     private TradeRecordService tradeRecordService;
 	/**
@@ -124,7 +124,7 @@ public class FssTradeApplyService {
 			fssTradeApplyEntity.setModifyTime((new Timestamp(new Date().getTime())));
 			fssTradeApplyEntity.setSeqNo(wthDrawApplyDto.getSeq_no());
 			Date date=new Date();
-	    	Date BespokeDate = CommonUtil.stringToDate(wthDrawApplyDto.getBespoke_date());
+	    	Date BespokeDate = DateUtil.stringToDate(wthDrawApplyDto.getBespoke_date());
 	    	if(BespokeDate.before(date)){
 	    		fssTradeApplyEntity.setBespokedate(date);
 	    	}else{
@@ -177,7 +177,7 @@ public class FssTradeApplyService {
 				withDrawApplyResponse.setWithDraw_date(format);
 			}
 		}
-		withDrawApplyResponse.setBespoke_date(CommonUtil.dateTostring(fssTradeApplyEntity.getBespokedate()));
+		withDrawApplyResponse.setBespoke_date(DateUtil.dateTostring(fssTradeApplyEntity.getBespokedate()));
 		return withDrawApplyResponse;
 	}
 	/**
@@ -255,20 +255,21 @@ public class FssTradeApplyService {
 			//添加代扣申请
 		FssAccountEntity fssAccountByAccNo =null;
 		if("11090005".equals(tradeType)){
-			fssAccountByAccNo=fssAccountService.getFssAccountByCustId(Long.valueOf(fssLoanEntity.getMortgageeAccNo()));
+			tradeApplyEntity.setCustId(Long.valueOf(fssLoanEntity.getMortgageeAccNo()));
+			tradeApplyEntity.setChannelNo("97010001");
 		}else{
 			fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
-		}
 			tradeApplyEntity.setAccNo(fssAccountByAccNo.getAccNo());
+			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
+			tradeApplyEntity.setCustNo(fssAccountByAccNo.getCustNo());
+			tradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
+			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
+		}
 			tradeApplyEntity.setContractId(fssLoanEntity.getContractId());
 			tradeApplyEntity.setBusinessNo(fssLoanEntity.getContractNo());
 			tradeApplyEntity.setMchnChild(fssLoanEntity.getMchnChild());
 			tradeApplyEntity.setMchnParent(fssLoanEntity.getMchnParent());
 			tradeApplyEntity.setSeqNo(fssLoanEntity.getSeqNo());
-			tradeApplyEntity.setCustNo(fssAccountByAccNo.getCustNo());
-			tradeApplyEntity.setCustId(fssAccountByAccNo.getCustId());
-			tradeApplyEntity.setUserNo(fssAccountByAccNo.getUserNo());
-			tradeApplyEntity.setChannelNo(fssAccountByAccNo.getChannelNo().toString());
 			tradeApplyEntity.setCreateTime(new Date());
 			tradeApplyEntity.setModifyTime(new Date());
 			tradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
@@ -286,7 +287,11 @@ public class FssTradeApplyService {
 				tradeApplyEntity.setTradeState("10090004");
 				tradeApplyEntity.setApplyType(1103);
 				fssTradeApplyWriteMapper.insertSelective(tradeApplyEntity);
-				fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
+				if("11090005".equals(tradeType)){
+					fssTradeRecordService.moneySplit(tradeApplyEntity);
+				}else {
+					fssTradeRecordService.insertRecord(tradeApplyEntity, 1);
+				}
 			}
 	}
 
@@ -410,98 +415,104 @@ public class FssTradeApplyService {
 		return tradeapplylist;
 	}
 	
-	/**
-	 * 根据id查询借款人提现信息
-	 * @param id
-	 * @return
-	 */
-	public FssTradeApplyEntity getFssTradeApplyEntityById(Long id) throws FssException{
-		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectByPrimaryKey(id);
-		return tradeapply;
-	}
+
 	
-	/**
-	 * 冠E通后台代扣申请和提现申请
-	 */
-	public boolean careateTradeApply(GETWithholdAndDrawDto dto) throws FssException{
-		//对提现申请金额进行资金冻结
-		if("1104".equals(dto.getApply_type())){
-	        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()),Integer.parseInt(dto.getCust_type()));
-	        if (fromEntity == null) {
-	            throw new FssException("90004006");
-	        }
-	        //判断提现金额是否大于账户余额
-	        BigDecimal bigDecimal = fromEntity.getAmount();
-	        if (bigDecimal.compareTo(dto.getAmt()) < 0) {
-	            throw new FssException("90004007");
-	        }
-	        FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(dto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-			tradeRecordService.frozen(fromEntity,toEntity,dto.getAmt(),1007,null,"",BigDecimal.ZERO);//资金冻结
+//	/**
+//	 * 冠E通后台代扣申请和提现申请
+//	 */
+//	public boolean careateTradeApply(GETWithholdAndDrawDto dto) throws FssException{
+//		//对提现申请金额进行资金冻结
+//		if("1104".equals(dto.getApply_type())){
+//
+//		}
+//		FssTradeApplyEntity fssTradeApplyEntity=this.CreateFssTradeApplyEntity(dto);
+//		try {
+//			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
+//		} catch (Exception e) {
+//			throw new FssException("91009804");
+//		}
+//		return true;
+//	}
+
+
+	public void  whithdrawApply(String custNo,String accNo,String tradeType, BigDecimal amt,  String mchn, String seqNo,  Long custId, Integer custType, String contractNo,String cId) throws FssException {
+
+		//获取账户信息
+		FundAccountEntity fromEntity = fundAccountService.getFundAccount(custId,custType);
+		if (fromEntity == null) {
+			throw new FssException("90004006");
 		}
-		FssTradeApplyEntity fssTradeApplyEntity=this.CreateFssTradeApplyEntity(dto);
+		//判断提现金额是否大于账户余额
+		BigDecimal bigDecimal = fromEntity.getAmount();
+		if (bigDecimal.compareTo(amt) < 0) {
+			throw new FssException("90004007");
+		}
+		FundAccountEntity toEntity = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+		//提现前资金冻结
+		tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);//资金冻结
+		FssTradeApplyEntity fssTradeApplyEntity = this.creareateFssTradeApplyEntity(custNo,accNo,tradeType,amt,mchn,seqNo,custId,custType,contractNo,cId,null,1104,false);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
 		} catch (Exception e) {
 			throw new FssException("91009804");
 		}
-		return true;
 	}
-	
-	/**
-	 * 冠E通后台代付申请
-	 * @param dto
-	 * @return
-	 * @throws FssException
-	 */
-	/*public boolean careateWithDrawApply(GET_WithholdDto dto) throws FssException{
-		FssTradeApplyEntity fssTradeApplyEntity=this.CreateFssTradeApplyEntity(dto);
+
+	public void whithholdingApply(String custNo,String accNo,String tradeType, BigDecimal amt,  String mchn, String seqNo,  Long custId, Integer custType, String contractNo,String cId,boolean autoPass) throws FssException {
+		FssTradeApplyEntity fssTradeApplyEntity = this.creareateFssTradeApplyEntity(custNo,accNo,tradeType,amt,mchn,seqNo,custId,custType,contractNo,cId,null,1103,autoPass);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
 		} catch (Exception e) {
 			throw new FssException("91009804");
 		}
-		return true;
-	}*/
+	}
+
 	
+
 	/**
 	 * 创建FssTradeApplyEntity
-	 * @param dto
-	 * @return
-	 * @throws FssException
-	 */
-	public FssTradeApplyEntity CreateFssTradeApplyEntity(GETWithholdAndDrawDto dto) throws FssException{
+	 * @param tradeType				交易类型
+	 * @param applyType				支付类型   1103 代扣  1104 代付
+	 * @param amt					交易金额
+	 * @param contractNo			业务编号 出借编号  借款合同号  无，则为互联网账户
+	 * @param mchn					商户号
+	 * @param seqNo					流水号
+	 * @param cId					业务系统id  仅记录并回盘返回
+	 * @param custId				业务系统客户id
+	 * @param custType				业务系统账户类型  如果是96，新版交易流水则判断应付款账户余额
+	 * @param settleType			代付时效性   目前付款资费 t0t1统一，但是有限额
+     * @return
+     * @throws FssException
+     */
+	private FssTradeApplyEntity creareateFssTradeApplyEntity(String custNo,String accNo,String tradeType, BigDecimal amt,  String mchn, String seqNo,  Long custId, Integer custType, String contractNo,String cId,Integer settleType, Integer applyType,boolean autoPass) throws FssException{
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
-		fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(dto.getTrade_type()));
-		fssTradeApplyEntity.setApplyType(Integer.valueOf(dto.getApply_type()));
-		fssTradeApplyEntity.setCustNo("");
-		fssTradeApplyEntity.setUserNo("");
-		if(dto.getContract_no()!=null && !"".equals(dto.getContract_no())){
-			fssTradeApplyEntity.setBusinessNo(dto.getContract_no());
-		}else{
-			fssTradeApplyEntity.setBusinessNo(null);
-		}
-		fssTradeApplyEntity.setBusiType(dto.getTrade_type());
-		fssTradeApplyEntity.setAccNo("");
-		fssTradeApplyEntity.setTradeAmount(dto.getAmt());
+		fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(tradeType));
+		fssTradeApplyEntity.setApplyType(applyType);
+
+		fssTradeApplyEntity.setCustNo(custNo);
+		fssTradeApplyEntity.setAccNo(accNo);
+		fssTradeApplyEntity.setBusinessNo(contractNo);
+		fssTradeApplyEntity.setBusiType(tradeType);
+		fssTradeApplyEntity.setTradeAmount(amt);
 		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 		fssTradeApplyEntity.setTradeState("10080001");
 		fssTradeApplyEntity.setApplyState("10100001");
-		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(dto.getMchn()));
-		fssTradeApplyEntity.setMchnChild(dto.getMchn());
+		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
+		fssTradeApplyEntity.setMchnChild(mchn);
 		fssTradeApplyEntity.setCreateTime((new Date()));
 		fssTradeApplyEntity.setModifyTime((new Date()));
-		fssTradeApplyEntity.setSeqNo(dto.getSeq_no());
-		fssTradeApplyEntity.setContractId(dto.getBusi_no());//合同Id
-		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(dto.getTrade_type()));//交易渠道
+		fssTradeApplyEntity.setSeqNo(seqNo);
+		fssTradeApplyEntity.setContractId(cId);//合同Id
+		fssTradeApplyEntity.setChannelNo(GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(tradeType));//交易渠道
 		fssTradeApplyEntity.setCount(0);
 		fssTradeApplyEntity.setSuccessCount(0);
-		fssTradeApplyEntity.setCustId(Long.valueOf(dto.getCust_no()));
-		fssTradeApplyEntity.setCustType(Integer.valueOf(dto.getCust_type()));
+		fssTradeApplyEntity.setCustId(custId);
+		fssTradeApplyEntity.setCustType(custType);
 		//提现添加预约到账日期
-		if(dto.getApply_type().equals("1104")){//提现
+		if(applyType.equals("1104")){//提现
 			fssTradeApplyEntity.setBespokedate(new Date());
-			fssTradeApplyEntity.setSettleType(Integer.valueOf(dto.getSettle_type()));
+			fssTradeApplyEntity.setSettleType(settleType);
 		}
 		return fssTradeApplyEntity;
 	}

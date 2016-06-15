@@ -6,12 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.entity.FssBusinessTradeEntity;
 import com.gqhmt.fss.architect.depos.mapper.read.FssBusiTradeReadMapper;
 import com.gqhmt.fss.architect.depos.mapper.write.FssBusiTradeWriteMapper;
-import com.gqhmt.util.CommonUtil;
 
 /**
  *
@@ -82,7 +83,7 @@ public class FssBusiTradeService {
 		FssBusinessTradeEntity busiTrade=new FssBusinessTradeEntity();
 		busiTrade.setMchn("0001000F0279762");
 		busiTrade.setThirdPartyPaymentId(thirdPartyPaymentId);
-		busiTrade.setTradeDate(CommonUtil.dateTostring(tradeDate));
+		busiTrade.setTradeDate(DateUtil.dateTostring(tradeDate));
 		busiTrade.setTradeType(tradeType);
 		busiTrade.setItemNo(itemNo);
 		busiTrade.setContractNo(contractNo);

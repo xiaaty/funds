@@ -3,11 +3,13 @@ package com.gqhmt.extServInter.service.account.impl;
 import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.event.account.CreateAccountEvent;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -31,8 +33,9 @@ import javax.annotation.Resource;
 @Service
 public class CreateAccountImpl implements ICreateAccount{
 	@Resource
-	private IFundsAccount fundsAccountImpl;
+	private CreateAccountEvent createAccountEvent;
 	
+
 	/**
 	 * 11020001:wap开户
 	 * 11020002:web开户
@@ -52,8 +55,10 @@ public class CreateAccountImpl implements ICreateAccount{
     public Response execute(SuperDto dto) {
     	CreateAccountResponse response = new CreateAccountResponse();
     	try {
-    		Integer id=fundsAccountImpl.createFundAccount((CreateAccountDto)dto);
-    		response.setId(id);
+			CreateAccountDto cDto = (CreateAccountDto)dto;
+			FssAccountEntity fssAccountEntity = createAccountEvent.createAccount(cDto.getTrade_type(),cDto.getName(),cDto.getMobile(),cDto.getCert_no(),
+					Long.parseLong(cDto.getCust_no()),cDto.getMchn(),cDto.getBank_id(),cDto.getBank_card(),cDto.getCity_id(),cDto.getBusi_no(),null);
+    		response.setId(fssAccountEntity.getBankId().intValue());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.debug(this.getClass(), e);
@@ -61,4 +66,5 @@ public class CreateAccountImpl implements ICreateAccount{
 		}
         return response;
     }
+
 }

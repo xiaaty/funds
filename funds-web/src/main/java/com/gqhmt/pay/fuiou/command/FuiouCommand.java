@@ -108,6 +108,7 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
 
             Map resultMap = ConnectionFuiou.send(url+apiName,jsonMap);//ConnectionDaqian.send(config.getURL(), jsonMap);
             resultCode = (String)resultMap.get("resp_code");
+            response.setMap(resultMap);
         }catch (CommandParmException e){
             resultCode = "9900";
         } catch (ApplicationNotConnectionRemoteUrl applicationNotConnectionRemoteUrl) {

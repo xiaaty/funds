@@ -66,7 +66,7 @@ public class LoanImpl implements ILoan {
 	/**
 	 * 借款系统开户
 	 */
-    @Override
+//    @Override
     public String createLoanAccount(CreateLoanAccountDto dto) throws FssException {
         //富友
     	FssAccountEntity  fssAccount=null; //新版账户体系
