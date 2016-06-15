@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016/6/8
- * Description:
+ * Description:线下充值回调
  * <p>
  * Modification History:
  * Date    Author      Version     Description

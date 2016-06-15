@@ -97,6 +97,13 @@ public class CreateAccountEvent {
                     }else{
                         //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                         customerInfoEntity =  customerInfoService.getCustomerById(custId);
+                        //设置值
+                        customerInfoEntity.setParentBankCode(bankType);
+                        customerInfoEntity.setBankNo(bankNo);
+                        customerInfoEntity.setCityCode(area);
+                        customerInfoEntity.setCertNo(certNo);
+                        customerInfoEntity.setMobilePhone(mobile);
+                        customerInfoEntity.setCustomerName(name);
                     }
                     //生成旧版账户
                     primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
@@ -137,15 +144,15 @@ public class CreateAccountEvent {
                 paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
                 primaryAccount.setHasThirdAccount(2);
                 fundAccountService.update(primaryAccount);
+                fssAccountService.createFuiouAccount(mchn,fssCustomerEntity);
             }
-            fssAccountService.createFuiouAccount(mchn,fssCustomerEntity);
             //跟新所有与该cust_id相同的账户名称
             fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
         }
 
         //银行卡信息生成
         //旧版银行卡信息生成
-    //创建银行卡信息
+        //创建银行卡信息
        BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId.toString()));
         if(bankCardInfoEntity==null){
             //判断输入的银行卡号是否已经存在
@@ -155,14 +162,24 @@ public class CreateAccountEvent {
             }
 
             bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
-        }else{
-            bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId.toString()));
         }
+//        else{
+//            bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId.toString()));
+//        }
 
         fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
 
         //新版银行卡信息生成  增加判断，是否存在
-        FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerEntity);
+        FssCustBankCardEntity fssCustBankCardEntity=null;
+        fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
+        if(fssCustBankCardEntity==null){
+            //创建银行卡时，判断银行卡号是否已经注册
+            fssCustBankCardEntity=fssCustBankCardService.queryByBankNo(bankNo);
+            if(fssCustBankCardEntity!=null){
+                throw new FssException("90002038");//该银行卡号已被注册
+            }
+            fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerEntity);
+        }
         return  fssAccountEntity;
     }
 

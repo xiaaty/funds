@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.beans.Expression;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -497,14 +498,18 @@ public class FundAccountService {
 	    /**
 	     * 根据custId更新账户信息
 	     */
-	    public void  updateAccountCustomerName(Long custId,String custName,String cityId,String parentBankId,String bankNo){
+	    public void  updateAccountCustomerName(Long custId,String custName,String cityId,String parentBankId,String bankNo) throws  FssException{
 	    	Map map=new HashMap();
 	    	map.put("custId", custId);
 	    	map.put("custName", custName);
 	    	map.put("cityId", cityId);
 	    	map.put("parentBankId", parentBankId);
 	    	map.put("bankNo", bankNo);
-	    	fundAccountWriteMapper.updateCustNameByCustId(map);
+			try {
+				fundAccountWriteMapper.updateCustNameByCustId(map);
+			}catch (Exception e){
+				throw new FssException("更新失败",e.getCause());
+			}
 	    }
 
 	    public FundAccountEntity getFundAccountInfo(String accNo) throws FssException{

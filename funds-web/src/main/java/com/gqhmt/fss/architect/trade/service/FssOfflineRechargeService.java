@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssOfflineRechargeWriteMapper;
@@ -108,8 +109,18 @@ public class FssOfflineRechargeService {
 		}
 	}
 
-
-
+	/**
+	 * 线下充值成功回调
+	 * @param mchn
+	 * @param seqNo
+	 * @return
+	 * @throws FssException
+     */
+	public Response getOfflineRechargeResponse(String mchn, String seqNo)throws FssException {
+		Response response=new Response();
+		response=fssOfflineRechargeReadMapper.getOfflineRechargeResponse(mchn,seqNo);
+		return response;
+	}
 
 
 
