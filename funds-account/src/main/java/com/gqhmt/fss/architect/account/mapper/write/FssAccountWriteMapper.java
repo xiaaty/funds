@@ -3,6 +3,8 @@ package com.gqhmt.fss.architect.account.mapper.write;
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 
+import java.util.Map;
+
 /**
  * Filename:    com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper
  * Copyright:   Copyright (c)2015

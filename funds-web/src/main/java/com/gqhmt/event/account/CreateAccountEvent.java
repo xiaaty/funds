@@ -97,14 +97,14 @@ public class CreateAccountEvent {
                     }else{
                         //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                         customerInfoEntity =  customerInfoService.getCustomerById(custId);
-                        //设置值
-                        customerInfoEntity.setParentBankCode(bankType);
-                        customerInfoEntity.setBankNo(bankNo);
-                        customerInfoEntity.setCityCode(area);
-                        customerInfoEntity.setCertNo(certNo);
-                        customerInfoEntity.setMobilePhone(mobile);
-                        customerInfoEntity.setCustomerName(name);
                     }
+                    //设置值
+                    customerInfoEntity.setParentBankCode(bankType);
+                    customerInfoEntity.setBankNo(bankNo);
+                    customerInfoEntity.setCityCode(area);
+                    customerInfoEntity.setCertNo(certNo);
+                    customerInfoEntity.setMobilePhone(mobile);
+                    customerInfoEntity.setCustomerName(name);
                     //生成旧版账户
                     primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
                     if(primaryAccount == null){
@@ -149,6 +149,13 @@ public class CreateAccountEvent {
             //跟新所有与该cust_id相同的账户名称
             fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
         }
+            //更新新版账户的客户名及其他信息
+//      fssCustomerService.updateFssCustomerInfo(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getCertNo());
+        fssCustomerEntity.setCertNo(customerInfoEntity.getCertNo());
+        fssCustomerEntity.setName(customerInfoEntity.getCustomerName());
+        fssCustomerEntity.setMobile(customerInfoEntity.getMobilePhone());
+        fssCustomerEntity.setModifyTime(new Date());
+        fssCustomerService.updateCustId(fssCustomerEntity,customerInfoEntity.getId());
 
         //银行卡信息生成
         //旧版银行卡信息生成
@@ -163,9 +170,6 @@ public class CreateAccountEvent {
 
             bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
         }
-//        else{
-//            bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId.toString()));
-//        }
 
         fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
 
