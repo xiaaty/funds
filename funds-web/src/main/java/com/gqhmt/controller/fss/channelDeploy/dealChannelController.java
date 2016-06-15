@@ -128,7 +128,7 @@ public class dealChannelController {
     //异步检查渠道商户重复
     @RequestMapping(value = "/channelDeploy/deploy/merchant/channelAjaxMerchantEdit",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Object checkOptionNameAndOptionValue(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException {
+    public Object checkOptionNameAndOptionValue(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException, FssException {
 
         Map<String, String> map = new HashMap<String, String>();
 
@@ -178,7 +178,7 @@ public class dealChannelController {
     //异步检查支持银行重复
     @RequestMapping(value = "/channelDeploy/deploy/merchant/channelAjaxBankEdit",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Object checkOptionName(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException {
+    public Object checkOptionName(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException,FssException {
 
         Map<String, String> map = new HashMap<String, String>();
 
@@ -226,7 +226,7 @@ public class dealChannelController {
     //异步检查限额配置
     @RequestMapping(value = "/channelDeploy/deploy/restrictions/channelAjaxRestrictionsEdit",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
-    public Object checkOptionNameToRes(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException {
+    public Object checkOptionNameToRes(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException, FssException {
 
         Map<String, String> map = new HashMap<String, String>();
 
@@ -247,7 +247,6 @@ public class dealChannelController {
             map.put("message", "success");
         }
 
-        map.put("code", "0000");
         map.put("optionName", optionName);
         map.put("optionBank", optionBank);
         map.put("optionType", optionType);

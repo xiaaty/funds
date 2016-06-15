@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.channelDeploy.service;
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.channelDeploy.entity.ChannelOrgEntity;
 import com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelOrgReadMapper;
 import com.gqhmt.fss.architect.channelDeploy.mapper.write.ChannelOrgWriteMapper;
@@ -39,7 +40,7 @@ public class ChannelOrgService {
      * @return List<ChannelOrgEntity>
      * @throws
      */
-    public List<ChannelOrgEntity> getChannelOrgList(){
+    public List<ChannelOrgEntity> getChannelOrgList()throws FssException {
         return channelOrgReadMapper.getChannelOrgEntityList();
     }
 
@@ -49,9 +50,9 @@ public class ChannelOrgService {
      * @return ChannelOrgEntity
      * @throws
      */
-    public ChannelOrgEntity getChannelOrgEntityById(int id){ return channelOrgReadMapper.getChannelOrgEntityById(id); }
+    public ChannelOrgEntity getChannelOrgEntityById(int id) throws FssException{ return channelOrgReadMapper.getChannelOrgEntityById(id); }
 
-    public ChannelOrgEntity updateChannelOrgEntity(ChannelOrgEntity channelOrgEntity){
+    public ChannelOrgEntity updateChannelOrgEntity(ChannelOrgEntity channelOrgEntity) throws FssException{
         channelOrgWriteMapper.updateChannelOrgEntity(channelOrgEntity);
         return channelOrgReadMapper.getChannelOrgEntityById(channelOrgEntity.getId());
     }

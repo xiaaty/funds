@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.channelDeploy.service;
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.channelDeploy.entity.ChannelMerchantEntity;
 import com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelMerchantReadMapper;
 import com.gqhmt.fss.architect.channelDeploy.mapper.write.ChannelMerchantWriteMapper;
@@ -39,7 +40,7 @@ public class ChannelMerchantService {
      * @return ChannelOrgEntity
      * @throws
      */
-    public List<ChannelMerchantEntity> getMerchantEntityListByOrgId(int orgId){
+    public List<ChannelMerchantEntity> getMerchantEntityListByOrgId(int orgId) throws FssException {
         return channelMerchantReadMapper.getMerchantListByOrgId(orgId);
     }
 
@@ -49,7 +50,7 @@ public class ChannelMerchantService {
      * @return
      * @throws
      */
-    public ChannelMerchantEntity addMerchantEntity(ChannelMerchantEntity channelMerchantEntity){
+    public ChannelMerchantEntity addMerchantEntity(ChannelMerchantEntity channelMerchantEntity) throws FssException{
         channelMerchantWriteMapper.addMerchantEntity(channelMerchantEntity);
         return channelMerchantEntity;
     }
@@ -70,7 +71,7 @@ public class ChannelMerchantService {
      * @return List<ChannelMerchantEntity>
      * @throws
      */
-    public List<ChannelMerchantEntity> getMerchantNameOrValue(ChannelMerchantEntity channelMerchantEntity){
+    public List<ChannelMerchantEntity> getMerchantNameOrValue(ChannelMerchantEntity channelMerchantEntity) throws FssException {
         return channelMerchantReadMapper.getMerchantNameOrValue(channelMerchantEntity);
     }
 }

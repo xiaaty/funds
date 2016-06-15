@@ -21,7 +21,13 @@
         .dt-wrapper {
             overflow: auto;
         }
-
+        .tab-btn {
+            width : 70px;
+            height: 35px;
+            margin-top: 0px;
+            margin-bottom: 10px;
+            float: right;
+        }
     </style>
 
 </head>
@@ -123,7 +129,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <input type="button" onclick="sumList()" value="保存" />
+                            <input class = "tab-btn" type="button" onclick="sumList()" value="保存" />
                         </div>
                     </div>
 

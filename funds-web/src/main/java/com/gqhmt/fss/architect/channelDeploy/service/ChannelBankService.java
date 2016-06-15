@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.channelDeploy.service;
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.channelDeploy.entity.ChannelBankEntity;
 import com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelBankReadMapper;
 import com.gqhmt.fss.architect.channelDeploy.mapper.write.ChannelBankWriteMapper;
@@ -39,7 +40,7 @@ public class ChannelBankService {
      * @return List<ChannelBankEntity>
      * @throws
      */
-    public List<ChannelBankEntity> getChannelBankEntityListByOrgId(int orgId) {
+    public List<ChannelBankEntity> getChannelBankEntityListByOrgId(int orgId) throws FssException {
         return channelBankReadMapper.getChannelBankEntityListByOrgId(orgId);
     }
 
@@ -49,7 +50,7 @@ public class ChannelBankService {
      * @return List<ChannelBankEntity>
      * @throws
      */
-    public List<ChannelBankEntity> getChannelBankEntity(ChannelBankEntity channelBankEntity){
+    public List<ChannelBankEntity> getChannelBankEntity(ChannelBankEntity channelBankEntity) throws FssException{
         return channelBankReadMapper.getChannelBankEntity(channelBankEntity);
     }
 
@@ -59,7 +60,7 @@ public class ChannelBankService {
      * @return List<ChannelBankEntity>
      * @throws
      */
-    public ChannelBankEntity addBankEntity(ChannelBankEntity channelBankEntity){
+    public ChannelBankEntity addBankEntity(ChannelBankEntity channelBankEntity) throws FssException{
         channelBankWriteMapper.addBankEntity(channelBankEntity);
         return channelBankEntity;
     }

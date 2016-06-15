@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.channelDeploy.service;
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.channelDeploy.entity.ChannelRestrictionsEntity;
 import com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelRestrictionsReadMapper;
 import com.gqhmt.fss.architect.channelDeploy.mapper.write.ChannelRestrictionsWriteMapper;
@@ -39,7 +40,7 @@ public class ChannelRestrictionsService {
      * @return List<ChannelRestrictionsEntity>
      * @throws
      */
-    public List<ChannelRestrictionsEntity> getChannelRestrictionsEntityListByOrgId(int orgId){
+    public List<ChannelRestrictionsEntity> getChannelRestrictionsEntityListByOrgId(int orgId) throws FssException {
         return channelRestrictionsReadMapper.getChannelRestrictionsEntityListByOrgId(orgId);
     }
 
@@ -49,7 +50,7 @@ public class ChannelRestrictionsService {
      * @return List<ChannelRestrictionsEntity>
      * @throws
      */
-    public List<ChannelRestrictionsEntity> getChannelRestrictionsEntity(ChannelRestrictionsEntity channelRestrictionsEntity){
+    public List<ChannelRestrictionsEntity> getChannelRestrictionsEntity(ChannelRestrictionsEntity channelRestrictionsEntity) throws FssException{
         return channelRestrictionsReadMapper.getChannelRestrictionsEntity(channelRestrictionsEntity);
     }
 
@@ -59,7 +60,7 @@ public class ChannelRestrictionsService {
      * @return channelBankEntity
      * @throws
      */
-    public ChannelRestrictionsEntity addRestrictionsEntity(ChannelRestrictionsEntity channelRestrictionsEntity){
+    public ChannelRestrictionsEntity addRestrictionsEntity(ChannelRestrictionsEntity channelRestrictionsEntity) throws FssException{
         channelRestrictionsWriteMapper.addRestrictionsEntity(channelRestrictionsEntity);
         return channelRestrictionsEntity;
     }
