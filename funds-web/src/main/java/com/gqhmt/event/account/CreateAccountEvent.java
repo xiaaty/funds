@@ -15,6 +15,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -35,6 +36,7 @@ import java.util.Date;
  * -----------------------------------------------------------------
  * 2016/6/13  于泳      1.0     1.0 Version
  */
+@Service
 public class CreateAccountEvent {
 
 
