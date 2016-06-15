@@ -9,7 +9,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,8 +20,10 @@ import javax.annotation.Resource;
  */
 @Service
 public class LoadWithDrawImpl implements ILoadWithDraw{
+
+
 	@Resource
-	private FundAccountService fundAccountService;
+	private FssTradeApplyService fssTradeApplyService ;
 
 	@APITradeTypeValid(value = "11091001")
 	@APISignature
@@ -29,7 +31,11 @@ public class LoadWithDrawImpl implements ILoadWithDraw{
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
     	try {
-    		fundAccountService.createWithDrawApply((LoanWithDrawApplyDto)dto);
+
+			LoanWithDrawApplyDto loanDto = (LoanWithDrawApplyDto)dto;
+
+			fssTradeApplyService.createLoanWithdrawApply(loanDto.getTrade_type(),loanDto.getSeq_no(),loanDto.getMchn(), loanDto.getAcc_no(),loanDto.getContract_no(),loanDto.getContract_id(),loanDto.getPay_amt(),loanDto.getBespoke_date());
+
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
