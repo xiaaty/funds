@@ -4,30 +4,24 @@ package com.gqhmt.funds.architect.account.service;
 import com.github.pagehelper.Page;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.loan.LoanWithDrawApplyDto;
+import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.exception.NeedSMSValidException;
 import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
-import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.util.LogUtil;
-import com.gqhmt.core.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -241,108 +235,7 @@ public class FundAccountService {
     }
     
     
-    /**
-     * 借款账户充值
-     * @param request
-     * @param customId
-     * @param pwd
-     * @param amount
-     * @param bankId
-     * @return
-     */
-    public  Object recharge(HttpServletRequest request, int customId,String pwd,String amount,Integer bankId) throws NeedSMSValidException{
-    	
-		Map<String,String> map = new HashMap<String,String>();
-		if(null == amount){
-			map.put("code","101");
-			map.put("msg","请输入充值金额！");
-			return map;
-		}
-		if(new BigDecimal(amount).compareTo(BigDecimal.ZERO) != 1){
-			map.put("code","105");
-			map.put("msg","充值金额必须大于0！");
-			return map;
-		}
-		if(pwd == null || "".equals(pwd)){
-			map.put("code","102");
-			map.put("msg","请输入交易密码！");
-			return map;
-		}
 
-		if(null == bankId){
-			map.put("code","107");
-			map.put("msg","请选择银行卡，再进行充值。");
-			return map;
-		}
-		
-        String password = pwd;
-        String code = "0000";
-        String msg = "账户充值成功";
-        String orderNo = "";
-
-        BankCardInfoEntity bankCardinfoEntity  = bankCardInfoService.queryBankCardinfoById(bankId);
-        String cardIndex = bankCardinfoEntity.getCardIndex();
-        try{
-//            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_CHARGE,ThirdPartyType.DAQIAN,customId,1,new BigDecimal(amount),password,cardIndex);
-        }catch (CommandParmException e){
-            code = "0001";
-            msg = e.getMessage();
-        }
-        map.put("code",code);
-        map.put("msg",msg);
-        map.put("orderNo",orderNo);
-        return map;
-    }
-    
-    /**
-     * 借款账户提现
-     * @param request
-     * @param customId
-     * @param bankId
-     * @param amount
-     * @param pwd
-     * @return
-     */
-    public Object withdraw(HttpServletRequest request, int customId,Integer bankId,String amount,String pwd){
-    	
-		Map<String,String> map = new HashMap<String,String>();
-		if(null == amount){
-			map.put("code","101");
-			map.put("msg","请输入提现金额！");
-			return map;
-		}
-		if(new BigDecimal(amount).compareTo(BigDecimal.ZERO) != 1){
-			map.put("code","101");
-			map.put("msg","提现金额必须大于0！");
-			return map;
-		}
-		if(null == pwd){
-			map.put("code","101");
-			map.put("msg","请输入交易密码！");
-			return map;
-		}
-
-		if(null == bankId){
-			map.put("code","101");
-			map.put("msg","请选择银行卡，再进行提现。");
-			return map;
-		}
-
-        String code = "0000";
-        String msg = "账户提现已申请";
-        String orderNo = "";
-        try{
-//            AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_WITHDRAW,ThirdPartyType.DAQIAN,customId,1,pwd,new BigDecimal(amount),bankId);
-        }catch (CommandParmException e){
-            code = "0001";
-            msg = e.getMessage();
-        }
-        map.put("code", code);
-        map.put("msg",msg);
-        map.put("orderNo",orderNo);
-        return map;
-    }
-    
     
     /**
      * 根据客户id更新客户名字 add by guofu
@@ -449,33 +342,7 @@ public class FundAccountService {
 	        return this.fundsAccountReadMapper.getAccountBanlance(cust_no,busi_type);
 	    }
 	    
-		/**
-		 * 借款人提现
-		 */
-		public boolean createWithDrawApply(LoanWithDrawApplyDto wthDrawApplyDto) throws FssException {
-			FssTradeApplyEntity fssTradeApplyEntity=null;
-			//1.根据acc_no查询借款人账户信息
-		 	FssAccountEntity fssAccountEntity= this.getFssFundAccountInfo(wthDrawApplyDto.getAcc_no());
-		 	if(fssAccountEntity==null){
-		 		throw new FssException("90004006");
-		 	}else{
-				//账户余额小于提现金额
-				FundAccountEntity fundAccountEntity=getFundsAccount(fssAccountEntity.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN);
-				if(fundAccountEntity.getAmount().compareTo(wthDrawApplyDto.getPay_amt())<0) throw new FssException("90004007");
-				//冻结资金
-				iFundsTrade.froze(fssAccountEntity.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN,wthDrawApplyDto.getPay_amt());
-	 			try {
-					//创建提现申请信息
-					fssTradeApplyEntity = fssTradeApplyService.createTradeApplyEntity(fssAccountEntity,wthDrawApplyDto);
-					fssTradeApplyService.createTradeApply(fssTradeApplyEntity);
-				} catch (FssException e) {
-					LogUtil.info(this.getClass(), e.getMessage());
-					throw new FssException("90099005");
-				}
-	 		
-		 	}
-		 	return true;
-		}
+
 	    /**
 	     * 根据accNo查询账户
 	     * @param accNo
