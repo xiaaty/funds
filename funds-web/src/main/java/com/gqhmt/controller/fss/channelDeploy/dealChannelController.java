@@ -278,7 +278,6 @@ public class dealChannelController {
     @RequestMapping(value = "/channelDeploy/deploy/Org/channelAjaxOrgEdit",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object updateOrgEdit(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException ,FssException{
-        System.out.println("------------upDateOrgEdit--------");
         Map<String, String> map = new HashMap<String, String>();
 
         int id = Integer.parseInt(request.getParameter("id"));
