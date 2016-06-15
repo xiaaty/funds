@@ -35,6 +35,7 @@ public class CreateAccountImpl implements ICreateAccount{
 	@Resource
 	private CreateAccountEvent createAccountEvent;
 	
+
 	/**
 	 * 11020001:wap开户
 	 * 11020002:web开户
@@ -65,4 +66,5 @@ public class CreateAccountImpl implements ICreateAccount{
 		}
         return response;
     }
+
 }

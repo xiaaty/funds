@@ -29,7 +29,7 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	
 	/**
 	 * 获取客户账户信息
-	 * @param map
+	 * @param fssAccountEntity
 	 * @return
 	 */
 	public List<FssAccountEntity> findCustomerAccountByParams(FssAccountEntity fssAccountEntity);
@@ -37,9 +37,26 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	
 	
 	public List<BussAndAccountBean> getBussinessAccountList(Map map);
-
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年3月17日
+	 * function：根据acc_no查询账户
+	 */
 	public FssAccountEntity findAccountByAccNo(@Param("accNo") String accNo);
-
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月6日
+	 * function：根据contractNo查询账户(busi_no)
+	 */
+	public FssAccountEntity findAccountByContractNo(@Param("contractNo") String contractNo);
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月13日
+	 * function：根据cust_id查询抵押权人账户（acc_type=10012002）
+	 */
 	public FssAccountEntity findAccountByCustId(@Param("custId") Long custId);
 
 }

@@ -21,11 +21,13 @@
 		  t.`seq_no` seqNo,
 		  t.`mchn` mchn,
 		  t.`channel_no` channelNo,
-		  t.`contract_no` contractNo,
+		  t.`cust_no` custNo,
 		  t.`chg_cd` chgCd,
   		  t.`chg_dt` chgDt,
   		  t.`fy_bank` fyBank,
   		  t.`fy_bank_branch` fyBankBranch,
+  		  t.`acc_no` accNo,
+  		  t.`result_state` resultState,
           t.`desc_code` descCode
 		FROM `t_gq_fss_offline_recharge` t
 	</sql>

@@ -61,7 +61,7 @@ public class FssOfflineRechargeService {
 	 * @throws FssException
      */
 	public FssOfflineRechargeEntity createOfflineRecharge(String applyNo,String applyType,Long custId,String custName,String custType,String fyAccNo,String orderNo,BigDecimal amt,String applyState,String tradeState,
-									  String busiNo,String busiType,String seqNo,String mchn,String channelNo,String contractNo,String chgCd,String chgDt,String fyAccNm,String fyBank,String fyBankBranch,String descCode){
+									  String busiNo,String busiType,String seqNo,String mchn,String channelNo,String custNo,String chgCd,String chgDt,String fyAccNm,String fyBank,String fyBankBranch,String descCode)throws FssException{
 			FssOfflineRechargeEntity fssOfflineRechargeEntity=new FssOfflineRechargeEntity();
 			fssOfflineRechargeEntity.setApplyNo(applyNo);
 			fssOfflineRechargeEntity.setApplyType(Integer.valueOf(applyType));
@@ -80,25 +80,31 @@ public class FssOfflineRechargeService {
 			fssOfflineRechargeEntity.setSeqNo(seqNo);
 			fssOfflineRechargeEntity.setMchn(mchn);
 			fssOfflineRechargeEntity.setChannelNo(channelNo);
-			fssOfflineRechargeEntity.setContractNo(contractNo);
+			fssOfflineRechargeEntity.setCustNo(custNo);
 			fssOfflineRechargeEntity.setChgCd(chgCd);
 			fssOfflineRechargeEntity.setChgDt(chgDt);
 			fssOfflineRechargeEntity.setFyAccNm(fyAccNm);
 			fssOfflineRechargeEntity.setFyBank(fyBank);
 			fssOfflineRechargeEntity.setFyBankBranch(fyBankBranch);
 			fssOfflineRechargeEntity.setDescCode(descCode);
+		try{
+			fssOfflineRechargeWriteMapper.insertSelective(fssOfflineRechargeEntity);
 			return fssOfflineRechargeEntity;
+		}catch (Exception e){
+			throw new FssException("91009804");
+		}
+
 	}
 
 	/**
 	 * 修改线下充值记录
 	 * @param entity
      */
-	public void insert(FssOfflineRechargeEntity entity) throws FssException{
+	public void update(FssOfflineRechargeEntity entity) throws FssException{
 		try{
-		fssOfflineRechargeWriteMapper.insertSelective(entity);
+		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		}catch (Exception e){
-			throw new FssException("");
+			throw new FssException("91009804");
 		}
 	}
 

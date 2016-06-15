@@ -16,7 +16,7 @@ import com.gqhmt.fss.architect.depos.entity.FssProjectCallbackEntity;
 import com.gqhmt.fss.architect.depos.entity.FssSftpRecordEntity;
 import com.gqhmt.fss.architect.depos.entity.FssSumAuditEntity;
 import com.gqhmt.fss.architect.depos.service.FssProjectInfoCallBackService;
-import com.gqhmt.fss.architect.depos.service.FssSftpRecordService;
+import com.gqhmt.fss.architect.depos.service.FssDeposRecordService;
 import com.gqhmt.fss.architect.depos.service.FssSumAuditService;
 @Service
 public class ReadTXTFile {
@@ -25,7 +25,7 @@ public class ReadTXTFile {
 	@Resource
 	private FssSumAuditService fssSumAuditService;
 	@Resource
-	private FssSftpRecordService fssSftpRecordService;
+	private FssDeposRecordService fssDeposRecordService;
 
 	/**
 	 *
@@ -61,7 +61,7 @@ public class ReadTXTFile {
 			}
 			fssProjectInfoCallBackService.createProjectInfo(list);
 			//创建sftp下载记录
-			FssSftpRecordEntity insertSftpRecord = fssSftpRecordService.insertSftpRecord("项目信息回盘", list.size(), "11120005");
+			FssSftpRecordEntity insertSftpRecord = fssDeposRecordService.insertSftpRecord("项目信息回盘", list.size(), "11120005");
 			for (FssProjectCallbackEntity fssProjectCallbackEntity : list) {
 				fssProjectCallbackEntity.setParentId(insertSftpRecord.getId());
 				fssProjectInfoCallBackService.update(fssProjectCallbackEntity);

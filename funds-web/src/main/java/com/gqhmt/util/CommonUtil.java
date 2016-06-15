@@ -48,7 +48,7 @@ public class CommonUtil {
     public static final int DEFAULT_BUFFER_SIZE = 10 * 1024;
 	public CommonUtil() {
 	}
-	
+
 	private static Hashtable<Long, String> hs = new Hashtable<Long, String>();
 	private static Random random = new Random(); 
 
@@ -226,117 +226,8 @@ public class CommonUtil {
 				+ "").append("_").append(fileName).toString();
 		return fileName;
 	}
-	
-	 /**
-     * 时间格式转换(Date to String“yyyy-MM-dd”)
-     * @return
-     */
-	public static String dateToString(Date date){
-		
-		if (date == null || date.equals("")) {
-			return "";
-		}
-		
-    	String pioDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
-    	return pioDate;
-    }
-	 /**
-     * 时间格式转换(Date to String"yyyyMMdd")
-     * @return
-     */
-	public static String dateTostring(Date date){
-		if (date == null || date.equals("")) {
-			return "";
-		}
-    	String pioDate = new SimpleDateFormat("yyyyMMdd").format(date);
-    	return pioDate;
-    }
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年5月18日
-	 * function：把时间返回string HHmm
-	 */
-	public static String timeToString(Date date){
-		if (date == null || date.equals("")) {
-			return "";
-		}
-    	String pioDate = new SimpleDateFormat("HHmm").format(date);
-    	return pioDate;
-    }
-	
-	public static String dateToMonthDay(Date date){
-		if (date == null || date.equals("")) {
-			return "";
-		}
-		String pioDate = new SimpleDateFormat("MM-dd").format(date);
-    	return pioDate;
-	}
-	
-	public static String dateToYearMonth(Date date){
-		if (date == null || date.equals("")) {
-			return "";
-		}
-		String pioDate = new SimpleDateFormat("yyyy-MM").format(date);
-		return pioDate;
-	}
-	
-	/**
-	 * 24小时制
-	 * @param date
-	 * @return
-	 */
-	public static String dateToString_24(Date date){
-		if (date == null || date.equals("")) {
-			return "";
-		}
-    	String pioDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
-    	return pioDate;
-    }
-	
-	
-	/**
-     * 时间格式转换(String to Date)
-     * @param dateString
-     * @return
-     */
-    public static Date stringToDate(String dateString){
-    	if (dateString == null  || dateString.equals("")) {
-    		return null;
-    	}
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
-        Date date = null;
-		try {
-			date = sdf.parse(dateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} 
-        return date;
-    }
-  
-    /** 
-    * @Title: stringToDate 
-    * @author 王晓鹏
-    * @Description: 日期转换
-    * @date 2014年8月26日 下午6:19:57 
-    * @param dateString
-    * @param formatString
-    * @return   
-    */ 
-    public static Date stringToDate(String dateString,String formatString){
-    	SimpleDateFormat sdf = new SimpleDateFormat(formatString);  
-        Date date = null;
-		try {
-			date = sdf.parse(dateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} 
-        return date;
-    }
-    
-	
 	public static String createRandom(){
-		
+
 		Long num = random.nextLong();
 		num = Math.abs(num);
 		if(hs.get(num)!=null){
@@ -345,147 +236,51 @@ public class CommonUtil {
 			hs.put( num, num.toString());
 		}
 		return num.toString();
-	}	
-	
-	
-  
+	}
+
+
+
 	/**
-	 * escape 解码 
-	 * 	前台javascript escape 编码 
+	 * escape 解码
+	 * 	前台javascript escape 编码
 	 * @param s
 	 * @return
 	 */
-	public static String unescape(String s) {       
-        StringBuffer sbuf = new StringBuffer();       
-        int i = 0;       
-        int len = s.length();       
-        while (i < len) {       
-        int ch = s.charAt(i);       
-        if ('A' <= ch && ch <= 'Z') {   
-        sbuf.append((char) ch);       
-        } else if ('a' <= ch && ch <= 'z') {        
-        sbuf.append((char) ch);       
-        } else if ('0' <= ch && ch <= '9') {    
-            sbuf.append((char) ch);       
-        } else if (ch == '-' || ch == '_'|| ch == '.' || ch == '!' || ch == '~' || ch == '*'|| ch == '\'' || ch == '(' || ch == ')') {       
-        sbuf.append((char) ch);       
-        } else if (ch == '%') {   
-            int cint = 0;       
-            if ('u' != s.charAt(i + 1)) {       
-            cint = (cint << 4) | val[s.charAt(i + 1)];       
-            cint = (cint << 4) | val[s.charAt(i + 2)];       
-            i += 2;       
-            } else {       
-                cint = (cint << 4) | val[s.charAt(i + 2)];       
-                cint = (cint << 4) | val[s.charAt(i + 3)];       
-                cint = (cint << 4) | val[s.charAt(i + 4)];       
-                cint = (cint << 4) | val[s.charAt(i + 5)];       
-                i += 5;       
-            }       
-            sbuf.append((char) cint);   
-        } else {       
-            sbuf.append((char) ch);       
-        }       
-        i++;       
-        }       
-        return sbuf.toString();       
-    }  
-	
-	/**
-	 * 
-	 * @Title: getYearMonth 
-	 * @Description: 出借提成的年月 
-	 * @author lidaqing   
-	 * @date 2014-11-5 下午5:11:53  
-	 * @return
-	 * String
-	 */
-	public static String getYearMonth(){
-		String dateStr = dateToYearMonth(new Date());
-		int dateYear = Integer.parseInt(dateStr.substring(0,4));
-		String dateMonth = dateStr.substring(5,6);
-		if(dateMonth.equals("0")){
-			dateMonth = dateStr.substring(6,7);
-		}else{
-			dateMonth = dateStr.substring(5,7);
+	public static String unescape(String s) {
+		StringBuffer sbuf = new StringBuffer();
+		int i = 0;
+		int len = s.length();
+		while (i < len) {
+			int ch = s.charAt(i);
+			if ('A' <= ch && ch <= 'Z') {
+				sbuf.append((char) ch);
+			} else if ('a' <= ch && ch <= 'z') {
+				sbuf.append((char) ch);
+			} else if ('0' <= ch && ch <= '9') {
+				sbuf.append((char) ch);
+			} else if (ch == '-' || ch == '_'|| ch == '.' || ch == '!' || ch == '~' || ch == '*'|| ch == '\'' || ch == '(' || ch == ')') {
+				sbuf.append((char) ch);
+			} else if (ch == '%') {
+				int cint = 0;
+				if ('u' != s.charAt(i + 1)) {
+					cint = (cint << 4) | val[s.charAt(i + 1)];
+					cint = (cint << 4) | val[s.charAt(i + 2)];
+					i += 2;
+				} else {
+					cint = (cint << 4) | val[s.charAt(i + 2)];
+					cint = (cint << 4) | val[s.charAt(i + 3)];
+					cint = (cint << 4) | val[s.charAt(i + 4)];
+					cint = (cint << 4) | val[s.charAt(i + 5)];
+					i += 5;
+				}
+				sbuf.append((char) cint);
+			} else {
+				sbuf.append((char) ch);
+			}
+			i++;
 		}
-		int dateMonths = Integer.parseInt(dateMonth);
-		if(dateMonths<2){
-			dateMonths = 12;
-			dateYear-=1;
-		}else{
-			dateMonths-=1;
-		}
-		dateStr = dateYear+"-"+dateMonths;
-		return dateStr;
+		return sbuf.toString();
 	}
-	
-	/**
-	 * @Title: getYieldDay 
-	 * @Description: 返回两日期相差的天数 (赎回适用,出借需+1)
-	 * @author lidaqing   
-	 * @date 2014-6-25 上午10:29:39  
-	 * @param startDate 开始时间
-	 * @param endDate 结束时间
-	 * @return int 相差天数
-	 * @throws java.text.ParseException
-	 */
-	public static int getDifferDay(String startDate,String endDate) throws ParseException{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar c = Calendar.getInstance();
-		c.setTime(sdf.parse(startDate));
-		long t1 = c.getTimeInMillis();
-		c.setTime(sdf.parse(endDate));
-		long t2 = c.getTimeInMillis();
-		return Integer.parseInt(String.valueOf((t2-t1)/(24*60*60*1000)));
-	}
-	
-	
-	/**
-	 * @Title: getYieldDay 
-	 * @Description: 返回两日期相差的天数 (赎回适用,出借需+1)
-	 * @author lidaqing   
-	 * @date 2014-6-25 上午10:29:39  
-	 * @param startDate 开始时间
-	 * @param endDate 结束时间
-	 * @return int 相差天数
-	 * @throws java.text.ParseException
-	 */
-	public static int getDifferDay(Date startDate,Date endDate) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(startDate);
-		long t1 = c.getTimeInMillis();
-		c.setTime(endDate);
-		long t2 = c.getTimeInMillis();
-		return Integer.parseInt(String.valueOf((t2-t1)/(24*60*60*1000)));
-	}
-	
-	
-	
-	
-	/**
-	 * @Title:  getContractEndDate 
-	 * @Description: 根据开始日期 和 相差天数 计算结束日期
-	 * @author guofu   
-	 * @date 2014-6-25 上午10:29:39  
-	 * @param startDate 开始时间
-	 * @param amount 相差天数
-	 * @return endDate 结束时间
-	 */
-	public static Date getContractEndDate(Date startDate,int amount) {
-		
-		if (startDate == null ) {
-			return null;
-		}
-
-		Calendar c = Calendar.getInstance();
-		c.setTime(startDate);
-		c.add(Calendar.DAY_OF_MONTH, amount);
-		c.getTime();
-		
-		return c.getTime();
-	}
-	
 	/**
 	 * 金额转成千分位格式
 	 * @param str

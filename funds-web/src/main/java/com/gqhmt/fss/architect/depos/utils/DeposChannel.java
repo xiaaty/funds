@@ -10,21 +10,21 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-public class SFTPChannel {
+public class DeposChannel {
 	
     Session session = null;
     Channel channel = null;
 
-    private static final Logger LOG = Logger.getLogger(SFTPChannel.class.getName());
+    private static final Logger LOG = Logger.getLogger(DeposChannel.class.getName());
 
     public ChannelSftp getChannel(Map<String, String> sftpDetails, int timeout) throws JSchException {
 
-        String ftpHost = sftpDetails.get(SFTPConstants.SFTP_REQ_HOST);
-        String port = sftpDetails.get(SFTPConstants.SFTP_REQ_PORT);
-        String ftpUserName = sftpDetails.get(SFTPConstants.SFTP_REQ_USERNAME);
-        String ftpPassword = sftpDetails.get(SFTPConstants.SFTP_REQ_PASSWORD);
+        String ftpHost = sftpDetails.get(DeposConstants.SFTP_REQ_HOST);
+        String port = sftpDetails.get(DeposConstants.SFTP_REQ_PORT);
+        String ftpUserName = sftpDetails.get(DeposConstants.SFTP_REQ_USERNAME);
+        String ftpPassword = sftpDetails.get(DeposConstants.SFTP_REQ_PASSWORD);
 
-        int ftpPort = SFTPConstants.SFTP_DEFAULT_PORT;
+        int ftpPort = DeposConstants.SFTP_DEFAULT_PORT;
         if (port != null && !port.equals("")) {
             ftpPort = Integer.valueOf(port);
         }

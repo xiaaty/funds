@@ -101,7 +101,7 @@
                                                 <td align="left">客户姓名：</td>
                                                 <td>
 												            <label class="input" style="width:210px">
-												            <input type="hidden" name="userNo" readonly value="${userName}">
+												            <input type="text" name="userNo" readonly value="${userName}">
 <%-- 												             <input type="text" name="" readonly="readonly" value="${userName }"> --%>
 												            </label>
 												</td>
@@ -163,7 +163,7 @@
 	                success: function (data) {
 	                    if (data.code == '0000') {
 	                        jAlert("代扣已提交!", '确认信息');
-                            parent.location.href="${contextPath}/loan/trade/11090001";
+                            parent.location.href="${contextPath}/loan/trade/${type}";
 	                    } else if(data.code == '0001'){
 	                    	jAlert(data.message, '确认信息');
 	                        return;

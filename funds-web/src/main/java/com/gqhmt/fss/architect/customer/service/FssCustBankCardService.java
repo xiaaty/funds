@@ -1,5 +1,4 @@
 package com.gqhmt.fss.architect.customer.service;
-
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.CommonUtil;
@@ -77,7 +76,7 @@ public class FssCustBankCardService {
 	 * @return
      * @throws FssException
      */
-	public FssCustBankCardEntity createFssBankCardEntity(String bankType,String bankNo,String area,String mchn,FssCustomerEntity fssCustomerEntity) throws FssException{
+	public FssCustBankCardEntity createFssBankCardEntity(String bankType, String bankNo, String area, String mchn, FssCustomerEntity fssCustomerEntity) throws FssException{
 			FssCustBankCardEntity fssbankcardInfo= GenerateBeanUtil.GenerateClassInstance(FssCustBankCardEntity.class);
 			fssbankcardInfo.setCust_no(String.valueOf(fssCustomerEntity.getCustNo()));
 			fssbankcardInfo.setCertType(fssCustomerEntity.getCertType());

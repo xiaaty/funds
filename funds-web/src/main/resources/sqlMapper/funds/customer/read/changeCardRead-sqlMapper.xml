@@ -77,4 +77,8 @@
 		<include refid="fieldSql"/>
 		WHERE t.cust_id=#{custId}
 	</select>
+	<select id="queryByChangeCardBankInfoId" resultType="com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity">
+		<include refid="fieldSql"/>
+		WHERE t.b_bank_info_id = #{bBankInfoId}
+	</select>
 </mapper>

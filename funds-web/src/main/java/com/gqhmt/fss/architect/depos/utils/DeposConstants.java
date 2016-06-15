@@ -1,6 +1,6 @@
 package com.gqhmt.fss.architect.depos.utils;
 
-public class SFTPConstants {
+public class DeposConstants {
 
 	 public static final String SFTP_REQ_HOST = "host";
 	    public static final String SFTP_REQ_PORT = "port";
