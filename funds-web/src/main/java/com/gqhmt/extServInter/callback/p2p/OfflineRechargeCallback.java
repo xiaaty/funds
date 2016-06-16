@@ -3,14 +3,15 @@ package com.gqhmt.extServInter.callback.p2p;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.callback.loan.GetCallBack;
-import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
+import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.trade.OfflineRechargeResponse;
+import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 
 /**
- * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
+ * Filename:
  * Copyright:   Copyright (c)2016
  * Company:     冠群驰骋投资管理(北京)有限公司
  * @author 柯禹来
@@ -26,18 +27,16 @@ import javax.annotation.Resource;
 @Service
 public class OfflineRechargeCallback implements GetCallBack{
 	@Resource
-	private FssTradeApplyService fssTradeApplyService;
+	private FssOfflineRechargeService fssOfflineRechargeService;
 	/**
 	 * author:柯禹来
-	 * time:2016年4月25日
-	 * function：得到冠E通代扣申请回调对象
+	 * time:2016年6月14日
+	 * function：线下充值回调
 	 */
-	public WithHoldApplyResponse getCallBack(String mchn,String seqNo) throws FssException{
-			WithHoldApplyResponse response =new WithHoldApplyResponse();
+	public Response getCallBack(String mchn, String seqNo) throws FssException{
+		Response response =new Response();
 			 try {
-				 response=fssTradeApplyService.getWhithHoldApplyResponse(mchn, seqNo);
-//				 String resp_msg = Application.getInstance().getDictName(response.getResp_code());
-//				 response.setResp_msg(resp_msg);
+				 response=fssOfflineRechargeService.getOfflineRechargeResponse(mchn, seqNo);
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 				response.setResp_code(e.getMessage());

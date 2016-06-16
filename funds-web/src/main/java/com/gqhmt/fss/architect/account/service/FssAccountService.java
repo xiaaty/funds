@@ -205,7 +205,7 @@ public class FssAccountService {
             busiNo = fssCustomerEntity.getCustNo();
         }else{//如果,线下出借,借款,保理,则业务编号不能为空
             if(busiNo == null || "".equals(busiNo)){
-                throw new FssException("");   //todo  未设定error类型  抛出业务编号为空
+                throw new FssException("90002016");   //todo  未设定error类型  抛出业务编号为空
             }
         }
         fssAccountEntity.setBusiNo(busiNo);

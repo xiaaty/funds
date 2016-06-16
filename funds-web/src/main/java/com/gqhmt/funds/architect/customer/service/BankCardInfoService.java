@@ -488,8 +488,11 @@ public class BankCardInfoService {
 		    queryEntity.setCustId(custId);
 			return bankCardinfoReadMapper.selectOne(queryEntity);
 	    }
-	
-	
+
+	 public List<BankCardInfoEntity> getBankCardByCustId(int custId){
+		 return bankCardinfoReadMapper.findBankCardByCustNo(String.valueOf(custId));
+	 }
+
 	 	/**
 	 	 * 创建银行卡信息
 	 	 * @return
@@ -563,6 +566,9 @@ public class BankCardInfoService {
 			return  changeCards;
 		}
 
-		
+
+	public BankCardInfoEntity getBankCardByCustNo(Long custId){
+		return bankCardinfoReadMapper.queryBankCard(String.valueOf(custId));
+	}
 	 
 }

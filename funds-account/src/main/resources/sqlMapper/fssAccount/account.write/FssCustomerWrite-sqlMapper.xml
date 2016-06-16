@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper">
+    <!--<update id="updateFssCustomerInfo"  parameterType="java.util.Map">
+        update t_gq_fss_customer t
+        set t.name=#{custName},
+        t.mobile=#{mobile},
+        t.cert_no=#{certNo}
+        where t.cust_id=#{custId}
+    </update>-->
+</mapper>
