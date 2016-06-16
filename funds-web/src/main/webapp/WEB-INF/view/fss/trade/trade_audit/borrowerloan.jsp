@@ -211,6 +211,9 @@
                                                     <fss:dictView key="${t.tradeType}" />
                                                     </td>
                                                     <td>${t.mchnParent}</td>
+                                                    <td>
+
+                                                    </td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
