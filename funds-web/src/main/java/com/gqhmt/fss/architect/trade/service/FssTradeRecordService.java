@@ -382,6 +382,17 @@ public class FssTradeRecordService {
 		
 	}
 	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月16日
+	 * function：根据申请编号得到该批次条数
+	 */
+	public int getCountByApplyNo(String applyNo){
+
+		return fssTradeRecordReadMapper.getCountByApplyNo(applyNo);
+
+	}
+	/**
 	 * 
 	 * author:jhz
 	 * time:2016年4月1日

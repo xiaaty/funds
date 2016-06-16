@@ -105,7 +105,11 @@
 	<select id="selectByTradeState" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 	 <include refid="selectSql" />
 	  WHERE t.trade_state=#{tradeState}
-		order by t.create_time desc
+	</select>
+	<!-- 根据applyState查询对象 -->
+	<select id="selectByApplyState" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
+	 <include refid="selectSql" />
+	  WHERE t.apply_state =#{applyState}
 	</select>
 	<select id="selectBySeqNoAndMchn" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity" >
 	 <include refid="selectSql" />

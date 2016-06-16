@@ -54,6 +54,11 @@
 		select count(*) from t_gq_fss_trade_record t
 		where trade_result=98060001 and t.apply_no =#{applyNo}
 	</select>
+<!-- 	 * function：根据申请编号得到该批次条数 -->
+	<select id="getCountByApplyNo"   resultType="java.lang.Integer" >
+		select count(*) from t_gq_fss_trade_record t
+		where t.apply_no =#{applyNo}
+	</select>
 <!-- 	 * function：根据申请编号得到该批次交易成功总金额 -->
 	<select id="getSuccessAmt"   resultType="java.math.BigDecimal" >
 		select sum(t.amount) from t_gq_fss_trade_record t
