@@ -107,8 +107,22 @@ public class FssAccountApi {
     	return response;
     }
 
-    
-    
+    /**
+     * 提供给冠E通后台调用开户接口
+     * @param createAccountByFuiou
+     * @return
+     */
+    @RequestMapping(value = "/createBackedAccount",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object createGetAccount(@RequestBody CreateAccountDto createAccountByFuiou){
+        Response response= new Response();
+        try {
+            response = createAccountImpl.execute(createAccountByFuiou);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
+
     private Response execute(Exception e){
         LogUtil.error(this.getClass(), e);
         Response response = new Response();

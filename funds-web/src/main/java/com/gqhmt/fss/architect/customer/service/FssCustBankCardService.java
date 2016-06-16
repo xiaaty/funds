@@ -99,7 +99,20 @@ public class FssCustBankCardService {
 			}
 			return fssbankcardInfo;
 	}
-	
-	
-	
+
+	/**
+	 * 根据custNo查询银行卡信息
+	 * @return
+     */
+	public FssCustBankCardEntity getFssCustBankCardByCustNo(String custNo){
+		return fssBankCardInfoReadMapper.getFssCustBankCardByCustNo(custNo);
+	}
+	/**
+	 * 根据bankNo查询银行卡信息
+	* @return
+	 */
+	public FssCustBankCardEntity queryByBankNo(String bankNo){
+		return fssBankCardInfoReadMapper.getFssCustBankCardByBankNo(bankNo);
+	}
+
 }

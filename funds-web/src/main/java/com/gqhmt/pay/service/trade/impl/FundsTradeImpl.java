@@ -603,16 +603,12 @@ public class FundsTradeImpl  implements IFundsTrade {
             fssOfflineRechargeEntity.setApplyState("10100003");
             fssOfflineRechargeEntity.setTradeState("10030002");
             fssOfflineRechargeEntity.setResultState("10080002");
+            fssOfflineRechargeEntity.setDescCode(response.getCode());
         }else{//失败
-            fssOfflineRechargeEntity.setFyAccNo(String.valueOf(response.getMap().get("fy_acc_no")));
-            fssOfflineRechargeEntity.setFyAccNm(String.valueOf(response.getMap().get("fy_acc_nm")));
-            fssOfflineRechargeEntity.setFyBank(String.valueOf(response.getMap().get("fy_bank")));
-            fssOfflineRechargeEntity.setFyBankBranch(String.valueOf(response.getMap().get("fy_bank_branch")));
-            fssOfflineRechargeEntity.setChgCd(String.valueOf(response.getMap().get("chg_cd")));
-            fssOfflineRechargeEntity.setChgDt(String.valueOf(response.getMap().get("chg_dt")));
             fssOfflineRechargeEntity.setApplyState("10100003");
             fssOfflineRechargeEntity.setTradeState("10030003");
             fssOfflineRechargeEntity.setResultState("10080010");
+            fssOfflineRechargeEntity.setDescCode(response.getCode());
         }
         fssOfflineRechargeService.update(fssOfflineRechargeEntity);
         offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
