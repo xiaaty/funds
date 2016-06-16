@@ -70,6 +70,16 @@ public class FssCardBinService {
     public FssCardBinEntity selectedById(Long id) throws FssException{
 		return fssCardBinReadMapper.selectByPrimaryKey(id);
     }
+
+	/**
+	 * 删除
+	 * @param id
+	 * @return
+	 * @throws FssException
+     */
+    public void deleteById(Long id) throws FssException{
+		 fssCardBinWriteMapper.deleteByPrimaryKey(id);
+    }
 	/**
 	 * 查询全部
 	 * @throws FssException

@@ -16,7 +16,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import javax.annotation.Resource;
 import java.util.Date;
 
@@ -98,10 +98,13 @@ public class CreateAccountEvent {
                         //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                         customerInfoEntity =  customerInfoService.getCustomerById(custId);
                     }
-
-
-
-
+                    //设置值
+                    customerInfoEntity.setParentBankCode(bankType);
+                    customerInfoEntity.setBankNo(bankNo);
+                    customerInfoEntity.setCityCode(area);
+                    customerInfoEntity.setCertNo(certNo);
+                    customerInfoEntity.setMobilePhone(mobile);
+                    customerInfoEntity.setCustomerName(name);
                     //生成旧版账户
                     primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
                     if(primaryAccount == null){
@@ -141,32 +144,45 @@ public class CreateAccountEvent {
                 paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
                 primaryAccount.setHasThirdAccount(2);
                 fundAccountService.update(primaryAccount);
+                fssAccountService.createFuiouAccount(mchn,fssCustomerEntity);
             }
-            fssAccountService.createFuiouAccount(mchn,fssCustomerEntity);
             //跟新所有与该cust_id相同的账户名称
             fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
         }
+            //更新新版账户的客户名及其他信息
+        fssCustomerEntity.setCertNo(customerInfoEntity.getCertNo());
+        fssCustomerEntity.setName(customerInfoEntity.getCustomerName());
+        fssCustomerEntity.setMobile(customerInfoEntity.getMobilePhone());
+        fssCustomerEntity.setModifyTime(new Date());
+        fssCustomerService.updateCustId(fssCustomerEntity,customerInfoEntity.getId());
 
         //银行卡信息生成
         //旧版银行卡信息生成
-    //创建银行卡信息
-       BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId.toString()));
-        if(bankCardInfoEntity==null){
+        //创建银行卡信息
+       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
+        BankCardInfoEntity bankCardInfoEntity=null;
+        if(listbankcard.size()==0){
             //判断输入的银行卡号是否已经存在
             bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
             if(bankCardInfoEntity!=null){
                 throw new FssException("90002038");//该银行卡号已经存在
             }
-
             bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
         }else{
-            bankCardInfoEntity=bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId.toString()));
+            bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
         }
-
         fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
-
         //新版银行卡信息生成  增加判断，是否存在
-        FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerEntity);
+        FssCustBankCardEntity fssCustBankCardEntity=null;
+        fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
+        if(fssCustBankCardEntity==null){
+            //创建银行卡时，判断银行卡号是否已经注册
+            fssCustBankCardEntity=fssCustBankCardService.queryByBankNo(bankNo);
+            if(fssCustBankCardEntity!=null){
+                throw new FssException("90002038");//该银行卡号已被注册
+            }
+            fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerEntity);
+        }
         return  fssAccountEntity;
     }
 

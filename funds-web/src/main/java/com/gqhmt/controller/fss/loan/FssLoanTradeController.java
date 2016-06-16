@@ -167,27 +167,28 @@ public class FssLoanTradeController {
 	public Object withholdApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal payAmt) {
 		Map<String, String> map = new HashMap<String, String>();
 		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
-		// 把交易状态 修改为‘代扣中’
-		fssLoanEntity.setStatus("10050002");
+		if(!"10050002".equals(fssLoanEntity.getStatus())) {
+			// 把交易状态 修改为‘代扣中’
+			fssLoanEntity.setStatus("10050002");
 //		String server_token  = (String) request.getSession().getAttribute("token");
 //		request.getSession().removeAttribute("token");
 //		if(token.equals(server_token)){
-		try {
-			fssLoanEntity.setContractAmt(payAmt);;
-			fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, "10100001",type);
-			//1 代扣，2 提现
-			map.put("code", "0000");
-	        map.put("message", "成功");
-	        fssLoanService.update(fssLoanEntity);
-		} catch (FssException e) {
+			try {
+				fssLoanEntity.setContractAmt(payAmt);
+				fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, type);
+				//1 代扣，2 提现
+				map.put("code", "0000");
+				map.put("message", "成功");
+				fssLoanService.update(fssLoanEntity);
+			} catch (FssException e) {
+				map.put("code", "0001");
+				map.put("message", e.getMessage());
+				LogUtil.info(this.getClass(), e.getMessage());
+			}
+		}else{
 			map.put("code", "0001");
-	        map.put("message", e.getMessage());
-			LogUtil.info(this.getClass(), e.getMessage());
+	        map.put("message", "请勿重复提交!");
 		}
-//		}else{
-//			map.put("code", "0001");
-//	        map.put("message", "请勿重复提交!");
-//		}
 		return map;
 	}
 
@@ -456,7 +457,7 @@ public class FssLoanTradeController {
 		if(fundAccountEntity.getAmount().compareTo(loanEntity.getContractAmt())<0) throw new FssException("90004007");
 		//冻结资金
 		iFundsTrade.froze(fssAccount.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN,loanEntity.getContractAmt());
-		fssTradeApplyService.insertLoanTradeApply(loanEntity, "10100001",type);
+		fssTradeApplyService.insertLoanTradeApply(loanEntity,type);
 		loanEntity.setModifyTime(new Date());
 		loanEntity.setStatus("10030001");
 		fssLoanService.update(loanEntity);

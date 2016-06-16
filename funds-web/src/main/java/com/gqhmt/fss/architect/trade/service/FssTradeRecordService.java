@@ -8,13 +8,10 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
-import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
-import com.gqhmt.sys.service.BankDealamountLimitService;
-
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -47,15 +44,7 @@ public class FssTradeRecordService {
 	private FssTradeRecordWriteMapper fssTradeRecordWriteMapper;
 	@Resource
 	private FssTradeRecordReadMapper fssTradeRecordReadMapper;
-	@Resource
-	private BankDealamountLimitService bankDealamountLimitService;
-	
-	@Resource
-	private FundAccountService fundAccountService;
-	
-	@Resource
-	private FssRepaymentService fssRepaymentService;
-	
+
 	@Resource
 	private FssAccountService fssAccountService;
 	
@@ -65,8 +54,7 @@ public class FssTradeRecordService {
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
 	@Resource
-	private FundsTradeImpl fundsTradeImpl;
-	
+
 	/**
 	 * 
 	 * author:jhz
@@ -132,37 +120,7 @@ public class FssTradeRecordService {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月18日
-	 * function：交易成功修改借款人放宽交易状态
-	 */
-//	public void updateStatus(FssTradeApplyEntity tradeApply){
-//		FssRepaymentEntity fssRepaymentEntity = fssRepaymentService.queryRepaymentById(Long.parseLong(tradeApply.getCustNo()));
-//		fssRepaymentEntity.setState("10090003");
-//		fssRepaymentEntity.setMotifyTime(new Date());
-//		fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
-		//查询该批次交易成功数
-		
-//		queryRepaymentParentById.setMotifyTime(new Date());
-//		int successCount = fssRepaymentService.getSuccessCount(id);
-//		if(successCount==queryFssRepaymentEntity.size()){
-//			//成功
-//			queryRepaymentParentById.setState("10080002");
-//			fssRepaymentService.updateRepaymentParent(queryRepaymentParentById);
-//		}else if(successCount==0){
-//			//失败
-//			queryRepaymentParentById.setState("10080010");
-//			fssRepaymentService.updateRepaymentParent(queryRepaymentParentById);
-//		}else{
-//			//部分成功
-//			queryRepaymentParentById.setState("10080003");
-//			fssRepaymentService.updateRepaymentParent(queryRepaymentParentById);
-//			
-//		}
-//	}
-	
+
 	/**
 	 * 根据申请单好查询抵押权人详细列表
 	 * @param 
@@ -182,8 +140,7 @@ public class FssTradeRecordService {
 	 * @throws FssException
 	 * 柯禹来
 	 */
-	public void  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
-			FssTradeRecordEntity tradeRecordEntity=null;
+	public List<FssTradeRecordEntity>  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 			//限额
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
 
@@ -192,11 +149,9 @@ public class FssTradeRecordService {
 			fssTradeApplyEntity.setCount(recordEntityList.size());
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
-			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
-			/*if(fssTradeApplyEntity.getApplyType()==1104){//	提现申请处理完成后冻结金额
-				fundsTradeImpl.froze(fssTradeApplyEntity.getCustId(),Integer.valueOf(fssTradeApplyEntity.getBusiType()),fssTradeApplyEntity.getTradeAmount());
-			}*/
 
+			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
+			return recordEntityList;
 	}
 
 	/**
@@ -262,22 +217,21 @@ public class FssTradeRecordService {
 	 * limitAmount:限额
 	 * realTradeAmount:实际交易额
 	 */
-	public  List<FssTradeRecordEntity> moneySplit(FssTradeApplyEntity tradeApplyEntity,BigDecimal limitAmount) throws FssException{
+	public  List<FssTradeRecordEntity> moneySplit(FssTradeApplyEntity tradeApplyEntity,BigDecimal limitAmount) throws FssException {
 		List<FssTradeRecordEntity> recordEntityList = new ArrayList<>();
 		//金额是否超过银行代付单笔上限
 		//金额超过银行代付单笔上限
 		BigDecimal bg[] = tradeApplyEntity.getTradeAmount().divideAndRemainder(limitAmount);
 		int splitCount = bg[0].intValue();
 		BigDecimal lastamount = bg[1];
-		splitCount = splitCount;
 
-		for (int j=0 ; j < splitCount; j++) {
-			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(tradeApplyEntity,limitAmount);
+		for (int j = 0; j < splitCount; j++) {
+			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(tradeApplyEntity, limitAmount);
 			recordEntityList.add(tradeRecordEntity);
 		}
 
-		if(lastamount.compareTo(BigDecimal.ZERO) > 0){
-			FssTradeRecordEntity 	tradeRecordEntity = this.creatTradeRecordEntity(tradeApplyEntity,lastamount);
+		if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
+			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(tradeApplyEntity, lastamount);
 			recordEntityList.add(tradeRecordEntity);
 		}
 
@@ -294,6 +248,17 @@ public class FssTradeRecordService {
 		
 		return fssTradeRecordReadMapper.getSuccessCount(applyNo);
 		
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月16日
+	 * function：根据申请编号得到该批次条数
+	 */
+	public int getCountByApplyNo(String applyNo){
+
+		return fssTradeRecordReadMapper.getCountByApplyNo(applyNo);
+
 	}
 	/**
 	 * 

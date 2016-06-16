@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.channelDeploy.mapper.write.ChannelOrgWriteMapper">
+    <update id="updateChannelOrgEntity" parameterType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelOrgEntity">
+        UPDATE
+            t_gq_fss_channel_org t
+        SET
+          <if test="channelName!=null and channelName!=''">
+            t.channel_name = #{channelName},
+          </if>
+          <if test="channelCondition!=null and channelCondition!=''">
+            t.channel_condition = #{channelCondition},
+          </if>
+          <if test="channelType!=null and channelType!=''">
+            t.channel_type = #{channelType},
+          </if>
+          <if test="channelPaymentMode!=null and channelPaymentMode!=''">
+            t.channel_payment_mode = #{channelPaymentMode},
+          </if>
+            t.modify_time = NOW()
+        WHERE
+            id = #{id}
+    </update>
+</mapper>

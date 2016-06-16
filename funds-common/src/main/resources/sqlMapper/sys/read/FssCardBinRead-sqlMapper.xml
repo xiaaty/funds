@@ -7,7 +7,7 @@
 		t.bank_name bankName,
 		t.card_name cardName,
 		t.card_type cardType,
-		t.create_time creatTime,
+		t.create_time createTime,
 		t.length length,
 		t.modify_time modifyTime,
 		t.organ_code organCode,

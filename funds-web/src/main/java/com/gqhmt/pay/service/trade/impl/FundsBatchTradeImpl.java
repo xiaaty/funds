@@ -84,8 +84,8 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         if(accNo != null && !"".equals(accNo)) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
-        	FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(entity.getCustId(), Integer.valueOf(GlobalConstants.ACCOUNT_TYPE_PRIMARY));
-        	businessType=tradeRecordService.parseBusinessType(fundAccountEntity.getAccountType());
+        	FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(entity.getCustId(), entity.getCustType());
+        	businessType=fundAccountEntity.getBusiType();
             orderEntity = this.fundsTrade.withholdingApplyNew(Integer.valueOf(entity.getCustId().toString()).intValue(),businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
         }
         return  orderEntity;

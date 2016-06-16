@@ -47,7 +47,7 @@ public class GetWithDrawApplyImpl implements IGetWithDrawApply{
 		GETWithholdAndDrawDto getWithholdAndDrawDto = 	(GETWithholdAndDrawDto)dto;
 		try {
 			fssTradeApplyService.whithdrawApply(null,null,getWithholdAndDrawDto.getTrade_type(),getWithholdAndDrawDto.getAmt(),getWithholdAndDrawDto.getMchn(),getWithholdAndDrawDto.getSeq_no(),Long.parseLong(getWithholdAndDrawDto.getCust_no())
-					,Integer.parseInt(getWithholdAndDrawDto.getCust_type()),getWithholdAndDrawDto.getContract_no(),getWithholdAndDrawDto.getBusi_no(),Integer.parseInt(getWithholdAndDrawDto.getSettle_type()));
+					,Integer.parseInt(getWithholdAndDrawDto.getCust_type()),getWithholdAndDrawDto.getContract_no(),getWithholdAndDrawDto.getBusi_no(),null,Integer.parseInt(getWithholdAndDrawDto.getSettle_type()));
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

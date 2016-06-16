@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.customer.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Filename:    com.gqhmt.fss.architect.customer.mapper.read.FssBankCardInfoReadMapper
@@ -20,4 +21,7 @@ import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
  * 16/4/18  于泳      1.0     1.0 Version
  */
 public interface FssBankCardInfoReadMapper extends ReadMapper<FssCustBankCardEntity> {
+   public  FssCustBankCardEntity getFssCustBankCardByCustNo(@Param("custNo") String custNo);
+   public  FssCustBankCardEntity getFssCustBankCardByBankNo(@Param("bankNo") String bankNo);
+
 }

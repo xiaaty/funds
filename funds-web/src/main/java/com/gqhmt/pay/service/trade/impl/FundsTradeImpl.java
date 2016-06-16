@@ -114,7 +114,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     /**
      * 线上代扣充值
      * @param withholdDto
-     * 
+     *
      */
     @Override
     public boolean withholding(WithholdDto withholdDto) throws FssException {
@@ -435,7 +435,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             fundOrderService.update(fundOrderEntity);
           //发送站内通知短信
             this.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE,NoticeService.NoticeType.FUND_CHARGE,entity,fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
-          
+
         }else{
             fundOrderEntity.setOrderState(3);
             fundOrderService.update(fundOrderEntity);
@@ -549,13 +549,13 @@ public class FundsTradeImpl  implements IFundsTrade {
         //资金处理
         tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
         return fundOrderEntity;
-    }  
-    
-    
-    
+    }
+
+
+
     /**
 	 * 充值提现金额变动通知
-	 * 
+	 *
 	 * @param noticeType
 	 * @param entity
 	 * @param amount
@@ -603,16 +603,12 @@ public class FundsTradeImpl  implements IFundsTrade {
             fssOfflineRechargeEntity.setApplyState("10100003");
             fssOfflineRechargeEntity.setTradeState("10030002");
             fssOfflineRechargeEntity.setResultState("10080002");
+            fssOfflineRechargeEntity.setDescCode(response.getCode());
         }else{//失败
-            fssOfflineRechargeEntity.setFyAccNo(String.valueOf(response.getMap().get("fy_acc_no")));
-            fssOfflineRechargeEntity.setFyAccNm(String.valueOf(response.getMap().get("fy_acc_nm")));
-            fssOfflineRechargeEntity.setFyBank(String.valueOf(response.getMap().get("fy_bank")));
-            fssOfflineRechargeEntity.setFyBankBranch(String.valueOf(response.getMap().get("fy_bank_branch")));
-            fssOfflineRechargeEntity.setChgCd(String.valueOf(response.getMap().get("chg_cd")));
-            fssOfflineRechargeEntity.setChgDt(String.valueOf(response.getMap().get("chg_dt")));
             fssOfflineRechargeEntity.setApplyState("10100003");
             fssOfflineRechargeEntity.setTradeState("10030003");
             fssOfflineRechargeEntity.setResultState("10080010");
+            fssOfflineRechargeEntity.setDescCode(response.getCode());
         }
         fssOfflineRechargeService.update(fssOfflineRechargeEntity);
         offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
