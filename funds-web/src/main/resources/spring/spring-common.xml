@@ -28,9 +28,9 @@
 	</context:component-scan>
 
 	<bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="dataSource" ref ="write_dataSource" />
-		<property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
-		<property name="configLocation" value="classpath:config/quartz.properties"/>
+		<!--<property name="dataSource" ref ="write_dataSource" />-->
+		<!--<property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>-->
+		<!--<property name="configLocation" value="classpath:config/quartz.properties"/>-->
 	</bean>
 
 	<!-- 任务执行器 -->
@@ -143,7 +143,7 @@
 	</bean>
 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper;com.gqhmt.*.mapper.*"/>
+		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper;com.gqhmt.*.mapper.*="/>
 		<property name="properties">
 			<value>
 				mappers=com.gqhmt.core.mybatis.ReadAndWriteMapper,com.gqhmt.core.mybatis.ReadMapper
