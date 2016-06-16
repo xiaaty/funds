@@ -201,7 +201,7 @@ public class FssAccountService {
     	fssAccountEntity.setAccType(Integer.parseInt(accType));
     	fssAccountEntity.setState(10020001);//默认为有效账户
         //验证业务编号 如果账户类型不是 线下出借,借款,保理,则设定业务编号为 客户编号,以此保证 其他类型账户唯一
-        if(!"10010002".equals(accType) && !"10010003".equals(accType) &&  !"10010004".equals(accType) ){
+        if(!"10010002".equals(accType) && !"10010003".equals(accType) &&  !"10010004".equals(accType) && !"10019002".equals(accType) && !"10019001".equals(accType)){
             busiNo = fssCustomerEntity.getCustNo();
         }else{//如果,线下出借,借款,保理,则业务编号不能为空
             if(busiNo == null || "".equals(busiNo)){
