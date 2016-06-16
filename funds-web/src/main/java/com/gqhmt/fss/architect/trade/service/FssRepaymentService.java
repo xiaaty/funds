@@ -59,7 +59,7 @@ public class FssRepaymentService {
 	private FssBackplateService fssBackplateService;
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
-	
+
 	
 	/**
 	 * 创建借款人提现申请
