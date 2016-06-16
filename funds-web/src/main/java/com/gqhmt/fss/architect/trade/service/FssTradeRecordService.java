@@ -14,12 +14,12 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.sys.service.BankDealamountLimitService;
 
+import org.apache.commons.collections.ArrayStack;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 
@@ -226,20 +226,21 @@ public class FssTradeRecordService {
 	 * @throws FssException
 	 * 柯禹来
 	 */
-	public void  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
+	public List<FssTradeRecordEntity>  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 			FssTradeRecordEntity tradeRecordEntity=null;
 			//限额
 			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
 			tradeRecordEntity = this.creatTradeRecordEntity(fssTradeApplyEntity);
-			int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
+			Map map = this.moneySplit(tradeRecordEntity, limitAmount, fssTradeApplyEntity.getTradeAmount());
 			//更新申请表该条数据拆分总条数
-			fssTradeApplyEntity.setCount(moneySplit);
-			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			fssTradeApplyEntity.setCount(Integer.parseInt(map.get("count").toString()));
 			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
+			List<FssTradeRecordEntity> list=(List)map.get("list");
+			return list;
 			/*if(fssTradeApplyEntity.getApplyType()==1104){//	提现申请处理完成后冻结金额
 				fundsTradeImpl.froze(fssTradeApplyEntity.getCustId(),Integer.valueOf(fssTradeApplyEntity.getBusiType()),fssTradeApplyEntity.getTradeAmount());
 			}*/
+
 
 	}
 	/**
@@ -256,9 +257,9 @@ public class FssTradeRecordService {
 		BigDecimal tradeAmount = fssTradeApplyEntity.getTradeAmount();
 		//限额
 		BigDecimal limitAmount =this.getLimit(fssTradeApplyEntity.getAccNo(),type);
-		int moneySplit = this.moneySplit(tradeRecordEntity, limitAmount, tradeAmount);
+		Map map = this.moneySplit(tradeRecordEntity, limitAmount, tradeAmount);
 		//更新申请表该条数据拆分总条数
-		fssTradeApplyEntity.setCount(moneySplit);
+		fssTradeApplyEntity.setCount(Integer.parseInt(map.get("count").toString()));
 		fssTradeApplyEntity.setSuccessCount(0);
 		fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 		
@@ -300,7 +301,7 @@ public class FssTradeRecordService {
 	
 	/**
 	 * 根据cust_id查询银行限额
-	 * @param accNo
+	 * @param
 	 * @return
 	 * @throws FssException
 	 */
@@ -327,13 +328,16 @@ public class FssTradeRecordService {
 	 * limitAmount:限额
 	 * realTradeAmount:实际交易额
 	 */
-	public  int moneySplit(FssTradeRecordEntity tradeRecordEntity,BigDecimal limitAmount,BigDecimal tradeAmount) throws FssException{
+	public  Map moneySplit(FssTradeRecordEntity tradeRecordEntity,BigDecimal limitAmount,BigDecimal tradeAmount) throws FssException{
+		Map<Object,Object> map=new HashMap<>();
+		List<FssTradeRecordEntity> list=new ArrayList<>();
 		int count=0;
 		//金额是否超过银行代付单笔上限
 		//否
 		if(tradeAmount.compareTo(limitAmount)<=0){
 		tradeRecordEntity.setAmount(tradeAmount);
 		fssTradeRecordWriteMapper.insert(tradeRecordEntity);
+			list.add(tradeRecordEntity);
 		count=1;
 		}else {
 			//金额超过银行代付单笔上限
@@ -353,14 +357,18 @@ public class FssTradeRecordService {
 					tradeRecordEntity.setId(null);
 					tradeRecordEntity.setAmount(limitAmount);
 					fssTradeRecordWriteMapper.insert(tradeRecordEntity);
+					list.add(tradeRecordEntity);
 				}else{
 					tradeRecordEntity.setId(null);
 					tradeRecordEntity.setAmount(lastamount);
 					fssTradeRecordWriteMapper.insert(tradeRecordEntity);
+					list.add(tradeRecordEntity);
 				}
 			}
 		}
-		return count;
+		map.put("count",count);
+		map.put("list",list);
+		return map;
 	}
 	/**
 	 * 
@@ -372,6 +380,17 @@ public class FssTradeRecordService {
 		
 		return fssTradeRecordReadMapper.getSuccessCount(applyNo);
 		
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月16日
+	 * function：根据申请编号得到该批次条数
+	 */
+	public int getCountByApplyNo(String applyNo){
+
+		return fssTradeRecordReadMapper.getCountByApplyNo(applyNo);
+
 	}
 	/**
 	 * 

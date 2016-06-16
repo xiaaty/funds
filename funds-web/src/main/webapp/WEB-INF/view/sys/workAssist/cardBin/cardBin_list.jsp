@@ -62,7 +62,7 @@
                             </header>
                             <!-- widget div-->
                             <div>
-                                <form class="smart-form" id="cardBinForm" action="${contextPath}/fss/customer/cardBinList" method="post" >
+                                <form class="smart-form" id="cardBinForm" action="${contextPath}/sys/customer/cardBinList" method="post" >
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
                                         <!-- This area used as dropdown edit box -->
@@ -171,7 +171,7 @@
                                                <td><fss:fmtDate value="${t.createTime}" /></td>
                                                <td><fss:fmtDate value="${t.modifyTime}" /></td>
                                               <td>
-                                               	<a href="${contextPath}/fund/updateBankCard/${t.id}">修改</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                                               	<a href="${contextPath}/sys/customer/toUpdateCardBin/${t.id}">修改</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                                               	<a href="javascript:void(0)" onclick="deleteBankCard(${t.id})">删除</a>
                                               </td>
                                            </tr>
@@ -204,25 +204,28 @@
     }
     //添加按钮按下
     $("#btn_add").button().click(function() {
-        window.open("${contextPath}/fss/customer/toAddCardBin","_self");
+        window.open("${contextPath}/sys/customer/toAddCardBin","_self");
     });
 
-   	删除
+//   	删除
    function deleteBankCard(id){
+                if(confirm("您确认删除本条信息吗？")){
 	            $.ajax({
-	            	url : "${contextPath}/fss/customer/deleteCardBin"+id,
+	            	url : "${contextPath}/sys/customer/deleteCardBin/"+id,
 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
 	                      jAlert("删除成功!", '确认信息');
+                            location.reload();
 	                      //自动跳转
-	                      parent.location.href="${contextPath}/fss/customer/cardBinList";
+	                      <%--parent.location.href="${contextPath}/sys/customer/cardBinList";--%>
 	                    } else {
 	                        return;
 	                    }
 	                }
 	            });
+                }
     }
 
     
