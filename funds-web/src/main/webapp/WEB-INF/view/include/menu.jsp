@@ -3,7 +3,6 @@
 
 <header id="header">
 			<div id="logo-group">
-
 				<!-- PLACE YOUR LOGO HERE -->
 				<span id="logo"> <img src="${contextPath}/img/logo.png" alt="SmartAdmin"> </span>
 				<!-- END LOGO PLACEHOLDER -->
@@ -53,7 +52,7 @@
         </div>
         <!-- end user info -->
         <nav>
-        ${menu}
+            ${menu}
         </nav>
         <span class="minifyme"> <i class="fa fa-arrow-circle-left hit"></i> </span>
         

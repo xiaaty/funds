@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelRestrictionsReadMapper">
+    <select id="getChannelRestrictionsEntityListByOrgId" parameterType="java.lang.Integer" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelRestrictionsEntity">
+        SELECT
+            t.id id,
+            t.option_name optionName,
+            t.option_bank optionBank,
+            t.option_type optionType,
+            t.option_value optionValue,
+            t.org_id orgId,
+            t.conf_of_people confOfPeople,
+            t.create_time createTime,
+            t.modify_time modifyTime
+        FROM t_gq_fss_channel_restrictions t
+        WHERE t.org_id = #{orgId }
+    </select>
+
+    <select id="getChannelRestrictionsEntity" parameterType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelRestrictionsEntity" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelRestrictionsEntity">
+        SELECT
+            t.id id,
+            t.option_name optionName,
+            t.option_bank optionBank,
+            t.option_type optionType,
+            t.option_value optionValue,
+            t.org_id orgId,
+            t.conf_of_people confOfPeople,
+            t.create_time createTime,
+            t.modify_time modifyTime
+        FROM t_gq_fss_channel_restrictions t
+        WHERE 1 = 1
+        <if test="optionName !=null and optionName != ''">
+            AND t.option_name = #{optionName}
+        </if>
+        <if test="optionBank != null and optionBank != ''">
+            AND t.option_bank = #{optionBank}
+        </if>
+        <if test="optionType != null and optionType != ''">
+            AND t.option_type = #{optionType}
+        </if>
+        <if test="orgId != null and orgId != ''">
+            AND t.org_id = #{orgId}
+        </if>
+
+    </select>
+
+</mapper>
