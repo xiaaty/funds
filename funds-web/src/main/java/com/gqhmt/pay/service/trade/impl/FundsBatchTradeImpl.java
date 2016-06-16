@@ -36,7 +36,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
 
 
     @Resource
-    private FssTradeRecordService recordService;
+    private FssTradeRecordService fssTradeRecordService;
     @Resource
     private FssTradeApplyService fssTradeApplyService;
     @Resource
@@ -53,7 +53,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         try {
 
             if(entity.getTradeType() != 1103 && entity.getTradeType() != 1104){
-                this.recordService.updateTradeRecordExecuteState(entity,2,"90099011");
+                this.fssTradeRecordService.updateTradeRecordExecuteState(entity,2,"90099011");
                 return;
             }
 
@@ -63,11 +63,11 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
                 orderEntity = this.batchWithdraw(entity);
             }
             entity.setOrderNo(orderEntity.getOrderNo());
-            this.recordService.updateTradeRecordExecuteState(entity,1,"0000");
+            this.fssTradeRecordService.updateTradeRecordExecuteState(entity,1,"0000");
 
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e);
-            this.recordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
+            this.fssTradeRecordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
         }
     }
 

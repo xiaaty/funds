@@ -2,8 +2,6 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
-import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
-import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
@@ -46,53 +44,10 @@ public class FssTradeRecordService {
 	private FssTradeRecordReadMapper fssTradeRecordReadMapper;
 
 	@Resource
-	private FssAccountService fssAccountService;
-	
-	@Resource
 	private BankCardInfoService bankCardInfoService;
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
-	@Resource
-
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月17日
-	 * function：通过账户号和交易类型（充值1，提现2）得到客户绑定的银行限额
-	 * @throws FssException 
-	 */
-	public BigDecimal  getLimit(String accNo,int type) throws FssException{
-		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(accNo);
-		List<BankCardInfoEntity> queryInvestmentByCustId = bankCardInfoService.queryInvestmentByCustId(fssAccountByAccNo.getCustId().intValue());
-		if(queryInvestmentByCustId==null) throw new FssException("90002001");
-		return getLimitAmount(queryInvestmentByCustId.get(0).getParentBankId(),type);
-	}
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月28日
-	 * function：得到银行限额
-	 * @throws FssException 
-	 */
-	public BigDecimal getLimitAmount(String bankCode,int type) throws FssException{
-		return Application.getInstance().getBankDealamountLimit(bankCode+type);
-		
-	}
-
-	
-
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月19日
-	 * function：批量代扣
-	 */
-	public List<FssTradeRecordEntity> findNotExecuteRecodes(){
-		//查询出处于划扣中的申请
-			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.selectByTradeState(98070001);
-			return tradeRecordList;
-	}
 
 	/**
 	 * 修改执行状态
@@ -101,7 +56,7 @@ public class FssTradeRecordService {
 	 * TradeResult: 98060001交易成功,98060003交易失败					
      */
 	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String respCode) {
-		
+
 		Date date=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
 		String time=sdf.format(date);
@@ -219,19 +174,20 @@ public class FssTradeRecordService {
 	 */
 	public  List<FssTradeRecordEntity> moneySplit(FssTradeApplyEntity tradeApplyEntity,BigDecimal limitAmount) throws FssException {
 		List<FssTradeRecordEntity> recordEntityList = new ArrayList<>();
-		//金额是否超过银行代付单笔上限
-		//金额超过银行代付单笔上限
+
 		BigDecimal bg[] = tradeApplyEntity.getTradeAmount().divideAndRemainder(limitAmount);
 		int splitCount = bg[0].intValue();
 		BigDecimal lastamount = bg[1];
 
-		for (int j = 0; j < splitCount; j++) {
+		for (int i = 0; i < splitCount; i++) {
 			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(tradeApplyEntity, limitAmount);
+			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 			recordEntityList.add(tradeRecordEntity);
 		}
 
 		if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
 			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(tradeApplyEntity, lastamount);
+			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
 			recordEntityList.add(tradeRecordEntity);
 		}
 
