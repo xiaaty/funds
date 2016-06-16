@@ -1,8 +1,9 @@
 package com.gqhmt.fss.architect.trade.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
-
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +24,6 @@ import java.util.Map;
  */
 public interface FssOfflineRechargeReadMapper extends ReadMapper<FssOfflineRechargeEntity>{
     public List<FssOfflineRechargeEntity> queryFssOfflineRecharegList(Map map);
+    public Response getOfflineRechargeResponse(@Param("mchn")String mchn, @Param("seqNo")String seqNo);
+
 }

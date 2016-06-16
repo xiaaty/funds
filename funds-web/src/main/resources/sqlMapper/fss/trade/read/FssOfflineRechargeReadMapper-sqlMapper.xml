@@ -49,4 +49,17 @@
 			</where>
 		order by t.create_time desc
 	</select>
+
+	<!--线下充值回盘 -->
+	<select id="getOfflineRechargeResponse" resultType="com.gqhmt.extServInter.dto.Response" >
+		SELECT
+		case
+		when t.result_state='10080002' then '0000'<!-- 交易成功 -->
+		else t.result_state
+		end resp_code
+		FROM `t_gq_fss_offline_recharge` t
+		WHERE t.mchn_child=#{mchn} AND t.seq_no=#{seqNo}
+	</select>
+
+
 </mapper>

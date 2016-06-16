@@ -177,7 +177,7 @@ public class FssTradeApplyController {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+//			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
 			tradeapply.setTradeState("10030001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
