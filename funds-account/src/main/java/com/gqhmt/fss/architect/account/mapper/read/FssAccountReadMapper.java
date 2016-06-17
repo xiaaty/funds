@@ -59,4 +59,11 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	 */
 	public FssAccountEntity findAccountByCustId(@Param("custId") Long custId);
 
+	/**
+	 * 根据custNo查新版账户
+	 * @param custNo
+	 * @return
+     */
+	public FssAccountEntity getFssAccountByCustNo(@Param("custNo") String custNo);
+
 }
