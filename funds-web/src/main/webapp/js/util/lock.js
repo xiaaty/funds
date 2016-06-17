@@ -14,10 +14,13 @@ function bilocUtil(msg){
             //   opacity: .7,
             bindEvents: true,
             constrainTabKey: false,
-            color: '#000'
+            color: '#000',
+            //timeout :1000*60*30
+            timeout : 5000
 
         },baseZ:999999,
-        message: '<img src="${contextPath}/img/loading.gif" />&nbsp;' + msg
+         //message: '<img src="${contextPath}/img/loading.gif" />&nbsp;' + msg
+        message: '<img src="/img/loading.gif" />&nbsp;' + msg
     });
     function closeBlock(){
         $.unblockUI();

@@ -151,8 +151,11 @@
 <%@include file="../../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-  <script src="${contextPath}/js/gqi.js"></script>
-  <script src="${contextPath}/js/layer.min.js"></script>
+<script src="${contextPath}/js/gqi.js"></script>
+<script src="${contextPath}/js/layer.min.js"></script>
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
+<script src="${contextPath}/js/util/lock.js"></script>
+
          <form class="smart-form" action="${contextPath}/withdrawApply/queryWithdrawList" method="post" id="withdrawListForm"></form>
         <!--main_content-->
     <script type="text/javascript">
@@ -333,11 +336,11 @@
             
             
             $("#sava").click(function(){
-            	
+
 				if (!validateCheck()) {
+					$.unblockUI();
 					return false;
 				}
-				
 				changAttrName();
         		
         		//loading层显示
@@ -354,13 +357,14 @@
         		    	html:'<img src="${contextPath}/images/loading.gif">'
         		    }
         		});
-        		
+				bilocUtil("保存...");
 	            $("#fm1").ajaxSubmit({
 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	                dataType: "json",
 	                success: function (data) {
 	                	layer.close(pageLoad); //执行关闭
 	                    if (data.code == '0000') {
+							$.unblockUI();
 	                        jAlert("审核成功!", '确认信息');
 	                        $("#withdrawListForm").submit();
 	                        return;
@@ -368,10 +372,12 @@
 	                        $("#sava").hide();
 	                        $("#addErrorMsg").html(data.message)
 	                        $("html,body").animate({scrollTop: $("#addErrorMsg").offset().top - 100}, 0);
+							$.unblockUI();
 	                        return;
 	                    }
 	                }
 	            });
+				$.unblockUI();
         	});
             
             
