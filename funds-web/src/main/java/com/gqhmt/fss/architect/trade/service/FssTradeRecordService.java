@@ -7,7 +7,9 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssTradeRecordWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,6 +50,9 @@ public class FssTradeRecordService {
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
+
+	@Resource
+	private CustomerInfoService customerInfoService;
 
 	/**
 	 * 修改执行状态
@@ -97,7 +102,7 @@ public class FssTradeRecordService {
 	 */
 	public List<FssTradeRecordEntity>  moneySplit(FssTradeApplyEntity fssTradeApplyEntity) throws FssException{
 			//限额
-			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),String.valueOf(fssTradeApplyEntity.getCustId()));//根据cust_id 查询银行限额
+			BigDecimal limitAmount =this.getBankLimit(fssTradeApplyEntity.getApplyType(),fssTradeApplyEntity.getCustId());//根据cust_id 查询银行限额
 
 			List<FssTradeRecordEntity> recordEntityList= this.moneySplit(fssTradeApplyEntity, limitAmount);
 			//更新申请表该条数据拆分总条数
@@ -149,8 +154,14 @@ public class FssTradeRecordService {
 	 * @return
 	 * @throws FssException
 	 */
-	public BigDecimal  getBankLimit(Integer applyType,String custId) throws FssException{
-		BankCardInfoEntity bankCardInfo = bankCardInfoService.getInvestmentByCustId(Integer.valueOf(custId));
+	public BigDecimal  getBankLimit(Integer applyType,Long custId) throws FssException{
+		CustomerInfoEntity customerInfoEntity=customerInfoService.getCustomerById(custId);
+		BankCardInfoEntity bankCardInfo=null;
+		if(null!=customerInfoEntity.getBankId()&&!"".equals(customerInfoEntity.getBankId())) {
+			bankCardInfo = bankCardInfoService.getBankCardInfoById(customerInfoEntity.getBankId());
+		}else {
+			bankCardInfo = bankCardInfoService.getBankCardByCustNo(custId);
+		}
 		if(bankCardInfo==null){
 			throw new FssException("90004027");
 		}

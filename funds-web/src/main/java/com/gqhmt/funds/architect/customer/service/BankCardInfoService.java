@@ -218,16 +218,7 @@ public class BankCardInfoService {
 		}
 	}
 
-    /**
-     * 根据客户编号查询返回银行信息
-     * @param custId
-     * @return
-     */
-    public List<BankCardInfoEntity> queryInvestmentByCustId(Integer custId){
-    	BankCardInfoEntity queryEntity = new BankCardInfoEntity();
-	    queryEntity.setCustId(custId);
-		return bankCardinfoReadMapper.select(queryEntity);
-    }
+
     /**
      * 查询该客户是否已配置银行卡信息
      * @param bankCardId
@@ -483,14 +474,13 @@ public class BankCardInfoService {
 	}
 	
 	
-	 public BankCardInfoEntity getInvestmentByCustId(Integer custId){
-	    	BankCardInfoEntity queryEntity = new BankCardInfoEntity();
-		    queryEntity.setCustId(custId);
-			return bankCardinfoReadMapper.selectOne(queryEntity);
-	    }
+
 
 	 public List<BankCardInfoEntity> getBankCardByCustId(int custId){
 		 return bankCardinfoReadMapper.findBankCardByCustNo(String.valueOf(custId));
+	 }
+	 public BankCardInfoEntity getBankCardInfoById(Integer id){
+		 return bankCardinfoReadMapper.selectByPrimaryKey(id);
 	 }
 
 	 	/**
@@ -542,28 +532,24 @@ public class BankCardInfoService {
 		 * @return
 		 * @throws FssException
 		 */
-		public List<ChangeCardBean> findChangeCardInfo(String custNo) throws FssException{
-			List<ChangeCardBean> changeCards=new ArrayList<>();
-			ChangeCardBean changecard=null;
+		public ChangeCardBean findChangeCardInfo(String custNo) throws FssException{
+			ChangeCardBean changecard =null;
 			List<BankCardInfoEntity> bankCardInfos=this.findBankCardByCustNo(custNo);
 			if(bankCardInfos==null) throw new FssException("90002036");
 			for (BankCardInfoEntity bankCardInfo:bankCardInfos) {
 				if(1==bankCardInfo.getChangeState()){
-					List<FssChangeCardEntity> changeCardResponse=	bankCardChangeReadMapper.queryByChangeCardBankInfoId(Long.valueOf(bankCardInfo.getId().toString()));
-					if(changeCardResponse!=null &&changeCardResponse.size()>0) {
-						for (FssChangeCardEntity changeCard:changeCardResponse){
-							changecard = new ChangeCardBean();
-							changecard.setBankName(changeCard.getBankName());
-							changecard.setBankAdd(changeCard.getBankAdd());
-							changecard.setBankCity(changeCard.getBankCity());
-							changecard.setBankType(changeCard.getBankType());
-							changecard.setCardNo(changeCard.getCardNo());
-							changeCards.add(changecard);
-							}
+					FssChangeCardEntity changeCard=	bankCardChangeReadMapper.queryByChangeCardBankInfoId(Long.valueOf(bankCardInfo.getId().toString()));
+					if(changeCard!=null) {
+						changecard = new ChangeCardBean();
+						changecard.setBankName(changeCard.getBankName());
+						changecard.setBankAdd(changeCard.getBankAdd());
+						changecard.setBankCity(changeCard.getBankCity());
+						changecard.setBankType(changeCard.getBankType());
+						changecard.setCardNo(changeCard.getCardNo());
 						}
 					}
 				}
-			return  changeCards;
+			return  changecard;
 		}
 
 

@@ -4,6 +4,8 @@ package com.gqhmt.pay.service.trade;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import java.math.BigDecimal;
@@ -248,5 +250,13 @@ public interface IFundsTrade {
      * @return
      */
     public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException;
-    
+
+    /**
+     * 充值提现金额变动通知
+     *
+     * @param noticeType
+     * @param entity
+     * @param amount
+     */
+    public void sendNotice(String tempCode, NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount, BigDecimal chargeAmount) ;
 }

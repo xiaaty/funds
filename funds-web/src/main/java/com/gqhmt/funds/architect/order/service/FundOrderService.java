@@ -134,6 +134,7 @@ public class FundOrderService  {
 		fundOrderEntity.setOrderState(status);
 		fundOrderEntity.setRetCode(code);
 		fundOrderEntity.setRetMessage(msg);
+        fundOrderEntity.setLastModifyTime(new Date());
 		try {
 //			this.insert(fundOrderEntity);
 			this.update(fundOrderEntity);

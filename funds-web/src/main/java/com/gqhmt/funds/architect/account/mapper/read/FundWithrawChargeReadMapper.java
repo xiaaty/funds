@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.account.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.account.entity.FundWithrawCharge;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,5 +23,11 @@ import java.util.List;
  * 2015/6/2  于泳      1.0     1.0 Version
  */
 public interface FundWithrawChargeReadMapper extends ReadMapper<FundWithrawCharge> {
-
+    /**
+     * jhz
+     * 通过orderNo得到对象信息
+     * @param order
+     * @return
+     */
+    FundWithrawCharge selectByOrderNo(@Param("order") String order);
 }
