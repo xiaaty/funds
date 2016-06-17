@@ -61,8 +61,7 @@ public class BatchWithholdingJob extends SupperJob{
             for (FssTradeApplyEntity apply:applyEntities) {
                int count= recordService.getCountByApplyNo(apply.getApplyNo());
                 if (count!=0) continue;
-                    recordService.moneySplit(apply);
-                    List<FssTradeRecordEntity> recordEntities = recordService.findNotExecuteRecodes();
+                    List<FssTradeRecordEntity> recordEntities = recordService.moneySplit(apply);
                     for (FssTradeRecordEntity entity : recordEntities) {
                         long startTime = Calendar.getInstance().getTimeInMillis();
                         fundsBatchTrade.batchTrade(entity);

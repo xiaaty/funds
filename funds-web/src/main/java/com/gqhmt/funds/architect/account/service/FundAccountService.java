@@ -9,21 +9,17 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
-import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundsAccountBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.beans.Expression;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -45,29 +41,15 @@ import java.util.*;
  */
 @Service
 public class FundAccountService {
-
     @Resource
     private FundsAccountReadMapper fundsAccountReadMapper;
     @Resource
     private FundsAccountWriteMapper fundAccountWriteMapper;
 
     @Resource
-    private FundSequenceService fundSequenceService;
-
-    @Resource
-    private BankCardInfoService bankCardInfoService;
-    
-    @Resource
     private  FssAssetReadMapper assetReadMapper;
-    
     @Resource
     private FssAccountReadMapper fssAccountReadMapper;
-
-    @Resource
-	private FssTradeApplyService fssTradeApplyService;
-
-    @Resource
-	private IFundsTrade iFundsTrade;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);

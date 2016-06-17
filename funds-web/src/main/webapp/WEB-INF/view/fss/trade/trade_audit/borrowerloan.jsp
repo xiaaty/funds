@@ -208,8 +208,13 @@
                                                     <td>
                                                         <fss:dictView key="${t.tradeType}" />
                                                     </td>
+<<<<<<< HEAD
                                                    <%-- xdw  缺少交易流水号。
                                                     <td>${t.seqNo}</td>--%>
+=======
+                                                    <%--xdw  缺少交易流水号。--%>
+                                                    <%--<td>${t.seqNo}</td>--%>
+>>>>>>> e2ff670016dc9c31bac62e8b419ccd398111c088
                                                     <td>${t.mchnParent}</td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
