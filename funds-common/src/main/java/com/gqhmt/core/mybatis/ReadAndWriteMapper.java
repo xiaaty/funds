@@ -1,5 +1,6 @@
 package com.gqhmt.core.mybatis;
 
+import tk.mybatis.mapper.common.BaseMapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
 /**
@@ -18,5 +19,5 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-public interface ReadAndWriteMapper<T> extends BaseReadMapper<T>,BaseWriteMapper<T>,MySqlMapper {
+public interface ReadAndWriteMapper<T> extends BaseMapper<T>,MySqlMapper<T> {
 }

@@ -1,12 +1,5 @@
 package com.gqhmt.fss.architect.accounting.service;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssLendAssetEntity;
@@ -14,6 +7,11 @@ import com.gqhmt.fss.architect.accounting.mapper.read.FssLendAssetDetailReadMapp
 import com.gqhmt.fss.architect.accounting.mapper.read.FssLendAssetReadMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssLendAssetDetailWriteMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssLendAssetWriteMapper;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -61,7 +59,7 @@ public class FssLendAssetService {
 	 * function：批量添加出借资产详情表信息
 	 */
 	public void insertLendAssetDetail(List<FssLendAssetDetailEntity> assetDetailEntities)throws FssException{
-		fssLendAssetWriteMapper.insertList(assetDetailEntities);
+		fssLendAssetDetailWriteMapper.insertList(assetDetailEntities);
 	}
 	
 	/**
