@@ -237,11 +237,13 @@
             error:errorFnt
         });
         function successFnt(data){
+            setTimeOut("functionName()",2000);
             $.unblockUI();
             //closeBlock();
             jAlert('保存成功', '信息提示');
         }
         function errorFnt() {
+            setTimeOut("functionName()",2000);
             $.unblockUI();
             //closeBlock();
             jAlert('保存失败', '信息提示');
