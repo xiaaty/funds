@@ -1,20 +1,16 @@
 package com.gqhmt.controller.interactions;
 
 
-import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.core.util.SecurityUtils;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.pay.fuiou.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -505,7 +501,6 @@ public class FuiouCallBack {
 				result = "FAIL";
 			}
 			//修改线下充值状态
-
 //				fssOfflineRechargeService.update(id);
 		} else {
 			result = "FAIL SIGNVALUE";

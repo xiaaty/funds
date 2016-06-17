@@ -600,7 +600,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new CommandParmException("90004009");
         }
        //创建充值记录信息
-        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(trade_type), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()),"", "", amt, "", "", null, trade_type, seq_no, mchn, "9701", null, "","",primaryAccount.getCustName(),"","","","10120001");
+        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge( "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), amt, trade_type,seq_no, mchn);
         CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,amt,GlobalConstants.ORDER_RECHARGE_OFFLINE,0,0);
         //根据返回码判断是否成功，修改线下充值记录状态
         if("0000".equals(response.getCode())){//成功
