@@ -162,14 +162,17 @@
 <%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
+<script src="${contextPath}/js/util/lock.js"></script>
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
     });
 	    $("#btn-success").click(function () {
+            bilocUtil("保存...");
 	        if (validateCheck()) {
 	            if (!confirm("确认 修改API吗?")) {
+                    $.unblockUI();
 	               return false;
 	            }
 	            $("#apiUpdateForm").ajaxSubmit({
@@ -177,9 +180,11 @@
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
+                            $.unblockUI();
 	                        jAlert("修改成功!", '确认信息');
 	                        return;
 	                    } else {
+                            $.unblockUI();
 	                    	jAlert("修改失败!", '确认信息');
 	                        return;
 	                    }

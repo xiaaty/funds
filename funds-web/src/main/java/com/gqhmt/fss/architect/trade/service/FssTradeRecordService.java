@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
@@ -48,8 +50,9 @@ public class FssTradeRecordService {
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
-<<<<<<< HEAD
 
+	@Resource
+	private FssAccountService fssAccountService;
 	/**
 	 * 
 	 * author:jhz
@@ -88,8 +91,6 @@ public class FssTradeRecordService {
 			List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordReadMapper.selectByTradeState(98070001);
 			return tradeRecordList;
 	}
-=======
->>>>>>> e2ff670016dc9c31bac62e8b419ccd398111c088
 
 	/**
 	 * 修改执行状态

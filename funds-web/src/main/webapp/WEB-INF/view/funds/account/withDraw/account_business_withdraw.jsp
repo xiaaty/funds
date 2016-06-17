@@ -126,7 +126,10 @@
 <%@include file="../../../include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-  <script src="${contextPath}/js/gqi.js"></script>
+<script src="${contextPath}/js/gqi.js"></script>
+<script src="${contextPath}/js/jquery.blockUI.js" ></script>
+<script src="${contextPath}/js/util/lock.js" ></script>
+
 <script type="text/javascript">
                 $(function(){
                     $("#rechargeAcct").click(function(){
@@ -141,6 +144,8 @@
                             alert("提现额度不是有效金额格式!");
                             return;
                         }
+                        //xdw 锁屏
+                        bilocUtil("提现...");
 //                         var pageLoad =$.layer({
 //                 		    type: 1,
 //                 		    title: '',
@@ -159,7 +164,8 @@
                           console.info(data.tips+"*********");
                             alert(data.tips);
 //                                 window.location.href="${contextPath}/funds/accountBusinessList/${withHoldId}";
-                                return;
+                            $.unblockUI();
+                            return;
                         });
                     });
                 });

@@ -268,15 +268,17 @@
                         $("#typeSubm").val(data.optionType);
                         $("#valueSubm").val(data.optionValue);
                         $("#sumRestrictions").submit();
+                        //setTimeout("$.unblockUI(),jAlert('保存成功', '信息提示')",100);
                         $.unblockUI();
+                        jAlert('保存成功', '信息提示');
                     }else{
                     }
-                    //       jAlert("添加成功!", '信息提示');
                 };
             }
             function errorFnt() {
+                setTimeout("$.unblockUI(),jAlert('保存失败', '信息提示')",100);
                 $.unblockUI();
-                alert(arguments[1]);
+                jAlert('保存失败', '信息提示');
             }
             //return false; //阻止表单的默认提交事件
 
