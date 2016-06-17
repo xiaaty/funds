@@ -564,7 +564,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 	 * @param entity
 	 * @param amount
 	 */
-	protected void sendNotice(String tempCode,NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount,BigDecimal chargeAmount) {
+    public void sendNotice(String tempCode,NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount,BigDecimal chargeAmount) {
 		List<Map<String, String>> noticeList = new ArrayList<Map<String, String>>();
 		Map<String, String> noticeMap = new HashMap<String, String>();
 		noticeMap.put("sysCode", CoreConstants.SYS_CODE);// 商户系统编码，在平台系统查看

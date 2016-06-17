@@ -114,6 +114,8 @@ public class CreateTXT  {
 					write.append(info.getPrepareAmount()*100+"|");
 					write.append(info.getPayChannel()+"|");
 					write.append(info.getBidYearIrr()+"|");
+					write.append(info.getBorrowType()+"|");
+					write.append(info.getLicenseNo()+"|");
 					write.append(info.getCustName()+"|");
 					write.append(info.getCertType()+"|");
 					write.append(info.getCertNo());

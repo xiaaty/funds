@@ -67,7 +67,7 @@ public class FssProjectInfoService {
 	 */
 	public void createProjectInfo(String seqNo,String itemNo,String loanType,String loanTittle,String organization,String description,
 								  Long loanAmt,Long expectedReturn,String productName,String repaymentType,String loanTime,String startDate,Long eachBidAmount,Integer minNum,
-								  Long maxAmount,String accNo,String accGoldNo,String loanItemDescription,Long feeType,String status,Integer period,Long prepareAmount,String payChannel,String bidYearIrr,String custName,String certType,String certNo)throws FssException{
+								  Long maxAmount,String accNo,String accGoldNo,String loanItemDescription,Long feeType,String status,Integer period,Long prepareAmount,String payChannel,String bidYearIrr,String borrowType,String licenseNo,String custName,String certType,String certNo)throws FssException{
 		FssProjectInfoEntity projectInfo=new FssProjectInfoEntity();
 		projectInfo.setMchn("0001000F0279762");
 		projectInfo.setSeqNo(seqNo);
@@ -94,6 +94,8 @@ public class FssProjectInfoService {
 		projectInfo.setPrepareAmount(prepareAmount);
 		projectInfo.setPayChannel(payChannel);
 		projectInfo.setBidYearIrr(bidYearIrr);
+		projectInfo.setBorrowType(borrowType);
+		projectInfo.setLicenseNo(licenseNo);
 		projectInfo.setCustName(custName);
 		projectInfo.setCertType(certType);
 		projectInfo.setCertNo(certNo);

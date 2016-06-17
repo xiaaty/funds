@@ -256,4 +256,14 @@ public interface IFundsTrade {
      */
     public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
     
+    public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException;
+
+    /**
+     * 充值提现金额变动通知
+     *
+     * @param noticeType
+     * @param entity
+     * @param amount
+     */
+    public void sendNotice(String tempCode, NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount, BigDecimal chargeAmount) ;
 }
