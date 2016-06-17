@@ -46,11 +46,13 @@ public class FundWithrawChargeService {
         return fundWithrawCharge;
     }
 
-
+    /**
+     * jhz
+     * @param orderNo
+     * @return
+     */
     public FundWithrawCharge getFundWithrawCharge(String orderNo){
-    	FundWithrawCharge entity = new FundWithrawCharge();
-    	entity.setOrderNo(orderNo);
-        return fundWithrawChargeReadMapper.selectOne(entity);
+        return fundWithrawChargeReadMapper.selectByOrderNo(orderNo);
     }
 
 
