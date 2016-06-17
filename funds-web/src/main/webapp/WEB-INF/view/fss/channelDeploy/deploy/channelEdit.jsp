@@ -233,18 +233,21 @@
             data:{"id" : id, "channelCondition" : channelCondition, "channelType" : channelType, "channelPaymentMode" : channelPaymentMode}, //表单数据
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "json",
+            async : false,
             success:successFnt,
             error:errorFnt
         });
         function successFnt(data){
-            $.unblockUI();
-            //closeBlock();
-            jAlert('保存成功', '信息提示');
+            //setTimeout("$.unblockUI(),jAlert('保存成功', '信息提示')",2000);
+
+            jAlert('保存成功', '信息提示')
         }
         function errorFnt() {
+           // setTimeout("$.unblockUI(),jAlert('保存失败', '信息提示')",100);
+
             $.unblockUI();
-            //closeBlock();
-            jAlert('保存失败', '信息提示');
+            jAlert('保存失败', '信息提示')
+
         }
     }
 
