@@ -62,7 +62,7 @@ public class FssOfflineRechargeService {
 	 * @throws FssException
      */
 	public FssOfflineRechargeEntity createOfflineRecharge(String applyNo,String applyType,Long custId,String custName,String custType,String fyAccNo,String orderNo,BigDecimal amt,String applyState,String tradeState,
-									  String busiNo,String busiType,String seqNo,String mchn,String channelNo,String custNo,String chgCd,String chgDt,String fyAccNm,String fyBank,String fyBankBranch,String descCode)throws FssException{
+									  String busiNo,String busiType,String seqNo,String mchn,String channelNo,String custNo,String chgCd,String chgDt,String fyAccNm,String fyBank,String fyBankBranch,String descCode,String resultState)throws FssException{
 			FssOfflineRechargeEntity fssOfflineRechargeEntity=new FssOfflineRechargeEntity();
 			fssOfflineRechargeEntity.setApplyNo(applyNo);
 			fssOfflineRechargeEntity.setApplyType(Integer.valueOf(applyType));
@@ -74,6 +74,7 @@ public class FssOfflineRechargeService {
 			fssOfflineRechargeEntity.setAmt(amt);
 			fssOfflineRechargeEntity.setApplyState(applyState);
 			fssOfflineRechargeEntity.setTradeState(tradeState);
+			fssOfflineRechargeEntity.setResultState(tradeState);
 			fssOfflineRechargeEntity.setCreateTime(new Date());
 			fssOfflineRechargeEntity.setModifyTime(new Date());
 			fssOfflineRechargeEntity.setBusiNo(busiNo);
@@ -120,6 +121,16 @@ public class FssOfflineRechargeService {
 		Response response=new Response();
 		response=fssOfflineRechargeReadMapper.getOfflineRechargeResponse(mchn,seqNo);
 		return response;
+	}
+
+	/**
+	 * 根据商户代码和流水号查询充值信息
+	 * @param mchntCd
+	 * @param mchntTxnSsn
+     * @return
+     */
+	public FssOfflineRechargeEntity getOfflineRechargeBy(String mchntCd,String mchntTxnSsn){
+		return fssOfflineRechargeReadMapper.queryFssOfflineRecharge(mchntTxnSsn,mchntCd);
 	}
 
 

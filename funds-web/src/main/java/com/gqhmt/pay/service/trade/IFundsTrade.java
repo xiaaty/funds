@@ -244,9 +244,16 @@ public interface IFundsTrade {
 
     /**
      * 线下充值
-     * @param dto
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @param amt
      * @return
+     * @throws FssException
      */
-    public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException;
+    public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
     
 }
