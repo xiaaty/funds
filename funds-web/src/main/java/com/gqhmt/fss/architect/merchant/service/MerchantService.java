@@ -1,14 +1,8 @@
 package com.gqhmt.fss.architect.merchant.service;
 
 import com.gqhmt.fss.architect.merchant.bean.BusinessApiBean;
-import com.gqhmt.fss.architect.merchant.entity.ApiAddrEntity;
-import com.gqhmt.fss.architect.merchant.entity.MerchantIpConfigEntity;
-import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
-import com.gqhmt.fss.architect.merchant.entity.MerchantApiEntity;
-import com.gqhmt.fss.architect.merchant.mapper.read.ApiAddrReadMapper;
-import com.gqhmt.fss.architect.merchant.mapper.read.MerchantIpReadMapper;
-import com.gqhmt.fss.architect.merchant.mapper.read.MerchantReadMapper;
-import com.gqhmt.fss.architect.merchant.mapper.read.MerchantApiReadMapper;
+import com.gqhmt.fss.architect.merchant.entity.*;
+import com.gqhmt.fss.architect.merchant.mapper.read.*;
 import com.gqhmt.fss.architect.merchant.mapper.write.ApiAddrWriteMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.MerchantIpWriteMapper;
 import com.gqhmt.fss.architect.merchant.mapper.write.MerchantWriteMapper;
@@ -41,6 +35,8 @@ public class MerchantService {
 	private MerchantApiReadMapper merchantApiReadMapper;
 	@Resource
 	private MerchantApiWriteMapper merchantApiWriteMapper;
+	@Resource
+	private MerchantRepayConfigReadMapper merchantRepayConfigReadMapper;
 	/**
 	 * 获取商户认证类型
 	 * @param busiCode
@@ -261,6 +257,20 @@ public class MerchantService {
 	public List<MerchantApiEntity> findMerchantApiAll(){
 		return merchantApiReadMapper.selectAll();
 	}
-	
-	
+
+	/**
+	 * 查询所有商户回盘配置集合
+	 * author:xdw
+	 * time:2016年6月16日
+	 * @param
+	 * @return List<MerchantRepayConfigEntity>
+	 * @throws
+	 */
+	public List<MerchantRepayConfigEntity> getMerchantRepayConfigEntityList() {
+		return merchantRepayConfigReadMapper.getMerchantRepayConfigEntityList();
+	}
+
+	public List<MerchantRepayConfigEntity> getMerchantRepayConfigEntityListByMchnNo(String mchnNo) {
+		return merchantRepayConfigReadMapper.getMerchantRepayConfigEntityListByMchnNo(mchnNo);
+	}
 }

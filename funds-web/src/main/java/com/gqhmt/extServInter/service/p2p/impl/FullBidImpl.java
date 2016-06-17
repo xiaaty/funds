@@ -41,7 +41,7 @@ public class FullBidImpl  implements IFullBidApply {
     public Response execute(SuperDto dto) {
         Response response = new Response();
         try {
-            loanService.insertFullBidApply((FullBidApplyDto)dto);
+                loanService.insertFullBidApply((FullBidApplyDto)dto);
             response.setResp_code("0000");
         } catch (FssException e) {
             LogUtil.error(this.getClass(), e);

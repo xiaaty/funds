@@ -47,7 +47,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
-                    <form id="cardBInForm" action="${contextPath}/fss/customer/saveCardBin" method="post">
+                    <form id="cardBInForm" action="${contextPath}/sys/customer/saveCardBin" method="post">
                    <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                         <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
@@ -119,7 +119,7 @@
                                                 </table>
                                                 <div class="mb20" id="wid-id-713">
                                                     <button class="btn btn-default table-nobg-btn" type="button" id="addCardBin">保存</button>
-                                                    <button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/customer/cardBinList'">返&nbsp;&nbsp;&nbsp;回</button>
+                                                    <button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/sys/customer/cardBinList'">返&nbsp;&nbsp;&nbsp;回</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@
     	                    if (data.code == '0000') {
     	                        jAlert("添加成功!", '信息提示');
     	                        //自动跳转
-    	                        parent.location.href="${contextPath}/fss/customer/cardBinList";
+    	                        parent.location.href="${contextPath}/sys/customer/cardBinList";
     	                    } else {
     	                    	jAlert("添加失败", '消息提示');
     	                        return;

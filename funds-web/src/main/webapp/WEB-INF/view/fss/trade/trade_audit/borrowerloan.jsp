@@ -154,13 +154,12 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2200px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2000px;">
                                         <col width="50" />
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
@@ -180,7 +179,6 @@
                                             <td>借款平台</td>
                                             <td>交易状态 </td> 
                                             <td>交易类型</td> 
-                                            <td>交易流水号</td>
                                             <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
@@ -208,8 +206,12 @@
 	                                                    <fss:dictView key="${t.status}" />
                                                     </td>
                                                     <td>
-                                                    <fss:dictView key="${t.tradeType}" />
+                                                        <fss:dictView key="${t.tradeType}" />
                                                     </td>
+
+                                                    <%--xdw  缺少交易流水号。--%>
+                                                    <%--<td>${t.seqNo}</td>--%>
+
                                                     <td>${t.mchnParent}</td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

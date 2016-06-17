@@ -192,7 +192,7 @@ public class FssTradeApplyController {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+//			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
 			tradeapply.setTradeState("10030001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
@@ -270,7 +270,7 @@ public class FssTradeApplyController {
 		Map<String, String> map = new HashMap<String, String>();
 		try {
 			if("11030006".equals(tradeType) || "11030014".equals(tradeType) || "11040012".equals(tradeType)){//委托充值、账户直接充值、账户直接提现
-				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(), fssAccountEntity.getAccType(),null,null,false);
+				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(), fssAccountEntity.getAccType(),null,null,null,false);
 			}else if("11030015".equals(tradeType)){//线下充值11030015
 				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(fssAccountEntity.getAccType()),null,amt);
 			}

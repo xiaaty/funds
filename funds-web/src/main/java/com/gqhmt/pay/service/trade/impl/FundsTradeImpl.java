@@ -118,7 +118,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     /**
      * 线上代扣充值
      * @param withholdDto
-     * 
+     *
      */
     @Override
     public boolean withholding(WithholdDto withholdDto) throws FssException {
@@ -439,7 +439,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             fundOrderService.update(fundOrderEntity);
           //发送站内通知短信
             this.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE,NoticeService.NoticeType.FUND_CHARGE,entity,fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
-          
+
         }else{
             fundOrderEntity.setOrderState(3);
             fundOrderService.update(fundOrderEntity);
@@ -553,13 +553,13 @@ public class FundsTradeImpl  implements IFundsTrade {
         //资金处理
         tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
         return fundOrderEntity;
-    }  
-    
-    
-    
+    }
+
+
+
     /**
 	 * 充值提现金额变动通知
-	 * 
+	 *
 	 * @param noticeType
 	 * @param entity
 	 * @param amount

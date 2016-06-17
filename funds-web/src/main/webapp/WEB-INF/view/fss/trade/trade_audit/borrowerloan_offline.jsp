@@ -197,8 +197,9 @@
                                                     <td>${l.index+1}</td>
                                                     
                                                     <td>${t.mortgageeAccNo}</td>
-                                                    <td>${t.accNo}</td>
-                                                    <td>${t.userNo}</td>
+                                                    <%--xdw  多余的两行。--%>
+                                                    <%--<td>${t.accNo}</td>
+                                                    <td>${t.userNo}</td>--%>
                                                     <td>${t.contractNo}</td>
                                                     <td>
                                                         <fss:money money="${t.contractAmt}"/>

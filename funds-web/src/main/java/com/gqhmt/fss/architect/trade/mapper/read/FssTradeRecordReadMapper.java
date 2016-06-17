@@ -40,6 +40,13 @@ public interface FssTradeRecordReadMapper extends ReadMapper<FssTradeRecordEntit
 	 */
 	int getSuccessCount(@Param("applyNo")String applyNo);
 	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月16日
+	 * function：根据申请编号得到该批次成功条数
+	 */
+	int getCountByApplyNo(@Param("applyNo")String applyNo);
+	/**
 	 * 
 	 * author:jhz
 	 * time:2016年4月1日

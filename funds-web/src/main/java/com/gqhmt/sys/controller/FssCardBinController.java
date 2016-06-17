@@ -43,7 +43,7 @@ public class FssCardBinController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/fss/customer/cardBinList",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/customer/cardBinList",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object cardBinList(ModelMap model, FssCardBinEntity fssCardBinEntity) throws FssException{
        List<FssCardBinEntity> list= fssCardBinService.findList(fssCardBinEntity);
@@ -58,7 +58,7 @@ public class FssCardBinController {
      * @return
      * @throws FssException
      */
-    @RequestMapping(value = "/fss/customer/toAddCardBin",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/customer/toAddCardBin",method = {RequestMethod.GET,RequestMethod.POST})
     public Object toAddCardBin(HttpServletRequest request, ModelMap model) throws FssException {
 
         return "sys/workAssist/cardBin/cardBin_add";
@@ -71,7 +71,7 @@ public class FssCardBinController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/fss/customer/saveCardBin",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/customer/saveCardBin",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object saveCardBin(FssCardBinEntity fssCardBinEntity){
         Date date=new Date();
@@ -96,7 +96,7 @@ public class FssCardBinController {
      * @return
      * @throws FssException
      */
-    @RequestMapping(value = "/fss/customer/toUpdateCardBin/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/customer/toUpdateCardBin/{id}",method = {RequestMethod.GET,RequestMethod.POST})
     public Object toUpdateCardBin(HttpServletRequest request,@PathVariable Long id,ModelMap model) throws FssException {
         FssCardBinEntity fssCardBinEntity=fssCardBinService.selectedById(id);
         model.addAttribute("cardBin",fssCardBinEntity);
@@ -110,7 +110,7 @@ public class FssCardBinController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/fss/customer/updateCardBin",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/sys/customer/updateCardBin",method = {RequestMethod.GET,RequestMethod.POST})
     @ResponseBody
     public Object updateCardBin(FssCardBinEntity fssCardBinEntity){
         Date date=new Date();
@@ -121,6 +121,27 @@ public class FssCardBinController {
             map.put("code", "0000");
             map.put("message", "success");
         } catch (Exception e) {//修改失败
+            e.printStackTrace();
+            map.put("code", "0001");
+            map.put("message", "error");
+        }
+        return map;
+    }
+    /**
+     * 删除银行卡卡bin信息
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/sys/customer/deleteCardBin/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public Object deleteCardBin(@PathVariable Long id){
+        Map<String, String> map = new HashMap<String, String>();
+        try {
+            fssCardBinService.deleteById(id);
+            map.put("code", "0000");
+            map.put("message", "success");
+        } catch (Exception e) {//删除失败
             e.printStackTrace();
             map.put("code", "0001");
             map.put("message", "error");

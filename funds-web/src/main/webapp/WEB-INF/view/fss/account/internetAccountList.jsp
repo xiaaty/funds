@@ -133,9 +133,8 @@
                                 </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
-
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2800px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2600px;">
                                         <col width="200" />
                                         <col width="150" />
                                         <col width="150" />
@@ -151,7 +150,7 @@
                                         <col width="150" />
                                         <col width="200" />
                                         <col width="200"/>
-                                        <col width="300"/>
+                                        <col width="100"/>
                                         <thead>
                                         <tr>
                                               <td>资金账号</td>
@@ -190,15 +189,7 @@
                                                     <td>${bussaccount.mchnParent}</td>
                                                     <td><fmt:formatDate value="${bussaccount.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bussaccount.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td>
-                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/1">充值交易</a>
-                                                        &nbsp;
-                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/2">直接充值</a>
-                                                        &nbsp;
-                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/3">直接提现</a>
-                                                        &nbsp;
-                                                        <a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a>
-                                                    </td>
+                                                    <td><a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

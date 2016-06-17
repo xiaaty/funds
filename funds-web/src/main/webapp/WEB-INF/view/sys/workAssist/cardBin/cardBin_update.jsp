@@ -47,7 +47,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <form id="cardBInForm" action="${contextPath}/fss/customer/saveCardBin" method="post">
+                <form id="cardBInForm" action="${contextPath}/sys/customer/updateCardBin" method="post">
                     <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                     <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
@@ -72,6 +72,7 @@
                                                     <td>
                                                         <label class="input">
                                                             <input type="text" maxlength="50"  name="bankName" value="${cardBin.bankName}"  style="width:256px;" />
+                                                            <input type="hidden" maxlength="50"  name="id" value="${cardBin.id}"  style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -115,6 +116,14 @@
                                                         </label>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td align="left">创建&nbsp;&nbsp;时间：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" maxlength="50" readonly name="createTime" value="<fss:fmtDate value="${cardBin.createTime}" />" style="width:256px;" />
+                                                        </label>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                             <div class="mb20" id="wid-id-713">
@@ -148,7 +157,7 @@
                         if (data.code == '0000') {
                             jAlert("添加成功!", '信息提示');
                             //自动跳转
-                            parent.location.href="${contextPath}/fss/customer/cardBinList";
+                            parent.location.href="${contextPath}/sys/customer/cardBinList";
                         } else {
                             jAlert("添加失败", '消息提示');
                             return;
