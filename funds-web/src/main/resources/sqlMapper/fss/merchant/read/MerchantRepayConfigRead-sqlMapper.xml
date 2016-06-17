@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.merchant.mapper.read.MerchantRepayConfigReadMapper">
+    <select id="getMerchantRepayConfigEntityList" resultType="com.gqhmt.fss.architect.merchant.entity.MerchantRepayConfigEntity">
+        SELECT
+            r.id id,
+            r.mchn_no mchnNo,
+            r.trade_type tradeType,
+            r.repay_type repayType,
+            r.mchn_url mchnUrl,
+            r.repay_className repayClassName,
+            r.create_time createTime
+            r.chnKeyEndDate,
+            r.modify_time modifyTime,
+        FROM t_gq_fss_mchn_repayconfig r
+    </select>
+
+    <select id="getMerchantRepayConfigEntityListByMchnNo" resultType="com.gqhmt.fss.architect.merchant.entity.MerchantRepayConfigEntity" parameterType="java.lang.String">
+        SELECT
+        r.id id,
+        r.mchn_no mchnNo,
+        r.trade_type tradeType,
+        r.repay_type repayType,
+        r.mchn_url mchnUrl,
+        r.repay_className repayClassName,
+        r.create_time createTime
+        r.chnKeyEndDate,
+        r.modify_time modifyTime,
+        FROM t_gq_fss_mchn_repayconfig r
+        WHERE t.id = #{id }
+    </select>
+</mapper>

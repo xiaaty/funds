@@ -148,11 +148,14 @@
 <%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
+<script src="${contextPath}/js/util/lock.js"></script>
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
 	    $("#btn-success").click(function () {
+            //xdw 添加锁屏
+            bilocUtil("保存...");
 	        if (validateCheck()) {
 	            /*if (!confirm("确认 修改商户信息吗?")) {
 	               return false;
@@ -162,15 +165,18 @@
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
+                            $.unblockUI();
 	                        jAlert("代扣已提交!", '确认信息');
                             parent.location.href="${contextPath}/loan/trade/${type}";
 	                    } else if(data.code == '0001'){
+                            $.unblockUI();
 	                    	jAlert(data.message, '确认信息');
 	                        return;
 	                    }
 	                }
 	            });
 	        }
+            $.unblockUI();
 	    });
     });
 	//校验函数

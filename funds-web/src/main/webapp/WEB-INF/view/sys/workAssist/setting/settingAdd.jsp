@@ -133,24 +133,30 @@
 <%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
+<script src="${contextPath}/js/util/lock.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
     	    $("#adddictmain").click(function () {
+                bilocUtil("保存...");
     	        if (validateCheck()) {
     	            $("#settingForm").ajaxSubmit({
     	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
     	                dataType: "json",
     	                success: function (data) {
     	                    if (data.code == '0000') {
+                                $.unblockUI();
     	                        jAlert("添加成功!", '信息提示');
     	                        //自动跳转
     	                    } else {
+                                $.unblockUI();
     	                    	jAlert("添加失败!", '消息提示');
     	                        return;
     	                    }
     	                }
     	            });
     	        }else{
+                    $.unblockUI();
     	        	 jAlert("您输入的值中存在空值，请检查!", '信息提示');
     	        }
     	    });

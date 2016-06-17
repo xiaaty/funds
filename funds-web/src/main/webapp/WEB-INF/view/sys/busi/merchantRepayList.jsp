@@ -80,7 +80,7 @@
                                     	<col width="300" />
                                     	<col width="300" />
                                     	<col width="300" />
-                                        <col width="300" />
+                                        <col width="200" />
                                         <thead>
                                         <tr>
                                             <td>商户名称</td>
@@ -104,11 +104,11 @@
                                                     <td> <fmt:formatDate value="${t.createTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td> <fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM--dd HH:mm:ss"/></td>
                                                     <td style="text-align:left;">
-                                                        &nbsp;&nbsp;<a href="${contextPath}/sys/busi/update/${t.mchnNo}?parentId=${t.parentId}">修改</a>&nbsp;&nbsp;
-                                                        <a href="${contextPath}/sys/busi/list/${t.id}">查看</a>&nbsp;&nbsp;
+                                                        <a href="${contextPath}/sys/busi/update/${t.mchnNo}?parentId=${t.parentId}">修改</a>
+                                                        <a href="${contextPath}/sys/busi/list/${t.id}">查看</a>
                                                         <c:if test="${parentId !=0}">
-                                                            <a href="${contextPath}/sys/busi/toBusinessApiAdd/${t.mchnNo}?mchnName=${t.mchnName}&parentId=${t.parentId}">API授权</a>&nbsp;&nbsp;
-                                                            <a href="${contextPath}/sys/busi/merchantRepayList/${t.mchnNo}">商户回盘配置</a>
+                                                            <a href="${contextPath}/sys/busi/toBusinessApiAdd/${t.mchnNo}?mchnName=${t.mchnName}&parentId=${t.parentId}">API授权</a>
+                                                            <a href="">商户回盘配置</a>
                                                         </c:if>
                                                     </td>
                                                 </tr>
