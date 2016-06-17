@@ -53,7 +53,6 @@ public class FssTradeRecordService {
 	
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
-	@Resource
 
 	/**
 	 * 
