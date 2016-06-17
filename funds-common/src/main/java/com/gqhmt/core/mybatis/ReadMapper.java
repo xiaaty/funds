@@ -2,7 +2,6 @@ package com.gqhmt.core.mybatis;
 
 import tk.mybatis.mapper.common.Marker;
 import tk.mybatis.mapper.common.RowBoundsMapper;
-import tk.mybatis.mapper.common.base.BaseSelectMapper;
 
 /**
  * Filename:    com.gqhmt.core.mybatis.ReadMapper
@@ -20,5 +19,5 @@ import tk.mybatis.mapper.common.base.BaseSelectMapper;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-public interface ReadMapper<T> extends BaseSelectMapper<T>,RowBoundsMapper<T>,Marker {
+public interface ReadMapper<T> extends BaseReadMapper<T>,RowBoundsMapper<T>,Marker {
 }
