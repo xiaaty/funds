@@ -3,9 +3,12 @@ package com.gqhmt.fss.architect.trade.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssOfflineRechargeWriteMapper;
+import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -38,6 +41,8 @@ public class FssOfflineRechargeService {
 	private FssOfflineRechargeReadMapper fssOfflineRechargeReadMapper;
 	@Resource
 	private FssOfflineRechargeWriteMapper fssOfflineRechargeWriteMapper;
+	@Resource
+	private FssBackplateService fssBackplateService;
 
 	/**
 	 * 查询线下充值记录
@@ -86,12 +91,48 @@ public class FssOfflineRechargeService {
 	}
 
 	/**
-	 * 修改线下充值记录
-	 * @param entity
+	 * fuiou返回成功修改线下充值记录
+	 * @param id
+	 * @param fy_acc_no
+	 * @param fy_acc_nm
+	 * @param fy_bank
+	 * @param fy_bank_branch
+	 * @param chg_cd
+	 * @param chg_dt
+	 * @param amt
+     * @param orderNo
+     * @throws FssException
      */
-	public void update(FssOfflineRechargeEntity entity) throws FssException{
+	public void updateSuccess(Long id,Object fy_acc_no,Object fy_acc_nm,Object fy_bank,Object fy_bank_branch,Object chg_cd,Object chg_dt,Object amt,String orderNo) throws FssException{
+		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+		entity.setFyAccNo(fy_acc_no == null ? null:String.valueOf(fy_acc_no));
+		entity.setFyAccNm(fy_acc_nm == null ? null:String.valueOf(fy_acc_nm));
+		entity.setFyBank(fy_bank == null ? null:String.valueOf(fy_bank));
+		entity.setFyBankBranch(fy_bank_branch == null ? null:String.valueOf(fy_bank_branch));
+		entity.setChgCd(chg_cd == null ? null:String.valueOf(chg_cd));
+		entity.setChgDt(chg_dt == null ? null:String.valueOf(chg_dt));
+		entity.setAmt(amt == null ? null:new BigDecimal((String)amt));
+		entity.setOrderNo(orderNo);
+		entity.setResultState("10120002");
 		try{
-		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+		}catch (Exception e){
+			throw new FssException("91009804");
+		}
+	}
+
+	/**
+	 * 失败修改充值状态
+	 * @param id
+	 * @param orderNo
+	 * @throws FssException
+     */
+	public void updateFiled(Long id,String orderNo) throws FssException{
+		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+		entity.setOrderNo(orderNo);
+		entity.setResultState("10120004");
+		try{
+			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		}catch (Exception e){
 			throw new FssException("91009804");
 		}
@@ -120,8 +161,24 @@ public class FssOfflineRechargeService {
 		return fssOfflineRechargeReadMapper.queryFssOfflineRecharge(mchntTxnSsn,mchntCd);
 	}
 
-
-
-
-
+	public FssOfflineRechargeEntity getOfflineRechargeById(Long id){
+		return fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+	}
+	/**
+	 * 修改线下充值结果，回盘处理
+	 * @param id
+	 * @param result
+     */
+	public void fuiouCallBack(Long id,String result) throws FssException{
+		FssOfflineRechargeEntity entity = fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+		//修改成功状态
+		if("SUCCESS".equals(result)){
+			entity.setResultState("10120003");
+		}else{
+			entity.setResultState("10120004");
+		}
+		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+		//创建回盘信息
+		fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeState());
+	}
 }

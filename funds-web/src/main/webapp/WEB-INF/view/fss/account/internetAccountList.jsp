@@ -196,7 +196,7 @@
                                                         &nbsp;
                                                         <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/3">直接提现</a>
                                                         &nbsp;
-                                                        <a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a>
+                                                       <%-- <a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a>--%>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

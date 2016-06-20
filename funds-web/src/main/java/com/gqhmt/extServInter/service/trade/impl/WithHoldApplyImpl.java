@@ -39,8 +39,9 @@ public class WithHoldApplyImpl implements IWithHoldApply{
 	 * 借款人充值:11030007
 	 * 抵押权人充值:11030008
 	 * 直接代扣:11030014
+	 * 手续费分期代扣：11030016
 	 */
-	@APITradeTypeValid(value = "11030006,11030007,11030008,11030014,11093001")
+	@APITradeTypeValid(value = "11030006,11030007,11030008,11030014,11093001,11030016")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
