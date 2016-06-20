@@ -75,7 +75,7 @@ public class FssOfflineRechargeService {
 			fssOfflineRechargeEntity.setCustName(custName);
 			fssOfflineRechargeEntity.setCustType(custType);
 			fssOfflineRechargeEntity.setAmt(amt);
-			fssOfflineRechargeEntity.setResultState("10120001");
+		    fssOfflineRechargeEntity.setTradeType(trade_type);
 			fssOfflineRechargeEntity.setCreateTime(new Date());
 			fssOfflineRechargeEntity.setModifyTime(new Date());
 			fssOfflineRechargeEntity.setSeqNo(seqNo);
@@ -113,7 +113,7 @@ public class FssOfflineRechargeService {
 		entity.setChgDt(chg_dt == null ? null:String.valueOf(chg_dt));
 		entity.setAmt(amt == null ? null:new BigDecimal((String)amt));
 		entity.setOrderNo(orderNo);
-		entity.setResultState("10120002");
+		entity.setResultState("10120002");//充值码获取成功，待客户充值
 		try{
 			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		}catch (Exception e){
@@ -130,7 +130,7 @@ public class FssOfflineRechargeService {
 	public void updateFiled(Long id,String orderNo) throws FssException{
 		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
 		entity.setOrderNo(orderNo);
-		entity.setResultState("10120004");
+		entity.setResultState("10120004");//充值码获取失败
 		try{
 			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		}catch (Exception e){
@@ -172,13 +172,11 @@ public class FssOfflineRechargeService {
 	public void fuiouCallBack(Long id,String result) throws FssException{
 		FssOfflineRechargeEntity entity = fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
 		//修改成功状态
-		if("SUCCESS".equals(result)){
+		if("0000".equals(result)){
 			entity.setResultState("10120003");
-		}else{
-			entity.setResultState("10120004");
 		}
 		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		//创建回盘信息
-		fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeState());
+		fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeType());
 	}
 }

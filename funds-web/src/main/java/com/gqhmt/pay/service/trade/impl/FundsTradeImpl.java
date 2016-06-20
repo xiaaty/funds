@@ -1,7 +1,6 @@
 package com.gqhmt.pay.service.trade.impl;
 
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
@@ -612,7 +611,6 @@ public class FundsTradeImpl  implements IFundsTrade {
             offlineRechargeResponse.setFy_acc_no(String.valueOf(response.getMap().get("fy_acc_no")));
             offlineRechargeResponse.setFy_bank(String.valueOf(response.getMap().get("fy_bank")));
             offlineRechargeResponse.setFy_bank_branch(String.valueOf(response.getMap().get("fy_bank_branch")));
-            fssOfflineRechargeService.fuiouCallBack(fssOfflineRechargeEntity.getId(),"");
         }else{//失败
             fssOfflineRechargeService.updateFiled(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo());
         }
