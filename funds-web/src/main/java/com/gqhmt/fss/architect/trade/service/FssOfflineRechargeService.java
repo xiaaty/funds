@@ -88,14 +88,15 @@ public class FssOfflineRechargeService {
 	/**
 	 * 修改线下充值记录
 	 * @param entity
-     */
+	 */
 	public void update(FssOfflineRechargeEntity entity) throws FssException{
 		try{
-		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		}catch (Exception e){
 			throw new FssException("91009804");
 		}
 	}
+
 
 	/**
 	 * 线下充值成功回调

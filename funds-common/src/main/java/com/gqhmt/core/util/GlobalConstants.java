@@ -456,6 +456,7 @@ public class GlobalConstants {
         fundsType.put(1011, "账务修正");
         fundsType.put(1012,"实时提现");
         fundsType.put(1013,"红包变现");
+        fundsType.put(1014,"线下转账充值");
 
         /*
 
