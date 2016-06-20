@@ -122,8 +122,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1700px;">
-                                        <col width="100" />
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -146,7 +145,6 @@
                                             <td>客户类型</td>
                                             <td>账户编号</td>
                                             <td>交易金额</td>
-                                            <td>申请状态</td>
                                             <td>交易状态</td>
                                             <td>业务编号</td>
                                             <td>业务类型</td>
@@ -164,13 +162,12 @@
                                                 <td>${t.custId}</td>
                                                 <td>${t.custName}</td>
                                                 <td>${t.custType}</td>
-                                                <td>${t.fyAccNo}</td>
+                                                <td>${t.accNo}</td>
                                                 <td>${t.amt}</td>
-                                                <td><fss:dictView key="${t.applyState}" /></td>
-                                                <td><fss:dictView key="${t.tradeState}" /></td>
+                                                <td><fss:dictView key="${t.resultState}" /></td>
                                                 <td>${t.busiNo}</td>
                                                 <td>${t.busiType}</td>
-                                                <td>${t.contractNo}</td>
+                                                <td>${t.busiNo}</td>
                                                 <td>${t.seqNo}</td>
                                                 <td>${t.mchn}</td>
                                                 <td><fss:fmtDate value="${t.createTime}"/></td>
@@ -225,6 +222,10 @@
             }
         }
     }
+    //添加
+    $("#btn_add").button().click(function() {
+        window.open("${contextPath}/trade/tradeApply/createOfflineRecharge","_self");
+    });
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

@@ -85,15 +85,15 @@ public interface IFundsTrade {
 
 //    public FundOrderEntity withholdingApplyNew(Long custId, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
     /**
-         *
-         * 代付申请
-         * @return
-         * @throws FssException
-         */
+     *
+     * 代付申请
+     * @return
+     * @throws FssException
+     */
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
-    
+
     public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
-    
+
 //    public FundOrderEntity withdrawApplyNew(int custID, int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
 
     /**
@@ -126,33 +126,33 @@ public interface IFundsTrade {
 
 
     /**
-	 * 
-	 * author:jhz
-	 * time:2016年2月27日
-	 * function：线下代扣充值
+     *
+     * author:jhz
+     * time:2016年2月27日
+     * function：线下代扣充值
      * @param custID                    客户id
      * @param businessType              业务类型1，出借赎回代付，2借款放款代付；3借款其他资金代付；4抵押权人资金代付；5代偿人资金代付；99，其他代付
      * @param contractNo
      * @param amount
      * @return
      * @throws FssException
-	 */
+     */
     boolean withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount,
-			Long busiId) throws FssException;
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年2月27日
-	 * function：线下提现代付
+                             Long busiId) throws FssException;
+    /**
+     *
+     * author:jhz
+     * time:2016年2月27日
+     * function：线下提现代付
      * @param custID                    客户id
      * @param businessType              业务类型1，出借赎回代付，2借款放款代付；3借款其他资金代付；4抵押权人资金代付；5代偿人资金代付；99，其他代付
      * @param contractNo
      * @param amount
      * @return
      * @throws FssException
-	 */
+     */
     boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
-			Long busiId,int selletType) throws FssException;
+                          Long busiId,int selletType) throws FssException;
 
 
 
@@ -216,11 +216,11 @@ public interface IFundsTrade {
      */
     //public boolean compensateByLoad(String thirdPartyType,int custID,int costMode,String contractNo,BigDecimal amount,Long bid) throws FssException;
 
-	/**
-	 * 查询交易记录
-	 * @param tradrecord
-	 * @return
-	 */
+    /**
+     * 查询交易记录
+     * @param tradrecord
+     * @return
+     */
     public List<FundTradeBean> queryFundTrade(FundTradeDto tradrecord) throws FssException;
 
     /**
@@ -238,18 +238,11 @@ public interface IFundsTrade {
      */
     public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException;
 
-   /* public boolean sstxBusiness(SstxDto sstx) throws FssException;
+    /* public boolean sstxBusiness(SstxDto sstx) throws FssException;
 
-    public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
-*/
-   public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
-
-    /**
-     * 线下充值
-     * @param dto
-     * @return
-     */
-    public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException;
+     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
+ */
+    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
 
     /**
      * 充值提现金额变动通知
@@ -259,4 +252,18 @@ public interface IFundsTrade {
      * @param amount
      */
     public void sendNotice(String tempCode, NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount, BigDecimal chargeAmount) ;
+    /**
+     * 线下充值
+     * @param dto
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @param amt
+     * @return
+     * @throws FssException
+     */
+    public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
 }

@@ -4,6 +4,7 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
+import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.trade.OfflineRechargeApplyDto;
 import com.gqhmt.extServInter.dto.trade.OfflineRechargeResponse;
 import com.gqhmt.extServInter.service.trade.IOfflineRechargeApply;
@@ -19,7 +20,7 @@ import javax.annotation.Resource;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年6月12日
- * Description:  委托充值交易申请（出借端出借代扣、借款端还款代扣）
+ * Description:  线下充值
  * <p>
  * Modification History:
  * Date    Author      Version     Description
@@ -35,7 +36,8 @@ public class OfflineRechargeApplyImpl implements IOfflineRechargeApply {
     public Response execute(SuperDto dto) {
     	OfflineRechargeResponse response = new OfflineRechargeResponse();
     	try {
-			response=fundsTradeImpl.OfflineRechargeApply((OfflineRechargeApplyDto)dto);
+			OfflineRechargeApplyDto cDto = (OfflineRechargeApplyDto)dto;
+			response=fundsTradeImpl.OfflineRechargeApply(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getCust_id(),cDto.getCust_type(),cDto.getBusi_no(),cDto.getAmt());
 			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

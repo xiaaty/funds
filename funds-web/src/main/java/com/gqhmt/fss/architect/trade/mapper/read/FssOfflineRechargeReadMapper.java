@@ -25,5 +25,5 @@ import java.util.Map;
 public interface FssOfflineRechargeReadMapper extends ReadMapper<FssOfflineRechargeEntity>{
     public List<FssOfflineRechargeEntity> queryFssOfflineRecharegList(Map map);
     public Response getOfflineRechargeResponse(@Param("mchn")String mchn, @Param("seqNo")String seqNo);
-
+    public FssOfflineRechargeEntity queryFssOfflineRecharge(@Param("mchntTxnSsn")String mchntTxnSsn, @Param("mchntCd")String mchntCd);
 }

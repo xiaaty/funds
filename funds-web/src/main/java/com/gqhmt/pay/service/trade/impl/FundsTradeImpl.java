@@ -8,6 +8,7 @@ import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -67,6 +68,9 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     @Resource
     private WithdrawApplyService withdrawApplyService;
+
+    @Resource
+    private FssBackplateService fssBackplateService;
 
 
     @Resource
@@ -578,20 +582,26 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     /**
      * 线下充值
-     * @param dto
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @param amt
      * @return
      * @throws FssException
      */
-    public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException{
+        public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException{
         OfflineRechargeResponse offlineRechargeResponse=new OfflineRechargeResponse();
         FssOfflineRechargeEntity fssOfflineRechargeEntity=null;
-        FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(dto.getCust_id()));
+        FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(cust_id));
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004009");
         }
        //创建充值记录信息
-        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(dto.getTrade_type()), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()),"", "", dto.getAmt(), "", "", null, dto.getTrade_type(), dto.getSeq_no(), dto.getMchn(), "9701", null, "","",primaryAccount.getCustName(),"","","");
-        CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,dto.getAmt(),GlobalConstants.ORDER_RECHARGE_OFFLINE,0,0);
+        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge( "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), amt, trade_type,seq_no, mchn);
+        CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,amt,GlobalConstants.ORDER_RECHARGE_OFFLINE,0,0);
         //根据返回码判断是否成功，修改线下充值记录状态
         if("0000".equals(response.getCode())){//成功
             fssOfflineRechargeEntity.setFyAccNo(String.valueOf(response.getMap().get("fy_acc_no")));
@@ -600,16 +610,15 @@ public class FundsTradeImpl  implements IFundsTrade {
             fssOfflineRechargeEntity.setFyBankBranch(String.valueOf(response.getMap().get("fy_bank_branch")));
             fssOfflineRechargeEntity.setChgCd(String.valueOf(response.getMap().get("chg_cd")));
             fssOfflineRechargeEntity.setChgDt(String.valueOf(response.getMap().get("chg_dt")));
-            fssOfflineRechargeEntity.setApplyState("10100003");
-            fssOfflineRechargeEntity.setTradeState("10030002");
-            fssOfflineRechargeEntity.setResultState("10080002");
+            fssOfflineRechargeEntity.setResultState("10120002");//1：新增；2：代扣充值中；3：充值成功
+            fssOfflineRechargeEntity.setMchntTxnSsn(String.valueOf(response.getMap().get("mchnt_txn_ssn")));
+            fssOfflineRechargeEntity.setMchntCd(String.valueOf(response.getMap().get("mchnt_cd")));
             fssOfflineRechargeEntity.setDescCode(response.getCode());
         }else{//失败
-            fssOfflineRechargeEntity.setApplyState("10100003");
-            fssOfflineRechargeEntity.setTradeState("10030003");
-            fssOfflineRechargeEntity.setResultState("10080010");
+            fssOfflineRechargeEntity.setResultState("10120004");
             fssOfflineRechargeEntity.setDescCode(response.getCode());
         }
+        //代扣充值完成后
         fssOfflineRechargeService.update(fssOfflineRechargeEntity);
         offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
         offlineRechargeResponse.setAmt(new BigDecimal(String.valueOf(response.getMap().get("amt"))));

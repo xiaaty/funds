@@ -528,8 +528,14 @@ public class FssTradeApplyService {
 			applyState = "10100002";
 		}
 		fssTradeApplyEntity.setApplyState(applyState);
-		fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
-		fssTradeApplyEntity.setMchnChild(mchn);
+		//判断商户号是否为空
+		if(mchn!=null && !"".equals(mchn)){
+			fssTradeApplyEntity.setMchnChild(mchn);
+			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
+		}else{
+			fssTradeApplyEntity.setMchnChild("01");
+			fssTradeApplyEntity.setMchnParent("01");
+		}
 		fssTradeApplyEntity.setCreateTime((new Date()));
 		fssTradeApplyEntity.setModifyTime((new Date()));
 		fssTradeApplyEntity.setSeqNo(seqNo);
