@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper;
@@ -61,33 +62,20 @@ public class FssOfflineRechargeService {
 	 * 保存线下充值申请信息
 	 * @throws FssException
      */
-	public FssOfflineRechargeEntity createOfflineRecharge(String applyNo,String applyType,Long custId,String custName,String custType,String fyAccNo,String orderNo,BigDecimal amt,String applyState,String tradeState,
-									  String busiNo,String busiType,String seqNo,String mchn,String channelNo,String custNo,String chgCd,String chgDt,String fyAccNm,String fyBank,String fyBankBranch,String descCode)throws FssException{
+	public FssOfflineRechargeEntity createOfflineRecharge(String applyType,Long custId,String custName,String custType,BigDecimal amt,String trade_type,String seqNo,String mchn)throws FssException{
 			FssOfflineRechargeEntity fssOfflineRechargeEntity=new FssOfflineRechargeEntity();
-			fssOfflineRechargeEntity.setApplyNo(applyNo);
+			fssOfflineRechargeEntity.setApplyNo(CommonUtil.getTradeApplyNo(trade_type));
 			fssOfflineRechargeEntity.setApplyType(Integer.valueOf(applyType));
 			fssOfflineRechargeEntity.setCustId(custId);
 			fssOfflineRechargeEntity.setCustName(custName);
 			fssOfflineRechargeEntity.setCustType(custType);
-			fssOfflineRechargeEntity.setFyAccNo(fyAccNo);
-			fssOfflineRechargeEntity.setOrderNo(orderNo);
 			fssOfflineRechargeEntity.setAmt(amt);
-			fssOfflineRechargeEntity.setApplyState(applyState);
-			fssOfflineRechargeEntity.setTradeState(tradeState);
+			fssOfflineRechargeEntity.setResultState("10120001");
 			fssOfflineRechargeEntity.setCreateTime(new Date());
 			fssOfflineRechargeEntity.setModifyTime(new Date());
-			fssOfflineRechargeEntity.setBusiNo(busiNo);
-			fssOfflineRechargeEntity.setBusiType(busiNo);
 			fssOfflineRechargeEntity.setSeqNo(seqNo);
 			fssOfflineRechargeEntity.setMchn(mchn);
-			fssOfflineRechargeEntity.setChannelNo(channelNo);
-			fssOfflineRechargeEntity.setCustNo(custNo);
-			fssOfflineRechargeEntity.setChgCd(chgCd);
-			fssOfflineRechargeEntity.setChgDt(chgDt);
-			fssOfflineRechargeEntity.setFyAccNm(fyAccNm);
-			fssOfflineRechargeEntity.setFyBank(fyBank);
-			fssOfflineRechargeEntity.setFyBankBranch(fyBankBranch);
-			fssOfflineRechargeEntity.setDescCode(descCode);
+			fssOfflineRechargeEntity.setChannelNo("9701");
 		try{
 			fssOfflineRechargeWriteMapper.insertSelective(fssOfflineRechargeEntity);
 			return fssOfflineRechargeEntity;
@@ -120,6 +108,16 @@ public class FssOfflineRechargeService {
 		Response response=new Response();
 		response=fssOfflineRechargeReadMapper.getOfflineRechargeResponse(mchn,seqNo);
 		return response;
+	}
+
+	/**
+	 * 根据商户代码和流水号查询充值信息
+	 * @param mchntCd
+	 * @param mchntTxnSsn
+     * @return
+     */
+	public FssOfflineRechargeEntity getOfflineRechargeBy(String mchntCd,String mchntTxnSsn){
+		return fssOfflineRechargeReadMapper.queryFssOfflineRecharge(mchntTxnSsn,mchntCd);
 	}
 
 

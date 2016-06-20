@@ -175,16 +175,16 @@
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}"/></td>
                                                     <td>
-                                                    	<c:choose>
-                                                    		<c:when test="${tradeapply.busiType!=11030004 && tradeapply.busiType!=11093001 && tradeapply.busiType!=11093002&&tradeapply.busiType!=11090001&&tradeapply.busiType!=11090005}">
+                                                    	<%--<c:choose>--%>
+                                                    		<%--<c:when test="${tradeapply.busiType!=11030004 && tradeapply.busiType!=11093001 && tradeapply.busiType!=11093002&&tradeapply.busiType!=11090001&&tradeapply.busiType!=11090005}">--%>
 	                                                    	 	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
 		                                                    	&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    		</c:when>
-                                                    		<c:otherwise>
-	                                                    	 	<a style="display: none;" href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> 
-		                                                    	&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    		</c:otherwise>
-                                                    	</c:choose>
+                                                    		<%--</c:when>--%>
+                                                    		<%--<c:otherwise>--%>
+	                                                    	 	<%--<a style="display: none;" href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">代扣审核</a> --%>
+		                                                    	<%--&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                                                    		<%--</c:otherwise>--%>
+                                                    	<%--</c:choose>--%>
 	                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
                                                     </td>
                                                 </tr>

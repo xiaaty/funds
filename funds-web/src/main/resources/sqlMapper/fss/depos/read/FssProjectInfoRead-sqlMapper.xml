@@ -30,6 +30,8 @@
 		    t.prepare_amount prepareAmount,
 		    t.pay_channel payChannel,
 		    t.bid_year_irr bidYearIrr,
+		    t.borrow_type borrowType,
+		    t.license_no licenseNo,
 		    t.cust_name custName,
 		    t.cert_type certType,
 		    t.cert_no certNo,

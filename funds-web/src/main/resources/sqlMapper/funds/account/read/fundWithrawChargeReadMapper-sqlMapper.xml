@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.funds.architect.account.mapper.read.FundWithrawChargeReadMapper">
 	<sql id="fieldSql">
+		SELECT
+		 t.id Id,
+		 t.order_no orderNo,
+		 t.account_id accountId,
+		 t.user_name userName,
+		 t.amount amount,
+		 t.charge_amount chargeAmount,
+		 t.state state
+		FROM  t_gq_fund_withraw_charge t
 	</sql>
 	<sql id="whereSql">
 	</sql>
@@ -16,5 +25,9 @@
 	</sql>
 	<select id="queryFundWithrawChargeList" parameterType="fundWithrawCharge" resultType="fundWithrawCharge">
 		
+	</select>
+	<select id="selectByOrderNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundWithrawCharge">
+	<include refid="fieldSql"/>
+		WHERE  t.order_no =#{orderNo}
 	</select>
 </mapper>

@@ -8,6 +8,7 @@
 		  t.`apply_type` applyType,
 		  t.`cust_id` custId,
 		  t.`cust_type` custType,
+		  t.`cust_name` custName,
 		  t.`fy_acc_no` fyAccNo,
 		  t.`fy_acc_nm` fyAccNm,
 		  t.`order_no` orderNo,
@@ -28,6 +29,8 @@
   		  t.`fy_bank_branch` fyBankBranch,
   		  t.`acc_no` accNo,
   		  t.`result_state` resultState,
+  		  t.`mchnt_txn_ssn` mchntTxnSsn,
+  		  t.`mchnt_cd` mchntCd,
           t.`desc_code` descCode
 		FROM `t_gq_fss_offline_recharge` t
 	</sql>
@@ -54,11 +57,17 @@
 	<select id="getOfflineRechargeResponse" resultType="com.gqhmt.extServInter.dto.Response" >
 		SELECT
 		case
-		when t.result_state='10080002' then '0000'<!-- 交易成功 -->
+		when t.result_state='10120002' then '0000'<!-- 交易成功 -->
 		else t.result_state
 		end resp_code
 		FROM `t_gq_fss_offline_recharge` t
 		WHERE t.mchn_child=#{mchn} AND t.seq_no=#{seqNo}
+	</select>
+
+	<select id="queryFssOfflineRecharge" resultType="com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity">
+		<include refid="selectSql"/>
+		WHERE t.`mchnt_txn_ssn`=#{mchntTxnSsn}
+		AND t.`mchnt_cd`=#{mchntCd}
 	</select>
 
 

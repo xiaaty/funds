@@ -31,12 +31,12 @@ public class OfflineRechargeCallback implements GetCallBack{
 	/**
 	 * author:柯禹来
 	 * time:2016年6月14日
-	 * function：线下充值回调
+	 * function 商户银行充值成功后，富友回盘成功失败的消息
 	 */
 	public Response getCallBack(String mchn, String seqNo) throws FssException{
 		Response response =new Response();
 			 try {
-				 response=fssOfflineRechargeService.getOfflineRechargeResponse(mchn, seqNo);
+				 response=fssOfflineRechargeService.getOfflineRechargeResponse(mchn,seqNo);
 			} catch (FssException e) {
 				LogUtil.info(this.getClass(), e.getMessage());
 				response.setResp_code(e.getMessage());

@@ -97,6 +97,29 @@ public class FssOfflineRechargeEntity implements Serializable {
 	@Column(name = "result_state")
 	private String resultState;
 
+	public String getMchntCd() {
+		return mchntCd;
+	}
+
+	public void setMchntCd(String mchntCd) {
+		this.mchntCd = mchntCd;
+	}
+
+	@Column(name = "mchnt_cd")
+	private String mchntCd;
+
+	public String getMchntTxnSsn() {
+		return mchntTxnSsn;
+	}
+
+	public void setMchntTxnSsn(String mchntTxnSsn) {
+		this.mchntTxnSsn = mchntTxnSsn;
+	}
+
+	@Column(name = "mchnt_txn_ssn")
+
+	private String mchntTxnSsn;
+
 	public Long getId() {
 		return id;
 	}
