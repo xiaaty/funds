@@ -83,7 +83,11 @@
 		SELECT 
 		    t.seq_no seq_no,
 		    t.mchn_child mchn,
-			t.contract_id busi_no,
+			case when
+			t.trade_type_parent='11101001' then t.busi_no
+			WHEN
+			t.trade_type_parent='11101002' then t.busi_no
+			else t.contract_id  end busi_no,
 			case when
 			t.trade_type_parent='11101001' then '11101001'
 			WHEN
