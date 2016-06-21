@@ -122,10 +122,11 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
                                     	<col width="100" />
                                         <col width="100" />
                                         <col width="200" />
+                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -145,6 +146,7 @@
                                         	 <td>客户电话</td>
                                              <td>申请编号</td>
                                              <td>业务编号</td>
+                                             <td>申请状态</td>
                                              <td>交易状态</td>
                                              <td>账户编号</td>
                                              <td>交易金额</td>
@@ -166,6 +168,7 @@
                                                 	<td>${tradeapply.custMobile}</td>
                                                     <td>${tradeapply.applyNo}</td>
                                                     <td>${tradeapply.businessNo}</td>
+                                                    <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.accNo}</td>
                                                     <td>${tradeapply.tradeAmount}</td>
@@ -179,13 +182,22 @@
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
                                                     <td>
                                                     <input type="hidden" name="token" value="${token}"/> 
-                                                    	<c:if test="${tradeapply.applyState==10100001}">
+                                                    	<%--<c:if test="${tradeapply.applyState==10100001}">
                                                     	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
                                                     	</c:if>
                                                     	<c:if test="${tradeapply.busiType==11092001 && tradeapply.applyState==10050009}">
                                                     	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
                                                     	</c:if>
-                                                        &nbsp;&nbsp;&nbsp;
+                                                        &nbsp;&nbsp;&nbsp;--%>
+                                                        <c:choose>
+                                                            <c:when test="${tradeapply.applyState==10100001}">
+                                                                <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a style="display: none;" href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
+                                                                &nbsp;&nbsp;&nbsp;
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                         <a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
                                                     </td>
                                                 </tr>
