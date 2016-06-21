@@ -128,10 +128,8 @@
 			when t.trade_state=10080002 then '10080002'<!-- 交易成功 -->
 			when t.trade_state=10080003 then '10080003'<!-- 交易部分成功 -->
 			when t.trade_state=10080011 then '10080011'<!-- 交易取消 -->
-			else r.resp_code	<!-- 交易失败 -->
-		end resp_code
-		FROM t_gq_fss_trade_apply t,t_gq_fss_trade_record r
-		WHERE t.apply_no=r.apply_no
-		AND t.mchn_child=#{mchn} AND t.seq_no=#{seqNo} 
+			END resp_code	<!-- 交易失败 -->
+		FROM t_gq_fss_trade_apply t
+		WHERE  t.mchn_child=#{mchn} AND t.seq_no=#{seqNo}
 	</select>
 </mapper>

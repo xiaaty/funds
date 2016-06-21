@@ -41,6 +41,11 @@
 			</if>
 		</where>
 	</select>
+
+	<select id="selectByMchnAndseqNo" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
+		<include refid="field"/>
+		WHERE t.seq_no=#{seqNo}  AND t.mchn=#{mchn}
+	</select>
 </mapper>
 
 
