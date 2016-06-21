@@ -349,6 +349,11 @@ public class TradeRecordService {
             } catch (Exception e) {
                 LogUtil.error(this.getClass(), e.getMessage(), e);
             }
+        }else if(fundOrderEntity.getOrderType() == GlobalConstants.ORDER_WITHDRAW){
+            //提现
+            FundAccountEntity entity = fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
+            //去掉资金冻结
+            //forzen(entity,fundOrderEntity);
         }
     }
 

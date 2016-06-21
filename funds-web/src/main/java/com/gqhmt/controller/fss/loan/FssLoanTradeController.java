@@ -117,6 +117,9 @@ public class FssLoanTradeController {
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";
 		}
+		else if("11090006".equals(type)){//冠e通抵押标权人提现
+			return "fss/trade/trade_audit/motegreeWithDraw";
+		}
 		else if("11092001".equals(type)){//抵押标权人提现
 			return "fss/trade/trade_audit/motegreeWithDraw";
 		}
@@ -452,16 +455,12 @@ public class FssLoanTradeController {
 	public String queryMortgageeDetail(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeapply, @PathVariable Long  id,@PathVariable String  type) throws Exception {
 		//账户余额小于提现金额
 		FssLoanEntity loanEntity= fssLoanService.getFssLoanEntityById(id);
-		FssAccountEntity fssAccount=fssAccountService.getFssAccountByAccNo(loanEntity.getMortgageeAccNo());
-		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(fssAccount.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN);
-		if(fundAccountEntity.getAmount().compareTo(loanEntity.getContractAmt())<0) throw new FssException("90004007");
 		//冻结资金
-		iFundsTrade.froze(fssAccount.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN,loanEntity.getContractAmt());
 		fssTradeApplyService.insertLoanTradeApply(loanEntity,type);
 		loanEntity.setModifyTime(new Date());
 		loanEntity.setStatus("10030001");
 		fssLoanService.update(loanEntity);
-		return "redirect:/trade/tradeApply/1104/11092001";
+		return "redirect:/trade/tradeApply/1104/"+type;
 	}
 
 
