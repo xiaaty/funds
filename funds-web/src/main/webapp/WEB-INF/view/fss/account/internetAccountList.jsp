@@ -192,8 +192,6 @@
                                                     <td>
                                                         <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/1">充值交易</a>
                                                         &nbsp;
-                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/2">直接充值</a>
-                                                        &nbsp;
                                                         <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/3">直接提现</a>
                                                         &nbsp;
                                                        <%-- <a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a>--%>

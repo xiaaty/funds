@@ -114,27 +114,21 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>交易类型：</td>
                                                     <c:choose>
-                                                        <c:when test="${flag==1}">//充值交易
+                                                        <c:when test="${flag==1}">
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>交易类型：</td>
                                                             <td colspan="5">
-                                                                <span class="pl10 pr50"><input checked="checked" id="tradeType" name="tradeType" type="radio" value="11030014"><label class="ml5">委托充值</label></span>
+                                                                <span class="pl10 pr50"><input id="tradeType" checked="checked"  name="tradeType" type="radio" value="11030014"><label class="ml5">委托充值</label></span>
                                                                 <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">线下充值</label></span>
                                                             </td>
                                                         </c:when>
-                                                        <c:when test="${flag==2}">//账户直接充值
-                                                            <td colspan="5">
-                                                                <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030014" checked="checked"><label class="ml5">账户直接充值</label></span>
-                                                            </td>
-                                                        </c:when>
-                                                        <c:when test="${flag==3}">//账户直接提现
-                                                            <td colspan="5">
-                                                                <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11040012" checked="checked"><label class="ml5">账户直接提现</label></span>
-                                                            </td>
+                                                        <c:when test="${flag==3}"><!--账户直接提现-->
+                                                            <input type="hidden" id="tradeType" name="tradeType" value="11040012"/>
                                                         </c:when>
                                                         <c:otherwise>
                                                         </c:otherwise>
                                                     </c:choose>
+                                                    <input type="hidden" name="customerType" value="${customerInfoEntity.customerType}"/>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -176,7 +170,8 @@
                             window.location.href="${contextPath}/account/${type}/list";
                         });
                     } else {
-                        jAlert("提交失败,请重试", '消息提示',function (r) {
+//                        jAlert("提交失败,请重试", '消息提示',function (r) {
+                        jAlert("提交失败，失败原因："+data.message, '消息提示',function (r) {
                             $.unblockUI();
                             window.location.href="${contextPath}/account/${type}/list";
                         });

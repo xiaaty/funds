@@ -2,6 +2,7 @@ package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -256,6 +257,9 @@ public class FssTradeApplyController {
 	@ResponseBody
 	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@ModelAttribute(value="customerInfoEntity") CustomerInfoEntity customerInfoEntity) throws FssException {
 		String  tradeType=request.getParameter("tradeType");
+		String type = request.getParameter("type");
+		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+		if (null==custType) throw new FssException("");
 		BigDecimal  amt=new BigDecimal(request.getParameter("amt"));
 		FssCustomerEntity fssCustomerEntity= fssCustomerService.getFssCustomerEntityByCertNo(customerInfoEntity.getCertNo());
 		String custNo="";
@@ -266,20 +270,23 @@ public class FssTradeApplyController {
 		FssAccountEntity fssAccountEntity=fssAccountService.getAccountByCustNo(custNo);
 		if(null!=fssAccountEntity){
 			accNo=fssAccountEntity.getAccNo();
+			fssAccountEntity.getAccType();
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		try {
-			if("11030014".equals(tradeType) || "11040012".equals(tradeType)){//委托充值、账户直接充值、账户直接提现
-				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(), fssAccountEntity.getAccType(),null,null,null,false);
-			}else if("11030015".equals(tradeType)){//线下充值11030015
-				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(fssAccountEntity.getAccType()),null,amt);
+			if("11030014".equals(tradeType)){//委托充值(账户直接充值)
+				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,false);
+			}else if("11040012".equals(tradeType)){//账户直接提现(账户类型)
+				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,null);
+			}else if("11030015".equals(tradeType)){//线下充值
+				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(custType),null,amt);
 			}
 			map.put("code", "0000");
 			map.put("message", "success");
-		} catch (Exception e) {//保存失败
-			e.printStackTrace();
-			map.put("code", "0001");
-			map.put("message", "error");
+		} catch (FssException e) {//保存失败
+			String resp_msg = Application.getInstance().getDictName(e.getMessage());
+			map.put("code", e.getMessage());
+			map.put("message", resp_msg);
 		}
 		return map;
 	}
