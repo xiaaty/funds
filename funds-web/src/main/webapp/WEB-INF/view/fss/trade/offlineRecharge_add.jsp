@@ -118,7 +118,7 @@
                                                     <c:choose>
                                                         <c:when test="${flag==1}">//充值交易
                                                             <td colspan="5">
-                                                                <span class="pl10 pr50"><input checked="checked" id="tradeType" name="tradeType" type="radio" value="11030006"><label class="ml5">委托充值</label></span>
+                                                                <span class="pl10 pr50"><input checked="checked" id="tradeType" name="tradeType" type="radio" value="11030014"><label class="ml5">委托充值</label></span>
                                                                 <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">线下充值</label></span>
                                                             </td>
                                                         </c:when>
