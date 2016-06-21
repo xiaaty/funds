@@ -36,9 +36,6 @@ public class MerchantRepayConfigEntity {
     @Column(name = "trade_type")
     private String tradeType;              //交易类型
 
-    @Column(name = "repay_type")
-    private String repayType;              //回盘类型
-
     @Column(name = "mchn_url")
     private String mchnUrl;                //商户地址
 
@@ -75,14 +72,6 @@ public class MerchantRepayConfigEntity {
 
     public void setTradeType(String tradeType) {
         this.tradeType = tradeType;
-    }
-
-    public String getRepayType() {
-        return repayType;
-    }
-
-    public void setRepayType(String repayType) {
-        this.repayType = repayType;
     }
 
     public String getMchnUrl() {

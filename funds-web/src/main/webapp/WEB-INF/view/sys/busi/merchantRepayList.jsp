@@ -108,7 +108,6 @@
                                         <td>序号</td>
                                         <td>商户号</td>
                                         <td>交易类型</td>
-                                        <td>回盘类型</td>
                                         <td>商户地址</td>
                                         <td>回盘地址</td>
                                         <td>创建时间</td>
@@ -140,24 +139,6 @@
                                                             <fss:dictOrder var="order" dictOrder="tradeType">
                                                                 <option value="${order.key}"
                                                                         <c:if test="${order.key== t.tradeType}">selected</c:if> >
-                                                                        ${order.value}
-                                                                </option>
-                                                            </fss:dictOrder>
-                                                        </select>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${!edit || t.id != id}">
-                                                        <fss:dictView key="${t.repayType}"/>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <select class="select02" style="width:202px;" name="repayType"
-                                                                id="repayType">
-                                                            <fss:dictOrder var="order" dictOrder="repayType">
-                                                                <option value="${order.key}"
-                                                                        <c:if test="${order.key== t.repayType}">selected</c:if> >
                                                                         ${order.value}
                                                                 </option>
                                                             </fss:dictOrder>
@@ -223,7 +204,6 @@
                             <input type="hidden" name="id"/>
                             <input type="hidden" name="mchnNo" />
                             <input type="hidden" name="tradeType"/>
-                            <input type="hidden" name="repayType"/>
                             <input type="hidden" name="mchnUrl"/>
                             <input type="hidden" name="repayClassName"/>
                             <input type="hidden" name="mchnNoVal" value="${mchnNo}"/>
@@ -254,7 +234,6 @@
         bilocUtil("保存...");
         var tradeType = ( $("#tradeType").val() != null && $("#tradeType").val() != '' && $("#tradeType").val() != undefined ) ? $("#tradeType").val().replace(/(^\s*)|(\s*$)/g, "") : '';
         var mchnUrl = ( $("#mchnUrl").val() != null && $("#mchnUrl").val() != '' && $("#mchnUrl").val() != undefined ) ? $("#mchnUrl").val().replace(/(^\s*)|(\s*$)/g, "") : '';
-        var repayType = ( $("#repayType").val() != null && $("#repayType").val() != '' && $("#repayType").val() != undefined ) ? $("#repayType").val().replace(/(^\s*)|(\s*$)/g, "") : '';
         var repayClassName = ( $("#repayClassName").val() != null && $("#repayClassName").val() != '' && $("#repayClassName").val() != undefined ) ? $("#repayClassName").val().replace(/(^\s*)|(\s*$)/g, "") : '';
         var mchnNo = ( $("#mchnNo").val() !=null && $("#mchnNo").val() != '' && $("#mchnNo").val() != undefined ) ? $("#mchnNo").val().replace(/(^\s*)|(\s*$)/g, "") : '';
 
@@ -290,8 +269,6 @@
             jAlert("交易类型不能为空", '信息提示');
             return;
         }
-
-        $("input[name='repayType']").val(repayType);
 
         $("input[name='mchnUrl']").val(mchnUrl);
         if(mchnUrl == '') {
@@ -344,15 +321,6 @@
                             '<fss:dictOrder var="order" dictOrder="tradeType">' +
                                 '<option value="${order.key}">${order.value}</option>' +
                             '</fss:dictOrder>' +
-                        '</select>' +
-                    '</td>' +
-                    '<td>' +
-                        '<select class="select02" style="width:202px;" name="repayType" id="repayType">' +
-                            '<fss:dictOrder var="order" dictOrder="repayType">' +
-                                '<option value="${order.key}" <c:if test="${order.key== t.repayType}">selected</c:if> >'  +
-                                    '${order.value}' +
-                                '</option>' +
-                            '</fss:dictOrder>'  +
                         '</select>' +
                     '</td>' +
                     '<td>' +
