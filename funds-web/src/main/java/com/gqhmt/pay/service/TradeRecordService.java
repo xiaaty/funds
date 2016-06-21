@@ -7,6 +7,7 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTransRecordReadMapper;
+import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -76,9 +77,7 @@ public class TradeRecordService {
     @Resource
     private IFundsTrade fundsTradeImpl;
     @Resource
-    private WithholdApplyService withholdApplyService;
-    @Resource
-    private WithdrawApplyService withdrawApplyService;
+    private FssTradeRecordService fssTradeRecordService;
 
     @Resource
     private FssOfflineRechargeService fssOfflineRechargeService;
@@ -240,7 +239,6 @@ public class TradeRecordService {
         //验证入账数量，充值、提现每个订单只允许一条入账记录，本记录作为再次验证，以免出现多次入账问题
         int size = sequenceService.getSizeByOrderNo(fundOrderEntity.getOrderNo());
         if(size>0){
-            fundOrderService.updateOrder(fundOrderEntity,2,"0000","成功");
             return;
         }
 
@@ -249,6 +247,7 @@ public class TradeRecordService {
             //充值操作
             try {
                 sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
+                paySuperByFuiou.withholding(entity, fundOrderEntity.getOrderAmount(), GlobalConstants.ORDER_CHARGE,0,0);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
                 //去掉冻结
 //                if(entity.getCustId() != 4){
@@ -308,8 +307,7 @@ public class TradeRecordService {
             }
 
             try {
-               // todo 需调用新版代扣代付表,需确认充值状态是否修改充值是否成功
-                withholdApplyService.updateWithholdCallback(fundOrderEntity.getOrderFrormId(),"0");
+                fssTradeRecordService.updateTradeRecord(fundOrderEntity.getOrderFrormId(),"0");
             } catch (Exception e) {
                 LogUtil.error(this.getClass(), e.getMessage(), e);
             }
@@ -318,7 +316,7 @@ public class TradeRecordService {
             sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(),ThirdPartyType.FUIOU,fundOrderEntity);
             if(fundOrderEntity.getOrderSource() != null &&  fundOrderEntity.getOrderSource()  == GlobalConstants.BUSINESS_WITHDRAW){
                 try {
-                    withdrawApplyService.updateWithDrawCallback(fundOrderEntity.getOrderFrormId(),"0");
+                    fssTradeRecordService.updateTradeRecord(fundOrderEntity.getOrderFrormId(),"0");
                 } catch (Exception e) {
                     LogUtil.error(this.getClass(), e.getMessage(), e);
                 }
@@ -340,22 +338,17 @@ public class TradeRecordService {
     private void asynSequenceFailed(FundOrderEntity fundOrderEntity){
         if(fundOrderEntity.getOrderType() == GlobalConstants.ORDER_WITHHOLDING) {
             try {
-                withholdApplyService.updateWithholdCallback(fundOrderEntity.getOrderFrormId(),"1");
+                fssTradeRecordService.updateTradeRecord(fundOrderEntity.getOrderFrormId(),"1");
             } catch (Exception e) {
                 LogUtil.error(this.getClass(), e.getMessage(), e);
             }
         }else if(fundOrderEntity.getOrderType() == GlobalConstants.ORDER_AGENT_WITHDRAW){
 
             try {
-                withdrawApplyService.updateWithDrawCallback(fundOrderEntity.getOrderFrormId(),"1");
+                fssTradeRecordService.updateTradeRecord(fundOrderEntity.getOrderFrormId(),"1");
             } catch (Exception e) {
                 LogUtil.error(this.getClass(), e.getMessage(), e);
             }
-        }else if(fundOrderEntity.getOrderType() == GlobalConstants.ORDER_WITHDRAW){
-            //提现
-            FundAccountEntity entity = fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
-            //去掉资金冻结
-            //forzen(entity,fundOrderEntity);
         }
     }
 

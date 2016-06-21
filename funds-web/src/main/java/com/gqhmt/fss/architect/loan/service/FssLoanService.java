@@ -19,6 +19,7 @@ import com.gqhmt.fss.architect.loan.mapper.read.FssLoanReadMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssFeeListWriteMapper;
 import com.gqhmt.fss.architect.loan.mapper.write.FssLoanWriteMapper;
 import com.gqhmt.fss.architect.merchant.service.MerchantService;
+import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -79,6 +80,8 @@ public class FssLoanService {
     private FundOrderService fundOrderService;
     @Resource
     private FundAccountService fundAccountService;
+    @Resource
+    private FssTradeApplyService fssTradeApplyService;
 	 /**
 	  * 
 	  * author:jhz

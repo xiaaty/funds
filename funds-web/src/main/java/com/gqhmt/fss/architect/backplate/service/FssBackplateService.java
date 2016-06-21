@@ -65,7 +65,16 @@ public class FssBackplateService {
     public FssBackplateEntity get(Long id)throws FssException{
         return fssBackplateReadMapper.selectByPrimaryKey(id);
     }
-    
+    /**
+     *
+     * author:jhz
+     * time:2016年6月20日
+     * function:通过商户号流水号查询
+     */
+    public FssBackplateEntity selectByMchnAndseqNo(String mchn,String seqNo)throws FssException{
+        return fssBackplateReadMapper.selectByMchnAndseqNo(mchn,seqNo);
+    }
+
     /**
      * 创建回盘信息
      * @return
@@ -108,6 +117,18 @@ public class FssBackplateService {
 
 	public List<FssBackplateEntity> getBackPlate(FssBackplateEntity fssBackplateEntity){
 		return  this.fssBackplateReadMapper.selectBackPlateByParam(fssBackplateEntity);
+	}
+
+	/**
+	 * jhz
+	 * 重新回盘
+	 * @param fssBackplateEntity
+	 * @throws FssException
+     */
+	public void updatebackplate(FssBackplateEntity fssBackplateEntity) throws  FssException{
+		fssBackplateEntity.setRepayCount(0);
+		fssBackplateEntity.setModifyTime(new Date());
+		this.update(fssBackplateEntity);
 	}
 
 }
