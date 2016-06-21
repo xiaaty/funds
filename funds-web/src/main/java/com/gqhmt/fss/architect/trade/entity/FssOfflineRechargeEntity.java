@@ -30,6 +30,9 @@ public class FssOfflineRechargeEntity implements Serializable {
     @Column(name = "apply_no")
     private String applyNo;
 
+    @Column(name = "trade_type")
+    private String tradeType;
+
     @Column(name = "apply_type")
     private Integer applyType;
 
@@ -331,5 +334,13 @@ public class FssOfflineRechargeEntity implements Serializable {
 
 	public void setResultState(String resultState) {
 		this.resultState = resultState;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
 	}
 }
