@@ -19,5 +19,5 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * -----------------------------------------------------------------
  * 2015/6/2  于泳      1.0     1.0 Version
  */
-public interface ReadAndWriteMapper<T> extends BaseMapper,MySqlMapper {
+public interface ReadAndWriteMapper<T> extends BaseMapper<T>,MySqlMapper<T> {
 }
