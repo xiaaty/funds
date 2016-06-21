@@ -91,6 +91,7 @@ public class FssOfflineRechargeService {
 	}
 
 	/**
+	 * 修改线下充值记录
 	 * fuiou返回成功修改线下充值记录
 	 * @param id
 	 * @param fy_acc_no
@@ -137,6 +138,7 @@ public class FssOfflineRechargeService {
 			throw new FssException("91009804");
 		}
 	}
+
 
 	/**
 	 * 线下充值成功回调

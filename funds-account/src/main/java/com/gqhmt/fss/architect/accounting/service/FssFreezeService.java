@@ -1,12 +1,5 @@
 package com.gqhmt.fss.architect.accounting.service;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreeze;
 import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreezeDetail;
@@ -14,6 +7,11 @@ import com.gqhmt.fss.architect.accounting.mapper.read.FssFreezeDetailReadMapper;
 import com.gqhmt.fss.architect.accounting.mapper.read.FssFreezeReadMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssFreezeDetailWriteMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssFreezeWriteMapper;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -68,7 +66,7 @@ public class FssFreezeService {
 	 * function：批量添加资金冻结详情表信息
 	 */
 	public void insertFreezeDetail(List<FssAccountingFreezeDetail> freezeDetails)throws FssException{
-		fssFreezeWriteMapper.insertList(freezeDetails);
+		freezeDetailWriteMapper.insertList(freezeDetails);
 	}
 	
 	/**

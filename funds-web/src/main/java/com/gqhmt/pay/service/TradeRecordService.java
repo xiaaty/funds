@@ -7,6 +7,7 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTransRecordReadMapper;
+import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -78,6 +79,9 @@ public class TradeRecordService {
     private WithholdApplyService withholdApplyService;
     @Resource
     private WithdrawApplyService withdrawApplyService;
+
+    @Resource
+    private FssOfflineRechargeService fssOfflineRechargeService;
 
     public void recharge(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
         try {
@@ -236,6 +240,7 @@ public class TradeRecordService {
         //验证入账数量，充值、提现每个订单只允许一条入账记录，本记录作为再次验证，以免出现多次入账问题
         int size = sequenceService.getSizeByOrderNo(fundOrderEntity.getOrderNo());
         if(size>0){
+            fundOrderService.updateOrder(fundOrderEntity,2,"0000","成功");
             return;
         }
 
@@ -244,7 +249,6 @@ public class TradeRecordService {
             //充值操作
             try {
                 sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
-                paySuperByFuiou.withholding(entity, fundOrderEntity.getOrderAmount(), GlobalConstants.ORDER_CHARGE,0,0);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
                 //去掉冻结
 //                if(entity.getCustId() != 4){
@@ -273,7 +277,6 @@ public class TradeRecordService {
             //提现
             try {
                 sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(),ThirdPartyType.FUIOU,fundOrderEntity);
-                paySuperByFuiou.withdraw(entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO, GlobalConstants.ORDER_WITHDRAW,0l,0);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
                 fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(),2);
                 //提现手续费收取实现方法
@@ -298,24 +301,21 @@ public class TradeRecordService {
         }else if(fundOrderEntity.getOrderType() == GlobalConstants.ORDER_WITHHOLDING) {
             //代扣
             sequenceService.charge(entity, 1002, fundOrderEntity.getOrderAmount(),ThirdPartyType.FUIOU,fundOrderEntity);
-            paySuperByFuiou.withholding(entity, fundOrderEntity.getOrderAmount(), GlobalConstants.ORDER_CHARGE,0,0);
             fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
-
-
             if(entity.getBusiType().intValue() == GlobalConstants.ACCOUNT_TYPE_LEND_ON) {
                 //首充红包or冠钱派发
 //                promoteService.saveFirstRecharge(entity.getCustId(), entity.getUserId());
             }
 
             try {
+               // todo 需调用新版代扣代付表,需确认充值状态是否修改充值是否成功
                 withholdApplyService.updateWithholdCallback(fundOrderEntity.getOrderFrormId(),"0");
             } catch (Exception e) {
                 LogUtil.error(this.getClass(), e.getMessage(), e);
             }
         }else if(fundOrderEntity.getOrderType() == GlobalConstants.ORDER_AGENT_WITHDRAW) {
             //代付
-            paySuperByFuiou.withdraw(entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO, GlobalConstants.ORDER_WITHDRAW,0l,0);
-
+            sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(),ThirdPartyType.FUIOU,fundOrderEntity);
             if(fundOrderEntity.getOrderSource() != null &&  fundOrderEntity.getOrderSource()  == GlobalConstants.BUSINESS_WITHDRAW){
                 try {
                     withdrawApplyService.updateWithDrawCallback(fundOrderEntity.getOrderFrormId(),"0");
@@ -324,6 +324,10 @@ public class TradeRecordService {
                 }
             }
             fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
+        }else if(fundOrderEntity.getOrderType() ==  GlobalConstants.ORDER_RECHARGE_OFFLINE){
+            sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
+            fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getId(),"0000");
+
         }
 
         fundOrderService.updateOrder(fundOrderEntity,2,"0000","成功");
