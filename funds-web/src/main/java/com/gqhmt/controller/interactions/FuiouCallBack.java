@@ -1,8 +1,10 @@
 package com.gqhmt.controller.interactions;
 
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
@@ -472,21 +474,20 @@ public class FuiouCallBack {
 
 	/**
 	 * 根据据富有有返回结果进行处理
-	 *
+	 * @param resp_code
 	 * @param mchnt_cd
 	 * @param mchnt_txn_ssn
-	 * @param mobile_no
-	 * @param mchnt_txn_dt
+	 * @param login_id
 	 * @param amt
 	 * @param remark
 	 * @param signature
-	 * @return
-	 */
+     * @throws FssException
+     */
 	@RequestMapping("/returnOfflineRechargeResult")
 	@ResponseBody
-	public void returnOfflineRechargeResult(String mchnt_cd, String mchnt_txn_ssn, String mobile_no, String mchnt_txn_dt, String amt, String remark, String signature) {
+	public String returnOfflineRechargeResult(String resp_code,String mchnt_cd,String mchnt_txn_ssn,String login_id,String amt,String remark,String signature) throws FssException{
 		//回调明文
-		String signValue = amt + "|" + mchnt_cd + "|" + mchnt_txn_dt + "|" + mchnt_txn_ssn + "|" + mobile_no + "|" + remark;
+		String signValue = amt+"|"+ login_id + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark+"|"+resp_code;
 		//验签
 		boolean flag = SecurityUtils.verifySign(signValue, signature);
 		System.out.println("fuiou callback returnWithhold:" + signValue);
@@ -495,16 +496,14 @@ public class FuiouCallBack {
 		String result = "SUCCESS";
 		if (flag) {
 			try {
-//				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_RETRUN_WITHDRAW, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+//				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
 			}
-			//修改线下充值状态
-//				fssOfflineRechargeService.update(id);
 		} else {
 			result = "FAIL SIGNVALUE";
 		}
-
+		return  result;
 	}
 }

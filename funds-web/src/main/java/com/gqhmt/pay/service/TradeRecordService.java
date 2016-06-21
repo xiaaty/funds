@@ -8,6 +8,7 @@ import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTransRecordReadMapper;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -17,6 +18,8 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
+import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
+import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.util.ThirdPartyType;
@@ -75,6 +78,9 @@ public class TradeRecordService {
     private IFundsTrade fundsTradeImpl;
     @Resource
     private FssTradeRecordService fssTradeRecordService;
+
+    @Resource
+    private FssOfflineRechargeService fssOfflineRechargeService;
 
     public void recharge(final FundAccountEntity entity,final BigDecimal amount,final FundOrderEntity fundOrderEntity,final int  fundType) throws FssException {
         try {
@@ -241,6 +247,7 @@ public class TradeRecordService {
             //充值操作
             try {
                 sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
+                paySuperByFuiou.withholding(entity, fundOrderEntity.getOrderAmount(), GlobalConstants.ORDER_CHARGE,0,0);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
                 //去掉冻结
 //                if(entity.getCustId() != 4){
@@ -272,7 +279,6 @@ public class TradeRecordService {
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
                 fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(),2);
                 //提现手续费收取实现方法
-//                --提现手续费要不要收？/
 //                this.chargeAmount(entity.getUserName(),fundOrderEntity);
             } catch (FssException e){
                 boolean isfundUk = false;
@@ -316,6 +322,10 @@ public class TradeRecordService {
                 }
             }
             fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
+        }else if(fundOrderEntity.getOrderType() ==  GlobalConstants.ORDER_RECHARGE_OFFLINE){
+            sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
+            fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getId(),"0000");
+
         }
 
         fundOrderService.updateOrder(fundOrderEntity,2,"0000","成功");

@@ -125,11 +125,12 @@
 		t.contract_id busi_no,
 		t.real_trade_amount real_trade_amount,
 		case  
-			when t.trade_state=10080002 then '10080002'<!-- 交易成功 -->
-			when t.trade_state=10080003 then '10080003'<!-- 交易部分成功 -->
-			when t.trade_state=10080011 then '10080011'<!-- 交易取消 -->
-			END resp_code	<!-- 交易失败 -->
+			when t.trade_state=10080002 then '10080002'
+			when t.trade_state=10080003 then '10080003'
+			when t.trade_state=10080010 then '10080010'
+			when t.trade_state=10080011 then '10080011'
+		end resp_code
 		FROM t_gq_fss_trade_apply t
-		WHERE  t.mchn_child=#{mchn} AND t.seq_no=#{seqNo}
+		WHERE t.mchn_child=#{mchn} AND t.seq_no=#{seqNo}
 	</select>
 </mapper>

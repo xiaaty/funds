@@ -199,7 +199,7 @@ public class FssTradeApplyController {
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
 			tradeapply.setApplyState("10100005");
-			tradeapply.setTradeState("10030004");//交易取消
+			tradeapply.setTradeState("10109999");//审核未通过
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}
