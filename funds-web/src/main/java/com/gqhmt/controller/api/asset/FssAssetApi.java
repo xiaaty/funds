@@ -112,9 +112,10 @@ public class FssAssetApi {
      * function：变更银行卡信息查询
      */
     @RequestMapping(value = "/getChangeCardInfo/{custNo}",method = {RequestMethod.POST,RequestMethod.GET})
-    public List<ChangeCardBean> getChangeCardInfo(@PathVariable String custNo) throws FssException{
-        List<ChangeCardBean> list = bankCardInfoService.findChangeCardInfo(custNo);
-    	return list;
+    public ChangeCardBean getChangeCardInfo(@PathVariable String custNo) throws FssException{
+        ChangeCardBean cardBean = bankCardInfoService.findChangeCardInfo(custNo);
+        if(cardBean==null) throw new FssException("90004027");
+    	return cardBean;
     }
 
     /**

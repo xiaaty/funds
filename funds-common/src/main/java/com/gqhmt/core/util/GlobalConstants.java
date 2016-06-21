@@ -456,6 +456,7 @@ public class GlobalConstants {
         fundsType.put(1011, "账务修正");
         fundsType.put(1012,"实时提现");
         fundsType.put(1013,"红包变现");
+        fundsType.put(1014,"线下转账充值");
 
         /*
 
@@ -676,7 +677,8 @@ public class GlobalConstants {
 //      TRADE_APPLY_NO__MAPPING.put("11040004","CJSH");
         TRADE_APPLY_NO__MAPPING.put("11040006","CJSH");
         TRADE_APPLY_NO__MAPPING.put("11040012","ZJTX");//账户直接提现
-        
+        TRADE_APPLY_NO__MAPPING.put("11030015","XXCZ");//线下充值
+        TRADE_APPLY_NO__MAPPING.put("11030016","FQDK");//手续费分期代扣
         
         //根据账户类型匹配    1:借款账户，2:线下出借账户，3:线上出借账户，99:冻结金账户
         TRADE_BUSINESS_TYPE__MAPPING.put(10010001,3);

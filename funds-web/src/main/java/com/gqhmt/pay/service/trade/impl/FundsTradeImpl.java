@@ -1,13 +1,13 @@
 package com.gqhmt.pay.service.trade.impl;
 
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -67,6 +67,9 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     @Resource
     private WithdrawApplyService withdrawApplyService;
+
+    @Resource
+    private FssBackplateService fssBackplateService;
 
 
     @Resource
@@ -560,7 +563,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 	 * @param entity
 	 * @param amount
 	 */
-	protected void sendNotice(String tempCode,NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount,BigDecimal chargeAmount) {
+    public void sendNotice(String tempCode,NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount,BigDecimal chargeAmount) {
 		List<Map<String, String>> noticeList = new ArrayList<Map<String, String>>();
 		Map<String, String> noticeMap = new HashMap<String, String>();
 		noticeMap.put("sysCode", CoreConstants.SYS_CODE);// 商户系统编码，在平台系统查看
@@ -578,46 +581,39 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     /**
      * 线下充值
-     * @param dto
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @param amt
      * @return
      * @throws FssException
      */
-    public OfflineRechargeResponse OfflineRechargeApply(OfflineRechargeApplyDto dto) throws FssException{
+        public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException{
         OfflineRechargeResponse offlineRechargeResponse=new OfflineRechargeResponse();
         FssOfflineRechargeEntity fssOfflineRechargeEntity=null;
-        FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(dto.getCust_id()));
+        FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(cust_id));
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004009");
         }
        //创建充值记录信息
-        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge(CommonUtil.getTradeApplyNo(dto.getTrade_type()), "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()),"", "", dto.getAmt(), "", "", null, dto.getTrade_type(), dto.getSeq_no(), dto.getMchn(), "9701", null, "","",primaryAccount.getCustName(),"","","");
-        CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,dto.getAmt(),GlobalConstants.ORDER_RECHARGE_OFFLINE,0,0);
+        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge( "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), amt, trade_type,seq_no, mchn);
+        CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,amt,GlobalConstants.ORDER_RECHARGE_OFFLINE,fssOfflineRechargeEntity.getId(),0);
         //根据返回码判断是否成功，修改线下充值记录状态
         if("0000".equals(response.getCode())){//成功
-            fssOfflineRechargeEntity.setFyAccNo(String.valueOf(response.getMap().get("fy_acc_no")));
-            fssOfflineRechargeEntity.setFyAccNm(String.valueOf(response.getMap().get("fy_acc_nm")));
-            fssOfflineRechargeEntity.setFyBank(String.valueOf(response.getMap().get("fy_bank")));
-            fssOfflineRechargeEntity.setFyBankBranch(String.valueOf(response.getMap().get("fy_bank_branch")));
-            fssOfflineRechargeEntity.setChgCd(String.valueOf(response.getMap().get("chg_cd")));
-            fssOfflineRechargeEntity.setChgDt(String.valueOf(response.getMap().get("chg_dt")));
-            fssOfflineRechargeEntity.setApplyState("10100003");
-            fssOfflineRechargeEntity.setTradeState("10030002");
-            fssOfflineRechargeEntity.setResultState("10080002");
-            fssOfflineRechargeEntity.setDescCode(response.getCode());
+            fssOfflineRechargeService.updateSuccess(fssOfflineRechargeEntity.getId(),response.getMap().get("fy_acc_no"),response.getMap().get("fy_acc_nm"),response.getMap().get("fy_bank"),response.getMap().get("fy_bank_branch"),response.getMap().get("chg_cd"),response.getMap().get("chg_dt"),response.getMap().get("amt"),response.getFundOrderEntity().getOrderNo());
+            offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
+            offlineRechargeResponse.setAmt(new BigDecimal(String.valueOf(response.getMap().get("amt"))));
+            offlineRechargeResponse.setChg_dt(String.valueOf(response.getMap().get("chg_dt")));
+            offlineRechargeResponse.setFy_acc_nm(String.valueOf(response.getMap().get("fy_acc_nm")));
+            offlineRechargeResponse.setFy_acc_no(String.valueOf(response.getMap().get("fy_acc_no")));
+            offlineRechargeResponse.setFy_bank(String.valueOf(response.getMap().get("fy_bank")));
+            offlineRechargeResponse.setFy_bank_branch(String.valueOf(response.getMap().get("fy_bank_branch")));
         }else{//失败
-            fssOfflineRechargeEntity.setApplyState("10100003");
-            fssOfflineRechargeEntity.setTradeState("10030003");
-            fssOfflineRechargeEntity.setResultState("10080010");
-            fssOfflineRechargeEntity.setDescCode(response.getCode());
+            fssOfflineRechargeService.updateFiled(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo());
         }
-        fssOfflineRechargeService.update(fssOfflineRechargeEntity);
-        offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
-        offlineRechargeResponse.setAmt(new BigDecimal(String.valueOf(response.getMap().get("amt"))));
-        offlineRechargeResponse.setChg_dt(String.valueOf(response.getMap().get("chg_dt")));
-        offlineRechargeResponse.setFy_acc_nm(String.valueOf(response.getMap().get("fy_acc_nm")));
-        offlineRechargeResponse.setFy_acc_no(String.valueOf(response.getMap().get("fy_acc_no")));
-        offlineRechargeResponse.setFy_bank(String.valueOf(response.getMap().get("fy_bank")));
-        offlineRechargeResponse.setFy_bank_branch(String.valueOf(response.getMap().get("fy_bank_branch")));
         return offlineRechargeResponse;
     }
 

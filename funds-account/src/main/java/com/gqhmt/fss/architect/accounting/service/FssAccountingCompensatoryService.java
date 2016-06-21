@@ -70,7 +70,7 @@ public class FssAccountingCompensatoryService {
 	 * @param entity
 	 * @throws FssException
 	 */
-	public void insert(FssAccountingServiceCharge entity) throws FssException{
+	public void insert(FssAccountingLoanCompensatory entity) throws FssException{
 		try {
 			fssAccountingCompensatoryWritreMapper.insert(entity);
 		} catch (Exception e) {

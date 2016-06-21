@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.accounting.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity;
+import com.gqhmt.fss.architect.accounting.entity.FssLendAssetEntity;
 
 /**
  * 
@@ -20,5 +20,5 @@ import com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity;
  * -----------------------------------------------------------------
  * 2016年4月28日  jhz      1.0     1.0 Version
  */
-public interface FssLendAssetWriteMapper extends ReadAndWriteMapper<FssLendAssetDetailEntity> {
+public interface FssLendAssetWriteMapper extends ReadAndWriteMapper<FssLendAssetEntity> {
 }

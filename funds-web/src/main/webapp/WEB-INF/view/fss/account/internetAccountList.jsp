@@ -134,7 +134,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15  table-striped table-hover" style="min-width:2600px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2800px;">
                                         <col width="200" />
                                         <col width="150" />
                                         <col width="150" />
@@ -150,7 +150,7 @@
                                         <col width="150" />
                                         <col width="200" />
                                         <col width="200"/>
-                                        <col width="100"/>
+                                        <col width="300"/>
                                         <thead>
                                         <tr>
                                               <td>资金账号</td>
@@ -158,7 +158,7 @@
                                               <td>客户编号</td>
                                               <td>账户类型</td>
                                               <td>证件号码</td>
-                                              <td>移动电话</td>
+                                              <td>移动电话</td> 
                                               <td>账户状态</td>
                                               <td>账户余额</td>
                                               <td>可用余额</td>
@@ -167,8 +167,8 @@
                                               <td>子商户号</td>
                                               <td>父商户号</td>
                                               <td>创建日期</td>
-                                              <td>修改日期</td>
-                                              <td>操作</td>
+                                              <td>修改日期</td> 
+                                              <td>操作</td> 
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -189,7 +189,15 @@
                                                     <td>${bussaccount.mchnParent}</td>
                                                     <td><fmt:formatDate value="${bussaccount.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bussaccount.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a></td>
+                                                    <td>
+                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/1">充值交易</a>
+                                                        &nbsp;
+                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/2">直接充值</a>
+                                                        &nbsp;
+                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/3">直接提现</a>
+                                                        &nbsp;
+                                                       <%-- <a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a>--%>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
