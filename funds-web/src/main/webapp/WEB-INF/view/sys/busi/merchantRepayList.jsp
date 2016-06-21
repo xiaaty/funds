@@ -302,7 +302,7 @@
 
         $("input[name='repayClassName']").val(repayClassName);
 
-        if(mchnUrl == '') {
+        if(repayClassName == '') {
             $.unblockUI();
             jAlert("回盘地址不能为空", '信息提示');
             return;
@@ -347,7 +347,13 @@
                         '</select>' +
                     '</td>' +
                     '<td>' +
-                        '<input type="text" id="repayType"  />' +
+                        '<select class="select02" style="width:202px;" name="repayType" id="repayType">' +
+                            '<fss:dictOrder var="order" dictOrder="repayType">' +
+                                '<option value="${order.key}" <c:if test="${order.key== t.repayType}">selected</c:if> >'  +
+                                    '${order.value}' +
+                                '</option>' +
+                            '</fss:dictOrder>'  +
+                        '</select>' +
                     '</td>' +
                     '<td>' +
                         '<input type="text" id="mchnUrl" style="width: 600px;" />' +
