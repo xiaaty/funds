@@ -460,11 +460,7 @@ public class FssLoanTradeController {
 		loanEntity.setModifyTime(new Date());
 		loanEntity.setStatus("10030001");
 		fssLoanService.update(loanEntity);
-		if("11090006".equals(type)){
-			return "redirect:/trade/tradeApply/1104/11090006";
-		}else {
-			return "redirect:/trade/tradeApply/1104/11092001";
-		}
+		return "redirect:/trade/tradeApply/1104/"+type;
 	}
 
 
