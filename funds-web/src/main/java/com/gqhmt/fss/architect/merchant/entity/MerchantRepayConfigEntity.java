@@ -28,7 +28,7 @@ public class MerchantRepayConfigEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;                         //id
+    private Integer id;                         //id
 
     @Column(name = "mchn_no")
     private String mchnNo;                 //商户号
@@ -42,8 +42,8 @@ public class MerchantRepayConfigEntity {
     @Column(name = "mchn_url")
     private String mchnUrl;                //商户地址
 
-    @Column(name = "repay_className")
-    private String repayClassname;         //回盘地址 -> classAddress
+    @Column(name = "repay_classname")
+    private String repayClassName;         //回盘地址 -> classAddress
 
     @Column(name = "create_time")
     @AutoDate
@@ -53,11 +53,11 @@ public class MerchantRepayConfigEntity {
     @AutoDate
     private Date modifyTime;                //修改时间
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,12 +93,12 @@ public class MerchantRepayConfigEntity {
         this.mchnUrl = mchnUrl;
     }
 
-    public String getRepayClassname() {
-        return repayClassname;
+    public String getRepayClassName() {
+        return repayClassName;
     }
 
-    public void setRepayClassname(String repayClassname) {
-        this.repayClassname = repayClassname;
+    public void setRepayClassName(String repayClassName) {
+        this.repayClassName = repayClassName;
     }
 
     public Date getCreateTime() {

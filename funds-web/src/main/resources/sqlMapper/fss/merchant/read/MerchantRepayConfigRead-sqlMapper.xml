@@ -8,25 +8,23 @@
             r.trade_type tradeType,
             r.repay_type repayType,
             r.mchn_url mchnUrl,
-            r.repay_className repayClassName,
-            r.create_time createTime
-            r.chnKeyEndDate,
-            r.modify_time modifyTime,
+            r.repay_classname repayClassName,
+            r.create_time createTime,
+            r.modify_time modifyTime
         FROM t_gq_fss_mchn_repayconfig r
     </select>
 
     <select id="getMerchantRepayConfigEntityListByMchnNo" resultType="com.gqhmt.fss.architect.merchant.entity.MerchantRepayConfigEntity" parameterType="java.lang.String">
         SELECT
-        r.id id,
-        r.mchn_no mchnNo,
-        r.trade_type tradeType,
-        r.repay_type repayType,
-        r.mchn_url mchnUrl,
-        r.repay_className repayClassName,
-        r.create_time createTime
-        r.chnKeyEndDate,
-        r.modify_time modifyTime,
+            r.id id,
+            r.mchn_no mchnNo,
+            r.trade_type tradeType,
+            r.repay_type repayType,
+            r.mchn_url mchnUrl,
+            r.repay_className repayClassName,
+            r.create_time createTime,
+            r.modify_time modifyTime
         FROM t_gq_fss_mchn_repayconfig r
-        WHERE t.id = #{id }
+        WHERE r.mchn_no = #{mchnNo }
     </select>
 </mapper>

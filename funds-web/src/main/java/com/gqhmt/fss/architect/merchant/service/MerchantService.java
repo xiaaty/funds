@@ -3,10 +3,7 @@ package com.gqhmt.fss.architect.merchant.service;
 import com.gqhmt.fss.architect.merchant.bean.BusinessApiBean;
 import com.gqhmt.fss.architect.merchant.entity.*;
 import com.gqhmt.fss.architect.merchant.mapper.read.*;
-import com.gqhmt.fss.architect.merchant.mapper.write.ApiAddrWriteMapper;
-import com.gqhmt.fss.architect.merchant.mapper.write.MerchantIpWriteMapper;
-import com.gqhmt.fss.architect.merchant.mapper.write.MerchantWriteMapper;
-import com.gqhmt.fss.architect.merchant.mapper.write.MerchantApiWriteMapper;
+import com.gqhmt.fss.architect.merchant.mapper.write.*;
 
 import org.springframework.stereotype.Service;
 
@@ -37,6 +34,8 @@ public class MerchantService {
 	private MerchantApiWriteMapper merchantApiWriteMapper;
 	@Resource
 	private MerchantRepayConfigReadMapper merchantRepayConfigReadMapper;
+	@Resource
+	private MerchantRepayConfigWriteMapper merchantRepayConfigWriteMapper;
 	/**
 	 * 获取商户认证类型
 	 * @param busiCode
@@ -270,7 +269,39 @@ public class MerchantService {
 		return merchantRepayConfigReadMapper.getMerchantRepayConfigEntityList();
 	}
 
+	/**
+	 * 根据商户查询回盘配置集合
+	 * author:xdw
+	 * time:2016年6月16日
+	 * @param
+	 * @return List<MerchantRepayConfigEntity>
+	 * @throws
+	 */
 	public List<MerchantRepayConfigEntity> getMerchantRepayConfigEntityListByMchnNo(String mchnNo) {
 		return merchantRepayConfigReadMapper.getMerchantRepayConfigEntityListByMchnNo(mchnNo);
+	}
+
+	/**
+	 * 修改商户回盘配置
+	 * author:xdw
+	 * time:2016年6月20日
+	 * @param
+	 * @return
+	 * @throws
+	 */
+	public void updateMerchantRepayConfigEntity(MerchantRepayConfigEntity merchantRepayConfigEntity) {
+		merchantRepayConfigWriteMapper.updateMerchantRepayConfigEntity(merchantRepayConfigEntity);
+	}
+
+	/**
+	 * 添加商户回盘配置
+	 * author:xdw
+	 * time:2016年6月21日
+	 * @param
+	 * @return
+	 * @throws
+	 */
+	public void addMerchantRepayConfigEntity(MerchantRepayConfigEntity merchantRepayConfigEntity) {
+		merchantRepayConfigWriteMapper.addMerchantRepayConfigEntity(merchantRepayConfigEntity);
 	}
 }
