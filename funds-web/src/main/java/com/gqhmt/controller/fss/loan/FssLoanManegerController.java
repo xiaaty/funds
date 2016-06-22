@@ -12,6 +12,7 @@ import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.util.CommonUtil;
 
+import com.gqhmt.util.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -138,10 +139,10 @@ public class FssLoanManegerController {
 							
 						row.createCell(9).setCellValue(fssLoanEntity.getMchnChild());
 						
-						row.createCell(10).setCellValue(CommonUtil.dateTostring(fssLoanEntity.getCreateTime())); 
+						row.createCell(10).setCellValue(DateUtil.dateTostring(fssLoanEntity.getCreateTime()));
 						
 						
-						row.createCell(12).setCellValue(CommonUtil.dateTostring(fssLoanEntity.getModifyTime())); 
+						row.createCell(12).setCellValue(DateUtil.dateTostring(fssLoanEntity.getModifyTime()));
 
 					} 
 			}

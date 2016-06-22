@@ -1,33 +1,18 @@
 package com.gqhmt.funds.architect.customer.service;
 
-import com.github.pagehelper.Page;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
-import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
-import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.funds.architect.customer.bean.BankCardBean;
-import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.UserEntity;
-import com.gqhmt.funds.architect.customer.mapper.read.BankCardInfoReadMapper;
-import com.gqhmt.funds.architect.customer.mapper.read.BankReadMapper;
-import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.read.GqUserReadMapper;
-import com.gqhmt.funds.architect.customer.mapper.write.BankCardinfoWriteMapper;
-import com.gqhmt.funds.architect.customer.mapper.write.BankWriteMapper;
 
-import org.apache.commons.lang3.StringUtils;
+import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -52,6 +37,9 @@ public class GqUserService {
 
     @Resource
     private GqUserReadMapper gqUserReadMapper;
+
+	@Resource
+	private GqUserWriteMapper gqUserWriteMapper;
 
 	/**
 	 * 根据id查询用户信息
@@ -87,6 +75,34 @@ public class GqUserService {
 		userEntity.setIsVerify(0);
 		return userEntity;
 	}
+
+
+	/**
+	 * 创建用户
+	 * @param name
+	 * @param mobile
+	 * @param id
+	 * @return
+	 * @throws FssException
+	 */
+	public UserEntity createUser(String name,String mobile,Long id) throws FssException{
+		UserEntity userEntity=new UserEntity();
+		userEntity.setUserUuid(this.getUUID());
+		userEntity.setUserName(name);
+		userEntity.setMobilePhone(mobile);
+		userEntity.setCreateTime((new Timestamp(new Date().getTime())));
+		userEntity.setModifyTime((new Timestamp(new Date().getTime())));
+		userEntity.setIntegral(0);
+		userEntity.setCreditLevel(0);
+		userEntity.setCustId(id!= null ? id.intValue():0);
+		userEntity.setUserFrom(0);
+		userEntity.setIsFirstDebt(0);
+		userEntity.setUserType(1);
+		userEntity.setIsVerify(0);
+		this.gqUserWriteMapper.insertSelective(userEntity);
+		return userEntity;
+	}
+
 	
 	/**
 	 * 生成UUid

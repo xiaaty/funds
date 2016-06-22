@@ -1,6 +1,6 @@
 package com.gqhmt.core.util;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.extServInter.dto.Response;
 import org.junit.Test;

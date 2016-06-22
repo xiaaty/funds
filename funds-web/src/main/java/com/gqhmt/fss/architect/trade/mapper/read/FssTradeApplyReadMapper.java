@@ -89,6 +89,12 @@ public interface FssTradeApplyReadMapper extends ReadMapper<FssTradeApplyEntity>
 	 * function：查询冠E通代扣申请回盘数据
 	 */
 	public WithHoldApplyResponse selectTradeApplyData(@Param("mchn")String mchn,@Param("seqNo")String seqNo);
-	
-	
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年6月16日
+	 * function：根据申请状态的交易申请列表
+	 */
+	public List<FssTradeApplyEntity> selectByApplyState(@Param("applyState")String applyState);
+
 }

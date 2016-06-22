@@ -1,6 +1,6 @@
 package com.gqhmt.funds.architect.order.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.bean.FundOrderBean;
@@ -134,6 +134,7 @@ public class FundOrderService  {
 		fundOrderEntity.setOrderState(status);
 		fundOrderEntity.setRetCode(code);
 		fundOrderEntity.setRetMessage(msg);
+        fundOrderEntity.setLastModifyTime(new Date());
 		try {
 //			this.insert(fundOrderEntity);
 			this.update(fundOrderEntity);

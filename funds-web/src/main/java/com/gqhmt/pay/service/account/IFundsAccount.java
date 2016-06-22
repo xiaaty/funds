@@ -1,8 +1,7 @@
 package com.gqhmt.pay.service.account;
 
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
 import com.gqhmt.extServInter.dto.loan.CardChangeDto;
@@ -10,7 +9,6 @@ import com.gqhmt.extServInter.dto.loan.ChangeCardResponse;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 
 /**
  * Filename:    com.gq.funds.interaction.IFundsAccount
@@ -44,25 +42,25 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 public interface IFundsAccount {
 
 
-    /**
-     * 创建账户
-     *
-     * @param createAccountDto 参数
-     * @throws FssException
-     */
-    public boolean createAccount(CreateAccountDto createAccountDto) throws FssException;
+//    /**
+//     * 创建账户
+//     *
+//     * @param createAccountDto 参数
+//     * @throws FssException
+//     */
+//    public boolean createAccount(CreateAccountDto createAccountDto) throws FssException;
 
 
-    /**
-     * 创建账户
-     *
-     * @param customerInfoEntity 客户实体
-     * @param pwd                支付渠道登陆密码
-     * @param taradPwd           支付渠道交易密码
-     * @throws FssException
-     */
-    public boolean createAccount(CustomerInfoEntity customerInfoEntity,
-			String pwd, String taradPwd) throws FssException;
+//    /**
+//     * 创建账户
+//     *
+//     * @param customerInfoEntity 客户实体
+//     * @param pwd                支付渠道登陆密码
+//     * @param taradPwd           支付渠道交易密码
+//     * @throws FssException
+//     */
+//    public boolean createAccount(CustomerInfoEntity customerInfoEntity,
+//			String pwd, String taradPwd) throws FssException;
 
 
     /**
@@ -139,7 +137,11 @@ public interface IFundsAccount {
 	 */
     public ChangeCardResponse bankCardChangeCallBack(String seq_no,String mchn) throws FssException;
     
+
+
+//
+//    public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException;
     
-    public Integer createFundAccount(CreateAccountDto createAccountDto) throws FssException;
-    
+
+
 }

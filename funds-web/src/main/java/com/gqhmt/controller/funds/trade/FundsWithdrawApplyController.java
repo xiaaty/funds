@@ -2,7 +2,7 @@ package com.gqhmt.controller.funds.trade;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.business.architect.invest.service.InvestmentService;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.trade.WithdrawDto;

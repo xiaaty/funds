@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.customer.service;
 
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.*;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
@@ -154,9 +154,27 @@ public class FssCustomerService {
 		    return fssCustomerEntity;
 	        
 	  }
-    
-    
-    
-    
-    
+
+    /**
+     * 更新新版客户信息与富友相同
+     * @param custId
+     * @param custName
+     * @param mobile
+     * @param certNo
+     * @throws FssException
+     */
+    /*public void  updateFssCustomerInfo(Long custId,String custName,String mobile,String certNo) throws  FssException{
+        Map map=new HashMap();
+        map.put("custId", custId);
+        map.put("custName", custName);
+        map.put("mobile", mobile);
+        map.put("certNo", certNo);
+        try {
+            customerWriteMapper.updateFssCustomerInfo(map);
+        }catch (Exception e){
+            throw new FssException("更新失败",e.getCause());
+        }
+    }*/
+
+
 }

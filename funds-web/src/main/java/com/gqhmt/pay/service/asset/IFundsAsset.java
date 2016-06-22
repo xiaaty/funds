@@ -1,7 +1,7 @@
 package com.gqhmt.pay.service.asset;
 
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 
 import java.util.Map;
 

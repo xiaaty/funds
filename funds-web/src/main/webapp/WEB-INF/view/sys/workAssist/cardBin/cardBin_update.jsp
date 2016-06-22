@@ -47,7 +47,7 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <form id="cardBInForm" action="${contextPath}/fss/customer/updateCardBin" method="post">
+                <form id="cardBInForm" action="${contextPath}/sys/customer/updateCardBin" method="post">
                     <%--     <input type="hidden" value="${dict.dictId}" name="dictId"  default="0"/> --%>
                     <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
 
@@ -72,6 +72,7 @@
                                                     <td>
                                                         <label class="input">
                                                             <input type="text" maxlength="50"  name="bankName" value="${cardBin.bankName}"  style="width:256px;" />
+                                                            <input type="hidden" maxlength="50"  name="id" value="${cardBin.id}"  style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -79,7 +80,7 @@
                                                     <td align="left">机构代码：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="8" name="organCode" value="${cardBin.organCode}" style="width:256px;" />
+                                                            <input type="text" maxlength="8" name="organCode" value="${cardBin.organCode}"  style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -115,10 +116,18 @@
                                                         </label>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td align="left">创建&nbsp;&nbsp;时间：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" maxlength="50" readonly name="createTime" value="<fss:fmtDate value="${cardBin.createTime}" />" style="width:256px;" />
+                                                        </label>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                             <div class="mb20" id="wid-id-713">
-                                                <button class="btn btn-default table-nobg-btn" type="button" id="updateCardBin">保存</button>
+                                                <button class="btn btn-default table-nobg-btn" type="button" id="addCardBin">保存</button>
                                                 <button class="btn btn-primary table-nobg-btn" type="button" onclick="location.href='${contextPath}/fss/customer/cardBinList'">返&nbsp;&nbsp;&nbsp;回</button>
                                             </div>
                                         </div>
@@ -139,18 +148,18 @@
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
-        $("#updateCardBin").click(function () {
+        $("#addCardBin").click(function () {
             if (validateCheck()) {
                 $("#cardBInForm").ajaxSubmit({
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
                         if (data.code == '0000') {
-                            jAlert("修改成功!", '信息提示');
+                            jAlert("添加成功!", '信息提示');
                             //自动跳转
-                            parent.location.href="${contextPath}/fss/customer/cardBinList";
+                            parent.location.href="${contextPath}/sys/customer/cardBinList";
                         } else {
-                            jAlert("修改失败", '消息提示');
+                            jAlert("添加失败", '消息提示');
                             return;
                         }
                     }

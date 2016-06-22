@@ -1,7 +1,6 @@
 package com.gqhmt.pay.core;
 
 import com.gqhmt.TestService;
-import com.gqhmt.fss.event.account.CreateAccountEvent;
 import com.gqhmt.pay.core.factory.ThirdpartyFactory;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -35,8 +34,5 @@ public class ConfigTest extends TestService {
         ThirdpartyFactory.command(PayCommondConstants.PAY_CHANNEL_FUIOU,"0100",null);
     }
 
-    @Test
-    public void eventTest(){
-        applicationContext.publishEvent(new CreateAccountEvent(""));
-    }
+
 }

@@ -82,7 +82,13 @@
                                                 </td>
                                             </tr>
                                             <tr class="lh32">
+                                                <c:if test="${loan.tradeType=='11090005'}">
+
+                                                    <td align="left">抵押权人客户id：</td>
+                                                </c:if>
+                                                <c:if test="${loan.tradeType=='11090001'}">
                                                 <td align="left">抵押权人资金平台账号：</td>
+                                                </c:if>
                                                 <td>
                                                  <section style="width:210px">
                                                         <label class="input">
@@ -95,7 +101,7 @@
                                                 <td align="left">客户姓名：</td>
                                                 <td>
 												            <label class="input" style="width:210px">
-												            <input type="hidden" name="userNo" value="${loan.userNo }">
+												            <input type="text" name="userNo" readonly value="${userName}">
 <%-- 												             <input type="text" name="" readonly="readonly" value="${userName }"> --%>
 												            </label>
 												</td>
@@ -113,12 +119,8 @@
                                                 <td>
                                                 <section style="width:210px">
                                                 <label class="input" >
-                                                    <fss:dictOrder var="order" dictOrder="tradeType">
-                                                    <c:if test="${loan.tradeType == order.key}">
-                                                     <input type="text" name="" readonly="readonly" value="${order.value}">
+                                                     <input type="text" name="" readonly="readonly" value=" <fss:dictView key='${loan.tradeType}' />">
                                                      <input type="hidden" name="tradeType" readonly="readonly" value="${order.key}">
-                                                     </c:if>
-                                                   	 </fss:dictOrder>
                                                    	 </label>
                                                    	  </section>
                                                 </td>
@@ -146,11 +148,14 @@
 <%@include file="../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
+<script src="${contextPath}/js/util/lock.js"></script>
 
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
 	    $("#btn-success").click(function () {
+            //xdw 添加锁屏
+            bilocUtil("保存...");
 	        if (validateCheck()) {
 	            /*if (!confirm("确认 修改商户信息吗?")) {
 	               return false;
@@ -160,15 +165,18 @@
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
+                            $.unblockUI();
 	                        jAlert("代扣已提交!", '确认信息');
-                            parent.location.href="${contextPath}/loan/trade/11090001";
+                            parent.location.href="${contextPath}/loan/trade/${type}";
 	                    } else if(data.code == '0001'){
+                            $.unblockUI();
 	                    	jAlert(data.message, '确认信息');
 	                        return;
 	                    }
 	                }
 	            });
 	        }
+            $.unblockUI();
 	    });
     });
 	//校验函数

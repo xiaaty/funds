@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.channelDeploy.mapper.read.ChannelMerchantReadMapper">
+    <select id="getMerchantListByOrgId" parameterType="java.lang.Integer" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelMerchantEntity">
+        SELECT
+            t.id id,
+            t.option_name optionName,
+            t.option_value optionValue,
+            t.org_id orgId,
+            t.conf_of_people confOfPeople,
+            t.create_time createTime,
+            t.modify_time modifyTime
+        FROM t_gq_fss_channel_merchant t
+        WHERE t.org_id = #{orgId }
+    </select>
+
+    <select id="getMerchantEntity" parameterType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelMerchantEntity" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelMerchantEntity">
+          SELECT
+            t.id id,
+            t.option_name optionName,
+            t.option_value optionValue,
+            t.org_id orgId,
+            t.conf_of_people confOfPeople,
+            t.create_time createTime,
+            t.modify_time modifyTime
+        FROM t_gq_fss_channel_merchant t
+        WHERE 1 = 1
+        <if test="optionName!=null and optionName!=''">
+           AND t.option_name = #{optionName}
+        </if>
+        <if test="optionValue!=null and optionValue!=''">
+           AND t.option_value = #{optionValue}
+        </if>
+        <if test="orgId!=null and orgId!=''">
+            AND t.org_id = #{orgId}
+        </if>
+        order by t.create_time desc
+    </select>
+
+    <select id="getMerchantNameOrValue" parameterType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelMerchantEntity" resultType="com.gqhmt.fss.architect.channelDeploy.entity.ChannelMerchantEntity">
+        SELECT
+        t.id id,
+        t.option_name optionName,
+        t.option_value optionValue,
+        t.org_id orgId,
+        t.conf_of_people confOfPeople,
+        t.create_time createTime,
+        t.modify_time modifyTime
+        FROM t_gq_fss_channel_merchant t
+        WHERE 1 = 1
+        <if test="(optionName!=null and optionName!='') || (optionValue!=null and optionValue!='')">
+            AND (t.option_name = #{optionName}  OR  t.option_value = #{optionValue})
+        </if>
+        <if test="orgId!=null and orgId!=''">
+            AND t.org_id = #{orgId}
+        </if>
+      <!--  <if test="optionValue!=null and optionValue!=''">
+            AND t.option_value = #{optionValue}
+        </if>
+        <if test="orgId!=null and orgId!=''">
+            AND t.org_id = #{orgId}
+        </if>-->
+        order by t.create_time desc
+    </select>
+</mapper>

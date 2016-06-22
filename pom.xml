@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>funds</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.8-SNAPSHOT</version>
 
 
 
@@ -29,10 +29,6 @@
 	<modules>
 		<module>funds-web</module>
         <module>funds-account</module>
-        <module>funds-accounting</module>
-        <module>funds-pay</module>
-        <module>funds-apiService</module>
-        <module>funds-business</module>
         <module>funds-common</module>
 	</modules>
 
@@ -74,7 +70,7 @@
 
 		<cglib.version>2.2.2</cglib.version>
 
-		<quartz.varsion>2.2.1</quartz.varsion>
+		<quartz.varsion>2.2.3</quartz.varsion>
 
 		<shiro.version>1.2.4</shiro.version>
 	</properties>
@@ -419,7 +415,12 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.2</version>
+			<version>${quartz.varsion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>${quartz.varsion}</version>
 		</dependency>
 
 

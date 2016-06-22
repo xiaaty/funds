@@ -22,8 +22,8 @@ import com.gqhmt.extServInter.dto.SuperDto;
  * 2016年3月23日  jhz      1.0     1.0 Version
  */
 public class RePaymentDto extends SuperDto{
-	
-	private String busi_no;	//标的编号
+
+	private String busi_bid_no;	//标的编号
 	
 	private String repayment_no;	//回款编号
 	
@@ -33,16 +33,23 @@ public class RePaymentDto extends SuperDto{
 
 	private String contract_no;	//合同号
 
-	private BigDecimal contract_amt;	//借款人实际还款金额
+	private String period;	//期数
 
 	private BigDecimal payment_amt;	//回款金额
 
-	private String period;	//期数
+	private BigDecimal contract_amt;	//借款人实际还款金额
 
 	private String remark;	//备注
 	
 	private String payment_type;	//回款类型
 
+	public String getBusi_bid_no() {
+		return busi_bid_no;
+	}
+
+	public void setBusi_bid_no(String busi_bid_no) {
+		this.busi_bid_no = busi_bid_no;
+	}
 
 	public String getRepayment_no() {
 		return repayment_no;
@@ -92,6 +99,14 @@ public class RePaymentDto extends SuperDto{
 		this.payment_amt = payment_amt;
 	}
 
+	public BigDecimal getContract_amt() {
+		return contract_amt;
+	}
+
+	public void setContract_amt(BigDecimal contract_amt) {
+		this.contract_amt = contract_amt;
+	}
+
 	public String getRemark() {
 		return remark;
 	}
@@ -107,13 +122,4 @@ public class RePaymentDto extends SuperDto{
 	public void setPayment_type(String payment_type) {
 		this.payment_type = payment_type;
 	}
-
-	public BigDecimal getContract_amt() {
-		return contract_amt;
-	}
-
-	public void setContract_amt(BigDecimal contract_amt) {
-		this.contract_amt = contract_amt;
-	}	
-	
 }

@@ -1,6 +1,6 @@
 package com.gqhmt.quartz.job.callback;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.FssBeanUtil;
 import com.gqhmt.core.util.LogUtil;
@@ -45,7 +45,7 @@ public class CallbackJob extends SupperJob {
 
     @Resource
     private ApplicationContext context;
-    @Scheduled(cron="0 0/2 *  * * * ")
+    @Scheduled(cron="0 0/1 *  * * * ")
     public void execute() throws JobExecutionException, FssException {
         if(!isIp("upload")){
             return;

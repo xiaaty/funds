@@ -1,6 +1,6 @@
 package com.gqhmt.pay.service.loan;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
 
@@ -25,13 +25,13 @@ import com.gqhmt.extServInter.dto.loan.MarginDto;
  * 2016/3/6  柯禹来   1.0     1.0 Version
  */
 public interface ILoan {
-	/**
-	 * 
-	 * author:kyl
-	 * time:2016年3月9日
-	 * function：开户
-	 */
-	public String createLoanAccount(CreateLoanAccountDto dto) throws FssException;
+//	/**
+//	 *
+//	 * author:kyl
+//	 * time:2016年3月9日
+//	 * function：开户
+//	 */
+//	public String createLoanAccount(CreateLoanAccountDto dto) throws FssException;
 	
 	/**
 	 * 保证金退还

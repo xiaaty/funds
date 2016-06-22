@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fss" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -14,7 +12,7 @@
     
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
-        .table-nobg-btn {
+        .borrow-rep-table12 {
             font: 15/29px;
             height: 31px;
             line-height: 31px;
@@ -56,6 +54,7 @@
             <section id="widget-grid" class="">
                 <div class="row">
                     <!-- NEW WIDGET START -->
+
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="jarviswidget" id="cardBinList"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
@@ -63,7 +62,7 @@
                             </header>
                             <!-- widget div-->
                             <div>
-                                <form class="smart-form" id="cardBinForm" action="${contextPath}/fss/customer/cardBinList" method="post" >
+                                <form class="smart-form" id="cardBinForm" action="${contextPath}/sys/customer/cardBinList" method="post" >
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
                                         <!-- This area used as dropdown edit box -->
@@ -105,7 +104,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <footer>
+                                        <footer><button type="button" class="btn btn-default " id="btn_add">添&nbsp;&nbsp;&nbsp;加</button>
                                              <button class="btn btn-primary" onclick="verify();">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
@@ -117,7 +116,7 @@
                         </div>
 
                         </div>
-    <div id="content">
+                <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
@@ -130,13 +129,10 @@
                         <!-- widget div-->
                         <div>
                             <form class="smart-form" id="">
-                                <!-- widget edit box -->
-                                <div class="jarviswidget-editbox">
-                                    <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
-                                </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                    <!-- widget edit box -->
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1400px;">
                                     	<col width="50" />
                                         <col width="200" />
@@ -175,7 +171,7 @@
                                                <td><fss:fmtDate value="${t.createTime}" /></td>
                                                <td><fss:fmtDate value="${t.modifyTime}" /></td>
                                               <td>
-                                               	<a href="${contextPath}/fund/updateBankCard/${t.id}">修改</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                                               	<a href="${contextPath}/sys/customer/toUpdateCardBin/${t.id}">修改</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                                               	<a href="javascript:void(0)" onclick="deleteBankCard(${t.id})">删除</a>
                                               </td>
                                            </tr>
@@ -208,25 +204,28 @@
     }
     //添加按钮按下
     $("#btn_add").button().click(function() {
-        window.open("${contextPath}/fss/customer/toAddCardBin","_self");
+        window.open("${contextPath}/sys/customer/toAddCardBin","_self");
     });
 
-   	删除
+//   	删除
    function deleteBankCard(id){
+                if(confirm("您确认删除本条信息吗？")){
 	            $.ajax({
-	            	url : "${contextPath}/fss/customer/deleteCardBin"+id,
+	            	url : "${contextPath}/sys/customer/deleteCardBin/"+id,
 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
 	                      jAlert("删除成功!", '确认信息');
+                            location.reload();
 	                      //自动跳转
-	                      parent.location.href="${contextPath}/fss/customer/cardBinList";
+	                      <%--parent.location.href="${contextPath}/sys/customer/cardBinList";--%>
 	                    } else {
 	                        return;
 	                    }
 	                }
 	            });
+                }
     }
 
     

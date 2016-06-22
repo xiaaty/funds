@@ -1,6 +1,6 @@
 package com.gqhmt.quartz.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
@@ -8,7 +8,6 @@ import com.gqhmt.fss.architect.fuiouFtp.service.FuiouUploadFileService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
-import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
 import org.springframework.stereotype.Service;

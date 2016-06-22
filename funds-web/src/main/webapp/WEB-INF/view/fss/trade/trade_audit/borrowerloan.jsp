@@ -154,10 +154,8 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2000px;">
                                         <col width="50" />
-                                        <col width="200" />
-                                        <col width="200" /> 
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="100" />
@@ -172,8 +170,8 @@
                                         <thead>
                                         <tr>
                                             <td></td> 
-                                            <td>抵押权人资金平台账号</td>
-                                            <td>借款人资金平台账号</td>
+                                            <%--<td>抵押权人资金平台账号</td>
+                                            <td>借款人资金平台账号</td>--%>
                                             <td>客户编号</td>
                                             <td>合同编号</td>
                                             <td>合同金额  </td>
@@ -191,8 +189,8 @@
                                         <c:forEach items="${page.list}" var="t"  varStatus="l">
                                                 <tr>
                                                     <td>${l.index+1}</td>
-                                                    <td>${t.mortgageeAccNo}</td>
-                                                    <td>${t.accNo}</td>
+                                                    <%--<td>${t.mortgageeAccNo}</td>
+                                                    <td>${t.accNo}</td>--%>
                                                     <td>${t.custNo}</td>
                                                     <td>${t.contractNo}</td>
                                                     <td>
@@ -208,8 +206,12 @@
 	                                                    <fss:dictView key="${t.status}" />
                                                     </td>
                                                     <td>
-                                                    <fss:dictView key="${t.tradeType}" />
+                                                        <fss:dictView key="${t.tradeType}" />
                                                     </td>
+
+                                                    <%--xdw  缺少交易流水号。--%>
+                                                    <%--<td>${t.seqNo}</td>--%>
+
                                                     <td>${t.mchnParent}</td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -218,7 +220,7 @@
                                                     <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
                                                     </c:if>
                                                     &nbsp; &nbsp;
-                                                      <c:if test="${t.tradeType == '11090001' && t.status != '10050002'}">
+                                                      <c:if test="${t.tradeType == '11090001' ||t.tradeType=='11090005' && t.status != '10050002'}">
                                                       		<c:if test="${t.status== '10050001'||t.status== '10080003'||t.status== '10080010'}">
 																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
 																&nbsp; &nbsp;
@@ -232,7 +234,7 @@
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
-                                                      <c:if test="${t.tradeType == '11090002'}">
+                                                      <c:if test="${t.tradeType == '11090002' || t.tradeType == '11090004'}">
 															<c:if test="${t.status == '10050009'}">
 																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
 																&nbsp; &nbsp;

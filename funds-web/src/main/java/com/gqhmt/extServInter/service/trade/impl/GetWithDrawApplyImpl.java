@@ -1,7 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
 import com.gqhmt.annotations.APITradeTypeValid;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
@@ -36,17 +36,21 @@ public class GetWithDrawApplyImpl implements IGetWithDrawApply{
 	/**
 	 * 借款人提现申请：11091001
 	 * 冠E通借款人放款：11091002
-	 * 抵押权人提现：11040007
+	 * 代偿人提现：11040007
 	 * 委托出借提现：11040006
 	 * 账户直接提现：11040012
+	 * 抵押权人提现：11092001
+	 * 归还保证金提现:11091003
 	 */
-	@APITradeTypeValid(value = "11091001,11091002,11040007,11040006,11040012")
+	@APITradeTypeValid(value = "11091001,11091002,11040007,11040006,11040012,11092001,11091003")
     @Override
     public Response execute(SuperDto dto){
     	Response response = new Response();
-    	try {
-    		fssTradeApplyService.careateTradeApply((GETWithholdAndDrawDto)dto);
-			 response.setResp_code("0000");
+		GETWithholdAndDrawDto getWithholdAndDrawDto = 	(GETWithholdAndDrawDto)dto;
+		try {
+			fssTradeApplyService.whithdrawApply(null,null,getWithholdAndDrawDto.getTrade_type(),getWithholdAndDrawDto.getAmt(),getWithholdAndDrawDto.getMchn(),getWithholdAndDrawDto.getSeq_no(),Long.parseLong(getWithholdAndDrawDto.getCust_no())
+					,Integer.parseInt(getWithholdAndDrawDto.getCust_type()),getWithholdAndDrawDto.getContract_no(),getWithholdAndDrawDto.getBusi_no(),null,Integer.parseInt(getWithholdAndDrawDto.getSettle_type()));
+			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

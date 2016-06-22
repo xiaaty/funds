@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper">
+	<sql id="selectSql">
+		SELECT 
+		  t.`id` id,
+		  t.`apply_no` applyNo,
+		  t.`apply_type` applyType,
+		  t.`cust_id` custId,
+		  t.`cust_type` custType,
+		  t.`cust_name` custName,
+		  t.`fy_acc_no` fyAccNo,
+		  t.`fy_acc_nm` fyAccNm,
+		  t.`order_no` orderNo,
+		  t.`amt` amt,
+		  t.`apply_state` applyState,
+		  t.`trade_state` tradeState,
+		  t.`create_time` createTime,
+		  t.`modify_time` modifyTime,
+		  t.`busi_no` busiNo,
+		  t.`busi_type` busiType,
+		  t.`seq_no` seqNo,
+		  t.`mchn` mchn,
+		  t.`channel_no` channelNo,
+		  t.`cust_no` custNo,
+		  t.`chg_cd` chgCd,
+  		  t.`chg_dt` chgDt,
+  		  t.`fy_bank` fyBank,
+  		  t.`fy_bank_branch` fyBankBranch,
+  		  t.`acc_no` accNo,
+  		  t.`result_state` resultState,
+  		  t.`mchnt_txn_ssn` mchntTxnSsn,
+  		  t.`mchnt_cd` mchntCd,
+          t.`desc_code` descCode
+		FROM `t_gq_fss_offline_recharge` t
+	</sql>
+	<select id="queryFssOfflineRecharegList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity">
+			<include refid="selectSql"/>
+			<where>
+				<if test="applyNo != null and applyNo != ''">
+					AND t.apply_no like CONCAT('%',#{applyNo},'%')
+				</if>
+				<if test="busiNo!=null and busiNo!=''">
+					AND t.busi_no like CONCAT('%',#{busiNo},'%')
+				</if>
+				<if test="startTime != null and startTime != '' ">
+					and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+				</if>
+				<if test="endTime != null and endTime != '' ">
+					and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+				</if>
+			</where>
+		order by t.create_time desc
+	</select>
+
+	<!--线下充值回盘 -->
+	<select id="getOfflineRechargeResponse" resultType="com.gqhmt.extServInter.dto.Response" >
+		SELECT
+		case
+		when t.result_state='10120002' then '0000'<!-- 交易成功 -->
+		else t.result_state
+		end resp_code
+		FROM `t_gq_fss_offline_recharge` t
+		WHERE t.mchn_child=#{mchn} AND t.seq_no=#{seqNo}
+	</select>
+
+	<select id="queryFssOfflineRecharge" resultType="com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity">
+		<include refid="selectSql"/>
+		WHERE t.`mchnt_txn_ssn`=#{mchntTxnSsn}
+		AND t.`mchnt_cd`=#{mchntCd}
+	</select>
+
+
+</mapper>

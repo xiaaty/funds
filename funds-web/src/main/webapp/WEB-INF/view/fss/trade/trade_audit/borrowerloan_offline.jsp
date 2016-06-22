@@ -154,10 +154,10 @@
                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_exp"><i class="fa fa-plus"></i>&nbsp;导出</button>
                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_imp"><i class="fa fa-plus"></i>&nbsp;导入</button>
                                     </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2200px;">
                                         <col width="50" />
-                                        <col width="200" />
-                                        <col width="200" />
+                                       <%-- <col width="200" />
+                                        <col width="200" />--%>
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="100" />
@@ -168,13 +168,14 @@
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
+                                        <col width="200" />
                                         <col width="200"/>
                                         <col width="300"/>
                                         <thead>
                                         <tr>
                                             <td></td>
-                                            <td>抵押权人资金平台账号</td>
-                                            <td>借款人资金平台账号</td>
+                                            <%--<td>抵押权人资金平台账号</td>
+                                            <td>借款人资金平台账号</td>--%>
                                             <td>客户编号</td>
                                             <td>合同编号</td>
                                             <td>合同金额  </td>
@@ -183,6 +184,7 @@
                                             <td>交易状态 </td>
                                             <td>交易结果</td>
                                             <td>交易类型</td>
+                                            <td>交易流水号</td>
                                             <td>所属商户 </td>
                                             <td>交易日期 </td>
                                             <td>修改日期 </td>
@@ -195,8 +197,9 @@
                                                     <td>${l.index+1}</td>
                                                     
                                                     <td>${t.mortgageeAccNo}</td>
-                                                    <td>${t.accNo}</td>
-                                                    <td>${t.userNo}</td>
+                                                    <%--xdw  多余的两行。--%>
+                                                    <%--<td>${t.accNo}</td>
+                                                    <td>${t.userNo}</td>--%>
                                                     <td>${t.contractNo}</td>
                                                     <td>
                                                         <fss:money money="${t.contractAmt}"/>
@@ -217,9 +220,10 @@
                                                     </td>
                                                     <td>
                                                       <fss:dictOrder var="order" dictOrder="tradeType">
-                                                    <c:if test="${t.tradeType == order.key}">${order.value}</c:if>
+                                                        <c:if test="${t.tradeType == order.key}">${order.value}</c:if>
                                                    	 </fss:dictOrder>
                                                     </td>
+                                                    <td>${t.seqNo}</td>
                                                     <td>${t.mchnParent}</td>
                                                   <td> <fss:fmtDate value="${t.createTime}"/></td>
                                                     <td> <fss:fmtDate value="${t.modifyTime}"/></td>

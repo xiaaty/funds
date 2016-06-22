@@ -181,7 +181,7 @@ a.DTTT_button_print span {
 }
 
 
-a.DTTT_button_csv span { background: url(../images/csv.png) no-repeat bottom right; }
+a.DTTT_button_csv span { background: url(../images/txt.png) no-repeat bottom right; }
 a.DTTT_button_csv:hover span { background: url(../images/csv_hover.png) no-repeat center right; }
 
 a.DTTT_button_xls span { background: url(../images/xls.png) no-repeat center right; }

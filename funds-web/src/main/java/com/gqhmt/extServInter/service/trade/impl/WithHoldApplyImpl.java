@@ -1,7 +1,7 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
 import com.gqhmt.annotations.APITradeTypeValid;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
@@ -39,13 +39,16 @@ public class WithHoldApplyImpl implements IWithHoldApply{
 	 * 借款人充值:11030007
 	 * 抵押权人充值:11030008
 	 * 直接代扣:11030014
+	 * 手续费分期代扣：11030016
 	 */
-	@APITradeTypeValid(value = "11030006,11030007,11030008,11030014")
+	@APITradeTypeValid(value = "11030006,11030007,11030008,11030014,11093001,11030016")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
+		GETWithholdAndDrawDto getWithholdAndDrawDto = 	(GETWithholdAndDrawDto)dto;
     	try {
-    		fssTradeApplyService.careateTradeApply((GETWithholdAndDrawDto)dto);
+    		fssTradeApplyService.whithholdingApply(null,null,getWithholdAndDrawDto.getTrade_type(),getWithholdAndDrawDto.getAmt(),getWithholdAndDrawDto.getMchn(),getWithholdAndDrawDto.getSeq_no(),Long.parseLong(getWithholdAndDrawDto.getCust_no())
+						,Integer.parseInt(getWithholdAndDrawDto.getCust_type()),getWithholdAndDrawDto.getContract_no(),getWithholdAndDrawDto.getBusi_no(),null,false);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

@@ -1,10 +1,9 @@
 package com.gqhmt.sys.controller;
 
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.ResourceUtil;
-import com.gqhmt.sys.service.UserService;
 import com.octo.captcha.service.image.ImageCaptchaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,8 +21,6 @@ public class LoginController {
 	@Resource
 	private ImageCaptchaService imageCaptchaService;
 	
-	@Resource
-	private UserService  userService;
 
 		@RequestMapping(value="/login",method=RequestMethod.POST)
 		public Object login(@RequestParam(value="loginName",required=false,defaultValue="")String loginName,

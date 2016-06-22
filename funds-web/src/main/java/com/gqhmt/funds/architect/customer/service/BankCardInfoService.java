@@ -1,9 +1,10 @@
 package com.gqhmt.funds.architect.customer.service;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.fss.architect.customer.bean.ChangeCardBean;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
 import com.gqhmt.pay.exception.CommandParmException;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -218,16 +218,7 @@ public class BankCardInfoService {
 		}
 	}
 
-    /**
-     * 根据客户编号查询返回银行信息
-     * @param custId
-     * @return
-     */
-    public List<BankCardInfoEntity> queryInvestmentByCustId(Integer custId){
-    	BankCardInfoEntity queryEntity = new BankCardInfoEntity();
-	    queryEntity.setCustId(custId);
-		return bankCardinfoReadMapper.select(queryEntity);
-    }
+
     /**
      * 查询该客户是否已配置银行卡信息
      * @param bankCardId
@@ -391,7 +382,7 @@ public class BankCardInfoService {
 
 	/**
 	 * 根据id得到银行信息
-	 * @param bankinfo
+	 * @param
 	 * @return
 	 */
 	public BankEntity getBankById(Long id){
@@ -408,7 +399,7 @@ public class BankCardInfoService {
 	
 	/**
 	 * 银行卡管理
-	 * @param bankcard
+	 * @param
 	 * @return
 	 */
 	public List<BankCardInfoEntity> findAllbankCards(Map<String,String> map){
@@ -483,13 +474,15 @@ public class BankCardInfoService {
 	}
 	
 	
-	 public BankCardInfoEntity getInvestmentByCustId(Integer custId){
-	    	BankCardInfoEntity queryEntity = new BankCardInfoEntity();
-		    queryEntity.setCustId(custId);
-			return bankCardinfoReadMapper.selectOne(queryEntity);
-	    }
-	
-	
+
+
+	 public List<BankCardInfoEntity> getBankCardByCustId(int custId){
+		 return bankCardinfoReadMapper.findBankCardByCustNo(String.valueOf(custId));
+	 }
+	 public BankCardInfoEntity getBankCardInfoById(Integer id){
+		 return bankCardinfoReadMapper.selectByPrimaryKey(id);
+	 }
+
 	 	/**
 	 	 * 创建银行卡信息
 	 	 * @return
@@ -532,7 +525,36 @@ public class BankCardInfoService {
 		public List<BankCardInfoEntity> findBankCardByCustNo(String custNo) throws FssException{
 			return bankCardinfoReadMapper.findBankCardByCustNo(custNo);
 		}
-		
-		
+
+		/**
+		 * 查询客户银行卡信息
+		 * @param custNo
+		 * @return
+		 * @throws FssException
+		 */
+		public ChangeCardBean findChangeCardInfo(String custNo) throws FssException{
+			ChangeCardBean changecard =null;
+			List<BankCardInfoEntity> bankCardInfos=this.findBankCardByCustNo(custNo);
+			if(bankCardInfos==null) throw new FssException("90002036");
+			for (BankCardInfoEntity bankCardInfo:bankCardInfos) {
+				if(1==bankCardInfo.getChangeState()){
+					FssChangeCardEntity changeCard=	bankCardChangeReadMapper.queryByChangeCardBankInfoId(Long.valueOf(bankCardInfo.getId().toString()));
+					if(changeCard!=null) {
+						changecard = new ChangeCardBean();
+						changecard.setBankName(changeCard.getBankName());
+						changecard.setBankAdd(changeCard.getBankAdd());
+						changecard.setBankCity(changeCard.getBankCity());
+						changecard.setBankType(changeCard.getBankType());
+						changecard.setCardNo(changeCard.getCardNo());
+						}
+					}
+				}
+			return  changecard;
+		}
+
+
+	public BankCardInfoEntity getBankCardByCustNo(Long custId){
+		return bankCardinfoReadMapper.queryBankCard(String.valueOf(custId));
+	}
 	 
 }

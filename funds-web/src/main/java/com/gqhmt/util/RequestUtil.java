@@ -1,6 +1,7 @@
 package com.gqhmt.util;
 
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.sql.Date;

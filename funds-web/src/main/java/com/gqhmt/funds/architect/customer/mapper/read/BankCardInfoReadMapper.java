@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.github.pagehelper.Page;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.customer.bean.BankCardBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
@@ -82,5 +82,6 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
 		
 		
 	 public List<BankCardInfoEntity> findBankCardByCustNo(@Param("custNo") String custNo);
-	
+
+	public BankCardInfoEntity queryBankCard(@Param("custNo") String custNo);
 }

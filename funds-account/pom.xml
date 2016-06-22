@@ -2,13 +2,21 @@
     <parent>
         <groupId>com.gqhmt</groupId>
         <artifactId>funds</artifactId>
-        <version>1.0.7-SNAPSHOT</version>
+        <version>1.0.8-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gqhmt.funds</groupId>
     <artifactId>funds-account</artifactId>
     <packaging>jar</packaging>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>com.gqhmt.funds</groupId>
+            <artifactId>funds-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>

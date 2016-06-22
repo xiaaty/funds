@@ -5,7 +5,7 @@ import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
-import com.gqhmt.util.LocalIPUtil;
+import com.gqhmt.core.util.LocalIPUtil;
 
 import java.util.Calendar;
 import java.util.List;

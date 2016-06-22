@@ -1,8 +1,7 @@
 package com.gqhmt.pay.service.loan.impl;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
 import com.gqhmt.extServInter.dto.loan.MarginDto;
@@ -11,9 +10,10 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
@@ -61,47 +61,59 @@ public class LoanImpl implements ILoan {
 	private CostImpl costImpl;
 //	@Resource
 //	private FssAccountFileService fssAccountFileService;
-	
+	@Resource
+	private BankCardInfoService bankCardInfoService;
 	/**
 	 * 借款系统开户
 	 */
-    @Override
+//    @Override
     public String createLoanAccount(CreateLoanAccountDto dto) throws FssException {
         //富友
     	FssAccountEntity  fssAccount=null; //新版账户体系
     	CustomerInfoEntity customerInfoEntity=null;//旧版客户信息
     	FssCustomerEntity fssCustomerEntity=null;//新版客户信息
+		BankCardInfoEntity bankCardInfoEntity=null;
     	String accNo=null;
     	Long custId=null;
-    	/**
-    	 * 借款人（纯线下）开户  ：11020011
-    	 * 放款(纯线下) ：11090003
-    	 * 还款代扣（纯线下）：11093002
-    	 * 入账清结算（纯线下）：11099002
-    	 */
-
+		/**
+		 * 11020001:wap开户
+		 * 11020002:web开户
+		 * 11020003:安卓开户
+		 * 11020004:微信开户
+		 * 11020005:ios开户
+		 * 11020006:委托出借开户
+		 * 11020007:借款人开户（冠e通）
+		 * 11020008:代偿人开户
+		 * 11020009:抵押权人开户
+		 * 11020010:保理合同开户
+		 * 11020011:借款人（纯线下）开户
+		 * 11020012:借款人开户（借款系统）
+		 * 11020013:借款代还人开户
+		 * 11020014:开互联网账户
+		 * 11020015:app开户
+		 */
 		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
 		try{
-		if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
-			customerInfoEntity=customerInfoService.createLoanAccount(dto);
-			customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
-			customerInfoEntity.setParentBankCode(dto.getBank_id());
-			customerInfoEntity.setBankLongName("");
-			customerInfoEntity.setBankNo(dto.getBank_card());
-			try {
-				fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
-			} catch (FssException e) {
-				LogUtil.error(this.getClass(), e);
-				throw e;
+			if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
+				customerInfoEntity=customerInfoService.createLoanAccount(dto);
+				customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
+				customerInfoEntity.setParentBankCode(dto.getBank_id());
+				customerInfoEntity.setBankLongName("");
+				customerInfoEntity.setBankNo(dto.getBank_card());
+				try {
+					fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
+				} catch (FssException e) {
+					LogUtil.error(this.getClass(), e);
+					throw e;
+				}
 			}
-		}
 		}catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			throw e;
 		}
 		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
 //    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
-    	fssAccount=fssAccountService.createAccount(dto, custId);
+    	fssAccount=fssAccountService.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(), custId);
     	accNo=fssAccount.getAccNo();
 //    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
 //    	 if(fundAccount!=null&&customerInfoEntity!=null){
@@ -110,7 +122,7 @@ public class LoanImpl implements ILoan {
 //    	 }
     	 return accNo;
     }
-    
+
     /**
      * 保证金退还
      */
@@ -122,6 +134,6 @@ public class LoanImpl implements ILoan {
 		costImpl.costReturn("10040001","10990006",dto.getAcc_no(),dto.getRefund_amt(),0l,0);
 		return true;
 		}
-		
+
 	}
-  
+

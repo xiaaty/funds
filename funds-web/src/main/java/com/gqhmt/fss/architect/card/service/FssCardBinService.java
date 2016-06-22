@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.card.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.card.entiry.FssCardBinEntity;
 import com.gqhmt.fss.architect.card.mapper.read.FssCardBinReadMapper;
 import com.gqhmt.fss.architect.card.mapper.write.FssCardBinWriteMapper;
@@ -69,6 +69,16 @@ public class FssCardBinService {
      */
     public FssCardBinEntity selectedById(Long id) throws FssException{
 		return fssCardBinReadMapper.selectByPrimaryKey(id);
+    }
+
+	/**
+	 * 删除
+	 * @param id
+	 * @return
+	 * @throws FssException
+     */
+    public void deleteById(Long id) throws FssException{
+		 fssCardBinWriteMapper.deleteByPrimaryKey(id);
     }
 	/**
 	 * 查询全部

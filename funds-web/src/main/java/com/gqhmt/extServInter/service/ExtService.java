@@ -2,7 +2,7 @@ package com.gqhmt.extServInter.service;
 
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.core.APIExcuteErrorException;
+import com.gqhmt.core.exception.APIExcuteErrorException;
 
 /**
  * Filename:    com.gqhmt.extServInter.service.ExtService

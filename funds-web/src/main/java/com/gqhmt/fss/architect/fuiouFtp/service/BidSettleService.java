@@ -2,7 +2,7 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -18,7 +18,6 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
-import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -79,7 +78,7 @@ public class BidSettleService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");
@@ -145,7 +144,7 @@ public class BidSettleService {
 
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
-        if("11090004".equals(loanEntity.getTradeType())){
+        if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
             paramMap.put("type","2");
         }else{
             paramMap.put("type","1");
@@ -184,7 +183,7 @@ public class BidSettleService {
 
         //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
 
-        if(!"11090002".equals(loanEntity.getTradeType())) {
+        if(!("11090002".equals(loanEntity.getTradeType())) && !("11090004".equals(loanEntity.getTradeType()))) {
             fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
         }
         loanEntity.setStatus("10050009");

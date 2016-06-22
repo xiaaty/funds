@@ -1,9 +1,8 @@
 package com.gqhmt.pay.service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.core.factory.ThirdpartyFactory;
@@ -145,7 +144,7 @@ public class PaySuperByFuiou {
 
 
     /*=============================================提   现==============================================*/
-    public FundOrderEntity withdraw(FundAccountEntity entity,BigDecimal amount,BigDecimal chargeAmount,int orderType,Long busiId,int busiType) throws FssException {
+    public FundOrderEntity  withdraw(FundAccountEntity entity,BigDecimal amount,BigDecimal chargeAmount,int orderType,Long busiId,int busiType) throws FssException {
         LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+chargeAmount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = fundOrderService.createOrder(entity,null,amount,chargeAmount,orderType,busiId,busiType,"2");
         //提现手续费记录
@@ -327,5 +326,24 @@ public class PaySuperByFuiou {
         } catch (Exception e) {
             throw new CommandParmException(e.getMessage(),e);
         }
+    }
+
+    /**
+     * 线下充值
+     * @param entity
+     * @param amount
+     * @param orderType
+     * @param busiId
+     * @param busiType
+     * @return
+     * @throws FssException
+     */
+    public CommandResponse offlineRecharge(FundAccountEntity entity,BigDecimal amount,int orderType,long busiId,int  busiType) throws FssException {
+        LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
+        FundOrderEntity fundOrderEntity = this.createOrder(entity,amount,orderType,busiId,busiType,thirdPartyType);
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_OFFLINE_RECHARGE_REFUND, fundOrderEntity, entity, amount,"充值 "+amount.toPlainString()+"元");
+        execExction(response,fundOrderEntity);
+        response.setFundOrderEntity(fundOrderEntity);
+        return response;
     }
 }

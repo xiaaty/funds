@@ -7,14 +7,15 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.depos.entity.FssAccountFileEntity;
 import com.gqhmt.fss.architect.depos.entity.FssBusinessTradeEntity;
 import com.gqhmt.fss.architect.depos.entity.FssFinanceSumEntity;
 import com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity;
-import com.gqhmt.util.CommonUtil;
 
 /**
  *
@@ -44,9 +45,11 @@ public class CreateTXT  {
 	 */
 	public String createProjectInfoTXT(List<FssProjectInfoEntity> queryItemsInfos) throws FssException{
 		String path = getClassPath();
-		File filepath  = new File(path);
+//		File filepath  = new File(path);
+		new File(path+"/projectInfo/check").mkdirs();
+		String filepath=path+"/projectInfo/check";
 		System.out.println(filepath+"***********************");
-		String fileName=filepath+"/"+"P2P_PWXM_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
+		String fileName=filepath+"/"+"P2P_PWXM_"+ DateUtil.dateTostring(new Date())+"_"+DateUtil.timeToString(new Date())+".txt";
 		BufferedOutputStream buff = null;
 		StringBuffer write = new StringBuffer();
 		String enter = "\r\n";
@@ -106,11 +109,13 @@ public class CreateTXT  {
 					write.append(info.getAccGoldNo()+"|");
 					write.append(info.getLoanItemDescription()+"|");
 					write.append(info.getFeeType()*100+"|");
-					write.append(info.getStatus()+"|");
+					write.append(info.getTradeStatus()+"|");
 					write.append(info.getPeriod()+"|");
 					write.append(info.getPrepareAmount()*100+"|");
 					write.append(info.getPayChannel()+"|");
 					write.append(info.getBidYearIrr()+"|");
+					write.append(info.getBorrowType()+"|");
+					write.append(info.getLicenseNo()+"|");
 					write.append(info.getCustName()+"|");
 					write.append(info.getCertType()+"|");
 					write.append(info.getCertNo());
@@ -141,8 +146,8 @@ public class CreateTXT  {
 	 */
 	public String createFinanceSumTXT(List<FssFinanceSumEntity> queryFinaSum) throws FssException{
 		String path = getClassPath();
-		new File(path+"/"+CommonUtil.dateTostring(new Date())).mkdirs();
-		String filepath=path+"/"+CommonUtil.dateTostring(new Date());
+		new File(path+"/"+DateUtil.dateTostring(new Date())).mkdirs();
+		String filepath=path+"/"+DateUtil.dateTostring(new Date());
 		String fileName=filepath+"/"+"sum.txt";
 		BufferedOutputStream buff = null;
 		StringBuffer write = new StringBuffer();
@@ -228,7 +233,7 @@ public class CreateTXT  {
 	public String createAccountFileTXT(List<FssAccountFileEntity> queryAccountFiles) throws FssException{
 		String path = getClassPath();
 		File filepath  = new File(path);
-		String fileName=filepath+"/"+"P2P_PW10_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
+		String fileName=filepath+"/"+"P2P_PW10_"+DateUtil.dateTostring(new Date())+"_"+DateUtil.timeToString(new Date())+".txt";
 		BufferedOutputStream buff = null;
 		StringBuffer write = new StringBuffer();
 		String enter = "\r\n";
@@ -302,7 +307,7 @@ public class CreateTXT  {
 		//文件名
 		String path = getClassPath();
 		File filepath  = new File(path+"/txt/reject");
-		String fileName=filepath+"/"+"P2P_PWJY_"+CommonUtil.dateTostring(new Date())+"_"+CommonUtil.timeToString(new Date())+".txt";
+		String fileName=filepath+"/"+"P2P_PWJY_"+DateUtil.dateTostring(new Date())+"_"+DateUtil.timeToString(new Date())+".txt";
 		BufferedOutputStream buff = null;
 		StringBuffer write = new StringBuffer();
 		String enter = "\r\n";

@@ -1,7 +1,8 @@
 package com.gqhmt.pay.service.cost.impl;
 
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -139,18 +140,12 @@ public class CostImpl  implements ICost{
         map.put("21992105_10040003",4l);
         map.put("21992105_10040099",4l);
 
-
     }
 
     @Override
     public void cost(String loanType, String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(custId,bustType);
-
         this.cost(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType);
-
-
-
-
     }
 
     @Override
@@ -172,11 +167,7 @@ public class CostImpl  implements ICost{
     public void cost(String fundsType, Long custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException {
         this.cost("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
     }
-
-
-
     private FundOrderEntity cost(FundAccountEntity fromAccountEntity,BigDecimal decimal,String fundsType,Long busiId,Integer busiType,String loanType) throws FssException {
-
         Long toCustId = this.map.get(fundsType+"_"+loanType);
         if (toCustId == null) throw new FssException("");
 
@@ -189,7 +180,6 @@ public class CostImpl  implements ICost{
         return  fundOrderEntity;
     }
 
-
     @Override
     public FundOrderEntity costReturn(String loanType, String fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
         FssAccountEntity accountEntity  = this.fssAccountService.getFssAccountByAccNo(accNo);
@@ -198,9 +188,9 @@ public class CostImpl  implements ICost{
         }
         int accType = accountEntity.getAccType();
         int bustType = this.tradeRecordService.parseBusinessType(accType);
-        FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(accountEntity.getCustId(),bustType);
+        FundAccountEntity toAccountEntity  = fundAccountService.getFundAccount(accountEntity.getCustId(),bustType);
 
-        return this.costReturn(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType);
+        return this.costReturn(toAccountEntity,decimal,fundsType,busiId,busiType,loanType);
 
     }
 
@@ -224,9 +214,15 @@ public class CostImpl  implements ICost{
         return  fundOrderEntity;
     }
 
-
-
-
-
+    /**
+     * 费用收取
+     * @param dto
+     * @return
+     * @throws FssException
+     */
+    public boolean charge(CostDto dto) throws FssException{
+//        this.cost(dto.getPlatform(), dto.getTrade_type(), Long.valueOf(dto.getCust_no()), Integer.valueOf(dto.getBusi_type()),dto.getAmt(),Long.valueOf(dto.getAccounts_type()),Integer.valueOf(GlobalConstants.ORDER_COST));
+        return true;
+    }
 
 }

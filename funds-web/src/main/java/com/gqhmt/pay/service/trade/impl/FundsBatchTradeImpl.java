@@ -1,10 +1,8 @@
 package com.gqhmt.pay.service.trade.impl;
 
-import com.gqhmt.core.FssException;
-import com.gqhmt.core.util.Application;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
@@ -38,7 +36,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
 
 
     @Resource
-    private FssTradeRecordService recordService;
+    private FssTradeRecordService fssTradeRecordService;
     @Resource
     private FssTradeApplyService fssTradeApplyService;
     @Resource
@@ -55,7 +53,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         try {
 
             if(entity.getTradeType() != 1103 && entity.getTradeType() != 1104){
-                this.recordService.updateTradeRecordExecuteState(entity,2,"90099011");
+                this.fssTradeRecordService.updateTradeRecordExecuteState(entity,2,"90099011");
                 return;
             }
 
@@ -65,11 +63,11 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
                 orderEntity = this.batchWithdraw(entity);
             }
             entity.setOrderNo(orderEntity.getOrderNo());
-            this.recordService.updateTradeRecordExecuteState(entity,1,"0000");
+            this.fssTradeRecordService.updateTradeRecordExecuteState(entity,1,"0000");
 
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e);
-            this.recordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
+            this.fssTradeRecordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
         }
     }
 
@@ -86,8 +84,8 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         if(accNo != null && !"".equals(accNo)) {
             orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
         }else{
-        	FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(entity.getCustId(), Integer.valueOf(GlobalConstants.ACCOUNT_TYPE_PRIMARY));
-        	businessType=tradeRecordService.parseBusinessType(fundAccountEntity.getAccountType());
+        	FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(entity.getCustId(), entity.getCustType());
+        	businessType=fundAccountEntity.getBusiType();
             orderEntity = this.fundsTrade.withholdingApplyNew(Integer.valueOf(entity.getCustId().toString()).intValue(),businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
         }
         return  orderEntity;

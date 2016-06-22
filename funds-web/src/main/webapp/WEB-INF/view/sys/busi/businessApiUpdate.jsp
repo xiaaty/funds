@@ -175,25 +175,30 @@
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
-
+<script src="${contextPath}/js/jquery.blockUI.js"></script>
+<script src="${contextPath}/js/util/lock.js"></script>
 
  <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
+     $(document).ready(function() {
     	$("#a").val($("#no").val());
     });
-	    $("#btn-success").click(function () {
-	        if (validateCheck()) {
-	            if (!confirm("确认 修改商户API信息吗?")) {
-	               return false;
-	            }
-	            $("#busiApiUpdateForm").ajaxSubmit({
+     $("#btn-success").click(function () {
+            bilocUtil("保存...");
+            if (validateCheck()) {
+                if (!confirm("确认 修改商户API信息吗?")) {
+                    $.unblockUI();
+                    return false;
+                }
+                $("#busiApiUpdateForm").ajaxSubmit({
 	                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	                dataType: "json",
 	                success: function (data) {
 	                    if (data.code == '0000') {
+                            $.unblockUI();
 	                        jAlert("修改成功!", '确认信息');
 	                        return;
 	                    } else {
+                            $.unblockUI();
 	                    	jAlert("修改失败!", '确认信息');
 	                        return;
 	                    }
@@ -201,7 +206,7 @@
 	            });
 	        }
 	    });
-	//校验函数
+     //校验函数
 	function validateCheck() {
 		return true;
 	}

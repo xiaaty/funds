@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.backplate.mapper.read;
 
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import java.util.List;
@@ -30,5 +31,13 @@ public interface FssFssBackplateReadMapper extends ReadMapper<FssBackplateEntity
 
 
     public List<FssBackplateEntity> findBackAllByTime(@Param("repayCount") int repayCount,@Param("timeType") int timeType);
-	
+
+    public List<FssBackplateEntity> selectBackPlateByParam(FssBackplateEntity fssBackplateEntity);
+    /**
+     *
+     * author:jhz
+     * time:2016年6月20日
+     * function:通过商户号流水号查询
+     */
+    public FssBackplateEntity selectByMchnAndseqNo(@Param("mchn")String mchn,@Param("seqNo")String seqNo);
 }

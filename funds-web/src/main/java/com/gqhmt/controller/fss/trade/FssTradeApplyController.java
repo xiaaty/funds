@@ -1,32 +1,42 @@
 package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.core.FssException;
+import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.CommonUtil;
+import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
+import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
+import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.util.StringUtils;
+import com.gqhmt.core.util.StringUtils;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Filename:    com.gqhmt.controller.fss.trade.FssTradeApplyController
  * Copyright:   Copyright (c)2015
@@ -54,6 +64,17 @@ public class FssTradeApplyController {
 	private FssBackplateService fssBackplateService;
     @Resource
     private CustomerInfoService customerInfoService;
+    @Resource
+    private FssOfflineRechargeService fssOfflineRechargeService;
+    @Resource
+    private FundAccountService fundAccountService;
+    @Resource
+    private FundsTradeImpl fundsTradeImpl;
+    @Resource
+    private FssAccountService fssAccountService;
+    @Resource
+    private FssCustomerService fssCustomerService;
+
     /**
 	 * author:柯禹来
 	 * function:交易管理---交易审核--代扣审核
@@ -131,7 +152,7 @@ public class FssTradeApplyController {
 		}else{
 			model.addAttribute("custMobile","");
 		}
-		
+
 		if(type==1103){//充值
 			return "fss/trade/trade_audit/borrower_withhold_check";
 		}else{
@@ -172,12 +193,14 @@ public class FssTradeApplyController {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
+//			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
+			tradeapply.setTradeState("10030001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
 			tradeapply.setApplyState("10100005");
+			tradeapply.setTradeState("10109999");//审核未通过
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}
@@ -187,5 +210,85 @@ public class FssTradeApplyController {
         map.put("message", "success");
 		return map;
 	}
-	
+
+	/**
+	 *线下充值记录
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/offlineRecharge",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getOfflineRechargeApply(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
+		model.addAttribute("page", offlineRechargeList);
+		model.put("map", map);
+		return "fss/trade/offlineRecharge_list";
+	}
+
+	/**
+	 * 添加线下充值申请
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws FssException
+	 */
+	@RequestMapping(value = "/trade/tradeApply/createOfflineRecharge/{type}/{certNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createOfflineRecharge(HttpServletRequest request, ModelMap model, @PathVariable Integer  type,@PathVariable String certNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
+		 customerInfoEntity=customerInfoService.queryCustomerInfoByCertNo(certNo);
+		if (customerInfoEntity!=null){
+			model.addAttribute("customerInfoEntity",customerInfoEntity);
+		}
+		model.addAttribute("type",type);
+		model.addAttribute("flag",flag);
+		return "fss/trade/offlineRecharge_add";
+	}
+
+	/**
+	 * 保存线下充值申请
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws FssException
+	 */
+	@RequestMapping(value = "/trade/tradeApply/saveOfflineRecharge",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@ModelAttribute(value="customerInfoEntity") CustomerInfoEntity customerInfoEntity) throws FssException {
+		String  tradeType=request.getParameter("tradeType");
+		String type = request.getParameter("type");
+		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+		if (null==custType) throw new FssException("");
+		BigDecimal  amt=new BigDecimal(request.getParameter("amt"));
+		FssCustomerEntity fssCustomerEntity= fssCustomerService.getFssCustomerEntityByCertNo(customerInfoEntity.getCertNo());
+		String custNo="";
+		String accNo="";
+		if(null!=fssCustomerEntity){
+			custNo=fssCustomerEntity.getCustNo();
+		}
+		FssAccountEntity fssAccountEntity=fssAccountService.getAccountByCustNo(custNo);
+		if(null!=fssAccountEntity){
+			accNo=fssAccountEntity.getAccNo();
+			fssAccountEntity.getAccType();
+		}
+		Map<String, String> map = new HashMap<String, String>();
+		try {
+			if("11030014".equals(tradeType)){//委托充值(账户直接充值)
+				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,false);
+			}else if("11040012".equals(tradeType)){//账户直接提现(账户类型)
+				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,null);
+			}else if("11030015".equals(tradeType)){//线下充值
+				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(custType),null,amt);
+			}
+			map.put("code", "0000");
+			map.put("message", "success");
+		} catch (FssException e) {//保存失败
+			String resp_msg = Application.getInstance().getDictName(e.getMessage());
+			map.put("code", e.getMessage());
+			map.put("message", resp_msg);
+		}
+		return map;
+	}
+
 }

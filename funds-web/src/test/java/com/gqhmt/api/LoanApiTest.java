@@ -1,12 +1,11 @@
 package com.gqhmt.api;
 
-import com.gqhmt.core.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.extServInter.callback.loan.PaymentCallback;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.*;
-
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -218,6 +217,21 @@ public class LoanApiTest extends SupperAPI {
         } catch (FssException e) {
             e.printStackTrace();
         }
+
+    }
+
+
+    @Test
+    public  void  matcher(){
+        String  respCode = "00000000";
+        String  respCode1 = "910010FC";
+
+        System.out.println(respCode1.matches("[0-9]*"));
+
+
+
+
+
 
     }
 }
