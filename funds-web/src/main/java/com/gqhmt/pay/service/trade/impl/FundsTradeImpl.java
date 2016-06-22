@@ -541,8 +541,8 @@ public class FundsTradeImpl  implements IFundsTrade {
     	           throw new CommandParmException("90004006");
     	       }
 
-                businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(fssAccountEntity.getAccType());
-    	      custID=String.valueOf(fssAccountEntity.getCustId());
+            businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(fssAccountEntity.getAccType());
+            custID=String.valueOf(fssAccountEntity.getCustId());
     	}
     	FundAccountEntity entity = this.getFundAccount(Integer.valueOf(custID).intValue(), businessType);
 //        this.hasEnoughBanlance(entity,amount);
