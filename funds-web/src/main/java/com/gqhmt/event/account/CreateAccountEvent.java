@@ -121,24 +121,6 @@ public class CreateAccountEvent {
             }
         }
         primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-        FssAccountEntity fssAccountEntity = null;
-        try {
-            //生成新版客户信息记录
-            if (fssCustomerEntity == null){
-                fssCustomerEntity = fssCustomerService.createFssCustomerEntity(name,mobile,certNo,custId,mchn);//生成客户信息
-            }else{
-                if(fssCustomerEntity.getCustId()  == null){
-                    fssCustomerService.updateCustId(fssCustomerEntity,custId);
-                }
-                //校验客户姓名和手机号，如果不同，需要修改，客户信息添加锁定字段，如果实名验证完成，则不允许修改客户姓名。手机号允许修改
-            }
-            //生成新版账户
-            fssAccountEntity = fssAccountService.createNewFssAccountEntity(fssCustomerEntity,tradeType,busiNo,mchn,null,createTime);
-        } catch (FssException e) {
-            if(!e.getMessage().contains("busi_no_uk")) {
-                throw new FssException(e.getMessage(), e);
-            }
-        }
 
         //生成富有账户
         if(isOldAccount){
@@ -157,6 +139,25 @@ public class CreateAccountEvent {
         fssCustomerEntity.setMobile(customerInfoEntity.getMobilePhone());
         fssCustomerEntity.setModifyTime(new Date());
         fssCustomerService.updateCustId(fssCustomerEntity,customerInfoEntity.getId());
+
+        FssAccountEntity fssAccountEntity = null;
+        try {
+            //生成新版客户信息记录
+            if (fssCustomerEntity == null){
+                fssCustomerEntity = fssCustomerService.createFssCustomerEntity(name,mobile,certNo,custId,mchn);//生成客户信息
+            }else{
+                if(fssCustomerEntity.getCustId()  == null){
+                    fssCustomerService.updateCustId(fssCustomerEntity,custId);
+                }
+                //校验客户姓名和手机号，如果不同，需要修改，客户信息添加锁定字段，如果实名验证完成，则不允许修改客户姓名。手机号允许修改
+            }
+            //生成新版账户
+            fssAccountEntity = fssAccountService.createNewFssAccountEntity(fssCustomerEntity,tradeType,busiNo,mchn,null,createTime);
+        } catch (FssException e) {
+            if(!e.getMessage().contains("busi_no_uk")) {
+                throw new FssException(e.getMessage(), e);
+            }
+        }
 
         //银行卡信息生成
         //旧版银行卡信息生成

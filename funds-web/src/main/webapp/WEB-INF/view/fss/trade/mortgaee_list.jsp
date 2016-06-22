@@ -66,20 +66,57 @@
                                                 <col width="100" />
                                                 <col />
                                                 <tbody>
-                                                    <tr></tr>
                                                     <tr>
                                                        <td class="tr">申请编号：</td>
                                                          <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="applyNo" value="${map.applyNo}" />
+                                                                <input type="text" style="width:200px" name="applyNo" value="${map.applyNo}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">业务编号：</td>
-                                                        <td>
-                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="businessNo" value="${map.businessNo}" />
+                                                        <td></td>
+                                                       <td class="tr">客户姓名：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:200px" name="custName" value="${map.custName}" />
                                                             </label>
-                                                        </td> 
+                                                        </td>
+                                                        <td></td>
+                                                       <td class="tr">客户电话：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:300px" name="custMobile" value="${map.custMobile}" />
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="tr">申请状态：</td>
+                                                        <td>
+                                                                <label>
+                                                                    <select id = "applyState" name = "applyState" style="width:200px;height: 30px;">
+                                                                        <option value="">请选择</option>
+                                                                        <option  <c:if test="${map.applyState==10100001}"> selected="selected" </c:if> value="10100001">新增</option>
+                                                                        <option  <c:if test="${map.applyState==10100002}"> selected="selected" </c:if> value="10100002" >审核成功待执行</option>
+                                                                        <option  <c:if test="${map.applyState==10100003}"> selected="selected" </c:if> value="10100003" >执行排队中</option>
+                                                                        <option  <c:if test="${map.applyState==10100004}"> selected="selected" </c:if> value="10100004" >执行中</option>
+                                                                        <option  <c:if test="${map.applyState==10100005}"> selected="selected" </c:if> value="10100005" >执行完成</option>
+                                                                        <option  <c:if test="${map.applyState==10109999}"> selected="selected" </c:if> value="10109999" >审核未通过</option>
+                                                                    </select>
+                                                                <label>
+                                                        </td>
+                                                        <td></td>
+                                                        <td class="tr">交易状态：</td>
+                                                        <td>
+                                                            <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
+                                                                <option value="">请选择</option>
+                                                                <option  <c:if test="${map.tradeState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
+                                                                <option  <c:if test="${map.tradeState==10030001 || map.tradeState==null}"> selected="selected" </c:if> value="10030001">交易提交</option>
+                                                                <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002" >交易成功</option>
+                                                                <option  <c:if test="${map.tradeState==10080003}"> selected="selected" </c:if> value="10080003" >交易部分成功</option>
+                                                                <option  <c:if test="${map.tradeState==10080010}"> selected="selected" </c:if> value="10080010" >交易失败</option>
+                                                                <option  <c:if test="${map.tradeState==10080011}"> selected="selected" </c:if> value="10080011" >交易取消</option>
+                                                            </select>
+                                                        </td>
+                                                        <td></td>
                                                         <td class="tr">创建日期：</td>
 			                                             <td colspan="3">
 				                                                <section class="fl">
@@ -123,14 +160,14 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
-                                    	<col width="100" />
-                                        <col width="100" />
                                         <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="200" />
+                                        <col width="150" />
+                                        <col width="100" />
+                                        <col width="150" />
                                         <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
@@ -141,36 +178,36 @@
                                         <col width="150" />
                                         <thead>
                                         <tr>
-                                        	 <td>客户姓名</td>
-                                        	 <td>客户电话</td>
-                                             <td>申请编号</td>
-                                             <td>业务编号</td>
-                                             <td>申请状态</td>
-                                             <td>交易状态</td>
-                                             <td>账户编号</td>
-                                             <td>交易金额</td>
-                                             <td>实际交易金额</td>
-                                             <td>总条数</td>
-                                             <td>执行条数</td>
-                                             <td>创建时间</td>
-                                             <td>修改时间</td>
-                                             <td>商户号</td>
-                                             <td>交易渠道</td>
-                                             <td>操作</td>
+                                            <td>申请编号</td>
+                                            <td>客户姓名</td>
+                                            <td>客户电话</td>
+                                            <td>交易金额</td>
+                                            <td>实际交易金额</td>
+                                            <td>申请状态</td>
+                                            <td>交易状态</td>
+                                            <td>业务编号</td>
+                                            <td>账户编号</td>
+                                            <td>总条数</td>
+                                            <td>执行条数</td>
+                                            <td>创建时间</td>
+                                            <td>修改时间</td>
+                                            <td>商户号</td>
+                                            <td>交易渠道</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
                                              <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
-                                                	<td>${tradeapply.custName}</td>
-                                                	<td>${tradeapply.custMobile}</td>
                                                     <td>${tradeapply.applyNo}</td>
-                                                    <td>${tradeapply.businessNo}</td>
+                                                    <td>${tradeapply.custName}</td>
+                                                    <td>${tradeapply.custMobile}</td>
+                                                    <td align="right"><fss:money money="${tradeapply.tradeAmount}"/></td>
+                                                    <td align="right"><fss:money money="${tradeapply.realTradeAmount}"/></td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
+                                                    <td>${tradeapply.businessNo}</td>
                                                     <td>${tradeapply.accNo}</td>
-                                                    <td>${tradeapply.tradeAmount}</td>
-                                                    <td>${tradeapply.realTradeAmount}</td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
