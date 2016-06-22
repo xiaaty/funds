@@ -340,7 +340,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(cust_no),GlobalConstants.ACCOUNT_TYPE_FREEZE);
         this.hasEnoughBanlance(fromEntity,amt);
         FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(cust_no), busi_type);
-        tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);
+        tradeRecordService.unFrozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);
         return true;
     }
 
