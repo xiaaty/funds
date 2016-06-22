@@ -108,8 +108,7 @@
                                                     <td>
                                                         <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
                                                             <option value="">请选择</option>
-                                                            <option  <c:if test="${map.tradeState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
-                                                            <option  <c:if test="${map.tradeState==10030001 || map.tradeState==null}"> selected="selected" </c:if> value="10030001">交易提交</option>
+                                                            <option  <c:if test="${map.tradeState==10080001 || map.tradeState==null}"> selected="selected" </c:if> value="10080001">新增</option>
                                                             <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002" >交易成功</option>
                                                             <option  <c:if test="${map.tradeState==10080003}"> selected="selected" </c:if> value="10080003" >交易部分成功</option>
                                                             <option  <c:if test="${map.tradeState==10080010}"> selected="selected" </c:if> value="10080010" >交易失败</option>

@@ -170,7 +170,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean unFroze( UnFreezeDto dto) throws FssException;
+    public boolean unFroze(String mchn,String seq_no,String trade_type,String cust_no,String user_no,BigDecimal amt,Integer busi_type) throws FssException;
 
     /**
      * 费用接口
@@ -266,4 +266,5 @@ public interface IFundsTrade {
      * @throws FssException
      */
     public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
+
 }
