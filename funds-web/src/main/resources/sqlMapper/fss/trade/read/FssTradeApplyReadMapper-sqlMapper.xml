@@ -68,8 +68,17 @@
 			<if test="applyNo != null and applyNo != ''">
 				AND t.apply_no like CONCAT('%',#{applyNo},'%')
 			</if>
-			<if test="businessNo != null and businessNo != ''">
-				AND t.business_no like CONCAT('%',#{businessNo},'%')
+			<if test="custName!=null and custName!=''">
+				AND c.`name` like CONCAT('%',#{custName},'%')
+			</if>
+			<if test="custMobile!=null and custMobile!=''">
+				AND c.mobile like CONCAT('%',#{custMobile},'%')
+			</if>
+			<if test="applyState!=null and applyState!=''">
+				AND t.apply_state=#{applyState}
+			</if>
+			<if test="tradeState!=null and tradeState!=''">
+				AND t.trade_state=#{tradeState}
 			</if>
 			<if test="startTime != null and startTime != '' ">
 				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
