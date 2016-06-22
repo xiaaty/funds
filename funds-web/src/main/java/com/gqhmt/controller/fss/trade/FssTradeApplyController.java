@@ -195,7 +195,7 @@ public class FssTradeApplyController {
 			}
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
-			tradeapply.setTradeState("10030001");//交易状态，交易提交
+			tradeapply.setTradeState("10080001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
