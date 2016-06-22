@@ -120,7 +120,7 @@ public class CreateAccountEvent {
 
             }
         }
-
+        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
         FssAccountEntity fssAccountEntity = null;
         try {
             //生成新版客户信息记录
@@ -135,7 +135,9 @@ public class CreateAccountEvent {
             //生成新版账户
             fssAccountEntity = fssAccountService.createNewFssAccountEntity(fssCustomerEntity,tradeType,busiNo,mchn,null,createTime);
         } catch (FssException e) {
-            throw new FssException(e.getMessage(),e);
+            if(!e.getMessage().contains("busi_no_uk")) {
+                throw new FssException(e.getMessage(), e);
+            }
         }
 
         //生成富有账户
