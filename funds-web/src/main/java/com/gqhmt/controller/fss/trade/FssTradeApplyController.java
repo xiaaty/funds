@@ -207,7 +207,7 @@ public class FssTradeApplyController {
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 			//审核不通过进行资金解冻
 			if(applyType==1104){
-				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),tradeapply.getCustNo(),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
+				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
 			}
 		}
 
