@@ -298,10 +298,11 @@ public class FssTradeApplyService {
 	public void insertLoanTradeApply(FssLoanEntity fssLoanEntity,String tradeType) throws FssException {
 		FssTradeApplyEntity tradeApplyEntity=new FssTradeApplyEntity();
 		//添加代扣申请
-
 		if("11092001".equals(tradeType)){
 			FssAccountEntity fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
 			this.whithdrawApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
+		}else if("11090006".equals(tradeType)){
+			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
 		}else if("11090005".equals(tradeType)){
 			this.whithholdingApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
 		}
@@ -380,7 +381,7 @@ public class FssTradeApplyService {
 
 				FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
 				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
+				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
 					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					 //98060001成功 //10080002交易成功
 					 fssLoanService.update(fssLoanEntityById,tradeStatus);
