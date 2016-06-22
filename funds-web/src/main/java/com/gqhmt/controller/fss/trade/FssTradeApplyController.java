@@ -203,6 +203,13 @@ public class FssTradeApplyController {
 			tradeapply.setTradeState("10109999");//审核未通过
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
+			//审核不通过进行资金解冻
+			if(applyType==1104){
+				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),tradeapply.getCustNo(),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
+			}
+		}
+		//不通过，添加回盘记录
+//		fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		}
