@@ -108,7 +108,11 @@ public class FssTradeRecordService {
 			//更新申请表该条数据拆分总条数
 			fssTradeApplyEntity.setCount(recordEntityList.size());
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			if("01".equals(fssTradeApplyEntity.getMchnChild())){
+				fssTradeApplyEntity.setMchnParent("01");
+			}else{
+				fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			}
 
 			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 			return recordEntityList;
@@ -132,7 +136,11 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setTradeTypeChild(Integer.valueOf(fssTradeApplyEntity.getBusiType()));
 		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
 		tradeRecordEntity.setAmount(tradeAmount);
-		tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+		if("01".equals(fssTradeApplyEntity.getMchnChild())){
+			tradeRecordEntity.setMchnParent("01");
+		}else{
+			tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+		}
 		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
 		tradeRecordEntity.setTradeDate("0");
 		tradeRecordEntity.setTradeTime("0");
