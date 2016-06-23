@@ -115,8 +115,15 @@ public class FssTradeApplyController {
 	 */
     @RequestMapping(value = "/trade/tradeApply/{applyNo}/records",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryTradeRecord(HttpServletRequest request, ModelMap model,FssTradeRecordEntity traderecord,@PathVariable String applyNo) throws Exception {
+    public String queryTradeRecord(HttpServletRequest request, ModelMap model,FssTradeRecordEntity traderecord,@PathVariable String applyNo,@RequestParam(required = false,value = "id")String id) throws Exception {
+		// 增加数据展示
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("ApplyBeanId",id);
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
+
+
     	List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(applyNo,traderecord.getTradeState());
+		model.addAttribute("tradeApply", tradeApplyList.get(0));
         model.addAttribute("page", tradeRecordList);
         model.addAttribute("traderecord", traderecord);
         return "fss/trade/trade_record/traderecord_list";
