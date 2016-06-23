@@ -73,18 +73,14 @@
                                                             <input type="text" style="width:200px" name="applyNo" value="${map.applyNo}" />
                                                         </label>
                                                     </td>
-                                                    <td class="tr">业务编号：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            <input type="text" style="width:200px" name="businessNo" value="${map.businessNo}" />
-                                                        </label>
-                                                    </td>
+                                                    <td></td>
                                                     <td class="tr">客户姓名：</td>
                                                     <td>
                                                         <label class="input">
                                                             <input type="text" style="width:200px" name="custName" value="${map.custName}" />
                                                         </label>
                                                     </td>
+                                                    <td></td>
                                                     <td class="tr">客户电话：</td>
                                                     <td>
                                                         <label class="input">
@@ -107,6 +103,7 @@
                                                             </select>
                                                             <label>
                                                     </td>
+                                                    <td></td>
                                                     <td class="tr">交易状态：</td>
                                                     <td>
                                                         <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
@@ -118,6 +115,7 @@
                                                             <option  <c:if test="${map.tradeState==10080011}"> selected="selected" </c:if> value="10080011" >交易取消</option>
                                                         </select>
                                                     </td>
+                                                    <td></td>
                                                     <td class="tr">创建日期：</td>
                                                     <td colspan="3">
                                                         <section class="fl">
@@ -151,7 +149,9 @@
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>数据列表信息</h2>
                         </header>
-                        <!-- widget div-->
+                        <div class="user_operate mb10 clearfix">
+                            <button class="btn btn-default" id="btn_rech">批量提现</button>
+                        </div>
                         <div>
                             <form class="smart-form">
                                 <!-- widget edit box -->
@@ -160,66 +160,69 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2650px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2450px;">
+                                    	<col width="50" />
+                                    	<col width="100" />
+                                        <col width="100" />
                                         <col width="200" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="150" />
                                         <col width="150" />
-                                        <col width="150" />
-                                        <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="150" />
-                                        <col width="200" />
+                                        <col width="100" />
                                         <col width="250" />
                                         <thead>
                                         <tr>
-                                            <td>申请编号</td>
-                                            <td>客户姓名</td>
-                                            <td>客户电话</td>
-                                            <td>交易金额</td>
-                                            <td>实际交易金额</td>
-                                            <td>申请状态</td>
-                                            <td>交易状态</td>
-                                            <td>业务编号</td>
-                                            <td>账户编号</td>
+                                             <td><input type="checkbox" id="checkAll"/></td>
+                                        	 <td>客户姓名</td>
+                                        	 <td>客户电话</td>
+                                             <td>申请编号</td>
+                                             <td>业务编号</td>
+                                             <td>申请状态</td>
+                                             <td>交易状态</td>
+                                             <td>账户编号</td>
+                                             <td>交易金额</td>
+                                             <td>实际交易金额</td>
                                              <td>总条数</td>
                                              <td>执行条数</td>
                                              <td>创建时间</td>
                                              <td>修改时间</td>
+                                             <td>预约到账日期</td>
                                              <td>商户号</td>
-                                            <td>交易渠道</td>
-                                            <td>预约到账日期</td>
-                                            <td>操作</td>
+                                             <td>交易渠道</td>
+                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
                                              <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
+                                                    <td><input type="checkbox" class="checkBoxAll" value="${tradeapply.applyNo}"/></td>
+                                                	<td>${tradeapply.custName}</td>
+                                                	<td>${tradeapply.custMobile}</td>
                                                     <td>${tradeapply.applyNo}</td>
-                                                    <td>${tradeapply.custName}</td>
-                                                    <td>${tradeapply.custMobile}</td>
-                                                    <td align="right"><fss:money money="${tradeapply.tradeAmount}"/></td>
-                                                    <td align="right"><fss:money money="${tradeapply.realTradeAmount}"/></td>
+                                                    <td>${tradeapply.businessNo}</td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
-                                                    <td>${tradeapply.businessNo}</td>
                                                     <td>${tradeapply.accNo}</td>
+                                                    <td>${tradeapply.tradeAmount}</td>
+                                                    <td>${tradeapply.realTradeAmount}</td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
                                                     <td><fss:fmtDate value="${tradeapply.modifyTime}"/></td>
+                                                    <td><fss:fmtDate value="${tradeapply.bespokedate}"/></td>
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
-                                                    <td><fss:fmtDate value="${tradeapply.bespokedate}"/></td>
                                                     <td>
-                                                    <input type="hidden" name="token" value="${token}"/> 
+                                                    <input type="hidden" name="token" value="${token}"/>
                                                         <c:choose>
                                                             <c:when test="${tradeapply.applyState==10100001}">
                                                                 <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
@@ -229,7 +232,7 @@
                                                                 &nbsp;&nbsp;&nbsp;
                                                             </c:otherwise>
                                                         </c:choose>
-                                                        <a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
+                                                        <a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records?id=${tradeapply.id}">查看详细</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -268,7 +271,7 @@
     	if(b[0].value!=null&&b[0].value!=''){
     		
     		if(a[0].value>b[0].value){
-    			JAlert("请检查您输入的日期","提示消息");
+    			jAlert("请检查您输入的日期","提示消息");
     		}else{
     			$("#withDrawForm").submit();
     		}
@@ -276,13 +279,42 @@
     		var d = new Date();
     		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
     		if(a[0].value>str){
-    			JAlert("请检查您输入的日期","提示消息");
+    			jAlert("请检查您输入的日期","提示消息");
     		}else{
     			$("#withDrawForm").submit();
     		}
     	}
     }
-</script>
+    //批量代付按钮
+    $('#btn_rech').click(function () {
+        var no = $('#borrow-rep-table12 tbody :checkbox:checked');
+        if (no.size() == 0) {
+            alert("请选择件数！");
+            return false;
+        }
+        var param = [];
+        no.each(function () {
+            param.push($(this).val());
+        })
+//        alert(param.toString());
+        if(confirm("您确认全部审核成功吗？")){
+        $.post("${contextPath}/trade/tradeApply/moneySplit", {'no': param.toString()}, function (data) {
+            if (data.code == '0000') {
+                alert("成功", '消息提示');
+                $("#withDrawForm").submit();
+                $("#checkAll").removeAttr("checked");
+                return false;
+            }else if(data.code == '0001'){
+                alert(data.message, '消息提示');
+                $("#withDrawForm").submit();
+                $("#checkAll").removeAttr("checked");
+                return false;
+            }
+        }, "json");
+        }
+    });
+
+ </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>
 </body>

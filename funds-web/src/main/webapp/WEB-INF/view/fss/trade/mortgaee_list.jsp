@@ -66,6 +66,7 @@
                                                 <col width="100" />
                                                 <col />
                                                 <tbody>
+                                                    <tr></tr>
                                                     <tr>
                                                        <td class="tr">申请编号：</td>
                                                          <td>
@@ -164,14 +165,14 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
+                                    	<col width="100" />
+                                        <col width="100" />
                                         <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="150" />
-                                        <col width="100" />
-                                        <col width="150" />
+                                        <col width="200" />
                                         <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
@@ -182,36 +183,36 @@
                                         <col width="150" />
                                         <thead>
                                         <tr>
-                                            <td>申请编号</td>
-                                            <td>客户姓名</td>
-                                            <td>客户电话</td>
-                                            <td>交易金额</td>
-                                            <td>实际交易金额</td>
-                                            <td>申请状态</td>
-                                            <td>交易状态</td>
-                                            <td>业务编号</td>
-                                            <td>账户编号</td>
-                                            <td>总条数</td>
-                                            <td>执行条数</td>
-                                            <td>创建时间</td>
-                                            <td>修改时间</td>
-                                            <td>商户号</td>
-                                            <td>交易渠道</td>
-                                            <td>操作</td>
+                                        	 <td>客户姓名</td>
+                                        	 <td>客户电话</td>
+                                             <td>申请编号</td>
+                                             <td>业务编号</td>
+                                             <td>申请状态</td>
+                                             <td>交易状态</td>
+                                             <td>账户编号</td>
+                                             <td>交易金额</td>
+                                             <td>实际交易金额</td>
+                                             <td>总条数</td>
+                                             <td>执行条数</td>
+                                             <td>创建时间</td>
+                                             <td>修改时间</td>
+                                             <td>商户号</td>
+                                             <td>交易渠道</td>
+                                             <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
                                              <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
+                                                	<td>${tradeapply.custName}</td>
+                                                	<td>${tradeapply.custMobile}</td>
                                                     <td>${tradeapply.applyNo}</td>
-                                                    <td>${tradeapply.custName}</td>
-                                                    <td>${tradeapply.custMobile}</td>
-                                                    <td align="right"><fss:money money="${tradeapply.tradeAmount}"/></td>
-                                                    <td align="right"><fss:money money="${tradeapply.realTradeAmount}"/></td>
+                                                    <td>${tradeapply.businessNo}</td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
-                                                    <td>${tradeapply.businessNo}</td>
                                                     <td>${tradeapply.accNo}</td>
+                                                    <td>${tradeapply.tradeAmount}</td>
+                                                    <td>${tradeapply.realTradeAmount}</td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
@@ -228,7 +229,7 @@
 		                                                    	&nbsp;&nbsp;&nbsp;&nbsp;
                                                     		</c:otherwise>
                                                     	</c:choose>
-	                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
+	                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records?id=${tradeapply.id}">查看详细</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

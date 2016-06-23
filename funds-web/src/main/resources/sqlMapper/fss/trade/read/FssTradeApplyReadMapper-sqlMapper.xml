@@ -64,7 +64,13 @@
 	<!-- 根据申请类型和业务类型查询申请数据 -->
 	<select id="queryFssTradeApplyList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean" >
 			<include refid="field"/>
-			WHERE t.apply_type=#{applyType}  and t.busi_type=#{busiType}
+			WHERE 1=1
+			<if test="applyType!=null and applyType!=''">
+				AND t.apply_type=#{applyType}
+			</if>
+			<if test="busiType!=null and busiType!=''">
+				AND t.busi_type=#{busiType}
+			</if>
 			<if test="applyNo != null and applyNo != ''">
 				AND t.apply_no like CONCAT('%',#{applyNo},'%')
 			</if>
@@ -88,6 +94,9 @@
 			</if>
 			<if test="endTime != null and endTime != '' ">
 				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
+			<if test="id != null and id != ''">
+				and t.id = #{id}
 			</if>
 		order by t.create_time desc
 	</select>

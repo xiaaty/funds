@@ -427,6 +427,18 @@ public class FssTradeApplyService {
 	/**
 	 *
 	 * author:jhz
+	 * time:2016年6月22日
+	 * function：修改交易申请
+	 */
+	public void updateTradeApply(FssTradeApplyEntity applyEntity,String applyState,String tradeState ){
+		applyEntity.setApplyState(applyState);
+		applyEntity.setTradeState(tradeState);
+		applyEntity.setModifyTime(new Date());
+		fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+	}
+	/**
+	 *
+	 * author:jhz
 	 * time:2016年5月26日
 	 * function：通过fromId和budiType查询申请表信息
 	 */
@@ -453,6 +465,10 @@ public class FssTradeApplyService {
 			map2.put("tradeState", map.get("tradeState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+			//xdw 增加id 查询， 怕影响前面逻辑，改名为 ApplyBeanId
+			if(map.get("ApplyBeanId")!=null){
+				map2.put("id",map.get("ApplyBeanId"));
+			}
 		}
 		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map2);
 		return tradeapplylist;
