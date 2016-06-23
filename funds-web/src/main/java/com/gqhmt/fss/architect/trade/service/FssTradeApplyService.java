@@ -455,6 +455,10 @@ public class FssTradeApplyService {
 			map2.put("tradeState", map.get("tradeState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+			//xdw 增加id 查询， 怕影响前面逻辑，改名为 ApplyBeanId
+			if(map.get("ApplyBeanId")!=null){
+				map2.put("id",map.get("ApplyBeanId"));
+			}
 		}
 		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map2);
 		return tradeapplylist;

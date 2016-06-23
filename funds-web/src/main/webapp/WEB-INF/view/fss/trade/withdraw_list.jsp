@@ -227,7 +227,7 @@
                                                                 &nbsp;&nbsp;&nbsp;
                                                             </c:otherwise>
                                                         </c:choose>
-                                                        <a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
+                                                        <a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records?id=${tradeapply.id}">查看详细</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
