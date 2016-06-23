@@ -584,14 +584,15 @@ public class FssTradeApplyService {
 		//提现添加预约到账日期
 		if(applyType.equals("1104")){//提现
 			//根据settle_type 判断预约到账日期
-			if(settleType.intValue()==0){
+			if(settleType.intValue()==0 || settleType==null){
 				fssTradeApplyEntity.setBespokedate(new Date());
+				fssTradeApplyEntity.setSettleType(0);
 			}else{
 				Calendar calendar=Calendar.getInstance();
 				calendar.roll(Calendar.DAY_OF_YEAR,1);
 				fssTradeApplyEntity.setBespokedate(calendar.getTime());
+				fssTradeApplyEntity.setSettleType(settleType);
 			}
-			fssTradeApplyEntity.setSettleType(settleType);
 		}
 		return fssTradeApplyEntity;
 	}
