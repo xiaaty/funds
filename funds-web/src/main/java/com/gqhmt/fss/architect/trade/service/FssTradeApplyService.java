@@ -582,7 +582,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setFormId(fromId);
 		}
 		//提现添加预约到账日期
-		if(applyType.equals("1104")){//提现
+		if(applyType.intValue()==1104){//提现
 			//根据settle_type 判断预约到账日期
 			if(settleType==null || settleType.intValue()>0){
 				Calendar calendar=Calendar.getInstance();
