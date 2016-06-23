@@ -452,7 +452,6 @@ public class FssTradeApplyService {
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
 			//xdw 增加id 查询， 怕影响前面逻辑，改名为 ApplyBeanId
-			System.out.println(map.get("ApplyBeanId"));
 			if(map.get("ApplyBeanId")!=null){
 				map2.put("id",map.get("ApplyBeanId"));
 			}
