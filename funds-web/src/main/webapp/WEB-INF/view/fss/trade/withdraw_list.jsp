@@ -222,7 +222,11 @@
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
                                                     <td>
-                                                    <input type="hidden" name="token" value="${token}"/>
+                                                        <c:if test="${tradeapply.busiType=='11092001' || tradeapply.busiType=='11090006'}">
+                                                            <c:if test="${tradeapply.tradeState=='10109999'}">
+                                                            <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">重新提现审核</a>
+                                                            </c:if>
+                                                        </c:if>
                                                         <c:choose>
                                                             <c:when test="${tradeapply.applyState==10100001}">
                                                                 <a href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}/${tradeapply.applyNo}/withdrawcheck">提现审核</a>
