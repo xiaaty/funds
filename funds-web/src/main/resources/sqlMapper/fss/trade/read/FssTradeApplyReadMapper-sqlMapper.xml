@@ -68,6 +68,9 @@
 			<if test="applyNo != null and applyNo != ''">
 				AND t.apply_no like CONCAT('%',#{applyNo},'%')
 			</if>
+			<if test="businessNo!=null and businessNo!=''">
+				AND t.business_no like CONCAT('%',#{businessNo},'%')
+			</if>
 			<if test="custName!=null and custName!=''">
 				AND c.`name` like CONCAT('%',#{custName},'%')
 			</if>

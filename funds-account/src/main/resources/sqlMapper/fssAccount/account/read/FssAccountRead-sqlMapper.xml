@@ -102,8 +102,8 @@
 		where t.busi_no = #{contractNo}
 	</select>
 
-	<select id="getFssAccountByCustNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+	<select id="getFssAccountByAccNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
 		<include refid="selectSql"/>
-		WHERE t.cust_no = #{custNo}
+		WHERE t.acc_no = #{accNo}
 	</select>
 </mapper>

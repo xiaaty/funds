@@ -47,6 +47,7 @@
                 <form id="OfflineRechargeForm" action="${contextPath}/trade/tradeApply/saveOfflineRecharge" method="post">
                     <input type="hidden" id="type" name="type" value="${type}"/>
                     <input type="hidden" id="flag" name="flag" value="${flag}"/>
+                    <input type="hidden" id="accNo" name="accNo" value="${accNo}"/>
                     <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
                         <div class="jarviswidget" id="borrowWithholdCheck" data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
@@ -157,6 +158,7 @@
     $("#passbtn").click(function () {
         var tradeType=$("#tradeType").val();
         var amt=$("#amt").val();
+        var accNo=$("#accNo").val();
 //        var type=$("#type").val();
         wait("正在提交中，请耐心等待...");
         if (validateCheck()) {

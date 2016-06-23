@@ -73,14 +73,18 @@
                                                             <input type="text" style="width:200px" name="applyNo" value="${map.applyNo}" />
                                                         </label>
                                                     </td>
-                                                    <td></td>
+                                                    <td class="tr">业务编号：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" style="width:200px" name="businessNo" value="${map.businessNo}" />
+                                                        </label>
+                                                    </td>
                                                     <td class="tr">客户姓名：</td>
                                                     <td>
                                                         <label class="input">
                                                             <input type="text" style="width:200px" name="custName" value="${map.custName}" />
                                                         </label>
                                                     </td>
-                                                    <td></td>
                                                     <td class="tr">客户电话：</td>
                                                     <td>
                                                         <label class="input">
@@ -103,7 +107,6 @@
                                                             </select>
                                                             <label>
                                                     </td>
-                                                    <td></td>
                                                     <td class="tr">交易状态：</td>
                                                     <td>
                                                         <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
@@ -115,7 +118,6 @@
                                                             <option  <c:if test="${map.tradeState==10080011}"> selected="selected" </c:if> value="10080011" >交易取消</option>
                                                         </select>
                                                     </td>
-                                                    <td></td>
                                                     <td class="tr">创建日期：</td>
                                                     <td colspan="3">
                                                         <section class="fl">
