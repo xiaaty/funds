@@ -461,7 +461,10 @@ public class FssTradeApplyService {
 			map2.put("applyType",map.get("applyType"));
 			map2.put("busiType", map.get("busiType"));
 			map2.put("applyNo", map.get("applyNo"));
-			map2.put("businessNo", map.get("businessNo"));
+			map2.put("custName", map.get("custName"));
+			map2.put("custMobile", map.get("custMobile"));
+			map2.put("applyState", map.get("applyState"));
+			map2.put("tradeState", map.get("tradeState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
 			//xdw 增加id 查询， 怕影响前面逻辑，改名为 ApplyBeanId

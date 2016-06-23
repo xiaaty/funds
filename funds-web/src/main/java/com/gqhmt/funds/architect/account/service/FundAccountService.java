@@ -247,6 +247,7 @@ public class FundAccountService {
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");
 			map2.put("customerName",map.get("customerName"));
+			map2.put("mobilePhone",map.get("mobilePhone"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
 		}
