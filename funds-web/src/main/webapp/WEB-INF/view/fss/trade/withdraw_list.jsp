@@ -66,35 +66,71 @@
                                                 <col width="100" />
                                                 <col />
                                                 <tbody>
-                                                    <tr></tr>
-                                                    <tr>
-                                                       <td class="tr">申请编号：</td>
-                                                         <td>
-                                                            <label class="input">
-                                                                <input type="text" style="width:300px" name="applyNo" value="${map.applyNo}" />
+                                                <tr>
+                                                    <td class="tr">申请编号：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" style="width:200px" name="applyNo" value="${map.applyNo}" />
+                                                        </label>
+                                                    </td>
+                                                    <td></td>
+                                                    <td class="tr">客户姓名：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" style="width:200px" name="custName" value="${map.custName}" />
+                                                        </label>
+                                                    </td>
+                                                    <td></td>
+                                                    <td class="tr">客户电话：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" style="width:300px" name="custMobile" value="${map.custMobile}" />
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tr">申请状态：</td>
+                                                    <td>
+                                                        <label>
+                                                            <select id = "applyState" name = "applyState" style="width:200px;height: 30px;">
+                                                                <option value="">请选择</option>
+                                                                <option  <c:if test="${map.applyState==10100001}"> selected="selected" </c:if> value="10100001">新增</option>
+                                                                <option  <c:if test="${map.applyState==10100002}"> selected="selected" </c:if> value="10100002" >审核成功待执行</option>
+                                                                <option  <c:if test="${map.applyState==10100003}"> selected="selected" </c:if> value="10100003" >执行排队中</option>
+                                                                <option  <c:if test="${map.applyState==10100004}"> selected="selected" </c:if> value="10100004" >执行中</option>
+                                                                <option  <c:if test="${map.applyState==10100005}"> selected="selected" </c:if> value="10100005" >执行完成</option>
+                                                                <option  <c:if test="${map.applyState==10109999}"> selected="selected" </c:if> value="10109999" >审核未通过</option>
+                                                            </select>
+                                                            <label>
+                                                    </td>
+                                                    <td></td>
+                                                    <td class="tr">交易状态：</td>
+                                                    <td>
+                                                        <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
+                                                            <option value="">请选择</option>
+                                                            <option  <c:if test="${map.tradeState==10080001 || map.tradeState==null}"> selected="selected" </c:if> value="10080001">新增</option>
+                                                            <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002" >交易成功</option>
+                                                            <option  <c:if test="${map.tradeState==10080003}"> selected="selected" </c:if> value="10080003" >交易部分成功</option>
+                                                            <option  <c:if test="${map.tradeState==10080010}"> selected="selected" </c:if> value="10080010" >交易失败</option>
+                                                            <option  <c:if test="${map.tradeState==10080011}"> selected="selected" </c:if> value="10080011" >交易取消</option>
+                                                        </select>
+                                                    </td>
+                                                    <td></td>
+                                                    <td class="tr">创建日期：</td>
+                                                    <td colspan="3">
+                                                        <section class="fl">
+                                                            <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
                                                             </label>
-                                                        </td>
-                                                        <td class="tr">业务编号：</td>
-                                                        <td>
-                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="businessNo" value="${map.businessNo}" />
+                                                        </section>
+                                                        <span class="fl">&nbsp;至&nbsp;</span>
+                                                        <section class="fl">
+                                                            <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
                                                             </label>
-                                                        </td> 
-                                                        <td class="tr">创建日期：</td>
-			                                             <td colspan="3">
-				                                                <section class="fl">
-				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-				                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
-				                                                    </label>
-				                                                </section>
-				                                                <span class="fl">&nbsp;至&nbsp;</span>
-				                                                <section class="fl">
-				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-				                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
-				                                                    </label>
-				                                                </section>
-				                                          </td>
-                                                    </tr>
+                                                        </section>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -218,13 +254,6 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#withDrawForm"));
-        $("#checkAll").removeAttr("checked");
-    });
-    $('#checkAll').bind('click', function () {
-        var that = this;
-        $('.checkBoxAll').each(function () {
-            this.checked = that.checked;
-        });
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',

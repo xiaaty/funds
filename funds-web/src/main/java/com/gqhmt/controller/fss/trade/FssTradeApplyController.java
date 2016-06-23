@@ -95,7 +95,9 @@ public class FssTradeApplyController {
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-    	
+    	if(map.size()==0){//默认交易状态为新增
+			map.put("tradeState","10080001");
+		}
     	map.put("applyType",type.toString());
 		map.put("busiType", bus);
 //		String token = TokenProccessor.getInstance().makeToken();//创建令牌
@@ -196,7 +198,13 @@ public class FssTradeApplyController {
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
-					tradeapply.setBespokedate(sdf.parse(bespokedate));
+					if(bespokedate==null || "".equals(bespokedate)){
+						tradeapply.setBespokedate(new Date());
+						tradeapply.setSettleType(0);
+					}else{
+						tradeapply.setBespokedate(sdf.parse(bespokedate));
+						tradeapply.setSettleType(1);
+					}
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -249,14 +257,15 @@ public class FssTradeApplyController {
 	 * @return
 	 * @throws FssException
 	 */
-	@RequestMapping(value = "/trade/tradeApply/createOfflineRecharge/{type}/{certNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object createOfflineRecharge(HttpServletRequest request, ModelMap model, @PathVariable Integer  type,@PathVariable String certNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
+	@RequestMapping(value = "/trade/tradeApply/createOfflineRecharge/{type}/{certNo}/{accNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createOfflineRecharge(HttpServletRequest request, ModelMap model, @PathVariable Integer  type,@PathVariable String certNo,@PathVariable String accNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
 		 customerInfoEntity=customerInfoService.queryCustomerInfoByCertNo(certNo);
 		if (customerInfoEntity!=null){
 			model.addAttribute("customerInfoEntity",customerInfoEntity);
 		}
 		model.addAttribute("type",type);
 		model.addAttribute("flag",flag);
+		model.addAttribute("accNo",accNo);
 		return "fss/trade/offlineRecharge_add";
 	}
 
@@ -272,26 +281,21 @@ public class FssTradeApplyController {
 	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@ModelAttribute(value="customerInfoEntity") CustomerInfoEntity customerInfoEntity) throws FssException {
 		String  tradeType=request.getParameter("tradeType");
 		String type = request.getParameter("type");
+		String accNo = request.getParameter("accNo");
 		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
-		if (null==custType) throw new FssException("");
+		if (null==custType) throw new FssException("91001006");
 		BigDecimal  amt=new BigDecimal(request.getParameter("amt"));
-		FssCustomerEntity fssCustomerEntity= fssCustomerService.getFssCustomerEntityByCertNo(customerInfoEntity.getCertNo());
 		String custNo="";
-		String accNo="";
-		if(null!=fssCustomerEntity){
-			custNo=fssCustomerEntity.getCustNo();
-		}
-		FssAccountEntity fssAccountEntity=fssAccountService.getAccountByCustNo(custNo);
+		FssAccountEntity fssAccountEntity=fssAccountService.getAccountByAccNo(accNo);
 		if(null!=fssAccountEntity){
-			accNo=fssAccountEntity.getAccNo();
-			fssAccountEntity.getAccType();
+			custNo=fssAccountEntity.getCustNo();
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		try {
 			if("11030014".equals(tradeType)){//委托充值(账户直接充值)
 				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,false);
 			}else if("11040012".equals(tradeType)){//账户直接提现(账户类型)
-				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,null);
+				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,0);
 			}else if("11030015".equals(tradeType)){//线下充值
 				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(custType),null,amt);
 			}

@@ -28,10 +28,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -461,6 +458,7 @@ public class FssTradeApplyService {
 			map2.put("applyType",map.get("applyType"));
 			map2.put("busiType", map.get("busiType"));
 			map2.put("applyNo", map.get("applyNo"));
+			map2.put("businessNo", map.get("businessNo"));
 			map2.put("custName", map.get("custName"));
 			map2.put("custMobile", map.get("custMobile"));
 			map2.put("applyState", map.get("applyState"));
@@ -585,7 +583,14 @@ public class FssTradeApplyService {
 		}
 		//提现添加预约到账日期
 		if(applyType.equals("1104")){//提现
-			fssTradeApplyEntity.setBespokedate(new Date());
+			//根据settle_type 判断预约到账日期
+			if(settleType.intValue()==0){
+				fssTradeApplyEntity.setBespokedate(new Date());
+			}else{
+				Calendar calendar=Calendar.getInstance();
+				calendar.roll(Calendar.DAY_OF_YEAR,1);
+				fssTradeApplyEntity.setBespokedate(calendar.getTime());
+			}
 			fssTradeApplyEntity.setSettleType(settleType);
 		}
 		return fssTradeApplyEntity;

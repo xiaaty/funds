@@ -190,9 +190,9 @@
                                                     <td><fmt:formatDate value="${bussaccount.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${bussaccount.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/1">充值交易</a>
+                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/${bussaccount.accNo}/1">充值交易</a>
                                                         &nbsp;
-                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/3">直接提现</a>
+                                                        <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/${bussaccount.accNo}/3">直接提现</a>
                                                         &nbsp;
                                                        <%-- <a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a>--%>
                                                     </td>

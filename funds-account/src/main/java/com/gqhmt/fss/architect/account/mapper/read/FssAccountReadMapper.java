@@ -61,9 +61,9 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 
 	/**
 	 * 根据custNo查新版账户
-	 * @param custNo
+	 * @param accNo
 	 * @return
      */
-	public FssAccountEntity getFssAccountByCustNo(@Param("custNo") String custNo);
+	public FssAccountEntity getFssAccountByAccNo(@Param("accNo") String accNo);
 
 }
