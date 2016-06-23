@@ -25,6 +25,11 @@
         .footer-bottom{font-size:13px}
         .footer-bottom ul>li{padding:0}
         .footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
+        .tdColo{
+            color: #000000;
+            background-color:gray;
+        }
+
     </style>
 
 </head>
@@ -49,7 +54,7 @@
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <div class="jarviswidget" id="tradeReList"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
-                                <h2>快速搜索</h2>
+                                <h2>客户信息</h2>
                             </header>
                             <div>
                                 <form class="smart-form" action=""  method="post" id="mortForm">
@@ -57,32 +62,62 @@
                                     </div>
                                     <div class="widget-body no-padding">
                                         <div class="mt10 mb10">
-                                            <table class="table lh32">
-                                                <col width="100" />
-                                                <col width="220" />
-                                                <col width="100" />
-                                                <col width="220" />
-                                                <col width="100" />
-                                                <col />
+                                            <table class="table table-bordered tc mt15" style="min-width:1200 px;">
+                                                <col width="110" />
+                                                <col width="140" />                                                <col width="100" />
+                                                <col width="140" />                                                <col width="100" />
+                                                <col width="140" />                                                <col width="100" />
+                                                <col width="140" />
+                                                <col width="140" />
+                                                <col width="140" />
+                                                <col width="300" />
                                                 <tbody>
-                                                    <tr>
-			                                            <td class="tr">交易状态：</td>
-                                                        <td>
-                                                            <select id = "tradeState" name = "tradeState" style="width:250px;height: 30px;">
-										                    	<option value="">请选择</option>
-										                    	<%-- <option  <c:if test="${traderecord.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option> --%>
-										                    	<option  <c:if test="${traderecord.tradeState==10030002}"> selected="selected" </c:if> value="10030002" >交易成功</option>
-										                    	<option  <c:if test="${traderecord.tradeState==10030003}"> selected="selected" </c:if> value="10030003" >交易失败</option>
-										                    	<%-- <option  <c:if test="${traderecord.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option> --%>
-										                    </select>
-                                                        </td> 
-                                                    </tr>
+                                                <tr>
+                                                    <td class="tdColo">客户姓名</td>
+                                                    <td class="tdColo">客户电话</td>
+                                                    <td class="tdColo">证件号码</td>
+                                                    <td class="tdColo">申请编号</td>
+                                                    <td class="tdColo">业务编号</td>
+                                                    <td class="tdColo">申请状态</td>
+                                                    <td class="tdColo">交易状态</td>
+                                                    <td class="tdColo">创建时间</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>${tradeApply.custName}</td>
+                                                    <td>${tradeApply.custMobile}</td>
+                                                    <td>${tradeApply.certNo}</td>
+                                                    <td>${tradeApply.applyNo}</td>
+                                                    <td>${tradeApply.businessNo}</td>
+                                                    <td><fss:dictView key="${tradeApply.applyState}" /></td>
+                                                    <td><fss:dictView key="${tradeApply.tradeState}" /></td>
+                                                    <td><fss:fmtDate value="${tradeApply.createTime}"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="tdColo">账户编号</td>
+                                                    <td class="tdColo">交易金额</td>
+                                                    <td class="tdColo">实际交易金额</td>
+                                                    <td class="tdColo">总条数</td>
+                                                    <td class="tdColo">执行条数</td>
+                                                    <td class="tdColo">商户号</td>
+                                                    <td class="tdColo">交易渠道</td>
+                                                    <td class="tdColo">修改时间</td>
+                                                </tr>
+                                                <tr style="width:30px">
+                                                    <td>${tradeApply.accNo}</td>
+                                                    <td>${tradeApply.tradeAmount}</td>
+                                                    <td>${tradeApply.realTradeAmount}</td>
+                                                    <td>${tradeApply.count}</td>
+                                                    <td>${tradeApply.successCount}</td>
+                                                   <td>${tradeApply.mchnChild}</td>
+                                                    <td><fss:dictView key="${tradeApply.channelNo}"/></td>
+                                                    <td><fss:fmtDate value="${tradeApply.modifyTime}"/></td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <footer>
+                                       <%-- <footer>
                                           <button type="submit" class="btn btn-primary" onclick="tijiao()">查&nbsp;&nbsp;&nbsp;询</button>
-                                        </footer>
+                                        </footer>--%>
                                     </div>
                                     <!-- end widget content -->
     							</form>
@@ -165,7 +200,7 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortForm"));
-        
+
         $('.selectdate').datetimepicker({
             language: 'zh-CN',
             weekStart: 1,
