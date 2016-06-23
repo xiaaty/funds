@@ -162,7 +162,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2450px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2550px;">
                                     	<col width="50" />
                                     	<col width="100" />
                                         <col width="100" />
@@ -180,27 +180,29 @@
                                         <col width="200" />
                                         <col width="150" />
                                         <col width="100" />
+                                        <col width="100" />
                                         <col width="250" />
                                         <thead>
                                         <tr>
-                                             <td><input type="checkbox" id="checkAll"/></td>
-                                        	 <td>客户姓名</td>
-                                        	 <td>客户电话</td>
-                                             <td>申请编号</td>
-                                             <td>业务编号</td>
-                                             <td>申请状态</td>
-                                             <td>交易状态</td>
-                                             <td>账户编号</td>
-                                             <td>交易金额</td>
-                                             <td>实际交易金额</td>
-                                             <td>总条数</td>
-                                             <td>执行条数</td>
-                                             <td>创建时间</td>
-                                             <td>修改时间</td>
-                                             <td>预约到账日期</td>
-                                             <td>商户号</td>
-                                             <td>交易渠道</td>
-                                             <td>操作</td>
+                                            <td><input type="checkbox" id="checkAll"/></td>
+                                            <td>客户姓名</td>
+                                            <td>客户电话</td>
+                                            <td>交易金额</td>
+                                            <td>实际交易金额</td>
+                                            <td>申请编号</td>
+                                            <td>业务编号</td>
+                                            <td>申请状态</td>
+                                            <td>交易状态</td>
+                                            <td>账户编号</td>
+                                            <td>总条数</td>
+                                            <td>执行条数</td>
+                                            <td>创建时间</td>
+                                            <td>修改时间</td>
+                                            <td>预约到账日期</td>
+                                            <td>商户号</td>
+                                            <td>交易渠道</td>
+                                            <td>提现时效</td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
@@ -209,13 +211,13 @@
                                                     <td><input type="checkbox" class="checkBoxAll" value="${tradeapply.applyNo}"/></td>
                                                 	<td>${tradeapply.custName}</td>
                                                 	<td>${tradeapply.custMobile}</td>
+                                                    <td>${tradeapply.tradeAmount}</td>
+                                                    <td>${tradeapply.realTradeAmount}</td>
                                                     <td>${tradeapply.applyNo}</td>
                                                     <td>${tradeapply.businessNo}</td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
                                                     <td>${tradeapply.accNo}</td>
-                                                    <td>${tradeapply.tradeAmount}</td>
-                                                    <td>${tradeapply.realTradeAmount}</td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
@@ -223,6 +225,8 @@
                                                     <td><fss:fmtDate value="${tradeapply.bespokedate}"/></td>
                                                     <td>${tradeapply.mchnChild}</td>
                                                     <td><fss:dictView key="${tradeapply.channelNo}" /></td>
+                                                    <td>T+${tradeapply.settleType}</td>
+
                                                     <td>
                                                     <input type="hidden" name="token" value="${token}"/>
                                                         <c:choose>

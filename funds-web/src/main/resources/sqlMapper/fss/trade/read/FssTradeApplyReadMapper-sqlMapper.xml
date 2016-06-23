@@ -56,7 +56,8 @@
 			t.real_trade_amount realTradeAmount,
 			t.channel_no channelNo,
 			c.`name` custName,
-			c.mobile custMobile
+			c.mobile custMobile,
+			t.settle_type settleType
 			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
 			ON t.cust_id=c.cust_id
 	</sql>
