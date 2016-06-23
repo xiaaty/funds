@@ -195,7 +195,7 @@ public class FssTradeApplyController {
 			}
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
-			tradeapply.setTradeState("10030001");//交易状态，交易提交
+			tradeapply.setTradeState("10080001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
@@ -203,9 +203,14 @@ public class FssTradeApplyController {
 			tradeapply.setTradeState("10109999");//审核未通过
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
+			//不通过，添加回盘记录
+			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			//审核不通过进行资金解冻
+			if(applyType==1104){
+				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
+			}
 		}
-		//不通过，添加回盘记录
-//		fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+
 		map.put("code", "0000");
         map.put("message", "success");
 		return map;

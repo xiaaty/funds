@@ -74,14 +74,20 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                     <td class="tr" nowrap="nowrap">客户姓名:</td>
+                                                        <td class="tr" nowrap="nowrap">客户姓名:</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input"  style="width:210px" >
                                                                 <input type="text" name="customerName" value="${accMap.customerName}">
                                                             </label>
                                                         </td>
+                                                        <td class="tr" nowrap="nowrap">手机号码:</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="input"  style="width:210px" >
+                                                                <input type="text" name="mobilePhone" value="${accMap.mobilePhone}">
+                                                            </label>
+                                                        </td>
                                                         <td class="tr">创建日期：</td>
-			                                             <td colspan="3">
+                                                        <td colspan="3">
 				                                                <section class="fl">
 				                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
 				                                                        <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${accMap.startTime}">
@@ -93,7 +99,7 @@
 				                                                        <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${accMap.endTime}">
 				                                                    </label>
 				                                                </section>
-				                                          </td>
+                                                        </td>
                                                     </tr>
                                                    
                                                 </tbody>
