@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -44,30 +45,50 @@ public class FssRepayController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/sys/busi/merchantRepayList/{mchnNo}",method = RequestMethod.GET)
-    //@RequestMapping(value = "/sys/busi/merchantRepayList",method = RequestMethod.GET)
+    @RequestMapping(value = "/sys/busi/merchantRepayList/{mchnNo}",method = {RequestMethod.POST, RequestMethod.GET})
     @AutoPage
-    public Object merchantRepayList(HttpServletRequest request, ModelMap model, String mchnNo){
-            System.out.println("-----------------------------merchantRepayList---------------------------------");
-        Map<String, Object> param =  new HashMap<String, Object>();
-        param.put("mchnNo", mchnNo);
-       /* List<MerchantEntity> merchantEntityList = merchantService.findBusinessList(param);
-        String returnId="0";
-        if(Integer.parseInt(id)>0){
-            MerchantEntity findMerchantEntityById = merchantService.findBusinessById(Long.parseLong(parentId));
-            returnId = findMerchantEntityById.getParentId();
-        }*/
+    public Object merchantRepayList(HttpServletRequest request, ModelMap model, @PathVariable String mchnNo, @RequestParam(value = "edit", required = false) boolean edit,@RequestParam(value = "id", required = false) String id){
         List<MerchantRepayConfigEntity> merchantRepayConfigEntityList = null;
-        if(mchnNo == null || "".equals(mchnNo)){
-            System.out.println("---------------------true-----------------------");
+        //判断是从回盘配置进入， 还是从商户进入
+        if(mchnNo == null || "".equals(mchnNo)|| "-1".equals(mchnNo)){
             merchantRepayConfigEntityList = merchantService.getMerchantRepayConfigEntityList();
         } else {
-            System.out.println("---------------------false-----------------------");
             merchantRepayConfigEntityList = merchantService.getMerchantRepayConfigEntityListByMchnNo(mchnNo);
         }
 
-        //model.addAttribute("page", merchantRepayConfigEntityList);
-        //model.addAttribute("returnId", returnId);
+        model.addAttribute("page", merchantRepayConfigEntityList);
+        model.addAttribute("mchnNo",mchnNo);
+        model.addAttribute("edit",edit);
+        model.addAttribute("id",id);
         return "sys/busi/merchantRepayList";
     }
+
+    /**
+     * 修改商户回盘配置
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/sys/busi/merchantRepay",method = {RequestMethod.POST, RequestMethod.GET})
+    @AutoPage
+    public Object updateMerchantRepay(HttpServletRequest request, ModelMap model,@RequestParam(value = "mchnNoVal", required = false) String mchnNo, MerchantRepayConfigEntity merchantRepayConfigEntity,@RequestParam(value = "edit", required = false) boolean edit,@RequestParam(value = "id", required = false) String id){
+        merchantService.updateMerchantRepayConfigEntity(merchantRepayConfigEntity);
+        return "redirect:"+request.getContextPath()+"/sys/busi/merchantRepayList/"+mchnNo;
+    }
+
+    /**
+     * 修改商户回盘配置
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/sys/busi/addMerchantRepay",method = {RequestMethod.POST, RequestMethod.GET})
+    @AutoPage
+    public Object addMerchantRepay(HttpServletRequest request, ModelMap model,@RequestParam(value = "mchnNoVal", required = false) String mchnNo , MerchantRepayConfigEntity merchantRepayConfigEntity,@RequestParam(value = "edit", required = false) boolean edit){
+        merchantService.addMerchantRepayConfigEntity(merchantRepayConfigEntity);
+        return "redirect:"+request.getContextPath()+"/sys/busi/merchantRepayList/"+mchnNo;
+    }
+
+
+
 }

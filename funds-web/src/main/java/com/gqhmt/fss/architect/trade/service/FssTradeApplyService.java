@@ -28,10 +28,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -430,6 +427,18 @@ public class FssTradeApplyService {
 	/**
 	 *
 	 * author:jhz
+	 * time:2016年6月22日
+	 * function：修改交易申请
+	 */
+	public void updateTradeApply(FssTradeApplyEntity applyEntity,String applyState,String tradeState ){
+		applyEntity.setApplyState(applyState);
+		applyEntity.setTradeState(tradeState);
+		applyEntity.setModifyTime(new Date());
+		fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+	}
+	/**
+	 *
+	 * author:jhz
 	 * time:2016年5月26日
 	 * function：通过fromId和budiType查询申请表信息
 	 */
@@ -449,12 +458,17 @@ public class FssTradeApplyService {
 			map2.put("applyType",map.get("applyType"));
 			map2.put("busiType", map.get("busiType"));
 			map2.put("applyNo", map.get("applyNo"));
+			map2.put("businessNo", map.get("businessNo"));
 			map2.put("custName", map.get("custName"));
 			map2.put("custMobile", map.get("custMobile"));
 			map2.put("applyState", map.get("applyState"));
 			map2.put("tradeState", map.get("tradeState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+			//xdw 增加id 查询， 怕影响前面逻辑，改名为 ApplyBeanId
+			if(map.get("ApplyBeanId")!=null){
+				map2.put("id",map.get("ApplyBeanId"));
+			}
 		}
 		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map2);
 		return tradeapplylist;
@@ -568,9 +582,17 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setFormId(fromId);
 		}
 		//提现添加预约到账日期
-		if(applyType.equals("1104")){//提现
-			fssTradeApplyEntity.setBespokedate(new Date());
-			fssTradeApplyEntity.setSettleType(settleType);
+		if(applyType.intValue()==1104){//提现
+			//根据settle_type 判断预约到账日期
+			if(settleType==null || settleType.intValue()>0){
+				Calendar calendar=Calendar.getInstance();
+				calendar.roll(Calendar.DAY_OF_YEAR,1);
+				fssTradeApplyEntity.setBespokedate(calendar.getTime());
+				fssTradeApplyEntity.setSettleType(1);
+			}else{
+				fssTradeApplyEntity.setBespokedate(new Date());
+				fssTradeApplyEntity.setSettleType(settleType);
+			}
 		}
 		return fssTradeApplyEntity;
 	}

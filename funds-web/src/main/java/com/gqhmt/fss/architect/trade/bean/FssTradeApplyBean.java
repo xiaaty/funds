@@ -32,6 +32,7 @@ public class FssTradeApplyBean implements java.io.Serializable {
 	    private String custName;           //客户名称
 	    private String custMobile;        //客户手机
 	    private String certNo;            //证件号码
+		private String settleType;//提现时效
 		public Long getId() {
 			return id;
 		}
@@ -194,5 +195,10 @@ public class FssTradeApplyBean implements java.io.Serializable {
 		public void setCertNo(String certNo) {
 			this.certNo = certNo;
 		}
-	    
+		public String getSettleType() {
+		return settleType;
+		}
+		public void setSettleType(String settleType) {
+		this.settleType = settleType;
+		}
 }
