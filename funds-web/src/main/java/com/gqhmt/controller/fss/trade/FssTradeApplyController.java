@@ -24,6 +24,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -211,6 +212,7 @@ public class FssTradeApplyController {
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 			//不通过，添加回盘记录
+
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 			//审核不通过进行资金解冻
 			if(applyType==1104){
@@ -300,6 +302,37 @@ public class FssTradeApplyController {
 			map.put("code", e.getMessage());
 			map.put("message", resp_msg);
 		}
+		return map;
+	}
+	/**
+	 * 批量体现
+	 * @param request
+	 * @param model
+	 * @throws FssException
+	 */
+//	审核通过,先进行处理，处理完成后走回盘
+	@RequestMapping(value = "/trade/tradeApply/moneySplit")
+	@ResponseBody
+	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no) throws FssException {
+		Map<String, String> map = new HashMap<String, String>();
+		FssTradeApplyEntity tradeapply=null;
+		String[] applyNos = no.split(",");
+		int count=0;
+		for (int i = 0; i < applyNos.length; i++) {
+			tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNos[i]);
+			if("10100001".equals(tradeapply.getApplyState())){
+				fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
+				count++;
+			}
+		}
+		if(applyNos.length==count){
+			map.put("code", "0000");
+			map.put("message", "success");
+		}else{
+			map.put("code", "0001");
+			map.put("message", "有"+count+"条成功，其他不符合代扣或提现状态");
+		}
+
 		return map;
 	}
 

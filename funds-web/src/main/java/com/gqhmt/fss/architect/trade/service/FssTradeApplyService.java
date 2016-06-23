@@ -430,6 +430,18 @@ public class FssTradeApplyService {
 	/**
 	 *
 	 * author:jhz
+	 * time:2016年6月22日
+	 * function：修改交易申请
+	 */
+	public void updateTradeApply(FssTradeApplyEntity applyEntity,String applyState,String tradeState ){
+		applyEntity.setApplyState(applyState);
+		applyEntity.setTradeState(tradeState);
+		applyEntity.setModifyTime(new Date());
+		fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+	}
+	/**
+	 *
+	 * author:jhz
 	 * time:2016年5月26日
 	 * function：通过fromId和budiType查询申请表信息
 	 */

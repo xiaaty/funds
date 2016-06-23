@@ -17,9 +17,6 @@ import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
-import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -70,8 +67,6 @@ public class FssLoanTradeController {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	@Resource
-	private FssTradeRecordService fssTradeRecordService;
-	@Resource
 	private ICost cost;
 	@Resource
     private FssCustomerService fssCustomerService;
@@ -81,10 +76,6 @@ public class FssLoanTradeController {
 	private FssAccountService fssAccountService;
 	@Resource
 	private ExportAndImpService exportAndImpService;
-	@Resource
-	private FundAccountService fundAccountService;
-	@Resource
-	private IFundsTrade iFundsTrade;
 	@Resource
 	private CustomerInfoService customerInfoService;
 	/**
@@ -309,9 +300,11 @@ public class FssLoanTradeController {
 							}
 							// 修改费用状态	收取成功
 							fssFeeList.setRepCode("0000");
+							fssFeeList.setModifyTime(new Date());
 							fssFeeList.setTradeStatus("10050007");
 						}else{
 							fssFeeList.setRepCode("10050015");
+							fssFeeList.setModifyTime(new Date());
 							fssFeeList.setTradeStatus("10050015");
 						}
 					}

@@ -43,9 +43,6 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     private IFundsTrade fundsTrade;
     @Resource
     private FundAccountService fundAccountService;
-    @Resource
-    private TradeRecordService tradeRecordService;
-    
     @Override
     public void batchTrade(FssTradeRecordEntity entity){
         FundOrderEntity orderEntity = null;
