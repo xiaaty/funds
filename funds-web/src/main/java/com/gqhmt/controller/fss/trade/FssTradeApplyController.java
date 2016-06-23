@@ -305,18 +305,10 @@ public class FssTradeApplyController {
 		Map<String, String> map = new HashMap<String, String>();
 		FssTradeApplyEntity tradeapply=null;
 		String[] applyNos = no.split(",");
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		int count=0;
 		for (int i = 0; i < applyNos.length; i++) {
 			tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNos[i]);
 			if("10100001".equals(tradeapply.getApplyState())){
-				if(tradeapply.getApplyType()==1104){//提现
-					try {
-						tradeapply.setBespokedate(sdf.parse((new Date()).toString()));
-					}catch (ParseException e) {
-						e.printStackTrace();
-					}
-				}
 				fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
 				count++;
 			}
