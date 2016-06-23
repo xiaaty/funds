@@ -254,6 +254,13 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#withDrawForm"));
+        $("#checkAll").removeAttr("checked");
+    });
+    $('#checkAll').bind('click', function () {
+        var that = this;
+        $('.checkBoxAll').each(function () {
+            this.checked = that.checked;
+        });
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',
