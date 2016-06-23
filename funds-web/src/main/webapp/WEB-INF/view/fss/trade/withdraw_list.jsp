@@ -70,29 +70,33 @@
                                                     <td class="tr">申请编号：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" style="width:200px" name="applyNo" value="${map.applyNo}" />
+                                                            <input type="text" style="width:150px" name="applyNo" value="${map.applyNo}" />
                                                         </label>
                                                     </td>
-                                                    <td></td>
+                                                    <td class="tr">业务编号：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" style="width:150px" name="businessNo" value="${map.businessNo}" />
+                                                        </label>
+                                                    </td>
                                                     <td class="tr">客户姓名：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" style="width:200px" name="custName" value="${map.custName}" />
-                                                        </label>
-                                                    </td>
-                                                    <td></td>
-                                                    <td class="tr">客户电话：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            <input type="text" style="width:300px" name="custMobile" value="${map.custMobile}" />
+                                                            <input type="text" style="width:150px" name="custName" value="${map.custName}" />
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="tr">客户电话：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" style="width:150px" name="custMobile" value="${map.custMobile}" />
+                                                        </label>
+                                                    </td>
                                                     <td class="tr">申请状态：</td>
                                                     <td>
                                                         <label>
-                                                            <select id = "applyState" name = "applyState" style="width:200px;height: 30px;">
+                                                            <select id = "applyState" name = "applyState" style="width:150px;height: 30px;">
                                                                 <option value="">请选择</option>
                                                                 <option  <c:if test="${map.applyState==10100001}"> selected="selected" </c:if> value="10100001">新增</option>
                                                                 <option  <c:if test="${map.applyState==10100002}"> selected="selected" </c:if> value="10100002" >审核成功待执行</option>
@@ -103,10 +107,9 @@
                                                             </select>
                                                             <label>
                                                     </td>
-                                                    <td></td>
                                                     <td class="tr">交易状态：</td>
                                                     <td>
-                                                        <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
+                                                        <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
                                                             <option value="">请选择</option>
                                                             <option  <c:if test="${map.tradeState==10080001 || map.tradeState==null}"> selected="selected" </c:if> value="10080001">新增</option>
                                                             <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002" >交易成功</option>
@@ -115,7 +118,6 @@
                                                             <option  <c:if test="${map.tradeState==10080011}"> selected="selected" </c:if> value="10080011" >交易取消</option>
                                                         </select>
                                                     </td>
-                                                    <td></td>
                                                     <td class="tr">创建日期：</td>
                                                     <td colspan="3">
                                                         <section class="fl">
