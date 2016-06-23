@@ -44,11 +44,6 @@
             content: "|"
         }
 
-        .tdColo {
-            color: #000000;
-            background-color: gray;
-        }
-
     </style>
 
 </head>
