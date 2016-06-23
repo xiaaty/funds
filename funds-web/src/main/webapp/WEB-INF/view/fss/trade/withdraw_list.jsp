@@ -113,7 +113,9 @@
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>数据列表信息</h2>
                         </header>
-                        <!-- widget div-->
+                        <div class="user_operate mb10 clearfix">
+                            <button class="btn btn-default" id="btn_rech">批量提现</button>
+                        </div>
                         <div>
                             <form class="smart-form">
                                 <!-- widget edit box -->
@@ -122,7 +124,8 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2450px;">
+                                    	<col width="50" />
                                     	<col width="100" />
                                         <col width="100" />
                                         <col width="200" />
@@ -142,6 +145,7 @@
                                         <col width="250" />
                                         <thead>
                                         <tr>
+                                             <td><input type="checkbox" id="checkAll"/></td>
                                         	 <td>客户姓名</td>
                                         	 <td>客户电话</td>
                                              <td>申请编号</td>
@@ -164,6 +168,7 @@
                                          <tbody>
                                              <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
+                                                    <td><input type="checkbox" class="checkBoxAll" value="${tradeapply.applyNo}"/></td>
                                                 	<td>${tradeapply.custName}</td>
                                                 	<td>${tradeapply.custMobile}</td>
                                                     <td>${tradeapply.applyNo}</td>
@@ -220,6 +225,13 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#withDrawForm"));
+        $("#checkAll").removeAttr("checked");
+    });
+    $('#checkAll').bind('click', function () {
+        var that = this;
+        $('.checkBoxAll').each(function () {
+            this.checked = that.checked;
+        });
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',
@@ -237,7 +249,7 @@
     	if(b[0].value!=null&&b[0].value!=''){
     		
     		if(a[0].value>b[0].value){
-    			JAlert("请检查您输入的日期","提示消息");
+    			jAlert("请检查您输入的日期","提示消息");
     		}else{
     			$("#withDrawForm").submit();
     		}
@@ -245,13 +257,42 @@
     		var d = new Date();
     		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
     		if(a[0].value>str){
-    			JAlert("请检查您输入的日期","提示消息");
+    			jAlert("请检查您输入的日期","提示消息");
     		}else{
     			$("#withDrawForm").submit();
     		}
     	}
     }
-</script>
+    //批量代付按钮
+    $('#btn_rech').click(function () {
+        var no = $('#borrow-rep-table12 tbody :checkbox:checked');
+        if (no.size() == 0) {
+            alert("请选择件数！");
+            return false;
+        }
+        var param = [];
+        no.each(function () {
+            param.push($(this).val());
+        })
+//        alert(param.toString());
+        if(confirm("您确认全部审核成功吗？")){
+        $.post("${contextPath}/trade/tradeApply/moneySplit", {'no': param.toString()}, function (data) {
+            if (data.code == '0000') {
+                alert("成功", '消息提示');
+                $("#withDrawForm").submit();
+                $("#checkAll").removeAttr("checked");
+                return false;
+            }else if(data.code == '0001'){
+                alert(data.message, '消息提示');
+                $("#withDrawForm").submit();
+                $("#checkAll").removeAttr("checked");
+                return false;
+            }
+        }, "json");
+        }
+    });
+
+ </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>
 </body>

@@ -23,6 +23,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -194,7 +195,7 @@ public class FssTradeApplyController {
 			}
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
-			tradeapply.setTradeState("10030001");//交易状态，交易提交
+			tradeapply.setTradeState("10080001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
@@ -203,6 +204,7 @@ public class FssTradeApplyController {
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 			//不通过，添加回盘记录
+
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		}
 		map.put("code", "0000");
@@ -281,6 +283,45 @@ public class FssTradeApplyController {
 			map.put("code", "0001");
 			map.put("message", "error");
 		}
+		return map;
+	}
+	/**
+	 * 批量体现
+	 * @param request
+	 * @param model
+	 * @throws FssException
+	 */
+//	审核通过,先进行处理，处理完成后走回盘
+	@RequestMapping(value = "/trade/tradeApply/moneySplit")
+	@ResponseBody
+	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no) throws FssException {
+		Map<String, String> map = new HashMap<String, String>();
+		FssTradeApplyEntity tradeapply=null;
+		String[] applyNos = no.split(",");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		int count=0;
+		for (int i = 0; i < applyNos.length; i++) {
+			tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNos[i]);
+			if("10100001".equals(tradeapply.getApplyState())){
+				if(tradeapply.getApplyType()==1104){//提现
+					try {
+						tradeapply.setBespokedate(sdf.parse((new Date()).toString()));
+					}catch (ParseException e) {
+						e.printStackTrace();
+					}
+				}
+				fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
+				count++;
+			}
+		}
+		if(applyNos.length==count){
+			map.put("code", "0000");
+			map.put("message", "success");
+		}else{
+			map.put("code", "0001");
+			map.put("message", "有"+count+"条成功，其他不符合代扣或提现状态");
+		}
+
 		return map;
 	}
 
