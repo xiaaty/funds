@@ -56,6 +56,7 @@ public class FssOfflineRechargeService {
 			String endTime = map.get("endTime");
 			map2.put("applyNo", map.get("applyNo"));
 			map2.put("busiNo", map.get("busiNo"));
+			map2.put("resultState", map.get("resultState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
 		}
@@ -104,7 +105,7 @@ public class FssOfflineRechargeService {
      * @param orderNo
      * @throws FssException
      */
-	public void updateSuccess(Long id,Object fy_acc_no,Object fy_acc_nm,Object fy_bank,Object fy_bank_branch,Object chg_cd,Object chg_dt,Object amt,String orderNo) throws FssException{
+	public void updateSuccess(Long id,Object fy_acc_no,Object fy_acc_nm,Object fy_bank,Object fy_bank_branch,Object chg_cd,Object chg_dt,BigDecimal amt,String orderNo) throws FssException{
 		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
 		entity.setFyAccNo(fy_acc_no == null ? null:String.valueOf(fy_acc_no));
 		entity.setFyAccNm(fy_acc_nm == null ? null:String.valueOf(fy_acc_nm));
@@ -112,7 +113,7 @@ public class FssOfflineRechargeService {
 		entity.setFyBankBranch(fy_bank_branch == null ? null:String.valueOf(fy_bank_branch));
 		entity.setChgCd(chg_cd == null ? null:String.valueOf(chg_cd));
 		entity.setChgDt(chg_dt == null ? null:String.valueOf(chg_dt));
-		entity.setAmt(amt == null ? null:new BigDecimal((String)amt));
+		entity.setAmt(amt);
 		entity.setOrderNo(orderNo);
 		entity.setResultState("10120002");//充值码获取成功，待客户充值
 		try{

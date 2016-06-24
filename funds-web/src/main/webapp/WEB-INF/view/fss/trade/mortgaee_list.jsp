@@ -167,17 +167,17 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2450px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2500px;">
                                     	<col width="50" />
-                                    	<col width="100" />
-                                        <col width="100" />
                                         <col width="200" />
-                                        <col width="100" />
-                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
+                                        <col width="150" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="250" />
@@ -188,15 +188,15 @@
                                         <thead>
                                         <tr>
                                             <td><input type="checkbox" id="checkAll"/></td>
-                                        	 <td>客户姓名</td>
-                                        	 <td>客户电话</td>
-                                             <td>申请编号</td>
-                                             <td>业务编号</td>
-                                             <td>申请状态</td>
-                                             <td>交易状态</td>
-                                             <td>账户编号</td>
-                                             <td>交易金额</td>
-                                             <td>实际交易金额</td>
+                                            <td>申请编号</td>
+                                            <td>客户姓名</td>
+                                            <td>客户电话</td>
+                                            <td>交易金额</td>
+                                            <td>实际交易金额</td>
+                                            <td>申请状态</td>
+                                            <td>交易状态</td>
+                                            <td>业务编号</td>
+                                            <td>账户编号</td>
                                              <td>总条数</td>
                                              <td>执行条数</td>
                                              <td>创建时间</td>
@@ -210,15 +210,15 @@
                                              <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
                                                     <td><input type="checkbox" class="checkBoxAll" value="${tradeapply.applyNo}"/></td>
-                                                	<td>${tradeapply.custName}</td>
-                                                	<td>${tradeapply.custMobile}</td>
                                                     <td>${tradeapply.applyNo}</td>
-                                                    <td>${tradeapply.businessNo}</td>
+                                                    <td>${tradeapply.custName}</td>
+                                                    <td>${tradeapply.custMobile}</td>
+                                                    <td><fss:money money="${tradeapply.tradeAmount}"/></td>
+                                                    <td><fss:money money="${tradeapply.realTradeAmount}"/></td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
+                                                    <td>${tradeapply.businessNo}</td>
                                                     <td>${tradeapply.accNo}</td>
-                                                    <td>${tradeapply.tradeAmount}</td>
-                                                    <td>${tradeapply.realTradeAmount}</td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
