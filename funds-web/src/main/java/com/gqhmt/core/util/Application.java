@@ -12,6 +12,7 @@ import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.sys.service.BankDealamountLimitService;
 import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.ServiceLoader;
+import com.gqhmt.fss.architect.merchant.entity.MerchantRepayConfigEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -66,7 +67,7 @@ public class Application {
         LogUtil.debug(this.getClass(),eightCodemap.toString());
         LogUtil.debug(this.getClass(),sixCodemap.toString());
         LogUtil.debug(this.getClass(),fourCodemap.toString());
-        LogUtil.debug(this.getClass(),merchantRepayConfigEntity.toString());
+        LogUtil.debug(this.getClass(),merchantRepayConfigEntityMap.toString());
 //        LogUtil.debug(this.getClass(),bankEntitymap.toString());
     }
 
@@ -92,7 +93,7 @@ public class Application {
         initBankDealamountLimit();
         iniBankArea();
         //回盘地址
-        initMerchantRepayConfigEntity()
+        initMerchantRepayConfigEntity();
 //        initBankList();
     }
 
@@ -243,8 +244,16 @@ public class Application {
 
             merchantRepayConfigEntityMap.put(merchantRepayConfigEntity.getMchnNo()+"_"+merchantRepayConfigEntity.getTradeType(),merchantRepayConfigEntity.getMchnUrl());
 
-            merchantRepayConfigEntityMap.put(merchantRepayConfigEntity.getMchnNo()+"_"+merchantRepayConfigEntity.getTradeType()+"_className",merchantEntity.getRepayClassName());
+            merchantRepayConfigEntityMap.put(merchantRepayConfigEntity.getMchnNo()+"_"+merchantRepayConfigEntity.getTradeType()+"_className",merchantRepayConfigEntity.getRepayClassName());
         }
+    }
+
+    public String getMchnUrlOrClassName(String MchnUrlOrClassName) throws FssException {
+        String merchantRepayConfAddress = merchantRepayConfigEntityMap.get(MchnUrlOrClassName);
+        if(merchantRepayConfAddress == null){
+            throw new FssException("90008102");
+        }
+        return merchantRepayConfAddress;
     }
 
     /**
