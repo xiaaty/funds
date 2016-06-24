@@ -64,25 +64,25 @@
 	   FROM `t_gq_fss_account` a,`t_gq_fss_customer` c
 	   WHERE a.cust_no=c.cust_no
 	   <if test="accType!=null and accType!=''">
-       	  AND a.acc_type = #{accType}
+       	  AND a.acc_type=#{accType}
        </if>
 	   <if test="custNo!=null and custNo!=''">
-       	  AND a.cust_no Like CONCAT(CONCAT('%',#{custNo}),'%')
+       	  AND a.cust_no=#{custNo}
        </if>
 	   <if test="accNo!=null and accNo!=''">
-       	  AND a.acc_no Like CONCAT(CONCAT('%',#{accNo}),'%')
+       	  AND a.acc_no=#{accNo}
        </if>
 	   <if test="custName!=null and custName!=''">
-       	  AND c.name Like CONCAT(CONCAT('%',#{custName}),'%')
+       	  AND c.name=#{custName}
        </if>
 	   <if test="certNo!=null and certNo!=''">
-	      AND c.cert_no Like CONCAT(CONCAT('%',#{certNo}),'%')
+	      AND c.cert_no=#{certNo}
 	   </if> 
 	   <if test="busiNo!=null and busiNo!=''">
-	      AND a.busi_no Like CONCAT(CONCAT('%',#{busiNo}),'%')
+	      AND a.busi_no=#{busiNo}
 	   </if> 
 	   <if test="mobile!=null and mobile!=''">
-	      AND c.mobile Like CONCAT(CONCAT('%',#{mobile}),'%')
+	      AND c.mobile=#{mobile}
 	   </if> 
 	   order by c.create_time desc
 	</select>
@@ -102,8 +102,8 @@
 		where t.busi_no = #{contractNo}
 	</select>
 
-	<select id="getFssAccountByCustNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
+	<select id="getFssAccountByAccNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
 		<include refid="selectSql"/>
-		WHERE t.cust_no = #{custNo}
+		WHERE t.acc_no = #{accNo}
 	</select>
 </mapper>

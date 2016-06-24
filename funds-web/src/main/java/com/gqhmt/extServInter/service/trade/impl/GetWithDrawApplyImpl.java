@@ -36,11 +36,14 @@ public class GetWithDrawApplyImpl implements IGetWithDrawApply{
 	/**
 	 * 借款人提现申请：11091001
 	 * 冠E通借款人放款：11091002
-	 * 抵押权人提现：11040007
+	 * 代偿人提现：11040007
 	 * 委托出借提现：11040006
 	 * 账户直接提现：11040012
+	 * 抵押权人提现：11092001
+	 * 归还保证金提现:11091003
+	 * 赎回提现:11040013
 	 */
-	@APITradeTypeValid(value = "11091001,11091002,11040007,11040006,11040012")
+	@APITradeTypeValid(value = "11091001,11091002,11040007,11040006,11040012,11092001,11091003,11040013")
     @Override
     public Response execute(SuperDto dto){
     	Response response = new Response();
