@@ -606,9 +606,9 @@ public class FundsTradeImpl  implements IFundsTrade {
         CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,amt,GlobalConstants.ORDER_RECHARGE_OFFLINE,fssOfflineRechargeEntity.getId(),0);
         //根据返回码判断是否成功，修改线下充值记录状态
         if("0000".equals(response.getCode())){//成功
-            fssOfflineRechargeService.updateSuccess(fssOfflineRechargeEntity.getId(),response.getMap().get("fy_acc_no"),response.getMap().get("fy_acc_nm"),response.getMap().get("fy_bank"),response.getMap().get("fy_bank_branch"),response.getMap().get("chg_cd"),response.getMap().get("chg_dt"),response.getMap().get("amt"),response.getFundOrderEntity().getOrderNo());
+            fssOfflineRechargeService.updateSuccess(fssOfflineRechargeEntity.getId(),response.getMap().get("fy_acc_no"),response.getMap().get("fy_acc_nm"),response.getMap().get("fy_bank"),response.getMap().get("fy_bank_branch"),response.getMap().get("chg_cd"),response.getMap().get("chg_dt"),amt,response.getFundOrderEntity().getOrderNo());
             offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
-            offlineRechargeResponse.setAmt(new BigDecimal(String.valueOf(response.getMap().get("amt"))));
+            offlineRechargeResponse.setAmt(amt);
             offlineRechargeResponse.setChg_dt(String.valueOf(response.getMap().get("chg_dt")));
             offlineRechargeResponse.setFy_acc_nm(String.valueOf(response.getMap().get("fy_acc_nm")));
             offlineRechargeResponse.setFy_acc_no(String.valueOf(response.getMap().get("fy_acc_no")));
