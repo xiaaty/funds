@@ -251,7 +251,7 @@ public class Application {
     public String getMchnUrlOrClassName(String MchnUrlOrClassName) throws FssException {
         String merchantRepayConfAddress = merchantRepayConfigEntityMap.get(MchnUrlOrClassName);
         if(merchantRepayConfAddress == null){
-            throw new FssException("90008102");
+            throw new FssException();
         }
         return merchantRepayConfAddress;
     }
