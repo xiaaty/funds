@@ -207,7 +207,7 @@ public class FssTradeRecordService {
 		if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
 			FssTradeRecordEntity tradeRecordEntity = this.creatTradeRecordEntity(tradeApplyEntity, lastamount);
 			fssTradeRecordWriteMapper.insert(tradeRecordEntity);
-			recordEntityList.add(tradeRecordEntity);
+			recordEntityList.add(0,tradeRecordEntity);
 		}
 
 

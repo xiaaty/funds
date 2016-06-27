@@ -228,7 +228,40 @@ public class LoanApiTest extends SupperAPI {
 
         System.out.println(respCode1.matches("[0-9]*"));
 
+    }
 
+    @Test
+    public void mosplitTest(){
+
+        List<BigDecimal> list = new ArrayList<>();
+        BigDecimal limit = new BigDecimal(5000.00);
+        BigDecimal split1 = new BigDecimal(8000.00);
+        BigDecimal split2 = new BigDecimal(16000.00);
+        BigDecimal split3 = new BigDecimal(10000.00);
+
+
+        BigDecimal bg1[] =  split1.divideAndRemainder(limit);
+        BigDecimal bg2[] =  split2.divideAndRemainder(limit);
+        BigDecimal bg3[] =  split3.divideAndRemainder(limit);
+
+        System.out.println(bg1[0]+":"+bg1[1]);
+        System.out.println(bg2[0]+":"+bg2[1]);
+        System.out.println(bg3[0]+":"+bg3[1]);
+
+
+        int splitCount = bg2[0].intValue();
+        BigDecimal lastamount = bg2[1];
+
+        for (int i = 0; i < splitCount; i++) {
+            list.add(limit);
+        }
+
+        if (lastamount.compareTo(BigDecimal.ZERO) > 0) {
+            list.add(0,lastamount);
+        }
+
+
+        System.out.println(list);
 
 
 
