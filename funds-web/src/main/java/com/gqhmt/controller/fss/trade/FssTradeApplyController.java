@@ -2,6 +2,7 @@ package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -23,6 +24,7 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -93,7 +95,9 @@ public class FssTradeApplyController {
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-    	
+    	if(map.size()==0){//默认交易状态为新增
+			map.put("tradeState","10080001");
+		}
     	map.put("applyType",type.toString());
 		map.put("busiType", bus);
 //		String token = TokenProccessor.getInstance().makeToken();//创建令牌
@@ -115,8 +119,15 @@ public class FssTradeApplyController {
 	 */
     @RequestMapping(value = "/trade/tradeApply/{applyNo}/records",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryTradeRecord(HttpServletRequest request, ModelMap model,FssTradeRecordEntity traderecord,@PathVariable String applyNo) throws Exception {
+    public String queryTradeRecord(HttpServletRequest request, ModelMap model,FssTradeRecordEntity traderecord,@PathVariable String applyNo,@RequestParam(required = false,value = "id")String id) throws Exception {
+		// 增加数据展示
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("ApplyBeanId",id);
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
+
+
     	List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(applyNo,traderecord.getTradeState());
+		model.addAttribute("tradeApply", tradeApplyList.get(0));
         model.addAttribute("page", tradeRecordList);
         model.addAttribute("traderecord", traderecord);
         return "fss/trade/trade_record/traderecord_list";
@@ -187,14 +198,20 @@ public class FssTradeApplyController {
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
-					tradeapply.setBespokedate(sdf.parse(bespokedate));
+					if(bespokedate==null || "".equals(bespokedate)){
+						tradeapply.setBespokedate(new Date());
+						tradeapply.setSettleType(0);
+					}else{
+						tradeapply.setBespokedate(sdf.parse(bespokedate));
+						tradeapply.setSettleType(1);
+					}
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setApplyState("10100002");//申请状态
-			tradeapply.setTradeState("10030001");//交易状态，交易提交
+			tradeapply.setTradeState("10080001");//交易状态，交易提交
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
 		}else{
@@ -202,9 +219,15 @@ public class FssTradeApplyController {
 			tradeapply.setTradeState("10109999");//审核未通过
 			tradeapply.setModifyTime(new Date());
 			fssTradeApplyService.updateTradeApply(tradeapply);
+			//不通过，添加回盘记录
+
+			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			//审核不通过进行资金解冻
+			if(applyType==1104){
+				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
+			}
 		}
-		//不通过，添加回盘记录
-//		fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+
 		map.put("code", "0000");
         map.put("message", "success");
 		return map;
@@ -234,14 +257,15 @@ public class FssTradeApplyController {
 	 * @return
 	 * @throws FssException
 	 */
-	@RequestMapping(value = "/trade/tradeApply/createOfflineRecharge/{type}/{certNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object createOfflineRecharge(HttpServletRequest request, ModelMap model, @PathVariable Integer  type,@PathVariable String certNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
+	@RequestMapping(value = "/trade/tradeApply/createOfflineRecharge/{type}/{certNo}/{accNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createOfflineRecharge(HttpServletRequest request, ModelMap model, @PathVariable Integer  type,@PathVariable String certNo,@PathVariable String accNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
 		 customerInfoEntity=customerInfoService.queryCustomerInfoByCertNo(certNo);
 		if (customerInfoEntity!=null){
 			model.addAttribute("customerInfoEntity",customerInfoEntity);
 		}
 		model.addAttribute("type",type);
 		model.addAttribute("flag",flag);
+		model.addAttribute("accNo",accNo);
 		return "fss/trade/offlineRecharge_add";
 	}
 
@@ -256,31 +280,63 @@ public class FssTradeApplyController {
 	@ResponseBody
 	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@ModelAttribute(value="customerInfoEntity") CustomerInfoEntity customerInfoEntity) throws FssException {
 		String  tradeType=request.getParameter("tradeType");
+		String type = request.getParameter("type");
+		String accNo = request.getParameter("accNo");
+		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+		if (null==custType) throw new FssException("91001006");
 		BigDecimal  amt=new BigDecimal(request.getParameter("amt"));
-		FssCustomerEntity fssCustomerEntity= fssCustomerService.getFssCustomerEntityByCertNo(customerInfoEntity.getCertNo());
 		String custNo="";
-		String accNo="";
-		if(null!=fssCustomerEntity){
-			custNo=fssCustomerEntity.getCustNo();
-		}
-		FssAccountEntity fssAccountEntity=fssAccountService.getAccountByCustNo(custNo);
+		FssAccountEntity fssAccountEntity=fssAccountService.getAccountByAccNo(accNo);
 		if(null!=fssAccountEntity){
-			accNo=fssAccountEntity.getAccNo();
+			custNo=fssAccountEntity.getCustNo();
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		try {
-			if("11030006".equals(tradeType) || "11030014".equals(tradeType) || "11040012".equals(tradeType)){//委托充值、账户直接充值、账户直接提现
-				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(), fssAccountEntity.getAccType(),null,null,null,false);
-			}else if("11030015".equals(tradeType)){//线下充值11030015
-				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(fssAccountEntity.getAccType()),null,amt);
+			if("11030014".equals(tradeType)){//委托充值(账户直接充值)
+				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,false);
+			}else if("11040012".equals(tradeType)){//账户直接提现(账户类型)
+				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,0);
+			}else if("11030015".equals(tradeType)){//线下充值
+				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(custType),null,amt);
 			}
 			map.put("code", "0000");
 			map.put("message", "success");
-		} catch (Exception e) {//保存失败
-			e.printStackTrace();
-			map.put("code", "0001");
-			map.put("message", "error");
+		} catch (FssException e) {//保存失败
+			String resp_msg = Application.getInstance().getDictName(e.getMessage());
+			map.put("code", e.getMessage());
+			map.put("message", resp_msg);
 		}
+		return map;
+	}
+	/**
+	 * 批量体现
+	 * @param request
+	 * @param model
+	 * @throws FssException
+	 */
+//	审核通过,先进行处理，处理完成后走回盘
+	@RequestMapping(value = "/trade/tradeApply/moneySplit")
+	@ResponseBody
+	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no) throws FssException {
+		Map<String, String> map = new HashMap<String, String>();
+		FssTradeApplyEntity tradeapply=null;
+		String[] applyNos = no.split(",");
+		int count=0;
+		for (int i = 0; i < applyNos.length; i++) {
+			tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNos[i]);
+			if("10100001".equals(tradeapply.getApplyState())){
+				fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
+				count++;
+			}
+		}
+		if(applyNos.length==count){
+			map.put("code", "0000");
+			map.put("message", "success");
+		}else{
+			map.put("code", "0001");
+			map.put("message", "有"+count+"条成功，其他不符合代扣或提现状态");
+		}
+
 		return map;
 	}
 

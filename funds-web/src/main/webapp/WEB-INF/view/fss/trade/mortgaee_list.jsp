@@ -71,15 +71,57 @@
                                                        <td class="tr">申请编号：</td>
                                                          <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="applyNo" value="${map.applyNo}" />
+                                                                <input type="text" style="width:150px" name="applyNo" value="${map.applyNo}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">业务编号：</td>
-                                                        <td>
-                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="businessNo" value="${map.businessNo}" />
+                                                       <td class="tr">业务编号：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:150px" name="businessNo" value="${map.businessNo}" />
                                                             </label>
-                                                        </td> 
+                                                        </td>
+                                                       <td class="tr">客户姓名：</td>
+                                                         <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:150px" name="custName" value="${map.custName}" />
+                                                            </label>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="tr">客户电话：</td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:150px" name="custMobile" value="${map.custMobile}" />
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">申请状态：</td>
+                                                        <td>
+                                                                <label>
+                                                                    <select id = "applyState" name = "applyState" style="width:150px;height: 30px;">
+                                                                        <option value="">请选择</option>
+                                                                        <option  <c:if test="${map.applyState==10100001}"> selected="selected" </c:if> value="10100001">新增</option>
+                                                                        <option  <c:if test="${map.applyState==10100002}"> selected="selected" </c:if> value="10100002" >审核成功待执行</option>
+                                                                        <option  <c:if test="${map.applyState==10100003}"> selected="selected" </c:if> value="10100003" >执行排队中</option>
+                                                                        <option  <c:if test="${map.applyState==10100004}"> selected="selected" </c:if> value="10100004" >执行中</option>
+                                                                        <option  <c:if test="${map.applyState==10100005}"> selected="selected" </c:if> value="10100005" >执行完成</option>
+                                                                        <option  <c:if test="${map.applyState==10109999}"> selected="selected" </c:if> value="10109999" >审核未通过</option>
+                                                                    </select>
+                                                                <label>
+                                                        </td>
+
+                                                        <td class="tr">交易状态：</td>
+                                                        <td>
+                                                            <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
+                                                                <option value="">请选择</option>
+                                                                <option  <c:if test="${map.tradeState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
+                                                                <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002" >交易成功</option>
+                                                                <option  <c:if test="${map.tradeState==10080003}"> selected="selected" </c:if> value="10080003" >交易部分成功</option>
+                                                                <option  <c:if test="${map.tradeState==10080010}"> selected="selected" </c:if> value="10080010" >交易失败</option>
+                                                                <option  <c:if test="${map.tradeState==10080011}"> selected="selected" </c:if> value="10080011" >交易取消</option>
+                                                            </select>
+                                                        </td>
+
                                                         <td class="tr">创建日期：</td>
 			                                             <td colspan="3">
 				                                                <section class="fl">
@@ -114,6 +156,9 @@
                             <h2>数据列表信息</h2>
                         </header>
                         <!-- widget div-->
+                        <div class="user_operate mb10 clearfix">
+                            <button class="btn btn-default" id="btn_rech">批量代扣</button>
+                        </div>
                         <div>
                             <form class="smart-form">
                                 <!-- widget edit box -->
@@ -122,16 +167,17 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
-                                    	<col width="100" />
-                                        <col width="100" />
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2500px;">
+                                    	<col width="50" />
                                         <col width="200" />
-                                        <col width="100" />
-                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
+                                        <col width="150" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="250" />
@@ -141,15 +187,16 @@
                                         <col width="150" />
                                         <thead>
                                         <tr>
-                                        	 <td>客户姓名</td>
-                                        	 <td>客户电话</td>
-                                             <td>申请编号</td>
-                                             <td>业务编号</td>
-                                             <td>申请状态</td>
-                                             <td>交易状态</td>
-                                             <td>账户编号</td>
-                                             <td>交易金额</td>
-                                             <td>实际交易金额</td>
+                                            <td><input type="checkbox" id="checkAll"/></td>
+                                            <td>申请编号</td>
+                                            <td>客户姓名</td>
+                                            <td>客户电话</td>
+                                            <td>交易金额</td>
+                                            <td>实际交易金额</td>
+                                            <td>申请状态</td>
+                                            <td>交易状态</td>
+                                            <td>业务编号</td>
+                                            <td>账户编号</td>
                                              <td>总条数</td>
                                              <td>执行条数</td>
                                              <td>创建时间</td>
@@ -162,15 +209,16 @@
                                          <tbody>
                                              <c:forEach items="${page.list}" var="tradeapply">
                                                 <tr>
-                                                	<td>${tradeapply.custName}</td>
-                                                	<td>${tradeapply.custMobile}</td>
+                                                    <td><input type="checkbox" class="checkBoxAll" value="${tradeapply.applyNo}"/></td>
                                                     <td>${tradeapply.applyNo}</td>
-                                                    <td>${tradeapply.businessNo}</td>
+                                                    <td>${tradeapply.custName}</td>
+                                                    <td>${tradeapply.custMobile}</td>
+                                                    <td><fss:money money="${tradeapply.tradeAmount}"/></td>
+                                                    <td><fss:money money="${tradeapply.realTradeAmount}"/></td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>
+                                                    <td>${tradeapply.businessNo}</td>
                                                     <td>${tradeapply.accNo}</td>
-                                                    <td>${tradeapply.tradeAmount}</td>
-                                                    <td>${tradeapply.realTradeAmount}</td>
                                                     <td>${tradeapply.count}</td>
                                                     <td>${tradeapply.successCount}</td>
                                                     <td><fss:fmtDate value="${tradeapply.createTime}"/></td>
@@ -187,7 +235,7 @@
 		                                                    	&nbsp;&nbsp;&nbsp;&nbsp;
                                                     		</c:otherwise>
                                                     	</c:choose>
-	                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records">查看详细</a>
+	                                                    	<a href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records?id=${tradeapply.id}">查看详细</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -208,6 +256,13 @@
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortForm"));
+        $("#checkAll").removeAttr("checked");
+    });
+    $('#checkAll').bind('click', function () {
+        var that = this;
+        $('.checkBoxAll').each(function () {
+            this.checked = that.checked;
+        });
     });
     $('.selectdate').datetimepicker({
         language:  'zh-CN',
@@ -225,7 +280,7 @@
     	if(b[0].value!=null&&b[0].value!=''){
     		
     		if(a[0].value>b[0].value){
-    			JAlert("请检查您输入的日期","提示消息");
+    			jAlert("请检查您输入的日期","提示消息");
     		}else{
     			$("#mortForm").submit();
     		}
@@ -233,12 +288,40 @@
     		var d = new Date();
     		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
     		if(a[0].value>str){
-    			JAlert("请检查您输入的日期","提示消息");
+    			jAlert("请检查您输入的日期","提示消息");
     		}else{
     			$("#mortForm").submit();
     		}
     	}
     }
+    //批量代扣按钮
+    $('#btn_rech').click(function () {
+        var no = $('#borrow-rep-table12 tbody :checkbox:checked');
+        if (no.size() == 0) {
+            alert("请选择件数！");
+            return false;
+        }
+        var param = [];
+        no.each(function () {
+            param.push($(this).val());
+        })
+//        alert(param.toString());
+        if(confirm("您确认全部审核成功吗？")){
+            $.post("${contextPath}/trade/tradeApply/moneySplit", {'no': param.toString()}, function (data) {
+                if (data.code == '0000') {
+                    alert("成功", '消息提示');
+                    $("#mortForm").submit();
+                    $("#checkAll").removeAttr("checked");
+                    return false;
+                }else if(data.code == '0001'){
+                    alert(data.message, '消息提示');
+                    $("#mortForm").submit();
+                    $("#checkAll").removeAttr("checked");
+                    return false;
+                }
+            }, "json");
+        }
+    });
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

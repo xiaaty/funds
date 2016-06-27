@@ -188,9 +188,9 @@ public class CostImpl  implements ICost{
         }
         int accType = accountEntity.getAccType();
         int bustType = this.tradeRecordService.parseBusinessType(accType);
-        FundAccountEntity fromAccountEntity  = fundAccountService.getFundAccount(accountEntity.getCustId(),bustType);
+        FundAccountEntity toAccountEntity  = fundAccountService.getFundAccount(accountEntity.getCustId(),bustType);
 
-        return this.costReturn(fromAccountEntity,decimal,fundsType,busiId,busiType,loanType);
+        return this.costReturn(toAccountEntity,decimal,fundsType,busiId,busiType,loanType);
 
     }
 

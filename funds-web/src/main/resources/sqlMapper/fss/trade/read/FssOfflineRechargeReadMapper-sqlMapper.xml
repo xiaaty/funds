@@ -43,6 +43,9 @@
 				<if test="busiNo!=null and busiNo!=''">
 					AND t.busi_no like CONCAT('%',#{busiNo},'%')
 				</if>
+				<if test="resultState!=null and resultState!=''">
+					AND t.`result_state` = #{resultState}
+				</if>
 				<if test="startTime != null and startTime != '' ">
 					and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 				</if>

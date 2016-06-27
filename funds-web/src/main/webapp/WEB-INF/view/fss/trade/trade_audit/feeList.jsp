@@ -55,7 +55,7 @@
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="jarviswidget jarviswidget-color-darken" id="feeList"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="fee"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>收费列表</h2>
@@ -63,9 +63,7 @@
                         <!-- widget div-->
                         <div>
                             <form class="smart-form" id="feeList">
-                                <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
-                                    <!-- This area used as dropdown edit box -->
                                 </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
@@ -73,12 +71,14 @@
                                 <div class="mb20" id="wid-id-713">
                                             <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/loan/trade/${type}'" ><i class="fa fa-minus"></i>返回</button>
                                       </div>
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2300px;">
-                                    	<col width="300" />
-                                    	<col width="500" />
-                                    	<col width="500" />
-                                    	<col width="500" />
-                                    	<col width="500" />
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="width: auto">
+                                    	<col width="200" />
+                                    	<col width="100" />
+                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="200" />
+                                    	<col width="250" />
+                                    	<col width="250" />
                                         <thead>
                                         <tr>
                                             <td>费用类型</td>
@@ -86,6 +86,8 @@
                                             <td>费用平台</td>
                                             <td>交易状态</td>
                                             <td>返回消息</td>
+                                            <td>创建日期</td>
+                                            <td>修改日期</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -99,6 +101,8 @@
                                                     <c:if test="${t.repCode=='0000'}">成功</c:if>
                                                     <c:if test="${t.repCode!='0000'}"><fss:dictView key="${t.repCode}" /></c:if>
                                                     </td>
+                                                    <td><fss:fmtDate value="${t.createTime}"/></td>
+                                                    <td><fss:fmtDate value="${t.modifyTime}"/></td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

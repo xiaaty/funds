@@ -71,14 +71,23 @@
                                                 <td class="tr">申请编号：</td>
                                                 <td>
                                                     <label class="input">
-                                                        <input type="text" style="width:300px" name="applyNo" value="${map.applyNo}" />
+                                                        <input type="text" style="width:200px" name="applyNo" value="${map.applyNo}" />
                                                     </label>
                                                 </td>
                                                 <td class="tr">业务编号：</td>
                                                 <td>
                                                     <label class="input">
-                                                        <input type="text" style="width:300px" name="busiNo" value="${map.busiNo}" />
+                                                        <input type="text" style="width:200px" name="busiNo" value="${map.busiNo}" />
                                                     </label>
+                                                </td>
+                                                <td class="tr">交易状态：</td>
+                                                <td>
+                                                    <select id = "resultState" name = "resultState" style="width:250px;height: 30px;">
+                                                        <option value="">请选择</option>
+                                                        <option  <c:if test="${map.resultState==10120002}"> selected="selected" </c:if> value="10120002">充值码获取成功，待客户充值</option>
+                                                        <option  <c:if test="${map.resultState==10120003}"> selected="selected" </c:if> value="10120003" >充值成功</option>
+                                                        <option  <c:if test="${map.resultState==10120004}"> selected="selected" </c:if> value="10120004" >充值码获取失败</option>
+                                                    </select>
                                                 </td>
                                                 <td class="tr">创建日期：</td>
                                                 <td colspan="3">
@@ -122,16 +131,18 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2900px;">
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
+                                        <col width="200" />
                                         <col width="100" />
-                                        <col width="100" />
-                                        <col width="100" />
-                                        <col width="100" />
+                                        <col width="400" />
+                                        <col width="200" />
+                                        <col width="400" />
+                                        <col width="300" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -142,15 +153,17 @@
                                             <td>申请编号</td>
                                             <td>客户编号</td>
                                             <td>客户名称</td>
-                                            <td>客户类型</td>
-                                            <td>账户编号</td>
-                                            <td>交易金额</td>
+                                            <td>充值金额</td>
+                                            <td>充值码</td>
+                                            <td>充值码时间</td>
+                                            <td>入账卡号</td>
+                                            <td  align="left">入账户名</td>
+                                            <td  align="left">入账银行</td>
+                                            <td  align="left">支行信息</td>
                                             <td>交易状态</td>
                                             <td>业务编号</td>
-                                            <td>业务类型</td>
-                                            <td>合同编号</td>
+                                            <td>所属商户</td>
                                             <td>流水号</td>
-                                            <td>商户号</td>
                                             <td>创建时间</td>
                                             <td>修改时间</td>
                                         </tr>
@@ -161,15 +174,17 @@
                                                 <td>${t.applyNo}</td>
                                                 <td>${t.custId}</td>
                                                 <td>${t.custName}</td>
-                                                <td>${t.custType}</td>
-                                                <td>${t.accNo}</td>
-                                                <td>${t.amt}</td>
-                                                <td><fss:dictView key="${t.resultState}" /></td>
+                                                <td><fss:money money="${t.amt}" /></td>
+                                                <td>${t.chgCd}</td>
+                                                <td>${t.chgDt}</td>
+                                                <td>${t.fyAccNo}</td>
+                                                <td align="left">${t.fyAccNm}</td>
+                                                <td align="left">${t.fyBank}</td>
+                                                <td align="left">${t.fyBankBranch}</td>
+                                                <td><fss:dictView key="${t.resultState}"/></td>
                                                 <td>${t.busiNo}</td>
-                                                <td>${t.busiType}</td>
-                                                <td>${t.busiNo}</td>
-                                                <td>${t.seqNo}</td>
                                                 <td>${t.mchn}</td>
+                                                <td>${t.seqNo}</td>
                                                 <td><fss:fmtDate value="${t.createTime}"/></td>
                                                 <td><fss:fmtDate value="${t.modifyTime}"/></td>
                                             </tr>

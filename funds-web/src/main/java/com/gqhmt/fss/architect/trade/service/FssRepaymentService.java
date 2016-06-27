@@ -7,6 +7,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentDto;
 import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
+import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
@@ -380,9 +381,13 @@ public class FssRepaymentService {
 				 queryRepaymentParentById.setMotifyTime(new Date());
 				this.updateRepaymentParent(queryRepaymentParentById);
 			}
-			
-			//创建回盘信息
-			fssBackplateService.createFssBackplateEntity(seqNo,mchn,tradeType);
+			FssBackplateEntity fssBackplateEntity=fssBackplateService.selectByMchnAndseqNo(mchn,seqNo);
+			if (fssBackplateEntity!=null){
+				fssBackplateService.updatebackplate(fssBackplateEntity);
+			}else {
+				//创建回盘信息
+				fssBackplateService.createFssBackplateEntity(seqNo, mchn, tradeType);
+			}
 		}
 	}
 	

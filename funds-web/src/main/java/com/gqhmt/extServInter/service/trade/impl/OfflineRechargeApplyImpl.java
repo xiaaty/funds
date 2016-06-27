@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -31,7 +32,7 @@ import javax.annotation.Resource;
 public class OfflineRechargeApplyImpl implements IOfflineRechargeApply {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
-	
+	@APITradeTypeValid(value = "11030015")
     @Override
     public Response execute(SuperDto dto) {
     	OfflineRechargeResponse response = new OfflineRechargeResponse();

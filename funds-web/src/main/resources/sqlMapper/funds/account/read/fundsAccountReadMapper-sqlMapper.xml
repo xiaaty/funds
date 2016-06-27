@@ -62,6 +62,9 @@
 			<if test="customerName != null and customerName != ''">
 				and a.CUSTOMER_NAME like concat('%',#{customerName},'%')
 			</if>
+			<if test="mobilePhone!= null and  mobilePhone=''">
+				and a.MOBILE_PHONE like concat('%',#{mobilePhone},'%')
+			</if>
 			<if test="startTime != null and startTime != '' ">
 				and date_format(b.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>

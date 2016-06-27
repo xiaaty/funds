@@ -108,7 +108,11 @@ public class FssTradeRecordService {
 			//更新申请表该条数据拆分总条数
 			fssTradeApplyEntity.setCount(recordEntityList.size());
 			fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
-			fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			if("01".equals(fssTradeApplyEntity.getMchnChild())){
+				fssTradeApplyEntity.setMchnParent("01");
+			}else{
+				fssTradeApplyEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+			}
 
 			fssTradeApplyService.updateTradeApply(fssTradeApplyEntity);
 			return recordEntityList;
@@ -132,7 +136,11 @@ public class FssTradeRecordService {
 		tradeRecordEntity.setTradeTypeChild(Integer.valueOf(fssTradeApplyEntity.getBusiType()));
 		tradeRecordEntity.setMchnChild(fssTradeApplyEntity.getMchnChild());
 		tradeRecordEntity.setAmount(tradeAmount);
-		tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+		if("01".equals(fssTradeApplyEntity.getMchnChild())){
+			tradeRecordEntity.setMchnParent("01");
+		}else{
+			tradeRecordEntity.setMchnParent(Application.getInstance().getParentMchn(fssTradeApplyEntity.getMchnChild()));
+		}
 		tradeRecordEntity.setCustNo(fssTradeApplyEntity.getCustNo());
 		tradeRecordEntity.setTradeDate("0");
 		tradeRecordEntity.setTradeTime("0");
@@ -247,6 +255,31 @@ public class FssTradeRecordService {
 		return fssTradeRecordReadMapper.getByApplyNo(applyNo);
 		
 	}
-	
-	
+	/**
+	 * author:jhz
+	 * time:2016年6月20日
+	 * function：修改申请状态
+	 */
+	public  void updateTradeRecord(Long id, String status) throws  FssException{
+		FssTradeRecordEntity entity=this.selectTradeApplyById(id);
+		entity.setModifyTime(new Date());
+		if ("1".equals(status)) {
+			entity.setTradeState(98060003);
+		} else if ("0".equals(status)) {
+//			List<FssTradeRecordEntity> list=fssTradeRecordService.getByApplyNo(entity.getApplyNo());
+			entity.setTradeResult(98060001);
+		}
+		fssTradeRecordWriteMapper.updateByPrimaryKey(entity);
+		fssTradeApplyService.checkExecuteCount(entity.getApplyNo());
+	};
+	/**
+	 * author:jhz
+	 * time:2016年6月20日
+	 * function：根据id查询申请对象
+	 */
+	public  FssTradeRecordEntity selectTradeApplyById(Long id){
+		return  fssTradeRecordReadMapper.selectByPrimaryKey(id);
+	};
+
+
 }
