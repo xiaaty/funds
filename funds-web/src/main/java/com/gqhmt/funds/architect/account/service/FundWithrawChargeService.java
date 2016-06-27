@@ -58,8 +58,10 @@ public class FundWithrawChargeService {
 
     public void updateSrate(String orderNo,int state){
         FundWithrawCharge fundWithrawCharge = this.getFundWithrawCharge(orderNo);
-        fundWithrawCharge.setState(state);
-        fundWithrawChargeWriteMapper.updateByPrimaryKeySelective(fundWithrawCharge);
+        if(fundWithrawCharge!=null) {
+            fundWithrawCharge.setState(state);
+            fundWithrawChargeWriteMapper.updateByPrimaryKeySelective(fundWithrawCharge);
+        }
     }
 
     public List<FundWithrawCharge> list(){
