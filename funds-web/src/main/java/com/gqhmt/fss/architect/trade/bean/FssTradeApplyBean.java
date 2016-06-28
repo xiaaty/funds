@@ -15,6 +15,7 @@ public class FssTradeApplyBean implements java.io.Serializable {
 	    private String busiType ;                                  //varchar(45)    utf8_general_ci  YES             (NULL)           select,insert,update,references  业务类型，借款，出借，冠e通，
 	    private String accNo ;                                     //varchar(45)    utf8_general_ci  NO              (NULL)           select,insert,update,references  账户编号
 	    private BigDecimal tradeAmount ;                               // decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  交易金额
+	    private BigDecimal auditAmount ;                               // decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  审核金额
 	    private BigDecimal realTradeAmount;                           //decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  实际交易金额
 	    private BigDecimal tradeChargeAmount ;                        //decimal(17,2)  (NULL)           NO              0.00             select,insert,update,references  交易手续费
 	    private String tradeState ;                                //varchar(45)    utf8_general_ci  NO              0                select,insert,update,references  交易状态，未交易，部分成功，成功，失败
@@ -201,4 +202,12 @@ public class FssTradeApplyBean implements java.io.Serializable {
 		public void setSettleType(String settleType) {
 		this.settleType = settleType;
 		}
+
+	public BigDecimal getAuditAmount() {
+		return auditAmount;
+	}
+
+	public void setAuditAmount(BigDecimal auditAmount) {
+		this.auditAmount = auditAmount;
+	}
 }

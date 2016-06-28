@@ -98,6 +98,14 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td align="left">审核金额：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" maxlength="50"  name="auditAmount" style="width:256px;" />
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td align="left">审批状态：</td>
                                                     <td colspan="5">
                                                         <span class="pl10 pr50"><input checked="checked" name="applyStatus" type="radio" value="4"><label class="ml5" for="typeofPayYes">通过</label></span>
