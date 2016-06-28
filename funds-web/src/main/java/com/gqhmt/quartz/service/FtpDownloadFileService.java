@@ -1,6 +1,8 @@
 package com.gqhmt.quartz.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
+import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
@@ -14,10 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Filename:    com.fuiou.service
@@ -44,6 +46,9 @@ public class FtpDownloadFileService {
 
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
+
+    @Resource
+    private FuiouAccountInfoService fuiouAccountInfoService;
 
     public void downFile()  throws NumberFormatException, FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
@@ -246,4 +251,232 @@ public class FtpDownloadFileService {
         }
         return path;
     }
+
+    /**
+     * ftp下载金账户对账文件，存在失败可能，失败重新下载
+     * @param file  // 需要 只 TradingTime 和 BusinessCode两个参数
+     * @return
+     * @throws FssException
+     */
+    public boolean downloadFuiouAccount(FuiouAccountInfoEntity file) throws FssException{
+        Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+        String url = (String)config.getValue("ftp.url.value");
+        String port = (String)config.getValue("ftp.port.value");
+        String userName = (String)config.getValue("ftp.userName.value");
+        String pwd = (String)config.getValue("ftp.pwd.value");
+        FtpClient ftp = new FtpClient(Integer.parseInt(port),userName,pwd,url);
+
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        String date = sdf.format(file.getTradingTime());
+        String url1 = "/account/" + file.getBusinessCode()  + date +  ".txt";
+        boolean flag = ftp.exits(url1);
+        if(!flag){
+            return false;
+        }
+        String path = getClassPath();
+        File filepath  = new File(path+"/tmp/account");
+        String fileName= filepath+"/"+ file.getBusinessCode()  + date +  ".txt";
+        flag = ftp.getFile("/account/" + file.getBusinessCode()  + date +  ".txt",fileName);
+        parseFileFuiouAcount(file);
+        return true;
+    }
+
+
+
+    /**
+     * 重载的方法 ， 通过String 类型的 businessCode, 和Date 类型的 TradingTime
+     * ftp下载金账户对账文件，存在失败可能，失败重新下载
+     * @param BusinessCode
+     * @param TradingTime
+     * @return
+     * @throws FssException
+     */
+    public boolean downloadFuiouAccount(String BusinessCode, Date TradingTime) throws FssException{
+        FuiouAccountInfoEntity file = new FuiouAccountInfoEntity();
+        file.setBusinessCode(BusinessCode);
+        file.setTradingTime(TradingTime);
+        downloadFuiouAccount(file);
+        return true;
+    }
+
+    /**
+     * 重载的方法 ， 通过String 类型的 businessCode, 和String 类型的 TradingTime
+     * ftp下载金账户对账文件，存在失败可能，失败重新下载
+     * @param BusinessCode
+     * @param TradingTime
+     * @return
+     * @throws FssException
+     */
+    public boolean downloadFuiouAccount(String BusinessCode, String TradingTime) throws FssException, ParseException {
+        FuiouAccountInfoEntity file = new FuiouAccountInfoEntity();
+
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        java.util.Date date=sdf.parse(TradingTime);
+
+        file.setBusinessCode(BusinessCode);
+        file.setTradingTime(date);
+        downloadFuiouAccount(file);
+        return true;
+    }
+
+    /**
+     * 对已下载金账户对账文件处理
+     * @param file
+     * @throws FssException
+     */
+    private void parseFileFuiouAcount(FuiouAccountInfoEntity file) throws FssException{
+        String path = getClassPath();
+        File filepath  = new File(path+"/tmp/account");
+
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        String date = sdf.format(file.getTradingTime());
+
+        String fileName= filepath+"/"+file.getBusinessCode()+date+".txt";
+        File localFile = new File(fileName);
+        try {
+            InputStream is = new FileInputStream(localFile);
+            InputStreamReader inputStreamReader = new InputStreamReader(is,"GBK");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            List<String> returnList = new ArrayList();
+            while(bufferedReader.ready()){
+                returnList.add(bufferedReader.readLine());
+            }
+            SaveOrUpdateResult(file,returnList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 结果处理，返回结果添加或者跟新数据库
+     * @param file
+     * @param list
+     * @throws FssException
+     * @throws NumberFormatException
+     */
+    private void SaveOrUpdateResult(FuiouAccountInfoEntity file,List<String> list) throws NumberFormatException, FssException, ParseException {
+
+        List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
+        List<String> strList = new ArrayList<String>();
+        String str = "";
+        for(int i = 0;i<list.size();i++) {
+            String s = list.get(i);
+            str += s;
+        }
+        String[] aStr = str.split("\\|");
+        strList = Arrays.asList(aStr);
+
+        String tradeType = null;
+        if(strList == null && strList.get(0) == null && file.getBusinessCode() == null){
+            return;
+        }
+        int size = strList.size();
+        tradeType = file.getBusinessCode();
+        int num = 0;
+        if("DJJD".equals(tradeType) && size == 9){
+            num = 1;
+        }else if("ZZ".equals(tradeType) && size == 11){
+            num = 2;
+        }else if("HB".equals(tradeType) && size == 11){
+            num = 3;
+        }else if("WTCZ".equals(tradeType) && size == 10){
+            num = 4;
+        }else if("WTTX".equals(tradeType) && size == 10){
+            num = 5;
+        }else if("YSQ".equals(tradeType) && size == 10){
+            num = 6;
+        }else{
+            System.out.println("格式错误");
+            return;
+        }
+
+        switch(num){
+            case 1 :
+                file.setTradeType("DJJD");
+                file.setBusinessCode(strList.get(0));
+                file.setTradeSources(strList.get(1));
+                file.setBatch(strList.get(2));
+                file.setTradingTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(strList.get(3)));
+                file.setTransactionAmount(new BigDecimal(strList.get(4)));
+                file.setUserAccount(strList.get(5));
+                file.setUserName(strList.get(6));
+                file.setRemark(strList.get(7));
+                file.setReturnNum(strList.get(8));
+                break;
+            case 2 :
+                file.setTradeType("ZZ");
+                file.setBusinessCode(strList.get(0));
+                file.setTradeSources(strList.get(1));
+                file.setBatch(strList.get(2));
+                file.setTradingTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(strList.get(3)));
+                file.setTransactionAmount(new BigDecimal(strList.get(4)));
+                file.setUserAccount(strList.get(5));
+                file.setUserName(strList.get(6));
+                file.setInAccount(strList.get(7));
+                file.setInUserName(strList.get(8));
+                file.setRemark(strList.get(9));
+                file.setReturnNum(strList.get(10));
+                break;
+            case 3 :
+                file.setTradeType("HB");
+                file.setBusinessCode(strList.get(0));
+                file.setTradeSources(strList.get(1));
+                file.setBatch(strList.get(2));
+                file.setTradingTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(strList.get(3)));
+                file.setTransactionAmount(new BigDecimal(strList.get(4)));
+                file.setUserAccount(strList.get(5));
+                file.setUserName(strList.get(6));
+                file.setInAccount(strList.get(7));
+                file.setInUserName(strList.get(8));
+                file.setRemark(strList.get(9));
+                file.setReturnNum(strList.get(10));
+                break;
+            case 4 :
+                file.setTradeType("WTCZ");
+                file.setBusinessCode(strList.get(0));
+                file.setTradeSources(strList.get(1));
+                file.setBatch(strList.get(2));
+                file.setBatchFoiuFinance(strList.get(3)); //
+                file.setTradingTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(strList.get(4)));
+                file.setTransactionAmount(new BigDecimal(strList.get(5)));
+                file.setUserAccount(strList.get(6));
+                file.setUserName(strList.get(7));
+                file.setRemark(strList.get(8));
+                file.setState(strList.get(9));
+                break;
+            case 5 :
+                file.setTradeType("WTTX");
+                file.setBusinessCode(strList.get(0));
+                file.setTradeSources(strList.get(1));
+                file.setBatch(strList.get(2));
+                file.setBatchFoiuFinance(strList.get(3)); //
+                file.setTradingTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(strList.get(4)));
+                file.setTransactionAmount(new BigDecimal(strList.get(5)));
+                file.setUserAccount(strList.get(6));
+                file.setUserName(strList.get(7));
+                file.setRemark(strList.get(8));
+                file.setState(strList.get(9));
+                break;
+            case 6 :
+                file.setTradeType("YSQ");
+                file.setBusinessCode(strList.get(0));
+                file.setContractNum(strList.get(1));
+                file.setUserAccount(strList.get(2));
+                file.setUserName(strList.get(3));
+                file.setInAccount(strList.get(4));
+                file.setInUserName(strList.get(5));
+                file.setTotalMoney(new BigDecimal(strList.get(6)));
+                file.setBalance(new BigDecimal(strList.get(7)));
+                file.setRemark(strList.get(8));
+                file.setAccountState(strList.get(9));
+                break;
+            default:
+                return;
+        }
+        fuiouAccountInfoService.addFuiouAccountInfoEntity(file);
+    }
+
 }
