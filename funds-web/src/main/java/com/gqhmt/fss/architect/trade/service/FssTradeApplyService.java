@@ -22,6 +22,7 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +72,8 @@ public class FssTradeApplyService {
 	private FssLoanService fssLoanService;
 	@Resource
     private FundOrderService fundOrderService;
-
+	@Resource
+	private FundsTradeImpl fundsTradeImpl;
 	@Resource
     private TradeRecordService tradeRecordService;
 
@@ -375,7 +377,10 @@ public class FssTradeApplyService {
 			 }else{
 				 tradeStatus="10080003";
 			 }
-
+			if(!"10080002".equals(tradeStatus)&&"1104".equals(applyEntity.getApplyType())) {
+				//代付失败进行资金解冻
+					fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(applyEntity.getRealTradeAmount()), applyEntity.getCustType());
+			}
 				FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
 				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
 				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
@@ -547,12 +552,12 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(tradeType));
 		fssTradeApplyEntity.setApplyType(applyType);
-
 		fssTradeApplyEntity.setCustNo(custNo);
 		fssTradeApplyEntity.setAccNo(accNo);
 		fssTradeApplyEntity.setBusinessNo(contractNo);
 		fssTradeApplyEntity.setBusiType(tradeType);
 		fssTradeApplyEntity.setTradeAmount(amt);
+		fssTradeApplyEntity.setAuditAmount(BigDecimal.ZERO);
 		fssTradeApplyEntity.setRealTradeAmount(BigDecimal.ZERO);
 		fssTradeApplyEntity.setTradeChargeAmount(BigDecimal.ZERO);
 		fssTradeApplyEntity.setTradeState("10080001");

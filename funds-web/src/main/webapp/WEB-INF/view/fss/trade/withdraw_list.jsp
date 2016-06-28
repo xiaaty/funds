@@ -167,8 +167,9 @@
                                     	<col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="150" />
-                                        <col width="150" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="150" />
@@ -189,6 +190,7 @@
                                             <td>客户姓名</td>
                                             <td>客户电话</td>
                                             <td>交易金额</td>
+                                            <td>审核金额</td>
                                             <td>实际交易金额</td>
                                             <td>申请状态</td>
                                             <td>交易状态</td>
@@ -213,6 +215,7 @@
                                                     <td>${tradeapply.custName}</td>
                                                     <td>${tradeapply.custMobile}</td>
                                                     <td><fss:money money="${tradeapply.tradeAmount}"/></td>
+                                                    <td><fss:money money="${tradeapply.auditAmount}"/></td>
                                                     <td><fss:money money="${tradeapply.realTradeAmount}"/></td>
                                                     <td><fss:dictView key="${tradeapply.applyState}" /></td>
                                                     <td><fss:dictView key="${tradeapply.tradeState}" /></td>

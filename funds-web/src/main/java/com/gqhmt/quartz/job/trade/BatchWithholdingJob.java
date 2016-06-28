@@ -41,7 +41,7 @@ public class BatchWithholdingJob extends SupperJob{
     private ApplicationContext context;
 
     @Resource
-    private FssTradeRecordService recordService;
+    private FssTradeRecordService fssTradeRecordService;
     @Resource
     private FssTradeApplyService fssTradeApplyService;
 
@@ -55,15 +55,15 @@ public class BatchWithholdingJob extends SupperJob{
             return;
         }
         if(isRunning) return;
-        startLog("还款代扣");
+        startLog("代扣代付");
         isRunning = true;
         try {
             List<FssTradeApplyEntity> applyEntities= fssTradeApplyService.getTradeAppliesByApplyState("10100002");
             for (FssTradeApplyEntity apply:applyEntities) {
-               int count= recordService.getCountByApplyNo(apply.getApplyNo());
+               int count= fssTradeRecordService.getCountByApplyNo(apply.getApplyNo());
                 if (count!=0&&apply.getCount()<=apply.getSuccessCount()) continue;
                 try {
-                    List<FssTradeRecordEntity> recordEntities = recordService.moneySplit(apply);
+                    List<FssTradeRecordEntity> recordEntities = fssTradeRecordService.moneySplit(apply);
                     this.batch(recordEntities);
                 }catch (Exception e){
                     LogUtil.error(getClass(),e);
@@ -96,7 +96,7 @@ public class BatchWithholdingJob extends SupperJob{
                 String msg = e.getMessage();
                 String breakMsg = Application.getInstance().getDictOrderValue("breakMsg");
                 if(breakMsg != null && breakMsg.contains(msg)){
-                    break;
+                    fssTradeRecordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
                 }
             }
             long endTime = Calendar.getInstance().getTimeInMillis();
