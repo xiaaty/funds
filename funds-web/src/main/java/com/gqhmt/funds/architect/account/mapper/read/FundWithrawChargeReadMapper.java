@@ -4,7 +4,6 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.account.entity.FundWithrawCharge;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 
 /**
  * Filename:    com.gq.funds.dao
@@ -26,8 +25,8 @@ public interface FundWithrawChargeReadMapper extends ReadMapper<FundWithrawCharg
     /**
      * jhz
      * 通过orderNo得到对象信息
-     * @param order
+     * @param orderNo
      * @return
      */
-    FundWithrawCharge selectByOrderNo(@Param("order") String order);
+    FundWithrawCharge selectByOrderNo(@Param("orderNo") String orderNo);
 }
