@@ -12,6 +12,8 @@
 			f.trade_status tradeStatus,
 			f.result result,
 			f.loan_id loanId,
+			f.create_time createTime,
+			f.modify_time modifyTime,
 			f.loan_platform loanPlatform,
 			f.fee_amt feeAmt
 			FROM t_gq_fss_feeList f

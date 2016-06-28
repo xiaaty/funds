@@ -254,8 +254,8 @@ public class FssAccountService {
 	}
 
 
-    public FssAccountEntity getAccountByCustNo(String custNo){
-        return accountReadMapper.getFssAccountByCustNo(custNo);
+    public FssAccountEntity getAccountByAccNo(String accNo){
+        return accountReadMapper.getFssAccountByAccNo(accNo);
     }
 
 

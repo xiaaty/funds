@@ -17,9 +17,6 @@ import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
-import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -70,8 +67,6 @@ public class FssLoanTradeController {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	@Resource
-	private FssTradeRecordService fssTradeRecordService;
-	@Resource
 	private ICost cost;
 	@Resource
     private FssCustomerService fssCustomerService;
@@ -81,10 +76,6 @@ public class FssLoanTradeController {
 	private FssAccountService fssAccountService;
 	@Resource
 	private ExportAndImpService exportAndImpService;
-	@Resource
-	private FundAccountService fundAccountService;
-	@Resource
-	private IFundsTrade iFundsTrade;
 	@Resource
 	private CustomerInfoService customerInfoService;
 	/**
@@ -116,6 +107,9 @@ public class FssLoanTradeController {
 		model.put("status", status);
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";
+		}
+		else if("11090006".equals(type)){//冠e通抵押标权人提现
+			return "fss/trade/trade_audit/motegreeWithDraw";
 		}
 		else if("11092001".equals(type)){//抵押标权人提现
 			return "fss/trade/trade_audit/motegreeWithDraw";
@@ -306,9 +300,11 @@ public class FssLoanTradeController {
 							}
 							// 修改费用状态	收取成功
 							fssFeeList.setRepCode("0000");
+							fssFeeList.setModifyTime(new Date());
 							fssFeeList.setTradeStatus("10050007");
 						}else{
 							fssFeeList.setRepCode("10050015");
+							fssFeeList.setModifyTime(new Date());
 							fssFeeList.setTradeStatus("10050015");
 						}
 					}
@@ -452,16 +448,12 @@ public class FssLoanTradeController {
 	public String queryMortgageeDetail(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeapply, @PathVariable Long  id,@PathVariable String  type) throws Exception {
 		//账户余额小于提现金额
 		FssLoanEntity loanEntity= fssLoanService.getFssLoanEntityById(id);
-		FssAccountEntity fssAccount=fssAccountService.getFssAccountByAccNo(loanEntity.getMortgageeAccNo());
-		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(fssAccount.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN);
-		if(fundAccountEntity.getAmount().compareTo(loanEntity.getContractAmt())<0) throw new FssException("90004007");
 		//冻结资金
-		iFundsTrade.froze(fssAccount.getCustId(),GlobalConstants.ACCOUNT_TYPE_LOAN,loanEntity.getContractAmt());
 		fssTradeApplyService.insertLoanTradeApply(loanEntity,type);
 		loanEntity.setModifyTime(new Date());
 		loanEntity.setStatus("10030001");
 		fssLoanService.update(loanEntity);
-		return "redirect:/trade/tradeApply/1104/11092001";
+		return "redirect:/trade/tradeApply/1104/"+type;
 	}
 
 

@@ -330,16 +330,19 @@ public class FundsTradeImpl  implements IFundsTrade {
     }
 
     @Override
-    public boolean unFroze(UnFreezeDto dto) throws FssException {
-        FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(dto.getCust_no()),GlobalConstants.ACCOUNT_TYPE_FREEZE);
-        this.hasEnoughBanlance(fromEntity,dto.getAmt());
-        FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(dto.getCust_no()), dto.getBusi_type());
-        tradeRecordService.frozen(fromEntity,toEntity,dto.getAmt(),1007,null,"",BigDecimal.ZERO);
+    public boolean unFroze(String mchn,String seq_no,String trade_type,String cust_no,String user_no,BigDecimal amt,Integer type) throws FssException {
+        Integer busi_type=0;
+        if(String.valueOf(type).length()>2){
+            busi_type= GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(busi_type);
+        }else{
+            busi_type =type;
+        }
+        FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(cust_no),GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        this.hasEnoughBanlance(fromEntity,amt);
+        FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(cust_no), busi_type);
+        tradeRecordService.unFrozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);
         return true;
     }
-
-
-
 
     /**
      * 数据校验
@@ -541,8 +544,8 @@ public class FundsTradeImpl  implements IFundsTrade {
     	           throw new CommandParmException("90004006");
     	       }
 
-                businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(fssAccountEntity.getAccType());
-    	      custID=String.valueOf(fssAccountEntity.getCustId());
+            businessType = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(fssAccountEntity.getAccType());
+            custID=String.valueOf(fssAccountEntity.getCustId());
     	}
     	FundAccountEntity entity = this.getFundAccount(Integer.valueOf(custID).intValue(), businessType);
 //        this.hasEnoughBanlance(entity,amount);
@@ -599,13 +602,13 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new CommandParmException("90004009");
         }
        //创建充值记录信息
-        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge( "1103", primaryAccount.getCustId(), primaryAccount.getCustName(), String.valueOf(primaryAccount.getBusiType()), amt, trade_type,seq_no, mchn);
+        fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge("1103", primaryAccount.getCustId(), primaryAccount.getCustName(),cust_type,amt,trade_type,seq_no,mchn);
         CommandResponse response = paySuperByFuiou.offlineRecharge(primaryAccount,amt,GlobalConstants.ORDER_RECHARGE_OFFLINE,fssOfflineRechargeEntity.getId(),0);
         //根据返回码判断是否成功，修改线下充值记录状态
         if("0000".equals(response.getCode())){//成功
-            fssOfflineRechargeService.updateSuccess(fssOfflineRechargeEntity.getId(),response.getMap().get("fy_acc_no"),response.getMap().get("fy_acc_nm"),response.getMap().get("fy_bank"),response.getMap().get("fy_bank_branch"),response.getMap().get("chg_cd"),response.getMap().get("chg_dt"),response.getMap().get("amt"),response.getFundOrderEntity().getOrderNo());
+            fssOfflineRechargeService.updateSuccess(fssOfflineRechargeEntity.getId(),response.getMap().get("fy_acc_no"),response.getMap().get("fy_acc_nm"),response.getMap().get("fy_bank"),response.getMap().get("fy_bank_branch"),response.getMap().get("chg_cd"),response.getMap().get("chg_dt"),amt,response.getFundOrderEntity().getOrderNo());
             offlineRechargeResponse.setChg_cd(String.valueOf(response.getMap().get("chg_cd")));
-            offlineRechargeResponse.setAmt(new BigDecimal(String.valueOf(response.getMap().get("amt"))));
+            offlineRechargeResponse.setAmt(amt);
             offlineRechargeResponse.setChg_dt(String.valueOf(response.getMap().get("chg_dt")));
             offlineRechargeResponse.setFy_acc_nm(String.valueOf(response.getMap().get("fy_acc_nm")));
             offlineRechargeResponse.setFy_acc_no(String.valueOf(response.getMap().get("fy_acc_no")));

@@ -430,8 +430,6 @@ public class FundSequenceService {
   public void selletSequence(List<Tender> list,FundAccountEntity toEntity, FundOrderEntity fundOrderEntity ,String title) throws FssException {
 
       BigDecimal bonusAmount = BigDecimal.ZERO;
-      List<Tender> tenders = new ArrayList<>();		//返现tender集合
-
 
       for (Tender tender : list) {
           FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
@@ -441,7 +439,9 @@ public class FundSequenceService {
               LogUtil.error(this.getClass(), e.getMessage());
           }
 
-          this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2006, "你出借的产品" + title + " 已满标，转给借款人 " + tender.getRealAmount() + "元" + (tender.getBonusAmount().intValue() > 0 ? ",红包抵扣 " + tender.getBonusAmount() + "元" : ""));
+          FundAccountEntity oFromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), tender.getInvestType() == 1?3:2);
+
+          this.fundTradeService.addFundTrade(oFromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2006, "你出借的产品" + title + " 已满标，转给借款人 " + tender.getRealAmount() + "元" + (tender.getBonusAmount().intValue() > 0 ? ",红包抵扣 " + tender.getBonusAmount() + "元" : ""));
 
           //红包使用金额汇总2015.07.31 于泳
           if(tender.getBonusAmount() != null) {
@@ -451,7 +451,7 @@ public class FundSequenceService {
 
       //红包账户出账，使用红包汇总 2015.07.31 于泳
       if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
-          FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+          FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
           this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
           this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
       }

@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.loan.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,7 +60,14 @@ public class FssFeeList implements Serializable {
   
     @Column(name="rep_msg")
     private String repMsg;              // 返回码
-  
+
+	@Column(name = "create_time",updatable = false)
+	private Date createTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
+
+	@Column(name = "modify_time")
+	private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
+
+
 	public String getRepCode() {
 		return repCode;
 	}
@@ -135,5 +143,19 @@ public class FssFeeList implements Serializable {
 		this.loanPlatform = loanPlatform;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
 
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 }

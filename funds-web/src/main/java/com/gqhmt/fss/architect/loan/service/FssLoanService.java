@@ -163,6 +163,8 @@ public class FssLoanService {
 
 		for (LendingFeeListDto feeListEntity: feeLists) {
 			FssFeeList fssFeeList = new FssFeeList();
+			fssFeeList.setCreateTime(new Date());
+			fssFeeList.setModifyTime(new Date());
 			fssFeeList.setLoanId(fssLoanEntity.getId());
 			fssFeeList.setLoanPlatform(dto.getLoan_platform());
 			fssFeeList.setFeeAmt(feeListEntity.getFee_amt());
@@ -286,6 +288,8 @@ public class FssLoanService {
 
 			for (LendingFeeListDto feeListEntity: feeLists) {
 				FssFeeList fssFeeList = new FssFeeList();
+				fssFeeList.setCreateTime(new Date());
+				fssFeeList.setModifyTime(new Date());
 				fssFeeList.setLoanId(fssLoanEntity.getId());
 				fssFeeList.setLoanPlatform(dto.getLoan_platform());
 				fssFeeList.setFeeAmt(feeListEntity.getFee_amt());
@@ -459,6 +463,8 @@ public class FssLoanService {
 
 		for (LendingFeeListDto feeListEntity: feeLists) {
 			FssFeeList fssFeeList = new FssFeeList();
+			fssFeeList.setCreateTime(new Date());
+			fssFeeList.setModifyTime(new Date());
 			fssFeeList.setLoanId(fssLoanEntity.getId());
 			fssFeeList.setLoanPlatform(bidRepayApplyDto.getLoan_platform());
 			fssFeeList.setFeeAmt(feeListEntity.getFee_amt());
