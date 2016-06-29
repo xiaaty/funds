@@ -554,7 +554,7 @@ public class BankCardInfoService {
 
 
 	public BankCardInfoEntity getBankCardByCustNo(Long custId){
-		return bankCardinfoReadMapper.queryBankCard(String.valueOf(custId));
+		return bankCardinfoReadMapper.queryBankCard(custId.intValue());
 	}
 	 
 }
