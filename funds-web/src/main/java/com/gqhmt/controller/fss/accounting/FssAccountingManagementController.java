@@ -2,26 +2,8 @@ package com.gqhmt.controller.fss.accounting;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingCompanyIncome;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreeze;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingFreezeDetail;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayable;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingLendPayableDetail;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebt;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingLoandebtDetail;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingMargin;
-import com.gqhmt.fss.architect.accounting.entity.FssAccountingMarginDetail;
-import com.gqhmt.fss.architect.accounting.service.FssAccountingCompanyIncomeService;
-import com.gqhmt.fss.architect.accounting.service.FssAccountingCompensatoryService;
-import com.gqhmt.fss.architect.accounting.entity.FssFundsFlowEntity;
-import com.gqhmt.fss.architect.accounting.entity.FssLendAssetDetailEntity;
-import com.gqhmt.fss.architect.accounting.entity.FssLendAssetEntity;
-import com.gqhmt.fss.architect.accounting.service.FssAccountingLendPayableService;
-import com.gqhmt.fss.architect.accounting.service.FssAccountingLoandebtService;
-import com.gqhmt.fss.architect.accounting.service.FssAccountingMarginService;
-import com.gqhmt.fss.architect.accounting.service.FssFreezeService;
-import com.gqhmt.fss.architect.accounting.service.FssFundsFlowService;
-import com.gqhmt.fss.architect.accounting.service.FssLendAssetService;
+import com.gqhmt.fss.architect.accounting.entity.*;
+import com.gqhmt.fss.architect.accounting.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,10 +45,13 @@ public class FssAccountingManagementController {
     private FssAccountingCompensatoryService fssAccountingCompensatoryService;
     @Resource
     private FssAccountingCompanyIncomeService fssAccountingCompanyIncomeService;
+    @Resource
     private FssFreezeService fssFreezeService;
     @Resource
     private FssFundsFlowService fssFundsFlowService;
- 
+    @Resource
+    private FssCapitalFlowService fssCapitalFlowService;
+
     /**
      * 出借应付款列表
      * @param request
@@ -259,5 +244,23 @@ public class FssAccountingManagementController {
     	List<FssFundsFlowEntity> fundsFlow = fssFundsFlowService.getFundsFlow(map);
     	model.addAttribute("page", fundsFlow);
     	return "fss/accounting/fundFlow/fundFlow_list";
+    }
+
+    /**
+     * jhz
+     * 客户资金流水总表，记录客户所有资金流水
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/accounting/capitalFlow/list",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public Object capitalFlow(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException{
+    	model.put("map", map);
+        List<FssAccountCapitalFlow> capitalFlow=fssCapitalFlowService.getCapitalFlow(map);
+    	model.addAttribute("page", capitalFlow);
+    	return "fss/accounting/capitalFlow/capitalFlow_list";
     }
 }

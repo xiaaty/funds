@@ -194,7 +194,7 @@ public class FssTradeRecordService {
 	public  List<FssTradeRecordEntity> moneySplit(FssTradeApplyEntity tradeApplyEntity,BigDecimal limitAmount) throws FssException {
 		List<FssTradeRecordEntity> recordEntityList = new ArrayList<>();
 
-		BigDecimal bg[] = tradeApplyEntity.getTradeAmount().divideAndRemainder(limitAmount);
+		BigDecimal bg[] = tradeApplyEntity.getAuditAmount().divideAndRemainder(limitAmount);
 		int splitCount = bg[0].intValue();
 		BigDecimal lastamount = bg[1];
 

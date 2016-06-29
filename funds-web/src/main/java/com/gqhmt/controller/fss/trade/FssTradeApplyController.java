@@ -184,17 +184,21 @@ public class FssTradeApplyController {
 //	审核通过,先进行处理，处理完成后走回盘	
 	@RequestMapping(value = "/trade/tradeApply/{applyType}/{busiType}/{applyNo}/moneySplit")
 	@ResponseBody
-	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String token) throws FssException {
+	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String auditAmount) throws FssException {
 //		String server_token  = (String) request.getSession().getAttribute("token");
 //		request.getSession().removeAttribute("token");
 		Map<String, String> map = new HashMap<String, String>();
 //		if(token.equals(server_token)){
-		FssTradeApplyEntity tradeapply=null;
-		int splitCount=0;//资金拆分条数
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		String applyStatus=request.getParameter("applyStatus");
 		String bespokedate=request.getParameter("bespokedate");
-		tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
+		FssTradeApplyEntity tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
+		BigDecimal audit_amount=BigDecimal.ZERO;
+		if(auditAmount!=null&&!"".equals(auditAmount)){
+			audit_amount=new BigDecimal(auditAmount);
+		}else{
+			audit_amount=tradeapply.getTradeAmount();
+		}
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
@@ -210,22 +214,17 @@ public class FssTradeApplyController {
 				e.printStackTrace();
 			}
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
-			tradeapply.setApplyState("10100002");//申请状态
-			tradeapply.setTradeState("10080001");//交易状态，交易提交
-			tradeapply.setModifyTime(new Date());
-			fssTradeApplyService.updateTradeApply(tradeapply);
+			tradeapply.setAuditAmount(audit_amount);
+			fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
 		}else{
-			tradeapply.setApplyState("10100005");
-			tradeapply.setTradeState("10109999");//审核未通过
-			tradeapply.setModifyTime(new Date());
-			fssTradeApplyService.updateTradeApply(tradeapply);
-			//不通过，添加回盘记录
-
-			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			tradeapply.setAuditAmount(audit_amount);
+			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10109999");
 			//审核不通过进行资金解冻
 			if(applyType==1104){
 				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
 			}
+			//不通过，添加回盘记录
+			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 		}
 
 		map.put("code", "0000");
@@ -325,6 +324,7 @@ public class FssTradeApplyController {
 		for (int i = 0; i < applyNos.length; i++) {
 			tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNos[i]);
 			if("10100001".equals(tradeapply.getApplyState())){
+				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
 				fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
 				count++;
 			}

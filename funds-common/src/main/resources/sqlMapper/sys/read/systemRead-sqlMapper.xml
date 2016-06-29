@@ -26,7 +26,7 @@
 		  and t.dict_id like  concat('%',#{dictId},'%')
 		</if>
 		<if test="parentId!=null and parentId !='' ">
-		  and t.parent_id =#{parentId}
+		  and t.parent_id  =#{parentId}
 		</if>
 		<if test="dictName != null and dictName !=''">
 			and t.dict_name like  concat('%',#{dictName},'%')
@@ -44,7 +44,7 @@
 	   where t.dict_id  NOT IN
 	    <foreach collection="list" item="dictId" index="index"
            open="(" close=")" separator=",">
-           ${dictId}
+			#{dictId}
        </foreach>
 	</select>
 	

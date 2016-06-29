@@ -12,6 +12,7 @@ import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.sys.service.BankDealamountLimitService;
 import com.gqhmt.sys.service.SystemService;
 import com.gqhmt.util.ServiceLoader;
+import com.gqhmt.fss.architect.merchant.entity.MerchantRepayConfigEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,6 +50,9 @@ public class Application {
     private final Map<String,String>   fourCodemap = new ConcurrentHashMap<>();
     private final Map<String,String>   sixCodemap = new ConcurrentHashMap<>();
     private final Map<String,String>   eightCodemap = new ConcurrentHashMap<>();
+
+    // xdw  回盘地址
+    private final Map<String,String>   merchantRepayConfigEntityMap = new ConcurrentHashMap<>();
 //    private final Map<String,BankEntity>   bankEntitymap = new ConcurrentHashMap<>(); //银行列表
 
     private void init() throws FssException{
@@ -63,6 +67,7 @@ public class Application {
         LogUtil.debug(this.getClass(),eightCodemap.toString());
         LogUtil.debug(this.getClass(),sixCodemap.toString());
         LogUtil.debug(this.getClass(),fourCodemap.toString());
+        LogUtil.debug(this.getClass(),merchantRepayConfigEntityMap.toString());
 //        LogUtil.debug(this.getClass(),bankEntitymap.toString());
     }
 
@@ -75,6 +80,8 @@ public class Application {
             fourCodemap.clear();
             sixCodemap.clear();
             eightCodemap.clear();
+            //回盘地址
+            merchantRepayConfigEntityMap.clear();
 //            bankEntitymap.clear();
             update();
         }
@@ -85,6 +92,8 @@ public class Application {
         initMerchant();
         initBankDealamountLimit();
         iniBankArea();
+        //回盘地址
+        initMerchantRepayConfigEntity();
 //        initBankList();
     }
 
@@ -217,6 +226,36 @@ public class Application {
     		eightCodemap.put(bankArea.getFourCode(),bankArea.getEightCode());
     	}
     }
+
+    /*======================================回盘配置加载到内存========================================================*/
+    /**
+     * 回盘配置加载到内存
+     * 取值方式 还是和以前一样 通过   商户号 + "_" + 交易类型               取 商户地址
+     *                      通过   商户号 + "_" + 交易类型 + "_className" 取 回盘地址
+     */
+    private  void initMerchantRepayConfigEntity() throws FssException{
+
+
+        MerchantService merchantService = ServiceLoader.get(MerchantService.class);
+
+        List<MerchantRepayConfigEntity> merchantRepayConfigEntites = merchantService.getMerchantRepayConfigEntityList();
+
+        for(MerchantRepayConfigEntity merchantRepayConfigEntity:merchantRepayConfigEntites) {
+
+            merchantRepayConfigEntityMap.put(merchantRepayConfigEntity.getMchnNo()+"_"+merchantRepayConfigEntity.getTradeType(),merchantRepayConfigEntity.getMchnUrl());
+
+            merchantRepayConfigEntityMap.put(merchantRepayConfigEntity.getMchnNo()+"_"+merchantRepayConfigEntity.getTradeType()+"_className",merchantRepayConfigEntity.getRepayClassName());
+        }
+    }
+
+    public String getMchnUrlOrClassName(String MchnUrlOrClassName) throws FssException {
+        String merchantRepayConfAddress = merchantRepayConfigEntityMap.get(MchnUrlOrClassName);
+        if(merchantRepayConfAddress == null){
+            throw new FssException();
+        }
+        return merchantRepayConfAddress;
+    }
+
     /**
      * 
      * author:jhz
