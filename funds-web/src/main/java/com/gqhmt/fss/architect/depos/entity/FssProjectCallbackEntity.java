@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.depos.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -57,6 +58,12 @@ public class FssProjectCallbackEntity implements Serializable{
 
 	@Column(name = "status")
 	private String status;		//审核状态(S-待审核，P-通过)
+
+	@Column(name = "create_time")
+	private Date createTime;
+
+	@Column(name = "modify_time")
+	private Date modifyTime;
 
 	public Long getId() {
 		return id;
@@ -138,6 +145,19 @@ public class FssProjectCallbackEntity implements Serializable{
 		this.parentId = parentId;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
 
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 }

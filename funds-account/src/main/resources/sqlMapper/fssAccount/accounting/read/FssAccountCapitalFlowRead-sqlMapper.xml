@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssAccountCapitalFlowReadMapper">
+
+ <select  id="getCapitalFlows" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.accounting.entity.FssAccountCapitalFlow" >
+	  SELECT 
+		  t.`id` id,
+		  t.`account_no` accountNo,
+		  t.`ori_account_no` oriAccountNo,
+		  t.`cust_no` custNo,
+		  t.`acc_no` accNo,
+		  t.`to_cust_no` toCustNo,
+		  t.`to_acc_no` toAccNo,
+		  t.`funds_type` fundsType,
+		  t.`secend_funds_type` secendFundsType,
+		  t.`amt` amt,
+		  t.`lend_contract_no` lendContractNo,
+		  t.`load_contact_no` loadContactNo,
+		  t.`ori_lend_contract_no` oriLendContractNo,
+		  t.`ori_cust_no` oriCustNo,
+		  t.`ori_acc_no` oriAccNo,
+		  t.`order_no` orderNo,
+		  t.`trade_date` tradeDate,
+		  t.`trade_time` tradeTime,
+		  t.`settle_date` settleDate,
+		  t.`mchn_parent` mchnParent,
+		  t.`pay_channel` payChannel,
+		  t.`mchn_child` mchnChild,
+		  t.`create_time` createTime,
+		  t.`modify_time` modifyTime,
+		  t.`token` token
+	  From t_gq_fss_account_capital_flow t
+	 <where>
+		 <if test="accountNo!=null and accountNo!=''">
+			 AND t.`account_no` like CONCAT('%',#{accountNo},'%')
+		 </if>
+		 <if test="accNo!=null and accNo!=''">
+			 AND t.`acc_no` like CONCAT('%',#{accNo},'%')
+		 </if>
+		 <if test="custNo!=null and custNo!=''">
+			 AND t.`cust_no` like CONCAT('%',#{custNo},'%')
+		 </if>
+		<if test="startTime!=null and startTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+	</where>
+</select>
+</mapper>
+
+
