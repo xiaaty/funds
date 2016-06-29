@@ -12,6 +12,8 @@ import javax.annotation.Resource;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 /**
  * 
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
@@ -37,8 +39,10 @@ public class TranseferImpl implements ITransefer{
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
-			fundsTrade.transfer((TransferDto)dto);
-			 response.setResp_code("00000000");
+			TransferDto cDto=(TransferDto)dto;
+			fundsTrade.transfer(cDto.getFrom_cust_no(),cDto.getFrom_user_no(),cDto.getFrom_cust_type(),cDto.getTo_cust_no(),
+								cDto.getTo_user_no(),cDto.getTo_cust_type(),cDto.getAmt(),cDto.getFunds_type(),cDto.getBusi_type(),cDto.getBusi_id());
+			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

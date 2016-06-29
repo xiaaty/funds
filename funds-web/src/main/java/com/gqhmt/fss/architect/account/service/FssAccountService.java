@@ -258,5 +258,9 @@ public class FssAccountService {
         return accountReadMapper.getFssAccountByAccNo(accNo);
     }
 
+    public FssAccountEntity getAccountByBusiNo(String busiNo,String accType){
+        return accountReadMapper.getAccountByBusiNo(busiNo,Integer.valueOf(accType));
+    }
+
 
 }

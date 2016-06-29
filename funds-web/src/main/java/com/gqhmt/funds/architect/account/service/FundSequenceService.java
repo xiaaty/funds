@@ -185,6 +185,8 @@ public class FundSequenceService {
             toActionType = 4004;
         }else if(accountType == 4005){
             toActionType = 1009;
+        }else if(accountType == 4014){
+            toActionType = 4015;
         }
 
         FundSequenceEntity fromFundSequenceEntity =this.getFundSequenceEntity(fromEntity.getId(), actionType, accountType, new BigDecimal("-" + amount.toPlainString()), thirdPartyType, orderEntity, toEntiry.getId());

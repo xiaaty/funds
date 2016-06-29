@@ -149,8 +149,21 @@ public class CreateAccountEvent {
             //跟新所有与该cust_id相同的账户名称
             fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
         }
-            //生成新版账户
-            fssAccountEntity = fssAccountService.createNewFssAccountEntity(fssCustomerEntity,tradeType,busiNo,mchn,null,createTime);
+            //判断是否存在该账户
+            String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(tradeType);//设置账户类型
+            //验证业务编号 如果账户类型不是 线下出借,借款,保理,则设定业务编号为 客户编号,以此保证 其他类型账户唯一
+            if(!"10010002".equals(accType) && !"10010003".equals(accType) &&  !"10010004".equals(accType) && !"10019002".equals(accType) && !"10019001".equals(accType)){
+                busiNo = fssCustomerEntity.getCustNo();
+            }else{//如果,线下出借,借款,保理,则业务编号不能为空
+                if(busiNo == null || "".equals(busiNo)){
+                    throw new FssException("90002016");   //todo  未设定error类型  抛出业务编号为空
+                }
+            }
+            fssAccountEntity=fssAccountService.getAccountByBusiNo(busiNo,accType);
+            if(fssAccountEntity==null){
+                //生成新版账户
+                fssAccountEntity = fssAccountService.createNewFssAccountEntity(fssCustomerEntity,tradeType,busiNo,mchn,null,createTime);
+            }
         } catch (FssException e) {
             if(!e.getMessage().contains("busi_no_uk")) {
                 throw new FssException(e.getMessage(), e);
