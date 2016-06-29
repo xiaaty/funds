@@ -187,7 +187,7 @@ public class FssAccountService {
 
 
     public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo,Date createTime)  throws FssException{
-        FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class);
+        FssAccountEntity fssAccountEntity=null;
         String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(tradeType);//设置账户类型
         //验证业务编号 如果账户类型不是 线下出借,借款,保理,则设定业务编号为 客户编号,以此保证 其他类型账户唯一
         if(!"10010002".equals(accType) && !"10010003".equals(accType) &&  !"10010004".equals(accType) && !"10019002".equals(accType) && !"10019001".equals(accType)){
@@ -200,6 +200,7 @@ public class FssAccountService {
         //判断是否存在该账户
         fssAccountEntity=this.getAccountByBusiNo(busiNo,accType);
         if(fssAccountEntity==null){
+            fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class);
             fssAccountEntity.setAccBalance(BigDecimal.ZERO);
             fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
             fssAccountEntity.setAccAvai(BigDecimal.ZERO);

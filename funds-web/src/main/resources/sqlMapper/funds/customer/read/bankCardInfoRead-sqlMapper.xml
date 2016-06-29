@@ -105,7 +105,7 @@
 		WHERE t.cust_id=#{custNo}
 	</select>
 
-	<select id="queryBankCard"  parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity" >
+	<select id="queryBankCard"  parameterType="java.lang.Integer" resultType="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity" >
 		SELECT
 		t.id id,
 		t.cust_id  custId,
