@@ -366,6 +366,9 @@ public class FssTradeApplyService {
 			try {
 			 int successCount = fssTradeRecordService.getSuccessCount(applyNo);
 			 BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
+				if (realTradeAmt==null){
+					realTradeAmt=BigDecimal.ZERO;
+				}
 				 //划扣成功
 			 String tradeStatus=null;
 			 if(successCount==applyEntity.getCount()){

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -51,6 +52,8 @@ public class ReadTXTFile {
 				projectCallback.setRespMsg(str[5]);
 				projectCallback.setBidId(str[6]);
 				projectCallback.setFailedMsg(str[7]);
+				projectCallback.setCreateTime(new Date());
+				projectCallback.setModifyTime(new Date());
 				list.add(projectCallback);
 				System.out.println(r);
 				r=br.readLine();
