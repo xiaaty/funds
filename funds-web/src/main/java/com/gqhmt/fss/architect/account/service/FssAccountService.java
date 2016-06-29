@@ -187,19 +187,8 @@ public class FssAccountService {
 
 
     public FssAccountEntity createNewFssAccountEntity(FssCustomerEntity fssCustomerEntity,String tradeType,String busiNo,String mchn,String  thirdAccNo,Date createTime)  throws FssException{
-    	FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class);
-    	fssAccountEntity.setAccBalance(BigDecimal.ZERO);
-    	fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
-    	fssAccountEntity.setAccAvai(BigDecimal.ZERO);
-    	fssAccountEntity.setAccNotran(BigDecimal.ZERO);
-    	fssAccountEntity.setCustNo(fssCustomerEntity.getCustNo());
-    	fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
+        FssAccountEntity fssAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssAccountEntity.class);
         String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(tradeType);//设置账户类型
-        String accNo=CommonUtil.getAccountNo(accType);
-    	fssAccountEntity.setAccNo(accNo);
-    	String channelNo=GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(tradeType);//渠道编号
-    	fssAccountEntity.setAccType(Integer.parseInt(accType));
-    	fssAccountEntity.setState(10020001);//默认为有效账户
         //验证业务编号 如果账户类型不是 线下出借,借款,保理,则设定业务编号为 客户编号,以此保证 其他类型账户唯一
         if(!"10010002".equals(accType) && !"10010003".equals(accType) &&  !"10010004".equals(accType) && !"10019002".equals(accType) && !"10019001".equals(accType)){
             busiNo = fssCustomerEntity.getCustNo();
@@ -208,17 +197,32 @@ public class FssAccountService {
                 throw new FssException("90002016");   //todo  未设定error类型  抛出业务编号为空
             }
         }
-        fssAccountEntity.setBusiNo(busiNo);
-    	fssAccountEntity.setCustId(fssCustomerEntity.getCustId());
-    	fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
-        fssAccountEntity.setThirdAccNo(thirdAccNo);
-        fssAccountEntity.setTradeType(tradeType);
-    	fssAccountEntity.setMchnChild(mchn);
-    	fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
-        if(createTime != null){
-            fssAccountEntity.setCreateTime(createTime);
+        //判断是否存在该账户
+        fssAccountEntity=this.getAccountByBusiNo(busiNo,accType);
+        if(fssAccountEntity==null){
+            fssAccountEntity.setAccBalance(BigDecimal.ZERO);
+            fssAccountEntity.setAccFreeze(BigDecimal.ZERO);
+            fssAccountEntity.setAccAvai(BigDecimal.ZERO);
+            fssAccountEntity.setAccNotran(BigDecimal.ZERO);
+            fssAccountEntity.setCustNo(fssCustomerEntity.getCustNo());
+            fssAccountEntity.setUserNo(fssCustomerEntity.getUserId().toString());
+            String accNo=CommonUtil.getAccountNo(accType);
+            fssAccountEntity.setAccNo(accNo);
+            String channelNo=GlobalConstants.TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.get(tradeType);//渠道编号
+            fssAccountEntity.setAccType(Integer.parseInt(accType));
+            fssAccountEntity.setState(10020001);//默认为有效账户
+            fssAccountEntity.setBusiNo(busiNo);
+            fssAccountEntity.setCustId(fssCustomerEntity.getCustId());
+            fssAccountEntity.setChannelNo(Integer.parseInt(channelNo));//根据tradeType匹配
+            fssAccountEntity.setThirdAccNo(thirdAccNo);
+            fssAccountEntity.setTradeType(tradeType);
+            fssAccountEntity.setMchnChild(mchn);
+            fssAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
+            if(createTime != null){
+                fssAccountEntity.setCreateTime(createTime);
+            }
+            fssAccountWriteMapper.insert(fssAccountEntity);
         }
-    	fssAccountWriteMapper.insert(fssAccountEntity);
     	return fssAccountEntity;
     }
 
