@@ -160,28 +160,15 @@ public class CreateAccountEvent {
         //银行卡信息生成
         //旧版银行卡信息生成
         //创建银行卡信息
-       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
-        BankCardInfoEntity bankCardInfoEntity=null;
-        if(listbankcard.size()==0){
-            //判断输入的银行卡号是否已经存在
-            bankCardInfoEntity=bankCardInfoService.queryBankCardByBankNo(customerInfoEntity.getBankNo());
-            if(bankCardInfoEntity!=null){
-                throw new FssException("90002038");//该银行卡号已经存在
-            }
+//       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
+        BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
+        if(bankCardInfoEntity==null){
             bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
-        }else{
-            bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
         }
         fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
         //新版银行卡信息生成  增加判断，是否存在
-        FssCustBankCardEntity fssCustBankCardEntity=null;
-        fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
+        FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
         if(fssCustBankCardEntity==null){
-            //创建银行卡时，判断银行卡号是否已经注册
-            fssCustBankCardEntity=fssCustBankCardService.queryByBankNo(bankNo);
-            if(fssCustBankCardEntity!=null){
-                throw new FssException("90002038");//该银行卡号已被注册
-            }
             fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerEntity);
         }
         return  fssAccountEntity;
