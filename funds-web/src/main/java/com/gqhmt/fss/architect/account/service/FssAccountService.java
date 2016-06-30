@@ -108,7 +108,7 @@ public class FssAccountService {
 			fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerinfo);
             //生成富友庄户
             if(!"11020011".equals(tradeType)){
-                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo);
+                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo,bankNo);
             }
 
 		}else{
@@ -128,7 +128,7 @@ public class FssAccountService {
                 }
                 //生成银行卡信息
                 fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerinfo);
-                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo);
+                fssFuiouAccountEntity = this.createFuiouAccount(mchn,fssCustomerinfo,bankNo);
             }else{
                 //验证银行信息.....    todo
             }
@@ -235,28 +235,31 @@ public class FssAccountService {
 	 * @return
 	 * @throws FssException
 	 */
-	public FssFuiouAccountEntity createFuiouAccount(String mchn,FssCustomerEntity fssCustomerEntity) throws FssException {
-		try {
-			FssFuiouAccountEntity fssFuiouAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssFuiouAccountEntity.class);
-			fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
-			fssFuiouAccountEntity.setUserNo(fssCustomerEntity.getUserId());
-			fssFuiouAccountEntity.setAccNo(fssCustomerEntity.getMobile());
-            if(fssCustomerEntity.getCustId()<100){
-                fssFuiouAccountEntity.setAccUserName(GlobalConstants.COMPANY_ACCOUNT_REAL_NAME.get(fssCustomerEntity.getCustId()));
-            }else {
-                fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
+	public FssFuiouAccountEntity createFuiouAccount(String mchn,FssCustomerEntity fssCustomerEntity,String bankNo) throws FssException {
+        FssFuiouAccountEntity fssFuiouAccountEntity=fssFuiouAccountReadMapper.getFuiouAccountByCustNo(String.valueOf(fssCustomerEntity.getCustNo()));
+        if(fssFuiouAccountEntity==null) {
+            try {
+                fssFuiouAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssFuiouAccountEntity.class);
+                fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
+                fssFuiouAccountEntity.setUserNo(fssCustomerEntity.getUserId());
+                fssFuiouAccountEntity.setAccNo(fssCustomerEntity.getMobile());
+                if (fssCustomerEntity.getCustId() < 100) {
+                    fssFuiouAccountEntity.setAccUserName(GlobalConstants.COMPANY_ACCOUNT_REAL_NAME.get(fssCustomerEntity.getCustId()));
+                } else {
+                    fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
+                }
+                fssFuiouAccountEntity.setBankCardNo(bankNo);
+                fssFuiouAccountEntity.setMchnChild(mchn);
+                fssFuiouAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
+                fssFuiouAccountEntity.setHasOpenAccFuiou(2);
+                fssFuiouAccountWriteMapper.insertSelective(fssFuiouAccountEntity);
+            } catch (Exception e) {
+                LogUtil.info(this.getClass(), e.getMessage());
+                throw new FssException("90002029");
             }
-//			fssFuiouAccountEntity.setBankCardNo(fssCustBankCardEntity.getBankCardNo());
-            fssFuiouAccountEntity.setMchnChild(mchn);
-			fssFuiouAccountEntity.setMchnParent(Application.getInstance().getParentMchn(mchn));
-			fssFuiouAccountEntity.setHasOpenAccFuiou(2);
-			fssFuiouAccountWriteMapper.insertSelective(fssFuiouAccountEntity);
-			return fssFuiouAccountEntity;
-		} catch (Exception e) {
-			LogUtil.info(this.getClass(), e.getMessage());
-			throw new FssException("90002029");
-		}
-	}
+        }
+        return fssFuiouAccountEntity;
+    }
 
 
     public FssAccountEntity getAccountByAccNo(String accNo){
