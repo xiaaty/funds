@@ -563,6 +563,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setTradeState("10080001");
 		String applyState = "10100001";
 		if(autoPass){
+			fssTradeApplyEntity.setAuditAmount(amt);
 			applyState = "10100002";
 		}
 		fssTradeApplyEntity.setApplyState(applyState);
