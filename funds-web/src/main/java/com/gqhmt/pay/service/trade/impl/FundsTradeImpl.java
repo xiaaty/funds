@@ -12,6 +12,7 @@ import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
 import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -19,6 +20,7 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.entity.WithdrawApplyEntity;
 import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
+import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
 import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
 import com.gqhmt.pay.core.PayCommondConstants;
@@ -30,6 +32,7 @@ import com.gqhmt.pay.fuiou.util.HttpClientUtil;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+import com.gqhmt.util.ThirdPartyType;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -82,6 +85,7 @@ public class FundsTradeImpl  implements IFundsTrade {
     private NoticeService noticeService;
     @Resource
     private FssOfflineRechargeService fssOfflineRechargeService;
+
     /**
      * 生成web提现订单
      * @param withdrawOrderDto            支付渠道
@@ -259,19 +263,19 @@ public class FundsTradeImpl  implements IFundsTrade {
      * 转账
      */
     @Override
-    public boolean transfer(TransferDto transferDto) throws FssException {
-        //90004017
-        if(transferDto.getFrom_cust_no().intValue() == transferDto.getTo_cust_no().intValue()){
-            throw  new FssException("90004017");
+    public boolean transfer(Integer from_cust_no,Integer from_user_no,Integer from_cust_type,Integer to_cust_no,Integer to_user_no,Integer to_cust_type,BigDecimal amt,Integer  funds_type,Integer  busi_type,Long  busi_id) throws FssException {
+        if(from_cust_no!=null && to_cust_no!=null){
+            if( from_cust_no == to_cust_no){
+                throw  new FssException("90004017");
+            }
         }
-
-        FundAccountEntity fromEntity = this.getFundAccount(transferDto.getFrom_cust_no(), transferDto.getFrom_cust_type().intValue());
-        this.hasEnoughBanlance(fromEntity,transferDto.getAmt());
-        FundAccountEntity toEntity = this.getFundAccount(transferDto.getTo_cust_no(),transferDto.getTo_cust_type().intValue());
+        FundAccountEntity fromEntity = this.getFundAccount(from_cust_no,from_cust_type);
+        this.hasEnoughBanlance(fromEntity,amt);
+        FundAccountEntity toEntity = this.getFundAccount(to_cust_no,to_cust_type);
         //第三方交易
-        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,transferDto.getAmt(),transferDto.getBusi_type(),transferDto.getBusi_id(),transferDto.getBusi_type());
+        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,busi_type,busi_id,busi_type);
         //资金处理
-        this.tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),transferDto.getFunds_type(),fundOrderEntity);
+        this.tradeRecordService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),funds_type,fundOrderEntity);
         return true;
     }
 
@@ -619,6 +623,5 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         return offlineRechargeResponse;
     }
-
 
 }
