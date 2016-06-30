@@ -96,7 +96,7 @@ public class BatchWithholdingJob extends SupperJob{
                 String msg = e.getMessage();
                 String breakMsg = Application.getInstance().getDictOrderValue("breakMsg");
                 if(breakMsg != null && breakMsg.contains(msg)){
-                    fssTradeRecordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
+                    fssTradeRecordService.updateTradeRecordExecuteState(entity,3,e.getMessage());//todo 增加失败原因ss
                 }
             }
             long endTime = Calendar.getInstance().getTimeInMillis();
