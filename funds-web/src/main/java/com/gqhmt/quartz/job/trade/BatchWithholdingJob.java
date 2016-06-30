@@ -60,8 +60,10 @@ public class BatchWithholdingJob extends SupperJob{
         try {
             List<FssTradeApplyEntity> applyEntities= fssTradeApplyService.getTradeAppliesByApplyState("10100002");
             for (FssTradeApplyEntity apply:applyEntities) {
+                apply.setApplyState("10100004");
+                fssTradeApplyService.updateTradeApply(apply);
                int count= fssTradeRecordService.getCountByApplyNo(apply.getApplyNo());
-                if (count!=0&&apply.getCount()<=apply.getSuccessCount()) continue;
+                if (count!=0 && apply.getCount()<=apply.getSuccessCount()) continue;
                 try {
                     List<FssTradeRecordEntity> recordEntities = fssTradeRecordService.moneySplit(apply);
                     this.batch(recordEntities);
@@ -88,15 +90,22 @@ public class BatchWithholdingJob extends SupperJob{
 
 
     private void batch(List<FssTradeRecordEntity> recordEntities){
+        int state = 0;//1中断 其他暂不处理
+        String respMsg = "";
         for (FssTradeRecordEntity entity : recordEntities) {
             long startTime = Calendar.getInstance().getTimeInMillis();
             try {
-                fundsBatchTrade.batchTrade(entity);
+                if(state < 2) {
+                    fundsBatchTrade.batchTrade(entity);
+                }else{
+                    fssTradeRecordService.updateTradeRecordExecuteState(entity,3,respMsg);//todo 增加失败原因ss
+                }
             } catch (FssException e) {
                 String msg = e.getMessage();
                 String breakMsg = Application.getInstance().getDictOrderValue("breakMsg");
                 if(breakMsg != null && breakMsg.contains(msg)){
-                    fssTradeRecordService.updateTradeRecordExecuteState(entity,3,e.getMessage());//todo 增加失败原因ss
+                    state = 1;
+                    respMsg = msg;
                 }
             }
             long endTime = Calendar.getInstance().getTimeInMillis();
