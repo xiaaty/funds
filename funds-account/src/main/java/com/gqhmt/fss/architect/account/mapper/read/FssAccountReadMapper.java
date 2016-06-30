@@ -72,4 +72,5 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	 */
 	public FssAccountEntity getAccountByBusiNo(@Param("busiNo") String busiNo,@Param("accType") Integer accType);
 
+
 }

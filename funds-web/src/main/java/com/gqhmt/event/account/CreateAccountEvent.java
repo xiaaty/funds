@@ -86,30 +86,30 @@ public class CreateAccountEvent {
         if(isOldAccount){
             Integer userId = null;
             try {
-                    if(custId == null){//此处不校验冠e通是否存在此客户，只要id不为空，就默认存在。
-                        //临时设置为查询冠e通客户表，后期需要改为冠e通提供接口，调用接口后，如果管e通不存在，则冠e通开户，并返回客户id
-                         customerInfoEntity= customerInfoService.searchCustomerInfoByCertNo(certNo);//旧版客户信息
-                        if(customerInfoEntity == null){
-                            customerInfoEntity=customerInfoService.createCustomer(certNo,name,mobile);
-                            custId = customerInfoEntity.getId();
-                            userId = customerInfoEntity.getUserId();
-                        }
-                    }else{
-                        //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
-                        customerInfoEntity =  customerInfoService.getCustomerById(custId);
+                if(custId == null){//此处不校验冠e通是否存在此客户，只要id不为空，就默认存在。
+                    //临时设置为查询冠e通客户表，后期需要改为冠e通提供接口，调用接口后，如果管e通不存在，则冠e通开户，并返回客户id
+                    customerInfoEntity= customerInfoService.searchCustomerInfoByCertNo(certNo);//旧版客户信息
+                    if(customerInfoEntity == null){
+                        customerInfoEntity=customerInfoService.createCustomer(certNo,name,mobile);
+                        custId = customerInfoEntity.getId();
+                        userId = customerInfoEntity.getUserId();
                     }
-                    //设置值
-                    customerInfoEntity.setParentBankCode(bankType);
-                    customerInfoEntity.setBankNo(bankNo);
-                    customerInfoEntity.setCityCode(area);
-                    customerInfoEntity.setCertNo(certNo);
-                    customerInfoEntity.setMobilePhone(mobile);
-                    customerInfoEntity.setCustomerName(name);
-                    //生成旧版账户
-                    primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-                    if(primaryAccount == null){
-                        primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
-                    }
+                }else{
+                    //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
+                    customerInfoEntity =  customerInfoService.getCustomerById(custId);
+                }
+                //设置值
+                customerInfoEntity.setParentBankCode(bankType);
+                customerInfoEntity.setBankNo(bankNo);
+                customerInfoEntity.setCityCode(area);
+                customerInfoEntity.setCertNo(certNo);
+                customerInfoEntity.setMobilePhone(mobile);
+                customerInfoEntity.setCustomerName(name);
+                //生成旧版账户
+                primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+                if(primaryAccount == null){
+                    primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
+                }
 
             } catch (FssException e) {
                 if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
@@ -138,17 +138,17 @@ public class CreateAccountEvent {
                 fssCustomerEntity.setModifyTime(new Date());
                 fssCustomerService.updateCustId(fssCustomerEntity,customerInfoEntity.getId());
             }
-        //生成富有账户
-        if(isOldAccount){
-            if (primaryAccount.getHasThirdAccount() ==1){//富友
-                paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
-                primaryAccount.setHasThirdAccount(2);
-                fundAccountService.update(primaryAccount);
-                fssAccountService.createFuiouAccount(mchn,fssCustomerEntity,bankNo);
+            //生成富有账户
+            if(isOldAccount){
+                if (primaryAccount.getHasThirdAccount() ==1){//富友
+                    paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+                    primaryAccount.setHasThirdAccount(2);
+                    fundAccountService.update(primaryAccount);
+                    fssAccountService.createFuiouAccount(mchn,fssCustomerEntity);
+                }
+                //跟新所有与该cust_id相同的账户名称
+                fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
             }
-            //跟新所有与该cust_id相同的账户名称
-            fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
-        }
             //生成新版账户
             fssAccountEntity = fssAccountService.createNewFssAccountEntity(fssCustomerEntity,tradeType,busiNo,mchn,null,createTime);
         } catch (FssException e) {
@@ -160,7 +160,6 @@ public class CreateAccountEvent {
         //银行卡信息生成
         //旧版银行卡信息生成
         //创建银行卡信息
-//       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
         BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
         if(bankCardInfoEntity==null){
             bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);

@@ -106,7 +106,6 @@
 		<include refid="selectSql"/>
 		WHERE t.acc_no = #{accNo}
 	</select>
-
 	<select id="getAccountByBusiNo" resultType="com.gqhmt.fss.architect.account.entity.FssAccountEntity">
 		<include refid="selectSql"/>
 		WHERE t.busi_no = #{busiNo} AND t.acc_type=#{accType}

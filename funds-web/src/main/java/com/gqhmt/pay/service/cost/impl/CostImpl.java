@@ -7,11 +7,15 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.cost.ICost;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
+import com.gqhmt.util.ThirdPartyType;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,6 +53,12 @@ public class CostImpl  implements ICost{
 
     @Resource
     private FssAccountService fssAccountService;
+    @Resource
+    private FundSequenceService fundSequenceService;
+    @Resource
+    private FundTradeService fundTradeService;
+    @Resource
+    private FundsTradeImpl fundsTradeImpl;
 
     private  final Map<String,Long> map = new ConcurrentHashMap<>();
 
@@ -128,8 +138,6 @@ public class CostImpl  implements ICost{
         map.put("21992103_10040003",3l);
         map.put("21992103_10040099",3l);
 
-
-
         map.put("21992105_10040001",12l);//风险备用金
         map.put("21992105_10040002",12l);
         map.put("21992105_10040003",12l);
@@ -139,6 +147,28 @@ public class CostImpl  implements ICost{
         map.put("21992105_10040002",4l);
         map.put("21992105_10040003",4l);
         map.put("21992105_10040099",4l);
+
+//代偿11070001、11070002、11070003、11070004
+        map.put("11070001_10040001",3l);  //借款人逾期代偿
+        map.put("11070001_10040002",3l);
+        map.put("11070001_10040003",3l);
+        map.put("11070001_10040099",3l);
+
+        map.put("11070002_10040001",3l);  //借款人逾期代偿资金退回
+        map.put("11070002_10040002",3l);
+        map.put("11070002_10040003",3l);
+        map.put("11070002_10040099",3l);
+
+        map.put("11070003_10040001",3l);  //委托出借人代偿
+        map.put("11070003_10040002",3l);
+        map.put("11070003_10040003",3l);
+        map.put("11070003_10040099",3l);
+
+        map.put("11070004_10040001",3l);  //委托出借代偿退回
+        map.put("11070004_10040002",3l);
+        map.put("11070004_10040003",3l);
+        map.put("11070004_10040099",3l);
+
 
     }
 
@@ -223,6 +253,61 @@ public class CostImpl  implements ICost{
     public boolean charge(CostDto dto) throws FssException{
 //        this.cost(dto.getPlatform(), dto.getTrade_type(), Long.valueOf(dto.getCust_no()), Integer.valueOf(dto.getBusi_type()),dto.getAmt(),Long.valueOf(dto.getAccounts_type()),Integer.valueOf(GlobalConstants.ORDER_COST));
         return true;
+    }
+
+    /**
+     * 代偿
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param amt
+     * @param funds_type
+     * @param busi_type
+     * @param busi_id
+     * @param mark
+     * @return
+     * @throws FssException
+     */
+    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Integer funds_type,Integer  busi_type,Long  busi_id,String mark) throws FssException{
+        FundAccountEntity fromEntity=null;
+        FundAccountEntity toEntity=null;
+        Long pubCustId = this.map.get(trade_type+"_"+"10040001");
+        if(pubCustId == null) throw new FssException("90002001");
+        if(pubCustId.intValue() == cust_id.intValue()){
+            throw  new FssException("90004017");
+        }
+        FundAccountEntity  publicAccount = fundAccountService.getFundAccount(pubCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//对公账户
+        FundAccountEntity  personalAccount = fundsTradeImpl.getFundAccount(cust_id,cust_type);//个人账户
+        //判断是从对公账户转入到个人账户还是从个人账户转入对公账户
+        if("TransferredCome".equals(mark)){//从个人账户转入对公账户
+            fromEntity=personalAccount;
+            toEntity=publicAccount;
+        }else if("TransferredOut".equals(mark)){//从对公账户转入对个人账户
+            fromEntity=publicAccount;
+            toEntity=personalAccount;
+        }
+        this.hasEnoughBanlance(fromEntity,amt);
+        //第三方交易
+        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_id,busi_type);
+        //资金处理
+        fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
+        //添加交易记录
+        fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),4014, "资金转出",BigDecimal.ZERO);
+        fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4015,"资金转入");
+        return true;
+    }
+
+    /**
+     * 判余额是否充足
+     * @param entity
+     * @param amount
+     * @throws CommandParmException
+     */
+    private void hasEnoughBanlance(FundAccountEntity entity, BigDecimal amount) throws CommandParmException {
+        BigDecimal bigDecimal = entity.getAmount();
+        if (bigDecimal.compareTo(amount) < 0) {
+            throw new CommandParmException("90004007");
+        }
     }
 
 }
