@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
@@ -84,8 +85,7 @@ public class FssTradeRecordService {
 		try {
 			fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
 		} catch (FssException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogUtil.error(this.getClass(),e);
 		}
 	}
 
