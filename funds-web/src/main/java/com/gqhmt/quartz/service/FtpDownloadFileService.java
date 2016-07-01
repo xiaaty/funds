@@ -124,7 +124,7 @@ public class FtpDownloadFileService {
      * ftp下载回盘文件，存在失败可能，失败重新下载
      * @param file
      * @return
-     * @throws FssException 
+     * @throws FssException
      */
     public boolean downloadReturn(FuiouUploadFile file) throws FssException{
     	Config config=ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
@@ -149,7 +149,7 @@ public class FtpDownloadFileService {
     /**
      * 对已下载回盘文件处理
      * @param file
-     * @throws FssException 
+     * @throws FssException
      */
     private void parseFile(FuiouUploadFile file) throws FssException{
         String path = getClassPath();
@@ -181,8 +181,8 @@ public class FtpDownloadFileService {
      * 结果处理，返回结果更新数据库
      * @param file
      * @param list
-     * @throws FssException 
-     * @throws NumberFormatException 
+     * @throws FssException
+     * @throws NumberFormatException
      */
     private void parseFileResult(FuiouUploadFile file,List<String> list) throws NumberFormatException, FssException{
         Map<String,FuiouFtpColomField> fields = this.fuiouFtpColomFieldService.getFuiouFtpColunm(Long.parseLong(file.getEntrustDate() + file.getNo()));
@@ -268,15 +268,15 @@ public class FtpDownloadFileService {
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
         String date = sdf.format(file.getTradingTime());
-        String url1 = "/account/" + file.getBusinessCode()  + date +  ".txt";
+        String url1 = "/account/" + file.getTradeType()  + date +  ".txt";
         boolean flag = ftp.exits(url1);
         if(!flag){
             return false;
         }
         String path = getClassPath();
         File filepath  = new File(path+"/tmp/account");
-        String fileName= filepath+"/"+ file.getBusinessCode()  + date +  ".txt";
-        flag = ftp.getFile("/account/" + file.getBusinessCode()  + date +  ".txt",fileName);
+        String fileName= filepath+"/"+ file.getTradeType()  + date +  ".txt";
+        flag = ftp.getFile("/account/" + file.getTradeType()  + date +  ".txt",fileName);
         parseFileFuiouAcount(file);
         return true;
     }
@@ -331,7 +331,7 @@ public class FtpDownloadFileService {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
         String date = sdf.format(file.getTradingTime());
 
-        String fileName= filepath+"/"+file.getBusinessCode()+date+".txt";
+        String fileName= filepath+"/"+file.getTradeType()+date+".txt";
         File localFile = new File(fileName);
         try {
             InputStream is = new FileInputStream(localFile);
@@ -374,7 +374,7 @@ public class FtpDownloadFileService {
             return;
         }
         int size = strList.size();
-        tradeType = file.getBusinessCode();
+        tradeType = file.getTradeType();
         int num = 0;
         if("DJJD".equals(tradeType) && size == 9){
             num = 1;
@@ -389,7 +389,8 @@ public class FtpDownloadFileService {
         }else if("YSQ".equals(tradeType) && size == 10){
             num = 6;
         }else{
-            System.out.println("格式错误");
+            //System.out .println("格式错误");
+            new FssException("格式错误");
             return;
         }
 
@@ -439,7 +440,7 @@ public class FtpDownloadFileService {
                 file.setBusinessCode(strList.get(0));
                 file.setTradeSources(strList.get(1));
                 file.setBatch(strList.get(2));
-                file.setBatchFoiuFinance(strList.get(3)); //
+                file.setBatchFoiuFinance(strList.get(3));
                 file.setTradingTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(strList.get(4)));
                 file.setTransactionAmount(new BigDecimal(strList.get(5)));
                 file.setUserAccount(strList.get(6));
@@ -476,7 +477,12 @@ public class FtpDownloadFileService {
             default:
                 return;
         }
-        fuiouAccountInfoService.addFuiouAccountInfoEntity(file);
+        if(file!=null && file.getId() != 0){
+            file.setBooleanType("1");
+            fuiouAccountInfoService.updateFuiouAccountInfoEntity(file);
+        }else{
+            fuiouAccountInfoService.addFuiouAccountInfoEntity(file);
+        }
     }
 
 }
