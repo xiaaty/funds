@@ -65,7 +65,15 @@ public class FssTradeRecordService {
 		Date date=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
 		String time=sdf.format(date);
-		fssTradeRecordEntity.setTradeResult((state == 1?98060001:98060003));//(state == 1?"":"")
+		Integer tradeResult=null;
+		if(state == 1){
+			tradeResult=98060001;//成功
+		}else if(state==3){
+			tradeResult=98060009;//中断
+		}else{
+			tradeResult=98060003;//失败
+		}
+		fssTradeRecordEntity.setTradeResult(tradeResult);
 		fssTradeRecordEntity.setTradeState(98070002);//修改交易状态为已执行
 		fssTradeRecordEntity.setModifyTime(new Date());
 		fssTradeRecordEntity.setTradeDate(time.substring(0,8));
@@ -194,7 +202,7 @@ public class FssTradeRecordService {
 	public  List<FssTradeRecordEntity> moneySplit(FssTradeApplyEntity tradeApplyEntity,BigDecimal limitAmount) throws FssException {
 		List<FssTradeRecordEntity> recordEntityList = new ArrayList<>();
 
-		BigDecimal bg[] = tradeApplyEntity.getTradeAmount().divideAndRemainder(limitAmount);
+		BigDecimal bg[] = tradeApplyEntity.getAuditAmount().divideAndRemainder(limitAmount);
 		int splitCount = bg[0].intValue();
 		BigDecimal lastamount = bg[1];
 

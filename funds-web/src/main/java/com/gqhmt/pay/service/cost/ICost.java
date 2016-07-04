@@ -61,4 +61,18 @@ public interface ICost {
 
     public boolean charge(CostDto dto) throws FssException;
 
+    /**
+     * 代偿
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param amt
+     * @param funds_type
+     * @param busi_type
+     * @param busi_id
+     * @return
+     * @throws FssException
+     */
+    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Integer funds_type,Integer  busi_type,Long  busi_id,String mark) throws FssException;
+
 }

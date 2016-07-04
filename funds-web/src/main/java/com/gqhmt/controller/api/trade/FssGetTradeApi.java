@@ -59,6 +59,8 @@ public class FssGetTradeApi {
 	private WithHoldApplyCallback withHoldApplyCallback;
 	@Resource
 	private ICharges chargesImpl;
+	@Resource
+	private ICompensation compensationImpl;
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
@@ -87,20 +89,6 @@ public class FssGetTradeApi {
 		return response;
 	}
 	
-	/*
-	 * 测试回盘
-	 * @RequestMapping(value = "/withHoldApplyCallback",method = RequestMethod.POST)
-	public Object careateWithDrawApplyCallBack(String mchn,String seqNo){
-		Response response=new Response();
-		try {
-			response = withHoldApplyCallback.getCallBack(mchn, seqNo);
-		} catch (Exception e) {
-			 response = this.execute(e);
-		}
-		return response;
-	}
-	*/
-
 	/**
 	 * 费用收取接口
 	 * @param dto
@@ -111,6 +99,23 @@ public class FssGetTradeApi {
 		Response response=new Response();
 		try {
 			response = chargesImpl.execute(dto);
+		} catch (Exception e) {
+			response = this.execute(e);
+		}
+		return response;
+	}
+
+
+	/**
+	 * 代偿接口
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/compensation",method = {RequestMethod.POST,RequestMethod.GET})
+	public Object compensation(@RequestBody CompensationDto dto){
+		Response response=new Response();
+		try {
+			response = compensationImpl.execute(dto);
 		} catch (Exception e) {
 			response = this.execute(e);
 		}

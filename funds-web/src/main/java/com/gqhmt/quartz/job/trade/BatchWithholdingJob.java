@@ -41,7 +41,7 @@ public class BatchWithholdingJob extends SupperJob{
     private ApplicationContext context;
 
     @Resource
-    private FssTradeRecordService recordService;
+    private FssTradeRecordService fssTradeRecordService;
     @Resource
     private FssTradeApplyService fssTradeApplyService;
 
@@ -55,15 +55,17 @@ public class BatchWithholdingJob extends SupperJob{
             return;
         }
         if(isRunning) return;
-        startLog("还款代扣");
+        startLog("代扣代付");
         isRunning = true;
         try {
             List<FssTradeApplyEntity> applyEntities= fssTradeApplyService.getTradeAppliesByApplyState("10100002");
             for (FssTradeApplyEntity apply:applyEntities) {
-               int count= recordService.getCountByApplyNo(apply.getApplyNo());
-                if (count!=0&&apply.getCount()<=apply.getSuccessCount()) continue;
+                apply.setApplyState("10100004");
+                fssTradeApplyService.updateTradeApply(apply);
+               int count= fssTradeRecordService.getCountByApplyNo(apply.getApplyNo());
+                if (count!=0 && apply.getCount()<=apply.getSuccessCount()) continue;
                 try {
-                    List<FssTradeRecordEntity> recordEntities = recordService.moneySplit(apply);
+                    List<FssTradeRecordEntity> recordEntities = fssTradeRecordService.moneySplit(apply);
                     this.batch(recordEntities);
                 }catch (Exception e){
                     LogUtil.error(getClass(),e);
@@ -88,15 +90,22 @@ public class BatchWithholdingJob extends SupperJob{
 
 
     private void batch(List<FssTradeRecordEntity> recordEntities){
+        int state = 0;//1中断 其他暂不处理
+        String respMsg = "";
         for (FssTradeRecordEntity entity : recordEntities) {
             long startTime = Calendar.getInstance().getTimeInMillis();
             try {
-                fundsBatchTrade.batchTrade(entity);
+                if(state < 2) {
+                    fundsBatchTrade.batchTrade(entity);
+                }else{
+                    fssTradeRecordService.updateTradeRecordExecuteState(entity,3,respMsg);//todo 增加失败原因ss
+                }
             } catch (FssException e) {
                 String msg = e.getMessage();
                 String breakMsg = Application.getInstance().getDictOrderValue("breakMsg");
                 if(breakMsg != null && breakMsg.contains(msg)){
-                    break;
+                    state = 1;
+                    respMsg = msg;
                 }
             }
             long endTime = Calendar.getInstance().getTimeInMillis();

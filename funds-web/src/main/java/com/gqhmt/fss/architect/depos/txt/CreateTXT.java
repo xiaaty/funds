@@ -276,7 +276,11 @@ public class CreateTXT  {
 					write.append(info.getRegistrationDate()+"|");
 					write.append(info.getThirdPartyPaymentId()+"|");
 					write.append(info.getActionType()+"|");
-					write.append(info.getRemark());
+					if(null!=info.getRemark()&&!"".equals(info.getRemark())){
+						write.append(info.getRemark());
+					}else{
+						write.append(" ");
+					}
 					write.append(enter);
 				}
 			}

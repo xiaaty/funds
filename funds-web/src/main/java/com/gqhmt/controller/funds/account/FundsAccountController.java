@@ -64,13 +64,13 @@ public class FundsAccountController {
 		model.addAttribute("page", acountList);
 		model.addAttribute("accMap", map);
 //    	System.out.println(custId+"****************");
-		if (custId > 100) {
+//		if (custId > 100) {
 			//帐号管理
 			return "funds/account/accountList";
-		} else {
+		/*} else {
 			//对公账户列表
 			return "funds/account/accountBusinessList";
-		}
+		}*/
 	}
 
 	/**

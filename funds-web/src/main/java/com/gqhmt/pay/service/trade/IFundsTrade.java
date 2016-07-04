@@ -98,11 +98,20 @@ public interface IFundsTrade {
 
     /**
      * 转账接口
-     * @param transferDto
+     * @param from_cust_no
+     * @param from_user_no
+     * @param from_cust_type
+     * @param to_cust_no
+     * @param to_user_no
+     * @param to_cust_type
+     * @param amt
+     * @param funds_type
+     * @param busi_type
+     * @param busi_id
      * @return
      * @throws FssException
      */
-    public boolean transfer(TransferDto transferDto) throws FssException;
+    public boolean transfer(Integer from_cust_no,Integer from_user_no,Integer from_cust_type,Integer to_cust_no,Integer to_user_no,Integer to_cust_type,BigDecimal amt,Integer  funds_type,Integer  busi_type,Long  busi_id) throws FssException;
 
 
     /**
