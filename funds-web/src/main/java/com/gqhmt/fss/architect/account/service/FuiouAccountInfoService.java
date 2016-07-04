@@ -60,4 +60,8 @@ public class FuiouAccountInfoService {
     public void updateFuiouAccountInfoEntity(FuiouAccountInfoEntity file) {
         fuiouAccountInfoWriteMapper.updateFuiouAccountInfoEntity(file);
     }
+
+    public void deleteAccountFailInfo(String id) {
+        fuiouAccountInfoWriteMapper.deleteFuiouAccountInfoEntity(id);
+    }
 }

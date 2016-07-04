@@ -7,6 +7,7 @@ import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
 import com.gqhmt.quartz.service.FtpDownloadFileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,6 +59,7 @@ public class FuiouAccountInfoController {
     public Object accountInfoList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException, ParseException {
         //查询记录
         List<FuiouAccountInfoEntity> accountInfoList = fuiouAccountInfoService.queryAccountInfoList(map);
+
         Map<String,String> map1 = new HashMap<String,String>();
         //查询失败记录
         List<FuiouAccountInfoEntity> accountInfoFailList = fuiouAccountInfoService.queryAccountFailInfoList(map1);
@@ -65,6 +67,7 @@ public class FuiouAccountInfoController {
         model.addAttribute("page", accountInfoList);
         model.addAttribute("failSize", accountInfoFailList.size());
         model.put("map", map);
+        model.addAttribute("grabState",request.getParameter("grabState"));
         return "fss/account/accountInfoList";
     }
 
@@ -77,7 +80,6 @@ public class FuiouAccountInfoController {
     @RequestMapping(value = "account/info/accountInfoFialList",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public Object accountInfoFialList(HttpServletRequest request, ModelMap model, @RequestParam(required=false) Map<String, String> map,@RequestParam(required=false,value="id")String id) throws FssException {
-
         //查询失败记录
         List<FuiouAccountInfoEntity> accountInfoFailList = fuiouAccountInfoService.queryAccountFailInfoList(map);
         model.addAttribute("page", accountInfoFailList);
@@ -91,29 +93,52 @@ public class FuiouAccountInfoController {
     public Object accountInfoEdit(HttpServletRequest request, ModelMap model, @RequestParam(required=false) Map<String, String> map,@PathVariable String id) throws FssException, ParseException {
         //查询失败记录
         List<FuiouAccountInfoEntity> accountInfoFailList = fuiouAccountInfoService.queryAccountFailInfoList(map);
-
-        Map<String,String> map1 = new HashMap<String,String>();
-        map1.put("id",id);
-        List<FuiouAccountInfoEntity> accountInfoFailList1 = fuiouAccountInfoService.queryAccountFailInfoList(map1);
         FuiouAccountInfoEntity oAccountInfoFail = new FuiouAccountInfoEntity();
-        if(accountInfoFailList1!=null && accountInfoFailList1.size()>0){
-            oAccountInfoFail = accountInfoFailList1.get(0);
+        if(accountInfoFailList!=null && accountInfoFailList.size()>0){
+            oAccountInfoFail = accountInfoFailList.get(0);
+        }else{
+            if(map.get("tradingTime")!=null && map.get("tradingTime")!=""){
+               SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                oAccountInfoFail.setTradingTime(sdf.parse(map.get("tradingTime")));
+                oAccountInfoFail.setTradeType(map.get("tradeType"));
+            }else{
+                return "redirect:"+request.getContextPath()+"/account/info/accountInfoFialList";
+            }
         }
-     //  测试用
-     //   String dateStr = "20150701";
-     //   SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-     //   java.util.Date date=sdf.parse(dateStr);
-     //   oAccountInfoFail.setTradingTime(date);
         boolean booleanType = ftpDownloadFileService.downloadFuiouAccount(oAccountInfoFail);
+
+        //查询失败记录
+        Map<String,String> map1 = new HashMap<String,String>();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        map1.put("tradingTime",sdf.format(oAccountInfoFail.getTradingTime()));
+        map1.put("tradeType",oAccountInfoFail.getTradeType());
+
+        FuiouAccountInfoEntity accountInfoFail = fuiouAccountInfoService.queryAccountFailInfoList(map1).size() > 0 ? fuiouAccountInfoService.queryAccountFailInfoList(map1).get(0) : null;
+
         String grabState = null;
-        if(booleanType==true){
+        if(booleanType == true){
             grabState = "1";
         }else{
             grabState = "-1";
+            if(accountInfoFail == null || accountInfoFail.getId() == 0){
+                oAccountInfoFail.setBooleanType(grabState);
+                fuiouAccountInfoService.addFuiouAccountInfoEntity(oAccountInfoFail);
+            }
         }
         model.put("grabState",grabState);
-        //return "fss/account/accountInfoFailList";
         model.addAttribute("grabState",grabState);
+
+        if(accountInfoFailList!=null && accountInfoFailList.size()>0){
+            return new ModelAndView("redirect:"+request.getContextPath()+"/account/info/accountInfoFialList", model);
+        }else{
+            return new ModelAndView("redirect:"+request.getContextPath()+"/account/info/accountInfoList", model);
+        }
+    }
+
+    @RequestMapping(value = "account/info/accountInfoDelete/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public Object accountInfoDelete(HttpServletRequest request, ModelMap model, @RequestParam(required=false) Map<String, String> map,@PathVariable String id) throws FssException, ParseException {
+        fuiouAccountInfoService.deleteAccountFailInfo(id);
         return new ModelAndView("redirect:"+request.getContextPath()+"/account/info/accountInfoFialList", model);
     }
 

@@ -28,4 +28,6 @@ public interface FuiouAccountInfoWriteMapper {
     //手动抓取失败文件
     public void updateFuiouAccountInfoEntity(FuiouAccountInfoEntity file);
 
+    //刪除fpt不存在的文件记录
+    public void deleteFuiouAccountInfoEntity(String id);
 }

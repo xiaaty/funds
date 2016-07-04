@@ -54,7 +54,7 @@
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="Form">
+                                <form class="smart-form" action="${contextPath}/account/info/accountInfoFialList"  method="post" id="Form">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -138,7 +138,10 @@
                                                  <td>${t.tradeType}</td>
                                                  <td>${t.businessCode}</td>
                                                  <td><fmt:formatDate value="${t.tradingTime}" pattern="yyyy-MM-dd"/></td>
-                                                 <td><a href="${contextPath}/account/info/accountInfoEdit/${t.id}" class="redFont" title="点击手动抓取" >手动抓取</a></td>
+                                                 <td>
+                                                     <a href="${contextPath}/account/info/accountInfoEdit/${t.id}" class="redFont" title="点击手动抓取" onsubmit = "beforeManuallyCrawl()" >手动抓取</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     <a href="${contextPath}/account/info/accountInfoDelete/${t.id}" class="redFont"  title="点击删除" id="aDelete" onclick = "return beforeDelete(${t.id})" >删除</a>
+                                                 </td>
                                              </tr>
                                          </c:forEach>
                                          </tbody>
@@ -176,10 +179,20 @@
     });
 
      if(${grabState == "1"}){
-         JAlert("抓取成功","提示消息");
+         jAlert("抓取成功","提示消息");
      }else if(${grabState == "-1"}){
-         JAlert("抓取失败","提示消息");
+         jAlert("抓取失败，确认文件是否存在","提示消息");
      }
+
+    function beforeDelete(id){
+            if(confirm("确认这一天不存在这个文件")){
+                jAlert("删除成功!", '确认信息');
+            }else{
+                jAlert("取消删除!", '确认信息');
+                return false;
+            }
+
+    }
 
 </script>
 

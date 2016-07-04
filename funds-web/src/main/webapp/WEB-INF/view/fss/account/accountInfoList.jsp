@@ -125,7 +125,64 @@
                         </div>
                     </div>
 
-
+                    <!-- 手动抓取指定日期对账文件 -->
+                    <div class="jarviswidget" id="manuallyCrawl" data-widget-deletebutton="false"
+                         data-widget-editbutton="false">
+                        <header>
+                            <h2 class="redFont">手动抓取</h2>
+                        </header>
+                        <div>
+                            <form class="smart-form" action="${contextPath}/account/info/accountInfoEdit/-1" onsubmit="return beforeManuallyCrawl()" method="post" >
+                                <div class="jarviswidget-editbox">
+                                </div>
+                                <div class="widget-body no-padding">
+                                    <div class="mt10 mb10">
+                                        <table class="table lh32">
+                                            <col width="20" />
+                                            <col width="220" />
+                                            <col width="150" />
+                                            <col width="220" />
+                                            <col width="150" />
+                                            <col />
+                                            <tbody>
+                                            <tr></tr>
+                                            <tr>
+                                                <td></td>
+                                                <td class="tr">信息类型：</td>
+                                                <td>
+                                                    <select class="select02" style="width:202px;" name="tradeType" id="tradeType">
+                                                        <option value="" >请选择</option>
+                                                        <option <c:if test="${FAIEntity.tradeType == 'DJJD'}"> selected="selected" </c:if> value="DJJD" >冻结/解冻</option>
+                                                        <option <c:if test="${map.tradeTypeInfo == 'ZZ'}"> selected="selected" </c:if> value="ZZ" >转账</option>
+                                                        <option <c:if test="${map.tradeTypeInfo == 'HB'}"> selected="selected" </c:if> value="HB" >划拨</option>
+                                                        <option <c:if test="${map.tradeTypeInfo == 'WTCZ'}"> selected="selected" </c:if> value="WTCZ" >委托充值</option>
+                                                        <option <c:if test="${map.tradeTypeInfo == 'WTTX'}"> selected="selected" </c:if> value="WTTX" >委托提现</option>
+                                                        <option <c:if test="${map.tradeTypeInfo == 'YSQ'}"> selected="selected" </c:if> value="YSQ" >预授权交易</option>
+                                                    </select>
+                                                    <%--<label class="input">
+                                                        <input type="text" style="width:210px" name="tradeType" value="${map.tradeType}" />
+                                                    </label>--%>
+                                                </td>
+                                                <td class="tr">交易/充值/提现日期：</td>
+                                                <td colspan="4">
+                                                    <section class="fl">
+                                                        <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                            <input type="text" maxlength="10" id="tradingTime" name="tradingTime" class="selectdate" placeholder="请选择时间" value="${map.tradingTime}" title="请选择手动抓取时间">
+                                                        </label>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <footer>
+                                        <button type="submit" class="btn btn-primary" >抓&nbsp;&nbsp;&nbsp;取</button>
+                                    </footer>
+                                </div>
+                                <!-- end widget content -->
+                            </form>
+                        </div>
+                    </div>
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-01" data-widget-deletebutton="false"
@@ -225,7 +282,7 @@
 </div>
 <%@include file="../../../view/include/common_footer_css_js.jsp" %>
 <script src="${contextPath}/js/jquery.form.js"></script>
-<script src="${contextPath}/js/jquery.alerts.js"></script>
+<script src="${contextPath}/js/jquery.alerts.js" ></script>
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         pageSetUp();
@@ -242,6 +299,22 @@
         minView: 2,
         forceParse: 0
     });
+    if(${grabState == "1"}){
+        jAlert("抓取成功","提示消息");
+    }else if(${grabState == "-1"}){
+        jAlert("抓取失败，确认文件是否存在","提示消息");
+    }
+
+    function beforeManuallyCrawl(){
+        $("#tradeType").val();
+        $("#tradingTime").val();
+        var tradeType =  $("#tradeType").val() != null ? $("#tradeType").val().replace(/(^\s*)|(\s*$)/g, "") : null;
+        var tradingTime = $("#tradingTime").val() != null ? $("#tradingTime").val().replace(/(^\s*)|(\s*$)/g, "") : null;
+        if(!(tradeType != null && tradeType != '' && tradingTime != null && tradingTime != '')){
+            jAlert("信息类型/交易日期不能为空","提示消息");
+            return false;
+        }
+    }
 
 </script>
 

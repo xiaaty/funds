@@ -104,4 +104,9 @@
         WHERE id = #{id}
     </update>
 
+    <delete id="deleteFuiouAccountInfoEntity" parameterType="java.lang.String" >
+        DELETE FROM t_gq_fss_fuiou_account_info
+        WHERE id = cast(#{id} as signed int)
+    </delete>
+
 </mapper>

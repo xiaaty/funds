@@ -24,11 +24,11 @@
             account_state accountState,
             boolean_type booleanType
         FROM t_gq_fss_fuiou_account_info t
-        WHERE boolean_type != '-1' or boolean_type is null
-        <if test="tradeType!=null and tradeType!=''">
-            AND trade_type = #{tradeType}
+        WHERE (boolean_type != '-1' or boolean_type is null)
+        <if test="tradeType != null and tradeType != '' ">
+            AND  t.trade_type = #{tradeType}
         </if>
-        <if test="businessCode!=null and businessCode!=''">
+        <if test=" businessCode != null and businessCode != ''">
             AND business_code = #{businessCode}
         </if>
         <if test="userName!=null and userName!=''">
@@ -39,6 +39,7 @@
         </if>
             ORDER BY t.trading_time
     </select>
+
     <select id="queryAccountFailInfoList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
         SELECT
             id,
@@ -64,7 +65,13 @@
         FROM t_gq_fss_fuiou_account_info t
         WHERE boolean_type = '-1'
         <if test="id!=null and id!='' and id!= 0">
-            AND id = cast(#{id} as signed int)
+            AND t.id = cast(#{id} as signed int)
+        </if>
+        <if test="tradeType!=null and tradeType!=''">
+            AND  t.trade_type = #{tradeType}
+        </if>
+        <if test="tradingTime!=null and tradingTime != ''">
+            AND date_format(t.trading_time,'%Y-%m-%d') = #{tradingTime}
         </if>
         ORDER BY t.trading_time
     </select>
