@@ -364,17 +364,16 @@ public class FssTradeApplyService {
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
 		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
 			try {
-			 int successCount = fssTradeRecordService.getSuccessCount(applyNo);
 			 BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
 				if (realTradeAmt==null){
 					realTradeAmt=BigDecimal.ZERO;
 				}
 				 //划扣成功
 			 String tradeStatus=null;
-			 if(successCount==applyEntity.getCount()){
-				 tradeStatus="10080002";
-			 //划扣失败
-			 }else if(successCount==0){
+			 if(applyEntity.getTradeAmount().compareTo(realTradeAmt)==0){
+				tradeStatus="10080002";
+				//划扣失败
+		  	 }else if(realTradeAmt.compareTo(BigDecimal.ZERO)==0){
 				 tradeStatus="10080010";
 			 //部分成功
 			 }else{
@@ -566,6 +565,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setTradeState("10080001");
 		String applyState = "10100001";
 		if(autoPass){
+			fssTradeApplyEntity.setAuditAmount(amt);
 			applyState = "10100002";
 		}
 		fssTradeApplyEntity.setApplyState(applyState);
