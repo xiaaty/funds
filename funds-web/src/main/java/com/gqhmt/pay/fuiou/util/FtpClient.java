@@ -175,7 +175,7 @@ public class FtpClient {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }finally {
             this.ftpDisConnection();
         }

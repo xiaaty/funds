@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.write.FuiouAccountInfoWriteMapper">
+    <insert id="addFuiouAccountInfoEntity" parameterType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
+        INSERT INTO t_gq_fss_fuiou_account_info (
+            trade_type,
+            business_code,
+            trade_sources,
+            contract_num,
+            batch,
+            batch_foiu_finance,
+            trading_time,
+            transaction_amount,
+            user_account,
+            user_name,
+            in_account,
+            in_user_name,
+            total_money,
+            balance,
+            remark,
+            return_num,
+            state,
+            account_state
+        )
+        VALUES
+	    (
+            #{tradeType},
+            #{businessCode},
+            #{tradeSources},
+            #{contractNum},
+            #{batch},
+            #{batchFoiuFinance},
+            #{tradingTime},
+            #{transactionAmount},
+            #{userAccount},
+            #{userName},
+            #{inAccount},
+            #{inUserName},
+            #{totalMoney},
+            #{balance},
+            #{remark},
+            #{returnNum},
+            #{state},
+            #{accountState}
+		)
+
+    </insert>
+</mapper>

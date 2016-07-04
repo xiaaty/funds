@@ -6,7 +6,7 @@
     <title>主页--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" type="text/css" media="screen" href="${contextPath}/css/jquery.alerts.css">
+    <%@include file="../../../view/include/common_css_js.jsp"%>
     <style>
         .table-nobg-btn {
             font: 15/29px;
@@ -21,7 +21,7 @@
         .button-icon i{
             line-height:32px;
         }
-        #footer{position: absolute;bottom: 10px;z-index: 100px;}
+        #footer{position: absolute;bottom: 10px;}
         .footer-bottom{font-size:13px}
         .footer-bottom ul>li{padding:0}
         .footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
@@ -126,9 +126,6 @@
 												            </label>
 												             </section>
                                                 </td>
-                                                    
-                                                    
-                                                         
                                                     </tr>
                                                     <tr>
                                                          <td class="tr">创建日期：</td>
@@ -151,11 +148,9 @@
                                             </table>
                                         </div>
                                         <footer>
-                                            <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
                                             <button class="btn btn-primary" type="button" onclick="verify();">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
-                                    <!-- end widget content -->
                                 </form>
                             </div>
 
@@ -163,8 +158,10 @@
                         </div>
 
                         </div>
-    <div id="content">
-        <section id="widget-grid" class="">
+                </section>
+        </div>
+    <div id="contents">
+        <section id="widget-grids" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
