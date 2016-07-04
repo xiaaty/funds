@@ -279,7 +279,7 @@ public class FssTradeRecordService {
 		}
 		fssTradeRecordWriteMapper.updateByPrimaryKey(entity);
 		fssTradeApplyService.checkExecuteCount(entity.getApplyNo());
-	};
+	}
 	/**
 	 * author:jhz
 	 * time:2016年6月20日
@@ -287,7 +287,7 @@ public class FssTradeRecordService {
 	 */
 	public  FssTradeRecordEntity selectTradeApplyById(Long id){
 		return  fssTradeRecordReadMapper.selectByPrimaryKey(id);
-	};
+	}
 
 
 }

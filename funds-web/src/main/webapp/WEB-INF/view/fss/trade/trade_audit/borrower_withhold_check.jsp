@@ -98,6 +98,14 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td align="left">账户余额：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" maxlength="50" readonly="readonly" name="amount" value="${amount}" style="width:256px;" />
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td align="left">审核金额：</td>
                                                     <td>
                                                         <label class="input">
