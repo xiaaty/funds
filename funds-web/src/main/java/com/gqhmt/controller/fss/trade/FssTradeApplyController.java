@@ -145,6 +145,8 @@ public class FssTradeApplyController {
     		throw new FssException("未查到交易申请记录！");
     	}
     	CustomerInfoEntity  customerInfo=customerInfoService.getCustomerById(tradeapplyentity.getCustId());
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(tradeapplyentity.getCustId(),tradeapplyentity.getCustType());
+		model.addAttribute("amount",fundAccountEntity.getAmount());
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		model.addAttribute("tradeapply",tradeapplyentity);
 		if(tradeapplyentity.getBespokedate()!=null){
@@ -184,12 +186,11 @@ public class FssTradeApplyController {
 //	审核通过,先进行处理，处理完成后走回盘	
 	@RequestMapping(value = "/trade/tradeApply/{applyType}/{busiType}/{applyNo}/moneySplit")
 	@ResponseBody
-	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String auditAmount) throws FssException {
+	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String auditAmount,BigDecimal amount) throws FssException {
 //		String server_token  = (String) request.getSession().getAttribute("token");
 //		request.getSession().removeAttribute("token");
 		Map<String, String> map = new HashMap<String, String>();
 //		if(token.equals(server_token)){
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		String applyStatus=request.getParameter("applyStatus");
 		String bespokedate=request.getParameter("bespokedate");
 		FssTradeApplyEntity tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
@@ -199,6 +200,12 @@ public class FssTradeApplyController {
 		}else{
 			audit_amount=tradeapply.getTradeAmount();
 		}
+		if (applyType==1104 && amount.compareTo(audit_amount)<0){
+			map.put("code", "0002");
+			map.put("message", "账户余额不足");
+			return map;
+		}
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
@@ -216,6 +223,8 @@ public class FssTradeApplyController {
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setAuditAmount(audit_amount);
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
+			map.put("code", "0000");
+			map.put("message", "success");
 		}else{
 			tradeapply.setAuditAmount(audit_amount);
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10109999");
@@ -225,10 +234,9 @@ public class FssTradeApplyController {
 			}
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			map.put("code", "0001");
+			map.put("message", "success");
 		}
-
-		map.put("code", "0000");
-        map.put("message", "success");
 		return map;
 	}
 

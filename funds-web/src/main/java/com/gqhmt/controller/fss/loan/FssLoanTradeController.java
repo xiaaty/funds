@@ -451,7 +451,7 @@ public class FssLoanTradeController {
 		//冻结资金
 		fssTradeApplyService.insertLoanTradeApply(loanEntity,type);
 		loanEntity.setModifyTime(new Date());
-		loanEntity.setStatus("10030001");
+		loanEntity.setWithDrawStatus("1");
 		fssLoanService.update(loanEntity);
 		return "redirect:/trade/tradeApply/1104/"+type;
 	}

@@ -98,6 +98,14 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
+                                                            <td align="left">账户余额：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" readonly="readonly" name="amount" value="${amount}" style="width:256px;" />
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
                                                             <td align="left">审核金额：</td>
                                                             <td>
                                                                 <label class="input">
@@ -155,20 +163,28 @@
     	                dataType: "json",
     	                success: function (data) {
     	                    if (data.code == '0000') {
+                                $.unblockUI();
     	                       jAlert("审核完成!", '信息提示');
     	                        //自动跳转
     	                    	/*parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyNo}/records";*/
                                 parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}";
     	                    } else if(data.code == '0001') {
-    	                    	jAlert("请勿重复审核!", '消息提示');
+                                $.unblockUI();
+    	                    	jAlert("审核失败!", '消息提示');
     	                        return;
-    	                    }else {
+    	                    }else if(data.code == '0002') {
+                                $.unblockUI();
+                                jAlert(data.message, '消息提示');
+                                return;
+                            }else {
+                                $.unblockUI();
     	                    	jAlert("审核失败!", '消息提示');
     	                        return;
     	                    }
     	                }
     	            });
     	        }
+                  $.unblockUI();
     	    });
         	 
         	//校验函数
