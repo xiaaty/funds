@@ -18,7 +18,7 @@ public class GlobalConstants {
 	public static final String SESSION_EMP = "emp_session";
 	public static final String SESSION_MENU = "session_menu";
 	public static final String EXCLUDE_URL_INIT="exclude";
-	public static final String EXCLUDE_DIRECTORY_REGEX="^/css/|^/images/|^/js/|^/upload/|^/img/|^/api/|^/fonts/|^/loginout.jsp";
+	public static final String EXCLUDE_DIRECTORY_REGEX="^/css/|^/images/|^/js/|^/upload/|^/img/|^/api/|^/interaction/|^/fonts/|^/loginout.jsp";
 	public static final String ROLE_SUPPER_ID=",1,";
     public static final String ROLE_BUSINESS_SUPPER_ID=",2,";
 	public static final String EXCLUDE_ONLY_LOGIN="^/json/";
