@@ -168,8 +168,31 @@ public class CostImpl  implements ICost{
         map.put("11070004_10040002",3l);
         map.put("11070004_10040003",3l);
         map.put("11070004_10040099",3l);
+//红包返现劵返现
+        map.put("11130001_10040001",4l);  //web返现红包入账
+        map.put("11130001_10040002",4l);
+        map.put("11130001_10040003",4l);
+        map.put("11130001_10040099",4l);
 
+        map.put("11130002_10040001",4l);  //wap返现红包入账
+        map.put("11130002_10040002",4l);
+        map.put("11130002_10040003",4l);
+        map.put("11130002_10040099",4l);
 
+        map.put("11130003_10040001",4l);  //安卓返现红包入账
+        map.put("11130003_10040002",4l);
+        map.put("11130003_10040003",4l);
+        map.put("11130003_10040099",4l);
+
+        map.put("11130004_10040001",4l);  //ios返现红包入账
+        map.put("11130004_10040002",4l);
+        map.put("11130004_10040003",4l);
+        map.put("11130004_10040099",4l);
+
+        map.put("11130005_10040001",4l);  //微信返现红包入账
+        map.put("11130005_10040002",4l);
+        map.put("11130005_10040003",4l);
+        map.put("11130005_10040099",4l);
     }
 
     @Override
@@ -246,12 +269,17 @@ public class CostImpl  implements ICost{
 
     /**
      * 费用收取
-     * @param dto
+     * @param platform
+     * @param trade_type
+     * @param cust_no
+     * @param busi_type
+     * @param amt
+     * @param accounts_type
      * @return
      * @throws FssException
      */
-    public boolean charge(CostDto dto) throws FssException{
-//        this.cost(dto.getPlatform(), dto.getTrade_type(), Long.valueOf(dto.getCust_no()), Integer.valueOf(dto.getBusi_type()),dto.getAmt(),Long.valueOf(dto.getAccounts_type()),Integer.valueOf(GlobalConstants.ORDER_COST));
+    public boolean charge(String platform, String trade_type,Integer cust_no,String busi_type,BigDecimal amt,String accounts_type) throws FssException{
+//        this.cost(platform, trade_type, Long.valueOf(cust_no), Integer.valueOf(busi_type),amt,Long.valueOf(),Integer.valueOf(GlobalConstants.ORDER_COST));
         return true;
     }
 
@@ -261,14 +289,11 @@ public class CostImpl  implements ICost{
      * @param cust_id
      * @param cust_type
      * @param amt
-     * @param funds_type
-     * @param busi_type
-     * @param busi_id
-     * @param mark
+     * @param busi_no
      * @return
      * @throws FssException
      */
-    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Integer funds_type,Integer  busi_type,Long  busi_id,String mark) throws FssException{
+    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Long busi_no) throws FssException{
         FundAccountEntity fromEntity=null;
         FundAccountEntity toEntity=null;
         Long pubCustId = this.map.get(trade_type+"_"+"10040001");
@@ -279,16 +304,16 @@ public class CostImpl  implements ICost{
         FundAccountEntity  publicAccount = fundAccountService.getFundAccount(pubCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//对公账户
         FundAccountEntity  personalAccount = fundsTradeImpl.getFundAccount(cust_id,cust_type);//个人账户
         //判断是从对公账户转入到个人账户还是从个人账户转入对公账户
-        if("TransferredCome".equals(mark)){//从个人账户转入对公账户
+        if("11070002".equals(trade_type) || "11070004".equals(trade_type)){//借款人逾期代偿资金退回、委托出借代偿退回
             fromEntity=personalAccount;
             toEntity=publicAccount;
-        }else if("TransferredOut".equals(mark)){//从对公账户转入对个人账户
+        }{//借款人逾期代偿、委托出借人代偿、web返现红包入账、wap返现红包入账、安卓返现红包入账、ios返现红包入账、微信返现红包入账
             fromEntity=publicAccount;
             toEntity=personalAccount;
         }
         this.hasEnoughBanlance(fromEntity,amt);
         //第三方交易
-        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_id,busi_type);
+        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER);
         //资金处理
         fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
         //添加交易记录

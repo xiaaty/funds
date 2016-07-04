@@ -45,6 +45,24 @@
 	where  f.acc_no=#{accNo}
 	order by f.create_time desc
 </select>
+
+ <select id="getFuiouAccountByCustNo" parameterType="java.lang.String"  resultType="com.gqhmt.fss.architect.account.entity.FssFuiouAccountEntity">
+	SELECT
+		f.id id,
+		f.cus_no cusNo,
+		f.user_no userNo,
+		f.acc_no accNo,
+		f.acc_user_name accUserName,
+		f.bank_card_no bankCardNo,
+		f.create_time createTime,
+		f.modify_time modifyTime,
+		f.mchn_parent mchnParent,
+		f.mchn_child mchnChild,
+		f.has_open_acc_fuiou hasOpenAccFuiou
+	FROM t_gq_fss_fuiou_account f
+	where  f.cus_no=#{custNo}
+	order by f.create_time desc
+</select>
 </mapper>
 
 

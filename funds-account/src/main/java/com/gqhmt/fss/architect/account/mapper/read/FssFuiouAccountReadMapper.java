@@ -27,4 +27,5 @@ public interface FssFuiouAccountReadMapper extends ReadMapper<FssFuiouAccountEnt
 	public FssFuiouAccountBean getAccountByCentNo(@Param(value="certNo") String certNo);
 	
 	public FssFuiouAccountEntity getByAccNo(@Param(value="accNo") String accNo);
+	public FssFuiouAccountEntity getFuiouAccountByCustNo(@Param(value="custNo") String custNo);
 }
