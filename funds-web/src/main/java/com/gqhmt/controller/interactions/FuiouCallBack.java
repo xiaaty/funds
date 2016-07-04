@@ -4,14 +4,15 @@ package com.gqhmt.controller.interactions;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
+import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,10 @@ public class FuiouCallBack {
 	private FssOfflineRechargeService fssOfflineRechargeService;
 	@Resource
 	private FssBackplateService fssBackplateService;
+
+	@Resource
+	private TradeRecordService tradeRecordService;
+
 //	@Autowired
 //	private ChangeCardService changeCardService;
 
@@ -71,6 +76,9 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, login_id, CommandEnum.FundsCommand.FUNDS_CHARGE, "", remark);
+
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
+
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -123,6 +131,7 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, login_id, CommandEnum.FundsCommand.FUNDS_WITHDRAW, "", remark);
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -177,6 +186,8 @@ public class FuiouCallBack {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID_NOT_ORDER, ThirdPartyType.FUIOU, mchnt_txn_ssn,
 //						"success", amt, mobile_no, CommandEnum.FundsCommand.FUNDS_CHARGE, remark);
+
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no);
 				plain.append("<resp_code>0000</resp_code>");
 			} catch (Exception e) {
 				plain.append("<resp_code>9999</resp_code>");
@@ -229,6 +240,8 @@ public class FuiouCallBack {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID_NOT_ORDER, ThirdPartyType.FUIOU, mchnt_txn_ssn,
 //						"success", amt, mobile_no, CommandEnum.FundsCommand.FUNDS_WITHDRAW, mchnt_txn_dt, remark);
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no);
+
 				plain.append("<resp_code>0000</resp_code>");
 			} catch (Exception e) {
 				plain.append("<resp_code>9999</resp_code>");
@@ -281,7 +294,8 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, CommandEnum.FundsCommand.FUNDS_WITHHOLDING);
-//					plain.append("<resp_code>0000</resp_code>");
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null);
+					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
 				}
@@ -334,7 +348,9 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, "", CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW);
-//					plain.append("<resp_code>0000</resp_code>");
+
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null);
+					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
 				}
@@ -421,6 +437,7 @@ public class FuiouCallBack {
 				try {
 					// 更新用户信息
 //					customerInfoService.updateCustomerInfoCallBack(retMap);
+
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -461,6 +478,7 @@ public class FuiouCallBack {
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_RETRUN_WITHDRAW, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
@@ -497,6 +515,7 @@ public class FuiouCallBack {
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";

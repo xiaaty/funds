@@ -56,6 +56,9 @@ public class FssTradeApplyEntity implements Serializable {
     @Column(name = "trade_amount",updatable = false)
     private BigDecimal tradeAmount ;                               // decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  交易金额
 
+    @Column(name = "audit_amount")
+    private BigDecimal auditAmount ;                               // decimal(17,2)  (NULL)           NO              (NULL)           select,insert,update,references  审核金额
+
     @Column(name = "real_trade_amount")
     private BigDecimal realTradeAmount;                           //decimal(17,2)  (NULL)           YES             (NULL)           select,insert,update,references  实际交易金额
 
@@ -319,5 +322,13 @@ public class FssTradeApplyEntity implements Serializable {
 
 	public void setSettleType(Integer settleType) {
 		this.settleType = settleType;
+	}
+
+	public BigDecimal getAuditAmount() {
+		return auditAmount;
+	}
+
+	public void setAuditAmount(BigDecimal auditAmount) {
+		this.auditAmount = auditAmount;
 	}
 }

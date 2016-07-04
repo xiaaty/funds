@@ -1,6 +1,7 @@
 package com.gqhmt.quartz.job.trade;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
@@ -40,7 +41,7 @@ public class BatchWithholdingJob extends SupperJob{
     private ApplicationContext context;
 
     @Resource
-    private FssTradeRecordService recordService;
+    private FssTradeRecordService fssTradeRecordService;
     @Resource
     private FssTradeApplyService fssTradeApplyService;
 
@@ -54,25 +55,25 @@ public class BatchWithholdingJob extends SupperJob{
             return;
         }
         if(isRunning) return;
-        startLog("还款代扣");
+        startLog("代扣代付");
         isRunning = true;
         try {
             List<FssTradeApplyEntity> applyEntities= fssTradeApplyService.getTradeAppliesByApplyState("10100002");
             for (FssTradeApplyEntity apply:applyEntities) {
-               int count= recordService.getCountByApplyNo(apply.getApplyNo());
+               int count= fssTradeRecordService.getCountByApplyNo(apply.getApplyNo());
                 if (count!=0&&apply.getCount()<=apply.getSuccessCount()) continue;
-                    List<FssTradeRecordEntity> recordEntities = recordService.moneySplit(apply);
-                    for (FssTradeRecordEntity entity : recordEntities) {
-                        long startTime = Calendar.getInstance().getTimeInMillis();
-                        fundsBatchTrade.batchTrade(entity);
-                        long endTime = Calendar.getInstance().getTimeInMillis();
-                        LogUtil.info(getClass(), "代扣执行完成,共耗时:" + (endTime - startTime));
-                    }
+                try {
+                    List<FssTradeRecordEntity> recordEntities = fssTradeRecordService.moneySplit(apply);
+                    this.batch(recordEntities);
+                }catch (Exception e){
+                    LogUtil.error(getClass(),e);
+                    continue;
+                }
             }
+
 
 		} catch (Exception e) {
 			  LogUtil.error(getClass(),e);
-			  e.printStackTrace();
 		}finally{
 			isRunning = false;
 		}
@@ -83,5 +84,23 @@ public class BatchWithholdingJob extends SupperJob{
     @Override
     public boolean isRunning() {
         return isRunning;
+    }
+
+
+    private void batch(List<FssTradeRecordEntity> recordEntities){
+        for (FssTradeRecordEntity entity : recordEntities) {
+            long startTime = Calendar.getInstance().getTimeInMillis();
+            try {
+                fundsBatchTrade.batchTrade(entity);
+            } catch (FssException e) {
+                String msg = e.getMessage();
+                String breakMsg = Application.getInstance().getDictOrderValue("breakMsg");
+                if(breakMsg != null && breakMsg.contains(msg)){
+                    fssTradeRecordService.updateTradeRecordExecuteState(entity,3,e.getMessage());//todo 增加失败原因ss
+                }
+            }
+            long endTime = Calendar.getInstance().getTimeInMillis();
+            LogUtil.info(getClass(), "代扣执行完成,共耗时:" + (endTime - startTime));
+        }
     }
 }

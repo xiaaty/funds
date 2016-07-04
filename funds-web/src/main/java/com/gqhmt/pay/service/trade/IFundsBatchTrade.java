@@ -1,5 +1,6 @@
 package com.gqhmt.pay.service.trade;
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 
 /**
@@ -20,5 +21,5 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
  */
 public interface IFundsBatchTrade {
 
-    public void batchTrade(FssTradeRecordEntity entity);
+    public void batchTrade(FssTradeRecordEntity entity) throws FssException;
 }
