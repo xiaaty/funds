@@ -104,7 +104,10 @@ public class FssLoanEntity implements Serializable {
    
    @Column(name="busi_no")
    private String busiNo;             //业务类型
-   
+
+   @Column(name="withDraw_status")
+   private String withDrawStatus;             //业务类型
+
 	public Long getId() {
 		return id;
 	}
@@ -300,5 +303,12 @@ public class FssLoanEntity implements Serializable {
 	public void setContractInterest(BigDecimal contractInterest) {
 		this.contractInterest = contractInterest;
 	}
-    
+
+	public String getWithDrawStatus() {
+		return withDrawStatus;
 	}
+
+	public void setWithDrawStatus(String withDrawStatus) {
+		this.withDrawStatus = withDrawStatus;
+	}
+}

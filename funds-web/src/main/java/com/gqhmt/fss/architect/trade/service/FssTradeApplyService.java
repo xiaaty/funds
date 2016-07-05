@@ -49,19 +49,19 @@ import java.util.*;
  */
 @Service
 public class FssTradeApplyService {
-	
+
 	@Resource
-    private FssTradeApplyWriteMapper fssTradeApplyWriteMapper;
-	
+	private FssTradeApplyWriteMapper fssTradeApplyWriteMapper;
+
 	@Resource
 	private FssTradeApplyReadMapper fssTradeApplyReadMapper;
-	
+
 	@Resource
 	private FundAccountService fundAccountService;
-	
+
 	@Resource
 	private FssRepaymentService fssRepaymentService;
-	
+
 	@Resource
 	private FssAccountService fssAccountService;
 	@Resource
@@ -71,14 +71,14 @@ public class FssTradeApplyService {
 	@Resource
 	private FssLoanService fssLoanService;
 	@Resource
-    private FundOrderService fundOrderService;
+	private FundOrderService fundOrderService;
 	@Resource
 	private FundsTradeImpl fundsTradeImpl;
 	@Resource
-    private TradeRecordService tradeRecordService;
+	private TradeRecordService tradeRecordService;
 
-	
-	
+
+
 	/**
 	 * 借款人提现完成通知借款系统
 	 * @param seqNo
@@ -99,17 +99,17 @@ public class FssTradeApplyService {
 	 * @param contractId
 	 * @param amt
 	 * @param bespoke_date
-     * @throws FssException
-     */
+	 * @throws FssException
+	 */
 	public void createLoanWithdrawApply(String tradeType,String seqNo,String mchn,String accNo,String contractNo,String contractId,BigDecimal amt,String bespoke_date) throws FssException {
 		FssAccountEntity fssAccountEntity= this.fundAccountService.getFssFundAccountInfo(accNo);
 		//借款人提现,custTYpe 默认值 为1
 		this.whithdrawApply(fssAccountEntity.getCustNo(),fssAccountEntity.getAccNo(),tradeType,amt,mchn,seqNo,fssAccountEntity.getCustId(),1,contractNo,contractId,null,this.compare_date(bespoke_date));
 	}
 
-	
+
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月11日
 	 * function：借款人提现
@@ -117,7 +117,7 @@ public class FssTradeApplyService {
 	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map) {
 		return fssTradeApplyReadMapper.getBorrowWithDraw(map);
 	}
-	
+
 	/**
 	 * 完成抵押标借款人提现后，通知借款系统
 	 */
@@ -154,7 +154,7 @@ public class FssTradeApplyService {
 		return withDrawApplyResponse;
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：判断申请编号是否唯一
@@ -166,7 +166,7 @@ public class FssTradeApplyService {
 		return selectCount==0;
 	}
 
-	
+
 //	/**
 //	 *
 //	 * author:jhz
@@ -315,7 +315,7 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：根据交易状态的交易申请列表
@@ -343,88 +343,89 @@ public class FssTradeApplyService {
 	 * 修改执行条数
 	 * @param fssTradeRecordEntity
 	 * 根据申请编号修改执行条数,实际交易金额，修改日期
-	 * @throws FssException 
-     */
+	 * @throws FssException
+	 */
 	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity) throws FssException{
-			fssTradeRecordEntity.setModifyTime(new Date());
-			fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(fssTradeRecordEntity);
+		fssTradeRecordEntity.setModifyTime(new Date());
+		fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(fssTradeRecordEntity);
 		this.checkExecuteCount(fssTradeRecordEntity.getApplyNo());
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
-	 * @throws FssException 
-	 * 
+	 * @throws FssException
+	 *
 	 */
 	public void checkExecuteCount(String applyNo) {
 		FssTradeApplyEntity applyEntity = fssTradeApplyReadMapper.selectByApplyNo(applyNo);
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
-		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
+		if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
 			try {
-			 int successCount = fssTradeRecordService.getSuccessCount(applyNo);
-			 BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
-				if (realTradeAmt==null){
+				BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
+				//划扣成功
+				if(realTradeAmt==null||"".equals(realTradeAmt)){
 					realTradeAmt=BigDecimal.ZERO;
 				}
-				 //划扣成功
-			 String tradeStatus=null;
-			 if(successCount==applyEntity.getCount()){
-				 tradeStatus="10080002";
-			 //划扣失败
-			 }else if(successCount==0){
-				 tradeStatus="10080010";
-			 //部分成功
-			 }else{
-				 tradeStatus="10080003";
-			 }
-			if(!"10080002".equals(tradeStatus)&&"1104".equals(applyEntity.getApplyType())) {
-				//代付失败进行资金解冻
+				String tradeStatus=null;
+				if(applyEntity.getTradeAmount().compareTo(realTradeAmt)==0){
+					tradeStatus="10080002";
+					//划扣失败
+				}else if(realTradeAmt.compareTo(BigDecimal.ZERO)==0){
+					tradeStatus="10080010";
+					//部分成功
+				}else{
+					tradeStatus="10080003";
+				}
+				if(!"10080002".equals(tradeStatus)&&"1104".equals(applyEntity.getApplyType())) {
+					//代付失败进行资金解冻
 					fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(applyEntity.getRealTradeAmount()), applyEntity.getCustType());
-			}
+				}
 				FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
 				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
-					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-					 //98060001成功 //10080002交易成功
-					 fssLoanService.update(fssLoanEntityById,tradeStatus);
-				 }else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
-					 //还款代扣
-					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-					 fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
-				 }else {
-					 if (fssBackplateEntity != null) {
-						 fssBackplateService.updatebackplate(fssBackplateEntity);
-					 } else{
-						 //创建回盘信息
-						 fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
-				 	 }
-				 }
-			 }else{
+					if("11090001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
+						FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+						//98060001成功 //10080002交易成功
+						fssLoanService.update(fssLoanEntityById,tradeStatus);
+					}else if("11092001".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
+						//借款系统和冠e通抵押权人提现不处理
+					}else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
+						//还款代扣
+						FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
+						fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
+					}else {
+						if (fssBackplateEntity != null) {
+							fssBackplateService.updatebackplate(fssBackplateEntity);
+						} else{
+							//创建回盘信息
+							fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
+						}
+					}
+				}else{
 					if (fssBackplateEntity != null) {
 						fssBackplateService.updatebackplate(fssBackplateEntity);
 					} else {
 						//创建回盘信息
 						fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
 					}
-			  }
-				 applyEntity.setModifyTime(new Date());
-				 applyEntity.setRealTradeAmount(realTradeAmt);
-				 applyEntity.setApplyState("10100005");//申请状态(已交易)
-				 applyEntity.setTradeState(tradeStatus);
-				 fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
-				} catch (FssException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+				applyEntity.setModifyTime(new Date());
+				applyEntity.setRealTradeAmount(realTradeAmt);
+				applyEntity.setApplyState("10100005");//申请状态(已交易)
+				applyEntity.setTradeState(tradeStatus);
+				fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
+			} catch (FssException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//通过交易类型,回调通知相应交易申请方.  //借款划扣 ,通知 相应划扣记录表..
-		 }
+		}
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：修改交易申请
@@ -458,7 +459,7 @@ public class FssTradeApplyService {
 	 * @param map
 	 * @return
 	 */
-		public List<FssTradeApplyBean> queryFssTradeApplyList(Map<String,String> map){
+	public List<FssTradeApplyBean> queryFssTradeApplyList(Map<String,String> map){
 		Map<String, String> map2=new HashMap<String, String>();
 		if(map!=null){
 			String startTime = map.get("startTime");
@@ -481,9 +482,9 @@ public class FssTradeApplyService {
 		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map2);
 		return tradeapplylist;
 	}
-	
 
-	
+
+
 //	/**
 //	 * 冠E通后台代扣申请和提现申请
 //	 */
@@ -534,7 +535,7 @@ public class FssTradeApplyService {
 		}
 	}
 
-	
+
 
 	/**
 	 * 创建FssTradeApplyEntity
@@ -548,9 +549,9 @@ public class FssTradeApplyService {
 	 * @param custId				业务系统客户id
 	 * @param custType				业务系统账户类型  如果是96，新版交易流水则判断应付款账户余额
 	 * @param settleType			代付时效性   目前付款资费 t0t1统一，但是有限额
-     * @return
-     * @throws FssException
-     */
+	 * @return
+	 * @throws FssException
+	 */
 	private FssTradeApplyEntity createFssTradeApplyEntity(String custNo,String accNo,String tradeType, BigDecimal amt,  String mchn, String seqNo,  Long custId, Integer custType, String contractNo,String cId,Integer settleType, Integer applyType,Long fromId,boolean autoPass) throws FssException{
 		FssTradeApplyEntity fssTradeApplyEntity=new FssTradeApplyEntity();
 		fssTradeApplyEntity.setApplyNo(com.gqhmt.core.util.CommonUtil.getTradeApplyNo(tradeType));
@@ -566,6 +567,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setTradeState("10080001");
 		String applyState = "10100001";
 		if(autoPass){
+			fssTradeApplyEntity.setAuditAmount(amt);
 			applyState = "10100002";
 		}
 		fssTradeApplyEntity.setApplyState(applyState);
@@ -587,7 +589,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setCustId(custId);
 		fssTradeApplyEntity.setCustType(custType);
 		if(null!=fromId){
-		fssTradeApplyEntity.setFormId(fromId);
+			fssTradeApplyEntity.setFormId(fromId);
 		}
 		//提现添加预约到账日期
 		if(applyType.intValue()==1104){//提现
@@ -610,32 +612,32 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectFssTradeApplyEntityByApplyNo(applyNo);
 		return tradeapply;
 	}
-	
+
 	public FssTradeApplyBean getFssTradeApply(String applyNo){
 		FssTradeApplyBean fssTradeApplyBean=fssTradeApplyReadMapper.queryFssTradeApply(applyNo);
 		return fssTradeApplyBean;
 	}
-	
-	 /**
-     * 判断预约到账日期是否为今天
-     */
 
-	 public int compare_date(String BespokeDate){
-		 return 0;
-	 }
-    public int compare_date(Date BespokeDate) {
-    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-    	Date date=new Date();
-    	String nowdate=sdf.format(date);
-    	String bespokeDate=sdf.format(BespokeDate);
-    	if(bespokeDate.equals(nowdate)){
-    		return 0;
-    	}else{
-    		return 1;
-    	}
-    }
-    
-    /**
+	/**
+	 * 判断预约到账日期是否为今天
+	 */
+
+	public int compare_date(String BespokeDate){
+		return 0;
+	}
+	public int compare_date(Date BespokeDate) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		Date date=new Date();
+		String nowdate=sdf.format(date);
+		String bespokeDate=sdf.format(BespokeDate);
+		if(bespokeDate.equals(nowdate)){
+			return 0;
+		}else{
+			return 1;
+		}
+	}
+
+	/**
 	 * author:柯禹来
 	 * time:2016年4月25日
 	 * function：得到冠e通回调对象

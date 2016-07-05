@@ -109,6 +109,8 @@ public class FssAccountFileService {
 		fileEntity.setThirdPartyPaymentId(thirdPartyPaymentId);
 		fileEntity.setActionType(actionType);
 		fileEntity.setRemark(remark);
+		fileEntity.setCreateTime(new Date());
+		fileEntity.setModifyTime(new Date());
 		fileEntity.setStatus("10110001");//10110001未报备，10110002已报备
 		this.insertAccountFile(fileEntity);
 	}

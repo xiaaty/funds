@@ -44,8 +44,17 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
         CommandResponse response=null;
         if(!isConnection){
             response = new CommandResponse();
-            response.setCode("0000");
-            response.setMsg("成功");
+            long i = (long) (Math.random()*20);
+            System.out.println(i);
+            if(i  == 11){
+                response.setCode("100017");
+                response.setThirdReturnCode("100017");
+                response.setMsg("余额不足");
+            }else{
+                response.setCode("0000");
+                response.setMsg("成功");
+            }
+
             return response;
         }
 

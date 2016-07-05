@@ -3,16 +3,19 @@ package com.gqhmt.controller.interactions;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
-import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
-import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,15 +37,15 @@ import java.util.Map;
 @Controller
 @RequestMapping("/interaction")
 public class FuiouCallBack {
-	@Autowired
-	private CustomerInfoService customerInfoService;
-	@Resource
-	private FssOfflineRechargeService fssOfflineRechargeService;
-	@Resource
-	private FssBackplateService fssBackplateService;
-//	@Autowired
-//	private ChangeCardService changeCardService;
 
+	@Resource
+	private TradeRecordService tradeRecordService;
+	@Resource
+	private PaySuperByFuiou paySuperByFuiou;
+	@Resource
+	private FundOrderService fundOrderService;
+	@Resource
+	private FundAccountService fundAccountService;
 	/**
 	 * 网页充值回调接口
 	 *
@@ -456,10 +459,11 @@ public class FuiouCallBack {
 		LogUtil.info(this.getClass(), "fuiou callback returnWithdraw:" + signValue);
 		//返回富友接收结果
 		String result = "SUCCESS";
-
-
+		FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(mchnt_txn_ssn);
+		FundAccountEntity entity = fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
 		if (flag) {
 			try {
+				tradeRecordService.recharge(entity,new BigDecimal(amt),fundOrderEntity,1104);
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_RETRUN_WITHDRAW, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);

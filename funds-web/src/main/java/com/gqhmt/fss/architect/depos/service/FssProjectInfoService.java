@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.depos.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +99,9 @@ public class FssProjectInfoService {
 		projectInfo.setLicenseNo(licenseNo);
 		projectInfo.setCustName(custName);
 		projectInfo.setCertType(certType);
+		projectInfo.setCertNo(certNo);
+		projectInfo.setCreateTime(new Date());
+		projectInfo.setModifyTime(new Date());
 		projectInfo.setCertNo(certNo);
 		this.insertProjectInfo(projectInfo);
 	}

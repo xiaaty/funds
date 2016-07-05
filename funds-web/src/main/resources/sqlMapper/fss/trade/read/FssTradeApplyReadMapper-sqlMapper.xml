@@ -29,7 +29,8 @@
 			t.count count,
 			t.success_count successCount,
 			t.cust_type custType,
-			t.channel_no channelNo
+			t.channel_no channelNo,
+			t.settle_type settleType
 			FROM t_gq_fss_trade_apply t
 	</sql>
 	<!-- 根据申请类型和业务类型查询申请数据 -->
@@ -48,6 +49,8 @@
 		    t.acc_no accNo,
 			t.trade_amount tradeAmount,
 			t.audit_amount auditAmount,
+			t.real_trade_amount realTradeAmount,
+			t.trade_charge_amount tradeChargeAmount,
 			t.create_time createTime,
 			t.modify_time modifyTime,
 			t.mchn_child mchnChild,

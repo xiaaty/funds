@@ -144,7 +144,7 @@ public class FssTradeApplyController {
     	if(tradeapplyentity==null){
     		throw new FssException("未查到交易申请记录！");
     	}
-    	CustomerInfoEntity  customerInfo=customerInfoService.getCustomerById(tradeapplyentity.getCustId());
+		CustomerInfoEntity  customerInfo=customerInfoService.getCustomerById(tradeapplyentity.getCustId());
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		model.addAttribute("tradeapply",tradeapplyentity);
 		if(tradeapplyentity.getBespokedate()!=null){
@@ -216,19 +216,20 @@ public class FssTradeApplyController {
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setAuditAmount(audit_amount);
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
+			map.put("code", "0000");
+			map.put("message", "success");
 		}else{
 			tradeapply.setAuditAmount(audit_amount);
-			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10109999");
+			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10080011");
 			//审核不通过进行资金解冻
 			if(applyType==1104){
 				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
 			}
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			map.put("code", "0001");
+			map.put("message", "defeat");
 		}
-
-		map.put("code", "0000");
-        map.put("message", "success");
 		return map;
 	}
 
@@ -262,6 +263,10 @@ public class FssTradeApplyController {
 		if (customerInfoEntity!=null){
 			model.addAttribute("customerInfoEntity",customerInfoEntity);
 		}
+		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+		if (null==custType) throw new FssException("91001006");
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(customerInfoEntity.getId(),custType);
+		model.addAttribute("amount",fundAccountEntity.getAmount());
 		model.addAttribute("type",type);
 		model.addAttribute("flag",flag);
 		model.addAttribute("accNo",accNo);
