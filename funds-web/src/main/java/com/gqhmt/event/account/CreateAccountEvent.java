@@ -144,7 +144,7 @@ public class CreateAccountEvent {
                     paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
                     primaryAccount.setHasThirdAccount(2);
                     fundAccountService.update(primaryAccount);
-                    fssAccountService.createFuiouAccount(mchn,fssCustomerEntity);
+                    fssAccountService.createFuiouAccount(mchn,fssCustomerEntity,bankNo);
                 }
                 //跟新所有与该cust_id相同的账户名称
                 fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
