@@ -503,9 +503,13 @@ public class FssLoanTradeController {
 	public Object withDrawApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal amt,BigDecimal amount) {
 		Map<String, String> map = new HashMap<String, String>();
 		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
-		if (amount.compareTo(amt)<0){
-			map.put("code", "0002");
-			map.put("message", "账户余额不足!");
+		if(amt!=null){
+			if (amount.compareTo(amt)<0){
+				map.put("code", "0002");
+				map.put("message", "账户余额不足!");
+			}
+		}else{
+			amt=fssLoanEntity.getContractAmt();
 		}
 		if(!"1".equals(fssLoanEntity.getWithDrawStatus())) {
 			// 修改体现状态
