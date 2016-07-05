@@ -458,7 +458,7 @@ public class FssLoanTradeController {
 //		loanEntity.setWithDrawStatus("1");
 //		fssLoanService.update(loanEntity);
 //		return "redirect:/trade/tradeApply/1104/"+type;
-	}
+//	}
 	/**
 	 *
 	 * author:jhz time:2016年07月04日 function：点击提现跳转到提现页面
