@@ -7,8 +7,8 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTransRecordReadMapper;
-import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
+import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -18,8 +18,6 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
-import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
-import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.util.ThirdPartyType;
@@ -187,7 +185,7 @@ public class TradeRecordService {
      * @param amt
      * @param mobile
      */
-    private void asynNotOrderCommand(String orderNo,String state,String amt,String mobile) throws  FssException{
+    public void asynNotOrderCommand(String orderNo,String state,String amt,String mobile) throws  FssException{
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
         FundAccountEntity entity = null;
         entity = fundAccountService.getFundAccount(mobile,GlobalConstants.ACCOUNT_TYPE_LEND_ON);

@@ -46,6 +46,14 @@ public class FuiouCallBack {
 	private FundOrderService fundOrderService;
 	@Resource
 	private FundAccountService fundAccountService;
+	private FssBackplateService fssBackplateService;
+
+	@Resource
+	private TradeRecordService tradeRecordService;
+
+//	@Autowired
+//	private ChangeCardService changeCardService;
+
 	/**
 	 * 网页充值回调接口
 	 *
@@ -459,11 +467,10 @@ public class FuiouCallBack {
 		LogUtil.info(this.getClass(), "fuiou callback returnWithdraw:" + signValue);
 		//返回富友接收结果
 		String result = "SUCCESS";
-		FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(mchnt_txn_ssn);
-		FundAccountEntity entity = fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
+
+
 		if (flag) {
 			try {
-				tradeRecordService.recharge(entity,new BigDecimal(amt),fundOrderEntity,1104);
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_RETRUN_WITHDRAW, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);

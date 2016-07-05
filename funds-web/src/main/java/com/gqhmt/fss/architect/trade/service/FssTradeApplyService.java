@@ -49,19 +49,19 @@ import java.util.*;
  */
 @Service
 public class FssTradeApplyService {
-
+	
 	@Resource
-	private FssTradeApplyWriteMapper fssTradeApplyWriteMapper;
-
+    private FssTradeApplyWriteMapper fssTradeApplyWriteMapper;
+	
 	@Resource
 	private FssTradeApplyReadMapper fssTradeApplyReadMapper;
-
+	
 	@Resource
 	private FundAccountService fundAccountService;
-
+	
 	@Resource
 	private FssRepaymentService fssRepaymentService;
-
+	
 	@Resource
 	private FssAccountService fssAccountService;
 	@Resource
@@ -71,14 +71,14 @@ public class FssTradeApplyService {
 	@Resource
 	private FssLoanService fssLoanService;
 	@Resource
-	private FundOrderService fundOrderService;
+    private FundOrderService fundOrderService;
 	@Resource
 	private FundsTradeImpl fundsTradeImpl;
 	@Resource
-	private TradeRecordService tradeRecordService;
+    private TradeRecordService tradeRecordService;
 
-
-
+	
+	
 	/**
 	 * 借款人提现完成通知借款系统
 	 * @param seqNo
@@ -99,17 +99,17 @@ public class FssTradeApplyService {
 	 * @param contractId
 	 * @param amt
 	 * @param bespoke_date
-	 * @throws FssException
-	 */
+     * @throws FssException
+     */
 	public void createLoanWithdrawApply(String tradeType,String seqNo,String mchn,String accNo,String contractNo,String contractId,BigDecimal amt,String bespoke_date) throws FssException {
 		FssAccountEntity fssAccountEntity= this.fundAccountService.getFssFundAccountInfo(accNo);
 		//借款人提现,custTYpe 默认值 为1
 		this.whithdrawApply(fssAccountEntity.getCustNo(),fssAccountEntity.getAccNo(),tradeType,amt,mchn,seqNo,fssAccountEntity.getCustId(),1,contractNo,contractId,null,this.compare_date(bespoke_date));
 	}
 
-
+	
 	/**
-	 *
+	 * 
 	 * author:jhz
 	 * time:2016年3月11日
 	 * function：借款人提现
@@ -117,7 +117,7 @@ public class FssTradeApplyService {
 	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map) {
 		return fssTradeApplyReadMapper.getBorrowWithDraw(map);
 	}
-
+	
 	/**
 	 * 完成抵押标借款人提现后，通知借款系统
 	 */
@@ -154,7 +154,7 @@ public class FssTradeApplyService {
 		return withDrawApplyResponse;
 	}
 	/**
-	 *
+	 * 
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：判断申请编号是否唯一
@@ -166,7 +166,7 @@ public class FssTradeApplyService {
 		return selectCount==0;
 	}
 
-
+	
 //	/**
 //	 *
 //	 * author:jhz
@@ -315,7 +315,7 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 *
+	 * 
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：根据交易状态的交易申请列表
@@ -343,26 +343,26 @@ public class FssTradeApplyService {
 	 * 修改执行条数
 	 * @param fssTradeRecordEntity
 	 * 根据申请编号修改执行条数,实际交易金额，修改日期
-	 * @throws FssException
-	 */
+	 * @throws FssException 
+     */
 	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity) throws FssException{
-		fssTradeRecordEntity.setModifyTime(new Date());
-		fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(fssTradeRecordEntity);
+			fssTradeRecordEntity.setModifyTime(new Date());
+			fssTradeApplyWriteMapper.updateTradeApplyByApplyNo(fssTradeRecordEntity);
 		this.checkExecuteCount(fssTradeRecordEntity.getApplyNo());
 	}
 
 	/**
-	 *
+	 * 
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
-	 * @throws FssException
-	 *
+	 * @throws FssException 
+	 * 
 	 */
 	public void checkExecuteCount(String applyNo) {
 		FssTradeApplyEntity applyEntity = fssTradeApplyReadMapper.selectByApplyNo(applyNo);
 		//判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
-		if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
+		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
 			try {
 				BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
 				//划扣成功
@@ -535,7 +535,7 @@ public class FssTradeApplyService {
 		}
 	}
 
-
+	
 
 	/**
 	 * 创建FssTradeApplyEntity
@@ -567,7 +567,6 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setTradeState("10080001");
 		String applyState = "10100001";
 		if(autoPass){
-			fssTradeApplyEntity.setAuditAmount(amt);
 			applyState = "10100002";
 		}
 		fssTradeApplyEntity.setApplyState(applyState);
@@ -589,7 +588,7 @@ public class FssTradeApplyService {
 		fssTradeApplyEntity.setCustId(custId);
 		fssTradeApplyEntity.setCustType(custType);
 		if(null!=fromId){
-			fssTradeApplyEntity.setFormId(fromId);
+		fssTradeApplyEntity.setFormId(fromId);
 		}
 		//提现添加预约到账日期
 		if(applyType.intValue()==1104){//提现
@@ -612,32 +611,32 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectFssTradeApplyEntityByApplyNo(applyNo);
 		return tradeapply;
 	}
-
+	
 	public FssTradeApplyBean getFssTradeApply(String applyNo){
 		FssTradeApplyBean fssTradeApplyBean=fssTradeApplyReadMapper.queryFssTradeApply(applyNo);
 		return fssTradeApplyBean;
 	}
+	
+	 /**
+     * 判断预约到账日期是否为今天
+     */
 
-	/**
-	 * 判断预约到账日期是否为今天
-	 */
-
-	public int compare_date(String BespokeDate){
-		return 0;
-	}
-	public int compare_date(Date BespokeDate) {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		Date date=new Date();
-		String nowdate=sdf.format(date);
-		String bespokeDate=sdf.format(BespokeDate);
-		if(bespokeDate.equals(nowdate)){
-			return 0;
-		}else{
-			return 1;
-		}
-	}
-
-	/**
+	 public int compare_date(String BespokeDate){
+		 return 0;
+	 }
+    public int compare_date(Date BespokeDate) {
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+    	Date date=new Date();
+    	String nowdate=sdf.format(date);
+    	String bespokeDate=sdf.format(BespokeDate);
+    	if(bespokeDate.equals(nowdate)){
+    		return 0;
+    	}else{
+    		return 1;
+    	}
+    }
+    
+    /**
 	 * author:柯禹来
 	 * time:2016年4月25日
 	 * function：得到冠e通回调对象

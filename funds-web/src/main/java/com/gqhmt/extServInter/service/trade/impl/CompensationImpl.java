@@ -32,23 +32,27 @@ public class CompensationImpl implements ICompensation {
 	@Resource
 	private ICost costImpl;
 
-
 	/**
-	 * 1107000:借款人逾期代偿
+	 * 11070001:借款人逾期代偿
 	 * 11070002:借款人逾期代偿资金退回
 	 * 11070003:委托出借人代偿
 	 * 11070004:委托出借代偿退回
+	 * ------------红包返现劵返现---------------
+	 * 11130001:web返现红包入账
+	 * 11130002:wap返现红包入账
+	 * 11130003:安卓返现红包入账
+	 * 11130004:ios返现红包入账
+	 * 11130005:微信返现红包入账
 	 * @param dto
 	 * @return
      */
-	@APITradeTypeValid(value = "11070001,11070002,11070003,11070004")
+	@APITradeTypeValid(value = "11070001,11070002,11070003,11070004,11130001,11130002,11130003,11130004,11130005")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
 			CompensationDto cDto = (CompensationDto)dto;
-			costImpl.compensation(cDto.getTrade_type(),cDto.getCust_no(),
-					cDto.getCust_type(),cDto.getAmt(),cDto.getFunds_type(),cDto.getBusi_type(),cDto.getBusi_id(),cDto.getMark());
+			costImpl.compensation(cDto.getTrade_type(),cDto.getCust_no(),cDto.getCust_type(),cDto.getAmt(),cDto.getBusi_no());
 			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
