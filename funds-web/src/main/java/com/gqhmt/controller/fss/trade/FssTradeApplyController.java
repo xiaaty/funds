@@ -145,8 +145,6 @@ public class FssTradeApplyController {
     		throw new FssException("未查到交易申请记录！");
     	}
     	CustomerInfoEntity  customerInfo=customerInfoService.getCustomerById(tradeapplyentity.getCustId());
-		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(tradeapplyentity.getCustId(),tradeapplyentity.getCustType());
-		model.addAttribute("amount",fundAccountEntity.getAmount());
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		model.addAttribute("tradeapply",tradeapplyentity);
 		if(tradeapplyentity.getBespokedate()!=null){
@@ -186,7 +184,7 @@ public class FssTradeApplyController {
 //	审核通过,先进行处理，处理完成后走回盘	
 	@RequestMapping(value = "/trade/tradeApply/{applyType}/{busiType}/{applyNo}/moneySplit")
 	@ResponseBody
-	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String auditAmount,BigDecimal amount) throws FssException {
+	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String auditAmount) throws FssException {
 //		String server_token  = (String) request.getSession().getAttribute("token");
 //		request.getSession().removeAttribute("token");
 		Map<String, String> map = new HashMap<String, String>();
@@ -199,11 +197,6 @@ public class FssTradeApplyController {
 			audit_amount=new BigDecimal(auditAmount);
 		}else{
 			audit_amount=tradeapply.getTradeAmount();
-		}
-		if (applyType==1104 && amount.compareTo(audit_amount)<0){
-			map.put("code", "0002");
-			map.put("message", "账户余额不足");
-			return map;
 		}
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
@@ -270,6 +263,10 @@ public class FssTradeApplyController {
 		if (customerInfoEntity!=null){
 			model.addAttribute("customerInfoEntity",customerInfoEntity);
 		}
+		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+		if (null==custType) throw new FssException("91001006");
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(customerInfoEntity.getId(),custType);
+		model.addAttribute("amount",fundAccountEntity.getAmount());
 		model.addAttribute("type",type);
 		model.addAttribute("flag",flag);
 		model.addAttribute("accNo",accNo);

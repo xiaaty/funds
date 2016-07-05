@@ -17,6 +17,8 @@ import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -78,6 +80,8 @@ public class FssLoanTradeController {
 	private ExportAndImpService exportAndImpService;
 	@Resource
 	private CustomerInfoService customerInfoService;
+	@Resource
+	private FundAccountService fundAccountService;
 	/**
 	 * 
 	 * author:jhz time:2016年3月11日 function：借款人放款
@@ -440,22 +444,93 @@ public class FssLoanTradeController {
 		return "fss/trade/backplateList";
 	}
 	
-	
-	 /*
-	  点击提现跳转到抵押权人提现页面
+//
+//	 /*
+//	  点击提现跳转到抵押权人提现页面
+//	 */
+//	@RequestMapping(value = "/fss/loan/trade/{type}/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+//	public String queryMortgageeDetail(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeapply, @PathVariable Long  id,@PathVariable String  type) throws Exception {
+//		//账户余额小于提现金额
+//		FssLoanEntity loanEntity= fssLoanService.getFssLoanEntityById(id);
+//		//冻结资金
+//		fssTradeApplyService.insertLoanTradeApply(loanEntity,type);
+//		loanEntity.setModifyTime(new Date());
+//		loanEntity.setWithDrawStatus("1");
+//		fssLoanService.update(loanEntity);
+//		return "redirect:/trade/tradeApply/1104/"+type;
+	}
+	/**
+	 *
+	 * author:jhz time:2016年07月04日 function：点击提现跳转到提现页面
+	 * @throws FssException
 	 */
-	@RequestMapping(value = "/fss/loan/trade/{type}/{id}",method = {RequestMethod.GET,RequestMethod.POST})
-	public String queryMortgageeDetail(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeapply, @PathVariable Long  id,@PathVariable String  type) throws Exception {
-		//账户余额小于提现金额
-		FssLoanEntity loanEntity= fssLoanService.getFssLoanEntityById(id);
-		//冻结资金
-		fssTradeApplyService.insertLoanTradeApply(loanEntity,type);
-		loanEntity.setModifyTime(new Date());
-		loanEntity.setWithDrawStatus("1");
-		fssLoanService.update(loanEntity);
-		return "redirect:/trade/tradeApply/1104/"+type;
+	@RequestMapping("/loan/trade/{type}/toWithDraw/{id}")
+	public String withDraw(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) throws FssException {
+		// 通过id查询交易对象
+		String userName=null;
+		CustomerInfoEntity customerInfoEntity=null;
+		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
+		if("11090006".equals(type)){//冠e通抵押标提现
+			customerInfoEntity=customerInfoService.getCustomerById(Long.valueOf(fssLoanEntityById.getMortgageeAccNo()));
+			if(customerInfoEntity!=null){
+				model.addAttribute("customerInfoEntity",customerInfoEntity);
+			}
+		}else { //借款系统抵押标提现
+			FssCustomerEntity fssCustomerEntity= fssCustomerService.getCustomerNameByCustNo(fssLoanEntityById.getCustNo());
+			if(fssCustomerEntity!=null) {
+				customerInfoEntity=customerInfoService.getCustomerById(fssCustomerEntity.getCustId());
+				if(customerInfoEntity!=null) {
+					model.addAttribute("customerInfoEntity", customerInfoEntity);
+				}
+			}
+		}
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(customerInfoEntity.getId(),GlobalConstants.ACCOUNT_TYPE_LOAN);
+		model.addAttribute("amount",fundAccountEntity.getAmount());
+		model.addAttribute("loan", fssLoanEntityById);
+		model.addAttribute("flag", 9);
+		return "fss/trade/offlineRecharge_add";
 	}
 
+	/**
+	 *
+	 * author:jhz time:2016年07月04日 function：添加到抵押权人提现
+	 * @throws InterruptedException
+	 *
+	 * @throws FssException
+	 */
+	@RequestMapping("/loan/trade/{type}/withDrawApply/{id}")
+	@ResponseBody
+	public Object withDrawApply(HttpServletRequest request, ModelMap model, @PathVariable String type, @PathVariable Long id, BigDecimal amt,BigDecimal amount) {
+		Map<String, String> map = new HashMap<String, String>();
+		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
+		if (amount.compareTo(amt)<0){
+			map.put("code", "0002");
+			map.put("message", "账户余额不足!");
+		}
+		if(!"1".equals(fssLoanEntity.getWithDrawStatus())) {
+			// 修改体现状态
+			fssLoanEntity.setWithDrawStatus("1");
+			fssLoanEntity.setModifyTime(new Date());
+			BigDecimal contractAmt=fssLoanEntity.getContractAmt();
+			try {
+				fssLoanEntity.setContractAmt(amt);
+				fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, type);
+				fssLoanEntity.setContractAmt(contractAmt);
+				//2 提现
+				map.put("code", "0000");
+				map.put("message", "成功");
+				fssLoanService.update(fssLoanEntity);
+			} catch (FssException e) {
+				map.put("code", "0001");
+				map.put("message", e.getMessage());
+				LogUtil.info(this.getClass(), e.getMessage());
+			}
+		}else{
+			map.put("code", "0001");
+			map.put("message", "请勿重复提交!");
+		}
+		return map;
+	}
 
 
 
