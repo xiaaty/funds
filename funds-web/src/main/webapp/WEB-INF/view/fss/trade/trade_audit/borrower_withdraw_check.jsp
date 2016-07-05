@@ -98,14 +98,6 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left">账户余额：</td>
-                                                            <td>
-                                                                <label class="input">
-                                                                    <input type="text" maxlength="50" readonly="readonly" name="amount" value="${amount}" style="width:256px;" />
-                                                                </label>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
                                                             <td align="left">审核金额：</td>
                                                             <td>
                                                                 <label class="input">
@@ -172,11 +164,7 @@
                                 $.unblockUI();
     	                    	jAlert("审核失败!", '消息提示');
     	                        return;
-    	                    }else if(data.code == '0002') {
-                                $.unblockUI();
-                                jAlert(data.message, '消息提示');
-                                return;
-                            }else {
+    	                    }else {
                                 $.unblockUI();
     	                    	jAlert("审核失败!", '消息提示');
     	                        return;

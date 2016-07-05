@@ -189,8 +189,8 @@
                                                     <%-- <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td> --%>
                                                 	<td>
                                                         <c:if test="${t.status=='10050009'&&t.withDrawStatus!='1'}">
-                                                            <a href="${contextPath}/fss/loan/trade/${type}/${t.id}">抵押权人提现</a></td>
-                                                         </c:if>
+                                                        <a href="${contextPath}/loan/trade/${type}/toWithDraw/${t.id}">抵押权人提现</a></td>
+                                                    </c:if>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
