@@ -198,6 +198,11 @@ public class FssTradeApplyController {
 		}else{
 			audit_amount=tradeapply.getTradeAmount();
 		}
+		if(tradeapply.getTradeAmount().compareTo(audit_amount)<0){
+			map.put("code", "0002");
+			map.put("message", "审核金额不能大于提现金额");
+			return  map;
+		}
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {

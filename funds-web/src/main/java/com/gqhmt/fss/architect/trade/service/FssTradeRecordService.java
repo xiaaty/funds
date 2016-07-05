@@ -60,7 +60,7 @@ public class FssTradeRecordService {
 	 * @param state	
 	 * TradeResult: 98060001交易成功,98060003交易失败					
      */
-	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String respCode) {
+	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String respCode) throws  FssException {
 
 		Date date=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
@@ -81,12 +81,7 @@ public class FssTradeRecordService {
 		fssTradeRecordEntity.setRespCode(respCode);
 		fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
 		//Apply 执行数量更新
-		try {
-			fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
-		} catch (FssException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
 	}
 
 	/**
