@@ -257,6 +257,9 @@ public class GlobalConstants {
     public static Map<Long,String> COMPANY_ACCOUNT_NAME =  new ConcurrentHashMap<>();
     public static Map<Long,String> COMPANY_ACCOUNT_REAL_NAME =  new ConcurrentHashMap<>();
 
+    //富有金账户对账文件信息类型
+    public static Map<String, String> FUYOU_ACCOUNT_INFO_TRADE_TYPE = new ConcurrentHashMap<>();
+
 
 	
 	public static Object getSession(HttpServletRequest request,String name){
@@ -763,5 +766,16 @@ public class GlobalConstants {
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11092001","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11091003","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11040013","97010001");
+
+
+
+//        --------------富有金账户对账文件信息类型---------------------------------
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("DJJD","冻结/解冻");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("ZZ","转账");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("HB","划拨");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTCZ","委托充值");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTTX","委托提现");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("YSQ","预授权交易");
+
 	}
 }
