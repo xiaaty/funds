@@ -365,6 +365,9 @@ public class FssTradeApplyService {
 		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
 			try {
 			 BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
+				if(null ==realTradeAmt ||"".equals(realTradeAmt)){
+					realTradeAmt=BigDecimal.ZERO;
+				}
 				 //划扣成功
 			 String tradeStatus=null;
 			 if(applyEntity.getTradeAmount().compareTo(realTradeAmt)==0){
@@ -376,7 +379,7 @@ public class FssTradeApplyService {
 			 }else{
 				 tradeStatus="10080003";
 			 }
-			if(!"10080002".equals(tradeStatus)&&"1104".equals(applyEntity.getApplyType())) {
+			if(!"10080002".equals(tradeStatus) && 1104==applyEntity.getApplyType()) {
 				//代付失败进行资金解冻
 					fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(applyEntity.getRealTradeAmount()), applyEntity.getCustType());
 			}
