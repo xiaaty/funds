@@ -365,6 +365,9 @@ public class FssTradeApplyService {
 		 if(applyEntity.getCount()<=applyEntity.getSuccessCount()){
 			try {
 			 BigDecimal realTradeAmt=fssTradeRecordService.getSuccessAmt(applyNo);
+				if(null ==realTradeAmt ||"".equals(realTradeAmt)){
+					realTradeAmt=BigDecimal.ZERO;
+				}
 				 //划扣成功
 			 String tradeStatus=null;
 			 if(applyEntity.getTradeAmount().compareTo(realTradeAmt)==0){
@@ -376,22 +379,24 @@ public class FssTradeApplyService {
 			 }else{
 				 tradeStatus="10080003";
 			 }
-			if(!"10080002".equals(tradeStatus)&&"1104".equals(applyEntity.getApplyType())) {
+			if(!"10080002".equals(tradeStatus) && 1104==applyEntity.getApplyType()) {
 				//代付失败进行资金解冻
-					fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(applyEntity.getRealTradeAmount()), applyEntity.getCustType());
+				fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType());
 			}
 				FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
 				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-				 if("11090001".equals(applyEntity.getBusiType())||"11092001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
-					 FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-					 //98060001成功 //10080002交易成功
-					 fssLoanService.update(fssLoanEntityById,tradeStatus);
-				 }else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
-					 //还款代扣
+					if("11090001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
+						FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+						//98060001成功 //10080002交易成功
+						fssLoanService.update(fssLoanEntityById,tradeStatus);
+					}else if("11092001".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
+						//借款系统和冠e通抵押权人提现不处理
+					}else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
+						//还款代扣
 					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
 					 fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
-				 }else {
-					 if (fssBackplateEntity != null) {
+				    }else {
+					    if (fssBackplateEntity != null) {
 						 fssBackplateService.updatebackplate(fssBackplateEntity);
 					 } else{
 						 //创建回盘信息
