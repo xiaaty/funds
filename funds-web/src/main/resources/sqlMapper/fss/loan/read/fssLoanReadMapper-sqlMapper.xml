@@ -34,7 +34,8 @@
 			t.rep_code repCode,
 			t.trade_type_parent tradeTypeParent,
 			t.rep_msg repMsg, 
-			t.busi_no busiNo, 
+			t.busi_no busiNo,
+			t.withDraw_status withDrawStatus,
 			t.loan_platform loanPlatform  	
 			FROM t_gq_fss_loan t 
 	</sql>

@@ -44,7 +44,16 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <form id="OfflineRechargeForm" action="${contextPath}/trade/tradeApply/saveOfflineRecharge" method="post">
+                <form id="OfflineRechargeForm"
+                        <c:choose>
+                            <c:when test="${type =='11090006' || type=='11092001'}">
+                                action="${contextPath}/loan/trade/${type}/withDrawApply/${id}"
+                            </c:when>
+                            <c:otherwise>
+                                action="${contextPath}/trade/tradeApply/saveOfflineRecharge"
+                            </c:otherwise>
+                        </c:choose>
+                      method="post">
                     <input type="hidden" id="type" name="type" value="${type}"/>
                     <input type="hidden" id="flag" name="flag" value="${flag}"/>
                     <input type="hidden" id="accNo" name="accNo" value="${accNo}"/>
@@ -94,6 +103,14 @@
                                                     <td>
                                                         <label class="input">
                                                             <input type="text" maxlength="50" readonly="readonly" name="mobilePhone" value="${customerInfoEntity.mobilePhone}" style="width:256px;" />
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left">账户余额：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            <input type="text" maxlength="50" readonly="readonly" name="amount" value="${amount}" style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -169,13 +186,27 @@
                     $.unblockUI();
                     if (data.code == '0000') {
                         jAlert("提交成功!", '信息提示',function (r) {
+                            <c:choose>
+                            <c:when test="${type =='11090006' || type=='11092001'}">
+                            window.location.href="${contextPath}/trade/tradeApply/1104/${type}";
+                            </c:when>
+                            <c:otherwise>
                             window.location.href="${contextPath}/account/${type}/list";
+                            </c:otherwise>
+                            </c:choose>
                         });
                     } else {
 //                        jAlert("提交失败,请重试", '消息提示',function (r) {
                         jAlert("提交失败，失败原因："+data.message, '消息提示',function (r) {
                             $.unblockUI();
+                            <c:choose>
+                            <c:when test="${type =='11090006' || type=='11092001'}">
+                            window.location.href="${contextPath}/trade/tradeApply/1104/${type}";
+                            </c:when>
+                            <c:otherwise>
                             window.location.href="${contextPath}/account/${type}/list";
+                            </c:otherwise>
+                            </c:choose>
                         });
                         return;
                     }

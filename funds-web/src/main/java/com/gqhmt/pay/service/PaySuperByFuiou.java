@@ -263,10 +263,10 @@ public class PaySuperByFuiou {
                 throw new FssException("90007002:"+fundOrderEntity.getOrderNo()+":等待回调通知");
             case "90007009":
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_THIRDERROR,response.getThirdReturnCode(),response.getMsg());
-                throw new ThirdpartyErrorAsyncException("90007009");
+                throw new FssException("90007009");
             default:
                 this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_FAILED,response.getThirdReturnCode(),response.getMsg());
-                throw new CommandParmException(toLocalCode(response.getThirdReturnCode()));
+                throw new FssException(toLocalCode(response.getThirdReturnCode()));
         }
     }
 
