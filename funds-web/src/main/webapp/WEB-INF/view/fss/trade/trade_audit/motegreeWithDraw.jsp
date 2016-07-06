@@ -90,10 +90,10 @@
                                                                 <input type="text" style="width:210px" name="mchnChild" value="${map.mchnChild}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">合同ID：</td>
+                                                        <td class="tr" nowrap="nowrap">合同编号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="contractId" value="${map.contractId}">
+                                                                <input type="text" name="contractNo" value="${map.contractNo}">
                                                             </label>
                                                         </td>
                                                     </tr>
@@ -165,7 +165,7 @@
                                             <td>序号</td>
                                             <td>抵押权人人资金平台账号</td>
                                             <td>交易流水号</td>
-                                            <td>合同ID</td>
+                                            <td>合同编号</td>
                                             <td>提现金额 </td>
                                             <td>交易状态 </td>
                                             <td>商户号</td>
@@ -180,7 +180,7 @@
                                                     <td>${l.index+1}</td>
                                                     <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.seqNo}</td>
-                                                    <td>${t.contractId}</td>
+                                                    <td>${t.contractNo}</td>
                                                     <td>${t.contractAmt}</td>
                                                     <td> <fss:dictView key="${t.status}" /></td>
                                                     <td>${t.mchnChild}</td>
@@ -188,9 +188,9 @@
                                                     <td><fss:fmtDate value="${t.modifyTime}"/></td>
                                                     <%-- <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td> --%>
                                                 	<td>
-                                                        <c:if test="${t.status=='10050009'}">
-                                                            <a href="${contextPath}/fss/loan/trade/${type}/${t.id}">抵押权人提现</a></td>
-                                                         </c:if>
+                                                        <c:if test="${t.status=='10050009'&&t.withDrawStatus!='1'}">
+                                                        <a href="${contextPath}/loan/trade/${type}/toWithDraw/${t.id}">抵押权人提现</a></td>
+                                                    </c:if>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

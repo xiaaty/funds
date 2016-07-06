@@ -2,7 +2,6 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
@@ -61,7 +60,7 @@ public class FssTradeRecordService {
 	 * @param state	
 	 * TradeResult: 98060001交易成功,98060003交易失败					
      */
-	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String respCode) {
+	public void  updateTradeRecordExecuteState(FssTradeRecordEntity fssTradeRecordEntity,int state,String respCode) throws  FssException {
 
 		Date date=new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddHHmmss");
@@ -82,11 +81,8 @@ public class FssTradeRecordService {
 		fssTradeRecordEntity.setRespCode(respCode);
 		fssTradeRecordWriteMapper.updateByPrimaryKey(fssTradeRecordEntity);
 		//Apply 执行数量更新
-		try {
-			fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
-		} catch (FssException e) {
-			LogUtil.error(this.getClass(),e);
-		}
+
+		fssTradeApplyService.updateExecuteCount(fssTradeRecordEntity);
 	}
 
 	/**
@@ -279,7 +275,7 @@ public class FssTradeRecordService {
 		}
 		fssTradeRecordWriteMapper.updateByPrimaryKey(entity);
 		fssTradeApplyService.checkExecuteCount(entity.getApplyNo());
-	};
+	}
 	/**
 	 * author:jhz
 	 * time:2016年6月20日
@@ -287,7 +283,7 @@ public class FssTradeRecordService {
 	 */
 	public  FssTradeRecordEntity selectTradeApplyById(Long id){
 		return  fssTradeRecordReadMapper.selectByPrimaryKey(id);
-	};
+	}
 
 
 }
