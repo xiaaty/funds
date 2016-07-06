@@ -129,6 +129,7 @@ public class BidSettleService {
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
         loanEntity.setStatus("10050008");
         loanEntity.setModifyTime(new Date());
+        loanEntity.setOrderNo(fundOrderEntity.getOrderNo());
         fssLoanService.update(loanEntity);
     }
 
