@@ -1,8 +1,9 @@
-package com.gqhmt.fss.architect.account.mapper.write;
+package com.gqhmt.fss.architect.account.mapper.read;
 
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
@@ -20,14 +21,12 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2016/6/27.  xdw         1.0     1.0 Version
  */
-public interface FuiouAccountInfoWriteMapper {
+public interface FuiouAccountInfoReadMapper {
 
-    //添加金账户对账文件记录
-    public void addFuiouAccountInfoEntity(FuiouAccountInfoEntity file);
+    //查询金账户对账文件记录
+    public List<FuiouAccountInfoEntity> queryAccountInfoList(Map<String,String> map);
 
-    //手动抓取失败文件
-    public void updateFuiouAccountInfoEntity(FuiouAccountInfoEntity file);
+    //查询抓取失败的金账户对账文件记录
+    public List<FuiouAccountInfoEntity> queryAccountFailInfoList(Map<String, String> map);
 
-    //刪除fpt不存在的文件记录
-    public void deleteFuiouAccountInfoEntity(String id);
 }

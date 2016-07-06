@@ -11,9 +11,11 @@ import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
+import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.service.FssBondTransferService;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
@@ -75,6 +77,8 @@ public class FssTradeApplyController {
     private FssAccountService fssAccountService;
     @Resource
     private FssCustomerService fssCustomerService;
+    @Resource
+    private FssBondTransferService fssBondTransferService;
 
     /**
 	 * author:柯禹来
@@ -350,4 +354,20 @@ public class FssTradeApplyController {
 		return map;
 	}
 
+	/**
+	 * 债权转让数据
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/bondTransfer",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getBondTransfer(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		List<FssBondTransferEntity> bondList=fssBondTransferService.queryBondTransferList(map);
+		model.addAttribute("page", bondList);
+		model.put("map", map);
+		return "fss/trade/bondTransfer_list";
+	}
 }

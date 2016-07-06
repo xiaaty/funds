@@ -169,9 +169,9 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <footer>
+                                    <%--<footer>
                                         <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
-                                    </footer>
+                                    </footer>--%>
                                 </div>
                                 <!-- end widget content -->
                             </form>

@@ -257,6 +257,9 @@ public class GlobalConstants {
     public static Map<Long,String> COMPANY_ACCOUNT_NAME =  new ConcurrentHashMap<>();
     public static Map<Long,String> COMPANY_ACCOUNT_REAL_NAME =  new ConcurrentHashMap<>();
 
+    //富有金账户对账文件信息类型
+    public static Map<String, String> FUYOU_ACCOUNT_INFO_TRADE_TYPE = new ConcurrentHashMap<>();
+
 
 	
 	public static Object getSession(HttpServletRequest request,String name){
@@ -713,6 +716,15 @@ public class GlobalConstants {
         TRADE_BUSINESS_TYPE__MAPPING.put(10018004,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(10018005,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(11040013,0);
+        //债权转让交易类型对应账户类型
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052001,3);//web购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052002,3);//wap购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052003,3);//IOS购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052004,3);//安卓购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052005,3);//微信购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052006,2);//委托购买债权
+
+
 
         TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);
 
@@ -763,5 +775,16 @@ public class GlobalConstants {
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11092001","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11091003","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11040013","97010001");
+
+
+
+//        --------------富有金账户对账文件信息类型---------------------------------
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("DJJD","冻结/解冻");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("ZZ","转账");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("HB","划拨");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTCZ","委托充值");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTTX","委托提现");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("YSQ","预授权交易");
+
 	}
 }

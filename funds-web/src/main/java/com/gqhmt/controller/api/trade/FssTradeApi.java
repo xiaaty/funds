@@ -86,6 +86,9 @@ public class FssTradeApi {
 
 	@Resource
 	private IOfflineRechargeApply offRechargeApplyImpl;
+
+	@Resource
+	private IBondTransfer bondTransferImpl;
     /**
      * 
      * author:jhz
@@ -337,7 +340,22 @@ public class FssTradeApi {
 	}
 
 
-
+	/**
+	 * 债权转让接口
+	 * @param dto
+	 * @return
+	 */
+	@RequestMapping(value = "/bondTransfer",method = RequestMethod.POST)
+	public Object bondTransfer(@RequestBody BondTransferDto dto){
+		Response response=new Response();
+		try {
+			response = bondTransferImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
 
 
 
