@@ -85,15 +85,11 @@ public class FundsTenderImpl  implements IFundsTender {
 
         FundAccountEntity fromEntity = this.getFundAccount(Long.valueOf(bidDto.getCust_no()), bidDto.getInvest_type() == 1 ? 3 : 2);
         this.hasEnoughBanlance(fromEntity,bidDto.getReal_Amount());
-
-
-
         //判断抵押权人
         Long cusId = Long.valueOf(bidDto.getLoan_cust_id());
         if (bidDto.getMoto_cust_id() != null && !"".equals(bidDto.getMoto_cust_id())){
             cusId =  Long.valueOf(bidDto.getMoto_cust_id());
         }
-
 //        Bid bid = this.bidService.findById(Long.parseLong(bidDto.getBusi_bid_no()));
 //        int cusId = bid.getCustomerId();
 //        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
