@@ -37,6 +37,12 @@ public class BidDto extends SuperDto{
 
 	@APIValidNull(errorCode = "90004014")
 	private String cust_no;		//客户编号
+
+
+	@APIValidNull(errorCode = "90004014")
+	private String  loan_cust_id;
+
+	private String  moto_cust_id;
 	
 	private String busi_no;		//出借业务编
 
@@ -140,5 +146,21 @@ public class BidDto extends SuperDto{
 
 	public void setInvest_type(int invest_type) {
 		this.invest_type = invest_type;
+	}
+
+	public String getLoan_cust_id() {
+		return loan_cust_id;
+	}
+
+	public void setLoan_cust_id(String loan_cust_id) {
+		this.loan_cust_id = loan_cust_id;
+	}
+
+	public String getMoto_cust_id() {
+		return moto_cust_id;
+	}
+
+	public void setMoto_cust_id(String moto_cust_id) {
+		this.moto_cust_id = moto_cust_id;
 	}
 }
