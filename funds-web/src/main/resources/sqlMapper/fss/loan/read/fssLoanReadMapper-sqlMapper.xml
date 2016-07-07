@@ -36,7 +36,8 @@
 			t.rep_msg repMsg, 
 			t.busi_no busiNo,
 			t.withDraw_status withDrawStatus,
-			t.loan_platform loanPlatform  	
+			t.loan_platform loanPlatform,
+			t.order_no orderNo
 			FROM t_gq_fss_loan t 
 	</sql>
 	<!-- 得到借款人放款回调对象 -->

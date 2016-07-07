@@ -107,6 +107,9 @@ public class FssLoanEntity implements Serializable {
 
 	@Column(name="withDraw_status")
 	private String withDrawStatus;             //体现状态
+
+	@Column(name="order_no",insertable = false)
+	private String orderNo;
    
 	public Long getId() {
 		return id;
@@ -310,5 +313,13 @@ public class FssLoanEntity implements Serializable {
 
 	public void setWithDrawStatus(String withDrawStatus) {
 		this.withDrawStatus = withDrawStatus;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 }

@@ -1,9 +1,6 @@
 package com.gqhmt.funds.architect.account.entity;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.gqhmt.util.ThirdPartyType;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -68,6 +65,9 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     @Column(name = "token")
     private String token;
+
+    @Column(name = "s_order_no")
+    private String sOrderNo;
 
     public Long getId() {
         return id;
@@ -218,5 +218,13 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     public void setThirdPartyType(int thirdPartyType) {
         this.thirdPartyType = thirdPartyType;
+    }
+
+    public String getsOrderNo() {
+        return sOrderNo;
+    }
+
+    public void setsOrderNo(String sOrderNo) {
+        this.sOrderNo = sOrderNo;
     }
 }
