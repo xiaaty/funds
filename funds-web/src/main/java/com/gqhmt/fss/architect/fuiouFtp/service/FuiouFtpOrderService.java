@@ -12,6 +12,7 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.fuiou.service
@@ -195,5 +196,12 @@ public class FuiouFtpOrderService {
     public void saveAll(List<FuiouFtpOrder> list)throws FssException{
     	fuiouFtpOrderWriteMapper.insertList(list);
     }
-    
+
+    /**
+     * 查询FtpOrder集合，根据FuiouFtpOrder
+     */
+    public List<FuiouFtpOrder> selectFuiouFtpOrderList(Map<String, String> map){
+        return fuiouFtpOrderReadMapper.selectFuiouFtpOrderList(map);
+    }
+
 }
