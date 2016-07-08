@@ -143,7 +143,7 @@ public class FundTradeService {
     				types.append("1003,1004,1012,2001,2002,2003,");
     			}
     			if(tradeFilters.indexOf("b")>=0){//出借
-    				types.append("2004,2006,3001,3002,3009,");
+    				types.append("2004,3001,3002,3009,");
     			}
     			if(tradeFilters.indexOf("r")>=0){//回款
     				types.append("3005,3006,3012,");
