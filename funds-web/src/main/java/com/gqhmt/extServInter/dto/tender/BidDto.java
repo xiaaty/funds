@@ -24,14 +24,25 @@ import java.math.BigDecimal;
  * 2016年2月20日  jhz      1.0     1.0 Version
  */
 public class BidDto extends SuperDto{
-	
+
+
+	@APIValidNull(errorCode = "90004014")
+	private String bid_id;
+
+	@APIValidNull(errorCode = "90004014")
 	private String busi_bid_no;		//标的编号
-	
+
+	@APIValidNull(errorCode = "90004014")
 	private String tender_no;			//投标编号
-	
+
+	@APIValidNull(errorCode = "90004014")
 	private String cust_no;		//客户编号
-	
-	private String user_no;		//用户编号
+
+
+	@APIValidNull(errorCode = "90004014")
+	private String  loan_cust_id;
+
+	private String  moto_cust_id;
 	
 	private String busi_no;		//出借业务编
 
@@ -44,7 +55,8 @@ public class BidDto extends SuperDto{
 	@APIValidNull(errorCode = "90004014")
 	private BigDecimal bonus_Amount;		//抵扣红包金额
 
-	private int busi_type;
+	@APIValidNull(errorCode = "90004014")
+	private int invest_type;				//投标类型 1,线上,2线下
 
 	private String product_title;
 
@@ -75,13 +87,7 @@ public class BidDto extends SuperDto{
 		this.cust_no = cust_no;
 	}
 
-	public String getUser_no() {
-		return user_no;
-	}
 
-	public void setUser_no(String user_no) {
-		this.user_no = user_no;
-	}
 
 	public String getBusi_no() {
 		return busi_no;
@@ -117,13 +123,6 @@ public class BidDto extends SuperDto{
 		this.bonus_Amount = bonus_Amount;
 	}
 
-	public int getBusi_type() {
-		return busi_type;
-	}
-
-	public void setBusi_type(int busi_type) {
-		this.busi_type = busi_type;
-	}
 
 	public String getProduct_title() {
 		return product_title;
@@ -131,5 +130,37 @@ public class BidDto extends SuperDto{
 
 	public void setProduct_title(String product_title) {
 		this.product_title = product_title;
+	}
+
+	public String getBid_id() {
+		return bid_id;
+	}
+
+	public void setBid_id(String bid_id) {
+		this.bid_id = bid_id;
+	}
+
+	public int getInvest_type() {
+		return invest_type;
+	}
+
+	public void setInvest_type(int invest_type) {
+		this.invest_type = invest_type;
+	}
+
+	public String getLoan_cust_id() {
+		return loan_cust_id;
+	}
+
+	public void setLoan_cust_id(String loan_cust_id) {
+		this.loan_cust_id = loan_cust_id;
+	}
+
+	public String getMoto_cust_id() {
+		return moto_cust_id;
+	}
+
+	public void setMoto_cust_id(String moto_cust_id) {
+		this.moto_cust_id = moto_cust_id;
 	}
 }

@@ -133,6 +133,7 @@ public class BidRepaymentService {
         fuiouFtpOrderService.addOrder(fundOrderEntity, 2);
         loanEntity.setStatus("10050012");
         loanEntity.setModifyTime(new Date());
+        loanEntity.setOrderNo(fundOrderEntity.getOrderNo());
         fssLoanService.update(loanEntity);
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 

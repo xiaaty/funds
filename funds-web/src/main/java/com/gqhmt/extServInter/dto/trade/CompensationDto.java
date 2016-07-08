@@ -6,7 +6,6 @@ import com.gqhmt.annotations.APIValid;
 import com.gqhmt.annotations.APIValidNull;
 import com.gqhmt.annotations.APIValidType;
 import com.gqhmt.extServInter.dto.SuperDto;
-
 import java.math.BigDecimal;
 
 /**
@@ -33,10 +32,7 @@ public class CompensationDto extends SuperDto{
 	@APIValidNull(errorCode = "90004014")
 	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
 	private BigDecimal amt;		//代偿金额
-	private Integer  funds_type;//交易子类型
-	private Integer  busi_type;//业务类型
-	private Long  busi_id;//账户类型
-	private String mark;//从对公账户进还是出
+	private Long busi_no;//业务编号
 
 	public Integer getCust_no() {
 		return cust_no;
@@ -62,35 +58,12 @@ public class CompensationDto extends SuperDto{
 		this.amt = amt;
 	}
 
-	public Integer getFunds_type() {
-		return funds_type;
+	public Long getBusi_no() {
+		return busi_no;
 	}
 
-	public void setFunds_type(Integer funds_type) {
-		this.funds_type = funds_type;
+	public void setBusi_no(Long busi_no) {
+		this.busi_no = busi_no;
 	}
 
-	public Integer getBusi_type() {
-		return busi_type;
-	}
-
-	public void setBusi_type(Integer busi_type) {
-		this.busi_type = busi_type;
-	}
-
-	public Long getBusi_id() {
-		return busi_id;
-	}
-
-	public void setBusi_id(Long busi_id) {
-		this.busi_id = busi_id;
-	}
-
-	public String getMark() {
-		return mark;
-	}
-
-	public void setMark(String mark) {
-		this.mark = mark;
-	}
 }

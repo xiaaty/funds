@@ -11,9 +11,11 @@ import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
+import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.service.FssBondTransferService;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
@@ -75,6 +77,8 @@ public class FssTradeApplyController {
     private FssAccountService fssAccountService;
     @Resource
     private FssCustomerService fssCustomerService;
+    @Resource
+    private FssBondTransferService fssBondTransferService;
 
     /**
 	 * author:柯禹来
@@ -189,7 +193,6 @@ public class FssTradeApplyController {
 //		request.getSession().removeAttribute("token");
 		Map<String, String> map = new HashMap<String, String>();
 //		if(token.equals(server_token)){
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		String applyStatus=request.getParameter("applyStatus");
 		String bespokedate=request.getParameter("bespokedate");
 		FssTradeApplyEntity tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
@@ -199,6 +202,12 @@ public class FssTradeApplyController {
 		}else{
 			audit_amount=tradeapply.getTradeAmount();
 		}
+		if(tradeapply.getTradeAmount().compareTo(audit_amount)<0){
+			map.put("code", "0002");
+			map.put("message", "审核金额不能大于提现金额");
+			return  map;
+		}
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
@@ -216,6 +225,8 @@ public class FssTradeApplyController {
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setAuditAmount(audit_amount);
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
+			map.put("code", "0000");
+			map.put("message", "success");
 		}else{
 			tradeapply.setAuditAmount(audit_amount);
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10109999");
@@ -225,10 +236,9 @@ public class FssTradeApplyController {
 			}
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			map.put("code", "0001");
+			map.put("message", "success");
 		}
-
-		map.put("code", "0000");
-        map.put("message", "success");
 		return map;
 	}
 
@@ -262,6 +272,10 @@ public class FssTradeApplyController {
 		if (customerInfoEntity!=null){
 			model.addAttribute("customerInfoEntity",customerInfoEntity);
 		}
+		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+		if (null==custType) throw new FssException("91001006");
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(customerInfoEntity.getId(),custType);
+		model.addAttribute("amount",fundAccountEntity.getAmount());
 		model.addAttribute("type",type);
 		model.addAttribute("flag",flag);
 		model.addAttribute("accNo",accNo);
@@ -340,4 +354,20 @@ public class FssTradeApplyController {
 		return map;
 	}
 
+	/**
+	 * 债权转让数据
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/bondTransfer",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getBondTransfer(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		List<FssBondTransferEntity> bondList=fssBondTransferService.queryBondTransferList(map);
+		model.addAttribute("page", bondList);
+		model.put("map", map);
+		return "fss/trade/bondTransfer_list";
+	}
 }

@@ -276,4 +276,22 @@ public interface IFundsTrade {
      */
     public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
 
+    /**
+     * 债权转让
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param bid_id
+     * @param busi_bid_no
+     * @param tender_no
+     * @param cust_no
+     * @param busi_no
+     * @param amt
+     * @param o_tender_no
+     * @param o_cust_no
+     * @param o_busi_no
+     * @return
+     * @throws FssException
+     */
+    public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no) throws FssException;
 }

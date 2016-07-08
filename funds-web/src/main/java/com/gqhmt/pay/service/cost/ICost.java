@@ -59,7 +59,7 @@ public interface ICost {
 
     public FundOrderEntity costReturn(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException;
 
-    public boolean charge(CostDto dto) throws FssException;
+    public boolean charge(String platform, String trade_type,Integer cust_no,String busi_type,BigDecimal amt,String accounts_type) throws FssException;
 
     /**
      * 代偿
@@ -67,12 +67,9 @@ public interface ICost {
      * @param cust_id
      * @param cust_type
      * @param amt
-     * @param funds_type
-     * @param busi_type
-     * @param busi_id
      * @return
      * @throws FssException
      */
-    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Integer funds_type,Integer  busi_type,Long  busi_id,String mark) throws FssException;
+    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Long  busi_no) throws FssException;
 
 }

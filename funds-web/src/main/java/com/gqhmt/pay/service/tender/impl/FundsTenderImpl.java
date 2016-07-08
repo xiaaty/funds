@@ -83,25 +83,31 @@ public class FundsTenderImpl  implements IFundsTender {
         tender.setBidId(Long.parseLong(bidDto.getBusi_bid_no()));*/
 
 
-        FundAccountEntity fromEntity = this.getFundAccount(Long.valueOf(bidDto.getCust_no()), bidDto.getBusi_type() == 1 ? 3 : 2);
+        FundAccountEntity fromEntity = this.getFundAccount(Long.valueOf(bidDto.getCust_no()), bidDto.getInvest_type() == 1 ? 3 : 2);
         this.hasEnoughBanlance(fromEntity,bidDto.getReal_Amount());
-
-        Bid bid = this.bidService.findById(Long.parseLong(bidDto.getBusi_bid_no()));
-        int cusId = bid.getCustomerId();
-        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
-            cusId = bid.getHypothecarius();
+        //判断抵押权人
+        Long cusId = Long.valueOf(bidDto.getLoan_cust_id());
+        if (bidDto.getMoto_cust_id() != null && !"".equals(bidDto.getMoto_cust_id())){
+            cusId =  Long.valueOf(bidDto.getMoto_cust_id());
         }
+//        Bid bid = this.bidService.findById(Long.parseLong(bidDto.getBusi_bid_no()));
+//        int cusId = bid.getCustomerId();
+//        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+//            cusId = bid.getHypothecarius();
+//        }
+
+        //处理抵押标
 
         // 入账账户
-        FundAccountEntity toSFEntity = this.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
+        FundAccountEntity toSFEntity = this.getFundAccount(cusId, GlobalConstants.ACCOUNT_TYPE_LOAN);
         // 冻结账户
         FundAccountEntity toEntity = this.getFundAccount(Long.valueOf(bidDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         BigDecimal amount = bidDto.getReal_Amount();//  bid.getRealAmount();
         BigDecimal boundsAmount = bidDto.getBonus_Amount();// tender.getBonusAmount();
-        CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBusi_bid_no()),GlobalConstants.BUSINESS_BID);
+        CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bidDto.getBid_id()),GlobalConstants.BUSINESS_BID);
         //后续处理
-        fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, bidDto.getReal_Amount(),Integer.parseInt(bidDto.getBusi_bid_no()),Integer.parseInt(bidDto.getTender_no()), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
-        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + bidDto.getProduct_title() + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+        fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, bidDto.getReal_Amount(),Integer.parseInt(bidDto.getBid_id()),Integer.parseInt(bidDto.getTender_no()), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
+        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + bidDto.getProduct_title() + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
         return true;
     }
 

@@ -8,7 +8,9 @@ import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
+import com.gqhmt.fss.architect.trade.service.FssBondTransferService;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -85,6 +87,12 @@ public class FundsTradeImpl  implements IFundsTrade {
     private NoticeService noticeService;
     @Resource
     private FssOfflineRechargeService fssOfflineRechargeService;
+    @Resource
+    private FundSequenceService fundSequenceService;
+    @Resource
+    private FundTradeService fundTradeService;
+    @Resource
+    private FssBondTransferService fssBondTransferService;
 
     /**
      * 生成web提现订单
@@ -622,6 +630,43 @@ public class FundsTradeImpl  implements IFundsTrade {
             fssOfflineRechargeService.updateFiled(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo());
         }
         return offlineRechargeResponse;
+    }
+
+    /**
+     * 债权转让
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @return
+     * @throws FssException
+     */
+    public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no) throws FssException {
+//      根据交易类型验证接标人出借业务编号是否为空，线下出借，必须传递此编号，线上客户为空
+        if("11052006".equals(trade_type)){//委托购买债权
+            if(busi_no==null || "".equals(busi_no)) throw new FssException("90002021");
+        }
+        Integer accType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(trade_type));
+        FundAccountEntity  fromEntity = this.getFundAccount(Integer.valueOf(o_cust_no),accType);//转让人账户
+        FundAccountEntity  toEntity = this.getFundAccount(Integer.valueOf(cust_no),accType);//接标人账户
+        //添加债权记账信息
+        FssBondTransferEntity bondEntity = fssBondTransferService.createBondTransferInfo(mchn,seq_no,trade_type,bid_id,busi_bid_no,cust_no,o_cust_no,busi_no,fromEntity.getCustName(),fromEntity.getAccountNo(),String.valueOf(accType));
+        String tradeState=bondEntity.getTradeState();
+        FundOrderEntity fundOrderEntity=null;
+        try {
+            this.hasEnoughBanlance(fromEntity, amt);
+            //第三方交易
+            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity, toEntity, amt, 8, bondEntity.getId(), GlobalConstants.ORDER_DEBT);
+            //资金处理
+            fundSequenceService.transfer(fromEntity, toEntity, fundOrderEntity.getOrderAmount(), 8, 3007, "债权转让", ThirdPartyType.FUIOU, fundOrderEntity);
+            tradeState="10080002";
+        }catch (FssException e){
+            tradeState="10080010";
+        }
+        fssBondTransferService.updateBandTransfer(bondEntity,amt,fundOrderEntity.getOrderNo(),tradeState);
+        //添加交易记录
+        fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),3007, "债权转让转出",BigDecimal.ZERO);
+        fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,3008,"债权转让转入");
+        return true;
     }
 
 }

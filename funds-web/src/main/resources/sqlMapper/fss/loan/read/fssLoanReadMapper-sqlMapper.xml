@@ -34,8 +34,10 @@
 			t.rep_code repCode,
 			t.trade_type_parent tradeTypeParent,
 			t.rep_msg repMsg, 
-			t.busi_no busiNo, 
-			t.loan_platform loanPlatform  	
+			t.busi_no busiNo,
+			t.withDraw_status withDrawStatus,
+			t.loan_platform loanPlatform,
+			t.order_no orderNo
 			FROM t_gq_fss_loan t 
 	</sql>
 	<!-- 得到借款人放款回调对象 -->

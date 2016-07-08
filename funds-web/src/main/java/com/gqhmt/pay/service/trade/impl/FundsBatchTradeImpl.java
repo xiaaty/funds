@@ -8,7 +8,6 @@ import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsBatchTrade;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
@@ -62,8 +61,8 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
             entity.setOrderNo(orderEntity.getOrderNo());
             this.fssTradeRecordService.updateTradeRecordExecuteState(entity,1,"0000");
 
-        } catch (Exception e) {
-            LogUtil.error(this.getClass(),e);
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
             this.fssTradeRecordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
             throw e;
         }

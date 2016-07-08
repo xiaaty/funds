@@ -18,7 +18,7 @@ public class GlobalConstants {
 	public static final String SESSION_EMP = "emp_session";
 	public static final String SESSION_MENU = "session_menu";
 	public static final String EXCLUDE_URL_INIT="exclude";
-	public static final String EXCLUDE_DIRECTORY_REGEX="^/css/|^/images/|^/js/|^/upload/|^/img/|^/api/|^/fonts/|^/loginout.jsp";
+	public static final String EXCLUDE_DIRECTORY_REGEX="^/css/|^/images/|^/interaction/|^/js/|^/upload/|^/img/|^/api/|^/fonts/|^/loginout.jsp";
 	public static final String ROLE_SUPPER_ID=",1,";
     public static final String ROLE_BUSINESS_SUPPER_ID=",2,";
 	public static final String EXCLUDE_ONLY_LOGIN="^/json/";
@@ -716,6 +716,15 @@ public class GlobalConstants {
         TRADE_BUSINESS_TYPE__MAPPING.put(10018004,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(10018005,0);
         TRADE_BUSINESS_TYPE__MAPPING.put(11040013,0);
+        //债权转让交易类型对应账户类型
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052001,3);//web购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052002,3);//wap购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052003,3);//IOS购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052004,3);//安卓购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052005,3);//微信购买债权
+        TRADE_BUSINESS_TYPE__MAPPING.put(11052006,2);//委托购买债权
+
+
 
         TRADETYPE_ACCOUNT_MAPPING.put("11099003", 10011001);
 

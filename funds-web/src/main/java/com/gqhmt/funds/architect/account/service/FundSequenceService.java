@@ -297,6 +297,10 @@ public class FundSequenceService {
      * @return
      */
     protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,Long oAccountId){
+        return getFundSequenceEntity(accountID,actionType,accountType,amount,thirdPartyType,orderEntity == null ?"":  orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),oAccountId);
+    }
+
+    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,String orderNo,String  sOrderNo,Long oAccountId){
         FundSequenceEntity entity = new FundSequenceEntity();
         entity.setCreateTime(new Timestamp(new Date().getTime()));
         entity.setAmount(amount);
@@ -305,9 +309,8 @@ public class FundSequenceService {
         entity.setFundType(accountType);
         entity.setActionType(actionType);
         entity.setThirdPartyType(thirdPartyType.getKey());
-        if(orderEntity != null){
-            entity.setOrderNo(orderEntity.getOrderNo());
-        }
+        entity.setOrderNo(orderNo == null ? "":orderNo);
+        entity.setsOrderNo(sOrderNo == null ? "":sOrderNo);
         entity.setModifyTime(new Date());
         entity.setoAccountId(oAccountId);
         return entity;
