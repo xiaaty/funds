@@ -63,8 +63,30 @@ public class FundOrderEntity implements java.io.Serializable {
 	
 	@Column(name = "thirdparty_type",updatable = false,nullable = false)
     private String thirdPartyType;			//第三方支付类型
-	
 
+	@Column(name="cust_id",updatable = false)
+	private Long custId;       // bigint(20) DEFAULT NULL COMMENT '出账（转账）入账（其他交易）客户id',
+
+	@Column(name="lend_no",updatable = false)
+	private String  lendNo; //varchar(45) DEFAULT NULL COMMENT '出账（转账）入账（其他交易）出借编号，线上客户为空',
+
+	@Column(name="to_cust_id",updatable = false)
+	private Long  toCustId; //bigint(20) DEFAULT NULL COMMENT '入账（转账）客户id',
+
+	@Column(name="to_pend_no",updatable = false)
+	private String toPendNo; //varchar(45) DEFAULT NULL COMMENT '入账（转账）出借编号',
+
+	@Column(name="loan_cust_id",updatable = false)
+	private Long loanCustId; //bigint(20) DEFAULT NULL COMMENT '对应借款标的借款人客户id，非抵押权人，原始借款人客户id',
+
+	@Column(name="loan_no",updatable = false)
+	private String loanNo; //varchar(45) DEFAULT NULL COMMENT '投标，满标，回款，等等对应借款合同编号',
+
+	@Column(name="new_order_type",updatable = false)
+	private String newOrderType; //char(10) DEFAULT '' COMMENT '新资金类型',
+
+	@Column(name="trade_type",updatable = false)
+	private String tradeType; //char(10) DEFAULT '' COMMENT '交易类型',
 
 
 	public Long getId() {
