@@ -664,5 +664,16 @@ public class FssLoanService {
 		map.put("seqNo", seqNo);
 		return fssLoanReadMapper.getBidApplyResponse(map);
 	}
+
+
+    /**
+     *
+     * author:xdw
+     * time:2016年7月07日
+     * function：冠e通交易信息列表
+     */
+    public List<FssLoanEntity> selectFssLoanList(Map<String,String> map){
+		return fssLoanReadMapper.selectFssLoanList(map);
+	}
 	
 }	
