@@ -5,6 +5,8 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.trade.entity.FssChargeRecordEntity;
+import com.gqhmt.fss.architect.trade.service.FssChargeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -61,7 +63,6 @@ public class CostImpl  implements ICost{
     private FundsTradeImpl fundsTradeImpl;
     @Resource
     private FssChargeRecordService fssChargeRecordService;
-
     private  final Map<String,Long> map = new ConcurrentHashMap<>();
 
     private CostImpl(){
@@ -291,29 +292,43 @@ public class CostImpl  implements ICost{
      * @return
      * @throws FssException
      */
-    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Long busi_no) throws FssException{
+    public boolean compensation(String trade_type,Integer cust_id,Integer busi_type,BigDecimal amt,Long busi_no,String platform,String accounts_type,String seqNo,String memo) throws FssException{
         FundAccountEntity fromEntity=null;
         FundAccountEntity toEntity=null;
-        Long pubCustId = this.map.get(trade_type+"_"+"10040001");
+        String loanType=null;
+        if(platform==null || "".equals(platform)){
+            loanType="10040001";//默认交易平台为北京
+        }else{
+            loanType=platform;
+        }
+        //代偿、红包
+        Long pubCustId = this.map.get(trade_type+"_"+loanType);
         if(pubCustId == null) throw new FssException("90002001");
         if(pubCustId.intValue() == cust_id.intValue()){
             throw  new FssException("90004017");
         }
         FundAccountEntity  publicAccount = fundAccountService.getFundAccount(pubCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//对公账户
-        FundAccountEntity  personalAccount = fundsTradeImpl.getFundAccount(cust_id,cust_type);//个人账户
+        FundAccountEntity  personalAccount = fundsTradeImpl.getFundAccount(cust_id,busi_type);//个人账户
         //判断是从对公账户转入到个人账户还是从个人账户转入对公账户
-        if("11070002".equals(trade_type) || "11070004".equals(trade_type)){//借款人逾期代偿资金退回、委托出借代偿退回
+        if("11070002".equals(trade_type) || "11070004".equals(trade_type) || "11060001".equals(trade_type) || "11060002".equals(trade_type) || "11060003".equals(trade_type) || "11060004".equals(trade_type) || "11060005".equals(trade_type)){//借款人逾期代偿资金退回、委托出借代偿退回及费用收取
             fromEntity=personalAccount;
             toEntity=publicAccount;
-        }{//借款人逾期代偿、委托出借人代偿、web返现红包入账、wap返现红包入账、安卓返现红包入账、ios返现红包入账、微信返现红包入账
+        }else {//借款人逾期代偿、委托出借人代偿、web返现红包入账、wap返现红包入账、安卓返现红包入账、ios返现红包入账、微信返现红包入账、逆服务费
             fromEntity=publicAccount;
             toEntity=personalAccount;
         }
-        this.hasEnoughBanlance(fromEntity,amt);
-        //第三方交易
-        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER);
-        //资金处理
-        fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
+        FundOrderEntity fundOrderEntity=null;
+        FssChargeRecordEntity chargeRecordEntity=fssChargeRecordService.addChargeRecord(fromEntity,toEntity,amt,loanType,String.valueOf(busi_type),trade_type,seqNo,String.valueOf(busi_no),String.valueOf(fromEntity.getBusiType()),String.valueOf(toEntity.getBusiType()),memo);
+        try{
+            this.hasEnoughBanlance(fromEntity,amt);
+            //第三方交易
+            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER);
+            //资金处理
+            fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
+            fssChargeRecordService.updateChargeRecord(chargeRecordEntity,fundOrderEntity.getOrderNo(),"10080002");
+        }catch (Exception e){
+            fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
+        }
         //添加交易记录
         fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),4014, "资金转出",BigDecimal.ZERO);
         fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4015,"资金转入");
