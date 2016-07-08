@@ -37,6 +37,8 @@ public class BondTransferDto extends SuperDto{
 	private String o_tender_no;//原投标编号
 	private String o_cust_no;//转让人客户编号
 	private String o_busi_no;//转让人出借业务编号
+	private Integer acc_type;//接标人账户类型
+	private Integer to_acc_type;//转让人账户类型
 
 	public String getBid_id() {
 		return bid_id;
@@ -109,4 +111,21 @@ public class BondTransferDto extends SuperDto{
 	public void setO_busi_no(String o_busi_no) {
 		this.o_busi_no = o_busi_no;
 	}
+
+	public Integer getAcc_type() {
+		return acc_type;
+	}
+
+	public void setAcc_type(Integer acc_type) {
+		this.acc_type = acc_type;
+	}
+
+	public Integer getTo_acc_type() {
+		return to_acc_type;
+	}
+
+	public void setTo_acc_type(Integer to_acc_type) {
+		this.to_acc_type = to_acc_type;
+	}
+
 }

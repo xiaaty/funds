@@ -71,7 +71,7 @@ public class FssBondTransferService {
      * @return
      * @throws FssException
      */
-	public FssBondTransferEntity createBondTransferInfo(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String cust_no,String o_cust_no,String busi_no,String custName,String accNo,String accType) throws FssException{
+	public FssBondTransferEntity createBondTransferInfo(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String cust_no,String o_cust_no,String busi_no,String custName,String accNo) throws FssException{
 		FssBondTransferEntity entity = GenerateBeanUtil.GenerateClassInstance(FssBondTransferEntity.class);
 		entity.setTradeType(trade_type);
 		entity.setBidId(bid_id);
@@ -81,7 +81,6 @@ public class FssBondTransferService {
 		entity.setCustNo(cust_no);
 		entity.setCustName(custName);
 		entity.setAccNo(accNo);
-		entity.setAccType(accType);
 		entity.setBusiBidNo(busi_bid_no);
 		entity.setSeqNo(seq_no);
 		entity.setMchn(mchn);

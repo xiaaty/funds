@@ -222,7 +222,7 @@ public class FssTradeApplyController {
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
 		}else{
 			tradeapply.setAuditAmount(audit_amount);
-			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10109999");
+			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10080010");
 			//审核不通过进行资金解冻
 			if(applyType==1104){
 				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
@@ -360,4 +360,30 @@ public class FssTradeApplyController {
 		model.put("map", map);
 		return "fss/trade/bondTransfer_list";
 	}
+
+	/**
+	 * 转账申请
+	 * @param request
+	 * @param model
+	 * @param type
+	 * @param certNo
+	 * @param accNo
+	 * @param flag
+	 * @param customerInfoEntity
+     * @return
+     * @throws FssException
+     */
+	@RequestMapping(value = "/trade/tradeApply/createTransfer/{type}/{certNo}/{accNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createTransferApply(HttpServletRequest request, ModelMap model, @PathVariable Integer type,@PathVariable String certNo,@PathVariable String accNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
+		//当前账户信息（4转账转入，5转账转出）
+		customerInfoEntity=customerInfoService.queryCustomerInfoByCertNo(certNo);
+		if (customerInfoEntity!=null){
+			model.addAttribute("customerInfoEntity",customerInfoEntity);
+		}
+		model.addAttribute("type",type);
+		model.addAttribute("flag",flag);
+		model.addAttribute("accNo",accNo);
+		return "fss/trade/transfer_add";
+	}
+
 }

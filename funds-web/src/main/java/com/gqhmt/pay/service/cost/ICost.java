@@ -62,14 +62,18 @@ public interface ICost {
     public boolean charge(String platform, String trade_type,Integer cust_no,String busi_type,BigDecimal amt,String accounts_type) throws FssException;
 
     /**
-     * 代偿
+     * 代偿红包费用公共接口
      * @param trade_type
      * @param cust_id
-     * @param cust_type
+     * @param busi_type
      * @param amt
+     * @param busi_no
+     * @param platform
+     * @param accounts_type
+     * @param seqNo
      * @return
      * @throws FssException
      */
-    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Long  busi_no) throws FssException;
+    public boolean compensation(String trade_type,Integer cust_id,Integer busi_type,BigDecimal amt,Long  busi_no,String platform,String accounts_type,String seqNo,String memo) throws FssException;
 
 }

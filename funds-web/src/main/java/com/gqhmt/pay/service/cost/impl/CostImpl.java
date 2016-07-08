@@ -5,6 +5,8 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.trade.entity.FssChargeRecordEntity;
+import com.gqhmt.fss.architect.trade.service.FssChargeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -59,6 +61,8 @@ public class CostImpl  implements ICost{
     private FundTradeService fundTradeService;
     @Resource
     private FundsTradeImpl fundsTradeImpl;
+    @Resource
+    private FssChargeRecordService fssChargeRecordService;
 
     private  final Map<String,Long> map = new ConcurrentHashMap<>();
 
@@ -78,10 +82,10 @@ public class CostImpl  implements ICost{
         map.put("10990005_10040003",11l);
         map.put("10990005_10040099",5l);
         
-        map.put("10990006_10040001",1l);//准时还款保证金
-        map.put("10990006_10040002",1l);
-        map.put("10990006_10040003",1l);
-        map.put("10990006_10040099",1l);
+        map.put("10990006_10040001",2l);//准时还款保证金
+        map.put("10990006_10040002",2l);
+        map.put("10990006_10040003",2l);
+        map.put("10990006_10040099",2l);
         
         map.put("10990007_10040001",1l);//实收罚息滞纳金
         map.put("10990007_10040002",6l);
@@ -123,30 +127,46 @@ public class CostImpl  implements ICost{
         map.put("10999002_10040003",9l);
         map.put("10999002_10040099",1l);
 
-        map.put("10990006_10040001",2l); //保证金(增信金)
-        map.put("10990006_10040002",2l);//天津 7 ,共用北京增信金账户
-        map.put("10990006_10040003",2l);//上海 10,共用北京增信金账户
-        map.put("10990006_10040099",2l);//其他,共用北京增信金账户
-        
-        map.put("10990003_10040001",2l); //退保证金(增信金)
-        map.put("10990003_10040002",2l);//天津 7 ,共用北京增信金账户
-        map.put("10990003_10040003",2l);//上海 10,共用北京增信金账户
-        map.put("10990003_10040099",2l);//其他,共用北京增信金账户
+        //冠E通收费交易类型映射公司账户类型
+        map.put("11060001_10040001",5l);//提现手续费
+        map.put("11060001_10040002",8l);
+        map.put("11060001_10040003",11l);
+        map.put("11060001_10040099",5l);
 
-        map.put("21992103_10040001",3l);  //逆服务费
-        map.put("21992103_10040002",3l);
-        map.put("21992103_10040003",3l);
-        map.put("21992103_10040099",3l);
+        map.put("11060002_10040001",1l);//账户管理费
+        map.put("11060002_10040002",6l);
+        map.put("11060002_10040003",9l);
+        map.put("11060002_10040099",1l);
 
-        map.put("21992105_10040001",12l);//风险备用金
-        map.put("21992105_10040002",12l);
-        map.put("21992105_10040003",12l);
-        map.put("21992105_10040099",12l);
+        map.put("11060003_10040001",5l);  //服务费
+        map.put("11060003_10040002",8l);
+        map.put("11060003_10040003",11l);
+        map.put("11060003_10040099",5l);
 
-        map.put("21992105_10040001",4l);//红包账户
-        map.put("21992105_10040002",4l);
-        map.put("21992105_10040003",4l);
-        map.put("21992105_10040099",4l);
+        map.put("11060004_10040001",5l);  //咨询费
+        map.put("11060004_10040002",8l);
+        map.put("11060004_10040003",11l);
+        map.put("11060004_10040099",5l);
+
+        map.put("11060005_10040001",2l);  //收风险保证金
+        map.put("11060005_10040002",2l);
+        map.put("11060005_10040003",2l);
+        map.put("11060005_10040099",2l);
+
+        map.put("11060006_10040001",2l);  //退风险保证金
+        map.put("11060006_10040002",2l);
+        map.put("11060006_10040003",2l);
+        map.put("11060006_10040099",2l);
+
+        map.put("11060007_10040001",3l);  //逆服务费（补差额从公司3账户出）
+        map.put("11060007_10040002",3l);
+        map.put("11060007_10040003",3l);
+        map.put("11060007_10040099",3l);
+
+        map.put("11060008_10040001",1l);  //逆服务费（垫付利息）
+        map.put("11060008_10040002",6l);
+        map.put("11060008_10040003",9l);
+        map.put("11060008_10040099",1l);
 
 //代偿11070001、11070002、11070003、11070004
         map.put("11070001_10040001",3l);  //借款人逾期代偿
@@ -173,26 +193,6 @@ public class CostImpl  implements ICost{
         map.put("11130001_10040002",4l);
         map.put("11130001_10040003",4l);
         map.put("11130001_10040099",4l);
-
-        map.put("11130002_10040001",4l);  //wap返现红包入账
-        map.put("11130002_10040002",4l);
-        map.put("11130002_10040003",4l);
-        map.put("11130002_10040099",4l);
-
-        map.put("11130003_10040001",4l);  //安卓返现红包入账
-        map.put("11130003_10040002",4l);
-        map.put("11130003_10040003",4l);
-        map.put("11130003_10040099",4l);
-
-        map.put("11130004_10040001",4l);  //ios返现红包入账
-        map.put("11130004_10040002",4l);
-        map.put("11130004_10040003",4l);
-        map.put("11130004_10040099",4l);
-
-        map.put("11130005_10040001",4l);  //微信返现红包入账
-        map.put("11130005_10040002",4l);
-        map.put("11130005_10040003",4l);
-        map.put("11130005_10040099",4l);
     }
 
     @Override
@@ -284,38 +284,54 @@ public class CostImpl  implements ICost{
     }
 
     /**
-     * 代偿
+     * 资金代偿、费用收取、红包提现 公共接口
      * @param trade_type
      * @param cust_id
-     * @param cust_type
+     * @param busi_type
      * @param amt
      * @param busi_no
+     * @param platform
+     * @param accounts_type
      * @return
      * @throws FssException
      */
-    public boolean compensation(String trade_type,Integer cust_id,Integer cust_type,BigDecimal amt,Long busi_no) throws FssException{
+    public boolean compensation(String trade_type,Integer cust_id,Integer busi_type,BigDecimal amt,Long busi_no,String platform,String accounts_type,String seqNo,String memo) throws FssException{
         FundAccountEntity fromEntity=null;
         FundAccountEntity toEntity=null;
-        Long pubCustId = this.map.get(trade_type+"_"+"10040001");
+        String loanType=null;
+        if(platform==null || "".equals(platform)){
+            loanType="10040001";//默认交易平台为北京
+        }else{
+            loanType=platform;
+        }
+        //代偿、红包
+        Long pubCustId = this.map.get(trade_type+"_"+loanType);
         if(pubCustId == null) throw new FssException("90002001");
         if(pubCustId.intValue() == cust_id.intValue()){
             throw  new FssException("90004017");
         }
         FundAccountEntity  publicAccount = fundAccountService.getFundAccount(pubCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//对公账户
-        FundAccountEntity  personalAccount = fundsTradeImpl.getFundAccount(cust_id,cust_type);//个人账户
+        FundAccountEntity  personalAccount = fundsTradeImpl.getFundAccount(cust_id,busi_type);//个人账户
         //判断是从对公账户转入到个人账户还是从个人账户转入对公账户
-        if("11070002".equals(trade_type) || "11070004".equals(trade_type)){//借款人逾期代偿资金退回、委托出借代偿退回
+        if("11070002".equals(trade_type) || "11070004".equals(trade_type) || "11060001".equals(trade_type) || "11060002".equals(trade_type) || "11060003".equals(trade_type) || "11060004".equals(trade_type) || "11060005".equals(trade_type)){//借款人逾期代偿资金退回、委托出借代偿退回及费用收取
             fromEntity=personalAccount;
             toEntity=publicAccount;
-        }{//借款人逾期代偿、委托出借人代偿、web返现红包入账、wap返现红包入账、安卓返现红包入账、ios返现红包入账、微信返现红包入账
+        }else{//借款人逾期代偿、委托出借人代偿、web返现红包入账、wap返现红包入账、安卓返现红包入账、ios返现红包入账、微信返现红包入账、逆服务费
             fromEntity=publicAccount;
             toEntity=personalAccount;
         }
-        this.hasEnoughBanlance(fromEntity,amt);
-        //第三方交易
-        FundOrderEntity fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER);
-        //资金处理
-        fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
+        FundOrderEntity fundOrderEntity=null;
+        FssChargeRecordEntity chargeRecordEntity=fssChargeRecordService.addChargeRecord(fromEntity,toEntity,amt,loanType,String.valueOf(busi_type),trade_type,seqNo,String.valueOf(busi_no),String.valueOf(fromEntity.getBusiType()),String.valueOf(toEntity.getBusiType()),memo);
+        try{
+            this.hasEnoughBanlance(fromEntity,amt);
+            //第三方交易
+            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER);
+            //资金处理
+            fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
+            fssChargeRecordService.updateChargeRecord(chargeRecordEntity,fundOrderEntity.getOrderNo(),"10080002");
+        }catch (Exception e){
+            fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
+        }
         //添加交易记录
         fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),4014, "资金转出",BigDecimal.ZERO);
         fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4015,"资金转入");
