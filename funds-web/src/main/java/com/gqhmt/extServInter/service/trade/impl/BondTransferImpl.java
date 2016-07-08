@@ -35,13 +35,14 @@ public class BondTransferImpl implements IBondTransfer {
      * 11052001:web购买债权
      * 11052002:wap购买债权
      * 11052003:IOS购买债权
-     * 11052004:安卓购买债权
-     * 11052005:微信购买债权
-     * 11052006：委托购买债权
+	 * 11052004:安卓购买债权
+	 * 11052005:微信购买债权
+     * 11052006:委托购买债权
+     * 11052007:线下购买债权
      * @param dto
      * @return
      */
-	@APITradeTypeValid(value = "11052001,11052002,11052003,11052004,11052005,11052006")
+	@APITradeTypeValid(value = "11052001,11052002,11052003,11052004,11052005,11052006,11052007")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
@@ -49,7 +50,7 @@ public class BondTransferImpl implements IBondTransfer {
 			BondTransferDto cDto = (BondTransferDto)dto;
 			fundsTradeImpl.bondTransfer(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(), cDto.getBid_id(),cDto.getBusi_bid_no(),
                     cDto.getTender_no(),cDto.getCust_no(),cDto.getBusi_no(),cDto.getAmt(),
-                    cDto.getO_tender_no(),cDto.getO_cust_no(),cDto.getO_busi_no());
+                    cDto.getO_tender_no(),cDto.getO_cust_no(),cDto.getO_busi_no(),cDto.getAcc_type(),cDto.getTo_acc_type());
             response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

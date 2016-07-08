@@ -194,6 +194,9 @@
                                                         &nbsp;
                                                         <a href="${contextPath}/trade/tradeApply/createOfflineRecharge/${requestScope.type}/${bussaccount.certNo}/${bussaccount.accNo}/3">直接提现</a>
                                                         &nbsp;
+                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${requestScope.type}/${bussaccount.certNo}/${bussaccount.accNo}/4">转账转入</a>
+                                                        &nbsp;
+                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${requestScope.type}/${bussaccount.certNo}/${bussaccount.accNo}/5">转账转出</a>
                                                        <%-- <a href="${contextPath}/accounts/${requestScope.type}/list/${id}/water">查看流水</a>--%>
                                                     </td>
                                                 </tr>

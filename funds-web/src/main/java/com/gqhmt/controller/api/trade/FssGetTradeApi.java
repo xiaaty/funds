@@ -107,7 +107,7 @@ public class FssGetTradeApi {
 
 
 	/**
-	 * 代偿接口
+	 * 资金代偿、费用收取、红包提现 公共接口
 	 * @param dto
 	 * @return
      */

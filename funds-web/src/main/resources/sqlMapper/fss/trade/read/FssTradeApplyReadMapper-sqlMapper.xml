@@ -7,8 +7,8 @@
 			t.apply_no applyNo,
 			t.apply_type applyType,
 			t.cust_id custId,
-			t.cust_no custNo	,
-			t.user_no userNo	,
+			t.cust_no custNo,
+			t.user_no userNo,
 			t.form_id formId,
 			t.business_no businessNo,
 			t.busi_type busiType,
@@ -29,7 +29,8 @@
 			t.count count,
 			t.success_count successCount,
 			t.cust_type custType,
-			t.channel_no channelNo
+			t.channel_no channelNo,
+			t.settle_type settleType
 			FROM t_gq_fss_trade_apply t
 	</sql>
 	<!-- 根据申请类型和业务类型查询申请数据 -->
