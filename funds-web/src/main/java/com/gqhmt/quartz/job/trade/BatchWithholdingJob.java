@@ -90,22 +90,22 @@ public class BatchWithholdingJob extends SupperJob{
 
 
     private void batch(List<FssTradeRecordEntity> recordEntities){
-        int state = 0;//1中断 其他暂不处理
-        String respMsg = "";
+
+        int flag = 0;  //是否中断
+        String msg = "";
         for (FssTradeRecordEntity entity : recordEntities) {
             long startTime = Calendar.getInstance().getTimeInMillis();
             try {
-                if(state < 2) {
+                if(flag == 0) {
                     fundsBatchTrade.batchTrade(entity);
                 }else{
-                    fssTradeRecordService.updateTradeRecordExecuteState(entity,3,respMsg);//todo 增加失败原因ss
+                    fssTradeRecordService.updateTradeRecordExecuteState(entity,3,msg);//todo 增加失败原因ss
                 }
             } catch (FssException e) {
-                String msg = e.getMessage();
+                msg = e.getMessage();
                 String breakMsg = Application.getInstance().getDictOrderValue("breakMsg");
                 if(breakMsg != null && breakMsg.contains(msg)){
-                    state = 1;
-                    respMsg = msg;
+                    flag = 1; //如果存在余额不足等，中断代扣、代付操作。
                 }
             }
             long endTime = Calendar.getInstance().getTimeInMillis();

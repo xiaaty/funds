@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
+import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.core.exception.FssException;
@@ -162,14 +163,14 @@ public class FuiouFtpColomFieldService {
 		   fuiouFtpColomFieldWriteMapper.updateByPrimaryKey(fuiouFtpColomField);
 	   }
    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    /**
+     *
+     * author:xdw
+     * time:2016年7月07日
+     * function：查询FuiouFtpColomField集合
+     */
+    public List<FuiouFtpColomField> selectFuiouFtpFieldList(Map<String, String> map) {
+        return fuiouFtpColomFieldReadMapper.selectFuiouFtpFieldList(map);
+    }
 }

@@ -193,7 +193,6 @@ public class FssTradeApplyController {
 //		request.getSession().removeAttribute("token");
 		Map<String, String> map = new HashMap<String, String>();
 //		if(token.equals(server_token)){
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		String applyStatus=request.getParameter("applyStatus");
 		String bespokedate=request.getParameter("bespokedate");
 		FssTradeApplyEntity tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
@@ -203,6 +202,12 @@ public class FssTradeApplyController {
 		}else{
 			audit_amount=tradeapply.getTradeAmount();
 		}
+		if(tradeapply.getTradeAmount().compareTo(audit_amount)<0){
+			map.put("code", "0002");
+			map.put("message", "审核金额不能大于提现金额");
+			return  map;
+		}
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
@@ -220,6 +225,8 @@ public class FssTradeApplyController {
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
 			tradeapply.setAuditAmount(audit_amount);
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
+			map.put("code", "0000");
+			map.put("message", "success");
 		}else{
 			tradeapply.setAuditAmount(audit_amount);
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10080010");
@@ -229,10 +236,9 @@ public class FssTradeApplyController {
 			}
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			map.put("code", "0001");
+			map.put("message", "success");
 		}
-
-		map.put("code", "0000");
-        map.put("message", "success");
 		return map;
 	}
 
@@ -266,6 +272,10 @@ public class FssTradeApplyController {
 		if (customerInfoEntity!=null){
 			model.addAttribute("customerInfoEntity",customerInfoEntity);
 		}
+		Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+		if (null==custType) throw new FssException("91001006");
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(customerInfoEntity.getId(),custType);
+		model.addAttribute("amount",fundAccountEntity.getAmount());
 		model.addAttribute("type",type);
 		model.addAttribute("flag",flag);
 		model.addAttribute("accNo",accNo);

@@ -104,7 +104,29 @@ public class FssLoanEntity implements Serializable {
    
    @Column(name="busi_no")
    private String busiNo;             //业务类型
-   
+
+   @Column(name="withDraw_status")		//提现状态，1已提现，空为未提现
+   private String withDrawStatus;
+
+   @Column(name="order_no")				//满标回款批量跑批订单号
+   private String orderNo;
+
+	public String getWithDrawStatus() {
+		return withDrawStatus;
+	}
+
+	public void setWithDrawStatus(String withDrawStatus) {
+		this.withDrawStatus = withDrawStatus;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
 	public Long getId() {
 		return id;
 	}

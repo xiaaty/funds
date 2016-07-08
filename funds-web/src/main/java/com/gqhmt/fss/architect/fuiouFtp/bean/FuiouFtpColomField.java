@@ -85,7 +85,17 @@ public class FuiouFtpColomField implements Serializable {
     
     @Column(name="tender_id")
     private Long tenderId;
-    
+
+    @Column(name="type")
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public Long getId() {
         return id;

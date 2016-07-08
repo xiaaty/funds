@@ -18,7 +18,7 @@ public class GlobalConstants {
 	public static final String SESSION_EMP = "emp_session";
 	public static final String SESSION_MENU = "session_menu";
 	public static final String EXCLUDE_URL_INIT="exclude";
-	public static final String EXCLUDE_DIRECTORY_REGEX="^/css/|^/images/|^/js/|^/upload/|^/img/|^/api/|^/fonts/|^/loginout.jsp";
+	public static final String EXCLUDE_DIRECTORY_REGEX="^/css/|^/images/|^/interaction/|^/js/|^/upload/|^/img/|^/api/|^/fonts/|^/loginout.jsp";
 	public static final String ROLE_SUPPER_ID=",1,";
     public static final String ROLE_BUSINESS_SUPPER_ID=",2,";
 	public static final String EXCLUDE_ONLY_LOGIN="^/json/";
@@ -256,6 +256,9 @@ public class GlobalConstants {
 
     public static Map<Long,String> COMPANY_ACCOUNT_NAME =  new ConcurrentHashMap<>();
     public static Map<Long,String> COMPANY_ACCOUNT_REAL_NAME =  new ConcurrentHashMap<>();
+
+    //富有金账户对账文件信息类型
+    public static Map<String, String> FUYOU_ACCOUNT_INFO_TRADE_TYPE = new ConcurrentHashMap<>();
 
 
 	
@@ -763,5 +766,16 @@ public class GlobalConstants {
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11092001","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11091003","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11040013","97010001");
+
+
+
+//        --------------富有金账户对账文件信息类型---------------------------------
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("DJJD","冻结/解冻");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("ZZ","转账");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("HB","划拨");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTCZ","委托充值");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTTX","委托提现");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("YSQ","预授权交易");
+
 	}
 }
