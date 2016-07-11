@@ -78,8 +78,8 @@ public class FundSequenceEntity  implements java.io.Serializable{
     @Column(name="to_cust_id",updatable = false)
     private Long  toCustId; //bigint(20) DEFAULT NULL COMMENT '入账（转账）客户id',
 
-    @Column(name="to_pend_no",updatable = false)
-    private String toPendNo; //varchar(45) DEFAULT NULL COMMENT '入账（转账）出借编号',
+    @Column(name="to_lend_no",updatable = false)
+    private String toLendNo; //varchar(45) DEFAULT NULL COMMENT '入账（转账）出借编号',
 
     @Column(name="loan_cust_id",updatable = false)
     private Long loanCustId; //bigint(20) DEFAULT NULL COMMENT '对应借款标的借款人客户id，非抵押权人，原始借款人客户id',
