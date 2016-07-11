@@ -141,7 +141,7 @@ public class CreateAccountEvent {
             //生成富有账户
             if(isOldAccount){
                 if (primaryAccount.getHasThirdAccount() ==1){//富友
-                    paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+                    paySuperByFuiou.createAccountByPersonal(primaryAccount,"","",tradeType);
                     primaryAccount.setHasThirdAccount(2);
                     fundAccountService.update(primaryAccount);
                     fssAccountService.createFuiouAccount(mchn,fssCustomerEntity,bankNo);

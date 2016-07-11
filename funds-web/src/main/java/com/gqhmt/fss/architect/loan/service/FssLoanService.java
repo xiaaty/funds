@@ -638,7 +638,7 @@ public class FssLoanService {
 		 fssAccountEntity = fssAccountService.getFssAccountByAccNo(fssLoanEntity.getAccNo());
 		}
 		FundAccountEntity toSFEntity = fundAccountService.getFundAccount(fssAccountEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_LOAN);
-		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID,"2");
+		FundOrderEntity fundOrderEntity =fundOrderService.createOrder(toSFEntity, null,fssLoanEntity.getPayAmt(),BigDecimal.ZERO, GlobalConstants.ORDER_ABORT_BID, fssLoanEntity.getId(), GlobalConstants.BUSINESS_BID);
 		fuiouFtpOrderService.addOrder(fundOrderEntity, 3);
 		fundOrderService.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
 //		throw new FssException("异步处理，等待回调通知");
@@ -666,14 +666,14 @@ public class FssLoanService {
 	}
 
 
-    /**
-     *
-     * author:xdw
-     * time:2016年7月07日
-     * function：冠e通交易信息列表
-     */
-    public List<FssLoanEntity> selectFssLoanList(Map<String,String> map){
-		return fssLoanReadMapper.selectFssLoanList(map);
-	}
+//    /**
+//     *
+//     * author:xdw
+//     * time:2016年7月07日
+//     * function：冠e通交易信息列表
+//     */
+//    public List<FssLoanEntity> selectFssLoanList(Map<String,String> map){
+//		return fssLoanReadMapper.selectFssLoanList(map);
+//	}
 	
 }	

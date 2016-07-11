@@ -67,61 +67,61 @@ public class LoanImpl implements ILoan {
 	 * 借款系统开户
 	 */
 //    @Override
-    public String createLoanAccount(CreateLoanAccountDto dto) throws FssException {
-        //富友
-    	FssAccountEntity  fssAccount=null; //新版账户体系
-    	CustomerInfoEntity customerInfoEntity=null;//旧版客户信息
-    	FssCustomerEntity fssCustomerEntity=null;//新版客户信息
-		BankCardInfoEntity bankCardInfoEntity=null;
-    	String accNo=null;
-    	Long custId=null;
-		/**
-		 * 11020001:wap开户
-		 * 11020002:web开户
-		 * 11020003:安卓开户
-		 * 11020004:微信开户
-		 * 11020005:ios开户
-		 * 11020006:委托出借开户
-		 * 11020007:借款人开户（冠e通）
-		 * 11020008:代偿人开户
-		 * 11020009:抵押权人开户
-		 * 11020010:保理合同开户
-		 * 11020011:借款人（纯线下）开户
-		 * 11020012:借款人开户（借款系统）
-		 * 11020013:借款代还人开户
-		 * 11020014:开互联网账户
-		 * 11020015:app开户
-		 */
-		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
-		try{
-			if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
-				customerInfoEntity=customerInfoService.createLoanAccount(dto);
-				customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
-				customerInfoEntity.setParentBankCode(dto.getBank_id());
-				customerInfoEntity.setBankLongName("");
-				customerInfoEntity.setBankNo(dto.getBank_card());
-				try {
-					fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
-				} catch (FssException e) {
-					LogUtil.error(this.getClass(), e);
-					throw e;
-				}
-			}
-		}catch (FssException e) {
-			LogUtil.error(this.getClass(), e);
-			throw e;
-		}
-		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
-//    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
-    	fssAccount=fssAccountService.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(), custId);
-    	accNo=fssAccount.getAccNo();
-//    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
-//    	 if(fundAccount!=null&&customerInfoEntity!=null){
-    	 //创建需要报备的 P2P个人平台开户文件
-//    	 fssAccountFileService.creatAccountFile(dto.getSeq_no(), fundAccount.getUserName(), fundAccount.getUserName(), 0, customerInfoEntity.getCustomerName(), customerInfoEntity.getCertType(), customerInfoEntity.getCertNo(), customerInfoEntity.getSex(), customerInfoEntity.getMobilePhone(), customerInfoEntity.getAddress(), customerInfoEntity.getCustomerType(), customerInfoEntity.getCreateTime(), "0", "ADD", customerInfoEntity.getRemark());
-//    	 }
-    	 return accNo;
-    }
+//    public String createLoanAccount(CreateLoanAccountDto dto) throws FssException {
+//        //富友
+//    	FssAccountEntity  fssAccount=null; //新版账户体系
+//    	CustomerInfoEntity customerInfoEntity=null;//旧版客户信息
+//    	FssCustomerEntity fssCustomerEntity=null;//新版客户信息
+//		BankCardInfoEntity bankCardInfoEntity=null;
+//    	String accNo=null;
+//    	Long custId=null;
+//		/**
+//		 * 11020001:wap开户
+//		 * 11020002:web开户
+//		 * 11020003:安卓开户
+//		 * 11020004:微信开户
+//		 * 11020005:ios开户
+//		 * 11020006:委托出借开户
+//		 * 11020007:借款人开户（冠e通）
+//		 * 11020008:代偿人开户
+//		 * 11020009:抵押权人开户
+//		 * 11020010:保理合同开户
+//		 * 11020011:借款人（纯线下）开户
+//		 * 11020012:借款人开户（借款系统）
+//		 * 11020013:借款代还人开户
+//		 * 11020014:开互联网账户
+//		 * 11020015:app开户
+//		 */
+//		customerInfoEntity=customerInfoService.searchCustomerInfoByCertNo(dto.getCert_no());
+//		try{
+//			if(customerInfoEntity == null && !"11020011".equals(dto.getTrade_type())){
+//				customerInfoEntity=customerInfoService.createLoanAccount(dto);
+//				customerInfoEntity.setCityCode(Application.getInstance().getFourCode(dto.getCity_id()));
+//				customerInfoEntity.setParentBankCode(dto.getBank_id());
+//				customerInfoEntity.setBankLongName("");
+//				customerInfoEntity.setBankNo(dto.getBank_card());
+//				try {
+//					fundsAccountImpl.createAccount(customerInfoEntity, "", "");//创建富友账户
+//				} catch (FssException e) {
+//					LogUtil.error(this.getClass(), e);
+//					throw e;
+//				}
+//			}
+//		}catch (FssException e) {
+//			LogUtil.error(this.getClass(), e);
+//			throw e;
+//		}
+//		custId = customerInfoEntity == null?null: customerInfoEntity.getId();
+////    	3,既有线上的又有纯线下的，要先把线下的转为线上的，再走富友
+//    	fssAccount=fssAccountService.createAccount(dto.getTrade_type(),dto.getMchn(),dto.getMobile(),dto.getCert_no(),dto.getName(),dto.getBank_id(),dto.getBank_card(),dto.getCity_id(),dto.getContract_no(), custId);
+//    	accNo=fssAccount.getAccNo();
+////    	 FundAccountEntity fundAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_LOAN);
+////    	 if(fundAccount!=null&&customerInfoEntity!=null){
+//    	 //创建需要报备的 P2P个人平台开户文件
+////    	 fssAccountFileService.creatAccountFile(dto.getSeq_no(), fundAccount.getUserName(), fundAccount.getUserName(), 0, customerInfoEntity.getCustomerName(), customerInfoEntity.getCertType(), customerInfoEntity.getCertNo(), customerInfoEntity.getSex(), customerInfoEntity.getMobilePhone(), customerInfoEntity.getAddress(), customerInfoEntity.getCustomerType(), customerInfoEntity.getCreateTime(), "0", "ADD", customerInfoEntity.getRemark());
+////    	 }
+//    	 return accNo;
+//    }
 
     /**
      * 保证金退还

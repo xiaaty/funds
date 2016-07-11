@@ -96,20 +96,20 @@ public class BatchWithholdingJob extends SupperJob{
                     	 return;
                      }
                      List<FssTradeRecordEntity> recordEntities = fssTradeRecordService.moneySplit(apply);
-                     this.batch(recordEntities);
+                     this.batch(recordEntities,apply.getBusinessNo(),apply.getCustType());
                  } catch (Exception e) {
                 	 LogUtil.error(getClass(),e);
                  }
              }
 
-             private void batch(List<FssTradeRecordEntity> recordEntities){
+             private void batch(List<FssTradeRecordEntity> recordEntities,String contractNo,int custType){
                  int flag = 0;  //是否中断
                  String msg = "";
                  for (FssTradeRecordEntity entity : recordEntities) {
                      long startTime = Calendar.getInstance().getTimeInMillis();
                      try {
                          if(flag == 0) {
-                             fundsBatchTrade.batchTrade(entity);
+                             fundsBatchTrade.batchTrade(entity,contractNo,custType);
                          }else{
                              fssTradeRecordService.updateTradeRecordExecuteState(entity,3,msg);//todo 增加失败原因ss
                          }

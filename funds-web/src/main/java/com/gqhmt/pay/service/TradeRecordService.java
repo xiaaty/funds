@@ -195,7 +195,7 @@ public class TradeRecordService {
         int soruceType = 0;
         BigDecimal amount = new BigDecimal(amt).divide(new BigDecimal("100"));
         if(fundOrderEntity == null){
-            fundOrderEntity = paySuperByFuiou.createOrder(entity,amount,soruceType,0,0,thirdPartyType);
+            fundOrderEntity = paySuperByFuiou.createOrder(entity,amount,soruceType,0,0,"","");
             fundOrderEntity.setOrderNo(orderNo);
         }
         asynCommand(fundOrderEntity,state);
@@ -245,7 +245,7 @@ public class TradeRecordService {
             //充值操作
             try {
                 sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
-                paySuperByFuiou.withholding(entity, fundOrderEntity.getOrderAmount(), GlobalConstants.ORDER_CHARGE,0,0);
+                //paySuperByFuiou.withholding(entity, fundOrderEntity.getOrderAmount(), GlobalConstants.ORDER_CHARGE,0,0);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
                 //去掉冻结
 //                if(entity.getCustId() != 4){

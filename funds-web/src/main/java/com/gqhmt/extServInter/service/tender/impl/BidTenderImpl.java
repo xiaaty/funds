@@ -41,7 +41,7 @@ public class BidTenderImpl implements IBidTender {
     	Response response = new Response();
     	try {
 			BidDto bidDto=(BidDto) dto;
-			fundsTenderImpl.bid(bidDto.getBid_id(),bidDto.getTender_no(),bidDto.getProduct_title(),bidDto.getCust_no(),bidDto.getInvest_type(),bidDto.getReal_Amount(),bidDto.getLoan_cust_id(),bidDto.getMoto_cust_id(),bidDto.getBonus_Amount());
+			fundsTenderImpl.bid(bidDto.getTrade_type(), bidDto.getBid_id(),bidDto.getTender_no(),bidDto.getProduct_title(),bidDto.getCust_no(),bidDto.getInvest_type(),bidDto.getReal_Amount(),bidDto.getLoan_cust_id(),bidDto.getMoto_cust_id(),bidDto.getBonus_Amount());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
