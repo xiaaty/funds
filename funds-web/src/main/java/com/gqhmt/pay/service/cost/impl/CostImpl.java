@@ -283,12 +283,16 @@ public class CostImpl  implements ICost{
     }
 
     /**
-     * 代偿
+     * 代偿、红包、费用等公共接口
      * @param trade_type
      * @param cust_id
-     * @param cust_type
+     * @param busi_type
      * @param amt
      * @param busi_no
+     * @param platform
+     * @param accounts_type
+     * @param seqNo
+     * @param memo
      * @return
      * @throws FssException
      */

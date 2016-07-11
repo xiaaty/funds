@@ -12,16 +12,16 @@ import java.math.BigDecimal;
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author jhz
+ * @author 柯禹来
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年2月20日
- * Description: APP（wap）端提现交易
+ * Create at:   2016年7月11日
+ * Description: 投标接口参数
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年2月20日  jhz      1.0     1.0 Version
+ * 2016年7月11日  柯禹来      1.0     1.0 Version
  */
 public class BidDto extends SuperDto{
 
