@@ -26,26 +26,26 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "id")
+    @Column(name = "id",updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "actionType")
     private Integer actionType;
 
-    @Column(name = "ACCOUNT_ID")
+    @Column(name = "ACCOUNT_ID",updatable = false)
     private Long accountId;
 
     @Column(name = "fund_type")
     private Integer fundType;
 
-    @Column(name = "amount")
+    @Column(name = "amount",updatable = false)
     private BigDecimal amount;
 
     @Column(name = "currency")
     private String currency;
 
-    @Column(name = "CREATE_TIME")
+    @Column(name = "CREATE_TIME",updatable = false)
     private Date createTime;
 
     @Column(name = "MODIFY_TIME")
@@ -54,13 +54,13 @@ public class FundSequenceEntity  implements java.io.Serializable{
     @Column(name="thirdparty_type")
     private int thirdPartyType;
 
-    @Column(name = "order_no")
+    @Column(name = "order_no",updatable = false)
     private String orderNo;
 
     @Column(name = "sumary")
     private String  sumary;
 
-    @Column(name="O_ACCOUNT_ID")
+    @Column(name="O_ACCOUNT_ID",updatable = false)
     private Long oAccountId;
 
     @Column(name = "token")
@@ -68,6 +68,33 @@ public class FundSequenceEntity  implements java.io.Serializable{
 
     @Column(name = "s_order_no")
     private String sOrderNo;
+
+    @Column(name="cust_id",updatable = false)
+    private Long custId;       // bigint(20) DEFAULT NULL COMMENT '出账（转账）入账（其他交易）客户id',
+
+    @Column(name="lend_no",updatable = false)
+    private String  lendNo; //varchar(45) DEFAULT NULL COMMENT '出账（转账）入账（其他交易）出借编号，线上客户为空',
+
+    @Column(name="to_cust_id",updatable = false)
+    private Long  toCustId; //bigint(20) DEFAULT NULL COMMENT '入账（转账）客户id',
+
+    @Column(name="to_pend_no",updatable = false)
+    private String toPendNo; //varchar(45) DEFAULT NULL COMMENT '入账（转账）出借编号',
+
+    @Column(name="loan_cust_id",updatable = false)
+    private Long loanCustId; //bigint(20) DEFAULT NULL COMMENT '对应借款标的借款人客户id，非抵押权人，原始借款人客户id',
+
+    @Column(name="loan_no",updatable = false)
+    private String loanNo; //varchar(45) DEFAULT NULL COMMENT '投标，满标，回款，等等对应借款合同编号',
+
+    @Column(name="new_fund_type",updatable = false)
+    private String newFundType; //char(10) DEFAULT '' COMMENT '新资金类型',
+
+    @Column(name="trade_type",updatable = false)
+    private String tradeType; //char(10) DEFAULT '' COMMENT '交易类型',
+
+
+
 
     public Long getId() {
         return id;
