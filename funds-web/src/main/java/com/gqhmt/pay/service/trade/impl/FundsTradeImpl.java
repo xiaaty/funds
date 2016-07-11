@@ -651,7 +651,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity  fromEntity = this.getFundAccount(Integer.valueOf(cust_no),acc_type);//接标人账户
         FundAccountEntity  toEntity = this.getFundAccount(Integer.valueOf(o_cust_no),to_acc_type);//转让人账户
         //添加债权记账信息
-        FssBondTransferEntity bondEntity = fssBondTransferService.createBondTransferInfo(mchn,seq_no,trade_type,bid_id,busi_bid_no,cust_no,o_cust_no,busi_no,fromEntity.getCustName(),fromEntity.getAccountNo());
+        FssBondTransferEntity bondEntity = fssBondTransferService.createBondTransferInfo(mchn,seq_no,trade_type,bid_id,busi_bid_no,cust_no,o_cust_no,busi_no,fromEntity.getCustName(),fromEntity.getAccountNo(),acc_type,to_acc_type,tender_no,o_tender_no,o_busi_no);
         String tradeState=bondEntity.getTradeState();
         FundOrderEntity fundOrderEntity=null;
         try {

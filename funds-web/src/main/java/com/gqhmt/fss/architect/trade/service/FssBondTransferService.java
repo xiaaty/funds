@@ -71,7 +71,7 @@ public class FssBondTransferService {
      * @return
      * @throws FssException
      */
-	public FssBondTransferEntity createBondTransferInfo(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String cust_no,String o_cust_no,String busi_no,String custName,String accNo) throws FssException{
+	public FssBondTransferEntity createBondTransferInfo(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String cust_no,String o_cust_no,String busi_no,String custName,String accNo,Integer acc_type,Integer to_acc_type,String tender_no,String o_tender_no,String o_busi_no) throws FssException{
 		FssBondTransferEntity entity = GenerateBeanUtil.GenerateClassInstance(FssBondTransferEntity.class);
 		entity.setTradeType(trade_type);
 		entity.setBidId(bid_id);
@@ -87,6 +87,11 @@ public class FssBondTransferService {
 		entity.setTradeState("10080001");
 		entity.setCreateTime(new Date());
 		entity.setModifyTime(new Date());
+		entity.setAccType(String.valueOf(acc_type));
+		entity.setToAccType(String.valueOf(to_acc_type));
+		entity.setTenderNo(tender_no);
+		entity.setTenderNo(o_tender_no);
+		entity.setoBusiNo(o_busi_no);
 		try {
 			fssBondTransferWriteMapper.insertSelective(entity);
 		}catch (Exception e){

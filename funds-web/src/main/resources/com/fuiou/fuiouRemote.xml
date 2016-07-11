@@ -63,7 +63,8 @@
           备注	rem	max(60)	O -->
         <out_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
         <in_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="4"/>
-        <amt source="doubleAmountToLong100" paramIndex="2"/>
+        <!--<amt source="doubleAmountToLong100" paramIndex="2"/>-->
+        <amt source="amountToLong100" paramIndex="2"/>
         <rem source="null"/>
     </api>
     <!-- 5.	预授权撤销接口 -->
