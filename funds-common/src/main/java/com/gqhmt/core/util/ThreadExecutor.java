@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadFactory;
  * @create 2016年7月11日
  */
 public class ThreadExecutor {
-    private static final int POOL_SIZE = 100;
+    private static final int POOL_SIZE = 50;
     private static ExecutorService executorService;
 
     private static ExecutorService getExecutor() {
