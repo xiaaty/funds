@@ -19,6 +19,7 @@ import java.util.Date;
  * 2016/7/6  jhz     1.0     1.0 Version
  */
 public class FssProjectInfoBean {
+
     private Long id;
 
     private Integer custId;
