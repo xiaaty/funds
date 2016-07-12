@@ -61,6 +61,9 @@ public class BatchWithholdingJob extends SupperJob{
         try {
             List<FssTradeApplyEntity> applyEntities= fssTradeApplyService.getTradeAppliesByApplyState("10100002");
             for (FssTradeApplyEntity apply:applyEntities) {
+            	//放入线程池前修改数据状态，防止数据被下次定时任务重新扫到的情况出现
+            	apply.setApplyState("10100004");
+                fssTradeApplyService.updateTradeApply(apply);
             	//启动线程池执行多线程任务
                 ThreadExecutor.execute(runnableProcess(apply));
             }
@@ -89,8 +92,6 @@ public class BatchWithholdingJob extends SupperJob{
              @Override
              public void run() {
                  try {
-                	 apply.setApplyState("10100004");
-                     fssTradeApplyService.updateTradeApply(apply);
                      int count= fssTradeRecordService.getCountByApplyNo(apply.getApplyNo());
                      if (count!=0 && apply.getCount()<=apply.getSuccessCount()) {
                     	 return;
