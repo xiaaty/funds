@@ -41,7 +41,7 @@ import java.util.Map;
  * 2016/6/28.  xdw         1.0     1.0 Version
  */
 @Component
-public class accountInfo extends SupperJob {
+public class AccountInfo extends SupperJob {
 
     @Resource
     private FtpDownloadFileService ftpDownloadFileService;
