@@ -110,7 +110,7 @@ public class BidAbortService {
         }
 
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(fromEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_ABORT_BID_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_ABORT_BID, "2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(fromEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_ABORT_BID_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_ABORT_BID, "1105","");
 
         BigDecimal bonusAmount = BigDecimal.ZERO;
 
@@ -132,6 +132,7 @@ public class BidAbortService {
         paySuperByFuiou.updateOrder(fundOrderEntity, 6, "0002", "ftp异步处理");
         loanEntity.setStatus("10050104");
         loanEntity.setModifyTime(new Date());
+        loanEntity.setOrderNo(fundOrderEntity.getOrderNo());
         fssLoanService.update(loanEntity);
         
     }

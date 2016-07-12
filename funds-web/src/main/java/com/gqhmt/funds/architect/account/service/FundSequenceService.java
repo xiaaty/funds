@@ -93,7 +93,7 @@ public class FundSequenceService {
         if(amount.multiply(new BigDecimal(100)).longValue()<0){
             throw new ChargeAmountNotenoughException();
         }
-        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 1, accountType, amount, thirdPartyType, orderEntity, 0L) ;
+        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 1, accountType, amount,  orderEntity, 0L,entity.getCustId()) ;
         fundSequenceEntity.setSumary("充值");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         try{
@@ -128,7 +128,7 @@ public class FundSequenceService {
             throw new AmountFailException("传入金额不能小于0");
         }
         BigDecimal refundAmount = new BigDecimal("-"+amount.toPlainString());
-        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 2, accountType, refundAmount, thirdPartyType, orderEntity, 0l);
+        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(entity.getId(), 2, accountType, refundAmount, orderEntity, 0l,entity.getCustId());
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
@@ -145,7 +145,7 @@ public class FundSequenceService {
             throw new AmountFailException("传入金额不能小于0");
         }
         amount = new BigDecimal("-"+amount.toPlainString());
-        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(frozeEntity.getId(), 2, accountType, amount, thirdPartyType, orderEntity, entity.getId());
+        FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(frozeEntity.getId(), 2, accountType, amount,  orderEntity, entity.getId(),frozeEntity.getCustId());
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
@@ -189,10 +189,10 @@ public class FundSequenceService {
             toActionType = 4015;
         }
 
-        FundSequenceEntity fromFundSequenceEntity =this.getFundSequenceEntity(fromEntity.getId(), actionType, accountType, new BigDecimal("-" + amount.toPlainString()), thirdPartyType, orderEntity, toEntiry.getId());
+        FundSequenceEntity fromFundSequenceEntity =this.getFundSequenceEntity(fromEntity.getId(), actionType, accountType, new BigDecimal("-" + amount.toPlainString()),  orderEntity, toEntiry.getId(),fromEntity.getCustId());
         fromFundSequenceEntity.setSumary("转账转出  转给"+toEntiry.getCustName()+"("+toEntiry.getId()+") ");
 
-        FundSequenceEntity toFundSequenceEntity = this.getFundSequenceEntity(toEntiry.getId(), actionType, toActionType, amount, thirdPartyType, orderEntity, fromEntity.getId());
+        FundSequenceEntity toFundSequenceEntity = this.getFundSequenceEntity(toEntiry.getId(), actionType, toActionType, amount,  orderEntity, fromEntity.getId(),toEntiry.getCustId());
         toFundSequenceEntity.setSumary("转账转入 "+fromEntity.getCustName()+"("+fromEntity.getId()+")转入");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(fromFundSequenceEntity);
@@ -219,7 +219,7 @@ public class FundSequenceService {
         //冻结金额需要小于账户余额
         long money = amount.multiply(new BigDecimal("10000")).longValue();
 
-        FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(), 4, accountType, new BigDecimal(-money).divide(new BigDecimal("10000")), thirdPartyType, orderEntity, frozenEntiry.getId());
+        FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(), 4, accountType, new BigDecimal(-money).divide(new BigDecimal("10000")),  orderEntity, frozenEntiry.getId(),orgEntity.getCustId());
         orgFundSequenceEntity.setSumary("冻结");
         int frozenType = 2007;
         if(accountType==1007){
@@ -229,7 +229,7 @@ public class FundSequenceService {
         }else if(accountType==1003){
             frozenType = 2001;
         }
-        FundSequenceEntity frozenFundSequenceEntity = this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount, thirdPartyType, orderEntity, orgEntity.getId());
+        FundSequenceEntity frozenFundSequenceEntity = this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount,  orderEntity, orgEntity.getId(),frozenEntiry.getCustId());
         frozenFundSequenceEntity.setSumary("冻结");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(orgFundSequenceEntity);
@@ -269,9 +269,9 @@ public class FundSequenceService {
         }else if(accountType==1004){
             frozenType = 2002;
         }
-        FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),thirdPartyType,orderEntity,frozenEntiry.getId());
+        FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),orderEntity,frozenEntiry.getId(),orgEntity.getCustId());
         orgFundSequenceEntity.setSumary("解冻");
-        FundSequenceEntity frozenFundSequenceEntity =this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount, thirdPartyType, orderEntity, orgEntity.getId());
+        FundSequenceEntity frozenFundSequenceEntity =this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount, orderEntity, orgEntity.getId(),frozenEntiry.getCustId());
         frozenFundSequenceEntity.setSumary("解冻");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(orgFundSequenceEntity);
@@ -291,12 +291,17 @@ public class FundSequenceService {
      * @param actionType
      * @param accountType
      * @param amount
-     * @param thirdPartyType
      * @param orderEntity
      * @param oAccountId
      * @return
      */
-    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,Long oAccountId){
+    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,FundOrderEntity orderEntity,Long oAccountId,Long custId){
+        return getFundSequenceEntity(accountID,actionType,accountType,amount,orderEntity == null ?"":  orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),oAccountId,"","",custId,null,null,null,null,null);
+    }
+
+    protected FundSequenceEntity getFundSequenceEntity(Long accountID,int actionType,int accountType,BigDecimal amount,String orderNo,String sOrderNo,
+                                                       Long oAccountId,String newFundsType,String tradeType,Long custId,String lendNo,Long toCustId,
+                                                       String toLendNo,Long loanCustId,String loanNo){
         FundSequenceEntity entity = new FundSequenceEntity();
         entity.setCreateTime(new Timestamp(new Date().getTime()));
         entity.setAmount(amount);
@@ -304,12 +309,19 @@ public class FundSequenceService {
         entity.setCurrency("0001");
         entity.setFundType(accountType);
         entity.setActionType(actionType);
-        entity.setThirdPartyType(thirdPartyType.getKey());
-        if(orderEntity != null){
-            entity.setOrderNo(orderEntity.getOrderNo());
-        }
+        entity.setThirdPartyType(2);
+        entity.setOrderNo(orderNo == null ? "":orderNo);
+        entity.setsOrderNo(sOrderNo == null ? "":sOrderNo);
         entity.setModifyTime(new Date());
         entity.setoAccountId(oAccountId);
+        entity.setNewFundType(newFundsType);
+        entity.setTradeType(tradeType);
+        entity.setCustId(custId);
+        entity.setLendNo(lendNo);
+        entity.setToCustId(toCustId);
+        entity.setToLendNo(toLendNo);
+        entity.setLoanCustId(loanCustId);
+        entity.setLoanNo(loanNo);
         return entity;
     }
 

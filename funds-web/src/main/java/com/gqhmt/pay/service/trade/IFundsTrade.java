@@ -163,19 +163,25 @@ public interface IFundsTrade {
     boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
                           Long busiId,int selletType) throws FssException;
 
-
-
     /**
-     * 冻结
-     * @param dto
+     * 资金冻结
+     * @param custId
+     * @param busiType
+     * @param amt
      * @return
      * @throws FssException
      */
-    public boolean froze(FreezeDto dto) throws FssException;
+    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
 
     /**
-     * 解冻
-     * @param dto
+     * 资金解冻
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_no
+     * @param user_no
+     * @param amt
+     * @param busi_type
      * @return
      * @throws FssException
      */
@@ -247,12 +253,6 @@ public interface IFundsTrade {
      */
     public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException;
 
-    /* public boolean sstxBusiness(SstxDto sstx) throws FssException;
-
-     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
- */
-    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
-
     /**
      * 充值提现金额变动通知
      *
@@ -293,5 +293,5 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no) throws FssException;
+    public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no,Integer acc_type,Integer to_acc_type) throws FssException;
 }

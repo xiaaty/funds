@@ -32,26 +32,28 @@ public class FssChargeRecordEntity implements Serializable {
     private String fromCustNo;
     @Column(name = "from_cust_name",updatable = false)
     private String fromCustName;
+    @Column(name = "from_acc_type",updatable = false)
+    private String fromAccType;
     @Column(name = "from_acc_no",updatable = false)
     private String fromAccNo;
     @Column(name = "to_cust_no",updatable = false)
     private String toCustNo;
     @Column(name = "to_cust_name",updatable = false)
     private String toCustName;
+	@Column(name = "to_acc_type",updatable = false)
+	private String toAccType;
     @Column(name = "to_acc_no",updatable = false)
     private String toAccNo;
     @Column(name = "charge_type",updatable = false)
     private String chargeType;
-	@Column(name = "charge",updatable = false)
-	private BigDecimal charge;
+	@Column(name = "amt",updatable = false)
+	private BigDecimal amt;
     @Column(name = "busi_no",updatable = false)
     private String busiNo;
     @Column(name = "busi_type",updatable = false)
     private String busiType;
     @Column(name = "trade_type",updatable = false)
     private String tradeType;
-    @Column(name = "trade_state")
-    private String tradeState;
     @Column(name = "trade_result")
     private String tradeResult;
     @Column(name = "trade_time",updatable = false)
@@ -64,7 +66,28 @@ public class FssChargeRecordEntity implements Serializable {
     private String respCode;
     @Column(name = "resp_msg")
     private String respMsg;
+    @Column(name = "order_no")
+    private String orderNo;
+	@Column(name = "create_time")
+	private Date createTime;
+	@Column(name = "modify_time")
+	private Date modifyTime;
 
+	public String getFromAccType() {
+		return fromAccType;
+	}
+
+	public void setFromAccType(String fromAccType) {
+		this.fromAccType = fromAccType;
+	}
+
+	public String getToAccType() {
+		return toAccType;
+	}
+
+	public void setToAccType(String toAccType) {
+		this.toAccType = toAccType;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -119,11 +142,11 @@ public class FssChargeRecordEntity implements Serializable {
 	public void setChargeType(String chargeType) {
 		this.chargeType = chargeType;
 	}
-	public BigDecimal getCharge() {
-		return charge;
+	public BigDecimal getAmt() {
+		return amt;
 	}
-	public void setCharge(BigDecimal charge) {
-		this.charge = charge;
+	public void setAmt(BigDecimal amt) {
+		this.amt = amt;
 	}
 	public String getBusiNo() {
 		return busiNo;
@@ -142,12 +165,6 @@ public class FssChargeRecordEntity implements Serializable {
 	}
 	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
-	}
-	public String getTradeState() {
-		return tradeState;
-	}
-	public void setTradeState(String tradeState) {
-		this.tradeState = tradeState;
 	}
 	public String getTradeResult() {
 		return tradeResult;
@@ -184,5 +201,25 @@ public class FssChargeRecordEntity implements Serializable {
 	}
 	public void setRespMsg(String respMsg) {
 		this.respMsg = respMsg;
+	}
+	public String getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 }

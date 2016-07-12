@@ -34,9 +34,10 @@
 			t.rep_code repCode,
 			t.trade_type_parent tradeTypeParent,
 			t.rep_msg repMsg, 
-			t.busi_no busiNo, 
+			t.busi_no busiNo,
 			t.withDraw_status withDrawStatus,
-			t.loan_platform loanPlatform
+			t.loan_platform loanPlatform,
+			t.order_no orderNo
 			FROM t_gq_fss_loan t 
 	</sql>
 	<!-- 得到借款人放款回调对象 -->
@@ -203,5 +204,116 @@
 				AND t.trade_type = #{type}
 			</if> -->
 	</select>
-	
+	<select id="selectFssLoanList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
+		SELECT
+			t.id id,
+			t.cust_no custNo,
+			t.user_no userNo,
+			t.contract_no contractNo,
+			t.contract_interest contractInterest,
+			t.contract_id contractId,
+			t.acc_no accNo,
+			t.contract_amt contractAmt,
+			t.pay_amt payAmt,
+			t.bespoke_date bespokeDate,
+			t.trade_type_parent tradeTypeParent,
+			t.trade_type tradeType,
+			t.mortgagee_acc_no mortgageeAccNo,
+			t.seq_no seqNo,
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.mchn_parent mchnParent,
+			t.mchn_child mchnChild,
+			t.loan_platform loanPlatform,
+			t.status,
+			t.result,
+			t.rep_code repCode,
+			t.rep_msg repMsg,
+			t.busi_no busiNo,
+			t.withDraw_status withDrawStatus,
+			t.order_no orderNo
+		FROM t_gq_fss_loan t
+		WHERE 1 = 1
+		<if test="id != null and id != ''">
+			AND t.id = cast(#{id} as signed int)
+		</if>
+		<if test="custNo != null and custNo != ''">
+			AND t.cust_no = #{custNo}
+		</if>
+		<if test="userNo != null and userNo != ''">
+			AND t.user_no = #{userNo}
+		</if>
+		<if test="contractNo != null and contractNo != ''">
+			AND t.contract_no = #{contractNo}
+		</if>
+		<if test="contractInterest != null and contractInterest != ''">
+			AND t.contract_interest = cast(#{contractInterest} as signed decimal(38,2))
+		</if>
+		<if test="contractId != null and contractId != ''">
+			AND t.contract_id = #{contractId}
+		</if>
+		<if test="accNo != null and accNo != ''">
+			AND t.acc_no = #{accNo}
+		</if>
+		<if test="contractAmt != null and contractAmt != ''">
+			AND t.contract_amt = cast(#{contractAmt} as signed decimal(38,2))
+		</if>
+		<if test="payAmt != null and payAmt != ''">
+			AND t.pay_amt = cast(#{payAmt} as signed decimal(38,2))
+		</if>
+		<if test="bespokeDate != null and bespokeDate != ''">
+			AND date_format(t.bespoke_date,'%Y-%m-%d') = #{bespokeDate}
+		</if>
+		<if test="tradeTypeParent != null and tradeTypeParent != ''">
+			AND t.trade_type_parent = #{tradeTypeParent}
+		</if>
+		<if test="tradeType != null and tradeType != ''">
+			AND t.trade_type = #{tradeType}
+		</if>
+		<if test="mortgageeAccNo != null and mortgageeAccNo != ''">
+			AND t.mortgagee_acc_no = #{mortgageeAccNo}
+		</if>
+		<if test="seqNo != null and seqNo != ''">
+			AND t.seq_no = #{seqNo}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND date_format(t.create_time,'%Y-%m-%d') = #{createTime}
+		</if>
+		<if test="modifyTime!=null and modifyTime!=''">
+			AND date_format(t.modify_time,'%Y-%m-%d') = #{modifyTime}
+		</if>
+		<if test="mchnParent!=null and mchnParent!=''">
+			AND t.mchn_parent = #{mchnParent}
+		</if>
+		<if test="mchnChild!=null and mchnChild!=''">
+			AND t.mchn_child = #{mchnChild}
+		</if>
+		<if test="loanPlatform!=null and loanPlatform!=''">
+			AND t.loan_platform = #{loanPlatform}
+		</if>
+		<if test="status!=null and status!=''">
+			AND t.status = #{status}
+		</if>
+		<if test="result!=null and result!=''">
+			AND t.result = #{result}
+		</if>
+		<if test="repCode!=null and repCode!=''">
+			AND t.rep_code = #{repCode}
+		</if>
+		<if test="repMsg!=null and repMsg!=''">
+			AND t.rep_msg = #{repMsg}
+		</if>
+		<if test="busiNo!=null and busiNo!=''">
+			AND t.busi_no = #{busiNo}
+		</if>
+		<if test="withDrawStatus!=null and withDrawStatus!=''">
+			AND t.withDraw_status = #{withDrawStatus}
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			AND t.order_no = #{orderNo}
+		</if>
+		ORDER BY t.modify_time
+	</select>
+
+
 </mapper>

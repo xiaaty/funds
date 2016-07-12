@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -35,7 +36,9 @@ public class TranseferImpl implements ITransefer{
 	
 	@Resource
 	private IFundsTrade fundsTrade;
-	
+
+	@APITradeTypeValid(value = "11080001")
+	@Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {

@@ -53,8 +53,6 @@
                                 action="${contextPath}/trade/tradeApply/saveOfflineRecharge"
                             </c:otherwise>
                         </c:choose>
-
-
                       method="post">
                     <input type="hidden" id="type" name="type" value="${type}"/>
                     <input type="hidden" id="flag" name="flag" value="${flag}"/>

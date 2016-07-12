@@ -93,7 +93,7 @@
                                                             <td align="left">交易金额：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                <input type="text" maxlength="50" readonly="readonly" name="tradeAmount" value="${tradeapply.tradeAmount}" style="width:256px;" />
+                                                                <input type="text" maxlength="50" readonly="readonly" id="tradeAmount" name="tradeAmount" value="${tradeapply.tradeAmount}" style="width:256px;" />
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -101,7 +101,7 @@
                                                             <td align="left">审核金额：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                <input type="text" maxlength="50"  name="auditAmount"  style="width:256px;" />
+                                                                <input type="text" maxlength="50" id="auditAmount" name="auditAmount"  style="width:256px;" onblur="checkAmt()"/>
                                                                 </label>
                                                             </td>
                                                         </tr>
@@ -146,7 +146,8 @@
 <script src="${contextPath}/js/jquery.blockUI.js"></script>
     <script type="text/javascript" charset="utf-8">
          $(document).ready(function () {
-        	/***************************审核通过*********************************************/ 
+        	/***************************审核通过*********************************************/
+            if(checkAmt()){
         	  $("#passbtn").click(function () {
                   wait("正在审核中，请耐心等待...");
     	        if (validateCheck()) {
@@ -162,9 +163,9 @@
                                 parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}";
     	                    } else if(data.code == '0001') {
                                 $.unblockUI();
-    	                    	jAlert("请勿重复审核!", '消息提示');
+    	                    	jAlert("审核失败!", '消息提示');
     	                        return;
-                            }else {
+    	                    }else {
                                 $.unblockUI();
     	                    	jAlert(data.message, '消息提示');
     	                        return;
@@ -174,7 +175,7 @@
     	        }
                   $.unblockUI();
     	    });
-        	 
+            }
         	//校验函数
           	function validateCheck() {
           		return true;
@@ -326,7 +327,17 @@
                  message: '<img src="${contextPath}/img/loading.gif" />&nbsp;' + msg
              });
          }
-    	    
+
+        function checkAmt(){
+            var tradeAmount=$("#tradeAmount").val();
+            var auditAmount=$("#auditAmount").val();
+            if(auditAmount>tradeAmount){
+                jAlert("审核金额不能大于申请金额", '消息提示');
+                return false;
+            }else{
+                return true;
+            }
+        }
         </script>
 </body>
 

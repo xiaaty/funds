@@ -148,7 +148,7 @@ public class FssTradeApplyController {
     	if(tradeapplyentity==null){
     		throw new FssException("未查到交易申请记录！");
     	}
-		CustomerInfoEntity  customerInfo=customerInfoService.getCustomerById(tradeapplyentity.getCustId());
+    	CustomerInfoEntity  customerInfo=customerInfoService.getCustomerById(tradeapplyentity.getCustId());
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		model.addAttribute("tradeapply",tradeapplyentity);
 		if(tradeapplyentity.getBespokedate()!=null){
@@ -193,7 +193,6 @@ public class FssTradeApplyController {
 //		request.getSession().removeAttribute("token");
 		Map<String, String> map = new HashMap<String, String>();
 //		if(token.equals(server_token)){
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		String applyStatus=request.getParameter("applyStatus");
 		String bespokedate=request.getParameter("bespokedate");
 		FssTradeApplyEntity tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
@@ -203,6 +202,12 @@ public class FssTradeApplyController {
 		}else{
 			audit_amount=tradeapply.getTradeAmount();
 		}
+		if(tradeapply.getTradeAmount().compareTo(audit_amount)<0){
+			map.put("code", "0002");
+			map.put("message", "审核金额不能大于提现金额");
+			return  map;
+		}
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
@@ -224,7 +229,7 @@ public class FssTradeApplyController {
 			map.put("message", "success");
 		}else{
 			tradeapply.setAuditAmount(audit_amount);
-			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10080011");
+			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10080010");
 			//审核不通过进行资金解冻
 			if(applyType==1104){
 				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
@@ -232,7 +237,7 @@ public class FssTradeApplyController {
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
 			map.put("code", "0001");
-			map.put("message", "defeat");
+			map.put("message", "success");
 		}
 		return map;
 	}
@@ -365,4 +370,30 @@ public class FssTradeApplyController {
 		model.put("map", map);
 		return "fss/trade/bondTransfer_list";
 	}
+
+	/**
+	 * 转账申请
+	 * @param request
+	 * @param model
+	 * @param type
+	 * @param certNo
+	 * @param accNo
+	 * @param flag
+	 * @param customerInfoEntity
+     * @return
+     * @throws FssException
+     */
+	@RequestMapping(value = "/trade/tradeApply/createTransfer/{type}/{certNo}/{accNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createTransferApply(HttpServletRequest request, ModelMap model, @PathVariable Integer type,@PathVariable String certNo,@PathVariable String accNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
+		//当前账户信息（4转账转入，5转账转出）
+		customerInfoEntity=customerInfoService.queryCustomerInfoByCertNo(certNo);
+		if (customerInfoEntity!=null){
+			model.addAttribute("customerInfoEntity",customerInfoEntity);
+		}
+		model.addAttribute("type",type);
+		model.addAttribute("flag",flag);
+		model.addAttribute("accNo",accNo);
+		return "fss/trade/transfer_add";
+	}
+
 }
