@@ -118,7 +118,7 @@ public class BidRepaymentService {
 
 
         List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(fromEntity, sumRepay, GlobalConstants.ORDER_REPAYMENT_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_REPAYMENT,"2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(fromEntity, sumRepay, GlobalConstants.ORDER_REPAYMENT_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_REPAYMENT,"1110",loanEntity.getTradeType());
         for (RepaymentBean bean : list) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount((long)bean.getCustomerId(), bean.getInvestType());
             if (bean.getRepaymentAmount().multiply(new BigDecimal("100")).longValue() <= 0) {
@@ -214,7 +214,7 @@ public class BidRepaymentService {
 
         FundAccountEntity toAxAccountEntity = fundAccountService.getFundAccount(3l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toAxAccountEntity, sumRepay, GlobalConstants.ORDER_REPAYMENT_REFUND, loanEntity.getId(), GlobalConstants.BUSINESS_REPAYMENT,"2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toAxAccountEntity, sumRepay, GlobalConstants.ORDER_REPAYMENT_REFUND, loanEntity.getId(), GlobalConstants.BUSINESS_REPAYMENT,"1110","");
         for (RepaymentBean bean : list) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount((long)bean.getCustomerId(), bean.getInvestType());
             if (bean.getToPublicAmount().multiply(new BigDecimal("100")).longValue() <= 0) {

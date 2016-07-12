@@ -43,7 +43,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     @Resource
     private FundAccountService fundAccountService;
     @Override
-    public void batchTrade(FssTradeRecordEntity entity) throws FssException {
+    public void batchTrade(FssTradeRecordEntity entity,String contractNo,int custType) throws FssException {
         FundOrderEntity orderEntity = null;
 
         try {
@@ -54,9 +54,9 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
             }
 
             if(entity.getTradeType() == 1103){
-                orderEntity = this.batchWithholding(entity);
+                orderEntity = this.batchWithholding(entity,contractNo,custType);
             }else if(entity.getTradeType() == 1104){
-                orderEntity = this.batchWithdraw(entity);
+                orderEntity = this.batchWithdraw(entity,contractNo,custType);
             }
             entity.setOrderNo(orderEntity.getOrderNo());
             this.fssTradeRecordService.updateTradeRecordExecuteState(entity,1,"0000");
@@ -74,7 +74,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
      * @return
      * @throws FssException
      */
-    public FundOrderEntity batchWithholding(FssTradeRecordEntity entity) throws FssException {
+    public FundOrderEntity batchWithholding(FssTradeRecordEntity entity,String contractNo,int custType) throws FssException {
         String  accNo = entity.getAccNo();
         FundOrderEntity orderEntity = null;
         Integer businessType;
@@ -92,7 +92,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
      * @param entity
      * @return
      */
-    public FundOrderEntity batchWithdraw(FssTradeRecordEntity entity) throws FssException{
+    public FundOrderEntity batchWithdraw(FssTradeRecordEntity entity,String contractNo,int custType) throws FssException{
     	FundOrderEntity orderEntity = null;
     	String  accNo = entity.getAccNo();//旧版通过账户号获取
     	int	selletType=0;//获取结算类型

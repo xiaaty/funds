@@ -57,14 +57,14 @@ public class FssTradeRepayController {
         return "fss/trade/trade_Repay/tradeFtpOrderList";
     }
 
-    @RequestMapping(value = "/trade/tradeRepay/loan",method = {RequestMethod.POST,RequestMethod.GET})
-    @AutoPage
-    public Object tradeRepayLoanList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map){
-        List<FssLoanEntity> fssLoanEntityList = fssLoanService.selectFssLoanList(map);
-        model.addAttribute("page",fssLoanEntityList);
-        model.put("map", map);
-        return "fss/trade/trade_Repay/tradeLoanList";
-    }
+//    @RequestMapping(value = "/trade/tradeRepay/loan",method = {RequestMethod.POST,RequestMethod.GET})
+//    @AutoPage
+//    public Object tradeRepayLoanList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map){
+//        List<FssLoanEntity> fssLoanEntityList = fssLoanService.selectFssLoanList(map);
+//        model.addAttribute("page",fssLoanEntityList);
+//        model.put("map", map);
+//        return "fss/trade/trade_Repay/tradeLoanList";
+//    }
 
     @RequestMapping(value = "/trade/tradeRepay/ftpField/{orderNo}",method = {RequestMethod.POST,RequestMethod.GET})
     @AutoPage

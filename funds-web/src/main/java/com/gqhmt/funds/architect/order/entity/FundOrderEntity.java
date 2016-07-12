@@ -217,4 +217,68 @@ public class FundOrderEntity implements java.io.Serializable {
     public void setChargeAmount(BigDecimal chargeAmount) {
         this.chargeAmount = chargeAmount;
     }
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public String getLendNo() {
+		return lendNo;
+	}
+
+	public void setLendNo(String lendNo) {
+		this.lendNo = lendNo;
+	}
+
+	public Long getToCustId() {
+		return toCustId;
+	}
+
+	public void setToCustId(Long toCustId) {
+		this.toCustId = toCustId;
+	}
+
+	public String getToLendNo() {
+		return toLendNo;
+	}
+
+	public void setToLendNo(String toLendNo) {
+		this.toLendNo = toLendNo;
+	}
+
+	public Long getLoanCustId() {
+		return loanCustId;
+	}
+
+	public void setLoanCustId(Long loanCustId) {
+		this.loanCustId = loanCustId;
+	}
+
+	public String getLoanNo() {
+		return loanNo;
+	}
+
+	public void setLoanNo(String loanNo) {
+		this.loanNo = loanNo;
+	}
+
+	public String getNewOrderType() {
+		return newOrderType;
+	}
+
+	public void setNewOrderType(String newOrderType) {
+		this.newOrderType = newOrderType;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
+	}
 }

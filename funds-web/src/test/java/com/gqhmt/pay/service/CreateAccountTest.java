@@ -38,25 +38,4 @@ public class CreateAccountTest extends TestService {
     @Resource
     CustomerInfoService customerInfoService;
 
-    @Test
-    public void createAccountTest() throws InterruptedException {
-        /*System.err.println("执行开始");
-        applicationContext.publishEvent(new CreateAccountEvent(""));
-
-        Thread.sleep(1000*10);
-
-        System.err.println("执行完成");*/
-
-        try {
-
-            CustomerInfoEntity customerInfoEntity = customerInfoService.queryCustomerById(611636);
-            customerInfoEntity.setBankNo("232342");
-
-            fundsAccount.createAccount(customerInfoEntity,"","");
-        } catch (FssException e) {
-            e.printStackTrace();
-            assert e.getMessage().equals("账户已存在");
-        }
-        assert true;
-    }
 }

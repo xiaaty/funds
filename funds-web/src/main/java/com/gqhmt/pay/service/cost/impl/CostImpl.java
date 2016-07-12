@@ -226,7 +226,7 @@ public class CostImpl  implements ICost{
         FundAccountEntity  toAccountEntity= fundAccountService.getFundAccount(toCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
         if (fromAccountEntity == null) throw new FssException("90004006");
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType,null,null,null,null,null,null);
         tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
 
         return  fundOrderEntity;
@@ -261,7 +261,7 @@ public class CostImpl  implements ICost{
         FundAccountEntity  fromAccountEntity= fundAccountService.getFundAccount(fromCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 
         if (fromAccountEntity == null) throw new FssException("90004006");
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType,null,null,null,null,null,null);
         tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
         return  fundOrderEntity;
     }
@@ -326,12 +326,12 @@ public class CostImpl  implements ICost{
         try{
             this.hasEnoughBanlance(fromEntity,amt);
             //第三方交易
-            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER);
+            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER,null,null,null,null,null,null);
             //资金处理
             fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
-            fssChargeRecordService.updateChargeRecord(chargeRecordEntity,fundOrderEntity.getOrderNo(),"10080002");
+            //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,fundOrderEntity.getOrderNo(),"10080002");
         }catch (Exception e){
-            fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
+            //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
         }
         //添加交易记录
         fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),4014, "资金转出",BigDecimal.ZERO);

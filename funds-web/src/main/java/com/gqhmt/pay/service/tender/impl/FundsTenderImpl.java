@@ -73,7 +73,7 @@ public class FundsTenderImpl  implements IFundsTender {
 	 * 投标
 	 */
     @Override
-    public boolean bid(String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount) throws FssException {
+    public boolean bid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount) throws FssException {
        /* Tender tender = this.tenderService.findById(Integer.parseInt(bidDto.getTender_no()));
         tender.setBonusAmount(bidDto.getBonus_Amount());
         tender.setRealAmount(bidDto.getReal_Amount());
@@ -104,7 +104,7 @@ public class FundsTenderImpl  implements IFundsTender {
         FundAccountEntity toEntity = this.getFundAccount(Long.valueOf(cust_no), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         BigDecimal amount = real_Amount;//  bid.getRealAmount();
         BigDecimal boundsAmount = bonus_Amount;// tender.getBonusAmount();
-        CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bid_id),GlobalConstants.BUSINESS_BID);
+        CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bid_id),GlobalConstants.BUSINESS_BID,tradeType);
         //后续处理
         fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, real_Amount,Integer.parseInt(bid_id),Integer.parseInt(tender_no), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
         tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));

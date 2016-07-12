@@ -110,7 +110,7 @@ public class BidAbortService {
         }
 
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(fromEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_ABORT_BID_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_ABORT_BID, "2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(fromEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_ABORT_BID_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_ABORT_BID, "1105","");
 
         BigDecimal bonusAmount = BigDecimal.ZERO;
 
