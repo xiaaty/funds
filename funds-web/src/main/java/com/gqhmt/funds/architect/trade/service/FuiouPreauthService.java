@@ -88,7 +88,7 @@ public class FuiouPreauthService {
         FuiouPreauth fuiouPreauth = new FuiouPreauth();
         fuiouPreauth.setAccountId(fromEntity.getId());
         fuiouPreauth.setAmount(amount);
-        fuiouPreauth.setSourceId(tenderId);
+        fuiouPreauth.setSourceId(bid);
         fuiouPreauth.setBid(bid);
         fuiouPreauth.setTenderid(tenderId);
         fuiouPreauth.setType(GlobalConstants.ORDER_BID);
