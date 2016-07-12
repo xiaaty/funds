@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.depos.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -38,8 +39,8 @@ public class FssBusinessTradeEntity implements Serializable{
 	@Column(name = "mchn")
 	private String  mchn;  //商户号
 
-	@Column(name = "third_party_payment_id")
-	private String thirdPartyPaymentId;
+	@Column(name = "seq_no")
+	private String seqNo;
 
 	@Column(name = "trade_date")
 	private String  tradeDate;
@@ -107,6 +108,12 @@ public class FssBusinessTradeEntity implements Serializable{
 	@Column(name = "status")
 	private String status;
 
+	@Column(name = "create_time")
+	private Date createTime;
+
+	@Column(name = "modify_time")
+	private Date modifyTime;
+
 	public Long getId() {
 		return id;
 	}
@@ -123,12 +130,12 @@ public class FssBusinessTradeEntity implements Serializable{
 		this.mchn = mchn;
 	}
 
-	public String getThirdPartyPaymentId() {
-		return thirdPartyPaymentId;
+	public String getSeqNo() {
+		return seqNo;
 	}
 
-	public void setThirdPartyPaymentId(String thirdPartyPaymentId) {
-		this.thirdPartyPaymentId = thirdPartyPaymentId;
+	public void setSeqNo(String seqNo) {
+		this.seqNo = seqNo;
 	}
 
 	public String getTradeDate() {
@@ -315,4 +322,19 @@ public class FssBusinessTradeEntity implements Serializable{
 		this.parentId = parentId;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 }

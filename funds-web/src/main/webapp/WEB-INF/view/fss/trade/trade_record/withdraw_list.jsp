@@ -77,7 +77,7 @@
                                                         <td class="tr">交易状态：</td>
                                                         <td>
                                                             <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
-										                    	<option value="">请选择</option>
+										                    	<option value="">所有</option>
 										                    	<option  <c:if test="${traderecorder.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option>
 										                    	<option  <c:if test="${traderecorder.tradeState==10030002}"> selected="selected" </c:if> value="10030002" >交易成功</option>
 										                    	<option  <c:if test="${traderecorder.tradeState==10030003}"> selected="selected" </c:if> value="10030003" >交易失败</option>

@@ -3,7 +3,6 @@ package com.gqhmt.quartz.job.trade;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.core.util.ThreadExecutor;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
@@ -81,7 +80,7 @@ public class BatchWithholdingJob extends SupperJob{
     public boolean isRunning() {
         return isRunning;
     }
-    
+
     /**
      * 创建线程
      * @param apply
@@ -125,7 +124,7 @@ public class BatchWithholdingJob extends SupperJob{
                      LogUtil.info(getClass(), "代扣执行完成,共耗时:" + (endTime - startTime));
                  }
              }
-             
+
          };
          return thread;
     }

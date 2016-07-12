@@ -78,11 +78,11 @@ public class FssBusiTradeService {
 	 * time:2016年5月18日
 	 * function：创建商户交易对象并添加进数据库
 	 */
-	public void creatBusiTrade(String thirdPartyPaymentId,Date tradeDate,String tradeType,String itemNo,String contractNo,String outFuiouUsername,String outPlatformUsername,BigDecimal amt,BigDecimal charge,BigDecimal thisRepaymentPrincipal,BigDecimal thisRepaymentInterest,
+	public void creatBusiTrade(String seqNo,Date tradeDate,String tradeType,String itemNo,String contractNo,String outFuiouUsername,String outPlatformUsername,BigDecimal amt,BigDecimal charge,BigDecimal thisRepaymentPrincipal,BigDecimal thisRepaymentInterest,
 							   String comeFuiouUsername,String comePlatformUsername,String loanUsername,Integer loanCertType,String loanCertNo,String lendUsername,String lendFuiouUsername,String lendName,Integer lendCertType,String lendCertNo,String busiType){
 		FssBusinessTradeEntity busiTrade=new FssBusinessTradeEntity();
 		busiTrade.setMchn("0001000F0279762");
-		busiTrade.setThirdPartyPaymentId(thirdPartyPaymentId);
+		busiTrade.setSeqNo(seqNo);
 		busiTrade.setTradeDate(DateUtil.dateTostring(tradeDate));
 		busiTrade.setTradeType(tradeType);
 		busiTrade.setItemNo(itemNo);
@@ -120,6 +120,8 @@ public class FssBusiTradeService {
 		}
 		busiTrade.setLendCertNo(lendCertNo);
 		busiTrade.setBusiType(busiType);
+		busiTrade.setCreateTime(new Date());
+		busiTrade.setModifyTime(new Date());
 		busiTrade.setStatus("10110001");
 		this.insertBusitrade(busiTrade);
 	}

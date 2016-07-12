@@ -1,160 +1,91 @@
-package com.gqhmt.fss.architect.depos.entity;
+package com.gqhmt.extServInter.dto.depos;
 
-import java.io.Serializable;
+import com.gqhmt.extServInter.dto.SuperDto;
+
 import java.util.Date;
 
-import javax.persistence.*;
-
 /**
- * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
- * Copyright:   Copyright (c)2016
+ * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
+ * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
  * @author jhz
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年5月6日
- * Description:
- * <p>项目信息实体
+ * Create at:   2016/7/6
+ * Description:还款划扣
+ * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年5月6日  jhz      1.0     1.0 Version
+ * 2016/7/6  jhz     1.0     1.0 Version
  */
-@Entity
-@Table(name = "t_gq_fss_depos_fuiou_project_info")
-public class FssProjectInfoEntity implements Serializable {
+public class ProjectInfoDto extends SuperDto{
 
+    private Integer custId; //customer表id
 
-    @Id
-    @Column(name = "id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    @Column(name = "mchn")
-    private String mchn;  //商户号
-
-    @Column(name = "seq_no")
-    private String seqNo;        //平台流水号
-
-    @Column(name = "item_no")
     private String itemNo;   //项目编号
 
-    @Column(name = "loan_type")
     private String loanType;        //借款类型(0.抵押标   1.担保标  2.信用标  3.净值标 4.流转标  5.秒标 6.其他)
 
-    @Column(name = "loan_tittle")
     private String loanTittle;        //借款标题
 
-    @Column(name = "organization")
     private String organization;        //推荐机构
 
-    @Column(name = "description")
     private String description;            //借款用途
 
-    @Column(name = "loan_amt")
     private Long loanAmt;        //借款金额
 
-    @Column(name = "expected_return")
     private Long expectedReturn;        //预期收益
 
-    @Column(name = "product_name")
     private String productName;            //产品名称
 
-    @Column(name = "repayment_type")
     private String repaymentType;        //还款方式(0.一次性还本付息 1.先息后本 2.等额本息/等额本金 3.其他)
 
-    @Column(name = "loan_time")
     private String loanTime;        //借款期限
 
-    @Column(name = "start_date")
     private String startDate;        //筹标起始日
 
-    @Column(name = "each_bid_amount")
     private Long eachBidAmount;            //每份投标金额
 
-    @Column(name = "min_num")
     private int minNum;            //最低投标份数
 
-    @Column(name = "max_amount")
     private Long maxAmount;            //最多投标金额
 
-    @Column(name = "acc_no")
-    private String accNo;        //借款人平台用户名
-
-    @Column(name = "acc_gold_no")
-    private String accGoldNo;        //借款人金账户用户名
-
-    @Column(name = "loan_item_description")
     private String loanItemDescription;        //借款人项目概述
 
-    @Column(name = "fee_type")
     private Long feeType;            //费用项
 
-    @Column(name = "trade_status")
     private String tradeStatus;        //筹集情况
 
-    @Column(name = "period")
     private int period;            //还款期数
 
-    @Column(name = "prepare_amount")
     private Long prepareAmount;        //备用金额
 
-    @Column(name = "pay_channel")
     private String payChannel;        //第三方支付公司ID
 
-    @Column(name = "bid_year_irr")
     private String bidYearIrr;            //发标年化利率
 
-    @Column(name = "borrow_type")
     private String borrowType;        //借款人类型01-个人; 02-企业
 
-    @Column(name = "license_no")
     private String licenseNo;        //借款企业营业执照编号(借款人类型为02必填)',
 
-    @Column(name = "cust_name")
     private String custName;        //借款人名称',
 
-    @Column(name = "cert_type")
     private String certType;        //借款人证件类型
 
-    @Column(name = "cert_no")
     private String certNo;            //借款人证件号码
 
-    @Column(name = "status")
-    private String status;            //状态
+    private String  filePath;     //文件路径
 
-    @Column(name = "modify_time")
-    private Date modifyTime;
+    private String busi_no;
 
-    @Column(name = "create_time")
-    private Date createTime;
-
-    public Long getId() {
-        return id;
+    public Integer getCustId() {
+        return custId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMchn() {
-        return mchn;
-    }
-
-    public void setMchn(String mchn) {
-        this.mchn = mchn;
-    }
-
-    public String getSeqNo() {
-        return seqNo;
-    }
-
-    public void setSeqNo(String seqNo) {
-        this.seqNo = seqNo;
+    public void setCustId(Integer custId) {
+        this.custId = custId;
     }
 
     public String getItemNo() {
@@ -269,22 +200,6 @@ public class FssProjectInfoEntity implements Serializable {
         this.maxAmount = maxAmount;
     }
 
-    public String getAccNo() {
-        return accNo;
-    }
-
-    public void setAccNo(String accNo) {
-        this.accNo = accNo;
-    }
-
-    public String getAccGoldNo() {
-        return accGoldNo;
-    }
-
-    public void setAccGoldNo(String accGoldNo) {
-        this.accGoldNo = accGoldNo;
-    }
-
     public String getLoanItemDescription() {
         return loanItemDescription;
     }
@@ -299,14 +214,6 @@ public class FssProjectInfoEntity implements Serializable {
 
     public void setFeeType(Long feeType) {
         this.feeType = feeType;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public int getPeriod() {
@@ -365,14 +272,6 @@ public class FssProjectInfoEntity implements Serializable {
         this.certNo = certNo;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
     public String getTradeStatus() {
         return tradeStatus;
     }
@@ -397,19 +296,19 @@ public class FssProjectInfoEntity implements Serializable {
         this.licenseNo = licenseNo;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
-    public Date getModifyTime() {
-        return modifyTime;
+    public String getBusi_no() {
+        return busi_no;
     }
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setBusi_no(String busi_no) {
+        this.busi_no = busi_no;
     }
 }

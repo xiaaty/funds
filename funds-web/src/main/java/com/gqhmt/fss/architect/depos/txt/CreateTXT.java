@@ -347,7 +347,7 @@ public class CreateTXT  {
 //		write.append(enter);
 				for (FssBusinessTradeEntity info : queryBusinessTrade) {
 					write.append(info.getMchn()+"|");
-					write.append(info.getThirdPartyPaymentId()+"|");
+					write.append(info.getSeqNo()+"|");
 					write.append(info.getTradeDate()+"|");
 					write.append(info.getTradeType()+"|");
 					write.append(info.getItemNo()+"|");
