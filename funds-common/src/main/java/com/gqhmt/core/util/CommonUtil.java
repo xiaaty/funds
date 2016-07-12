@@ -53,6 +53,10 @@ public class CommonUtil {
         return commonUtil.getRandom(length);
     }
 
+    public static String getItemNo(){
+        return commonUtil.executeItemNo();
+    }
+
     public  String  executeAcconutNo(String tradeType){
         StringBuffer acc_no= new StringBuffer();
         acc_no.append(GlobalConstants.ACCOUNT_TYPE_MAPPING.get(tradeType));
@@ -125,7 +129,9 @@ public class CommonUtil {
 
         return year+month+dateString;
     }
-
+    public String executeItemNo(){
+        return  (System.currentTimeMillis()+"").substring(3);
+    }
 
 
 }

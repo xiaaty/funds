@@ -166,7 +166,7 @@
     	                        return;
                             }else {
                                 $.unblockUI();
-    	                    	jAlert("审核失败!", '消息提示');
+    	                    	jAlert(data.message, '消息提示');
     	                        return;
     	                    }
     	                }

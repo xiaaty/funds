@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+
+import com.gqhmt.core.util.CommonUtil;
+import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.depos.bean.FssProjectInfoBean;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.exception.FssException;
@@ -19,6 +25,8 @@ public class FssProjectInfoService {
 	private FssProjectInfoReadMapper fssProjectInfoReadMapper;
 	@Resource
 	private FssProjectInfoWriteMapper fssProjectInfoWriteMapper;
+	@Resource
+	private FundAccountService fundAccountService;
 
 	/**
 	 * 项目信息列表
@@ -66,9 +74,15 @@ public class FssProjectInfoService {
 	 * time:2016年5月18日
 	 * function：创建项目信息并添加进数据库
 	 */
-	public void createProjectInfo(String seqNo,String itemNo,String loanType,String loanTittle,String organization,String description,
-								  Long loanAmt,Long expectedReturn,String productName,String repaymentType,String loanTime,String startDate,Long eachBidAmount,Integer minNum,
-								  Long maxAmount,String accNo,String accGoldNo,String loanItemDescription,Long feeType,String status,Integer period,Long prepareAmount,String payChannel,String bidYearIrr,String borrowType,String licenseNo,String custName,String certType,String certNo)throws FssException{
+	public void createProjectInfo(String seqNo,String itemNo,String loanType,
+								  String loanTittle,String organization,String description,
+								  Long loanAmt,Long expectedReturn,String productName,
+								  String repaymentType,String loanTime,String startDate,
+								  Long eachBidAmount,Integer minNum,Long maxAmount,String accNo,
+								  String accGoldNo,String loanItemDescription,Long feeType,
+								  String status,Integer period,Long prepareAmount,String payChannel,
+								  String bidYearIrr,String borrowType,String licenseNo,
+								  String custName,String certType,String certNo)throws FssException{
 		FssProjectInfoEntity projectInfo=new FssProjectInfoEntity();
 		projectInfo.setMchn("0001000F0279762");
 		projectInfo.setSeqNo(seqNo);
@@ -123,4 +137,86 @@ public class FssProjectInfoService {
 	public List<FssProjectInfoEntity> queryItemsInfosByStatus(String status)throws FssException {
 		return fssProjectInfoReadMapper.queryItemsInfosByStatus(status);
 	}
+
+	/**
+	 * jhz
+	 * 添加项目信息
+	 * @param
+     */
+	public void insertProjectInfo(String tradeType,String orderNo,String mchnNo,String loanType,
+								  String loanTittle,String organization,String description,
+								  Long loanAmt,Long expectedReturn,String productName,
+								  String repaymentType,String loanTime,String startDate,
+								  Long eachBidAmount,Integer minNum,Long maxAmount,
+								  String loanItemDescription,Long feeType,
+								  String tradeStatus,Integer period,Long prepareAmount,String payChannel,
+								  String bidYearIrr,String borrowType,String licenseNo,
+								  String custName,String certType,String certNo,String filePath,Integer custId,String busiNo) throws  FssException{
+		FssProjectInfoBean	fssProjectInfoBean=new FssProjectInfoBean();
+		fssProjectInfoBean.setTradeType(tradeType);
+		fssProjectInfoBean.setOrderNo(orderNo);
+		fssProjectInfoBean.setMchnNo(mchnNo);
+		fssProjectInfoBean.setLoanType(loanType);
+		fssProjectInfoBean.setLoanTittle(loanTittle);
+		fssProjectInfoBean.setOrganization(organization);
+		fssProjectInfoBean.setDescription(description);
+		fssProjectInfoBean.setLoanAmt(loanAmt);
+		fssProjectInfoBean.setExpectedReturn(expectedReturn);
+		fssProjectInfoBean.setProductName(productName);
+		fssProjectInfoBean.setRepaymentType(repaymentType);
+		fssProjectInfoBean.setLoanTime(loanTime);
+		fssProjectInfoBean.setStartDate(startDate);
+		fssProjectInfoBean.setEachBidAmount(eachBidAmount);
+		fssProjectInfoBean.setMinNum(minNum);
+		fssProjectInfoBean.setMaxAmount(maxAmount);
+		fssProjectInfoBean.setLoanItemDescription(loanItemDescription);
+		fssProjectInfoBean.setFeeType(feeType);
+		fssProjectInfoBean.setTradeStatus(tradeStatus);
+		fssProjectInfoBean.setPeriod(period);
+		fssProjectInfoBean.setPrepareAmount(prepareAmount);
+		fssProjectInfoBean.setPayChannel(payChannel);
+		fssProjectInfoBean.setBidYearIrr(bidYearIrr);
+		fssProjectInfoBean.setBorrowType(borrowType);
+		fssProjectInfoBean.setLicenseNo(licenseNo);
+		fssProjectInfoBean.setCustName(custName);
+		fssProjectInfoBean.setCertType(certType);
+		fssProjectInfoBean.setCertNo(certNo);
+		fssProjectInfoBean.setFilePath(filePath);
+		fssProjectInfoBean.setSeqNo(CommonUtil.getSeqNo());
+		fssProjectInfoBean.setBusiNo(busiNo);
+		fssProjectInfoBean.setItemNo(this.getItemNo());
+		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_LOAN);
+		fssProjectInfoBean.setAccNo(fundAccountEntity.getUserName());
+		fssProjectInfoBean.setAccGoldNo(fundAccountEntity.getUserName());
+		fssProjectInfoBean.setMchn("0001000F0279762");
+		fssProjectInfoBean.setStatus("10110001");//10110001未报备，10110002已报备
+		fssProjectInfoBean.setCreateTime(new Date());
+		fssProjectInfoBean.setModifyTime(new Date());
+		fssProjectInfoWriteMapper.insertProjectInfo(fssProjectInfoBean);
+	}
+
+	/**
+	 * jhz
+	 * 得到项目编号
+	 * @return
+     */
+	public String getItemNo(){
+		String itemNo=CommonUtil.getItemNo();
+		int count=this.getCountByItemNo(itemNo);
+		if(count>0){
+			this.getItemNo();
+		}
+		return itemNo;
+	}
+
+	/**
+	 * jhz
+	 * 查询项目编号是否唯一
+	 * @param itemNo
+	 * @return
+     */
+	public int getCountByItemNo(String itemNo){
+		return  fssProjectInfoReadMapper.getCountByItemNo(itemNo);
+	}
+
 }

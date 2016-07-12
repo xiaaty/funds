@@ -635,7 +635,7 @@ public class FssTradeApplyService {
     		return 1;
     	}
     }
-    
+
     /**
 	 * author:柯禹来
 	 * time:2016年4月25日

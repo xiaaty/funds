@@ -7,6 +7,13 @@ import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpDownloadFileService;
+import com.gqhmt.quartz.service.FtpUploadService;
+import com.mysql.jdbc.log.Log;
+import org.apache.ibatis.logging.LogFactory;
+import org.apache.shiro.crypto.hash.Hash;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

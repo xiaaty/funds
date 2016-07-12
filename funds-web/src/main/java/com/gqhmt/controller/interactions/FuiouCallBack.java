@@ -3,9 +3,7 @@ package com.gqhmt.controller.interactions;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
 import com.gqhmt.pay.service.PaySuperByFuiou;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,10 +43,7 @@ public class FuiouCallBack {
 	private FundOrderService fundOrderService;
 	@Resource
 	private FundAccountService fundAccountService;
-	private FssBackplateService fssBackplateService;
 
-	@Resource
-	private TradeRecordService tradeRecordService;
 
 //	@Autowired
 //	private ChangeCardService changeCardService;
