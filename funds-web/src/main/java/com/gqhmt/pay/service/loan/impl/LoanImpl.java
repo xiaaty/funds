@@ -131,7 +131,7 @@ public class LoanImpl implements ILoan {
 		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(dto.getAcc_no());
 			//Integer integer = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(GlobalConstants.TRADETYPE_ACCOUNT_MAPPING.get(dto.getTrade_type()));
 
-		costImpl.costReturn("10040001","10990006",dto.getAcc_no(),dto.getRefund_amt(),0l,0);
+		costImpl.costReturn("10040001","10990006",dto.getAcc_no(),dto.getRefund_amt(),0l,0,dto.getContract_no());
 		return true;
 		}
 

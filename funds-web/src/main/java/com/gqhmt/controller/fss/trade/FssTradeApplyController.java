@@ -25,6 +25,7 @@ import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.core.util.StringUtils;
+import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
@@ -394,6 +395,62 @@ public class FssTradeApplyController {
 		model.addAttribute("flag",flag);
 		model.addAttribute("accNo",accNo);
 		return "fss/trade/transfer_add";
+	}
+
+	/**
+	 * 客户转账
+	 * @param request
+	 * @param model
+	 * @param type
+	 * @param flag
+	 * @param customerInfoEntity
+	 * @return
+     * @throws FssException
+     */
+	@RequestMapping(value ="/trade/tradeApply/createTransfer/{type}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@PathVariable Integer type,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
+		Map<String, String> map = new HashMap<String, String>();
+		Integer from_cust_no=null;
+		Integer to_cust_no=null;
+		Integer from_user_no=null;
+		Integer to_user_no=null;
+		Integer from_cust_type=null;
+		Integer to_cust_type=null;
+		String accType = request.getParameter("accType");
+		String tradeType=request.getParameter("tradeType");
+		try {
+			Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
+			if (null==custType) throw new FssException("91001006");
+			BigDecimal  amt=new BigDecimal(request.getParameter("amt"));//转账金额
+			String cert_no = request.getParameter("cert_no");
+			CustomerInfoEntity customerEntity= customerInfoService.searchCustomerInfoByCertNo(cert_no);
+			if(customerEntity==null) throw new FssException("90002007");
+			if(flag==4){//4转账转入
+				from_cust_no=customerEntity.getId().intValue();
+				from_user_no=customerEntity.getUserId();
+				from_cust_type=Integer.valueOf(accType);
+				to_cust_no=customerInfoEntity.getId().intValue();
+				to_user_no=customerInfoEntity.getUserId();
+				to_cust_type=custType;
+			}else{//转账转出
+				from_cust_no=customerInfoEntity.getId().intValue();
+				from_user_no=customerInfoEntity.getUserId();
+				from_cust_type=custType;
+				to_cust_no=customerEntity.getId().intValue();
+				to_user_no=customerEntity.getUserId();
+				to_cust_type=Integer.valueOf(accType);
+			}
+
+				fundsTradeImpl.transfer(from_cust_no,from_user_no,from_cust_type,to_cust_no,to_user_no,to_cust_type,amt,1005,null,0l);
+				map.put("code", "0000");
+				map.put("message", "success");
+		}catch (FssException e){
+			String resp_msg = Application.getInstance().getDictName(e.getMessage());
+			map.put("code", e.getMessage());
+			map.put("message", resp_msg);
+		}
+		return map;
 	}
 
 }
