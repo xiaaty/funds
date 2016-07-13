@@ -83,7 +83,7 @@ public class FuiouFtpColomField implements Serializable {
     @Column(name="feild_order_no_his")
     private String feildOrderNoHis;
     
-    @Column(name="tender_id")
+    @Column(name="tender_id",updatable = false)
     private Long tenderId;
 
     @Column(name="type")
