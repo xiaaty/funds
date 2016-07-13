@@ -16,7 +16,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import javax.annotation.Resource;
 import java.util.Date;
 
@@ -97,6 +97,7 @@ public class CreateAccountEvent {
                     }else{
                         //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                         customerInfoEntity =  customerInfoService.getCustomerById(custId);
+                        userId = customerInfoEntity.getUserId();
                     }
                     //设置值
                     customerInfoEntity.setParentBankCode(bankType);
