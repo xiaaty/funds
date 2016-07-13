@@ -472,6 +472,20 @@ public class FundSequenceService {
 
   }
 
+    public void selletSequence(Tender tender,FundAccountEntity toEntity, String orderNo,String newOrderNo ,String title) throws FssException {
+        FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
+//        try {
+//            this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null, ThirdPartyType.FUIOU, fundOrderEntity);
+//        } catch (FssException e) {
+//            LogUtil.error(this.getClass(), e.getMessage());
+//        }
+
+        FundAccountEntity oFromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), tender.getInvestType() == 1?3:2);
+
+        this.fundTradeService.addFundTrade(oFromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2006, "你出借的产品" + title + " 已满标，转给借款人 " + tender.getRealAmount() + "元" + (tender.getBonusAmount().intValue() > 0 ? ",红包抵扣 " + tender.getBonusAmount() + "元" : ""));
+
+    }
+
     public void abortSequence(List<Tender> list,FundAccountEntity  fromEntity , FundOrderEntity fundOrderEntity ,String title) throws FssException {
 
         BigDecimal bonusAmount = BigDecimal.ZERO;

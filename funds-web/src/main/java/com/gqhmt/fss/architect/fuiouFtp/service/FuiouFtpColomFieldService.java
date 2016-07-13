@@ -105,7 +105,7 @@ public class FuiouFtpColomFieldService {
         field.setToAccountId(toEntity.getId());
         field.setToUserName(toEntity.getUserName());
         field.setToCnUserName(toEntity.getCustName().trim());
-        field.setState(101);
+        field.setState(10890001);
         field.setOrderId(fundOrderEntity.getId());
         if(type == 1){//投标解冻
             field.setRem("投标 "+bidTitle+ "解冻资金 "+amt.toPlainString()+"元");
