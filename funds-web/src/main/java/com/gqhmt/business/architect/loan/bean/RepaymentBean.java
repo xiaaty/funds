@@ -28,6 +28,8 @@ public class RepaymentBean {
 	private BigDecimal toPublicAmount  = BigDecimal.ZERO;
 
 	private Integer tenderId;
+
+	private String contractNo;
 	
 	
 
