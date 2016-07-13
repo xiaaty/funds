@@ -202,11 +202,11 @@ public class FssLoanTradeController {
 			if("11090005".equals(type)){//冠e通抵押标转账
 				fundsTradeImpl.transefer(Integer.parseInt(fssLoanEntityById.getMortgageeAccNo()), 10012002,Integer.parseInt(fssLoanEntityById.getAccNo()), 10010003,
 						fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
-						GlobalConstants.NEW_BUSINESS_MT);
+						GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo());
 			}else {//借款系统抵押标转账
 				fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
 						fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
-						GlobalConstants.NEW_BUSINESS_MT);
+						GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo());
 			}
 			fssLoanEntityById.setStatus("10050005");
 			fssLoanService.update(fssLoanEntityById);
@@ -232,7 +232,7 @@ public class FssLoanTradeController {
 		try {
 			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(),fssLoanEntityById.getMortgageeAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
-					GlobalConstants.NEW_BUSINESS_MT);
+					GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo());
 			fssLoanEntityById.setStatus("10050100");
 			fssLoanService.update(fssLoanEntityById);
 			fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
@@ -276,8 +276,6 @@ public class FssLoanTradeController {
 		Map<String,String> map=new HashMap<>();
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
-
-
 		if (fssLoanEntityById == null) {
 			// 处理前台页面消息提示内容
 			map.put("msg", "0001");
@@ -296,11 +294,11 @@ public class FssLoanTradeController {
 							if("11090005".equals(type) || "11090004".equals(type)){//冠e通收费
 								cost.cost(fssLoanEntityById.getLoanPlatform(),
 										fssFeeList.getFeeType(),Long.parseLong(fssLoanEntityById.getAccNo()),1, fssFeeList.getFeeAmt(),
-										fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+										fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST,fssLoanEntityById.getContractNo());
 							}else {
 								cost.cost(fssLoanEntityById.getLoanPlatform(),
 										fssFeeList.getFeeType(), fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
-										fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+										fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST,fssLoanEntityById.getContractNo());
 							}
 							// 修改费用状态	收取成功
 							fssFeeList.setRepCode("0000");
@@ -366,7 +364,7 @@ public class FssLoanTradeController {
 					if(!"10050099".equals(fssFeeList.getTradeStatus())){
 						FundOrderEntity fundOrderEntity = cost.costReturn(fssLoanEntityById.getLoanPlatform(),
 								fssFeeList.getFeeType(),fssLoanEntityById.getAccNo(), fssFeeList.getFeeAmt(),
-								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST);
+								fssFeeList.getId(), GlobalConstants.NEW_BUSINESS_COST,fssLoanEntityById.getContractNo());
 						// 修改费用状态	退费成功
 						fssFeeList.setTradeStatus("10050099");
 						fssLoanService.updateFeeList(fssFeeList);

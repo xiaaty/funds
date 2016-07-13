@@ -49,6 +49,8 @@
 		    t.acc_no accNo,
 			t.trade_amount tradeAmount,
 			t.audit_amount auditAmount,
+			t.real_trade_amount realTradeAmount,
+			t.trade_charge_amount tradeChargeAmount,
 			t.create_time createTime,
 			t.modify_time modifyTime,
 			t.mchn_child mchnChild,
