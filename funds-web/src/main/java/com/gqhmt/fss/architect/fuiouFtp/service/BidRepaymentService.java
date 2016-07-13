@@ -106,6 +106,11 @@ public class BidRepaymentService {
         //还款总额获取
         BigDecimal sumRepay  = BigDecimal.ZERO;
 
+
+        for (RepaymentBean bean : list) {
+            sumRepay = sumRepay.add(bean.getRepaymentAmount());
+        }
+
         //账户资金余额验证   todo
 
         //利差补偿  todo
@@ -125,7 +130,7 @@ public class BidRepaymentService {
                 continue;
             }
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", ""));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", "",bean.getId()));
         }
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
@@ -221,7 +226,7 @@ public class BidRepaymentService {
                 continue;
             }
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(toEntity,toAxAccountEntity, fundOrderEntity, bean.getToPublicAmount(), 3, "", ""));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(toEntity,toAxAccountEntity, fundOrderEntity, bean.getToPublicAmount(), 3, "", "",bean.getId()));
         }
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
