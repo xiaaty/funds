@@ -108,7 +108,7 @@ public class TradeRecordService {
     }
 
     /**
-     *
+     *资金解冻
      * @param fromEntity
      * @param toEntity
      * @param amount
