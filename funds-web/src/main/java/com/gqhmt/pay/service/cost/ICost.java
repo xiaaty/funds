@@ -32,7 +32,7 @@ public interface ICost {
      * @param bustType
      * @param decimal
      */
-    public void cost(String loanType,String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
+    public void cost(String loanType,String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType,String contractNo) throws FssException;
 
 
     /**
@@ -42,7 +42,7 @@ public interface ICost {
      * @param accNo
      * @param decimal
      */
-    public FundOrderEntity cost(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException;
+    public FundOrderEntity cost(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType,String contractNo) throws FssException;
 
 
     /**
@@ -57,7 +57,18 @@ public interface ICost {
 
     public FundOrderEntity costReturn(String  fundsType, Long  custId, Integer bustType, BigDecimal decimal,Long busiId,Integer busiType) throws FssException;
 
-    public FundOrderEntity costReturn(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType) throws FssException;
+    /**
+     * 退费
+     * @param loanType
+     * @param fundsType
+     * @param accNo
+     * @param decimal
+     * @param busiId
+     * @param busiType
+     * @return
+     * @throws FssException
+     */
+    public FundOrderEntity costReturn(String loanType, String  fundsType, String accNo, BigDecimal decimal, Long busiId, Integer busiType,String contractNo) throws FssException;
 
     public boolean charge(String platform, String trade_type,Integer cust_no,String busi_type,BigDecimal amt,String accounts_type) throws FssException;
 

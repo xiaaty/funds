@@ -14,6 +14,8 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -61,7 +63,8 @@ public class CreateAccountEvent {
 
     @Resource
     private BankCardInfoService bankCardInfoService;
-
+    @Resource
+    private FundOrderService fundOrderService;
 
     public FssAccountEntity createAccount(String tradeType,String  name,String  mobile,String certNo,Long custId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
         FssCustomerEntity fssCustomerEntity = fssCustomerService.getFssCustomerEntityByCertNo(certNo);
@@ -97,6 +100,7 @@ public class CreateAccountEvent {
                 }else{
                     //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                     customerInfoEntity =  customerInfoService.getCustomerById(custId);
+                    userId = customerInfoEntity.getUserId();
                 }
                 //设置值
                 customerInfoEntity.setParentBankCode(bankType);
@@ -145,6 +149,11 @@ public class CreateAccountEvent {
                     primaryAccount.setHasThirdAccount(2);
                     fundAccountService.update(primaryAccount);
                     fssAccountService.createFuiouAccount(mchn,fssCustomerEntity,bankNo);
+//                  富友开户成功,更新开户时间和开户订单号
+                    FundOrderEntity fundOrderEntity=fundOrderService.getOrderNoByAccountId(primaryAccount.getId());
+                    primaryAccount.setAccountOrderNo(fundOrderEntity.getOrderNo());
+                    primaryAccount.setAccountTime(fundOrderEntity.getCreateTime());
+                    fundAccountService.update(primaryAccount);
                 }
                 //跟新所有与该cust_id相同的账户名称
                 fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());

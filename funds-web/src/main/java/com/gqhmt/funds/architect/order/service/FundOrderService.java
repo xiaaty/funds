@@ -161,4 +161,9 @@ public class FundOrderService  {
         return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type == null?0:type==1003?1:2,strTime,endTime);
     }
 
+
+
+    public FundOrderEntity getOrderNoByAccountId(Long accountId){
+        return fundOrderReadMapper.getFundOrderByAccountId(accountId);
+    }
 }

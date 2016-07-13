@@ -44,15 +44,8 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <form id="transferForm" action="" method="post">
-                    <input type="hidden" id="type" name="type" value="${type}"/>
-                    <input type="hidden" id="flag" name="flag" value="${flag}"/>
-                    <input type="hidden" id="accNo" name="accNo" value="${accNo}"/>
+                <form id="transferForm" action="${contextPath}/trade/tradeApply/createTransfer/${type}/${flag}" method="post">
                     <input type="hidden" id="id" name="id" value="${customerInfoEntity.id}"/>
-                    <input type="hidden" id="customerName" name="customerName" value="${customerInfoEntity.customerName}"/>
-                    <input type="hidden" id="mobilePhone" name="mobilePhone" value="${${customerInfoEntity.mobilePhone}}"/>
-                    <input type="hidden" name="customerType" value="${customerInfoEntity.customerType}"/>
-
                     <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
                         <div class="jarviswidget" id="borrowWithholdCheck" data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
@@ -71,34 +64,41 @@
                                                 <col />
                                                 <tbody>
                                                 <tr>
-                                                    <td align="left">客户编号：</td>
+                                                    <td align="left">转出客户姓名：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" readonly="readonly" name="id" value="${customerInfoEntity.id}" style="width:256px;" />
+                                                            <input type="text" maxlength="50" id="customerName" name="customerName" value="${customerName}" style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">客户姓名：</td>
+                                                    <td align="left">客户手机号码：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" readonly="readonly" name="customerName" value="${customerInfoEntity.customerName}" style="width:256px;" />
+                                                            <input type="text" maxlength="50" id="mobilePhone" name="mobilePhone" value="${mobilePhone}" style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">手机号码：</td>
+                                                    <td align="left">身份证号：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" readonly="readonly" name="mobilePhone" value="${customerInfoEntity.mobilePhone}" style="width:256px;" />
+                                                            <input type="text" maxlength="50" id="cert_no" name="cert_no" value="${cert_no}" style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">账户余额：</td>
+                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>账户类型：</td>
                                                     <td>
-                                                        <label class="input">
-                                                            <input type="text" maxlength="50" readonly="readonly" name="amt" value="1000.00" style="width:256px;" />
+                                                        <label>
+                                                                <select id = "accType" name = "accType" style="width:150px;height: 30px;">
+                                                                    <option value="0" selected="selected">主账户</option>
+                                                                    <option value="1">借款账户</option>
+                                                                    <option value="2">线下出借账户</option>
+                                                                    <option value="3">线上出借账户</option>
+                                                                    <option value="96">应付账户</option>
+                                                                    <option value="99">冻结账户</option>
+                                                                </select>
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -115,7 +115,8 @@
                                                     <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账金额</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;" onblur="checkAmt()"/>
+                                                            <%--<input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;" onblur="checkAmt()"/>--%>
+                                                            <input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;"/>
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -144,10 +145,10 @@
 <script type="text/javascript" charset="utf-8">
 
     $("#passbtn").click(function () {
+        var cert_no=$("#cert_no").val();
+        var accType=$("#accType").val();
         var tradeType=$("#tradeType").val();
         var amt=$("#amt").val();
-        var accNo=$("#accNo").val();
-//        var type=$("#type").val();
         wait("正在提交中，请耐心等待...");
         if (validateCheck()) {
             $("#transferForm").ajaxSubmit({
@@ -160,7 +161,6 @@
                             window.location.href="${contextPath}/account/${type}/list";
                         });
                     } else {
-//                        jAlert("提交失败,请重试", '消息提示',function (r) {
                         jAlert("提交失败，失败原因："+data.message, '消息提示',function (r) {
                             $.unblockUI();
                             window.location.href="${contextPath}/account/${type}/list";
@@ -197,13 +197,13 @@
         });
     }
 
-
-    function checkAmt() {
+   /* function checkAmt() {
         var amt=$("#amt").val();
-        var amt=$("#amt").val();
-        alert(amt);
+        if(amt<=0){
+            alert("转账金额不能为0");
+        }
         return true;
-    }
+    }*/
 </script>
 </body>
 

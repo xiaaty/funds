@@ -79,9 +79,9 @@ public interface IFundsTrade {
      */
     public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException;
 
-    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
+    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild) throws FssException ;
 
-    public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
+    public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild) throws FssException ;
 
 //    public FundOrderEntity withholdingApplyNew(Long custId, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
     /**
@@ -92,7 +92,7 @@ public interface IFundsTrade {
      */
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
 
-    public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
+    public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType,Integer tradeType,Integer tradeTypeChild) throws FssException;
 
 //    public FundOrderEntity withdrawApplyNew(int custID, int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
 
@@ -116,7 +116,6 @@ public interface IFundsTrade {
 
     /**
      * 转账接口,老账户提现 预留接口,新版账户提现,不设此接口
-     * @param thirdPartyType
      * @param fromCusID
      * @param fromType
      * @param toCusID
@@ -128,10 +127,10 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public FundOrderEntity transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+    public FundOrderEntity transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo) throws FssException;
 
 
-    public FundOrderEntity transefer(String fromAccNo,String toAccno,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+    public FundOrderEntity transefer(String fromAccNo,String toAccno,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo) throws FssException;
 
 
     /**

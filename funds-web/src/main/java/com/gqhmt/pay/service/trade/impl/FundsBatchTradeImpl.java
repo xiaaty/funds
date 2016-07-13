@@ -79,11 +79,11 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         FundOrderEntity orderEntity = null;
         Integer businessType;
         if(accNo != null && !"".equals(accNo)) {
-            orderEntity = this.fundsTrade.withholdingApplyNew(accNo, entity.getApplyNo(), entity.getAmount(), entity.getId());
+            orderEntity = this.fundsTrade.withholdingApplyNew(accNo,contractNo,entity.getAmount(),entity.getId(),entity.getTradeType(),entity.getTradeTypeChild());
         }else{
         	FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(entity.getCustId(), entity.getCustType());
         	businessType=fundAccountEntity.getBusiType();
-            orderEntity = this.fundsTrade.withholdingApplyNew(Integer.valueOf(entity.getCustId().toString()).intValue(),businessType.intValue(),entity.getApplyNo(),entity.getAmount(),entity.getId());
+            orderEntity = this.fundsTrade.withholdingApplyNew(entity.getCustId().intValue(),businessType,contractNo,entity.getAmount(),entity.getId(),entity.getTradeType(),entity.getTradeTypeChild());
         }
         return  orderEntity;
     }
@@ -101,12 +101,12 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     		selletType=fssTradeApplyService.compare_date(entity.getBespokeDate());//结算类型；0 T+0 ; 1 T+1
     	}
     	if(accNo != null && !"".equals(accNo)){
-    		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType, entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+    		orderEntity =this.fundsTrade.withdrawApplyNew(accNo,null,businessType, contractNo, entity.getAmount(), entity.getId(), selletType,entity.getTradeType(),entity.getTradeTypeChild());
     	}else{
     		String custId=null;
         	if(entity.getCustId()!=null && !"".equals(entity.getCustId())){
         		custId = String.valueOf(entity.getCustId());//新版通过custId获取
-        		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, entity.getCustType(), entity.getApplyNo(), entity.getAmount(), entity.getId(), selletType);
+        		orderEntity = this.fundsTrade.withdrawApplyNew(null,custId, entity.getCustType(),contractNo, entity.getAmount(), entity.getId(), selletType,entity.getTradeType(),entity.getTradeTypeChild());
         	}else{
         		throw new FssException("90002006");
         	}
