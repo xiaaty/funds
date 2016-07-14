@@ -94,8 +94,23 @@ public class BidTransferService {
 
 
 
+
                 //数据处理
                 if(fuiouFtpOrder.getType() == 1){//满标
+                    try {
+                        if(fromAccount.getCustId()>100) {
+                            settleService.newSettleCalback(field.getOrderNo(), "", String.valueOf(field.getTenderId()));
+                        }else{
+                            settleService.newSettleBonusCalback(fromAccount,field.getOrderNo(),"",field.getAmt());
+                        }
+                    } catch (FssException e) {
+                        try {
+                            settleService.newSettleCalback(field.getOrderNo(),"",String.valueOf(field.getTenderId()));
+                        } catch (FssException e1) {
+                            LogUtil.error(this.getClass(),e);
+                        }
+
+                    }
 
                 }else if(fuiouFtpOrder.getType() == 2){//回款
 

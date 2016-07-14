@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.gqhmt.business.architect.loan.bean.RepaymentBean;
+import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -257,6 +258,25 @@ public class FundSequenceService {
      * @throws FssException
      */
     public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntity,int actionType,int accountType,BigDecimal amount,String memo,FundOrderEntity orderEntity,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException{
+        this.transfer(fromEntity,toEntity,actionType,accountType,amount,memo,orderEntity == null ?"": orderEntity.getOrderNo(),"",newFundsType,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
+    }
+
+    /**
+     * 转账重载
+     * @param fromEntity
+     * @param actionType
+     * @param accountType
+     * @param amount
+     * @param newFundsType
+     * @param tradeType
+     * @param lendNo
+     * @param toCustId
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
+     * @throws FssException
+     */
+    public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntity,int actionType,int accountType,BigDecimal amount,String memo,String orderNo,String newOrderNo,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException{
         if(amount.multiply(new BigDecimal("100")).longValue()<0){
             throw new AmountFailException("传入金额不能小于0");
         }
@@ -285,9 +305,9 @@ public class FundSequenceService {
             toActionType = 4015;
         }
 
-        FundSequenceEntity fromFundSequenceEntity=this.getFundSequenceEntity(fromEntity.getId(),actionType,accountType,new BigDecimal("-" + amount.toPlainString()),orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),toEntity.getId(),newFundsType,tradeType,fromEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity fromFundSequenceEntity=this.getFundSequenceEntity(fromEntity.getId(),actionType,accountType,new BigDecimal("-" + amount.toPlainString()),orderNo,newOrderNo,toEntity.getId(),newFundsType,tradeType,fromEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         fromFundSequenceEntity.setSumary("转账转出  转给"+toEntity.getCustName()+"("+toEntity.getId()+") ");
-        FundSequenceEntity toFundSequenceEntity=this.getFundSequenceEntity(toEntity.getId(),actionType,toActionType,amount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),fromEntity.getId(),newFundsType,tradeType,toEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity toFundSequenceEntity=this.getFundSequenceEntity(toEntity.getId(),actionType,toActionType,amount,orderNo,newOrderNo,fromEntity.getId(),newFundsType,tradeType,toEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         toFundSequenceEntity.setSumary("转账转入 "+fromEntity.getCustName()+"("+fromEntity.getId()+")转入");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(fromFundSequenceEntity);
@@ -611,18 +631,35 @@ public class FundSequenceService {
 
   }
 
-    public void selletSequence(Tender tender,FundAccountEntity toEntity, String orderNo,String newOrderNo ,String title) throws FssException {
+
+
+    public void selletSequence(Tender tender, FundAccountEntity toEntity, Bid bid, String orderNo, String newOrderNo , String title) throws FssException {
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
-//        try {
-//            this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null, ThirdPartyType.FUIOU, fundOrderEntity);
-//        } catch (FssException e) {
-//            LogUtil.error(this.getClass(), e.getMessage());
-//        }
+
+        try {
+            this.transfer(fromEntity,toEntity,6,2006,tender.getRealAmount(),null,orderNo,newOrderNo,"1105",null,tender.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(), e.getMessage());
+        }
 
         FundAccountEntity oFromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), tender.getInvestType() == 1?3:2);
 
         this.fundTradeService.addFundTrade(oFromEntity, BigDecimal.ZERO, BigDecimal.ZERO, 2006, "你出借的产品" + title + " 已满标，转给借款人 " + tender.getRealAmount() + "元" + (tender.getBonusAmount().intValue() > 0 ? ",红包抵扣 " + tender.getBonusAmount() + "元" : ""));
+    }
 
+    public void selletSequenceBouns(FundAccountEntity fromAccount, FundAccountEntity toEntity, Bid bid, String orderNo, String newOrderNo , String title,BigDecimal amount) throws FssException {
+
+        try {
+           this .transfer(fromAccount,toEntity,6,2006,amount,null,orderNo,newOrderNo,"1105",null,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+
+
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(), e.getMessage());
+        }
+
+
+        this.fundTradeService.addFundTrade(fromAccount, BigDecimal.ZERO, amount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + amount + "元");
     }
 
     public void abortSequence(List<Tender> list,FundAccountEntity  fromEntity , FundOrderEntity fundOrderEntity ,String title) throws FssException {
