@@ -1,14 +1,18 @@
 package com.gqhmt.quartz.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.ThreadExecutor;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -32,6 +36,9 @@ public class BidTransferService {
 
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
+
+    @Resource
+    private FundAccountService fundAccountService;
 
     @Resource
     private FuiouFtpOrderService fuiouFtpOrderService;
@@ -73,6 +80,16 @@ public class BidTransferService {
                 } catch (FssException e) {
                     LogUtil.error(this.getClass(),e);
                 }
+                String  fromUserName = field.getFromUserName();
+                String  toUserName = field.getToUserName();
+                BigDecimal amt  = field.getAmt();
+                String contractNo = field.getContractNo();
+
+                FundAccountEntity fromAccount =fundAccountService.getFundAccount(fromUserName, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+                FundAccountEntity toAccount  = fundAccountService.getFundAccount(toUserName,GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+
+
+
                 //数据处理
                 if(fuiouFtpOrder.getType() == 1){//满标
 
