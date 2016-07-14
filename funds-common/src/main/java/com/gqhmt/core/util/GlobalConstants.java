@@ -260,7 +260,8 @@ public class GlobalConstants {
     //富有金账户对账文件信息类型
     public static Map<String, String> FUYOU_ACCOUNT_INFO_TRADE_TYPE = new ConcurrentHashMap<>();
 
-
+    //交易类型映射t_gq_fund_sequence中的fund_type,
+    public static Map<String, String> TRADE_TYPE_MAPPING_FUND_TYPE = new ConcurrentHashMap<>();
 	
 	public static Object getSession(HttpServletRequest request,String name){
 		return request.getSession(true).getAttribute(name);
@@ -776,6 +777,45 @@ public class GlobalConstants {
         FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTCZ","委托充值");
         FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTTX","委托提现");
         FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("YSQ","预授权交易");
+
+
+        /**
+         * #1开头，资金交易类型
+         1001:充值
+         1002:代扣
+         1003:预提现（转到冻结金账户）
+         1004:提现失败（冻结金账户转回）
+         1005:一般转账转出
+         1006:一般转账转入
+         1007:资金冻结（转到冻结金账户）
+         1008:资金解冻（冻结金账户转回）
+         #2开头，冻结资金类型
+         2001:提现冻结
+         2002:提现解冻
+         2003:投标冻结
+         2004:投标解冻
+         2005：一般冻结
+         2006：一般冻结解冻
+         #3开头投标交易类型
+         3001:预投标（转到冻结金账户）
+         3002:投标清算
+         3003:还款本金（借款出）
+         3005:还款利息（借款出）
+         3006:收款本金（出借入）
+         3007:收款利息（出借入）
+         3008:债权转让转出
+         3008:债权转让转入
+         3009:流标退款（冻结金账户转回）
+         */
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+        TRADE_TYPE_MAPPING_FUND_TYPE.put("","");
+
 
 	}
 }
