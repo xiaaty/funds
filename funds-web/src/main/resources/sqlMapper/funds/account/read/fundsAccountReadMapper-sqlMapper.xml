@@ -126,7 +126,11 @@
 		where busi_type = #{busi_type}
 		order by CREATE_TIME desc
 	</select>
-	
-	
-	
+
+	<select id="queryFundAccountByUserName" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		<include refid="fieldSql" />
+		where user_name=#{userName}
+		and busi_type = #{type}
+		order by CREATE_TIME desc
+	</select>
 </mapper>

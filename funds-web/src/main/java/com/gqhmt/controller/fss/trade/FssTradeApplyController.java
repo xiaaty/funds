@@ -442,7 +442,7 @@ public class FssTradeApplyController {
 				to_cust_type=Integer.valueOf(accType);
 			}
 
-				fundsTradeImpl.transfer(from_cust_no,from_user_no,from_cust_type,to_cust_no,to_user_no,to_cust_type,amt,1005,null,0l);
+//				fundsTradeImpl.transfer(from_cust_no,from_user_no,from_cust_type,to_cust_no,to_user_no,to_cust_type,amt,1005,null,0l);
 				map.put("code", "0000");
 				map.put("message", "success");
 		}catch (FssException e){
