@@ -87,7 +87,7 @@
         <out_cust_no must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="0"/>
         <in_cust_no  must="true" source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" paramIndex="1"/>
         <amt  source="amountToLong100" paramIndex="2"/>
-        <contract_no  source="null" paramIndex="3"/>
+        <contract_no  source="string" paramIndex="3"/>
         <rem source="null"/>
     </api>
     <!--21.	冻结到冻结接口 -->

@@ -2,8 +2,8 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
-import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Filename:    com.gqhmt.fss.architect.fuiouFtp.service.SettleService
@@ -74,6 +75,10 @@ public class BidSettleService {
     private FssBackplateService fssBackplateService;
 
 
+
+
+
+
     public void settle(FssLoanEntity loanEntity) throws FssException {
 
         Map<String,String > paramMap = new HashMap<>();
@@ -86,9 +91,11 @@ public class BidSettleService {
 
         Bid bid = null;
         List<Tender> list  = null;
+        String title = null;
         try {
             bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
             list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
         } catch (FssException e) {
             LogUtil.error(getClass(),e);
            return;
@@ -191,4 +198,6 @@ public class BidSettleService {
         loanEntity.setModifyTime(new Date());
         fssLoanService.update(loanEntity);
     }
+
+
 }

@@ -6,6 +6,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.ThreadExecutor;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.service.BidSettleService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -42,6 +43,9 @@ public class BidTransferService {
 
     @Resource
     private FuiouFtpOrderService fuiouFtpOrderService;
+
+    @Resource
+    private BidSettleService settleService;
 
     public void batchTransfer() throws FssException {
         List<FuiouFtpOrder> list = fuiouFtpOrderService.listFile();//fuiouFtpOrderService.listNotUpload();
