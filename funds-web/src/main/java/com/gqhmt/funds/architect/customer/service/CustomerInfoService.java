@@ -1077,6 +1077,7 @@ public class CustomerInfoService {
 	public CustomerInfoEntity createCustomer(String certNo,String name,String mobile) throws FssException{
 		try{
 			CustomerInfoEntity customerInfoEntity = this.createCustomerInfo(certNo,name,mobile);
+			this.customerInfoWriteMapper.insertSelective(customerInfoEntity);
 			UserEntity userEntity = gqUserService.createUser(customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getId());
 			customerInfoEntity.setBankId(userEntity.getId());
 			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
