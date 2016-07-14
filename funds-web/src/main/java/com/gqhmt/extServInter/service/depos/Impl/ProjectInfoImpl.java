@@ -45,7 +45,7 @@ public class ProjectInfoImpl implements IProjectInfo {
     	Response response = new Response();
     	try {
 			ProjectInfoDto pDto = (ProjectInfoDto)dto;
-			fssProjectInfoService.insertProjectInfo(pDto.getTrade_type(),pDto.getSeq_no(),pDto.getMchn(),pDto.getLoanType(),pDto.getLoanTittle(),pDto.getOrganization(),pDto.getDescription(),pDto.getLoanAmt(),pDto.getExpectedReturn(),pDto.getProductName(),pDto.getRepaymentType(),pDto.getLoanTime(),pDto.getStartDate(),pDto.getEachBidAmount(),pDto.getMinNum(),pDto.getMaxAmount(),pDto.getLoanItemDescription(),pDto.getFeeType(),pDto.getTradeStatus(),pDto.getPeriod(),pDto.getPrepareAmount(),pDto.getPayChannel(),pDto.getBidYearIrr(),pDto.getBorrowType(),pDto.getLicenseNo(),pDto.getCustName(),pDto.getCertType(),pDto.getCertNo(),pDto.getFilePath(),pDto.getCustId(),pDto.getBusi_no());
+			fssProjectInfoService.insertProjectInfo(pDto.getTrade_type(),pDto.getSeq_no(),pDto.getMchn(),pDto.getLoanType(),pDto.getLoanTittle(),pDto.getOrganization(),pDto.getDescription(),pDto.getLoanAmt(),pDto.getExpectedReturn(),pDto.getProductName(),pDto.getRepaymentType(),pDto.getLoanTime(),pDto.getStartDate(),pDto.getEachBidAmount(),pDto.getMinNum(),pDto.getMaxAmount(),pDto.getLoanItemDescription(),pDto.getFeeType(),pDto.getTradeStatus(),pDto.getPeriod(),pDto.getPrepareAmount(),pDto.getPayChannel(),pDto.getBidYearIrr(),pDto.getBorrowType(),pDto.getLicenseNo(),pDto.getCustName(),pDto.getCertType(),pDto.getCertNo(),pDto.getFilePath(),pDto.getCustId(),pDto.getBusi_no(),pDto.getContractNo(),pDto.getBidInterest());
             response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
