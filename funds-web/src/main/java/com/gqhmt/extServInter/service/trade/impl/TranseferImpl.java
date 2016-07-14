@@ -44,7 +44,7 @@ public class TranseferImpl implements ITransefer{
     	try {
 			TransferDto cDto=(TransferDto)dto;
 			fundsTrade.transfer(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getFrom_cust_no(),cDto.getFrom_user_no(),cDto.getFrom_cust_type(),cDto.getTo_cust_no(),
-								cDto.getTo_user_no(),cDto.getTo_cust_type(),cDto.getAmt(),cDto.getFunds_type(),cDto.getBusi_type(),cDto.getBusi_id());
+								cDto.getTo_user_no(),cDto.getTo_cust_type(),cDto.getAmt(),cDto.getFunds_type(),cDto.getBusi_type(),cDto.getBusi_id(),3);
 			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
