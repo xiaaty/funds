@@ -24,12 +24,19 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.DateUtil;
+import com.gqhmt.util.ExportExcel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
+
+import static com.gqhmt.pay.core.configer.ConfigAbstract.getClassPath;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -48,20 +55,20 @@ import java.util.*;
  * 2016/1/10  于泳      1.0     1.0 Version
  */
 @Service
-public class FssTradeApplyService {
-	
+public class FssTradeApplyService extends JDialog {
+
 	@Resource
     private FssTradeApplyWriteMapper fssTradeApplyWriteMapper;
-	
+
 	@Resource
 	private FssTradeApplyReadMapper fssTradeApplyReadMapper;
-	
+
 	@Resource
 	private FundAccountService fundAccountService;
-	
+
 	@Resource
 	private FssRepaymentService fssRepaymentService;
-	
+
 	@Resource
 	private FssAccountService fssAccountService;
 	@Resource
@@ -77,8 +84,8 @@ public class FssTradeApplyService {
 	@Resource
     private TradeRecordService tradeRecordService;
 
-	
-	
+
+
 	/**
 	 * 借款人提现完成通知借款系统
 	 * @param seqNo
@@ -107,9 +114,9 @@ public class FssTradeApplyService {
 		this.whithdrawApply(fssAccountEntity.getCustNo(),fssAccountEntity.getAccNo(),tradeType,amt,mchn,seqNo,fssAccountEntity.getCustId(),1,contractNo,contractId,null,this.compare_date(bespoke_date));
 	}
 
-	
+
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月11日
 	 * function：借款人提现
@@ -117,7 +124,7 @@ public class FssTradeApplyService {
 	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map) {
 		return fssTradeApplyReadMapper.getBorrowWithDraw(map);
 	}
-	
+
 	/**
 	 * 完成抵押标借款人提现后，通知借款系统
 	 */
@@ -154,7 +161,7 @@ public class FssTradeApplyService {
 		return withDrawApplyResponse;
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：判断申请编号是否唯一
@@ -214,7 +221,7 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：根据交易状态的交易申请列表
@@ -242,7 +249,7 @@ public class FssTradeApplyService {
 	 * 修改执行条数
 	 * @param fssTradeRecordEntity
 	 * 根据申请编号修改执行条数,实际交易金额，修改日期
-	 * @throws FssException 
+	 * @throws FssException
      */
 	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity) throws FssException{
 			fssTradeRecordEntity.setModifyTime(new Date());
@@ -251,12 +258,12 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
-	 * @throws FssException 
-	 * 
+	 * @throws FssException
+	 *
 	 */
 	public void checkExecuteCount(String applyNo) {
 		FssTradeApplyEntity applyEntity = fssTradeApplyReadMapper.selectByApplyNo(applyNo);
@@ -325,7 +332,7 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：修改交易申请
@@ -382,7 +389,7 @@ public class FssTradeApplyService {
 		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map2);
 		return tradeapplylist;
 	}
-	
+
 
 
 
@@ -419,7 +426,7 @@ public class FssTradeApplyService {
 		}
 	}
 
-	
+
 
 	/**
 	 * 创建FssTradeApplyEntity
@@ -496,12 +503,12 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectFssTradeApplyEntityByApplyNo(applyNo);
 		return tradeapply;
 	}
-	
+
 	public FssTradeApplyBean getFssTradeApply(String applyNo){
 		FssTradeApplyBean fssTradeApplyBean=fssTradeApplyReadMapper.queryFssTradeApply(applyNo);
 		return fssTradeApplyBean;
 	}
-	
+
 	 /**
      * 判断预约到账日期是否为今天
      */
@@ -520,7 +527,7 @@ public class FssTradeApplyService {
     		return 1;
     	}
     }
-    
+
     /**
 	 * author:柯禹来
 	 * time:2016年4月25日
@@ -539,5 +546,87 @@ public class FssTradeApplyService {
 	public  FssTradeApplyEntity selectTradeApplyById(Long id){
 		return  fssTradeApplyReadMapper.selectByPrimaryKey(id);
 	};
+
+    /**
+     * author:xdw
+     * time:2016年7月14日
+     * function：TradeApply,tradeRecord导出excel
+     */
+	public void exportTradeApplyList(List<FssTradeApplyBean> tradeApplyList) throws IOException {
+		List<Map> mapList = new ArrayList<Map>();
+
+		if(tradeApplyList.size()>0){
+			for(FssTradeApplyBean tradeApply:tradeApplyList){
+				Map<String, Object> mapObject = new HashMap<String, Object>();
+				List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(tradeApply.getApplyNo(), null);
+				mapObject.put("tradeApply", tradeApply);
+				mapObject.put("tradeRecordList", tradeRecordList);
+				mapList.add(mapObject);
+			}
+		}
+
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String path = getClassPath();
+        File filepath  = new File(path+"\\excel");
+        String address = filepath+"\\"  + sdf.format(new Date()) +  ".xls";
+
+        System.out.println("address: "+address);
+
+        String fileName = checkFileName(address,0);
+
+        OutputStream out = new FileOutputStream(fileName);
+		System.out.println("导出路径： "+ fileName);
+        String[] headers =
+                {"业务编号", "申请单号", "客户姓名", "客户电话", "交易金额", "单次交易金额", "创建时间"};
+        ExportExcel<Map> ex = new ExportExcel<Map>();
+		try{
+            ex.exportExcel("tradeApply", headers, mapList, out);
+        }catch (IllegalAccessException i){
+            i.printStackTrace();
+        }catch (IOException io){
+            io.printStackTrace();
+        }finally {
+            if(out!=null){
+                out.close();
+            }
+        }
+
+		JOptionPane.showMessageDialog(this.getMostRecentFocusOwner().getFocusCycleRootAncestor(), "导出成功!");
+	}
+
+    //验证文件是否存在。
+	public String checkFileName(String fileName,int i){
+		//验证文件是否存在
+		String addressFileName;
+
+		int index=fileName.lastIndexOf(".");
+		int index2=fileName.lastIndexOf("\\");
+		String fileEnd = fileName.substring(index);
+		String fileStart = fileName.substring(0,index);
+
+		String fileFolder = fileStart.substring(0,index2);
+		// 验证文件夹是否存在
+		File folder = new File(fileFolder);
+		if(!folder.exists()){
+			folder.mkdir();
+		}
+		String newFileName;
+		if(i!=0){
+			newFileName = fileStart+"("+i+")"+fileEnd;
+		}else{
+			newFileName = fileName;
+		}
+		i++;
+		File file=new File(newFileName);
+
+		if(!file.exists()) {
+			addressFileName = newFileName;
+		}else{
+			addressFileName = checkFileName(fileName,i);
+		}
+
+		return addressFileName;
+	}
 
 }

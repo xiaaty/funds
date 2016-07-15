@@ -30,9 +30,12 @@ import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -99,6 +102,7 @@ public class FssTradeApplyController {
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
     	if(map.size()==0){//默认交易状态为新增
 			map.put("tradeState","10080001");
 		}
@@ -106,7 +110,6 @@ public class FssTradeApplyController {
 		map.put("busiType", bus);
 //		String token = TokenProccessor.getInstance().makeToken();//创建令牌
 //		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
-        List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
         model.put("map", map);
@@ -369,5 +372,21 @@ public class FssTradeApplyController {
 		model.addAttribute("page", bondList);
 		model.put("map", map);
 		return "fss/trade/bondTransfer_list";
+	}
+
+	/**
+	 * 导出excle
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object exportExcel(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus, RedirectAttributes attr) throws Exception {
+		HttpSession httpSession = request.getSession();
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
+		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
+		return new ModelAndView("redirect:"+request.getContextPath()+"/trade/tradeApply/"+type+"/"+bus, map);
 	}
 }
