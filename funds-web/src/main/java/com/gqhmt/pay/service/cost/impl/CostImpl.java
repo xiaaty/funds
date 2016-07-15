@@ -192,6 +192,11 @@ public class CostImpl  implements ICost{
         map.put("11130001_10040002",4l);
         map.put("11130001_10040003",4l);
         map.put("11130001_10040099",4l);
+
+        map.put("21992105_10040001",2l);  //收风险备用金
+        map.put("21992105_10040002",2l);
+        map.put("21992105_10040003",2l);
+        map.put("21992105_10040099",2l);
     }
 
     @Override

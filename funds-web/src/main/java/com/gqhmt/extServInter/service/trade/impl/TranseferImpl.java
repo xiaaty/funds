@@ -37,7 +37,13 @@ public class TranseferImpl implements ITransefer{
 	@Resource
 	private IFundsTrade fundsTrade;
 
-	@APITradeTypeValid(value = "11080001")
+	/**
+	 * 11080001：遗留转账
+	 * 11080004:个人账户之间转账
+	 * @param dto
+	 * @return
+     */
+	@APITradeTypeValid(value = "11080001,11080004")
 	@Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
