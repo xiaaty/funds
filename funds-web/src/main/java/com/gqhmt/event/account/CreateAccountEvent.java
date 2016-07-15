@@ -100,6 +100,7 @@ public class CreateAccountEvent {
                 }else{
                     //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                     customerInfoEntity =  customerInfoService.getCustomerById(custId);
+                    custId = customerInfoEntity.getId();
                     userId = customerInfoEntity.getUserId();
                 }
                 //设置值
