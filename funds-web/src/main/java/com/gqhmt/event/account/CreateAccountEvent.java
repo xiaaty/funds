@@ -130,7 +130,6 @@ public class CreateAccountEvent {
 
             }
         }
-        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
         FssAccountEntity fssAccountEntity = null;
         try {
             //生成新版客户信息记录
@@ -151,6 +150,7 @@ public class CreateAccountEvent {
         //生成富有账户
         if(isOldAccount){
             if (primaryAccount.getHasThirdAccount() ==1){//富友
+                primaryAccount.setCustomerInfoEntity(customerInfoEntity);
                 paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
                 primaryAccount.setHasThirdAccount(2);
                 fundAccountService.update(primaryAccount);
