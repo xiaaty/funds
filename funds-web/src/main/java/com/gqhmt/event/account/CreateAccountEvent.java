@@ -171,11 +171,13 @@ public class CreateAccountEvent {
         //旧版银行卡信息生成
         //创建银行卡信息
 //       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
-        BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
-        if(bankCardInfoEntity==null){
-            bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
-        }
-        fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
+       if(isOldAccount) {
+           BankCardInfoEntity bankCardInfoEntity = bankCardInfoService.getBankCardByCustNo(custId);
+           if (bankCardInfoEntity == null) {
+               bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+           }
+           fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
+       }
         //新版银行卡信息生成  增加判断，是否存在
         FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
         if(fssCustBankCardEntity==null){
