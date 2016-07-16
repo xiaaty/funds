@@ -1,6 +1,7 @@
 package com.gqhmt.event.account;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
@@ -65,7 +66,12 @@ public class CreateAccountEvent {
 
     public FssAccountEntity createAccount(String tradeType,String  name,String  mobile,String certNo,Long orgcustId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
         FssCustomerEntity fssCustomerEntity = fssCustomerService.getFssCustomerEntityByCertNo(certNo);
-
+        if(area.length()==6){
+            area= Application.getInstance().getFourCode(area);
+        }
+        if(bankType.length()==3){
+            bankType="0"+bankType;
+        }
         Long custId = orgcustId;
 
         if(fssCustomerEntity == null){
@@ -99,9 +105,9 @@ public class CreateAccountEvent {
                     }else{
                         //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                         customerInfoEntity =  customerInfoService.getCustomerById(custId);
-                        custId = customerInfoEntity.getId();
-                        userId = customerInfoEntity.getUserId();
                     }
+                    custId = customerInfoEntity.getId();
+                    userId = customerInfoEntity.getUserId();
                     //设置值
                     customerInfoEntity.setParentBankCode(bankType);
                     customerInfoEntity.setBankNo(bankNo);
