@@ -121,7 +121,7 @@ public class BidRepaymentService extends BidSupper{
                 continue;
             }
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", "",bean.getId()));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", "",bean.getId(),bean.getCustomerId(),bean.getContractNo(),bid.getCustomerId().longValue(),bid.getContractNo()));
         }
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
@@ -177,7 +177,7 @@ public class BidRepaymentService extends BidSupper{
 
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
-        this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay);
+        this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay,bid);
         //修改订单信息
         paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
 
@@ -191,10 +191,6 @@ public class BidRepaymentService extends BidSupper{
     }
 
 
-    public void newRepayCallbakc(String  orderNo,String newOrderNo,String tenderId) throws FssException {
-
-
-    }
 
     public void complete(String orderNo) throws FssException {
 
@@ -256,7 +252,7 @@ public class BidRepaymentService extends BidSupper{
                 continue;
             }
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(toEntity,toAxAccountEntity, fundOrderEntity, bean.getToPublicAmount(), 3, "", "",bean.getId()));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(toEntity,toAxAccountEntity, fundOrderEntity, bean.getToPublicAmount(), 3, "", "",bean.getId(),bean.getCustomerId(),bean.getContractNo(),null,null));
         }
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
@@ -280,11 +276,22 @@ public class BidRepaymentService extends BidSupper{
         }
         Map<String,String > repParamMap = new HashMap<>();
         repParamMap.put("id",loanEntity.getBusiNo());
+        Bid bid = null;
         List<RepaymentBean> list  = null;
+        String title = "";
+        try {
+            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
+            list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
+            //产品名称，如果产品名称为空，则去标的title
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+            throw  e;
+        }
         try {
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
             FundAccountEntity toAxAccountEntity = fundAccountService.getFundAccount(3l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-            this.fundSequenceService.repaymentSequenceRefund(list,toAxAccountEntity,fundOrderEntity);
+            this.fundSequenceService.repaymentSequenceRefund(list,toAxAccountEntity,fundOrderEntity,bid);
             //修改订单信息
             paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
         } catch (FssException e) {

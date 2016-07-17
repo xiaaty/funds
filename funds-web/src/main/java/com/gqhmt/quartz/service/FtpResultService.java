@@ -100,38 +100,10 @@ public class FtpResultService {
             return;
         }
         String reqCodeMsg = reqCode.get(0);
-        if(reqCode.size() == 1 ){
-            if("0000".equals(reqCodeMsg)){
-                order.setResultStatus(3);
-                order.setResult(1);
-            }else if("5138".equals(reqCodeMsg) || "3201".equals(reqCodeMsg) || (reqCodeMsg!= null && reqCodeMsg.length() == 4 && "98".equals(reqCodeMsg.substring(0, 2)))){
-                order.setResultStatus(3);
-                order.setResult(4);
-            }else{
-                order.setResult(2);
-                order.setResultStatus(3);
-
-            }
-        }else{
-            for(String s:reqCode){
-                if(s == null || "".equals(s)){
-                    return;
-                }
-                if("5138".equals(reqCodeMsg) || "3201".equals(reqCodeMsg) || (reqCodeMsg!= null && reqCodeMsg.length() == 4 && "98".equals(reqCodeMsg.substring(0, 2)))){
-                    order.setResultStatus(3);
-                    order.setResult(4);
-                    return;
-                }else if(!"0000".equals(s)){
-                    order.setResultStatus(3);
-                    order.setResult(3);
-                    return;
-                }
-                order.setResultStatus(3);
-                order.setResult(2);
-                order.setRetrunResultStatus(0);
-            }
+        if(reqCode.size() == 1 && "0000".equals(reqCodeMsg)){
+            order.setResultStatus(3);
+            order.setResult(1);
         }
-
     }
 
     //资金流水入账
