@@ -1076,7 +1076,8 @@ public class CustomerInfoService {
 
 	public CustomerInfoEntity createCustomer(String certNo,String name,String mobile) throws FssException{
 		try{
-			CustomerInfoEntity customerInfoEntity = this.createCustomer(certNo,name,mobile);
+			CustomerInfoEntity customerInfoEntity = this.createCustomerInfo(certNo,name,mobile);
+			this.customerInfoWriteMapper.insertSelective(customerInfoEntity);
 			UserEntity userEntity = gqUserService.createUser(customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getId());
 			customerInfoEntity.setBankId(userEntity.getId());
 			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
@@ -1092,15 +1093,17 @@ public class CustomerInfoService {
 
 	/**
 	 * 创建账户
-	 * @param loanAccountDto
+	 * @param certNo
+	 * @param name
+	 * @param mobile
 	 * @return
 	 * @throws FssException
-	 */
-	public CustomerInfoEntity createCustomerInfo(CreateLoanAccountDto loanAccountDto) throws FssException{
+     */
+	public CustomerInfoEntity createCustomerInfo(String certNo,String name,String mobile) throws FssException{
 		CustomerInfoEntity customerInfoEntity=new CustomerInfoEntity();
-		customerInfoEntity.setCustomerName(loanAccountDto.getName());
-		customerInfoEntity.setCertNo(loanAccountDto.getCert_no());
-		customerInfoEntity.setMobilePhone(loanAccountDto.getMobile());
+		customerInfoEntity.setCustomerName(name);
+		customerInfoEntity.setCertNo(certNo);
+		customerInfoEntity.setMobilePhone(mobile);
 		customerInfoEntity.setCustomerType(1);
 		customerInfoEntity.setCertType(1);
 		customerInfoEntity.setNameIdentification(0);
@@ -1108,8 +1111,8 @@ public class CustomerInfoService {
 		customerInfoEntity.setEmailIdentification(0);
 		customerInfoEntity.setUserId(1);
 		customerInfoEntity.setIsvalid(0);
-		customerInfoEntity.setHasThirdAgreement(0);
-		customerInfoEntity.setHasAcount(0);
+		customerInfoEntity.setHasThirdAgreement(1);
+		customerInfoEntity.setHasAcount(1);
 		customerInfoEntity.setPayChannel(2);
 //		customerInfoEntity.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
 		customerInfoEntity.setIsBatchSendmsgCalled(0);
@@ -1118,6 +1121,16 @@ public class CustomerInfoService {
 		customerInfoEntity.setModifyTime((new Timestamp(new Date().getTime())));
 		customerInfoEntity.setModifyUserId(0);
 		return customerInfoEntity;
+	}
+
+	/**
+	 * 创建账户
+	 * @param loanAccountDto
+	 * @return
+	 * @throws FssException
+	 */
+	public CustomerInfoEntity createCustomerInfo(CreateLoanAccountDto loanAccountDto) throws FssException{
+		return this.createCustomer(loanAccountDto.getCert_no(),loanAccountDto.getName(),loanAccountDto.getMobile());
 	}
 
 	/**

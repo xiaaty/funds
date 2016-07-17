@@ -18,7 +18,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import javax.annotation.Resource;
 import java.util.Date;
 
@@ -63,11 +63,15 @@ public class CreateAccountEvent {
 
     @Resource
     private BankCardInfoService bankCardInfoService;
+
     @Resource
     private FundOrderService fundOrderService;
 
-    public FssAccountEntity createAccount(String tradeType,String  name,String  mobile,String certNo,Long custId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
+
+    public FssAccountEntity createAccount(String tradeType,String  name,String  mobile,String certNo,Long orgcustId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
         FssCustomerEntity fssCustomerEntity = fssCustomerService.getFssCustomerEntityByCertNo(certNo);
+
+        Long custId = orgcustId;
 
         if(fssCustomerEntity == null){
             //首次开户,验证银行卡信息
@@ -89,7 +93,7 @@ public class CreateAccountEvent {
         if(isOldAccount){
             Integer userId = null;
             try {
-                if(custId == null){//此处不校验冠e通是否存在此客户，只要id不为空，就默认存在。
+                if(orgcustId == null){//此处不校验冠e通是否存在此客户，只要id不为空，就默认存在。
                     //临时设置为查询冠e通客户表，后期需要改为冠e通提供接口，调用接口后，如果管e通不存在，则冠e通开户，并返回客户id
                     customerInfoEntity= customerInfoService.searchCustomerInfoByCertNo(certNo);//旧版客户信息
                     if(customerInfoEntity == null){
@@ -100,6 +104,7 @@ public class CreateAccountEvent {
                 }else{
                     //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                     customerInfoEntity =  customerInfoService.getCustomerById(custId);
+                    custId = customerInfoEntity.getId();
                     userId = customerInfoEntity.getUserId();
                 }
                 //设置值
@@ -149,7 +154,7 @@ public class CreateAccountEvent {
                     primaryAccount.setHasThirdAccount(2);
                     fundAccountService.update(primaryAccount);
                     fssAccountService.createFuiouAccount(mchn,fssCustomerEntity,bankNo);
-//                  富友开户成功,更新开户时间和开户订单号
+                    //富友开户成功,更新开户时间和开户订单号
                     FundOrderEntity fundOrderEntity=fundOrderService.getOrderNoByAccountId(primaryAccount.getId());
                     primaryAccount.setAccountOrderNo(fundOrderEntity.getOrderNo());
                     primaryAccount.setAccountTime(fundOrderEntity.getCreateTime());
@@ -169,6 +174,7 @@ public class CreateAccountEvent {
         //银行卡信息生成
         //旧版银行卡信息生成
         //创建银行卡信息
+//       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
         BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
         if(bankCardInfoEntity==null){
             bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
@@ -184,4 +190,3 @@ public class CreateAccountEvent {
 
 
 }
-
