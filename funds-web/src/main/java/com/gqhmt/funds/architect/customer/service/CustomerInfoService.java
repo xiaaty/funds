@@ -338,16 +338,13 @@ public class CustomerInfoService {
 		return customerInfoReadMapper.selectOne(entity);
 	}
 
-	/**//**
-	 * 根据省份证号查询客户信息
-	 *
+	/**
+	 * 根据身份份证号查询客户信息
 	 * @param certNo
 	 * @return
 	 */
 	public CustomerInfoEntity searchCustomerInfoByCertNo(String certNo) {
-		CustomerInfoEntity entity = new CustomerInfoEntity();
-		entity.setCertNo(certNo);
-		return customerInfoReadMapper.selectOne(entity);
+		return customerInfoReadMapper.queryCustomerByCertNo(certNo);
 	}
 
 	/**
