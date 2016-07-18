@@ -25,7 +25,11 @@
 	t.input_date inputDate,
 	t.feild_order_no feildOrderNo,
 	t.feild_order_no_his feildOrderNoHis,
-	t.tender_id tenderId
+	t.tender_id tenderId,
+	lend_cust_id lendCustId,
+	lend_no lendNo,
+	loan_cust_id loanCustId,
+	loan_no loanNo
 	FROM t_fuiou_ftp_field t
 	
 	</sql>

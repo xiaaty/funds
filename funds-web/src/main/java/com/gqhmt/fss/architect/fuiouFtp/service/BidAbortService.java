@@ -118,14 +118,14 @@ public class BidAbortService {
         for (Tender tender : list) {
 
             FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getRealAmount(), 2, "", null,tender.getId()));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getRealAmount(), 2, "", null,tender.getId(),tender.getCustomerId().longValue(),tender.getContractNo(),bid.getCustomerId().longValue(),bid.getContractNo()));
             if (tender.getBonusAmount() != null) {
                 bonusAmount = bonusAmount.add(tender.getBonusAmount());
             }
         }
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null,null));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo()));
         }
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
         fuiouFtpOrderService.addOrder(fundOrderEntity, 10);

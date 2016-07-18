@@ -60,6 +60,15 @@ public class FuiouFtpColomFieldService {
         return fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
     }
 
+    public Map<Long,String> getFuiouFtpColunmByOrderNo(String orderNo)throws FssException{
+        List<FuiouFtpColomField> list = fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
+        Map<Long,String> map = new HashMap<>();
+        for(FuiouFtpColomField field:list){
+            map.put(field.getTenderId(),field.getFeildOrderNo());
+        }
+       return map;
+    }
+
     public Map<String,FuiouFtpColomField> getFuiouFtpColunm(Long fileId)throws FssException{
     	List<FuiouFtpColomField> list=fuiouFtpColomFieldReadMapper.selectByFileId(fileId);
     	 if(list == null){
@@ -91,7 +100,7 @@ public class FuiouFtpColomFieldService {
      * @param contractNo
      */
 
-    public FuiouFtpColomField addColomFieldByNotInsert(FundAccountEntity fromEntity,FundAccountEntity toEntity,FundOrderEntity fundOrderEntity,BigDecimal amt,int type,String bidTitle,String contractNo,Long tID)throws FssException{
+    public FuiouFtpColomField addColomFieldByNotInsert(FundAccountEntity fromEntity,FundAccountEntity toEntity,FundOrderEntity fundOrderEntity,BigDecimal amt,int type,String bidTitle,String contractNo,Long tID,Long lendCustId,String lendNo,Long loanCustId,String loanNo)throws FssException{
         FuiouFtpColomField field = new FuiouFtpColomField();
         field.setFromAccountId(fromEntity.getId());
         field.setFromUserName(fromEntity.getUserName());
@@ -105,7 +114,7 @@ public class FuiouFtpColomFieldService {
         field.setToAccountId(toEntity.getId());
         field.setToUserName(toEntity.getUserName());
         field.setToCnUserName(toEntity.getCustName().trim());
-        field.setState(101);
+        field.setState(10890001);
         field.setOrderId(fundOrderEntity.getId());
         if(type == 1){//投标解冻
             field.setRem("投标 "+bidTitle+ "解冻资金 "+amt.toPlainString()+"元");
@@ -122,6 +131,10 @@ public class FuiouFtpColomFieldService {
         field.setOrderNo(fundOrderEntity.getOrderNo());
         field.setContractNo(contractNo);
         field.setTenderId(tID);
+        field.setLendCustId(lendCustId);
+        field.setLendNo(lendNo);
+        field.setLoanCustId(loanCustId);
+        field.setLoanNo(loanNo);
         return field;
     }
 

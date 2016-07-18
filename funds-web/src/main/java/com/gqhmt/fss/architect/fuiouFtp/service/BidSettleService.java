@@ -3,10 +3,8 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -41,10 +39,9 @@ import java.util.*;
  * 16/3/15  于泳      1.0     1.0 Version
  */
 @Service
-public class BidSettleService {
+public class BidSettleService extends BidSupper{
 
-    @Resource
-    private FetchDataService fetchDataService;
+
 
     @Resource
     private FundAccountService fundAccountService;
@@ -74,25 +71,24 @@ public class BidSettleService {
     private FssBackplateService fssBackplateService;
 
 
+
+
+
+
     public void settle(FssLoanEntity loanEntity) throws FssException {
 
-        Map<String,String > paramMap = new HashMap<>();
-        paramMap.put("id",loanEntity.getContractId());
+        String type = "1";
         if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
-            paramMap.put("type","2");
-        }else{
-            paramMap.put("type","1");
+           // paramMap.put("type","2");
+            type = "2";
         }
 
-        Bid bid = null;
-        List<Tender> list  = null;
-        try {
-            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
-            list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
-        } catch (FssException e) {
-            LogUtil.error(getClass(),e);
-           return;
-        }
+        String contractId = loanEntity.getContractId();
+        super.initTender(contractId,type);
+
+        Bid bid = super.getBid(contractId);
+        List<Tender> list = super.getTenderList(contractId);
+
 
        // List<FundOrderEntity> listFundOrder = fundOrderService.queryFundOrder(GlobalConstants.ORDER_SETTLE, GlobalConstants.BUSINESS_SETTLE, bid);
 
@@ -115,14 +111,14 @@ public class BidSettleService {
         List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
         for (Tender tender : list) {
             FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getRealAmount(), 2, "", map.get(tender.getId()),tender.getId()));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getRealAmount(), 2, "", map.get(tender.getId()),tender.getId(),fromEntity.getCustId().longValue(),tender.getContractNo(),bid.getCustomerId().longValue(),bid.getContractNo()));
             if (tender.getBonusAmount() != null) {
                 bonusAmount = bonusAmount.add(tender.getBonusAmount());
             }
         }
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null,null));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", "",-1l,null,null,bid.getCustomerId().longValue(),bid.getContractNo()));
         }
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
         fuiouFtpOrderService.addOrder(fundOrderEntity, 1);
@@ -143,28 +139,17 @@ public class BidSettleService {
 
         FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
 
-        Map<String,String > paramMap = new HashMap<>();
-        paramMap.put("id",loanEntity.getContractId());
+        String type = "1";
         if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
-            paramMap.put("type","2");
-        }else{
-            paramMap.put("type","1");
+            // paramMap.put("type","2");
+            type = "2";
         }
 
-        Bid bid = null;
-        List<Tender> list  = null;
-        String title = "cc";
-        try {
-            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
-            list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
-            //产品名称，如果产品名称为空，则去标的title
-            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
-        } catch (FssException e) {
-            LogUtil.error(getClass(),e);
-           throw  e;
-        }
+        String contractId = loanEntity.getContractId();
 
-
+        Bid bid = super.getBid(contractId);
+        List<Tender> list  = super.getTenderList(contractId);
+        String title = super.getTitle(contractId);
 
         //抵押标抵押权人判断   todo
         Integer cusId = bid.getCustomerId();
@@ -178,7 +163,7 @@ public class BidSettleService {
         } catch (FssException e) {
             LogUtil.error(this.getClass(), e);
         }
-        fundSequenceService.selletSequence(list,toEntity,fundOrderEntity,title);
+        fundSequenceService.selletSequence(list,toEntity,fundOrderEntity,title,bid);
         //修改订单信息
         fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
 
@@ -191,4 +176,87 @@ public class BidSettleService {
         loanEntity.setModifyTime(new Date());
         fssLoanService.update(loanEntity);
     }
+
+//
+//    public void newSettleCalback(String  orderNo,String newOrderNo,String tenderId) throws FssException {
+//        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+//        FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
+//
+//        String type = "1";
+//        if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
+//            // paramMap.put("type","2");
+//            type = "2";
+//        }
+//        String contractId = loanEntity.getContractId();
+//        super.initTender(contractId,type);
+//
+//        Bid bid = super.getBid(contractId);
+////        List<Tender> list = super.getTenderList(contractId);
+//
+//        //抵押标抵押权人判断
+//        Integer cusId = bid.getCustomerId();
+//        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+//            cusId = bid.getHypothecarius();
+//        }
+//
+//        FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
+//
+//        Tender tender  = super.getTender(contractId,tenderId);
+//        String title = super.getTitle(contractId);
+//
+//        fundSequenceService.selletSequence(tender,toEntity,bid,orderNo,newOrderNo,title);
+//    }
+//
+//    public void newSettleBonusCalback(FundAccountEntity fromAccount,String  orderNo,String newOrderNo,BigDecimal amount) throws FssException {
+//        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+//        FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
+//
+//        String type = "1";
+//        if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
+//            // paramMap.put("type","2");
+//            type = "2";
+//        }
+//        String contractId = loanEntity.getContractId();
+//        super.initTender(contractId,type);
+//
+//        Bid bid = super.getBid(contractId);
+////        List<Tender> list = super.getTenderList(contractId);
+//
+//        //抵押标抵押权人判断
+//        Integer cusId = bid.getCustomerId();
+//        if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
+//            cusId = bid.getHypothecarius();
+//        }
+//
+//        FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
+//
+//        String title = super.getTitle(contractId);
+//
+//        fundSequenceService.transfer(fromAccount,toEntity,6,2006,amount,null,orderNo,newOrderNo,"1105",null,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+//
+//    }
+//
+//    public void newSettleComplete(String orderNo) throws FssException {
+//        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+//        if (fundOrderEntity.getOrderState() != 6 && fundOrderEntity.getOrderState() != 1001) {
+//            return;
+//        }
+//
+//        FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
+//
+//        //修改订单信息
+//        fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
+//
+//        //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
+//
+//        if(!("11090002".equals(loanEntity.getTradeType())) && !("11090004".equals(loanEntity.getTradeType()))) {
+//            fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+//        }
+//        loanEntity.setStatus("10050009");
+//        loanEntity.setModifyTime(new Date());
+//        fssLoanService.update(loanEntity);
+//
+//    }
+
+
 }

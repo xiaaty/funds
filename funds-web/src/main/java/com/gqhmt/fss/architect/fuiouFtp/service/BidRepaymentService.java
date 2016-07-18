@@ -2,8 +2,8 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.business.architect.loan.entity.Bid;
-import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.connection.UrlConnectUtil;
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
@@ -15,6 +15,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,11 @@ import java.util.*;
  * 16/3/29  于泳      1.0     1.0 Version
  */
 @Service
-public class BidRepaymentService {
+public class BidRepaymentService extends BidSupper{
+
+
+    @Resource
+    private FundOrderService fundOrderService;
 
 
     @Resource
@@ -70,33 +75,19 @@ public class BidRepaymentService {
 
     public void BidRepayment(FssLoanEntity loanEntity) throws FssException {
 
-
-        Map<String,String > paramMap = new HashMap<>();
-        paramMap.put("id",loanEntity.getContractId());
+        String type = "1";
         if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
-            paramMap.put("type","2");
-        }else{
-            paramMap.put("type","1");
+            // paramMap.put("type","2");
+            type = "2";
         }
-        Map<String,String > repParamMap = new HashMap<>();
-        repParamMap.put("id",loanEntity.getBusiNo());
-        Bid bid = null;
-        List<RepaymentBean> list  = null;
-        try {
-            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
-            list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
-            if(list == null || list.size() == 0 ){
-                //回盘处理
-                loanEntity.setStatus("10050014");
-                loanEntity.setModifyTime(new Date());
-                fssLoanService.update(loanEntity);
-                fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
-                return;
-            }
-        } catch (FssException e) {
-            LogUtil.error(getClass(),e);
-            return;
-        }
+
+        String contractId = loanEntity.getContractId();
+        String busiNo = loanEntity.getBusiNo();
+        super.initRepay(contractId,type,busiNo);
+
+        Bid bid = super.getBid(contractId);
+        List<RepaymentBean> list = super.getBidRepayment(contractId);
+
 
         Integer cusId = bid.getCustomerId();
         //抵押标, 处理custId为抵押权人id
@@ -130,7 +121,7 @@ public class BidRepaymentService {
                 continue;
             }
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", "",bean.getId()));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", "",bean.getId(),bean.getCustomerId(),bean.getContractNo(),bid.getCustomerId().longValue(),bid.getContractNo()));
         }
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
@@ -183,12 +174,10 @@ public class BidRepaymentService {
         }
         //还款总额获取   todo
         BigDecimal sumRepay  = BigDecimal.ZERO;
-        /*if (bid.getIsHypothecarius() != null && bid.getIsHypothecarius() == 1 && bid.getHypothecarius() > 0) {
-            cusId = bid.getHypothecarius();
-        }*/
+
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
-        this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay);
+        this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay,bid);
         //修改订单信息
         paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
 
@@ -200,6 +189,43 @@ public class BidRepaymentService {
         this.refunds(loanEntity,list);
 
     }
+
+
+
+    public void complete(String orderNo) throws FssException {
+
+        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+        if (fundOrderEntity.getOrderState() != 6 && fundOrderEntity.getOrderState() != 1001) {
+            return;
+        }
+
+        FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
+
+        String type = "1";
+        if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
+            // paramMap.put("type","2");
+            type = "2";
+        }
+
+        String contractId = loanEntity.getContractId();
+        String busiNo = loanEntity.getBusiNo();
+        super.initRepay(contractId,type,busiNo);
+
+        List<RepaymentBean> list = super.getBidRepayment(contractId);
+
+
+        //修改订单信息
+        fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
+
+        //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
+
+        fssBackplateService.createFssBackplateEntity(loanEntity.getSeqNo(),loanEntity.getMchnChild(),loanEntity.getTradeType());
+        loanEntity.setStatus("10050013");
+        loanEntity.setModifyTime(new Date());
+        fssLoanService.update(loanEntity);
+        this.refunds(loanEntity,list);
+    }
+
 
     public void refunds(FssLoanEntity loanEntity,List<RepaymentBean> list) throws FssException {
         List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
@@ -226,7 +252,7 @@ public class BidRepaymentService {
                 continue;
             }
 //            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(toEntity,toAxAccountEntity, fundOrderEntity, bean.getToPublicAmount(), 3, "", "",bean.getId()));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(toEntity,toAxAccountEntity, fundOrderEntity, bean.getToPublicAmount(), 3, "", "",bean.getId(),bean.getCustomerId(),bean.getContractNo(),null,null));
         }
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
@@ -250,11 +276,22 @@ public class BidRepaymentService {
         }
         Map<String,String > repParamMap = new HashMap<>();
         repParamMap.put("id",loanEntity.getBusiNo());
+        Bid bid = null;
         List<RepaymentBean> list  = null;
+        String title = "";
+        try {
+            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
+            list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
+            //产品名称，如果产品名称为空，则去标的title
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+            throw  e;
+        }
         try {
             list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
             FundAccountEntity toAxAccountEntity = fundAccountService.getFundAccount(3l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-            this.fundSequenceService.repaymentSequenceRefund(list,toAxAccountEntity,fundOrderEntity);
+            this.fundSequenceService.repaymentSequenceRefund(list,toAxAccountEntity,fundOrderEntity,bid);
             //修改订单信息
             paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
         } catch (FssException e) {
