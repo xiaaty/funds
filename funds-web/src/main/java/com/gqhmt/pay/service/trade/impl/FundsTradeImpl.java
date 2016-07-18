@@ -297,7 +297,7 @@ public class FundsTradeImpl  implements IFundsTrade {
      */
     @Override
     public boolean transefer(Integer fromCusID, Integer fromType, Integer toCusID, Integer toType, BigDecimal amount, Integer orderType, Long busiId, int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException {
-        return this.bondTransfer(null,null,tradeType,null,null,null,String.valueOf(fromCusID),null,amount,null,String.valueOf(toCusID),null,fromType,toType,fund_type,actionType);
+        return this.bondTransfer(null,null,tradeType,null,contractNo,null,String.valueOf(fromCusID),null,amount,null,String.valueOf(toCusID),null,fromType,toType,fund_type,actionType);
     }
 
     /**
@@ -358,7 +358,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             //第三方交易
             fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,8,bondEntity.getId(),GlobalConstants.ORDER_DEBT,trade_type.substring(0,4),trade_type,busi_no,o_tender_no,Long.valueOf(cust_no),busi_bid_no);
             //资金处理
-            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType);
+            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,busi_no,Long.valueOf(o_cust_no),o_tender_no,Long.valueOf(cust_no),busi_bid_no);
             tradeState="10080002";
         }catch (FssException e){
             tradeState="10080010";

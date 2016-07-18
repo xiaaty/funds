@@ -167,11 +167,11 @@ public class PaySuperByFuiou {
         FundOrderEntity fundOrderEntity = this.createOrder(fromEntity,toEntity,amount,orderType,busiId,busiType,newOrderType,tradeType,lendNo,toLendNo,loanCustId,loanNo);
         CommandResponse response = null;
         if(fromEntity.getCustId() < 100 || toEntity.getCustId() < 100){
-            ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_CHARGE_WITHDRAW, fundOrderEntity, fromEntity.getUserName(),toEntity.getUserName(),amount,contractNo);
+            response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_CHARGE_WITHDRAW, fundOrderEntity, fromEntity.getUserName(),toEntity.getUserName(),amount,contractNo);
         }else {
-             response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_TRANSFER, fundOrderEntity, fromEntity, toEntity, amount);
+            response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_TRANSFER, fundOrderEntity, fromEntity, toEntity, amount);
         }
-        execExction(response,fundOrderEntity);
+        response.setFundOrderEntity(fundOrderEntity);
         return response;
     }
 
