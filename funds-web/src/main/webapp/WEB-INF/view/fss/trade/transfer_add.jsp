@@ -71,14 +71,14 @@
                                                         </label>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <%--<tr>
                                                     <td align="left">客户手机号码：</td>
                                                     <td>
                                                         <label class="input">
                                                             <input type="text" maxlength="50" id="mobilePhone" name="mobilePhone" value="${mobilePhone}" style="width:256px;" />
                                                         </label>
                                                     </td>
-                                                </tr>
+                                                </tr>--%>
                                                 <tr>
                                                     <td align="left">身份证号：</td>
                                                     <td>
@@ -105,10 +105,10 @@
                                                 <tr>
                                                     <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账类型：</td>
                                                     <td colspan="5">
-                                                        <span class="pl10 pr50"><input id="tradeType" checked="checked"  name="tradeType" type="radio" value="11030014"><label class="ml5">个人对个人转账</label></span>
-                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">个人对公司转账</label></span>
-                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">个人账户间转账</label></span>
-                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">其他账户间转账</label></span>
+                                                        <span class="pl10 pr50"><input id="tradeType" checked="checked"  name="tradeType" type="radio" value="11080001"><label class="ml5">个人对个人转账</label></span>
+                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11080001"><label class="ml5">个人对公司转账</label></span>
+                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11080004"><label class="ml5">个人账户间转账</label></span>
+                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11080001"><label class="ml5">其他账户间转账</label></span>
                                                     </td>
                                                 </tr>
                                                 <tr>
