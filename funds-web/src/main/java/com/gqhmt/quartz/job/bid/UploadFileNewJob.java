@@ -3,7 +3,8 @@ package com.gqhmt.quartz.job.bid;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
-import com.gqhmt.quartz.service.FtpUploadService;
+import com.gqhmt.quartz.service.BidTransferService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -25,15 +26,15 @@ import javax.annotation.Resource;
  * 16/3/14  于泳      1.0     1.0 Version
  */
 @Component
-public class UploadFileJob extends SupperJob{
+public class UploadFileNewJob extends SupperJob{
 
     @Resource
-    private FtpUploadService ftpUploadService;
+    private BidTransferService bidTransferService;
 
     private static boolean isRunning = false;
 
-//    @Scheduled(cron="0/23 * 7-23  * * * ")
-public void execute() throws PayChannelNotSupports {
+    @Scheduled(cron="0/23 * *  * * * ")
+    public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
         }
@@ -46,8 +47,7 @@ public void execute() throws PayChannelNotSupports {
         isRunning = true;
 
         try{
-            ftpUploadService.upload();
-            ftpUploadService.uploadFileToFtp();
+            bidTransferService.batchTransfer();
         }catch (Exception e){
             LogUtil.error(getClass(),e);
         }finally {
