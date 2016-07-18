@@ -1,14 +1,14 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
-import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
-import com.gqhmt.pay.exception.CommandParmException;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.pay.exception.CommandParmException;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -90,12 +90,8 @@ public class FuiouFtpColomFieldService {
      * @param bidTitle
      * @param contractNo
      */
-    public void addColomField(FundAccountEntity fromEntity, FundAccountEntity toEntity, FundOrderEntity fundOrderEntity, BigDecimal amt, int type, String bidTitle, String contractNo)throws FssException{
-        FuiouFtpColomField field = this.addColomFieldByNotInsert(fromEntity,toEntity,fundOrderEntity,amt,type,bidTitle,contractNo);
-        insert(field);
-    }
 
-    public FuiouFtpColomField addColomFieldByNotInsert(FundAccountEntity fromEntity,FundAccountEntity toEntity,FundOrderEntity fundOrderEntity,BigDecimal amt,int type,String bidTitle,String contractNo)throws FssException{
+    public FuiouFtpColomField addColomFieldByNotInsert(FundAccountEntity fromEntity,FundAccountEntity toEntity,FundOrderEntity fundOrderEntity,BigDecimal amt,int type,String bidTitle,String contractNo,Long tID)throws FssException{
         FuiouFtpColomField field = new FuiouFtpColomField();
         field.setFromAccountId(fromEntity.getId());
         field.setFromUserName(fromEntity.getUserName());
@@ -109,7 +105,7 @@ public class FuiouFtpColomFieldService {
         field.setToAccountId(toEntity.getId());
         field.setToUserName(toEntity.getUserName());
         field.setToCnUserName(toEntity.getCustName().trim());
-        field.setState(1);
+        field.setState(101);
         field.setOrderId(fundOrderEntity.getId());
         if(type == 1){//投标解冻
             field.setRem("投标 "+bidTitle+ "解冻资金 "+amt.toPlainString()+"元");
@@ -125,6 +121,7 @@ public class FuiouFtpColomFieldService {
         }
         field.setOrderNo(fundOrderEntity.getOrderNo());
         field.setContractNo(contractNo);
+        field.setTenderId(tID);
         return field;
     }
 

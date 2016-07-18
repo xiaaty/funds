@@ -41,14 +41,18 @@
 			</sql>
 	<select id="getParentId" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity">
 		<include refid="selectSql"/>
-		WHERE t.parent_id=${parentId} 
+		WHERE t.parent_id=#{parentId}
 	</select>
 	
 	<select id="queryItemsInfosByStatus" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity">
 		<include refid="selectSql"/>
-		WHERE t.status=${status} 
+		WHERE t.status=#{status}
 	</select>
-	
+	<select id="getCountByItemNo" resultType="java.lang.Integer">
+		select count(*) from t_gq_fss_depos_fuiou_project_info t
+		WHERE t.item_no=#{itemNo}
+	</select>
+
 	<select  id="queryFssProjectInfoList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity" >
 	  SELECT 
 		  t.`id` id,

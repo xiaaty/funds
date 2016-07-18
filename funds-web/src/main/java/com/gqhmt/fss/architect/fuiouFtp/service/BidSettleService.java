@@ -107,7 +107,7 @@ public class BidSettleService {
 
         FundAccountEntity toEntity = fundAccountService.getFundAccount(cusId.longValue(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_SETTLE_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_SETTLE, "2");
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_SETTLE_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_SETTLE, "1109",loanEntity.getTradeType());
 
         Map<Long, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
         BigDecimal bonusAmount = BigDecimal.ZERO;
@@ -115,14 +115,14 @@ public class BidSettleService {
         List<FuiouFtpColomField> fuiouFtpColomFields = new ArrayList<>();
         for (Tender tender : list) {
             FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getRealAmount(), 2, "", map.get(tender.getId())));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, tender.getRealAmount(), 2, "", map.get(tender.getId()),tender.getId()));
             if (tender.getBonusAmount() != null) {
                 bonusAmount = bonusAmount.add(tender.getBonusAmount());
             }
         }
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
-            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null));
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", null,null));
         }
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);
         fuiouFtpOrderService.addOrder(fundOrderEntity, 1);

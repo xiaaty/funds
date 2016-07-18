@@ -57,7 +57,7 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
     
     public FundAccountEntity getAccountBanlance(@Param("cust_no") Long cust_no, @Param("busi_type")int busi_type);
     
-    public FundAccountEntity queryFundAccountByUserName(String userName,int type);
+    public FundAccountEntity queryFundAccountByUserName(@Param("userName") String userName,@Param("type") int type);
 
     public List<FundAccountEntity> queryFundAccount(Integer cusID);
     

@@ -99,7 +99,7 @@
                                                         <td>
                                                                 <label>
                                                                     <select id = "applyState" name = "applyState" style="width:150px;height: 30px;">
-                                                                        <option value="">请选择</option>
+                                                                        <option value="">所有</option>
                                                                         <option  <c:if test="${map.applyState==10100001}"> selected="selected" </c:if> value="10100001">新增</option>
                                                                         <option  <c:if test="${map.applyState==10100002}"> selected="selected" </c:if> value="10100002" >审核成功待执行</option>
                                                                         <option  <c:if test="${map.applyState==10100003}"> selected="selected" </c:if> value="10100003" >执行排队中</option>
@@ -113,7 +113,7 @@
                                                         <td class="tr">交易状态：</td>
                                                         <td>
                                                             <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
-                                                                <option value="">请选择</option>
+                                                                <option value="">所有</option>
                                                                 <option  <c:if test="${map.tradeState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
                                                                 <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002" >交易成功</option>
                                                                 <option  <c:if test="${map.tradeState==10080003}"> selected="selected" </c:if> value="10080003" >交易部分成功</option>

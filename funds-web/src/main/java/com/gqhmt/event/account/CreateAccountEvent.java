@@ -1,6 +1,7 @@
 package com.gqhmt.event.account;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
@@ -14,6 +15,8 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -61,11 +64,17 @@ public class CreateAccountEvent {
 
     @Resource
     private BankCardInfoService bankCardInfoService;
-
+    @Resource
+    private FundOrderService fundOrderService;
 
     public FssAccountEntity createAccount(String tradeType,String  name,String  mobile,String certNo,Long custId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
         FssCustomerEntity fssCustomerEntity = fssCustomerService.getFssCustomerEntityByCertNo(certNo);
-
+        if(area.length()==6){
+            area= Application.getInstance().getFourCode(area);
+        }
+        if(bankType.length()==3){
+            bankType="0"+bankType;
+        }
         if(fssCustomerEntity == null){
             //首次开户,验证银行卡信息
             if(bankType == null || bankNo == null || area == null){
@@ -91,13 +100,13 @@ public class CreateAccountEvent {
                     customerInfoEntity= customerInfoService.searchCustomerInfoByCertNo(certNo);//旧版客户信息
                     if(customerInfoEntity == null){
                         customerInfoEntity=customerInfoService.createCustomer(certNo,name,mobile);
-                        custId = customerInfoEntity.getId();
-                        userId = customerInfoEntity.getUserId();
                     }
                 }else{
                     //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                     customerInfoEntity =  customerInfoService.getCustomerById(custId);
                 }
+                custId = customerInfoEntity.getId();
+                userId = customerInfoEntity.getUserId();
                 //设置值
                 customerInfoEntity.setParentBankCode(bankType);
                 customerInfoEntity.setBankNo(bankNo);
@@ -120,7 +129,7 @@ public class CreateAccountEvent {
 
             }
         }
-        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+
         FssAccountEntity fssAccountEntity = null;
         try {
             //生成新版客户信息记录
@@ -141,10 +150,16 @@ public class CreateAccountEvent {
             //生成富有账户
             if(isOldAccount){
                 if (primaryAccount.getHasThirdAccount() ==1){//富友
-                    paySuperByFuiou.createAccountByPersonal(primaryAccount,"","");
+                    primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+                    paySuperByFuiou.createAccountByPersonal(primaryAccount,"","",tradeType);
                     primaryAccount.setHasThirdAccount(2);
                     fundAccountService.update(primaryAccount);
                     fssAccountService.createFuiouAccount(mchn,fssCustomerEntity,bankNo);
+//                  富友开户成功,更新开户时间和开户订单号
+                    FundOrderEntity fundOrderEntity=fundOrderService.getOrderNoByAccountId(primaryAccount.getId());
+                    primaryAccount.setAccountOrderNo(fundOrderEntity.getOrderNo());
+                    primaryAccount.setAccountTime(fundOrderEntity.getCreateTime());
+                    fundAccountService.update(primaryAccount);
                 }
                 //跟新所有与该cust_id相同的账户名称
                 fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
@@ -160,11 +175,13 @@ public class CreateAccountEvent {
         //银行卡信息生成
         //旧版银行卡信息生成
         //创建银行卡信息
-        BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
-        if(bankCardInfoEntity==null){
-            bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
+        if(isOldAccount) {
+            BankCardInfoEntity bankCardInfoEntity = bankCardInfoService.getBankCardByCustNo(custId);
+            if (bankCardInfoEntity == null) {
+                bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+            }
+            fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
         }
-        fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
         //新版银行卡信息生成  增加判断，是否存在
         FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
         if(fssCustBankCardEntity==null){

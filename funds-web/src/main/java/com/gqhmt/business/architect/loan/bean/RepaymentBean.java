@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class RepaymentBean {
 
 	// 1:A0,2:AX
+	private Long id;
 	private int customerId;
 	private BigDecimal repaymentPrincipal = BigDecimal.ZERO;             //本金
 	private BigDecimal repaymentInterest = BigDecimal.ZERO;              //利息
@@ -147,5 +148,13 @@ public class RepaymentBean {
 
 	public void setToPublicAmount(BigDecimal toPublicAmount) {
 		this.toPublicAmount = toPublicAmount;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

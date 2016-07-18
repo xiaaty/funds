@@ -338,16 +338,13 @@ public class CustomerInfoService {
 		return customerInfoReadMapper.selectOne(entity);
 	}
 
-	/**//**
-	 * 根据省份证号查询客户信息
-	 *
+	/**
+	 * 根据身份份证号查询客户信息
 	 * @param certNo
 	 * @return
 	 */
 	public CustomerInfoEntity searchCustomerInfoByCertNo(String certNo) {
-		CustomerInfoEntity entity = new CustomerInfoEntity();
-		entity.setCertNo(certNo);
-		return customerInfoReadMapper.selectOne(entity);
+		return customerInfoReadMapper.queryCustomerByCertNo(certNo);
 	}
 
 	/**
@@ -1076,7 +1073,7 @@ public class CustomerInfoService {
 
 	public CustomerInfoEntity createCustomer(String certNo,String name,String mobile) throws FssException{
 		try{
-			CustomerInfoEntity customerInfoEntity = this.createCustomer(certNo,name,mobile);
+			CustomerInfoEntity customerInfoEntity = this.createCustomerInfo(certNo,name,mobile);
 			UserEntity userEntity = gqUserService.createUser(customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getId());
 			customerInfoEntity.setBankId(userEntity.getId());
 			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
@@ -1092,15 +1089,17 @@ public class CustomerInfoService {
 
 	/**
 	 * 创建账户
-	 * @param loanAccountDto
+	 * @param certNo
+	 * @param name
+	 * @param mobile
 	 * @return
 	 * @throws FssException
 	 */
-	public CustomerInfoEntity createCustomerInfo(CreateLoanAccountDto loanAccountDto) throws FssException{
+	public CustomerInfoEntity createCustomerInfo(String certNo,String name,String mobile) throws FssException{
 		CustomerInfoEntity customerInfoEntity=new CustomerInfoEntity();
-		customerInfoEntity.setCustomerName(loanAccountDto.getName());
-		customerInfoEntity.setCertNo(loanAccountDto.getCert_no());
-		customerInfoEntity.setMobilePhone(loanAccountDto.getMobile());
+		customerInfoEntity.setCustomerName(name);
+		customerInfoEntity.setCertNo(certNo);
+		customerInfoEntity.setMobilePhone(mobile);
 		customerInfoEntity.setCustomerType(1);
 		customerInfoEntity.setCertType(1);
 		customerInfoEntity.setNameIdentification(0);
@@ -1120,6 +1119,15 @@ public class CustomerInfoService {
 		return customerInfoEntity;
 	}
 
+	/**
+	 * 创建账户
+	 * @param loanAccountDto
+	 * @return
+	 * @throws FssException
+	 */
+	public CustomerInfoEntity createCustomerInfo(CreateLoanAccountDto loanAccountDto) throws FssException{
+		return this.createCustomer(loanAccountDto.getCert_no(),loanAccountDto.getName(),loanAccountDto.getMobile());
+	}
 	/**
 	 * 生成UUid
 	 * @return

@@ -62,7 +62,12 @@ public class FundOrderService  {
      * @return
      * @throws FssException
      */
-    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, Long sourceID, Integer sourceType, String thirdPartyType) throws FssException {
+    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, Long sourceID, Integer sourceType) throws FssException {
+
+        return this.createOrder(primaryAccount,toAccountEntity,amount,chargeAmount,orderType,sourceID,sourceType,null,null,null,null,null,null);
+    }
+
+    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, Long sourceID, Integer sourceType,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo) throws FssException {
         FundOrderEntity fundOrderEntity = new FundOrderEntity();
         fundOrderEntity.setAccountId(primaryAccount.getId());
         if (toAccountEntity != null) {
@@ -75,11 +80,19 @@ public class FundOrderService  {
         fundOrderEntity.setOrderFrormId(sourceID);
         // 订单类型(1-充值 2-提现 3-代偿 4-投标 5-转账 6-还款 7-流标)
         fundOrderEntity.setOrderType(orderType);
-        fundOrderEntity.setThirdPartyType(thirdPartyType);
+        fundOrderEntity.setThirdPartyType("2");
         fundOrderEntity.setChargeAmount(chargeAmount);
         fundOrderEntity.setOrderState(GlobalConstants.ORDER_STATUS_SUBMIT);
+        fundOrderEntity.setNewOrderType(newOrderType);
+        fundOrderEntity.setTradeType(tradeType);
+        fundOrderEntity.setCustId(primaryAccount.getCustId());
+        fundOrderEntity.setLendNo(lendNo);
+        fundOrderEntity.setToCustId(toAccountEntity == null ? 0:toAccountEntity.getCustId());
+        fundOrderEntity.setToLendNo(toLendNo);
+        fundOrderEntity.setLoanCustId(loanCustId);
+        fundOrderEntity.setLoanNo(loanNo);
         try {
-        	this.insert(fundOrderEntity);
+            this.insert(fundOrderEntity);
 //        	this.update(fundOrderEntity);
         } catch (Exception e) {
             throw new FssException(e.getMessage());
@@ -148,4 +161,9 @@ public class FundOrderService  {
         return fundOrderReadMapper.getFundOrderRechargeAndWithdraw(custId,type == null?0:type==1003?1:2,strTime,endTime);
     }
 
+
+
+    public FundOrderEntity getOrderNoByAccountId(Long accountId){
+        return fundOrderReadMapper.getFundOrderByAccountId(accountId);
+    }
 }

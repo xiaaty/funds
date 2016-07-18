@@ -238,13 +238,13 @@ public class FssTradeApi {
 
 
 	/**
-	 *
-	 * author:jhz
-	 * time:2016年2月27日
-	 * function：资金冻结
-	 */
+	 * 柯禹来
+	 * 资金冻结
+	 * @param freezeDto
+	 * @return
+     */
 	@RequestMapping(value = "/freeze",method = RequestMethod.POST)
-	public Object freeze(FreezeDto freezeDto){
+	public Object freeze(@RequestBody FreezeDto freezeDto){
 		Response response=new Response();
 		try {
 			response = freezeImpl.execute(freezeDto);
@@ -256,13 +256,13 @@ public class FssTradeApi {
 	}
 
 	/**
-	 *
-	 * author:jhz
-	 * time:2016年2月22日
-	 * function：资金解冻
-	 */
+	 * 柯禹来
+	 * 资金解冻
+	 * @param unFreezeDto
+	 * @return
+     */
 	@RequestMapping(value = "/unFreeze",method = RequestMethod.POST)
-	public Object unFreeze(UnFreezeDto unFreezeDto){
+	public Object unFreeze(@RequestBody UnFreezeDto unFreezeDto){
 		Response response= null;
 		try {
 			response = unFreezeImpl.execute(unFreezeDto);
@@ -278,49 +278,16 @@ public class FssTradeApi {
 	 * @return
 	 */
 	@RequestMapping(value = "/transfer",method = RequestMethod.POST)
-	public Object transfer(TransferDto dto){
+	public Object transfer(@RequestBody TransferDto dto){
 		Response response= null;
 		try {
 			response = transeferImpl.execute(dto);
 		} catch (Exception e) {
-			response = execute(e);
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
 		}
 		return response;
 	}
-	
-	/**
-     * author:柯禹来
-     * time:2016年3月1日
-     * function：实时提现
-     
-    @RequestMapping(value = "/withhold",method = RequestMethod.POST)
-    public Object sstxBusiness(SstxDto sstxDto){
-    	Response response=new Response();
-    	try {
-    		response = sstxTradeImpl.excute(sstxDto);
-    	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
-    	}
-    	return response;
-    }
-	*/
-    /**     * author:柯禹来
-     * time:2016年3月1日
-     * function：实时代扣
-     
-    @RequestMapping(value = "/agentWithdraw ",method = RequestMethod.POST)
-    public Object ssdkBusiness(SsdkDto ssdkDto){
-    	Response response=new Response();
-    	try {
-    		response = ssdkTradeImpl.excute(ssdkDto);
-    	} catch (Exception e) {
-    		LogUtil.error(this.getClass(), e);
-    		response.setResp_code(e.getMessage());
-    	}
-    	return response;
-    }
-    */
 
 	/**
 	 * 线下充值接口
@@ -328,7 +295,7 @@ public class FssTradeApi {
 	 * @return
      */
 	@RequestMapping(value = "/offlineRechargeApply",method = RequestMethod.POST)
-	public Object offlineRechargeApply(OfflineRechargeApplyDto dto){
+	public Object offlineRechargeApply(@RequestBody OfflineRechargeApplyDto dto){
 		Response response=new Response();
 		try {
 			response = offRechargeApplyImpl.execute(dto);
@@ -356,8 +323,6 @@ public class FssTradeApi {
 		}
 		return response;
 	}
-
-
 
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);

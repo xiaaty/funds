@@ -20,7 +20,7 @@ import java.util.Date;
  * 2016/06/29 柯禹来      1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_bond_transfer")
+@Table(name = "t_gq_fss_debt_transfer")
 public class FssBondTransferEntity implements Serializable {
     @Id
     @Column(name = "id")
@@ -72,6 +72,8 @@ public class FssBondTransferEntity implements Serializable {
 	private String seqNo;
 	@Column(name = "order_no")
 	private String orderNo;
+	@Column(name = "to_acc_type")
+	private String toAccType;
 
 	public Long getId() {
 		return id;
@@ -263,5 +265,13 @@ public class FssBondTransferEntity implements Serializable {
 
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public String getToAccType() {
+		return toAccType;
+	}
+
+	public void setToAccType(String toAccType) {
+		this.toAccType = toAccType;
 	}
 }

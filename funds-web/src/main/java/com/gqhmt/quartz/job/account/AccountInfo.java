@@ -58,7 +58,7 @@ public class AccountInfo extends SupperJob {
             return;
         }*/
 
-     //   if(isRunning) return;
+        //   if(isRunning) return;
 
         startLog("金账户对账文件ftp批量处理 下载及导入文件");
 
@@ -74,9 +74,9 @@ public class AccountInfo extends SupperJob {
         FuiouAccountInfoEntity fuiouAccountInfoEntityYSQ = new FuiouAccountInfoEntity();
 
 
-       // 测试用的。
-       // String dateStr = "20150701";
-       // SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        // 测试用的。
+        // String dateStr = "20150701";
+        // SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
         boolean DJJD = false;
         boolean ZZ = false;
         boolean HB = false;
@@ -84,7 +84,7 @@ public class AccountInfo extends SupperJob {
         boolean WTTX = false;
         boolean YSQ = false;
         try{
-     //       java.util.Date date=sdf.parse(dateStr);
+            //       java.util.Date date=sdf.parse(dateStr);
 
             Date date = new Date();
             fuiouAccountInfoEntityDJJD.setTradingTime(date);

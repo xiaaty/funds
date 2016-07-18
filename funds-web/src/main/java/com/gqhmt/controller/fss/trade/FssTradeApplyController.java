@@ -30,12 +30,9 @@ import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,11 +102,11 @@ public class FssTradeApplyController {
     	if(map.size()==0){//默认交易状态为新增
 			map.put("tradeState","10080001");
 		}
-		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
-		map.put("applyType",type.toString());
+    	map.put("applyType",type.toString());
 		map.put("busiType", bus);
 //		String token = TokenProccessor.getInstance().makeToken();//创建令牌
 //		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
+        List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
         model.put("map", map);
@@ -119,7 +116,7 @@ public class FssTradeApplyController {
     		return "fss/trade/withdraw_list";
     	}
     }
-    
+
     /**
 	 * author:柯禹来
 	 * function:查看金额拆分列表信息
@@ -136,17 +133,17 @@ public class FssTradeApplyController {
     	List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(applyNo,traderecord.getTradeState());
 		model.addAttribute("tradeApply", tradeApplyList.get(0));
         model.addAttribute("page", tradeRecordList);
-      //  model.addAttribute("traderecord", traderecord);
+        model.addAttribute("traderecord", traderecord);
         return "fss/trade/trade_record/traderecord_list";
     }
-  
+
     /**
      * 审核数据查看
      */
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}/{applyNo}/withdrawcheck",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeDetail(HttpServletRequest request, ModelMap model,FssTradeApplyEntity tradeapply, @PathVariable Integer  type,@PathVariable String bus,@PathVariable String applyNo,String token) throws Exception {
-    	
+
     	FssTradeApplyEntity tradeapplyentity=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNo);
     	if(tradeapplyentity==null){
     		throw new FssException("未查到交易申请记录！");
@@ -175,9 +172,9 @@ public class FssTradeApplyController {
 		}else{
 			return "fss/trade/trade_audit/borrower_withdraw_check";
 		}
-		
+
     }
-    
+
 	/**
 	 * 提现审核(资金拆分)
 	 * @param request
@@ -188,7 +185,7 @@ public class FssTradeApplyController {
 	 * @throws FssException
 	 */
 //  审核不通过走回盘
-//	审核通过,先进行处理，处理完成后走回盘	
+//	审核通过,先进行处理，处理完成后走回盘
 	@RequestMapping(value = "/trade/tradeApply/{applyType}/{busiType}/{applyNo}/moneySplit")
 	@ResponseBody
 	public Object borrowWithDrawCheck(HttpServletRequest request, ModelMap model,@PathVariable Integer  applyType,@PathVariable String busiType,@PathVariable String applyNo,String auditAmount) throws FssException {
@@ -372,21 +369,5 @@ public class FssTradeApplyController {
 		model.addAttribute("page", bondList);
 		model.put("map", map);
 		return "fss/trade/bondTransfer_list";
-	}
-
-	/**
-	 * 导出excle
-	 * @param request
-	 * @param model
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object exportExcel(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus, RedirectAttributes attr) throws Exception {
-		HttpSession httpSession = request.getSession();
-		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
-		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
-		return new ModelAndView("redirect:"+request.getContextPath()+"/trade/tradeApply/"+type+"/"+bus, map);
 	}
 }

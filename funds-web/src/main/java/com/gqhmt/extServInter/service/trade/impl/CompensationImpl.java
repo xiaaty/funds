@@ -33,6 +33,7 @@ public class CompensationImpl implements ICompensation {
 	private ICost costImpl;
 
 	/**
+	 * -------------与代偿相关交易类型-----------------
 	 * 11070001:借款人逾期代偿
 	 * 11070002:借款人逾期代偿资金退回
 	 * 11070003:委托出借人代偿
@@ -43,16 +44,26 @@ public class CompensationImpl implements ICompensation {
 	 * 11130003:安卓返现红包入账
 	 * 11130004:ios返现红包入账
 	 * 11130005:微信返现红包入账
+	 * -----------费用相关交易类型---------------------
+	 *11060001:提现手续费
+	 *11060002:账户管理费
+	 *11060003:服务费
+	 *11060004:咨询费
+	 *11060005:收风险保证金
+	 *11060006:退风险保证金
+	 *11060007:逆服务费（补差额）
+	 *11060008:逆服务费（垫付利息）
+	 * 21992105：收风险备用金
 	 * @param dto
 	 * @return
      */
-	@APITradeTypeValid(value = "11070001,11070002,11070003,11070004,11130001,11130002,11130003,11130004,11130005")
+	@APITradeTypeValid(value = "11070001,11070002,11070003,11070004,11130001,11130002,11130003,11130004,11130005,11060001,11060002,11060003,11060004,11060005,11060006,11060007,11060008,21992105")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
 			CompensationDto cDto = (CompensationDto)dto;
-			costImpl.compensation(cDto.getTrade_type(),cDto.getCust_no(),cDto.getCust_type(),cDto.getAmt(),cDto.getBusi_no());
+			costImpl.compensation(cDto.getTrade_type(),cDto.getCust_no(),cDto.getBusi_type(),cDto.getAmt(),cDto.getBusi_no(),cDto.getPlatform(),cDto.getAccounts_type(),cDto.getSeq_no(),cDto.getMemo());
 			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
