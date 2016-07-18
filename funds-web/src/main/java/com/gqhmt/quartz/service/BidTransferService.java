@@ -15,6 +15,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -36,6 +37,7 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 16/7/13  于泳      1.0     1.0 Version
  */
+@Service
 public class BidTransferService {
 
 

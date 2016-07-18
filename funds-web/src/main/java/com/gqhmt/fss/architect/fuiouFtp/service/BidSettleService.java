@@ -2,9 +2,11 @@ package com.gqhmt.fss.architect.fuiouFtp.service;
 
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.entity.Tender;
+import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -41,7 +43,8 @@ import java.util.*;
 @Service
 public class BidSettleService extends BidSupper{
 
-
+    @Resource
+    private FetchDataService fetchDataService;
 
     @Resource
     private FundAccountService fundAccountService;
@@ -76,21 +79,25 @@ public class BidSettleService extends BidSupper{
 
 
     public void settle(FssLoanEntity loanEntity) throws FssException {
-
-        String type = "1";
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id",loanEntity.getContractId());
         if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
-           // paramMap.put("type","2");
-            type = "2";
+            paramMap.put("type","2");
+        }else{
+            paramMap.put("type","1");
         }
 
         String contractId = loanEntity.getContractId();
-        super.initTender(contractId,type);
-
-        Bid bid = super.getBid(contractId);
-        List<Tender> list = super.getTenderList(contractId);
-
-
-       // List<FundOrderEntity> listFundOrder = fundOrderService.queryFundOrder(GlobalConstants.ORDER_SETTLE, GlobalConstants.BUSINESS_SETTLE, bid);
+        Bid bid = null;
+        List<Tender> list  = null;
+        try {
+            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
+            list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+            return;
+        }
+        // List<FundOrderEntity> listFundOrder = fundOrderService.queryFundOrder(GlobalConstants.ORDER_SETTLE, GlobalConstants.BUSINESS_SETTLE, bid);
 
 
         //验证标的金额与满标金额是否相等  todo
@@ -138,18 +145,28 @@ public class BidSettleService extends BidSupper{
         }
 
         FssLoanEntity loanEntity = fssLoanService.getFssLoanEntityById(fundOrderEntity.getOrderFrormId());
-
-        String type = "1";
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id",loanEntity.getContractId());
         if("11090004".equals(loanEntity.getTradeType())||"11090006".equals(loanEntity.getTradeType())){
-            // paramMap.put("type","2");
-            type = "2";
+            paramMap.put("type","2");
+        }else{
+            paramMap.put("type","1");
         }
 
         String contractId = loanEntity.getContractId();
+        Bid bid = null;
+        List<Tender> list  = null;
+        String title = "cc";
+        try {
+            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
+            list = fetchDataService.featchData(Tender.class,"tenderList",paramMap);
+            //产品名称，如果产品名称为空，则去标的title
+            title  = UrlConnectUtil.sendDataReturnString("findProductName",paramMap);
 
-        Bid bid = super.getBid(contractId);
-        List<Tender> list  = super.getTenderList(contractId);
-        String title = super.getTitle(contractId);
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+            return;
+        }
 
         //抵押标抵押权人判断   todo
         Integer cusId = bid.getCustomerId();
