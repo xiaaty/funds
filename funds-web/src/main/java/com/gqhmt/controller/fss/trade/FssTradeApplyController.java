@@ -102,11 +102,11 @@ public class FssTradeApplyController {
     @RequestMapping(value = "/trade/tradeApply/{type}/{bus}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus) throws Exception {
-		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
     	if(map.size()==0){//默认交易状态为新增
 			map.put("tradeState","10080001");
 		}
-    	map.put("applyType",type.toString());
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
+		map.put("applyType",type.toString());
 		map.put("busiType", bus);
 //		String token = TokenProccessor.getInstance().makeToken();//创建令牌
 //		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
@@ -136,7 +136,7 @@ public class FssTradeApplyController {
     	List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(applyNo,traderecord.getTradeState());
 		model.addAttribute("tradeApply", tradeApplyList.get(0));
         model.addAttribute("page", tradeRecordList);
-        model.addAttribute("traderecord", traderecord);
+      //  model.addAttribute("traderecord", traderecord);
         return "fss/trade/trade_record/traderecord_list";
     }
   

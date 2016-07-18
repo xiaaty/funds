@@ -568,65 +568,63 @@ public class FssTradeApplyService extends JDialog {
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String path = getClassPath();
-        File filepath  = new File(path+"\\excel");
-        String address = filepath+"\\"  + sdf.format(new Date()) +  ".xls";
+        File filepath = new File(path + File.separator +"excel");
+        String address = filepath + File.separator + sdf.format(new Date()) + ".xls";
 
-        System.out.println("address: "+address);
-
-        String fileName = checkFileName(address,0);
+        String fileName = checkFileName(address, 0);
 
         OutputStream out = new FileOutputStream(fileName);
-		System.out.println("导出路径： "+ fileName);
+        System.out.println("导出路径： " + fileName);
         String[] headers =
                 {"业务编号", "申请单号", "客户姓名", "客户电话", "交易金额", "单次交易金额", "创建时间"};
         ExportExcel<Map> ex = new ExportExcel<Map>();
-		try{
+        try {
             ex.exportExcel("tradeApply", headers, mapList, out);
-        }catch (IllegalAccessException i){
+        } catch (IllegalAccessException i) {
             i.printStackTrace();
-        }catch (IOException io){
+        } catch (IOException io) {
             io.printStackTrace();
-        }finally {
-            if(out!=null){
+        } finally {
+            if (out != null) {
                 out.close();
             }
         }
 
-		JOptionPane.showMessageDialog(this.getMostRecentFocusOwner().getFocusCycleRootAncestor(), "导出成功!");
-	}
+        JOptionPane.showMessageDialog(this.getMostRecentFocusOwner().getFocusCycleRootAncestor(), "导出成功!");
+    }
 
     //验证文件是否存在。
-	public String checkFileName(String fileName,int i){
-		//验证文件是否存在
-		String addressFileName;
+    public String checkFileName(String fileName, int i) {
+        //验证文件是否存在
+        String addressFileName;
 
-		int index=fileName.lastIndexOf(".");
-		int index2=fileName.lastIndexOf("\\");
-		String fileEnd = fileName.substring(index);
-		String fileStart = fileName.substring(0,index);
+        int index = fileName.lastIndexOf(".");
+        int index2 = fileName.lastIndexOf(File.separator);
+        String fileEnd = fileName.substring(index);
+        String fileStart = fileName.substring(0, index);
 
-		String fileFolder = fileStart.substring(0,index2);
-		// 验证文件夹是否存在
-		File folder = new File(fileFolder);
-		if(!folder.exists()){
-			folder.mkdir();
-		}
-		String newFileName;
-		if(i!=0){
-			newFileName = fileStart+"("+i+")"+fileEnd;
-		}else{
-			newFileName = fileName;
-		}
-		i++;
-		File file=new File(newFileName);
+        String fileFolder = fileStart.substring(0, index2);
+        // 验证文件夹是否存在
+        File folder = new File(fileFolder);
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        String newFileName;
+        if (i != 0) {
+            newFileName = fileStart + "(" + i + ")" + fileEnd;
+        } else {
+            newFileName = fileName;
+        }
+        i++;
+        File file = new File(newFileName);
 
-		if(!file.exists()) {
-			addressFileName = newFileName;
-		}else{
-			addressFileName = checkFileName(fileName,i);
-		}
+        if (!file.exists()) {
+            addressFileName = newFileName;
+        } else {
+            addressFileName = checkFileName(fileName, i);
+        }
 
-		return addressFileName;
-	}
+        return addressFileName;
+    }
 
 }
