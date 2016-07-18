@@ -89,6 +89,20 @@ public class FuiouFtpColomField implements Serializable {
     @Column(name="type")
     private int type;
 
+
+//    lend_cust_id
+    @Column(name = "lend_cust_id",updatable = false)
+    private Long  lendCustId;
+//lend_no
+    @Column(name = "lend_no",updatable = false)
+    private String  lendNo;
+//loan_cust_id
+    @Column(name = "loan_cust_id",updatable = false)
+    private Long  loanCustId;
+//loan_no
+    @Column(name = "loan_no",updatable = false)
+    private String  loanNo;
+
     public int getType() {
         return type;
     }
@@ -272,5 +286,36 @@ public class FuiouFtpColomField implements Serializable {
 	public void setTenderId(Long tenderId) {
 		this.tenderId = tenderId;
 	}
-    
+
+    public Long getLendCustId() {
+        return lendCustId;
+    }
+
+    public void setLendCustId(Long lendCustId) {
+        this.lendCustId = lendCustId;
+    }
+
+    public String getLendNo() {
+        return lendNo;
+    }
+
+    public void setLendNo(String lendNo) {
+        this.lendNo = lendNo;
+    }
+
+    public Long getLoanCustId() {
+        return loanCustId;
+    }
+
+    public void setLoanCustId(Long loanCustId) {
+        this.loanCustId = loanCustId;
+    }
+
+    public String getLoanNo() {
+        return loanNo;
+    }
+
+    public void setLoanNo(String loanNo) {
+        this.loanNo = loanNo;
+    }
 }
