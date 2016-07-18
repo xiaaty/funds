@@ -142,6 +142,7 @@
                                         </div>
                                         <footer>
                                           <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                            <button id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();">导&nbsp;&nbsp;&nbsp;出</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -325,6 +326,14 @@
             }, "json");
         }
     });
+
+     function exportExcel(){
+         $("#exportExcelBtn").unbind('click');
+         $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel");
+         $("#mortForm").sub();
+         // $("#mortForm table").find("tr:first").append("<td><input type=\"hidden\" name=\"buttonType\" value=\"exportExcel\" /></td>")
+
+     }
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>
