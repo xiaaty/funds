@@ -40,4 +40,26 @@
               </if>
 		 </where>
 	</select>
+
+	<select id="queryCustomerByCertNo" parameterType="java.lang.String" resultType="customerInfoEntity">
+		SELECT t.id id,
+		t.CUSTOMER_NAME customerName,
+		t.MOBILE_PHONE mobilePhone,
+		t.CERT_NO certNo,
+		t.CUSTOMER_TYPE customerType,
+		t.CERT_TYPE certType,
+		t.SEX sex,
+		t.user_id userId,
+		t.isvalid isvalid,
+		t.has_acount hasAccount,
+		t.bank_id bankId,
+		t.BIRTHDATE birthdate,
+		t.EDUCATION education,
+		t.MARITAL_STATUS maritalStatus,
+		t.EMER_CONTACT emerContact,
+		t.EMER_CONTACT_MOBILE emerContactMobile
+		FROM `t_gq_customer_info` t
+		WHERE t.CERT_NO=#{certNo}
+	</select>
+
 </mapper>

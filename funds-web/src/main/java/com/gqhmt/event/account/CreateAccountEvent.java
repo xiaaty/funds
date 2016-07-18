@@ -1,6 +1,7 @@
 package com.gqhmt.event.account;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
@@ -68,7 +69,12 @@ public class CreateAccountEvent {
 
     public FssAccountEntity createAccount(String tradeType,String  name,String  mobile,String certNo,Long custId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
         FssCustomerEntity fssCustomerEntity = fssCustomerService.getFssCustomerEntityByCertNo(certNo);
-
+        if(area.length()==6){
+            area= Application.getInstance().getFourCode(area);
+        }
+        if(bankType.length()==3){
+            bankType="0"+bankType;
+        }
         if(fssCustomerEntity == null){
             //首次开户,验证银行卡信息
             if(bankType == null || bankNo == null || area == null){
@@ -94,15 +100,13 @@ public class CreateAccountEvent {
                     customerInfoEntity= customerInfoService.searchCustomerInfoByCertNo(certNo);//旧版客户信息
                     if(customerInfoEntity == null){
                         customerInfoEntity=customerInfoService.createCustomer(certNo,name,mobile);
-                        custId = customerInfoEntity.getId();
-                        userId = customerInfoEntity.getUserId();
                     }
                 }else{
                     //获取冠e通客户信息，用生成冠e通旧版账户体系，后期账户体系全部移到新版后，则不再提供此功能
                     customerInfoEntity =  customerInfoService.getCustomerById(custId);
-                    custId = customerInfoEntity.getId();
-                    userId = customerInfoEntity.getUserId();
                 }
+                custId = customerInfoEntity.getId();
+                userId = customerInfoEntity.getUserId();
                 //设置值
                 customerInfoEntity.setParentBankCode(bankType);
                 customerInfoEntity.setBankNo(bankNo);
@@ -125,7 +129,7 @@ public class CreateAccountEvent {
 
             }
         }
-        primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+
         FssAccountEntity fssAccountEntity = null;
         try {
             //生成新版客户信息记录
@@ -146,6 +150,7 @@ public class CreateAccountEvent {
             //生成富有账户
             if(isOldAccount){
                 if (primaryAccount.getHasThirdAccount() ==1){//富友
+                    primaryAccount.setCustomerInfoEntity(customerInfoEntity);
                     paySuperByFuiou.createAccountByPersonal(primaryAccount,"","",tradeType);
                     primaryAccount.setHasThirdAccount(2);
                     fundAccountService.update(primaryAccount);
@@ -170,11 +175,13 @@ public class CreateAccountEvent {
         //银行卡信息生成
         //旧版银行卡信息生成
         //创建银行卡信息
-        BankCardInfoEntity bankCardInfoEntity=bankCardInfoService.getBankCardByCustNo(custId);
-        if(bankCardInfoEntity==null){
-            bankCardInfoEntity=bankCardInfoService.createBankCardInfo(customerInfoEntity,tradeType);
+        if(isOldAccount) {
+            BankCardInfoEntity bankCardInfoEntity = bankCardInfoService.getBankCardByCustNo(custId);
+            if (bankCardInfoEntity == null) {
+                bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+            }
+            fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
         }
-        fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
         //新版银行卡信息生成  增加判断，是否存在
         FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
         if(fssCustBankCardEntity==null){
