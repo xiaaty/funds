@@ -31,9 +31,12 @@ import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -411,10 +414,8 @@ public class FssTradeApplyController {
 	@ResponseBody
 	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@PathVariable Integer type,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
-		Integer from_cust_no=null;
-		Integer to_cust_no=null;
-		Integer from_user_no=null;
-		Integer to_user_no=null;
+		String from_cust_no=null;
+		String to_cust_no=null;
 		Integer from_cust_type=null;
 		Integer to_cust_type=null;
 		String accType = request.getParameter("accType");
@@ -426,23 +427,19 @@ public class FssTradeApplyController {
 			String cert_no = request.getParameter("cert_no");
 			CustomerInfoEntity customerEntity= customerInfoService.searchCustomerInfoByCertNo(cert_no);
 			if(customerEntity==null) throw new FssException("90002007");
+			int fundType;
 			if(flag==4){//4转账转入
-				from_cust_no=customerEntity.getId().intValue();
-				from_user_no=customerEntity.getUserId();
+				from_cust_no=String.valueOf(customerEntity.getId());
 				from_cust_type=Integer.valueOf(accType);
-				to_cust_no=customerInfoEntity.getId().intValue();
-				to_user_no=customerInfoEntity.getUserId();
+				to_cust_no=String.valueOf(customerInfoEntity.getId());
 				to_cust_type=custType;
 			}else{//转账转出
-				from_cust_no=customerInfoEntity.getId().intValue();
-				from_user_no=customerInfoEntity.getUserId();
+				from_cust_no=String.valueOf(customerInfoEntity.getId());
 				from_cust_type=custType;
-				to_cust_no=customerEntity.getId().intValue();
-				to_user_no=customerEntity.getUserId();
+				to_cust_no=String.valueOf(customerEntity.getId());
 				to_cust_type=Integer.valueOf(accType);
 			}
-
-//				fundsTradeImpl.transfer(from_cust_no,from_user_no,from_cust_type,to_cust_no,to_user_no,to_cust_type,amt,1005,null,0l);
+				fundsTradeImpl.bondTransfer(null,null,tradeType,null,null,null,from_cust_no,null,amt,null,to_cust_no,null,from_cust_type,to_cust_type,1005,3);
 				map.put("code", "0000");
 				map.put("message", "success");
 		}catch (FssException e){
@@ -451,6 +448,22 @@ public class FssTradeApplyController {
 			map.put("message", resp_msg);
 		}
 		return map;
+	}
+
+	/**
+	 * 导出excle
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object exportExcel(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus, RedirectAttributes attr) throws Exception {
+		HttpSession httpSession = request.getSession();
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
+		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
+		return new ModelAndView("redirect:"+request.getContextPath()+"/trade/tradeApply/"+type+"/"+bus, map);
 	}
 
 }
