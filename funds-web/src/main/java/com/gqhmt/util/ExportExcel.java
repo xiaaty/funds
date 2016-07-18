@@ -395,11 +395,12 @@ public class ExportExcel<T> {
                     HSSFCell cell = row.createCell(i);
                     cell.setCellStyle(style2);
                     Field field = fields[i];
-                    String fieldName = field.getName();
 
+                    String fieldName = field.getName();
                     String getMethodName = "get"
                             + fieldName.substring(0, 1).toUpperCase()
                             + fieldName.substring(1);
+
                     try {
                         Class tCls = t.getClass();
                         Method getMethod = tCls.getMethod(getMethodName,
