@@ -80,6 +80,11 @@ public class ProjectInfoDto extends SuperDto{
 
     private String busi_no;
 
+    private String contractNo;  //合同编号
+
+    private Long bidInterest;   //利息
+
+
     public Integer getCustId() {
         return custId;
     }
@@ -310,5 +315,21 @@ public class ProjectInfoDto extends SuperDto{
 
     public void setBusi_no(String busi_no) {
         this.busi_no = busi_no;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+
+    public Long getBidInterest() {
+        return bidInterest;
+    }
+
+    public void setBidInterest(Long bidInterest) {
+        this.bidInterest = bidInterest;
     }
 }

@@ -283,7 +283,8 @@ public class FssTradeApi {
 		try {
 			response = transeferImpl.execute(dto);
 		} catch (Exception e) {
-			response = execute(e);
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
 		}
 		return response;
 	}
@@ -322,8 +323,6 @@ public class FssTradeApi {
 		}
 		return response;
 	}
-
-
 
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);

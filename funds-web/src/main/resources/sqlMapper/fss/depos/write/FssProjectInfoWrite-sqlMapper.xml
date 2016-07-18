@@ -40,7 +40,9 @@
        trade_type,
        mchn_no,
        file_path,
-       busi_no
+       busi_no,
+       contract_no,
+       bid_interest
        )
        VALUES(
        #{mchn},
@@ -80,7 +82,9 @@
        #{tradeType},
        #{mchnNo},
        #{filePath},
-       #{busiNo}
+       #{busiNo},
+       #{contractNo},
+       #{bidInterest}
        )
     </insert>
 </mapper>

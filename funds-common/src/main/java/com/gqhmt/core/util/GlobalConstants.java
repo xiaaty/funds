@@ -261,8 +261,6 @@ public class GlobalConstants {
     //富有金账户对账文件信息类型
     public static Map<String, String> FUYOU_ACCOUNT_INFO_TRADE_TYPE = new ConcurrentHashMap<>();
 
-
-	
 	public static Object getSession(HttpServletRequest request,String name){
 		return request.getSession(true).getAttribute(name);
 	}

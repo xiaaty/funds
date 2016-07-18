@@ -100,6 +100,10 @@ public class FssProjectInfoBean {
 
     private String busiNo; //标的编号
 
+    private String contractNo;  //合同编号
+
+    private Long bidInterest;   //利息
+
     public Long getId() {
         return id;
     }
@@ -418,5 +422,21 @@ public class FssProjectInfoBean {
 
     public void setBusiNo(String busiNo) {
         this.busiNo = busiNo;
+    }
+
+    public Long getBidInterest() {
+        return bidInterest;
+    }
+
+    public void setBidInterest(Long bidInterest) {
+        this.bidInterest = bidInterest;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 }

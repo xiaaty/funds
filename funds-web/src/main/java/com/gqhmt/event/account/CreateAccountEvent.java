@@ -79,6 +79,7 @@ public class CreateAccountEvent {
         }
         Long custId = orgcustId;
 
+
         if(fssCustomerEntity == null){
             //首次开户,验证银行卡信息
             if(bankType == null || bankNo == null || area == null){
@@ -123,6 +124,7 @@ public class CreateAccountEvent {
                     if(primaryAccount == null){
                         primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
                     }
+
 
             } catch (FssException e) {
                 if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
@@ -199,6 +201,7 @@ public class CreateAccountEvent {
            }
            fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
        }
+
         //新版银行卡信息生成  增加判断，是否存在
         FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
         if(fssCustBankCardEntity==null){

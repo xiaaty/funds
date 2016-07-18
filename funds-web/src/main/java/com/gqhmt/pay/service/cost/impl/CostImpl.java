@@ -192,6 +192,11 @@ public class CostImpl  implements ICost{
         map.put("11130001_10040002",4l);
         map.put("11130001_10040003",4l);
         map.put("11130001_10040099",4l);
+
+        map.put("21992105_10040001",2l);  //收风险备用金
+        map.put("21992105_10040002",2l);
+        map.put("21992105_10040003",2l);
+        map.put("21992105_10040099",2l);
     }
 
     @Override
@@ -222,7 +227,7 @@ public class CostImpl  implements ICost{
         FundAccountEntity  toAccountEntity= fundAccountService.getFundAccount(toCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         if (fromAccountEntity == null) throw new FssException("90004006");
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST,busiId,busiType,fundsType.substring(0,3),fundsType,null,null,fromAccountEntity.getCustId()==null?null:fromAccountEntity.getCustId(),contractNo);
-        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,3);
         return  fundOrderEntity;
     }
 
@@ -242,7 +247,6 @@ public class CostImpl  implements ICost{
 
     public FundOrderEntity costReturn(String fundsType, Long custId, Integer bustType, BigDecimal decimal, Long busiId, Integer busiType) throws FssException {
 //        return this.costReturn("10040001",fundsType,custId,bustType,decimal,busiId,busiType);
-
         return  null;
     }
 
@@ -253,7 +257,7 @@ public class CostImpl  implements ICost{
         FundAccountEntity  fromAccountEntity= fundAccountService.getFundAccount(fromCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
         if (fromAccountEntity == null) throw new FssException("90004006");
         FundOrderEntity fundOrderEntity = paySuperByFuiou.transerer(fromAccountEntity,toAccountEntity,decimal,GlobalConstants.ORDER_COST_RETURN,busiId,busiType,fundsType.substring(0,3),fundsType,null,null,null,contractNo);
-        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity);
+        tradeRecordService.transfer(fromAccountEntity,toAccountEntity,decimal,Integer.parseInt(fundsType),fundOrderEntity,3);
         return  fundOrderEntity;
     }
 
@@ -326,17 +330,46 @@ public class CostImpl  implements ICost{
                 lendNo=busi_no;
             }
             //第三方交易
-//            final String newOrderType,final String tradeType,final String lendNo,final String toLendNo,final Long loanCustId,final String loanNo
-            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER,trade_type.substring(0,3),trade_type,lendNo==null?null:String.valueOf(lendNo),null,null,loanNo==null?null:String.valueOf(loanNo));
+            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,3,busi_no,GlobalConstants.ORDER_TRANSFER,trade_type.substring(0,4),trade_type,lendNo==null?null:String.valueOf(lendNo),null,null,loanNo==null?null:String.valueOf(loanNo));
             //资金处理
-            fundSequenceService.transfer(fromEntity,toEntity,fundOrderEntity.getOrderAmount(),3,4014,"资金代偿", ThirdPartyType.FUIOU,fundOrderEntity);
+            Integer fundType=null;
+            Integer actionType=null;
+            if("11060001".equals(trade_type)){//提现手续费
+                fundType=4010;
+                actionType=3;
+            }else if("11060002".equals(trade_type)){//账户管理费
+                fundType=4001;
+                actionType=3;
+            }else if("11060003".equals(trade_type)){//服务费
+                fundType=4006;
+                actionType=3;
+            }else if("11060004".equals(trade_type)){//咨询费
+                fundType=4006;
+                actionType=3;
+            }else if("11060005".equals(trade_type)){//收风险保证金
+                fundType=4003;
+                actionType=3;
+            }else if("11060006".equals(trade_type)){//退风险保证金
+                fundType=4007;
+                actionType=3;
+            }else if("11060007".equals(trade_type) || "11060008".equals(trade_type)){//逆服务费
+                fundType=4014;
+                actionType=3;
+            }else if("11130001".equals(trade_type) || "11130002".equals(trade_type) || "11130003".equals(trade_type) || "11130004".equals(trade_type) || "11130005".equals(trade_type)){//红包返现
+                fundType=4014;
+                actionType=3;
+            }else if("11070001".equals(trade_type) || "11070002".equals(trade_type) || "11070003".equals(trade_type) || "11070004".equals(trade_type)){//红包返现
+                fundType=4015;
+                actionType=3;
+            }
+            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType);
             //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,fundOrderEntity.getOrderNo(),"10080002");
         }catch (Exception e){
             //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
         }
         //添加交易记录
-        fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),4014, "资金转出",BigDecimal.ZERO);
-        fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4015,"资金转入");
+//      fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),4014, "资金转出",BigDecimal.ZERO);
+//      fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4015,"资金转入");
         return true;
     }
 

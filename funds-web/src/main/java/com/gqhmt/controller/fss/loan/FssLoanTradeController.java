@@ -199,14 +199,10 @@ public class FssLoanTradeController {
 		// 通过id查询交易对象
 		FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(id);
 		try {
-			if("11090005".equals(type)){//冠e通抵押标转账
-				fundsTradeImpl.transefer(Integer.parseInt(fssLoanEntityById.getMortgageeAccNo()), 10012002,Integer.parseInt(fssLoanEntityById.getAccNo()), 10010003,
-						fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
-						GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo());
-			}else {//借款系统抵押标转账
-				fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(), fssLoanEntityById.getAccNo(),
-						fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
-						GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo());
+			if("11090005".equals(type)){//冠e通抵押标转账MortgageeAccNo存的cust_id
+				fundsTradeImpl.transefer(Integer.parseInt(fssLoanEntityById.getMortgageeAccNo()),1,Integer.parseInt(fssLoanEntityById.getAccNo()),1,fssLoanEntityById.getContractAmt(),GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC,fssLoanEntityById.getId(),GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo(),1005,3);
+			}else {//借款系统抵押标转账MortgageeAccNo存的accno
+				fundsTradeImpl.transefer(fssLoanEntityById.getMortgageeAccNo(),fssLoanEntityById.getAccNo(),fssLoanEntityById.getContractAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo(),1005,3);
 			}
 			fssLoanEntityById.setStatus("10050005");
 			fssLoanService.update(fssLoanEntityById);
@@ -232,7 +228,7 @@ public class FssLoanTradeController {
 		try {
 			fundsTradeImpl.transefer(fssLoanEntityById.getAccNo(),fssLoanEntityById.getMortgageeAccNo(),
 					fssLoanEntityById.getPayAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, fssLoanEntityById.getId(),
-					GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo());
+					GlobalConstants.NEW_BUSINESS_MT,type,fssLoanEntityById.getContractNo(),1005,3);
 			fssLoanEntityById.setStatus("10050100");
 			fssLoanService.update(fssLoanEntityById);
 			fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());

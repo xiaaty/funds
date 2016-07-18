@@ -151,7 +151,8 @@ public class FssProjectInfoService {
 								  String loanItemDescription,Long feeType,
 								  String tradeStatus,Integer period,Long prepareAmount,String payChannel,
 								  String bidYearIrr,String borrowType,String licenseNo,
-								  String custName,String certType,String certNo,String filePath,Integer custId,String busiNo) throws  FssException{
+								  String custName,String certType,String certNo,String filePath,Integer custId,String busiNo,
+								  String contractNO,Long bidInterest) throws  FssException{
 		FssProjectInfoBean	fssProjectInfoBean=new FssProjectInfoBean();
 		fssProjectInfoBean.setTradeType(tradeType);
 		fssProjectInfoBean.setOrderNo(orderNo);
@@ -184,6 +185,8 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setFilePath(filePath);
 		fssProjectInfoBean.setSeqNo(CommonUtil.getSeqNo());
 		fssProjectInfoBean.setBusiNo(busiNo);
+		fssProjectInfoBean.setContractNo(contractNO);
+		fssProjectInfoBean.setBidInterest(bidInterest);
 		fssProjectInfoBean.setItemNo(this.getItemNo());
 		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		fssProjectInfoBean.setAccNo(fundAccountEntity.getUserName());
