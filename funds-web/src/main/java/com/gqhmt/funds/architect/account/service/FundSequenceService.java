@@ -262,7 +262,7 @@ public class FundSequenceService {
      * @throws FssException
      */
     public void transfer(FundAccountEntity fromEntity,FundAccountEntity toEntity,int actionType,int accountType,BigDecimal amount,String memo,FundOrderEntity orderEntity,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException{
-        this.transfer(fromEntity,toEntity,actionType,accountType,amount,memo,orderEntity == null ?"": orderEntity.getOrderNo(),"",newFundsType,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        this.transfer(fromEntity,toEntity,actionType,accountType,amount,memo,orderEntity == null ?"": orderEntity.getOrderNo(),orderEntity == null ?"": orderEntity.getOrderNo(),newFundsType,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
     /**
