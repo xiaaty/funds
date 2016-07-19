@@ -370,7 +370,7 @@ public class PaySuperByFuiou {
      */
     public CommandResponse offlineRecharge(FundAccountEntity entity,BigDecimal amount,int orderType,long busiId,int  busiType) throws FssException {
         LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
-        FundOrderEntity fundOrderEntity = this.createOrder(entity,amount,orderType,busiId,busiType,"","");
+        FundOrderEntity fundOrderEntity = this.createOrder(entity,amount,orderType,busiId,busiType,"1103","");
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_OFFLINE_RECHARGE_REFUND, fundOrderEntity, entity, amount,"充值 "+amount.toPlainString()+"元");
         execExction(response,fundOrderEntity);
         response.setFundOrderEntity(fundOrderEntity);

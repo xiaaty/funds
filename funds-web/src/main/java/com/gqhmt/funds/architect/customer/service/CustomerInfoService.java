@@ -333,9 +333,7 @@ public class CustomerInfoService {
 	 * @return
 	 */
 	public CustomerInfoEntity queryCustomerInfoByCertNo(String certNo) {
-		CustomerInfoEntity entity = new CustomerInfoEntity();
-		entity.setCertNo(certNo);
-		return customerInfoReadMapper.selectOne(entity);
+		return this.searchCustomerInfoByCertNo(certNo);
 	}
 
 	/**
