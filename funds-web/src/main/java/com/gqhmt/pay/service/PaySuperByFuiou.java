@@ -49,11 +49,12 @@ public class PaySuperByFuiou {
      * @param primaryAccount
      * @return
      */
-    public boolean createAccountByPersonal(FundAccountEntity primaryAccount,String pwd,String taradPwd,String tradeType) throws FssException {
+    public FundOrderEntity createAccountByPersonal(FundAccountEntity primaryAccount,String pwd,String taradPwd,String tradeType) throws FssException {
         LogUtil.info(this.getClass(),"第三方个人开户:"+primaryAccount.getAccountNo());
         FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount, BigDecimal.ZERO, GlobalConstants.ORDER_CREATE_ACCOUNT,0,0,"",tradeType);
         CommandResponse response  = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_PRIVATE_CREATE,fundOrderEntity,primaryAccount,pwd,taradPwd);
-        return execExction(response,fundOrderEntity);
+        execExction(response,fundOrderEntity);
+        return fundOrderEntity;
     }
 
     /**

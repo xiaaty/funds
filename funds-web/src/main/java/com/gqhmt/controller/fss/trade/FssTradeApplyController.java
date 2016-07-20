@@ -419,7 +419,7 @@ public class FssTradeApplyController {
 		Integer from_cust_type=null;
 		Integer to_cust_type=null;
 		try {
-			FundAccountEntity accEntity= fundAccountService.getFundAccount(mobilePhone,busiType);
+			FundAccountEntity accEntity= fundAccountService.getFundAccount(phone,Integer.valueOf(accType));
 			if(accEntity==null) throw new FssException("90002007");
 			if(flag==4){//4转账转入
 				from_cust_no=String.valueOf(accEntity.getCustId());
