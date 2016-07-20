@@ -90,7 +90,7 @@ public class FundAccountEntity {
     @Column(name = "settle_type")
     private Integer settleType ;
 
-    @Column(name = "account_order_no",updatable = false)
+    @Column(name = "account_order_no")
     private String accountOrderNo;//开户订单号
     @Column(name = "account_time")
     private Date accountTime;//富友开户时间

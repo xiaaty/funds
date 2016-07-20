@@ -133,7 +133,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1550px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
                                         <col width="100" />
                                     	<col width="200" />
                                     	<col width="100" />
@@ -142,7 +142,7 @@
                                     	<col width="100" />
                                     	<col width="150" />
                                     	<col width="150" />
-                                    	<col width="100" />
+                                    	<col width="150" />
                                     	<col width="150" />
                                     	<col width="200" />
                                         <thead>
