@@ -350,6 +350,9 @@ public class ExportExcel<T> {
                         cell2.setCellValue(tradeApply.getCustName());
                         cell3.setCellValue(tradeApply.getCustMobile());
                         cell4.setCellValue(tradeApply.getTradeAmount().toString());
+
+                        //根据业务编号 重命名 sheet
+                        workbook.setSheetName(index-1,tradeApply.getApplyNo());
                     }
                     if ("tradeRecordList".equals(key)) {
                         List<FssTradeRecordEntity> tradeRecordList = (List<FssTradeRecordEntity>) value;
