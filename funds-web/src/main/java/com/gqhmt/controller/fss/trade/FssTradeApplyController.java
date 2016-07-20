@@ -36,7 +36,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -459,10 +461,14 @@ public class FssTradeApplyController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object exportExcel(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String bus, RedirectAttributes attr) throws Exception {
+	public Object exportExcel(HttpServletResponse response, HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus, RedirectAttributes attr) throws Exception {
 		HttpSession httpSession = request.getSession();
+		map.put("applyType",type.toString());
+		map.put("busiType", bus);
 		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
-		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
+
+		fssTradeApplyService.exportTradeApplyList(response,tradeApplyList);
+
 		return new ModelAndView("redirect:"+request.getContextPath()+"/trade/tradeApply/"+type+"/"+bus, map);
 	}
 
