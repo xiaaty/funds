@@ -141,7 +141,7 @@
                                             </table>
                                         </div>
                                         <footer>
-                                          <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button class="btn btn-primary" onclick="querySub();">查&nbsp;&nbsp;&nbsp;询</button>
                                             <button id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();">导&nbsp;&nbsp;&nbsp;出</button>
                                         </footer>
                                     </div>
@@ -256,6 +256,7 @@
     </div>
     </div>
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<script src="${contextPath}/js/jquery.form.js" ></script>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
@@ -328,12 +329,16 @@
     });
 
      function exportExcel(){
+         $("#mortForm").sub
          $("#exportExcelBtn").unbind('click');
          $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel");
          $("#mortForm").sub();
          // $("#mortForm table").find("tr:first").append("<td><input type=\"hidden\" name=\"buttonType\" value=\"exportExcel\" /></td>")
 
      }
+     function querySub(){
+         $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}");
+    }
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>
