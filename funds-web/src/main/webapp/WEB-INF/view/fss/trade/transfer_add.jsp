@@ -34,9 +34,9 @@
     <!-- RIBBON -->
     <div id="ribbon">
         <!-- breadcrumb -->
-        <%--<ol class="breadcrumb">
-            <li>转账</li>
-        </ol>--%>
+        <ol class="breadcrumb">
+            <li>客户转账</li>
+        </ol>
         <!-- end breadcrumb -->
     </div>
 
@@ -67,39 +67,78 @@
                                                     <td>
                                                         <input id="tradeType" checked="checked"  name="tradeType" type="radio" value="11080001">个人对个人&nbsp;&nbsp;
                                                         <input id="tradeType" name="tradeType" type="radio" value="11080001">个人对公司&nbsp;&nbsp;
-                                                        <input id="tradeType" name="tradeType" type="radio" value="11080004">账户间转账&nbsp;&nbsp;
+                                                        <input id="tradeType" name="tradeType" type="radio" value="11080004">个人账户间转账&nbsp;&nbsp;
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户姓名：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            <input type="text" maxlength="50" id="name" name="name" value="${name}" style="width:256px;" />
-                                                        </label>
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${flag==5}">
+                                                            <td align="left">转出客户姓名：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                        ${customerName}
+                                                                </label>
+                                                            </td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转出客户姓名：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" id="name" name="name" value="${name}" style="width:256px;" />
+                                                                </label>
+                                                            </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户手机号：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            <input type="text" maxlength="50" id="phone" name="phone" value="${phone}" style="width:256px;" />
-                                                        </label>
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${flag==5}">
+                                                            <td align="left">转出客户手机号：</td>
+                                                            <td>
+                                                                <label class="input">${mobilePhone}</label>
+                                                            </td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转出客户手机号：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" id="phone" name="phone" value="${phone}" style="width:256px;" />
+                                                                </label>
+                                                            </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户账户类型：</td>
-                                                    <td>
-                                                        <label>
-                                                                <select id = "accType" name = "accType" style="width:256px;height: 30px;">
-                                                                    <option value="0" selected="selected">主账户</option>
-                                                                    <option value="1">借款账户</option>
-                                                                    <option value="2">线下出借账户</option>
-                                                                    <option value="3">线上出借账户</option>
-                                                                    <option value="96">应付账户</option>
-                                                                    <option value="99">冻结账户</option>
-                                                                </select>
-                                                        </label>
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${flag==5}">
+                                                        <td align="left">转出账户类型：</td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <c:if test="${busiType==0}">主账户</c:if>
+                                                                <c:if test="${busiType==1}">借款账户</c:if>
+                                                                <c:if test="${busiType==2}">线下出借账户 </c:if>
+                                                                <c:if test="${busiType==3}">线上出借账户</c:if>
+                                                                <c:if test="${busiType==96}">应付账户</c:if>
+                                                                <c:if test="${busiType==99}">冻结账户</c:if>
+                                                            </label>
+                                                        </td>
+                                                    </c:when>
+                                                        <c:otherwise>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转出账户类型：</td>
+                                                            <td>
+                                                                <label>
+                                                                    <select id = "accType" name = "accType" style="width:256px;height: 30px;">
+                                                                        <option value="0" selected="selected">主账户</option>
+                                                                        <option value="1">借款账户</option>
+                                                                        <option value="2">线下出借账户</option>
+                                                                        <option value="3">线上出借账户</option>
+                                                                        <option value="96">应付账户</option>
+                                                                        <option value="99">冻结账户</option>
+                                                                    </select>
+                                                                </label>
+                                                            </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                                 <tr>
                                                     <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账金额</td>
@@ -111,33 +150,76 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">转入客户姓名：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            ${customerName}
-                                                        </label>
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${flag==4}">
+                                                            <td align="left">转入客户姓名：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                        ${customerName}
+                                                                </label>
+                                                            </td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转入客户姓名：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" id="name" name="name" value="${name}" style="width:256px;" />
+                                                                </label>
+                                                            </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">转入客户手机号：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            ${mobilePhone}
-                                                        </label>
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${flag==4}">
+                                                            <td align="left">转入客户手机号：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    ${mobilePhone}
+                                                                </label>
+                                                            </td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转入客户手机号：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <input type="text" maxlength="50" id="phone" name="phone" value="${phone}" style="width:256px;"/>
+                                                                </label>
+                                                            </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">转入账户类型：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                                <c:if test="${busiType==0}">主账户</c:if>
-                                                                <c:if test="${busiType==1}">借款账户</c:if>
-                                                                <c:if test="${busiType==2}">线下出借账户 </c:if>
-                                                                <c:if test="${busiType==3}">线上出借账户</c:if>
-                                                                <c:if test="${busiType==96}">应付账户</c:if>
-                                                                <c:if test="${busiType==99}">冻结账户</c:if>
-                                                        </label>
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${flag==4}">
+                                                            <td align="left">转入账户类型：</td>
+                                                            <td>
+                                                                <label class="input">
+                                                                    <c:if test="${busiType==0}">主账户</c:if>
+                                                                    <c:if test="${busiType==1}">借款账户</c:if>
+                                                                    <c:if test="${busiType==2}">线下出借账户 </c:if>
+                                                                    <c:if test="${busiType==3}">线上出借账户</c:if>
+                                                                    <c:if test="${busiType==96}">应付账户</c:if>
+                                                                    <c:if test="${busiType==99}">冻结账户</c:if>
+                                                                </label>
+                                                            </td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转入账户类型：</td>
+                                                            <td>
+                                                                <label>
+                                                                    <select id = "accType" name = "accType" style="width:256px;height: 30px;">
+                                                                        <option value="0" selected="selected">主账户</option>
+                                                                        <option value="1">借款账户</option>
+                                                                        <option value="2">线下出借账户</option>
+                                                                        <option value="3">线上出借账户</option>
+                                                                        <option value="96">应付账户</option>
+                                                                        <option value="99">冻结账户</option>
+                                                                    </select>
+                                                                </label>
+                                                            </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                                 </tbody>
                                             </table>
