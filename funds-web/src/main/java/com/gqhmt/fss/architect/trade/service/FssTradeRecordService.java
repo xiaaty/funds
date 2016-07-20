@@ -71,7 +71,7 @@ public class FssTradeRecordService {
 			summary="成功";
 		}else if(state==3){
 			tradeResult=98060009;//中断
-			summary="中断";
+			summary=Application.getInstance().getDictName(respCode);
 		}else{
 			tradeResult=98060003;//失败
 			summary=Application.getInstance().getDictName(respCode);
