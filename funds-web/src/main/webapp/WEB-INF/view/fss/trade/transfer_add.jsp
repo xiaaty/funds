@@ -102,7 +102,7 @@
                                                             <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转出客户手机号：</td>
                                                             <td>
                                                                 <label class="input">
-                                                                    <input type="text" maxlength="50" id="phone" name="phone" value="${phone}" style="width:256px;" />
+                                                                    <input type="text" maxlength="50" id="phone" name="phone" value="${phone}" style="width:256px;" onblur="validatemobile()"/>
                                                                 </label>
                                                             </td>
                                                         </c:otherwise>
@@ -141,11 +141,10 @@
                                                     </c:choose>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账金额</td>
+                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账金额:</td>
                                                     <td>
                                                         <label class="input">
-                                                            <%--<input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;" onblur="checkAmt()"/>--%>
-                                                            <input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;"/>
+                                                            <input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;" onblur="checkAmt()"/>
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -244,7 +243,6 @@
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
 <script src="${contextPath}/js/jquery.blockUI.js"></script>
 <script type="text/javascript" charset="utf-8">
-
     $("#passbtn").click(function () {
         var phone=$("#phone").val();
         var accType=$("#accType").val();
@@ -259,12 +257,12 @@
                     $.unblockUI();
                     if (data.code == '0000') {
                         jAlert("提交成功!", '信息提示',function (r) {
-                            window.location.href="${contextPath}/funds/accountBusinessList/${custId}";
+                            window.location.href="${contextPath}/funds/accountBusinessList/${accCustId}";
                         });
                     } else {
                         jAlert("提交失败，失败原因："+data.message, '消息提示',function (r) {
                             $.unblockUI();
-                            window.location.href="${contextPath}/funds/accountBusinessList/${custId}";
+                            window.location.href="${contextPath}/funds/accountBusinessList/${accCustId}";
                         });
                         return;
                     }
@@ -272,6 +270,11 @@
             });
         }
     });
+
+
+
+
+
     $("#btn_cancel").button().click(function() {
         window.history.back();
     });
@@ -297,14 +300,30 @@
             message: '<img src="${contextPath}/img/loading.gif" />&nbsp;' + msg
         });
     }
+    /*校验手机号码*/
+    function validatemobile(){
+        var myreg = /^(((13[0-9]{1})|159|153)+\d{8})$/;
+        var mobile=$("#phone").val();
+        if(mobile.length==0){
+            alert('请输入手机号码！');
+            return false;
+        }else if(mobile.length!=11){
+            alert('请输入有效的手机号码！');
+            return false;
+        }else if(!myreg.test(mobile)){
+            alert('请输入有效的手机号码！');
+            return false;
+        }
+    }
 
-   /* function checkAmt() {
+   function checkAmt() {
         var amt=$("#amt").val();
-        if(amt<=0){
-            alert("转账金额不能为0");
+        if(amt=null || amt<=0){
+            alert("转账金额错误！");
+            return false;
         }
         return true;
-    }*/
+    }
 </script>
 </body>
 

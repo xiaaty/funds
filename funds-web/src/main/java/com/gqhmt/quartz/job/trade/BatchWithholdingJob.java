@@ -112,13 +112,18 @@ public class BatchWithholdingJob extends SupperJob{
                          if(flag == 0) {
                              fundsBatchTrade.batchTrade(entity,contractNo,custType);
                          }else{
-                             fssTradeRecordService.updateTradeRecordExecuteState(entity,3,msg);//todo 增加失败原因ss
+                             fssTradeRecordService.updateTradeRecordExecuteState(entity,3,"98060009");//todo 增加失败原因ss
                          }
                      } catch (FssException e) {
                          msg = e.getMessage();
                          String breakMsg = Application.getInstance().getDictOrderValue("breakMsg");
                          if(breakMsg != null && breakMsg.contains(msg)){
                              flag = 1; //如果存在余额不足等，中断代扣、代付操作。
+                         }
+                         try {
+                             fssTradeRecordService.updateTradeRecordExecuteState(entity,2,msg);//todo 增加失败原因ss
+                         } catch (FssException e1) {
+                             e1.printStackTrace();
                          }
                      }
                      long endTime = Calendar.getInstance().getTimeInMillis();

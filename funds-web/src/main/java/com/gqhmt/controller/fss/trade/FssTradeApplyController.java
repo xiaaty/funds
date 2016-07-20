@@ -386,13 +386,14 @@ public class FssTradeApplyController {
      * @return
      * @throws FssException
      */
-	@RequestMapping(value = "/trade/tradeApply/createTransfer/{custId}/{busiType}/{customerName}/{mobilePhone}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object createTransferApply(HttpServletRequest request, ModelMap model, @PathVariable String custId,@PathVariable Integer busiType,@PathVariable String customerName,@PathVariable String mobilePhone,@PathVariable Integer flag) throws FssException {
+	@RequestMapping(value = "/trade/tradeApply/createTransfer/{custId}/{busiType}/{customerName}/{mobilePhone}/{flag}/{accCustId}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createTransferApply(HttpServletRequest request, ModelMap model, @PathVariable String custId,@PathVariable Integer busiType,@PathVariable String customerName,@PathVariable String mobilePhone,@PathVariable Integer flag,@PathVariable String accCustId) throws FssException {
 		model.addAttribute("busiType",busiType);
 		model.addAttribute("custId",custId);
 		model.addAttribute("customerName",customerName);
 		model.addAttribute("mobilePhone",mobilePhone);
 		model.addAttribute("flag",flag);
+		model.addAttribute("accCustId",accCustId);//用来区分是对公账户还是旧版客户账户
 		return "fss/trade/transfer_add";
 	}
 

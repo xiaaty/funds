@@ -53,7 +53,7 @@
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action=""  method="post" id="rechargeForm">
+                                <form class="smart-form" action="${contextPath}/trade/record/${map.type}"  method="post" id="rechargeForm">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -66,25 +66,46 @@
                                                 <col width="100" />
                                                 <col />
                                                 <tbody>
-                                                    <tr></tr>
                                                     <tr>
+                                                        <td class="tr">申请编号：</td>
+                                                        <td>
+                                                            <label class="input">
+                                                                <input type="text" style="width:200px" name="applyNo" value="${map.applyNo}" />
+                                                            </label>
+                                                        </td>
                                                        <td class="tr">客户账号：</td>
                                                          <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="accNo" value="${traderecorder.accNo}" />
+                                                                <input type="text" style="width:300px" name="accNo" value="${map.accNo}" />
                                                             </label>
                                                         </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td class="tr">交易状态：</td>
                                                         <td>
-                                                            <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
-										                    	<option value="">所有</option>
-										                    	<option  <c:if test="${traderecorder.tradeState==10030001}"> selected="selected" </c:if> value="10030001">交易提交</option>
-										                    	<option  <c:if test="${traderecorder.tradeState==10030002}"> selected="selected" </c:if> value="10030002" >交易成功</option>
-										                    	<option  <c:if test="${traderecorder.tradeState==10030003}"> selected="selected" </c:if> value="10030003" >交易失败</option>
-										                    	<option  <c:if test="${traderecorder.tradeState==10030004}"> selected="selected" </c:if> value="10030004" >交易关闭</option>
-										                    </select>
-                                                        </td> 
-                                                     
+                                                            <select id = "resultState" name = "resultState" style="width:200px;height: 30px;">
+                                                                <option value="">所有</option>
+                                                                <option  <c:if test="${map.resultState==98060001}"> selected="selected" </c:if> value="98060001">成功</option>
+                                                                <option  <c:if test="${map.resultState==98060002}"> selected="selected" </c:if> value="98060002">部分成功</option>
+                                                                <option  <c:if test="${map.resultState==98060003}"> selected="selected" </c:if> value="98060003">失败</option>
+                                                                <option  <c:if test="${map.resultState==98060004}"> selected="selected" </c:if> value="98060004">无需回盘</option>
+                                                                <option  <c:if test="${map.resultState==98060009}"> selected="selected" </c:if> value="98060009">交易中断</option>
+                                                            </select>
+                                                        </td>
+                                                        <td class="tr">创建日期：</td>
+                                                        <td colspan="3">
+                                                            <section class="fl">
+                                                                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                    <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
+                                                                </label>
+                                                            </section>
+                                                            <span class="fl">&nbsp;至&nbsp;</span>
+                                                            <section class="fl">
+                                                                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                    <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
+                                                                </label>
+                                                            </section>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -143,20 +164,20 @@
                                         </tr>
                                         </thead>
                                          <tbody>
-                                             <c:forEach items="${page.list}" var="traderecorder">
+                                             <c:forEach items="${page.list}" var="t">
                                                 <tr>
-                                                    <td>${traderecorder.id}</td>
-                                                    <td>${traderecorder.accNo}</td>
-                                                    <td><fss:dictView key="${traderecorder.tradeTypeChild}" /></td>
-                                                    <td>${traderecorder.amount}</td>
-                                                    <td>${traderecorder.applyNo}</td>
-                                                    <td><fss:dictView key="${traderecorder.tradeState}" /></td>
-                                                    <td><fss:dictView key="${traderecorder.tradeResult}" /></td>
-                                                    <td>${traderecorder.sumary}</td>
-                                                    <td><fss:fmtDate value="${traderecorder.createTime}"/></td>
-                                                    <td><fss:fmtDate value="${traderecorder.modifyTime}"/></td>
-                                                    <td>${traderecorder.mchnChild}</td>
-                                                    <td>${traderecorder.orderNo}</td>
+                                                    <td>${t.id}</td>
+                                                    <td>${t.accNo}</td>
+                                                    <td><fss:dictView key="${t.tradeTypeChild}" /></td>
+                                                    <td>${t.amount}</td>
+                                                    <td>${t.applyNo}</td>
+                                                    <td><fss:dictView key="${t.tradeState}" /></td>
+                                                    <td><fss:dictView key="${t.tradeResult}" /></td>
+                                                    <td>${t.sumary}</td>
+                                                    <td><fss:fmtDate value="${t.createTime}"/></td>
+                                                    <td><fss:fmtDate value="${t.modifyTime}"/></td>
+                                                    <td>${t.mchnChild}</td>
+                                                    <td>${t.orderNo}</td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -179,6 +200,36 @@
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#rechargeForm"));
     });
 
+    $('.selectdate').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        autoclose: 1,
+        format:'yyyy-mm-dd',
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    function verify(){
+        var a=document.getElementsByName("startTime");
+        var b=document.getElementsByName("endTime");
+        if(b[0].value!=null&&b[0].value!=''){
+
+            if(a[0].value>b[0].value){
+                JAlert("请检查您输入的日期","提示消息");
+            }else{
+                $("#rechargeForm").submit();
+            }
+        }else{
+            var d = new Date();
+            var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+            if(a[0].value>str){
+                JAlert("请检查您输入的日期","提示消息");
+            }else{
+                $("#rechargeForm").submit();
+            }
+        }
+    }
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>
