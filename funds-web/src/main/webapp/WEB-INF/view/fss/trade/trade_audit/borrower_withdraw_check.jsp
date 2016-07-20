@@ -163,7 +163,8 @@
                                 parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}";
     	                    } else if(data.code == '0001') {
                                 $.unblockUI();
-    	                    	jAlert("审核失败!", '消息提示');
+    	                    	jAlert("审核未通过!", '消息提示');
+                                <%--parent.location.href="${contextPath}/trade/tradeApply/${tradeapply.applyType}/${tradeapply.busiType}";--%>
     	                        return;
     	                    }else {
                                 $.unblockUI();

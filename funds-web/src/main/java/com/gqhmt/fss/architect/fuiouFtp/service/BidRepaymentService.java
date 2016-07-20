@@ -74,19 +74,26 @@ public class BidRepaymentService extends BidSupper{
     private FssBackplateService fssBackplateService;
 
     public void BidRepayment(FssLoanEntity loanEntity) throws FssException {
-
-        String type = "1";
+        Map<String,String > paramMap = new HashMap<>();
+        paramMap.put("id",loanEntity.getContractId());
         if("11101002".equals(loanEntity.getTradeTypeParent())||"11101001".equals(loanEntity.getTradeTypeParent())){
-            // paramMap.put("type","2");
-            type = "2";
+            paramMap.put("type","2");
+        }else{
+            paramMap.put("type","1");
         }
+        Map<String,String > repParamMap = new HashMap<>();
+        repParamMap.put("id",loanEntity.getBusiNo());
 
         String contractId = loanEntity.getContractId();
-        String busiNo = loanEntity.getBusiNo();
-        super.initRepay(contractId,type,busiNo);
-
-        Bid bid = super.getBid(contractId);
-        List<RepaymentBean> list = super.getBidRepayment(contractId);
+        Bid bid = null;
+        List<RepaymentBean> list  = null;
+        try {
+            bid = fetchDataService.featchDataSingle(Bid.class,"findBid",paramMap);
+            list =fetchDataService.featchData(RepaymentBean.class,"revicePayment",repParamMap);
+        } catch (FssException e) {
+            LogUtil.error(getClass(),e);
+            throw  e;
+        }
 
 
         Integer cusId = bid.getCustomerId();

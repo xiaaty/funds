@@ -126,6 +126,28 @@ public class TradeRecordService {
     public void transfer(FundAccountEntity fromAcc,FundAccountEntity toAcc,BigDecimal amount,Integer  fundType,FundOrderEntity fundOrderEntity,Integer actionType) throws FssException {
         sequenceService.transfer(fromAcc,toAcc,amount,actionType,fundType,null,ThirdPartyType.FUIOU,fundOrderEntity);
     }
+
+    /**
+     * 转账接口重载
+     * @param fromAcc
+     * @param toAcc
+     * @param amount
+     * @param fundType
+     * @param fundOrderEntity
+     * @param actionType
+     * @param memo
+     * @param newFundsType
+     * @param tradeType
+     * @param lendNo
+     * @param toCustId
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
+     * @throws FssException
+     */
+    public void transfer(FundAccountEntity fromAcc,FundAccountEntity toAcc,BigDecimal amount,Integer  fundType,FundOrderEntity fundOrderEntity,Integer actionType,String memo,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+        sequenceService.transfer(fromAcc,toAcc,actionType,fundType,amount,memo,fundOrderEntity,newFundsType,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
+    }
     /**
      * 交易记录查询
      * @param cust_no

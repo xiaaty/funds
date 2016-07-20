@@ -381,64 +381,57 @@ public class FssTradeApplyController {
 	 * 转账申请
 	 * @param request
 	 * @param model
-	 * @param type
-	 * @param certNo
-	 * @param accNo
+	 * @param busiType
+	 * @param customerName
+	 * @param mobilePhone
 	 * @param flag
-	 * @param customerInfoEntity
      * @return
      * @throws FssException
      */
-	@RequestMapping(value = "/trade/tradeApply/createTransfer/{type}/{certNo}/{accNo}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object createTransferApply(HttpServletRequest request, ModelMap model, @PathVariable Integer type,@PathVariable String certNo,@PathVariable String accNo,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
-		//当前账户信息（4转账转入，5转账转出）
-		customerInfoEntity=customerInfoService.queryCustomerInfoByCertNo(certNo);
-		if (customerInfoEntity!=null){
-			model.addAttribute("customerInfoEntity",customerInfoEntity);
-		}
-		model.addAttribute("type",type);
+	@RequestMapping(value = "/trade/tradeApply/createTransfer/{custId}/{busiType}/{customerName}/{mobilePhone}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createTransferApply(HttpServletRequest request, ModelMap model, @PathVariable String custId,@PathVariable Integer busiType,@PathVariable String customerName,@PathVariable String mobilePhone,@PathVariable Integer flag) throws FssException {
+		model.addAttribute("busiType",busiType);
+		model.addAttribute("custId",custId);
+		model.addAttribute("customerName",customerName);
+		model.addAttribute("mobilePhone",mobilePhone);
 		model.addAttribute("flag",flag);
-		model.addAttribute("accNo",accNo);
 		return "fss/trade/transfer_add";
 	}
 
 	/**
-	 * 客户转账
+	 * 旧版账户客户转账
 	 * @param request
 	 * @param model
-	 * @param type
+	 * @param mobilePhone
+	 * @param busiType
 	 * @param flag
-	 * @param customerInfoEntity
 	 * @return
      * @throws FssException
      */
-	@RequestMapping(value ="/trade/tradeApply/createTransfer/{type}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value ="/trade/tradeApply/transfer/{custId}/{mobilePhone}/{busiType}/{flag}",method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@PathVariable Integer type,@PathVariable Integer flag,CustomerInfoEntity customerInfoEntity) throws FssException {
+	public Object saveOfflineRecharge(HttpServletRequest request, ModelMap model,@PathVariable String custId,@PathVariable String mobilePhone,@PathVariable Integer busiType,@PathVariable Integer flag) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
+		String accType = request.getParameter("accType");
+		String tradeType=request.getParameter("tradeType");
+		String phone = request.getParameter("phone");
+		BigDecimal  amt=new BigDecimal(request.getParameter("amt"));//转账金额
 		String from_cust_no=null;
 		String to_cust_no=null;
 		Integer from_cust_type=null;
 		Integer to_cust_type=null;
-		String accType = request.getParameter("accType");
-		String tradeType=request.getParameter("tradeType");
 		try {
-			Integer custType=GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(Integer.valueOf(type));
-			if (null==custType) throw new FssException("91001006");
-			BigDecimal  amt=new BigDecimal(request.getParameter("amt"));//转账金额
-			String cert_no = request.getParameter("cert_no");
-			CustomerInfoEntity customerEntity= customerInfoService.searchCustomerInfoByCertNo(cert_no);
-			if(customerEntity==null) throw new FssException("90002007");
-			int fundType;
+			FundAccountEntity accEntity= fundAccountService.getFundAccount(phone,Integer.valueOf(accType));
+			if(accEntity==null) throw new FssException("90002007");
 			if(flag==4){//4转账转入
-				from_cust_no=String.valueOf(customerEntity.getId());
+				from_cust_no=String.valueOf(accEntity.getCustId());
 				from_cust_type=Integer.valueOf(accType);
-				to_cust_no=String.valueOf(customerInfoEntity.getId());
-				to_cust_type=custType;
+				to_cust_no=custId;
+				to_cust_type=busiType;
 			}else{//转账转出
-				from_cust_no=String.valueOf(customerInfoEntity.getId());
-				from_cust_type=custType;
-				to_cust_no=String.valueOf(customerEntity.getId());
+				from_cust_no=custId;
+				from_cust_type=busiType;
+				to_cust_no=String.valueOf(accEntity.getCustId());
 				to_cust_type=Integer.valueOf(accType);
 			}
 				fundsTradeImpl.bondTransfer(null,null,tradeType,null,null,null,from_cust_no,null,amt,null,to_cust_no,null,from_cust_type,to_cust_type,1005,3);
