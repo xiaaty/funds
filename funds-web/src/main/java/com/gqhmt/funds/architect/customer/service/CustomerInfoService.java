@@ -333,9 +333,7 @@ public class CustomerInfoService {
 	 * @return
 	 */
 	public CustomerInfoEntity queryCustomerInfoByCertNo(String certNo) {
-		CustomerInfoEntity entity = new CustomerInfoEntity();
-		entity.setCertNo(certNo);
-		return customerInfoReadMapper.selectOne(entity);
+		return this.searchCustomerInfoByCertNo(certNo);
 	}
 
 	/**
@@ -1074,6 +1072,7 @@ public class CustomerInfoService {
 	public CustomerInfoEntity createCustomer(String certNo,String name,String mobile) throws FssException{
 		try{
 			CustomerInfoEntity customerInfoEntity = this.createCustomerInfo(certNo,name,mobile);
+			this.customerInfoWriteMapper.insertSelective(customerInfoEntity);
 			UserEntity userEntity = gqUserService.createUser(customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getId());
 			customerInfoEntity.setBankId(userEntity.getId());
 			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
@@ -1094,7 +1093,7 @@ public class CustomerInfoService {
 	 * @param mobile
 	 * @return
 	 * @throws FssException
-	 */
+     */
 	public CustomerInfoEntity createCustomerInfo(String certNo,String name,String mobile) throws FssException{
 		CustomerInfoEntity customerInfoEntity=new CustomerInfoEntity();
 		customerInfoEntity.setCustomerName(name);
@@ -1107,8 +1106,8 @@ public class CustomerInfoService {
 		customerInfoEntity.setEmailIdentification(0);
 		customerInfoEntity.setUserId(1);
 		customerInfoEntity.setIsvalid(0);
-		customerInfoEntity.setHasThirdAgreement(0);
-		customerInfoEntity.setHasAcount(0);
+		customerInfoEntity.setHasThirdAgreement(1);
+		customerInfoEntity.setHasAcount(1);
 		customerInfoEntity.setPayChannel(2);
 //		customerInfoEntity.setBankId(Integer.parseInt(loanAccountDto.getBank_id()));
 		customerInfoEntity.setIsBatchSendmsgCalled(0);

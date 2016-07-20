@@ -43,7 +43,8 @@ public class TransferDto extends SuperDto {
 	private Integer  funds_type;//交易子类型
 	private Integer  busi_type;//业务类型
 	private Long  busi_id;//账户类型
-
+	private String loan_type;//借款、出借、或其他
+	private String contract_no;//合同号
 
 	public Integer getFrom_cust_no() {
 		return from_cust_no;
@@ -101,8 +102,6 @@ public class TransferDto extends SuperDto {
 		this.amt = amt;
 	}
 
-
-
 	public Integer getBusi_type() {
 		return busi_type;
 	}
@@ -125,5 +124,21 @@ public class TransferDto extends SuperDto {
 
 	public void setFunds_type(Integer funds_type) {
 		this.funds_type = funds_type;
+	}
+
+	public String getContract_no() {
+		return contract_no;
+	}
+
+	public void setContract_no(String contract_no) {
+		this.contract_no = contract_no;
+	}
+
+	public String getLoan_type() {
+		return loan_type;
+	}
+
+	public void setLoan_type(String loan_type) {
+		this.loan_type = loan_type;
 	}
 }

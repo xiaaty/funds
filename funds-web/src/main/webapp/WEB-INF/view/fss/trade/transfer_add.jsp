@@ -44,13 +44,12 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <form id="transferForm" action="${contextPath}/trade/tradeApply/createTransfer/${type}/${flag}" method="post">
-                    <input type="hidden" id="id" name="id" value="${customerInfoEntity.id}"/>
+                <form id="transferForm" action="${contextPath}/trade/tradeApply/transfer/${custId}/${mobilePhone}/${busiType}/${flag}" method="post">
                     <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
                         <div class="jarviswidget" id="borrowWithholdCheck" data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2><i class="fa fa-edit pr10"></i>账户转账<font class="pl10 f12 color07"></font></h2>
-                                <span class="tip02 color03">”*“为必填项</span>
+                                <span class="emphasis emphasis_txtx01 pr5">”*“为必填项</span>
                             </header>
                             <div>
                                 <div class="smart-form">
@@ -64,34 +63,34 @@
                                                 <col />
                                                 <tbody>
                                                 <tr>
-                                                    <td align="left">转出客户姓名：</td>
+                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账类型：</td>
+                                                    <td>
+                                                        <input id="tradeType" checked="checked"  name="tradeType" type="radio" value="11080001">个人对个人&nbsp;&nbsp;
+                                                        <input id="tradeType" name="tradeType" type="radio" value="11080001">个人对公司&nbsp;&nbsp;
+                                                        <input id="tradeType" name="tradeType" type="radio" value="11080004">账户间转账&nbsp;&nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户姓名：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" id="customerName" name="customerName" value="${customerName}" style="width:256px;" />
+                                                            <input type="text" maxlength="50" id="name" name="name" value="${name}" style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">客户手机号码：</td>
+                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户手机号：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" id="mobilePhone" name="mobilePhone" value="${mobilePhone}" style="width:256px;" />
+                                                            <input type="text" maxlength="50" id="phone" name="phone" value="${phone}" style="width:256px;" />
                                                         </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left">身份证号：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            <input type="text" maxlength="50" id="cert_no" name="cert_no" value="${cert_no}" style="width:256px;" />
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>账户类型：</td>
+                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>客户账户类型：</td>
                                                     <td>
                                                         <label>
-                                                                <select id = "accType" name = "accType" style="width:150px;height: 30px;">
+                                                                <select id = "accType" name = "accType" style="width:256px;height: 30px;">
                                                                     <option value="0" selected="selected">主账户</option>
                                                                     <option value="1">借款账户</option>
                                                                     <option value="2">线下出借账户</option>
@@ -103,20 +102,40 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账类型：</td>
-                                                    <td colspan="5">
-                                                        <span class="pl10 pr50"><input id="tradeType" checked="checked"  name="tradeType" type="radio" value="11030014"><label class="ml5">个人对个人转账</label></span>
-                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">个人对公司转账</label></span>
-                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">个人账户间转账</label></span>
-                                                        <span class="pl10 pr50"><input id="tradeType" name="tradeType" type="radio" value="11030015"><label class="ml5">其他账户间转账</label></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
                                                     <td align="left"><span class="emphasis emphasis_txtx01 pr5">*</span>转账金额</td>
                                                     <td>
                                                         <label class="input">
                                                             <%--<input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;" onblur="checkAmt()"/>--%>
                                                             <input type="text" maxlength="50" id="amt" name="amt" value="${amt}" style="width:256px;"/>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left">转入客户姓名：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            ${customerName}
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left">转入客户手机号：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                            ${mobilePhone}
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left">转入账户类型：</td>
+                                                    <td>
+                                                        <label class="input">
+                                                                <c:if test="${busiType==0}">主账户</c:if>
+                                                                <c:if test="${busiType==1}">借款账户</c:if>
+                                                                <c:if test="${busiType==2}">线下出借账户 </c:if>
+                                                                <c:if test="${busiType==3}">线上出借账户</c:if>
+                                                                <c:if test="${busiType==96}">应付账户</c:if>
+                                                                <c:if test="${busiType==99}">冻结账户</c:if>
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -145,7 +164,7 @@
 <script type="text/javascript" charset="utf-8">
 
     $("#passbtn").click(function () {
-        var cert_no=$("#cert_no").val();
+        var phone=$("#phone").val();
         var accType=$("#accType").val();
         var tradeType=$("#tradeType").val();
         var amt=$("#amt").val();
@@ -158,12 +177,12 @@
                     $.unblockUI();
                     if (data.code == '0000') {
                         jAlert("提交成功!", '信息提示',function (r) {
-                            window.location.href="${contextPath}/account/${type}/list";
+                            window.location.href="${contextPath}/funds/accountBusinessList/${custId}";
                         });
                     } else {
                         jAlert("提交失败，失败原因："+data.message, '消息提示',function (r) {
                             $.unblockUI();
-                            window.location.href="${contextPath}/account/${type}/list";
+                            window.location.href="${contextPath}/funds/accountBusinessList/${custId}";
                         });
                         return;
                     }
