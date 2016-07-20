@@ -3,6 +3,7 @@ package com.gqhmt.pay.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 import com.gqhmt.fss.architect.trade.entity.FssTransRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper;
@@ -25,7 +26,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.pay.service.TradeRecordService
@@ -188,7 +191,25 @@ public class TradeRecordService {
     	List<FssTradeRecordEntity> traderecorderlist=fssTradeRecordReadMapper.select(traderecorder);
     	return traderecorderlist;
     }
-    
+    /**
+     * 查询充值/提现记录
+     * @param map
+     * @return
+     */
+    public List<FssTradeRecordEntity> queryRechargeList(Map<String,String> map){
+        Map<String, String> map2=new HashMap<String, String>();
+        if(map!=null){
+            String startTime = map.get("startTime");
+            String endTime = map.get("endTime");
+            map2.put("applyNo", map.get("applyNo"));
+            map2.put("accNo", map.get("accNo"));
+            map2.put("resultState", map.get("resultState"));
+            map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+            map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+        }
+        List<FssTradeRecordEntity> traderecorderlist=fssTradeRecordReadMapper.getRecordList(map2);
+        return traderecorderlist;
+    }
     /**
      * 转账交易记录查询
      * @param transrecord
