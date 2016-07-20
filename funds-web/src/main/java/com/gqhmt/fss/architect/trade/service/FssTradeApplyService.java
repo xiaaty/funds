@@ -28,14 +28,17 @@ import com.gqhmt.util.ExportExcel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+import static com.gqhmt.core.util.XmlUtil.log;
 import static com.gqhmt.pay.core.configer.ConfigAbstract.getClassPath;
 
 /**
@@ -552,7 +555,7 @@ public class FssTradeApplyService {
 	 * time:2016年7月14日
 	 * function：TradeApply,tradeRecord导出excel
 	 */
-	public void exportTradeApplyList(List<FssTradeApplyBean> tradeApplyList) throws IOException {
+	public void exportTradeApplyList(HttpServletResponse response, List<FssTradeApplyBean> tradeApplyList) throws IOException {
 		List<Map> mapList = new ArrayList<Map>();
 
 		if(tradeApplyList.size()>0){
@@ -590,7 +593,57 @@ public class FssTradeApplyService {
 			}
 		}
 
-		JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "导出成功!");
+		//------------------------------
+		//step1. 保存一个临时excel到temp目录下
+		//------------------------------
+		//并且已经生成了一个File 指向这个临时的 excel，名叫exportFile
+		//-------------------------------
+		//step2. 弹出下载对话框
+		//-------------------------------
+		File exportFile = new File(fileName);
+
+		int index = fileName.lastIndexOf(File.separator);
+		String excelName = fileName.substring(index);
+
+		if(exportFile == null){
+			log.error("生成excel错误! exportFile 为空");
+			return;
+		}
+
+		//先建立一个文件读取流去读取这个临时excel文件
+		FileInputStream fs = null;
+		try {
+			fs = new FileInputStream(exportFile);
+		} catch (FileNotFoundException e) {
+			log.error("生成excel错误! " + exportFile + " 不存在!",e);
+			return;
+		}
+		// 设置响应头和保存文件名
+		//HttpServletResponse response = ServletActionContext.getResponse();
+		//这个一定要设定，告诉浏览器这次请求是一个下载的数据流
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		/*try {
+			excelName = URLEncoder.encode(excelName, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			log.error("转换excel名称编码错误!",e1);
+		}*/
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + excelName + "\"");
+		// 写出流信息
+		int b = 0;
+		try {
+			//从服务器下载到本地
+			PrintWriter out1 = response.getWriter();
+			while ((b = fs.read()) != -1) {
+				out1.write(b);
+			}
+			fs.close();
+			out1.close();
+			log.debug(excelName + " 文件下载完毕.");
+		} catch (Exception e) {
+			log.error(excelName + " 下载文件失败!.",e);
+		}
+
+	//	JOptionPane.showMessageDialog(null, "导出成功!");
 	}
 
 	//验证文件是否存在。

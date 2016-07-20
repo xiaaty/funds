@@ -71,4 +71,26 @@
 	order by t.create_time desc
 </select>
 
+
+<select id="getRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+	<include refid="selectSql"/>
+	<where>
+		<if test="applyNo!=null and applyNo!=''">
+			AND t.apply_no=#{applyNo}
+		</if>
+		<if test="accNo!=null and accNo!=''">
+			AND t.acc_no=#{accNo}
+		</if>
+		<if test="resultState!= null and resultState!=''">
+			AND t.trade_result=#{resultState}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+	</where>
+	order by t.create_time desc
+</select>
 </mapper>
