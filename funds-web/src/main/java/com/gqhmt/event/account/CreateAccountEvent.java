@@ -180,6 +180,7 @@ public class CreateAccountEvent {
            //判断是否为借款系统开户，如果是借款系统开户，则更新customerInfo中的bankId;
            if(orgcustId==null){
                customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+               customerInfoEntity.setHasAcount(1);
                customerInfoService.update(customerInfoEntity);
            }
        }
