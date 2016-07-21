@@ -137,7 +137,8 @@
                                             </table>
                                         </div>
                                         <footer>
-                                          <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button class="btn btn-primary" onclick="querySub();">查&nbsp;&nbsp;&nbsp;询</button>
+                                            <button id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();">导&nbsp;&nbsp;&nbsp;出</button>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -332,6 +333,16 @@
         }, "json");
         }
     });
+
+    function exportExcel(){
+        $("#withDrawForm").unbind('click');
+        $("#withDrawForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel");
+        $("#withDrawForm").sub();
+
+    }
+    function querySub(){
+        $("#withDrawForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}");
+    }
 
  </script>
 
