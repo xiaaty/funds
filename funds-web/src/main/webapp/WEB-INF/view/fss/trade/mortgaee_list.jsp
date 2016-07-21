@@ -329,7 +329,6 @@
     });
 
      function exportExcel(){
-         $("#mortForm").sub
          $("#exportExcelBtn").unbind('click');
          $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel");
          $("#mortForm").sub();
