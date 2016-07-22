@@ -551,7 +551,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 //        this.hasEnoughBanlance(entity,amount);
         checkwithholdingOrWithDraw(entity,2,businessType);
         this.cashWithSetReq(entity.getCustId(),selletType);
-        fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
+        fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_AGENT_WITHDRAW,busiId,GlobalConstants.BUSINESS_WITHHOLDING);
         //资金处理
         tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
         return fundOrderEntity;
