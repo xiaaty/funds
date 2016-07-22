@@ -42,10 +42,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * Filename:    com.gqhmt.controller.fss.trade.FssTradeApplyController
  * Copyright:   Copyright (c)2015
@@ -454,16 +452,26 @@ public class FssTradeApplyController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object exportExcel(HttpServletResponse response, HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus, RedirectAttributes attr) throws Exception {
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel/{no}",method = {RequestMethod.GET,RequestMethod.POST})
+	public void exportExcel(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus, RedirectAttributes attr,@PathVariable String no) throws Exception {
 		HttpSession httpSession = request.getSession();
 		map.put("applyType",type.toString());
 		map.put("busiType", bus);
-		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
 
-		fssTradeApplyService.exportTradeApplyList(response,tradeApplyList);
+		FssTradeApplyBean tradeapply=null;
+		List<FssTradeApplyBean> tradeApplyList = new ArrayList<FssTradeApplyBean>();
+		String[] applyNos = no.split(",");
+		int count=0;
+		for (int i = 0; i < applyNos.length; i++) {
+			tradeapply = fssTradeApplyService.getFssTradeApply(applyNos[i]);
+			tradeApplyList.add(tradeapply);
+		}
 
-		return new ModelAndView("redirect:"+request.getContextPath()+"/trade/tradeApply/"+type+"/"+bus, map);
+
+		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
+
+		//return new ModelAndView("redirect:"+request.getContextPath()+"/trade/tradeApply/"+type+"/"+bus, map);
 	}
 
 }

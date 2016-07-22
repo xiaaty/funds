@@ -138,7 +138,7 @@
                                         </div>
                                         <footer>
                                           <button class="btn btn-primary" onclick="querySub();">查&nbsp;&nbsp;&nbsp;询</button>
-                                            <button id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();">导&nbsp;&nbsp;&nbsp;出</button>
+                                            <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();" value="导&nbsp;&nbsp;&nbsp;出"/>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -335,9 +335,19 @@
     });
 
     function exportExcel(){
+        var no = $('#borrow-rep-table12 tbody :checkbox:checked');
+        if (no.size() == 0) {
+            alert("请选择件数！");
+            return false;
+        }
+        var param = [];
+        no.each(function () {
+            param.push($(this).val());
+        });
+        $("#checkAll").removeAttr("checked");
         $("#withDrawForm").unbind('click');
-        $("#withDrawForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel");
-        $("#withDrawForm").sub();
+        $("#withDrawForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel/"+param);
+        $("#withDrawForm").submit();
 
     }
     function querySub(){
