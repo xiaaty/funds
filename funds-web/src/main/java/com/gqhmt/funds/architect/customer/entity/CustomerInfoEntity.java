@@ -18,16 +18,16 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	//用户id
-	@Column(name = "user_id",updatable = false)
+	@Column(name = "user_id")
 	private Integer userId;
 	//客户姓名
-	@Column(name = "CUSTOMER_NAME",updatable = false)
+	@Column(name = "CUSTOMER_NAME")
 	private String customerName;
 	//客户类型 1：借款用户 2:借款共借人 3：线下出借用户 4：线上出借注册用户 9：A0公司内用用户
 	@Column(name = "CUSTOMER_TYPE",updatable = false)
 	private Integer customerType;
 	//移动电话
-	@Column(name = "MOBILE_PHONE",updatable = false)
+	@Column(name = "MOBILE_PHONE")
 	private String mobilePhone;
 	//国籍
 	@Column(name = "NATIONALITY",updatable = false)
@@ -36,7 +36,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	@Column(name = "CERT_TYPE",updatable = false)
 	private Integer certType;
 	//证件号码
-	@Column(name = "CERT_NO",updatable = false)
+	@Column(name = "CERT_NO")
 	private String certNo;
 	//发证机关所在地
 	@Column(name = "CERT_ADDRESS",updatable = false)
@@ -128,11 +128,11 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	private Integer isvalid;
 	
 	//是否签署第三方协议 0 没有 1 有
-	@Column(name = "has_third_agreement",updatable = false)
+	@Column(name = "has_third_agreement")
 	private Integer hasThirdAgreement;
 	
 	//是否已经创建账户
-	@Column(name = "has_acount",updatable = false)
+	@Column(name = "has_acount")
 	private Integer hasAcount;
 	
 	//创建时间

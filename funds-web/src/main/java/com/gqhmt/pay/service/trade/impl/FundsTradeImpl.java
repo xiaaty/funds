@@ -593,7 +593,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         }else if(businessType==96){//应付账户（出借）
             lendNo=contractNo;
         }
-        fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
+        fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_AGENT_WITHDRAW,busiId,GlobalConstants.BUSINESS_WITHHOLDING,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
         tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
         return fundOrderEntity;
