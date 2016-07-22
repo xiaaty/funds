@@ -11,6 +11,9 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.depos.bean.FssProjectInfoBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.pay.core.PayCommondConstants;
+import com.gqhmt.pay.core.configer.Config;
+import com.gqhmt.pay.core.factory.ConfigFactory;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.exception.FssException;
@@ -154,6 +157,9 @@ public class FssProjectInfoService {
 								  String custName,String certType,String certNo,String filePath,Integer custId,String busiNo,
 								  String contractNO,Long bidInterest) throws  FssException{
 		FssProjectInfoBean	fssProjectInfoBean=new FssProjectInfoBean();
+		Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+		String mchn = (String)config.getValue("public.mchnt_cd.value");
+		fssProjectInfoBean.setMchn(mchn);
 		fssProjectInfoBean.setTradeType(tradeType);
 		fssProjectInfoBean.setOrderNo(orderNo);
 		fssProjectInfoBean.setMchnNo(mchnNo);
@@ -191,7 +197,6 @@ public class FssProjectInfoService {
 		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		fssProjectInfoBean.setAccNo(fundAccountEntity.getUserName());
 		fssProjectInfoBean.setAccGoldNo(fundAccountEntity.getUserName());
-		fssProjectInfoBean.setMchn("0001000F0279762");
 		fssProjectInfoBean.setStatus("10110001");//10110001未报备，10110002已报备
 		fssProjectInfoBean.setCreateTime(new Date());
 		fssProjectInfoBean.setModifyTime(new Date());
