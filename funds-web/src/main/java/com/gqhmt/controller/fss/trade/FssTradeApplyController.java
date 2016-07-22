@@ -451,6 +451,7 @@ public class FssTradeApplyController {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel/{no}",method = {RequestMethod.GET,RequestMethod.POST})
 	public void exportExcel(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus, RedirectAttributes attr,@PathVariable String no) throws Exception {
 		HttpSession httpSession = request.getSession();
