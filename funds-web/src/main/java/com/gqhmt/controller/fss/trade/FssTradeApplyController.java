@@ -454,7 +454,7 @@ public class FssTradeApplyController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel/{no}",method = {RequestMethod.GET,RequestMethod.POST})
-	public void exportExcel(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus, RedirectAttributes attr,@PathVariable String no) throws Exception {
+	public @ResponseBody void exportExcel(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus, RedirectAttributes attr, @PathVariable String no) throws Exception {
 		HttpSession httpSession = request.getSession();
 		map.put("applyType",type.toString());
 		map.put("busiType", bus);
@@ -467,7 +467,6 @@ public class FssTradeApplyController {
 			tradeapply = fssTradeApplyService.getFssTradeApply(applyNos[i]);
 			tradeApplyList.add(tradeapply);
 		}
-
 
 		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
 
