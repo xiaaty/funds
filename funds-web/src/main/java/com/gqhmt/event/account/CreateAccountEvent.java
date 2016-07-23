@@ -173,18 +173,19 @@ public class CreateAccountEvent {
         //旧版银行卡信息生成
         //创建银行卡信息
 //       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
-        if(isOldAccount) {
-            BankCardInfoEntity bankCardInfoEntity = bankCardInfoService.getBankCardByCustNo(custId);
-            if (bankCardInfoEntity == null) {
-                bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
-            }
-            fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
-            //判断是否为借款系统开户，如果是借款系统开户，则更新customerInfo中的bankId;
-            if(orgcustId==null){
-                customerInfoEntity.setBankId(bankCardInfoEntity.getId());
-                customerInfoService.update(customerInfoEntity);
-            }
-        }
+       if(isOldAccount) {
+           BankCardInfoEntity bankCardInfoEntity = bankCardInfoService.getBankCardByCustNo(custId);
+           if (bankCardInfoEntity == null) {
+               bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+           }
+           fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
+           //判断是否为借款系统开户，如果是借款系统开户，则更新customerInfo中的bankId;
+           if(orgcustId==null){
+               customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+               customerInfoEntity.setHasAcount(1);
+               customerInfoService.update(customerInfoEntity);
+           }
+       }
         //新版银行卡信息生成  增加判断，是否存在
         FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
         if(fssCustBankCardEntity==null){
