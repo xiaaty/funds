@@ -189,8 +189,24 @@
                                                     <%-- <td><a href="${contextPath}/fss/loan/trade/borrowerwithdraw/${t.id}">借款人提现</a></td> --%>
                                                 	<td>
                                                         <c:if test="${t.status=='10050009'&&t.withDrawStatus!='1'}">
-                                                        <a href="${contextPath}/loan/trade/${type}/toWithDraw/${t.id}">抵押权人提现</a></td>
-                                                    </c:if>
+                                                            <a href="${contextPath}/loan/trade/${type}/toWithDraw/${t.id}">抵押权人提现</a>
+                                                        </c:if>
+
+                                                        <%--查看借款跑批--%>
+                                                        <c:choose>
+                                                            <c:when test="${t.orderNo!=null && t.orderNo!=''}">
+                                                                <a href="${contextPath}/trade/tradeRepay/ftpField/${t.orderNo}">
+                                                                    查看借款跑批
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a href="" title="订单号是空值">
+                                                                    查看借款跑批
+                                                                </a>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

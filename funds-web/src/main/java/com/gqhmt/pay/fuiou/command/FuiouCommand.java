@@ -52,6 +52,7 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
                 response.setMsg("余额不足");
             }else{
                 response.setCode("0000");
+                response.setThirdReturnCode("0000");
                 response.setMsg("成功");
             }
 

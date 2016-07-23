@@ -22,6 +22,11 @@
             <artifactId>funds-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.gqhmt.funds</groupId>
+            <artifactId>funds-common</artifactId>
+            <version>1.0.8-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

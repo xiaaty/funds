@@ -202,13 +202,15 @@
                                         <col width="50" />
                                         <col width="150" />
                                         <col width="100" />
-                                        <col width="100" />
-                                        <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
+                                        <col width="200"/>
+                                        <col width="200"/>
+                                        <col width="200"/>
+                                        <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
@@ -225,10 +227,8 @@
                                         <thead>
                                         <tr>
                                             <td>序号</td>
-                                            <td>原账户id</td>
                                             <td>原用户名</td>
                                             <td>原中文名称</td>
-                                            <td>目标账户id</td>
                                             <td>目标用户名</td>
                                             <td>目标中文名称</td>
                                             <td>结果状态</td>
@@ -240,28 +240,27 @@
                                             <td>文件序号</td>
                                             <td>order表id</td>
                                             <td>交易流水号</td>
-                                            <td>状态</td>
                                             <td>返回结果</td>
                                             <td>返回消息</td>
                                             <td>业务代码</td>
                                             <td>创建日期</td>
+                                            <td>业务流水号(提供给富有)</td>
                                             <td>备份</td>
                                             <td>投标id</td>
+                                            <td>投标人/回款人id</td>
+                                            <td>出借编号，线上客户</td>
+                                            <td>借款人id</td>
+                                            <td>借款合同编号</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t"  varStatus="l">
                                             <tr>
                                                 <td>${l.index+1}</td>
-                                                <td>${t.fromAccountId}</td>
                                                 <td>${t.fromUserName}</td>
                                                 <td>${t.fromCnUserName}</td>
-                                                <td>${t.toAccountId}</td>
                                                 <td>${t.toUserName}</td>
                                                 <td>${t.toCnUserName}</td>
-                                                <td>${t.amt}</td>
-                                                <td>${t.rem}</td>
-                                                <td>${t.contractNo}</td>
                                                 <td>
                                                     <c:if test="${t.state == '1'}">新增</c:if>
                                                     <c:if test="${t.state == '2'}">提交中</c:if>
@@ -269,10 +268,9 @@
                                                     <c:if test="${t.state == '4'}">结果已处理</c:if>
                                                     <c:if test="${t.state == '5'}">结果返回</c:if>
                                                 </td>
-                                                <td>${t.fileId}</td>
-                                                <td>${t.seqNo}</td>
-                                                <td>${t.orderId}</td>
-                                                <td>${t.orderNo}</td>
+                                                <td>${t.amt}</td>
+                                                <td>${t.rem}</td>
+                                                <td>${t.contractNo}</td>
                                                 <td>
                                                     <c:if test="${t.type == '1'}">批量开户</c:if>
                                                     <c:if test="${t.type == '2'}">批量扣款</c:if>
@@ -284,13 +282,30 @@
                                                     <c:if test="${t.type == '8'}">批量冻结</c:if>
                                                     <c:if test="${t.type == '9'}">批量解冻</c:if>
                                                 </td>
-                                                <td>${t.returnCode}</td>
-                                                <td>${t.returnMsg}</td>
+                                                <td>${t.fileId}</td>
+                                                <td>${t.seqNo}</td>
+                                                <td>${t.orderId}</td>
+                                                <td>${t.orderNo}</td>
+                                                <td>
+                                                    <c:if test="${t.returnCode == '0000'}">
+                                                        成功
+                                                    </c:if>
+                                                    <c:if test="${t.returnCode != '0000'}">
+                                                        失败
+                                                    </c:if>
+                                                </td>
+                                                <td>
+                                                    ${t.returnMsg}
+                                                </td>
                                                 <td>${t.businessCode}</td>
-                                                <td>${t.inputDate}</td>
+                                                <td><fmt:formatDate value="${t.inputDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                 <td>${t.feildOrderNo}</td>
                                                 <td>${t.feildOrderNoHis}</td>
                                                 <td>${t.tenderId}</td>
+                                                <td>${t.lendCustId}</td>
+                                                <td>${t.lendNo}</td>
+                                                <td>${t.loanCustId}</td>
+                                                <td>${t.loanNo}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>

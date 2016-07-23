@@ -362,9 +362,10 @@ public class CostImpl  implements ICost{
                 fundType=4015;
                 actionType=3;
             }
-            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType);
+            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,lendNo==null?null:String.valueOf(lendNo),toEntity.getCustId(),null,Long.valueOf(cust_id),loanNo==null?null:String.valueOf(loanNo));
             //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,fundOrderEntity.getOrderNo(),"10080002");
         }catch (Exception e){
+            throw new FssException("费用收取失败");
             //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
         }
         //添加交易记录

@@ -141,7 +141,8 @@
                                             </table>
                                         </div>
                                         <footer>
-                                          <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button class="btn btn-primary" onclick="querySub();">查&nbsp;&nbsp;&nbsp;询</button>
+                                            <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();" value="导&nbsp;&nbsp;&nbsp;出"/>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -255,6 +256,7 @@
     </div>
     </div>
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<script src="${contextPath}/js/jquery.form.js" ></script>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
@@ -325,6 +327,27 @@
             }, "json");
         }
     });
+
+     function exportExcel(){
+         var no = $('#borrow-rep-table12 tbody :checkbox:checked');
+         if (no.size() == 0) {
+             alert("请选择件数！");
+             return false;
+         }
+         var param = [];
+         no.each(function () {
+             param.push($(this).val());
+         });
+
+         $("#exportExcelBtn").unbind('click');
+         $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel/"+param);
+         $("#mortForm").submit();
+         // $("#mortForm table").find("tr:first").append("<td><input type=\"hidden\" name=\"buttonType\" value=\"exportExcel\" /></td>")
+
+     }
+     function querySub(){
+         $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}");
+    }
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

@@ -24,7 +24,7 @@
 		  t.`modify_time` modifyTime,
 		  t.`mchn` mchn,
 		  t.`seq_no` seqNo
-		FROM `t_gq_fss_bond_transfer` t
+		FROM `t_gq_fss_debt_transfer` t
 	</sql>
 	<select id="queryBondTransferList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity">
 			<include refid="selectSql"/>

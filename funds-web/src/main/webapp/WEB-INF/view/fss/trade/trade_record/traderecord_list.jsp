@@ -187,7 +187,7 @@
                         </header>
                         <!-- widget div-->
                         <div>
-                            <form class="smart-form">
+                            <form class="smart-form" id="mortForm">
                                 <!-- widget edit box -->
                                 <div class="jarviswidget-editbox">
                                 </div>

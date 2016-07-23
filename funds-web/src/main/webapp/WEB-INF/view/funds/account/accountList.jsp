@@ -133,7 +133,8 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1350px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
+                                        <col width="100" />
                                     	<col width="200" />
                                     	<col width="100" />
                                     	<col width="150" />
@@ -141,11 +142,11 @@
                                     	<col width="100" />
                                     	<col width="150" />
                                     	<col width="150" />
-                                    	<col width="100" />
                                     	<col width="150" />
-                                    	<col width="100" />
+                                    	<col width="150" />
+                                    	<col width="200" />
                                         <thead>
-                                        <tr>
+                                        <tr>  <td>客户编号</td>
                                               <td>客户姓名</td>
                                               <td>手机号码</td>
                                               <td>账户编号</td>
@@ -160,7 +161,8 @@
                                         </thead>
                                         <tbody>
                                              <c:forEach items="${page.list}" var="acc">
-                                                <tr >
+                                                <tr>
+                                                    <td>${acc.custId}</td>
                                                     <td>${acc.customerName}</td>
                                                     <td>${acc.mobilePhone}</td>
                                                     <td>${acc.accountNo}</td>
@@ -175,6 +177,9 @@
                                                     <td>${acc.hasThirdAccount==2?"已创建":"未创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
+                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/4/${accMap.custId}">转账转入</a>
+                                                        &nbsp;
+                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/5/${accMap.custId}">转账转出</a>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>--%>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a> --%>
                                                 <%--<a href="${contextPath}/funds/account/accountWater/${acc.id}">查看流水</a> --%>

@@ -58,7 +58,7 @@ public class AccountInfo extends SupperJob {
             return;
         }*/
 
-        //   if(isRunning) return;
+        if(isRunning) return;
 
         startLog("金账户对账文件ftp批量处理 下载及导入文件");
 
@@ -145,20 +145,29 @@ public class AccountInfo extends SupperJob {
 
     @Scheduled(cron="0 15 20 ? * MON-FRI")
     public void inspect() throws FssException {
-        Map<String,String> map = new HashMap<String,String>();
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dateStr = sdf.format(date);
-        map.put("tradingTime",dateStr);
-        // 检测今天的抓取情况 如果有抓取失败的文件， 则重新抓取
-        List<FuiouAccountInfoEntity> accountInfoFailList = fuiouAccountInfoService.queryAccountFailInfoList(map);
-        if (accountInfoFailList.size()<0){
-            return;
+        if(isRunning) return;
+        isRunning = true;
+        try{
+            Map<String,String> map = new HashMap<String,String>();
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateStr = sdf.format(date);
+            map.put("tradingTime",dateStr);
+            // 检测今天的抓取情况 如果有抓取失败的文件， 则重新抓取
+            List<FuiouAccountInfoEntity> accountInfoFailList = fuiouAccountInfoService.queryAccountFailInfoList(map);
+            if (accountInfoFailList.size()<0){
+                return;
+            }
+
+            for(FuiouAccountInfoEntity accountInfoFail:accountInfoFailList){
+                ftpDownloadFileService.downloadFuiouAccount(accountInfoFail);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            isRunning = false;
         }
 
-        for(FuiouAccountInfoEntity accountInfoFail:accountInfoFailList){
-            ftpDownloadFileService.downloadFuiouAccount(accountInfoFail);
-        }
     }
 
     @Override

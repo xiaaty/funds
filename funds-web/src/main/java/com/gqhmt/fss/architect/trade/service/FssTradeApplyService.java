@@ -24,12 +24,24 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.DateUtil;
+import com.gqhmt.util.ExportExcel;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
+
+import static com.gqhmt.core.util.XmlUtil.log;
+import static com.gqhmt.pay.core.configer.ConfigAbstract.getClassPath;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -49,19 +61,19 @@ import java.util.*;
  */
 @Service
 public class FssTradeApplyService {
-	
+
 	@Resource
     private FssTradeApplyWriteMapper fssTradeApplyWriteMapper;
-	
+
 	@Resource
 	private FssTradeApplyReadMapper fssTradeApplyReadMapper;
-	
+
 	@Resource
 	private FundAccountService fundAccountService;
-	
+
 	@Resource
 	private FssRepaymentService fssRepaymentService;
-	
+
 	@Resource
 	private FssAccountService fssAccountService;
 	@Resource
@@ -77,8 +89,6 @@ public class FssTradeApplyService {
 	@Resource
     private TradeRecordService tradeRecordService;
 
-	
-	
 	/**
 	 * 借款人提现完成通知借款系统
 	 * @param seqNo
@@ -107,9 +117,9 @@ public class FssTradeApplyService {
 		this.whithdrawApply(fssAccountEntity.getCustNo(),fssAccountEntity.getAccNo(),tradeType,amt,mchn,seqNo,fssAccountEntity.getCustId(),1,contractNo,contractId,null,this.compare_date(bespoke_date));
 	}
 
-	
+
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月11日
 	 * function：借款人提现
@@ -117,7 +127,7 @@ public class FssTradeApplyService {
 	public List<FssTradeApplyEntity> getBorrowWithDraw(Map map) {
 		return fssTradeApplyReadMapper.getBorrowWithDraw(map);
 	}
-	
+
 	/**
 	 * 完成抵押标借款人提现后，通知借款系统
 	 */
@@ -154,7 +164,7 @@ public class FssTradeApplyService {
 		return withDrawApplyResponse;
 	}
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：判断申请编号是否唯一
@@ -214,7 +224,7 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月18日
 	 * function：根据交易状态的交易申请列表
@@ -242,7 +252,7 @@ public class FssTradeApplyService {
 	 * 修改执行条数
 	 * @param fssTradeRecordEntity
 	 * 根据申请编号修改执行条数,实际交易金额，修改日期
-	 * @throws FssException 
+	 * @throws FssException
      */
 	public void updateExecuteCount(FssTradeRecordEntity fssTradeRecordEntity) throws FssException{
 			fssTradeRecordEntity.setModifyTime(new Date());
@@ -251,12 +261,12 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：判断 应执行数量 == 已执行数量,如果相等,执行状态 修改
-	 * @throws FssException 
-	 * 
+	 * @throws FssException
+	 *
 	 */
 	public void checkExecuteCount(String applyNo) {
 		FssTradeApplyEntity applyEntity = fssTradeApplyReadMapper.selectByApplyNo(applyNo);
@@ -325,7 +335,7 @@ public class FssTradeApplyService {
 	}
 
 	/**
-	 * 
+	 *
 	 * author:jhz
 	 * time:2016年3月19日
 	 * function：修改交易申请
@@ -382,7 +392,7 @@ public class FssTradeApplyService {
 		List<FssTradeApplyBean> tradeapplylist=fssTradeApplyReadMapper.queryFssTradeApplyList(map2);
 		return tradeapplylist;
 	}
-	
+
 
 
 
@@ -419,7 +429,7 @@ public class FssTradeApplyService {
 		}
 	}
 
-	
+
 
 	/**
 	 * 创建FssTradeApplyEntity
@@ -496,12 +506,12 @@ public class FssTradeApplyService {
 		FssTradeApplyEntity tradeapply=fssTradeApplyReadMapper.selectFssTradeApplyEntityByApplyNo(applyNo);
 		return tradeapply;
 	}
-	
+
 	public FssTradeApplyBean getFssTradeApply(String applyNo){
 		FssTradeApplyBean fssTradeApplyBean=fssTradeApplyReadMapper.queryFssTradeApply(applyNo);
 		return fssTradeApplyBean;
 	}
-	
+
 	 /**
      * 判断预约到账日期是否为今天
      */
@@ -520,7 +530,7 @@ public class FssTradeApplyService {
     		return 1;
     	}
     }
-    
+
     /**
 	 * author:柯禹来
 	 * time:2016年4月25日
@@ -540,4 +550,143 @@ public class FssTradeApplyService {
 		return  fssTradeApplyReadMapper.selectByPrimaryKey(id);
 	};
 
+	/**
+	 * author:xdw
+	 * time:2016年7月14日
+	 * function：TradeApply,tradeRecord导出excel
+	 */
+	public void exportTradeApplyList(List<FssTradeApplyBean> tradeApplyList) throws IOException {
+
+		List<Map> mapList = new ArrayList<Map>();
+
+		if(tradeApplyList.size()>0){
+			for(FssTradeApplyBean tradeApply:tradeApplyList){
+				Map<String, Object> mapObject = new HashMap<String, Object>();
+				List<FssTradeRecordEntity> tradeRecordList = fssTradeRecordService.queryFssTradeRecordList(tradeApply.getApplyNo(), null);
+				mapObject.put("tradeApply", tradeApply);
+				mapObject.put("tradeRecordList", tradeRecordList);
+				mapList.add(mapObject);
+			}
+		}
+
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String path = getClassPath();
+		File filepath = new File(path + File.separator +"excel");
+		String address = filepath + File.separator + sdf.format(new Date()) + ".xls";
+
+		String fileName = checkFileName(address, 0);
+
+		OutputStream out = new FileOutputStream(fileName);
+		System.out.println("导出路径： " + fileName);
+		String[] headers =
+				{"业务编号", "申请单号", "客户姓名", "客户电话", "交易金额", "单次交易金额", "创建时间"};
+		ExportExcel<Map> ex = new ExportExcel<Map>();
+		try {
+			ex.exportExcel("tradeApply", headers, mapList, out);
+		} catch (IllegalAccessException i) {
+			i.printStackTrace();
+		} catch (IOException io) {
+			io.printStackTrace();
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
+
+		//------------------------------
+		//step1. 保存一个临时excel到temp目录下
+		//------------------------------
+		//并且已经生成了一个File 指向这个临时的 excel，名叫exportFile
+		//-------------------------------
+		//step2. 弹出下载对话框
+		//-------------------------------
+		File exportFile = new File(fileName);
+
+		int index = fileName.lastIndexOf(File.separator);
+		String excelName = fileName.substring(index);
+
+		if(exportFile == null){
+			log.error("生成excel错误! exportFile 为空");
+			return;
+		}
+
+		//先建立一个文件读取流去读取这个临时excel文件
+		FileInputStream fs = null;
+		try {
+			fs = new FileInputStream(exportFile);
+		} catch (FileNotFoundException e) {
+			log.error("生成excel错误! " + exportFile + " 不存在!",e);
+			return;
+		}
+		// 设置响应头和保存文件名
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+		//这个一定要设定，告诉浏览器这次请求是一个下载的数据流
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		/*try {
+			excelName = URLEncoder.encode(excelName, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			log.error("转换excel名称编码错误!",e1);
+		}*/
+
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + excelName + "\"");
+		// 写出流信息
+		int b = 0;
+		try {
+			//从服务器下载到本地
+			PrintWriter out1 = response.getWriter();
+			while ((b = fs.read()) != -1) {
+				out1.write(b);
+			}
+			if(fs!=null){
+				fs.close();
+			}
+			if(out1!=null){
+				out1.close();
+			}
+			log.debug(excelName + " 文件下载完毕.");
+		} catch (Exception e) {
+			log.error(excelName + " 下载文件失败!.",e);
+		}
+
+	//	JOptionPane.showMessageDialog(null, "导出成功!");
+	}
+
+	//验证文件是否存在。
+	public String checkFileName(String fileName, int i) {
+		//验证文件是否存在
+		String addressFileName;
+
+		int index = fileName.lastIndexOf(".");
+		int index2 = fileName.lastIndexOf(File.separator);
+		String fileEnd = fileName.substring(index);
+		String fileStart = fileName.substring(0, index);
+
+		String fileFolder = fileStart.substring(0, index2);
+		// 验证文件夹是否存在
+		File folder = new File(fileFolder);
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+		String newFileName;
+		if (i != 0) {
+			newFileName = fileStart + "(" + i + ")" + fileEnd;
+		} else {
+			newFileName = fileName;
+		}
+		i++;
+		File file = new File(newFileName);
+
+		if (!file.exists()) {
+			addressFileName = newFileName;
+		} else {
+			addressFileName = checkFileName(fileName, i);
+		}
+
+		return addressFileName;
+	}
+
+
 }
+
+

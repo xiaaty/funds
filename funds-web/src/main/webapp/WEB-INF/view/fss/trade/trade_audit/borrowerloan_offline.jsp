@@ -253,6 +253,20 @@
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
+
+                                                        <%--查看借款跑批--%>
+                                                        <c:choose>
+                                                            <c:when test="${t.orderNo!=null && t.orderNo!=''}">
+                                                                <a href="${contextPath}/trade/tradeRepay/ftpField/${t.orderNo}">
+                                                                    查看借款跑批
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a href="" title="订单号是空值">
+                                                                    查看借款跑批
+                                                                </a>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                 </tr>
                                         </c:forEach>
