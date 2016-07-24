@@ -1,5 +1,7 @@
 package com.gqhmt.core.util;
 
+import org.apache.commons.lang3.*;
+
 import java.util.Date;
 
 /**
@@ -53,8 +55,8 @@ public class CommonUtil {
         return commonUtil.getRandom(length);
     }
 
-    public static String getItemNo(){
-        return commonUtil.executeItemNo();
+    public static String getItemNo(String contractNo){
+        return commonUtil.executeItemNo(contractNo);
     }
 
     public  String  executeAcconutNo(String tradeType){
@@ -129,8 +131,13 @@ public class CommonUtil {
 
         return year+month+dateString;
     }
-    public String executeItemNo(){
-        return  (System.currentTimeMillis()+"").substring(3);
+    public String executeItemNo(String contractNo){
+        if(org.apache.commons.lang3.StringUtils.isBlank(contractNo)){
+            return "";
+        }
+        String itemNo = Encriptor.getMD5(contractNo);
+        itemNo = itemNo.substring(0, 5)+itemNo.substring(itemNo.length()-5, itemNo.length());
+        return itemNo;
     }
 
 
