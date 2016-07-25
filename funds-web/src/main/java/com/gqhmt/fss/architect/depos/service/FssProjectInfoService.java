@@ -159,6 +159,8 @@ public class FssProjectInfoService {
 		FssProjectInfoBean	fssProjectInfoBean=new FssProjectInfoBean();
 		Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
 		String mchn = (String)config.getValue("public.mchnt_cd.value");
+		String loanTimes= (String)config.getValue("sftp.loanTime.value");
+		String payChannels= (String)config.getValue("sftp.payChannel.value");
 		fssProjectInfoBean.setMchn(mchn);
 		fssProjectInfoBean.setTradeType(tradeType);
 		fssProjectInfoBean.setOrderNo(orderNo);
@@ -171,7 +173,7 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setExpectedReturn(expectedReturn);
 		fssProjectInfoBean.setProductName(productName);
 		fssProjectInfoBean.setRepaymentType(repaymentType);
-		fssProjectInfoBean.setLoanTime(loanTime);
+		fssProjectInfoBean.setLoanTime(loanTimes);
 		fssProjectInfoBean.setStartDate(startDate);
 		fssProjectInfoBean.setEachBidAmount(eachBidAmount);
 		fssProjectInfoBean.setMinNum(minNum);
@@ -181,7 +183,7 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setTradeStatus(tradeStatus);
 		fssProjectInfoBean.setPeriod(period);
 		fssProjectInfoBean.setPrepareAmount(prepareAmount);
-		fssProjectInfoBean.setPayChannel(payChannel);
+		fssProjectInfoBean.setPayChannel(payChannels);
 		fssProjectInfoBean.setBidYearIrr(bidYearIrr);
 		fssProjectInfoBean.setBorrowType(borrowType);
 		fssProjectInfoBean.setLicenseNo(licenseNo);
@@ -193,7 +195,7 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setBusiNo(busiNo);
 		fssProjectInfoBean.setContractNo(contractNO);
 		fssProjectInfoBean.setBidInterest(bidInterest);
-		fssProjectInfoBean.setItemNo(this.getItemNo());
+		fssProjectInfoBean.setItemNo(this.getItemNo(contractNO));
 		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		fssProjectInfoBean.setAccNo(fundAccountEntity.getUserName());
 		fssProjectInfoBean.setAccGoldNo(fundAccountEntity.getUserName());
@@ -208,11 +210,11 @@ public class FssProjectInfoService {
 	 * 得到项目编号
 	 * @return
      */
-	public String getItemNo(){
-		String itemNo=CommonUtil.getItemNo();
+	public String getItemNo(String contractNo){
+		String itemNo=CommonUtil.getItemNo(contractNo);
 		int count=this.getCountByItemNo(itemNo);
 		if(count>0){
-			this.getItemNo();
+			this.getItemNo(contractNo);
 		}
 		return itemNo;
 	}
