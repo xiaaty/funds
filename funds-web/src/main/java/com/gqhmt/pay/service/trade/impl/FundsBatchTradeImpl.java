@@ -65,7 +65,12 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
             LogUtil.error(this.getClass(),e.getMessage());
             this.fssTradeRecordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
             throw e;
+        }catch (Exception e){
+            LogUtil.error(this.getClass(),e.getMessage());
+            this.fssTradeRecordService.updateTradeRecordExecuteState(entity,2,e.getMessage());//todo 增加失败原因ss
+            throw e;
         }
+
     }
 
     /**
