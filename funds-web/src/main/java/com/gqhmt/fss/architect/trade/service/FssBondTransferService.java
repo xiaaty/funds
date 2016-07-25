@@ -110,7 +110,7 @@ public class FssBondTransferService {
      */
 	public void updateBandTransfer(FssBondTransferEntity bondEntity,BigDecimal amt,String orderNo,String tradeState,String respCode) throws FssException{
 		bondEntity.setAmount(amt);
-		bondEntity.setOrderNo(orderNo);
+		bondEntity.setOrderNo(orderNo!=null?orderNo:null);
 		bondEntity.setTradeState(tradeState);
 		bondEntity.setModifyTime(new Date());
 		bondEntity.setRespCode(respCode);

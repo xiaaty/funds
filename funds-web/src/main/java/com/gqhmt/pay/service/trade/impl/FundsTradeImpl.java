@@ -376,9 +376,8 @@ public class FundsTradeImpl  implements IFundsTrade {
             tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,busi_no,Long.valueOf(o_cust_no),o_tender_no,Long.valueOf(cust_no),busi_bid_no);
             fssBondTransferService.updateBandTransfer(bondEntity,amt,fundOrderEntity.getOrderNo(),"10080002","0000");
         }catch (Exception e){
-//            tradeState="10080010";
-            fssBondTransferService.updateBandTransfer(bondEntity,amt,fundOrderEntity.getOrderNo(),"10080010",e.getMessage());
-            throw new FssException(e.getMessage());
+              fssBondTransferService.updateBandTransfer(bondEntity,amt,null,"10080010",e.getMessage());
+//            throw new FssException(e.getMessage());
         }
         //添加交易记录
 //        fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),fundType, "",BigDecimal.ZERO);
