@@ -375,6 +375,7 @@ public class PaySuperByFuiou {
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_OFFLINE_RECHARGE_REFUND, fundOrderEntity, entity, amount,"充值 "+amount.toPlainString()+"元");
         execExction(response,fundOrderEntity);
         response.setFundOrderEntity(fundOrderEntity);
+        this.updateOrder(fundOrderEntity,1,response.getThirdReturnCode(),response.getMsg());
         return response;
     }
 }
