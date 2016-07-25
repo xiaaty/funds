@@ -256,9 +256,14 @@ public class FundsTradeImpl  implements IFundsTrade {
         }else if(businessType==96){//应付账户（出借）
             lendNo=contractNo;
         }
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
+        FundOrderEntity fundOrderEntity =null;
+        try{
+         fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
         tradeRecordService.recharge(entity,amount,fundOrderEntity,1002);
+        }catch (Exception e){
+            throw new FssException(e.getMessage());
+        }
         return  fundOrderEntity;
     }
 
