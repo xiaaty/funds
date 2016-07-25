@@ -74,7 +74,8 @@ public class FssBondTransferEntity implements Serializable {
 	private String orderNo;
 	@Column(name = "to_acc_type")
 	private String toAccType;
-
+	@Column(name = "resp_code")
+	private String respCode;
 	public Long getId() {
 		return id;
 	}
@@ -273,5 +274,13 @@ public class FssBondTransferEntity implements Serializable {
 
 	public void setToAccType(String toAccType) {
 		this.toAccType = toAccType;
+	}
+
+	public String getRespCode() {
+		return respCode;
+	}
+
+	public void setRespCode(String respCode) {
+		this.respCode = respCode;
 	}
 }
