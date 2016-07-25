@@ -257,13 +257,11 @@ public class FundsTradeImpl  implements IFundsTrade {
             lendNo=contractNo;
         }
         FundOrderEntity fundOrderEntity =null;
-        try{
+
          fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
         tradeRecordService.recharge(entity,amount,fundOrderEntity,1002);
-        }catch (Exception e){
-            throw new FssException(e.getMessage());
-        }
+        
         return  fundOrderEntity;
     }
 
