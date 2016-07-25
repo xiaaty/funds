@@ -1,19 +1,20 @@
 package com.gqhmt.fss.architect.depos.service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import javax.annotation.Resource;
 
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.depos.bean.FssProjectInfoBean;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.exception.FssException;
@@ -173,8 +174,25 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setExpectedReturn(expectedReturn);
 		fssProjectInfoBean.setProductName(productName);
 		fssProjectInfoBean.setRepaymentType(repaymentType);
-		fssProjectInfoBean.setLoanTime(loanTimes);
 		fssProjectInfoBean.setStartDate(startDate);
+
+		if (startDate == null  || startDate.equals("")) {
+			throw  new FssException("投标起始日期为空");
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Date date = null;
+		try {
+			date = sdf.parse(startDate);
+		} catch (ParseException e) {
+			LogUtil.debug(e.getClass(),e.getMessage());
+		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		int inputDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
+		cal.set(Calendar.DAY_OF_YEAR , inputDayOfYear+Integer.parseInt(loanTimes));
+		String pioDate = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
+		fssProjectInfoBean.setLoanTime(pioDate);
+
 		fssProjectInfoBean.setEachBidAmount(eachBidAmount);
 		fssProjectInfoBean.setMinNum(minNum);
 		fssProjectInfoBean.setMaxAmount(maxAmount);
