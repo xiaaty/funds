@@ -108,11 +108,12 @@ public class FssBondTransferService {
 	 * @param tradeState
 	 * @throws FssException
      */
-	public void updateBandTransfer(FssBondTransferEntity bondEntity,BigDecimal amt,String orderNo,String tradeState) throws FssException{
+	public void updateBandTransfer(FssBondTransferEntity bondEntity,BigDecimal amt,String orderNo,String tradeState,String respCode) throws FssException{
 		bondEntity.setAmount(amt);
 		bondEntity.setOrderNo(orderNo);
 		bondEntity.setTradeState(tradeState);
 		bondEntity.setModifyTime(new Date());
+		bondEntity.setRespCode(respCode);
 		try {
 			fssBondTransferWriteMapper.updateByPrimaryKey(bondEntity);
 		}catch (Exception e){
