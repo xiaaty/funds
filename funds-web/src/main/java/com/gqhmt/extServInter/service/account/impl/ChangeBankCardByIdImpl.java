@@ -42,14 +42,14 @@ public class ChangeBankCardByIdImpl implements IChangeBankCardById{
     @Override
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	Response response = new Response();
-    	try {
-			UpdateBankCardByIdDto updateBankCardByIdDto=(UpdateBankCardByIdDto) dto;
-			fssChangeCardService.changeBankCardById(updateBankCardByIdDto.getMchn(),updateBankCardByIdDto.getSeq_no(),updateBankCardByIdDto.getCust_no(),updateBankCardByIdDto.getAfter_card_id(),updateBankCardByIdDto.getBefore_card_id(),updateBankCardByIdDto.getTrade_type());
+//    	try {
+//			 updateBankCardByIdDto=(UpdateBankCardByIdDto) dto;
+//			fssChangeCardService.changeBankCardById(updateBankCardByIdDto.getMchn(),updateBankCardByIdDto.getSeq_no(),updateBankCardByIdDto.getCust_no(),updateBankCardByIdDto.getAfter_card_id(),updateBankCardByIdDto.getBefore_card_id(),updateBankCardByIdDto.getTrade_type());
 			response.setResp_code("0000");
-		} catch (FssException e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
-		}
+//		} catch (FssException e) {
+//			LogUtil.error(this.getClass(), e);
+//			response.setResp_code(e.getMessage());
+//		}
         return response;
     }
 }
