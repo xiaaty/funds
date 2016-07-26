@@ -1,6 +1,8 @@
 package com.gqhmt.fss.architect.trade.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gqhmt.core.json.BigDecimalSerialize;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -187,6 +189,7 @@ public class FssOfflineRechargeEntity implements Serializable {
 		this.orderNo = orderNo;
 	}
 
+	@JsonSerialize(using = BigDecimalSerialize.class)
 	public BigDecimal getAmt() {
 		return amt;
 	}

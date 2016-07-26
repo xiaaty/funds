@@ -81,7 +81,7 @@
 		t.`chg_dt` chgDt,
 		t.`amt` amt,
 		t.`result_state`
-		END payState
+
 		FROM `t_gq_fss_offline_recharge` t
 		WHERE t.`cust_id`=#{custId}
 		AND t.`cust_type`=#{custType}
