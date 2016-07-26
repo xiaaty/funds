@@ -3,8 +3,6 @@ package com.gqhmt.controller.api.account;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
-import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
-import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.context.ApplicationContext;
@@ -42,10 +40,7 @@ public class FssAccountApi {
     
     @Resource
     private ICreateAccount createAccountImpl;
-    
-    @Resource
-    private IChangeBankCardAccount changeBankCardAccountImpl;
-    
+
     @Resource
     private IFundsAccount fundsAccountImpl;
     
@@ -90,22 +85,7 @@ public class FssAccountApi {
         return response;
     }
     
-    /**
-     * 
-     * author:jhz
-     * time:2016年2月22日
-     * function：变更银行卡
-     */
-    @RequestMapping(value = "/changeBankCard",method = {RequestMethod.GET,RequestMethod.POST})
-    public Object changeBankCard(UpdateBankCardDto changeBankCardDto){
-    	Response response= null;
-    	try {
-    		response = changeBankCardAccountImpl.execute(changeBankCardDto);
-    	} catch (Exception e) {
-            response = this.execute(e);
-    	}
-    	return response;
-    }
+
 
     /**
      * 提供给冠E通后台调用开户接口
