@@ -1,7 +1,9 @@
 package com.gqhmt.fss.architect.trade.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gqhmt.core.util.Application;
+
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class FssOfflineRechargeBean{
 
@@ -9,6 +11,8 @@ public class FssOfflineRechargeBean{
 	private String seqNo;//流水号
 	private String chgCd;//充值码
 	private String chgDt;//充值码时间
+	@JsonIgnore
+	private String payStateType;//支付状态
 	private String payState;//支付状态
 	private BigDecimal amt;//充值金额
 
@@ -45,7 +49,7 @@ public class FssOfflineRechargeBean{
 	}
 
 	public String getPayState() {
-		return payState;
+		return Application.getInstance().getDictName(this.payStateType);
 	}
 
 	public void setPayState(String payState) {
@@ -58,5 +62,13 @@ public class FssOfflineRechargeBean{
 
 	public void setAmt(BigDecimal amt) {
 		this.amt = amt;
+	}
+
+	public String getPayStateType() {
+		return payStateType;
+	}
+
+	public void setPayStateType(String payStateType) {
+		this.payStateType = payStateType;
 	}
 }
