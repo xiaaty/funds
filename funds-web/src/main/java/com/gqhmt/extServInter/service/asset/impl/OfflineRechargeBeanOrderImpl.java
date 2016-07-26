@@ -1,22 +1,17 @@
 package com.gqhmt.extServInter.service.asset.impl;
 
-import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.exception.APIExcuteErrorException;
-import com.gqhmt.extServInter.dto.QueryListResponse;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.asset.OfflineRechargeListDto;
-import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
-import com.gqhmt.extServInter.service.asset.IOfflineRechargeOrder;
-import com.gqhmt.extServInter.service.asset.IRechargeAndWithdrawOrder;
-import com.gqhmt.fss.architect.trade.bean.FssOfflineRechargeBean;
+import com.gqhmt.extServInter.dto.asset.OfflineRechargeBeanDto;
+import com.gqhmt.extServInter.dto.asset.OfflineRechargeBeanResponse;
+import com.gqhmt.extServInter.service.asset.IOfflineRechargeBenaOrder;
+import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
-import com.gqhmt.funds.architect.order.bean.FundOrderBean;
-import com.gqhmt.funds.architect.order.service.FundOrderService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Filename:    com.gqhmt.extServInter.service.asset.impl.RechargeAndWitwdrawOrder
@@ -35,22 +30,23 @@ import java.util.List;
  * 16/3/8  柯禹来      1.0     1.0 Version
  */
 @Service
-public class OfflineRechargeOrder implements IOfflineRechargeOrder {
+public class OfflineRechargeBeanOrderImpl implements IOfflineRechargeBenaOrder {
 
     @Resource
     private FssOfflineRechargeService fssOfflineRechargeService;
 
-    @AutoPage
     @Override
+    @APITradeTypeValid(value = "11110005")
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
-        QueryListResponse response = new QueryListResponse();
-        try {
-            OfflineRechargeListDto cDto = (OfflineRechargeListDto) dto;
-            List<FssOfflineRechargeBean> list = fssOfflineRechargeService.getOfflineRechargeByCustId(cDto.getCust_id(),cDto.getCust_type(),cDto.getStr_trade_time(),cDto.getEnd_trade_time());
+
+        OfflineRechargeBeanDto offlineRechargeBeanDto = (OfflineRechargeBeanDto) dto;
+        FssOfflineRechargeEntity fssOfflineRechargeEntity = fssOfflineRechargeService.getOfflineRechargeById(offlineRechargeBeanDto.getOfflineRechargeId());
+        OfflineRechargeBeanResponse response = new OfflineRechargeBeanResponse();
+        if(fssOfflineRechargeEntity == null){
+            response.setResp_code("");
+        }else{
             response.setResp_code("0000");
-            response.setPlain(list);
-        }catch (Exception e){
-            response.setResp_code(e.getMessage());
+            response.setOfflineRecharge(fssOfflineRechargeEntity);
         }
         return response;
     }
