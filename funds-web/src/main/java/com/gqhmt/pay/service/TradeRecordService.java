@@ -111,6 +111,21 @@ public class TradeRecordService {
     }
 
     /**
+     * 冻结重载
+     * @param fromEntity
+     * @param toEntity
+     * @param amount
+     * @param fundType
+     * @param fundOrderEntity
+     * @param memo
+     * @param boundsAmout
+     * @throws FssException
+     */
+    public void frozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int fundType,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+        sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo,fundOrderEntity,boundsAmout, newFundsType,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
+    }
+
+    /**
      *资金解冻
      * @param fromEntity
      * @param toEntity
