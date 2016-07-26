@@ -128,7 +128,10 @@ public class FssRepaymentService {
 	 * time:2016年3月17日
 	 * function：修改主表状态
 	 */
-	public int updateRepaymentParent(FssRepaymentParentEntity fssRepaymentParentEntity){
+	public int updateRepaymentParent(FssRepaymentParentEntity fssRepaymentParentEntity,String resultStatus,String status){
+		fssRepaymentParentEntity.setResultState(resultStatus);
+		fssRepaymentParentEntity.setState(status);
+		fssRepaymentParentEntity.setMotifyTime(new Date());
 		return fssRepaymentParentWriteMapper.updateByPrimaryKey(fssRepaymentParentEntity);
 	}
 	/**
@@ -160,14 +163,12 @@ public class FssRepaymentService {
 		repayment.setResultState(tradeStatus);
 		repayment.setMotifyTime(new Date());
 		fssRepaymentWriteMapper.updateByPrimaryKey(repayment);
-		if(!"10080010".equals(tradeStatus)){
 		repayment.setAmt(amt);
-		//更新主表执行成功条数
+		//更新主表执行条数
 		this.updateSuccessCount(repayment);
 		//修改主表状态
 		this.changeRepaymentParentStatus(repayment,sqNo,mchn,tradeType);
-		}
-		
+
 	}
 	/**
 	 * 还款划扣
@@ -184,7 +185,6 @@ public class FssRepaymentService {
 				response.setSeq_no(repaymentDto.getSeq_no());
 				response.setTrade_type(repaymentDto.getTrade_type());
 				response.setSignature(repaymentDto.getSignature());
-				response.setResp_code("0000");
 				response.setResp_msg("执行成功！");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
@@ -333,22 +333,22 @@ public class FssRepaymentService {
 		fssRepaymentParentWriteMapper.updateRepaymentParentSuccessCount(queryRepayment);
 	}
 
-	/**
-	 * 
-	 * author:jhz
-	 * time:2016年3月19日
-	 * function：代扣成功
-	 */
-	public FssRepaymentEntity changeTradeStatus(Long id){
-		FssRepaymentEntity queryRepayment= this.queryRepaymentById(id);
-		queryRepayment.setState("10090003");	//10090003划扣完成
-		queryRepayment.setResultState("10080002");	//10080002 成功
-		queryRepayment.setMotifyTime(new Date());
-		this.updateRepaymentEntity(queryRepayment);
-		//更新主表执行成功条数
-		this.updateSuccessCount(queryRepayment);
-		return queryRepayment;
-	}
+//	/**
+//	 *
+//	 * author:jhz
+//	 * time:2016年3月19日
+//	 * function：代扣成功
+//	 */
+//	public FssRepaymentEntity changeTradeStatus(Long id){
+//		FssRepaymentEntity queryRepayment= this.queryRepaymentById(id);
+//		queryRepayment.setState("10090003");	//10090003划扣完成
+//		queryRepayment.setResultState("10080002");	//10080002 成功
+//		queryRepayment.setMotifyTime(new Date());
+//		this.updateRepaymentEntity(queryRepayment);
+//		//更新主表执行成功条数
+//		this.updateSuccessCount(queryRepayment);
+//		return queryRepayment;
+//	}
 	/**
 	 * 
 	 * author:jhz
@@ -362,24 +362,14 @@ public class FssRepaymentService {
 		if(queryRepaymentParentById.getTradeCount()<=queryRepaymentParentById.getSuccessCount()){
 			int successCount = getSuccessCount(queryRepayment.getParentId());
 			if(queryRepaymentParentById.getTradeCount()==successCount){
-				
 				//成功
-				queryRepaymentParentById.setResultState("10080002");
-				 queryRepaymentParentById.setState("10090003");
-				 queryRepaymentParentById.setMotifyTime(new Date());
-				this.updateRepaymentParent(queryRepaymentParentById);
+				this.updateRepaymentParent(queryRepaymentParentById,"10080002","10090003");
 			}else if(successCount==0){
 				//失败
-				queryRepaymentParentById.setResultState("10080010");
-				 queryRepaymentParentById.setState("10090003");
-				 queryRepaymentParentById.setMotifyTime(new Date());
-				this.updateRepaymentParent(queryRepaymentParentById);
+				this.updateRepaymentParent(queryRepaymentParentById,"10080010","10090003");
 			}else{
 				//部分成功
-				queryRepaymentParentById.setResultState("10080003");
-				 queryRepaymentParentById.setState("10090003");
-				 queryRepaymentParentById.setMotifyTime(new Date());
-				this.updateRepaymentParent(queryRepaymentParentById);
+				this.updateRepaymentParent(queryRepaymentParentById,"10080003","10090003");
 			}
 			FssBackplateEntity fssBackplateEntity=fssBackplateService.selectByMchnAndseqNo(mchn,seqNo);
 			if (fssBackplateEntity!=null){

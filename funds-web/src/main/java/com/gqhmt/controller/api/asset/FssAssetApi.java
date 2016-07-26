@@ -5,17 +5,23 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.asset.*;
+import com.gqhmt.extServInter.dto.account.BankCardDto;
+import com.gqhmt.extServInter.dto.account.BankCardLisyResponse;
+import com.gqhmt.extServInter.dto.asset.AssetDto;
+import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
+import com.gqhmt.extServInter.dto.asset.FundTradeDto;
+import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
 import com.gqhmt.extServInter.dto.fund.BankDto;
+import com.gqhmt.extServInter.service.account.IFindBankCardList;
 import com.gqhmt.extServInter.service.asset.*;
 import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
 import com.gqhmt.fss.architect.customer.bean.ChangeCardBean;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.gqhmt.util.JsonUtil;
+import net.sf.json.JSONObject;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -52,6 +58,8 @@ public class FssAssetApi {
     private IFundSeqence fundSeqenceImpl;
 	@Resource
 	private IFundTrade fundTradeImpl;
+	@Resource
+	private IFindBankCardList findBankCardListImpl;
     @Resource
     private IRechargeAndWithdrawOrder rechargeAndWithdrawOrder;
     @Resource
@@ -81,6 +89,7 @@ public class FssAssetApi {
      * function：银行列表查询
      */
     @RequestMapping(value = "/getBankInfo",method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
     public Object getBankInfo() throws APIExcuteErrorException{
     	BankDto dto=new BankDto();
     	Response response= new Response();
@@ -95,13 +104,26 @@ public class FssAssetApi {
     /**
      * author:柯禹来
      * time:2016年3月1日
-     * function：银行卡信息查询
+     * function：银行卡信息查询(查询已经绑定的银行卡)
      */
     @RequestMapping(value = "/getBankCardInfo/{custNo}",method = {RequestMethod.POST,RequestMethod.GET})
-    public List<BankCardInfoEntity> getBankCardInfo(@PathVariable String custNo) throws FssException{
+    @ResponseBody
+    public Object getBankCardInfo(@PathVariable String custNo) throws FssException{
     	List<BankCardInfoEntity> list = bankCardInfoService.findBankCardByCustNo(custNo);
     	if(list==null) throw new FssException("90002036");
     	return list;
+    }
+    /**
+     * author:jhz
+     * time:2016年7月20日
+     * function：银行卡信息查询（查询用户名下所有银行卡信息）
+     */
+    @RequestMapping(value = "/bankCardInfoList",method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Object bankCardInfoList( BankCardDto bankCardDto) throws FssException{
+        Response response=findBankCardListImpl.execute(bankCardDto);
+        return response;
+//    	return JSONObject.fromObject(list).toString();
     }
     /**
      * author:jhz
@@ -109,6 +131,7 @@ public class FssAssetApi {
      * function：变更银行卡信息查询
      */
     @RequestMapping(value = "/getChangeCardInfo/{custNo}",method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
     public ChangeCardBean getChangeCardInfo(@PathVariable String custNo) throws FssException{
         ChangeCardBean cardBean = bankCardInfoService.findChangeCardInfo(custNo);
         if(cardBean==null) throw new FssException("90004027");
@@ -183,22 +206,6 @@ public class FssAssetApi {
             execute(e);
         }
 
-        return response;
-    }
-
-    /**
-     *客户线下充值列表
-     * @param dto
-     * @return
-     */
-    @RequestMapping(value = "/offlineRechargeList",method = RequestMethod.POST)
-    public Object queryRechargeList(OfflineRechargeListDto dto){
-        Response response=null;
-        try {
-            response = offlineRechargeOrder.execute(dto);
-        } catch (APIExcuteErrorException e) {
-            execute(e);
-        }
         return response;
     }
 }

@@ -71,7 +71,7 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
 	
 	/**
 	 * 查询银行卡信息
-	 * @param bankinfo
+	 * @param
 	 * @return
 	 */
 	public List<BankCardInfoEntity> selectBankCardList(Map map);
@@ -83,5 +83,5 @@ public interface BankCardInfoReadMapper extends ReadMapper<BankCardInfoEntity> {
 		
 	 public List<BankCardInfoEntity> findBankCardByCustNo(@Param("custNo") String custNo);
 
-	public BankCardInfoEntity queryBankCard(@Param("custNo") Integer custNo);
+	public List<BankCardInfoEntity> queryBankCard(@Param("custNo") Integer custNo);
 }
