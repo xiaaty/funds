@@ -180,9 +180,10 @@ public class PaySuperByFuiou {
 
     /*=============================================预  授 权==============================================*/
 
-    public CommandResponse preAuth(FundAccountEntity fromEntity,FundAccountEntity toSFEntity,BigDecimal amount,int  orderType,Long busiId,int  busiType,String tradeType) throws FssException {
-        LogUtil.info(this.getClass(),"第三方预授权:"+fromEntity.getAccountNo()+":"+toSFEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
-        FundOrderEntity fundOrderEntity = this.createOrder(fromEntity, amount, orderType, busiId,busiType,"1105",tradeType);
+    public CommandResponse preAuth(FundAccountEntity fromEntity,FundAccountEntity toSFEntity,BigDecimal amount,int  orderType,Long busiId,int  busiType,String tradeType,String busi_bid_no,String busi_no,String loan_cust_id) throws FssException {
+        LogUtil.info(this.getClass(),"第三方预授权:"+fromEntity.getAccountNo()+":"+toSFEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType+":"+busi_bid_no+":"+busi_no+":"+loan_cust_id);
+//        FundOrderEntity fundOrderEntity = this.createOrder(fromEntity, amount, orderType, busiId,busiType,"1105",tradeType);
+        FundOrderEntity fundOrderEntity = this.createOrder(fromEntity, null, amount, orderType, busiId,busiType,"1105",tradeType,busi_no,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_INVEST_BID, fundOrderEntity, fromEntity, String.valueOf(busiId), amount, "投标预授权", toSFEntity);
         execExction(response,fundOrderEntity);
         response.setFundOrderEntity(fundOrderEntity);
