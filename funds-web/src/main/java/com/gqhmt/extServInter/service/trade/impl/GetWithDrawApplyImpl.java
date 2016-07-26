@@ -42,8 +42,9 @@ public class GetWithDrawApplyImpl implements IGetWithDrawApply{
 	 * 抵押权人提现：11092001
 	 * 归还保证金提现:11091003
 	 * 赎回提现:11040013
+	 * 续投利息赎回:11040014
 	 */
-	@APITradeTypeValid(value = "11091001,11091002,11040007,11040006,11040012,11092001,11091003,11040013")
+	@APITradeTypeValid(value = "11091001,11091002,11040007,11040006,11040012,11092001,11091003,11040013,11040014")
     @Override
     public Response execute(SuperDto dto){
     	Response response = new Response();

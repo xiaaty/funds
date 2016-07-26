@@ -73,5 +73,29 @@
 		AND t.`mchnt_cd`=#{mchntCd}
 	</select>
 
+	<select id="getRecharegByCustId" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FssOfflineRechargeBean">
+		SELECT
+		t.`id` id,
+		t.`seq_no` seqNo,
+		t.`chg_cd` chgCd,
+		t.`chg_dt` chgDt,
+		t.`amt` amt,
+		CASE
+			WHEN t.`result_state`='10120002' THEN '充值码获取成功，待客户充值'
+			WHEN t.`result_state`='10120003' THEN '充值成功'
+			WHEN t.`result_state`='10120004' THEN '充值码获取失败'
+		ELSE t.`result_state`
+		END payState
+		FROM `t_gq_fss_offline_recharge` t
+		WHERE t.`cust_id`=#{custId}
+		AND t.`cust_type`=#{custType}
+		<if test="startTime != null and startTime!=''">
+			AND t.chg_dt &gt;= #{startTime}
+		</if>
+		<if test="endTime != null and endTime!=''">
+			AND t.chg_dt &lt;= #{endTime}
+		</if>
+		ORDER BY t.`id` DESC
+	</select>
 
 </mapper>

@@ -4,6 +4,7 @@ import com.gqhmt.core.exception.APIExcuteErrorException;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.asset.*;
 import com.gqhmt.extServInter.dto.account.BankCardDto;
 import com.gqhmt.extServInter.dto.account.BankCardLisyResponse;
 import com.gqhmt.extServInter.dto.asset.AssetDto;
@@ -65,8 +66,8 @@ public class FssAssetApi {
     private  BankCardInfoService bankCardInfoService;
     @Resource
     private FundSequenceService fundSequenceService;
-    
-    
+    @Resource
+    private IOfflineRechargeOrder offlineRechargeOrder;
     /**
      * 账户余额查询
      * @param dto

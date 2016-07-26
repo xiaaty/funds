@@ -630,7 +630,7 @@ public class FssTradeApplyService {
     	Date date=new Date();
     	String nowdate=sdf.format(date);
     	String bespokeDate=sdf.format(BespokeDate);
-    	if(bespokeDate.equals(nowdate)){
+    	if(bespokeDate.equals(nowdate)){//大于等于今天
     		return 0;
     	}else{
     		return 1;
