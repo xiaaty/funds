@@ -426,7 +426,10 @@ public class BankCardInfoService {
 	}
 	
 	public void delBankCard(Integer id){
-		this.bankCardinfoWriteMapper.deleteBankCardInfo(id);
+		BankCardInfoEntity bankCardInfoEntity=this.getBankCardInfoById(id);
+		bankCardInfoEntity.setModifyTime(new Date());
+		bankCardInfoEntity.setIsDel(0);
+		this.update(bankCardInfoEntity);
 	}
 	
 	public List<CustomerInfoEntity> getAllCustomers(CustomerInfoEntity customer){

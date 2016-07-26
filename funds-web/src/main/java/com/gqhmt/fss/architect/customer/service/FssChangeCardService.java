@@ -163,9 +163,9 @@ public class FssChangeCardService {
      * @throws Exception
      */
     public void addChangeCard(CustomerInfoEntity custom, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,int type,String seqNo,String mchn,String tradeType) throws FssException {
-        //添加银行卡，变更后银行卡信息
-        BankCardInfoEntity bankCardInfo= bankCardinfoService.creatBankInfoEntity(custom.getId(),custom.getCertNo(),custom.getMobilePhone(),custom.getCustomerName(),bankNo,bankId,bankCity,filePath,tradeType);
-        bankCardinfoService.insert(bankCardInfo);
+//        //添加银行卡，变更后银行卡信息
+//        BankCardInfoEntity bankCardInfo= bankCardinfoService.creatBankInfoEntity(custom.getId(),custom.getCertNo(),custom.getMobilePhone(),custom.getCustomerName(),bankNo,bankId,bankCity,filePath,tradeType);
+//        bankCardinfoService.insert(bankCardInfo);
 
         List<Map<String, String>> noticeList= new ArrayList<Map<String, String>>();
 		Map<String, String> noticeMap = new HashMap<String, String>();
@@ -181,8 +181,8 @@ public class FssChangeCardService {
         if(bankNo.equals(bankCardinfoEntity.getBankNo())){
             throw new FssException("90002034");
         }
-//        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo,mchn,tradeType);
-        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankCardInfo,type,seqNo,mchn,tradeType);
+        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo,mchn,tradeType);
+//        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankCardInfo,type,seqNo,mchn,tradeType);
         try {
 			this.insert(entity);
 		} catch (Exception e) {
@@ -208,52 +208,22 @@ public class FssChangeCardService {
         
     }
 
-//    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bankCardinfoEntity, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn,String tradeType){
-//        FssChangeCardEntity entity = new FssChangeCardEntity();
-//        entity.setCustId(cus.getId().longValue());
-//        entity.setCardNo(bankNo);
-//        entity.setBankType(bankId);
-//        entity.setBankAdd(bankAddr);
-//        if(bankCity.length() == 6){
-//            try {
-//                bankCity = Application.getInstance().getFourCode(bankCity);
-//            } catch (FssException e) {
-//                LogUtil.error(getClass(),e);
-//            }
-//        }
-//        entity.setBankCity(bankCity);
-//        entity.setFilePath(filePath);
-//        entity.setbBankInfoId(cus.getBankId().longValue());
-//        entity.setaBankInfoId();
-//        entity.setCertNo(cus.getCertNo());
-//        entity.setCustName(cus.getCustomerName());
-//        entity.setCreateUserId(-1l);
-//        entity.setCreateTime(new Date());
-//        entity.setModifyTime(new Date());
-//        entity.setState(1);
-//        entity.setTradeState(1);
-//        entity.setCertType(cus.getCertType());
-//        entity.setMobile(cus.getMobilePhone());
-//        entity.setType(type);
-//        entity.setBankType(bankId);
-//        entity.setBankName(bankCardinfoEntity.getBankSortName());
-//        entity.setCardNo(bankNo);
-//        entity.setMchn(mchn);
-//        if(seqNo != null){
-//            entity.setSeqNo(seqNo);
-//        }
-//        entity.setTradeType(tradeType);
-//        return  entity;
-//    }
-    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bbankCardinfoEntity, BankCardInfoEntity abankCardinfoEntity, int type, String seqNo,String mchn,String tradeType){
+    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bankCardinfoEntity, String bankNo, String bankId, String bankAddr, String bankCity, String filePath, int type, String seqNo,String mchn,String tradeType){
         FssChangeCardEntity entity = new FssChangeCardEntity();
         entity.setCustId(cus.getId().longValue());
-        entity.setCardNo(abankCardinfoEntity.getBankNo());
-        entity.setBankType(abankCardinfoEntity.getParentBankId());
-        entity.setBankCity(abankCardinfoEntity.getCityId());
-        entity.setFilePath(abankCardinfoEntity.getFilePath());
+        entity.setCardNo(bankNo);
+        entity.setBankType(bankId);
+        entity.setBankAdd(bankAddr);
+        if(bankCity.length() == 6){
+            try {
+                bankCity = Application.getInstance().getFourCode(bankCity);
+            } catch (FssException e) {
+                LogUtil.error(getClass(),e);
+            }
+        }
+        entity.setBankCity(bankCity);
+        entity.setFilePath(filePath);
         entity.setbBankInfoId(cus.getBankId().longValue());
-        entity.setaBankInfoId(abankCardinfoEntity.getId().longValue());
         entity.setCertNo(cus.getCertNo());
         entity.setCustName(cus.getCustomerName());
         entity.setCreateUserId(-1l);
@@ -264,7 +234,9 @@ public class FssChangeCardService {
         entity.setCertType(cus.getCertType());
         entity.setMobile(cus.getMobilePhone());
         entity.setType(type);
-        entity.setBankName(bbankCardinfoEntity.getBankSortName());
+        entity.setBankType(bankId);
+        entity.setBankName(bankCardinfoEntity.getBankSortName());
+        entity.setCardNo(bankNo);
         entity.setMchn(mchn);
         if(seqNo != null){
             entity.setSeqNo(seqNo);
@@ -272,6 +244,33 @@ public class FssChangeCardService {
         entity.setTradeType(tradeType);
         return  entity;
     }
+//    public FssChangeCardEntity getChangeCardInstance(CustomerInfoEntity cus,BankCardInfoEntity bbankCardinfoEntity, BankCardInfoEntity abankCardinfoEntity, int type, String seqNo,String mchn,String tradeType){
+//        FssChangeCardEntity entity = new FssChangeCardEntity();
+//        entity.setCustId(cus.getId().longValue());
+//        entity.setCardNo(abankCardinfoEntity.getBankNo());
+//        entity.setBankType(abankCardinfoEntity.getParentBankId());
+//        entity.setBankCity(abankCardinfoEntity.getCityId());
+//        entity.setFilePath(abankCardinfoEntity.getFilePath());
+//        entity.setbBankInfoId(cus.getBankId().longValue());
+//        entity.setaBankInfoId(abankCardinfoEntity.getId().longValue());
+//        entity.setCertNo(cus.getCertNo());
+//        entity.setCustName(cus.getCustomerName());
+//        entity.setCreateUserId(-1l);
+//        entity.setCreateTime(new Date());
+//        entity.setModifyTime(new Date());
+//        entity.setState(1);
+//        entity.setTradeState(1);
+//        entity.setCertType(cus.getCertType());
+//        entity.setMobile(cus.getMobilePhone());
+//        entity.setType(type);
+//        entity.setBankName(bbankCardinfoEntity.getBankSortName());
+//        entity.setMchn(mchn);
+//        if(seqNo != null){
+//            entity.setSeqNo(seqNo);
+//        }
+//        entity.setTradeType(tradeType);
+//        return  entity;
+//    }
 
 
     //自动审核换卡需求
@@ -314,48 +313,49 @@ public class FssChangeCardService {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
                 //变更后银行卡信息更新
-	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getaBankInfoId().toString()));
-//	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getbBankInfoId().toString()));
+//	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getaBankInfoId().toString()));
+	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getbBankInfoId().toString()));
 	            if(bankCardinfoEntity == null){
 	                bankCardinfoEntity = new BankCardInfoEntity();
 	            }
 	
 	            bankCardinfoEntity.setChangeState(0);
-	            bankCardinfoEntity.setStatus("90004042");//90004042 银行卡已激活
-//	            bankCardinfoEntity.setCustId(changeCardEntity.getCustId().intValue());
-//                bankCardinfoEntity.setCertNo(changeCardEntity.getCertNo());
-//                bankCardinfoEntity.setBankNo(changeCardEntity.getCardNo());
-//                bankCardinfoEntity.setCertName(changeCardEntity.getCustName());
-//                bankCardinfoEntity.setCityId(changeCardEntity.getBankCity());
-//	            bankCardinfoEntity.setMobile(changeCardEntity.getMobile());
-//	            bankCardinfoEntity.setBankLongName(changeCardEntity.getBankAdd());
-//	            bankCardinfoEntity.setParentBankId(changeCardEntity.getBankType());
-//	            bankCardinfoEntity.setBankSortName(fuiouBankCodeService.queryFuiouBankValueByCode(changeCardEntity.getBankType()));
+//	            bankCardinfoEntity.setStatus("90004042");//90004042 银行卡已激活
+	            bankCardinfoEntity.setCustId(changeCardEntity.getCustId().intValue());
+                bankCardinfoEntity.setCertNo(changeCardEntity.getCertNo());
+                bankCardinfoEntity.setBankNo(changeCardEntity.getCardNo());
+                bankCardinfoEntity.setCertName(changeCardEntity.getCustName());
+                bankCardinfoEntity.setCityId(changeCardEntity.getBankCity());
+	            bankCardinfoEntity.setMobile(changeCardEntity.getMobile());
+	            bankCardinfoEntity.setBankLongName(changeCardEntity.getBankAdd());
+	            bankCardinfoEntity.setParentBankId(changeCardEntity.getBankType());
+	            bankCardinfoEntity.setBankSortName(fuiouBankCodeService.queryFuiouBankValueByCode(changeCardEntity.getBankType()));
 	            bankCardinfoEntity.setMemo("变更成功");
 	            bankCardinfoEntity.setModifyTime(new Date());
 	            bankCardinfoService.update(bankCardinfoEntity);
 
-                //变更前银行卡信息更新
-                BankCardInfoEntity bbankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getbBankInfoId().toString()));
-                if(bbankCardinfoEntity != null){
-                    bankCardinfoEntity.setChangeState(3);//3 新增
-                    bankCardinfoEntity.setStatus("90004041");//90004041 银行卡未激活
-                    bankCardinfoEntity.setMemo("变更成功");
-                    bankCardinfoEntity.setModifyTime(new Date());
-                    bankCardinfoService.update(bankCardinfoEntity);
-                }
+//                //变更前银行卡信息更新
+//                BankCardInfoEntity bbankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(changeCardEntity.getbBankInfoId().toString()));
+//                if(bbankCardinfoEntity != null){
+//                    bbankCardinfoEntity.setChangeState(3);//3 新增
+//                    bbankCardinfoEntity.setStatus("90004041");//90004041 银行卡未激活
+//                    bbankCardinfoEntity.setMemo("变更成功");
+//                    bbankCardinfoEntity.setModifyTime(new Date());
+//                    bankCardinfoService.update(bbankCardinfoEntity);
+//                }
 
 
 	            changeCardEntity.setState(2);
+	            changeCardEntity.setModifyTime(new Date());
 	            changeCardEntity.setEffectTime(new Date());
 	            changeCardEntity.setTradeState(99);
 	            FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(changeCardEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 	            fundAccountEntity.setIshangeBankCard(0);
 	            fundAccountService.update(fundAccountEntity);
-	            this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUCESS, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),tmCardNo(bankCardinfoEntity.getBankNo()));
+	            this.noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUCESS, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),tmCardNo(changeCardEntity.getCardNo()));
 	
 	            CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(changeCardEntity.getCustId());
-                customerInfoEntity.setBankId(bankCardinfoEntity.getId());
+//                customerInfoEntity.setBankId(bankCardinfoEntity.getId());
                 customerInfoEntity.setModifyTime(new Date());
 	              customerInfoEntity.setHasThirdAgreement(0);
 	            try {
@@ -398,26 +398,32 @@ public class FssChangeCardService {
 	        for(FssChangeCardEntity changeCardEntity : list){
 	            //同步变更信息到银行卡信息表中
                 //变更后银行卡信息修改
-	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getaBankInfoId().intValue());
+                BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
+//	            BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getaBankInfoId().intValue());
 	            if(bankCardinfoEntity !=null){
+                    bankCardinfoEntity.setModifyTime(new Date());
 	                bankCardinfoEntity.setChangeState(2);
-	                bankCardinfoEntity.setStatus("90004044");//90004044 激活失败，请修改激活资料
+//	                bankCardinfoEntity.setStatus("90004044");//90004044 激活失败，请修改激活资料
 	                bankCardinfoEntity.setMemo("资料审核不通过，新银行卡变更失败，请重新变更；原银行卡充值提现不受影响。");
 	                bankCardinfoService.update(bankCardinfoEntity);
 	            }
-	            //变更前银行卡信息修改
-	            BankCardInfoEntity bbankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
-	            if(bbankCardinfoEntity !=null){
-                    bbankCardinfoEntity.setStatus("90004042");//90004042 银行卡已激活
-	                bankCardinfoService.update(bbankCardinfoEntity);
-	            }
+//	            //变更前银行卡信息修改
+//	            BankCardInfoEntity bbankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(changeCardEntity.getbBankInfoId().intValue());
+//	            if(bbankCardinfoEntity !=null){
+//                    bbankCardinfoEntity.setStatus("90004042");//90004042 银行卡已激活
+//                    bbankCardinfoEntity.setModifyTime(new Date());
+//	                bankCardinfoService.update(bbankCardinfoEntity);
+//	            }
 	            changeCardEntity.setState(3);
 	            changeCardEntity.setTradeState(99);
 	            FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(changeCardEntity.getCustId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
 	            fundAccountEntity.setIshangeBankCard(0);
+	            fundAccountEntity.setModifyTime(new Date());
 	            fundAccountService.update(fundAccountEntity);
-	
-	            noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_FAIL, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),changeCardEntity.getRespMsg()!= null?changeCardEntity.getRespMsg():"未知错误",tmCardNo (bbankCardinfoEntity.getBankNo()));
+
+                noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_FAIL, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),changeCardEntity.getRespMsg()!= null?changeCardEntity.getRespMsg():"未知错误",tmCardNo (bankCardinfoEntity.getBankNo()));
+
+//                noticeService.sendNotice(NoticeService.NoticeType.FUND_UPDATE_BANKCARD_FAIL, changeCardEntity.getCreateUserId().intValue(), changeCardEntity.getCustId().intValue(),changeCardEntity.getRespMsg()!= null?changeCardEntity.getRespMsg():"未知错误",tmCardNo (bbankCardinfoEntity.getBankNo()));
 	            update(changeCardEntity);
 	        }
         }
@@ -667,58 +673,58 @@ public class FssChangeCardService {
      * time:2016年6月13日
      * function：根据银行卡id进行银行卡变更
      */
-    public void changeBankCardById(String mchn,String seqNo,String custNo,String aBankInfoId,String bBankInfoId,String tradeType) throws FssException{
-        //添加银行卡，变更后银行卡信息
-        BankCardInfoEntity bankCardInfo= bankCardinfoService.getBankCardInfoById(Integer.parseInt(aBankInfoId));
-        //变更前银行卡信息
-        BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(bBankInfoId));
-
-//        变更后银行卡信息修改
-        bankCardInfo.setStatus("90004043");
-        bankCardInfo.setChangeState(1);
-        bankCardInfo.setModifyTime(new Date());
-        bankCardinfoService.update(bankCardInfo);
-
-        List<Map<String, String>> noticeList= new ArrayList<Map<String, String>>();
-        Map<String, String> noticeMap = new HashMap<String, String>();
-        noticeMap.put("sysCode",CoreConstants.SYS_CODE);//商户系统编码，在平台系统查看
-        noticeList.add(noticeMap);
-
-        if(bankCardinfoEntity==null) throw new FssException("90002036");
-        if(bankCardinfoEntity.getChangeState() == 1){//变更中,请勿重复提交变更
-            throw new FssException("90002037");
-        }
-        if(bankCardInfo.getBankNo().equals(bankCardinfoEntity.getBankNo())){
-            throw new FssException("90002034");
-        }
-        CustomerInfoEntity  custom=customerInfoService.getCustomerById(Long.valueOf(custNo));
-//        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo,mchn,tradeType);
-        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankCardInfo,1,seqNo,mchn,tradeType);
-        try {
-            this.insert(entity);
-        } catch (Exception e) {
-            throw new FssException("90002035");
-        }
-
-        //变更前银行卡信息修改
-        bankCardinfoEntity.setChangeState(1);
-        bankCardinfoEntity.setMemo("变更申请已提交,原银行卡不能做提现操作");
-        bankCardinfoEntity.setModifyTime(new Date());
-        bankCardinfoService.updateBankCardInfo(bankCardinfoEntity);
-
-        FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custom.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-        fundAccountEntity.setIshangeBankCard(1);
-        fundAccountEntity.setModifyTime(new Date());
-        fundAccountService.update(fundAccountEntity);
-
-        if (entity.getType() == 1 || entity.getType() == 11029003) {
-            //发送站内通知短信
-            noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(bankCardinfoEntity.getBankNo()));
-            HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
-
-            this.sendMms(entity.getMobile(), 1);
-        }
-    }
+//    public void changeBankCardById(String mchn,String seqNo,String custNo,String aBankInfoId,String bBankInfoId,String tradeType) throws FssException{
+//        //添加银行卡，变更后银行卡信息
+//        BankCardInfoEntity bankCardInfo= bankCardinfoService.getBankCardInfoById(Integer.parseInt(aBankInfoId));
+//        //变更前银行卡信息
+//        BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.queryBankCardinfoById(Integer.parseInt(bBankInfoId));
+//
+////        变更后银行卡信息修改
+//        bankCardInfo.setStatus("90004043");
+//        bankCardInfo.setChangeState(1);
+//        bankCardInfo.setModifyTime(new Date());
+//        bankCardinfoService.update(bankCardInfo);
+//
+//        List<Map<String, String>> noticeList= new ArrayList<Map<String, String>>();
+//        Map<String, String> noticeMap = new HashMap<String, String>();
+//        noticeMap.put("sysCode",CoreConstants.SYS_CODE);//商户系统编码，在平台系统查看
+//        noticeList.add(noticeMap);
+//
+//        if(bankCardinfoEntity==null) throw new FssException("90002036");
+//        if(bankCardinfoEntity.getChangeState() == 1){//变更中,请勿重复提交变更
+//            throw new FssException("90002037");
+//        }
+//        if(bankCardInfo.getBankNo().equals(bankCardinfoEntity.getBankNo())){
+//            throw new FssException("90002034");
+//        }
+//        CustomerInfoEntity  custom=customerInfoService.getCustomerById(Long.valueOf(custNo));
+////        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankNo,bankId,bankAddr,bankCity,filePath ,type,seqNo,mchn,tradeType);
+//        FssChangeCardEntity entity = getChangeCardInstance(custom,bankCardinfoEntity,bankCardInfo,1,seqNo,mchn,tradeType);
+//        try {
+//            this.insert(entity);
+//        } catch (Exception e) {
+//            throw new FssException("90002035");
+//        }
+//
+//        //变更前银行卡信息修改
+////        bankCardinfoEntity.setChangeState(1);
+//        bankCardinfoEntity.setMemo("变更申请已提交,原银行卡不能做提现操作");
+//        bankCardinfoEntity.setModifyTime(new Date());
+//        bankCardinfoService.updateBankCardInfo(bankCardinfoEntity);
+//
+//        FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custom.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+//        fundAccountEntity.setIshangeBankCard(1);
+//        fundAccountEntity.setModifyTime(new Date());
+//        fundAccountService.update(fundAccountEntity);
+//
+//        if (entity.getType() == 1 || entity.getType() == 11029003) {
+//            //发送站内通知短信
+//            noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(bankCardinfoEntity.getBankNo()));
+//            HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
+//
+//            this.sendMms(entity.getMobile(), 1);
+//        }
+//    }
 
     /**
      *
