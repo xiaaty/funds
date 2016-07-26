@@ -252,9 +252,12 @@ public class FundsTradeImpl  implements IFundsTrade {
         }else if(businessType==96){//应付账户（出借）
             lendNo=contractNo;
         }
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
+        FundOrderEntity fundOrderEntity =null;
+
+         fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
         tradeRecordService.recharge(entity,amount,fundOrderEntity,1002);
+        
         return  fundOrderEntity;
     }
 
@@ -367,9 +370,8 @@ public class FundsTradeImpl  implements IFundsTrade {
             tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,busi_no,Long.valueOf(o_cust_no),o_tender_no,Long.valueOf(cust_no),busi_bid_no);
             fssBondTransferService.updateBandTransfer(bondEntity,amt,fundOrderEntity.getOrderNo(),"10080002","0000");
         }catch (Exception e){
-//            tradeState="10080010";
-            fssBondTransferService.updateBandTransfer(bondEntity,amt,fundOrderEntity.getOrderNo(),"10080010",e.getMessage());
-            throw new FssException(e.getMessage());
+              fssBondTransferService.updateBandTransfer(bondEntity,amt,null,"10080010",e.getMessage());
+//            throw new FssException(e.getMessage());
         }
         //添加交易记录
 //        fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),fundType, "",BigDecimal.ZERO);
@@ -690,7 +692,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         try {
             this.hasEnoughBanlance(fromEntity, amt);
             //第三方交易
-            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,8,bondEntity.getId(),GlobalConstants.ORDER_DEBT,trade_type.substring(0,4),trade_type,busi_no,o_tender_no,Long.valueOf(cust_no),busi_bid_no);
+//            fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity,toEntity,amt,8,bondEntity.getId(),GlobalConstants.ORDER_DEBT,trade_type.substring(0,4),trade_type,busi_no,o_tender_no,Long.valueOf(cust_no),busi_bid_no);
             //资金处理
             tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType);
             fssBondTransferService.updateBandTransfer(bondEntity,amt,fundOrderEntity.getOrderNo(),"10080002","0000");
