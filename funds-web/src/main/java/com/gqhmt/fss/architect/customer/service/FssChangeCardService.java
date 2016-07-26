@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.customer.service;/**
  * Created by yuyonf on 15/11/30.
  */
 
+import com.gqhmt.extServInter.dto.account.UpdateBankCardAnotherDto;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssChangeCardEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssChangeCardReadMapper;
@@ -719,4 +720,33 @@ public class FssChangeCardService {
         }
     }
 
+    /**
+     *
+     * author:xdw
+     * time:2016年7月26日
+     * function：根据银行卡号进行银行卡变更
+     */
+    public void changeBankCardAnotherById(String bankId, String bankNo, String cityId, String bankSortName, String filePath) throws FssException{
+
+        //变更前银行卡信息
+        BankCardInfoEntity bankCardinfoEntity = bankCardinfoService.getBankCardInfoById(new Integer(bankId));
+        if(bankCardinfoEntity==null) throw  new FssException("银行卡信息不存在");
+        BankCardInfoEntity newBankCardInfoEntity = new BankCardInfoEntity();
+        newBankCardInfoEntity.setId(bankCardinfoEntity.getId());
+        newBankCardInfoEntity.setBankNo(bankNo);
+        newBankCardInfoEntity.setCityId(cityId);
+        newBankCardInfoEntity.setBankSortName(bankSortName);
+        newBankCardInfoEntity.setFilePath(filePath);
+        bankCardinfoService.updateBankCardinfo(newBankCardInfoEntity);
+    }
+
+    /**
+     *
+     * author:xdw
+     * time:2016年7月26日
+     * function：查询银行卡信息
+     */
+    public BankCardInfoEntity queryBankCardinfoById(int id) {
+        return bankCardinfoService.queryBankCardinfoById(id);
+    }
 }
