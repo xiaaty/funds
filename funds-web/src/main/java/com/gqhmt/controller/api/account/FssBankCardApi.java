@@ -1,15 +1,13 @@
 package com.gqhmt.controller.api.account;
 
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.extServInter.dto.QueryListResponse;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.account.DeleteBankCardDto;
-import com.gqhmt.extServInter.dto.account.UpdateBankCardByIdDto;
-import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
-import com.gqhmt.extServInter.service.account.IAddBankCardInfo;
-import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
-import com.gqhmt.extServInter.service.account.IChangeBankCardById;
+import com.gqhmt.extServInter.dto.account.*;
+import com.gqhmt.extServInter.service.account.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -40,6 +38,10 @@ public class FssBankCardApi {
     private IChangeBankCardById changeBankCardByIdImpl;
     @Resource
     private IAddBankCardInfo addBankCardInfoImpl;
+    @Resource
+    private IChangeBankCardAnotherById changeBankCardAnotherByIdImpl;
+    @Resource
+    private IFindBankCardAnotherById findBankCardAnotherByIdImpl;
     /**
      *
      * author:jhz
@@ -99,6 +101,41 @@ public class FssBankCardApi {
         Response response= null;
         try {
             response = changeBankCardAccountImpl.execute(deleteBankCardDto);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
+
+    /**
+     *
+     * author:xdw
+     * time:2016年7月20日
+     * function：修改银行卡银行卡
+     */
+    @RequestMapping(value = "/updateBankCardAnother",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object updateBankCardAnother(UpdateBankCardAnotherDto updateBankCardAnotherDto){
+        Response response= null;
+        try {
+            response = changeBankCardAnotherByIdImpl.execute(updateBankCardAnotherDto);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
+
+    /**
+     *
+     * author:xdw
+     * time:2016年7月20日
+     * function：查询银行卡讯息
+     */
+    @RequestMapping(value = "/findBankCardAnother",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public Object FindBankCardAnother(FindBankCardDto findBankCardDto){
+        Response response= null;
+        try {
+            response = findBankCardAnotherByIdImpl.execute(findBankCardDto);
         } catch (Exception e) {
             response = this.execute(e);
         }

@@ -637,4 +637,23 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setModifyTime(new Date());
 		this.update(bankCardInfoEntity);
 	}
+
+	/**
+	 * xdw
+	 * 根据银行卡号查询
+	 * @param bankCardInfoEntity
+	 * @throws FssException
+	 */
+	public void updateBankCardinfo(BankCardInfoEntity bankCardInfoEntity) throws FssException {
+		BankCardInfoEntity bankCardInfo=this.getBankCardById(bankCardInfoEntity.getId());
+		if(bankCardInfo==null) throw  new FssException("银行卡信息不存在");
+		if(bankCardInfo.getChangeState()==0) throw  new FssException("银行卡已绑定，不允许修改");
+		if(bankCardInfo.getChangeState()==1) throw  new FssException("银行卡变更中，不允许修改");
+		bankCardInfoEntity.setId(bankCardInfo.getId());
+		bankCardInfoEntity.setIsDel(0);
+		bankCardInfoEntity.setModifyTime(new Date());
+		this.update(bankCardInfoEntity);
+	}
+
+
 }
