@@ -16,10 +16,12 @@ import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.event.account.CreateAccountEvent
@@ -172,9 +174,12 @@ public class CreateAccountEvent {
         //创建银行卡信息
 //       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
        if(isOldAccount) {
-           BankCardInfoEntity bankCardInfoEntity = bankCardInfoService.getBankCardByCustNo(custId);
-           if (bankCardInfoEntity == null) {
-               bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+           List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
+           BankCardInfoEntity    bankCardInfoEntity=null;
+           if(CollectionUtils.isEmpty(bankCardInfoList)){
+                bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+           }else{
+               bankCardInfoEntity=bankCardInfoList.get(0);
            }
            fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
        }

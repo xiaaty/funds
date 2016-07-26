@@ -10,6 +10,7 @@ import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -171,7 +172,10 @@ public class FssTradeRecordService {
 		if(null!=customerInfoEntity.getBankId()&&!"".equals(customerInfoEntity.getBankId())) {
 			bankCardInfo = bankCardInfoService.getBankCardInfoById(customerInfoEntity.getBankId());
 		}else {
-			bankCardInfo = bankCardInfoService.getBankCardByCustNo(custId);
+		List<BankCardInfoEntity> bankCardInfos = bankCardInfoService.getBankCardByCustNo(custId.toString());
+			if (CollectionUtils.isNotEmpty(bankCardInfos)){
+				bankCardInfo=bankCardInfos.get(0);
+			}
 		}
 		if(bankCardInfo==null){
 			throw new FssException("90004027");
