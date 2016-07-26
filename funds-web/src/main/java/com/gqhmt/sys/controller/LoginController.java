@@ -79,13 +79,13 @@ public class LoginController {
 	}
 		*/
 
-	@RequestMapping(value = "/sys/cache/reloadView")
+	@RequestMapping(value = "/interaction/cache/reloadView")
 	public String cacheReloadVie(){
 
 		return "sys/menu/cacheReload";
 	}
 
-	@RequestMapping(value = "/sys/cache/reload")
+	@RequestMapping(value = "/interaction/cache/reload")
 	public String cacheReload() throws FssException{
 		Application.getInstance().reload();
 		return "redirect:/sys/cache/reloadView" ;
