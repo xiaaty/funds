@@ -4,10 +4,7 @@ import com.gqhmt.core.exception.APIExcuteErrorException;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.asset.AssetDto;
-import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
-import com.gqhmt.extServInter.dto.asset.FundTradeDto;
-import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
+import com.gqhmt.extServInter.dto.asset.*;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.service.asset.*;
 import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
@@ -61,8 +58,8 @@ public class FssAssetApi {
     private  BankCardInfoService bankCardInfoService;
     @Resource
     private FundSequenceService fundSequenceService;
-    
-    
+    @Resource
+    private IOfflineRechargeOrder offlineRechargeOrder;
     /**
      * 账户余额查询
      * @param dto
@@ -186,6 +183,22 @@ public class FssAssetApi {
             execute(e);
         }
 
+        return response;
+    }
+
+    /**
+     *客户线下充值列表
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/offlineRechargeList",method = RequestMethod.POST)
+    public Object queryRechargeList(OfflineRechargeListDto dto){
+        Response response=null;
+        try {
+            response = offlineRechargeOrder.execute(dto);
+        } catch (APIExcuteErrorException e) {
+            execute(e);
+        }
         return response;
     }
 }
