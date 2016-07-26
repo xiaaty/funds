@@ -1079,7 +1079,7 @@ public class CustomerInfoService {
 			CustomerInfoEntity customerInfoEntity = this.createCustomerInfo(certNo,name,mobile);
 			this.customerInfoWriteMapper.insertSelective(customerInfoEntity);
 			UserEntity userEntity = gqUserService.createUser(customerInfoEntity.getCustomerName(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getId());
-			customerInfoEntity.setBankId(userEntity.getId());
+			customerInfoEntity.setUserId(userEntity.getId());
 			this.customerInfoWriteMapper.updateByPrimaryKeySelective(customerInfoEntity);
 			return customerInfoEntity;
 		}catch (Exception e){
