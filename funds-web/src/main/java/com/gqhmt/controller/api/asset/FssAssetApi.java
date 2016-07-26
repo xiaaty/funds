@@ -4,13 +4,8 @@ import com.gqhmt.core.exception.APIExcuteErrorException;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.extServInter.dto.asset.*;
 import com.gqhmt.extServInter.dto.account.BankCardDto;
-import com.gqhmt.extServInter.dto.account.BankCardLisyResponse;
-import com.gqhmt.extServInter.dto.asset.AssetDto;
-import com.gqhmt.extServInter.dto.asset.FundSequenceDto;
-import com.gqhmt.extServInter.dto.asset.FundTradeDto;
-import com.gqhmt.extServInter.dto.asset.RechargeAndWithdrawListDto;
+import com.gqhmt.extServInter.dto.asset.*;
 import com.gqhmt.extServInter.dto.fund.BankDto;
 import com.gqhmt.extServInter.service.account.IFindBankCardList;
 import com.gqhmt.extServInter.service.asset.*;
@@ -19,16 +14,13 @@ import com.gqhmt.fss.architect.customer.bean.ChangeCardBean;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
-import com.gqhmt.util.JsonUtil;
-import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 /**
  * Filename:    com.gqhmt.controller.api.asset.FssAssetApi
@@ -68,6 +60,9 @@ public class FssAssetApi {
     private FundSequenceService fundSequenceService;
     @Resource
     private IOfflineRechargeOrder offlineRechargeOrder;
+
+    @Resource
+    private IOfflineRechargeBenaOrder offlineRechargeBenaOrder;
     /**
      * 账户余额查询
      * @param dto
@@ -208,4 +203,37 @@ public class FssAssetApi {
 
         return response;
     }
+
+    /**
+     *客户线下充值列表
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/offlineRecharge/query",method = RequestMethod.POST)
+    public Object queryRechargeList(OfflineRechargeListDto dto){
+        Response response=null;
+        try {
+            response = offlineRechargeOrder.execute(dto);
+        } catch (APIExcuteErrorException e) {
+            execute(e);
+        }
+        return response;
+    }
+
+    /**
+     *客户线下充值列表
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/offlineRecharge/detail",method = RequestMethod.POST)
+    public Object queryRechargeList(OfflineRechargeBeanDto dto){
+        Response response=null;
+        try {
+            response = offlineRechargeBenaOrder.execute(dto);
+        } catch (APIExcuteErrorException e) {
+            execute(e);
+        }
+        return response;
+    }
+
 }

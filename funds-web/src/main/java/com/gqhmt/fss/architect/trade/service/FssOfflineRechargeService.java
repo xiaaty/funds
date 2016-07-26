@@ -3,14 +3,13 @@ package com.gqhmt.fss.architect.trade.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.bean.FssOfflineRechargeBean;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssOfflineRechargeWriteMapper;
-import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -199,5 +198,10 @@ public class FssOfflineRechargeService {
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		return fssOfflineRechargeReadMapper.getRecharegByCustId(map);
+	}
+
+
+	public FssOfflineRechargeEntity get(Long id){
+		return this.fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
 	}
 }

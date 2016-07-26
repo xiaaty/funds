@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.trade.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -30,6 +32,7 @@ public class FssOfflineRechargeEntity implements Serializable {
     @Column(name = "apply_no")
     private String applyNo;
 
+	@JsonIgnore
     @Column(name = "trade_type")
     private String tradeType;
 
@@ -54,9 +57,11 @@ public class FssOfflineRechargeEntity implements Serializable {
 	@Column(name = "amt")
 	private BigDecimal amt ;
 
+	@JsonIgnore
 	@Column(name = "apply_state")
 	private String applyState  ;
 
+	@JsonIgnore
     @Column(name = "trade_state")
     private String tradeState ;
 
@@ -72,15 +77,19 @@ public class FssOfflineRechargeEntity implements Serializable {
 	@Column(name = "busi_type")
 	private String busiType ;
 
+	@JsonIgnore
 	@Column(name = "seq_no")
 	private String seqNo;
 
+	@JsonIgnore
     @Column(name = "mchn")
     private String mchn ;
 
+	@JsonIgnore
     @Column(name = "channel_no")
     private String channelNo;
 
+	@JsonIgnore
     @Column(name = "cust_no")
     private String custNo;
 	@Column(name = "chg_cd")
@@ -91,12 +100,19 @@ public class FssOfflineRechargeEntity implements Serializable {
     private String fyBank;
     @Column(name = "fy_bank_branch")
     private String fyBankBranch;
+
+	@JsonIgnore
     @Column(name = "desc_code")
     private String descCode;
+
 	@Column(name = "fy_acc_nm")
     private String fyAccNm;
+
 	@Column(name = "acc_no")
+	@JsonIgnore
 	private String accNo;
+
+	@JsonIgnore
 	@Column(name = "result_state")
 	private String resultState;
 
@@ -108,6 +124,7 @@ public class FssOfflineRechargeEntity implements Serializable {
 		this.mchntCd = mchntCd;
 	}
 
+	@JsonIgnore
 	@Column(name = "mchnt_cd")
 	private String mchntCd;
 
@@ -120,7 +137,7 @@ public class FssOfflineRechargeEntity implements Serializable {
 	}
 
 	@Column(name = "mchnt_txn_ssn")
-
+	@JsonIgnore
 	private String mchntTxnSsn;
 
 	public Long getId() {
