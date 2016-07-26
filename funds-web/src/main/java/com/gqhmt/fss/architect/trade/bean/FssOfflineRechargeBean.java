@@ -1,6 +1,8 @@
 package com.gqhmt.fss.architect.trade.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gqhmt.core.json.BigDecimalSerialize;
 import com.gqhmt.core.util.Application;
 
 import java.math.BigDecimal;
@@ -56,6 +58,7 @@ public class FssOfflineRechargeBean{
 		this.payState = payState;
 	}
 
+	@JsonSerialize(using = BigDecimalSerialize.class)
 	public BigDecimal getAmt() {
 		return amt;
 	}

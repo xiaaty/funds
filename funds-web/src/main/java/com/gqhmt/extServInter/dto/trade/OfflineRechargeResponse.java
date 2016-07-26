@@ -1,5 +1,7 @@
 package com.gqhmt.extServInter.dto.trade;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gqhmt.core.json.BigDecimalSerialize;
 import com.gqhmt.extServInter.dto.Response;
 
 import java.math.BigDecimal;
@@ -21,6 +23,7 @@ import java.math.BigDecimal;
  */
 public class OfflineRechargeResponse extends Response {
     private String chg_cd;//充值码
+
     private BigDecimal amt;//交易金额
     private String chg_dt;//充值码时间
     private String fy_acc_nm;//入账户名
@@ -34,6 +37,9 @@ public class OfflineRechargeResponse extends Response {
     public void setChg_cd(String chg_cd) {
         this.chg_cd = chg_cd;
     }
+
+
+    @JsonSerialize(using = BigDecimalSerialize.class)
     public BigDecimal getAmt() {
         return amt;
     }

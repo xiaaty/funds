@@ -43,10 +43,15 @@ public class OfflineRechargeBeanOrderImpl implements IOfflineRechargeBenaOrder {
         FssOfflineRechargeEntity fssOfflineRechargeEntity = fssOfflineRechargeService.getOfflineRechargeById(offlineRechargeBeanDto.getOfflineRechargeId());
         OfflineRechargeBeanResponse response = new OfflineRechargeBeanResponse();
         if(fssOfflineRechargeEntity == null){
-            response.setResp_code("");
+            response.setResp_code("90009001");
         }else{
-            response.setResp_code("0000");
-            response.setOfflineRecharge(fssOfflineRechargeEntity);
+            if(fssOfflineRechargeEntity.getCustId().longValue() != offlineRechargeBeanDto.getCust_id().longValue()){
+                response.setResp_code("90009001");
+            }else{
+                response.setResp_code("0000");
+                response.setOfflineRecharge(fssOfflineRechargeEntity);
+            }
+
         }
         return response;
     }
