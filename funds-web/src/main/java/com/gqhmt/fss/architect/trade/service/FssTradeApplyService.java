@@ -519,17 +519,22 @@ public class FssTradeApplyService {
 	 public int compare_date(String BespokeDate){
 		 return 0;
 	 }
-    public int compare_date(Date BespokeDate) {
-    	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-    	Date date=new Date();
-    	String nowdate=sdf.format(date);
-    	String bespokeDate=sdf.format(BespokeDate);
-    	if(bespokeDate.equals(nowdate)){
-    		return 0;
-    	}else{
-    		return 1;
-    	}
-    }
+	public int compare_date(Date BespokeDate) throws FssException{
+		try{
+			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+			String dateTime1 = df.format(BespokeDate);//预约到账日期
+			Date bespDate=df.parse(dateTime1);
+			String dateTime2 = df.format(new Date());
+			Date today=df.parse(dateTime2);
+			if(bespDate.compareTo(today)>=0){//大于等于今天
+				return 0;
+			}else{
+				return 1;
+			}
+		}catch (Exception e){
+			throw new FssException("日期格式转换异常");
+		}
+	}
 
     /**
 	 * author:柯禹来
