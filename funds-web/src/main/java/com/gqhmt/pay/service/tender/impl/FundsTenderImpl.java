@@ -5,7 +5,6 @@ import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -161,8 +160,8 @@ public class FundsTenderImpl  implements IFundsTender {
         // super.getFundAccountThird(bid.getCustomerId(),thirdPartyType);
         // 冻结账户
         FundAccountEntity toEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-        FundOrderEntity orderEntity = paySuperByFuiou.canclePreAuth(fromEntity,toSFEntity,tender.getRealAmount(),3011,tender.getId(),0,contactNo);
-        tradeRecordService.unFrozen(toEntity, fromEntity,tender.getRealAmount(), 3011, orderEntity,title + " 流标退款 " + new BigDecimal(tender.getRealAmount().toString()) + "元",BigDecimal.ZERO);
+        FundOrderEntity orderEntity = paySuperByFuiou.canclePreAuth(fromEntity,toSFEntity,tender.getRealAmount(),3011,tender.getId(),0,contactNo,tender.getContractNo(),bid.getContractNo());
+        tradeRecordService.unFrozen(toEntity, fromEntity,tender.getRealAmount(), 3011, orderEntity,title + " 流标退款 " + new BigDecimal(tender.getRealAmount().toString()) + "元",BigDecimal.ZERO,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue());
     }
 
 
