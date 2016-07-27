@@ -160,7 +160,7 @@ public class FundsTenderImpl  implements IFundsTender {
         // super.getFundAccountThird(bid.getCustomerId(),thirdPartyType);
         // 冻结账户
         FundAccountEntity toEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-        FundOrderEntity orderEntity = paySuperByFuiou.canclePreAuth(fromEntity,toSFEntity,tender.getRealAmount(),3011,tender.getId(),0,contactNo,tender.getContractNo(),bid.getContractNo());
+        FundOrderEntity orderEntity = paySuperByFuiou.canclePreAuth(fromEntity,toSFEntity,tender.getRealAmount(),3011,tender.getId(),0,contactNo,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue());
         tradeRecordService.unFrozen(toEntity, fromEntity,tender.getRealAmount(), 3011, orderEntity,title + " 流标退款 " + new BigDecimal(tender.getRealAmount().toString()) + "元",BigDecimal.ZERO,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue());
     }
 
