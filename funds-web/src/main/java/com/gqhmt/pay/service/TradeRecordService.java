@@ -316,7 +316,7 @@ public class TradeRecordService {
                 if(fundOrderEntity.getOrderFrormId() != null && fundOrderEntity.getOrderFrormId() != 0){
                     isOffline = true;
                 }
-                sequenceService.charge(entity,isOffline? 1014: 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
+                sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
 
                 if(isOffline){
