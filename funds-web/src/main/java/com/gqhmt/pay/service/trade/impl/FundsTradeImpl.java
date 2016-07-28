@@ -409,7 +409,7 @@ public class FundsTradeImpl  implements IFundsTrade {
                 fundType = 1013;
             }
             //资金处理
-            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,sourceType,null,newOrderType,tradeType,lendNo,toCustId != null ? toCustId.longValue():0,toLendNo,loanCustId,loanNo);
+            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,8,null,newOrderType,tradeType,lendNo,toCustId != null ? toCustId.longValue():0l,toLendNo,loanCustId,loanNo);
         }catch (Exception e){
             throw new FssException(e.getMessage());
         }
