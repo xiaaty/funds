@@ -17,6 +17,7 @@ import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -73,6 +74,9 @@ public class BidRepaymentService extends BidSupper{
     @Resource
     private FssBackplateService fssBackplateService;
 
+    private FundsTradeImpl fundsTrade;
+
+
     public void BidRepayment(FssLoanEntity loanEntity) throws FssException {
         Map<String,String > paramMap = new HashMap<>();
         paramMap.put("id",loanEntity.getContractId());
@@ -105,12 +109,22 @@ public class BidRepaymentService extends BidSupper{
         BigDecimal sumRepay  = BigDecimal.ZERO;
 
 
+
         for (RepaymentBean bean : list) {
-            sumRepay = sumRepay.add(bean.getRepaymentAmount());
+            if (bean.getRepaymentAmount().multiply(new BigDecimal("100")).longValue() <= 0) {
+                sumRepay = sumRepay.add(bean.getRepaymentAmount());
+            }
         }
 
         //账户资金余额验证   todo
+        if (sumRepay.multiply(new BigDecimal("100")).longValue() <= 0) {
+            try {
+                fundsTrade.transfer(3,0,cusId,1,sumRepay,GlobalConstants.ORDER_TRANSFER,null,null, "1119", null,null,null,bid.getCustomerId().longValue(), bid.getContractNo());
+            }catch (FssException e){
+                LogUtil.error(this.getClass(),e);
+            }
 
+        }
         //利差补偿  todo
 
         //抵押标 还款资金转账
