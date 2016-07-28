@@ -503,10 +503,10 @@ public class FuiouCallBack {
 	@ResponseBody
 	public String returnOfflineRechargeResult(String resp_code,String mchnt_cd,String mchnt_txn_ssn,String login_id,String amt,String remark,String signature) throws FssException{
 		//回调明文
-		String signValue = amt+"|"+ login_id + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark == null?"":remark+"|"+resp_code;
+		String signValue = amt+"|"+ login_id + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark+"|"+resp_code;
 		//验签
 		boolean flag = SecurityUtils.verifySign(signValue, signature);
-		LogUtil.info(this.getClass(), "fuiou callback returnOfflineRechargeResult:" + flag);
+		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue);
 		//返回富友接收结果
 		String result = "SUCCESS";
 		if (flag) {
