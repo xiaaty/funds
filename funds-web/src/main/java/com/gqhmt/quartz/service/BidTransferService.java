@@ -74,7 +74,6 @@ public class BidTransferService {
         if(field.getState() != 10890001){
             return;
         }
-
         String  fromUserName = field.getFromUserName();
         String  toUserName = field.getToUserName();
         BigDecimal amt  = field.getAmt();
@@ -120,7 +119,18 @@ public class BidTransferService {
 
 
     public Runnable transferRunProcess(final FuiouFtpOrder fuiouFtpOrder){
-
+        try {
+            fuiouFtpOrder.setFileSize(1);
+            fuiouFtpOrder.setFileStatus(2);
+            fuiouFtpOrder.setUploadStatus(3);
+            fuiouFtpOrderService.update(fuiouFtpOrder);
+            fuiouFtpOrder.setDownloadStatus(4);
+            Thread.sleep(1000);
+        }catch (FssException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Runnable thread = new Runnable(){
 
             @Override
@@ -131,11 +141,7 @@ public class BidTransferService {
                     for(FuiouFtpColomField fuiouFtpColomField : list){
                         transfer(fuiouFtpColomField,fuiouFtpOrder);
                     }
-                    fuiouFtpOrder.setFileSize(1);
-                    fuiouFtpOrder.setFileStatus(2);
-                    fuiouFtpOrder.setUploadStatus(3);
-                    fuiouFtpOrder.setDownloadStatus(4);
-                    fuiouFtpOrderService.update(fuiouFtpOrder);
+
                 } catch (FssException e) {
                     e.printStackTrace();
                 }
