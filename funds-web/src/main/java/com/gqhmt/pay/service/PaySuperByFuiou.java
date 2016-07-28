@@ -172,7 +172,15 @@ public class PaySuperByFuiou {
         }else {
             response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_TRANSFER, fundOrderEntity, fromEntity, toEntity, amount,contractNo);
         }
+
+        if("0000".equals(response.getCode())){
+            this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_SUCCESS,response.getThirdReturnCode(),response.getMsg());
+        }else{
+            this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_FAILED,response.getThirdReturnCode(),response.getMsg());
+            throw new FssException(toLocalCode(response.getThirdReturnCode()));
+        }
         response.setFundOrderEntity(fundOrderEntity);
+
         return response;
     }
 
@@ -192,7 +200,7 @@ public class PaySuperByFuiou {
 
     public FundOrderEntity canclePreAuth(FundAccountEntity fromEntity,FundAccountEntity toSFEntity,BigDecimal amount,int orderType,Long busiId,int busiType,String contactNo,String lendNo,String loanNo,Long loanCustId) throws FssException {
         LogUtil.info(this.getClass(),"第三方预授权:"+fromEntity.getAccountNo()+":"+toSFEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
-        FundOrderEntity fundOrderEntity = this.createOrder(fromEntity,null, amount, orderType, busiId, busiType,null,null,lendNo,null,loanCustId,loanNo);
+        FundOrderEntity fundOrderEntity = this.createOrder(fromEntity,null, amount, orderType, busiId, busiType,"1114","",lendNo,null,loanCustId,loanNo);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_INVEST_BID_CANCLE, fundOrderEntity, fromEntity, String.valueOf(busiId), amount, contactNo, toSFEntity);
         execExction(response,fundOrderEntity);
         return fundOrderEntity;
