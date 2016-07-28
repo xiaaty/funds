@@ -63,8 +63,30 @@ public class FundOrderEntity implements java.io.Serializable {
 	
 	@Column(name = "thirdparty_type",updatable = false,nullable = false)
     private String thirdPartyType;			//第三方支付类型
-	
 
+	@Column(name="cust_id",updatable = false)
+	private Long custId;       // bigint(20) DEFAULT NULL COMMENT '出账（转账）入账（其他交易）客户id',
+
+	@Column(name="lend_no",updatable = false)
+	private String  lendNo; //varchar(45) DEFAULT NULL COMMENT '出账（转账）入账（其他交易）出借编号，线上客户为空',
+
+	@Column(name="to_cust_id",updatable = false)
+	private Long  toCustId; //bigint(20) DEFAULT NULL COMMENT '入账（转账）客户id',
+
+	@Column(name="to_lend_no",updatable = false)
+	private String toLendNo; //varchar(45) DEFAULT NULL COMMENT '入账（转账）出借编号',
+
+	@Column(name="loan_cust_id",updatable = false)
+	private Long loanCustId; //bigint(20) DEFAULT NULL COMMENT '对应借款标的借款人客户id，非抵押权人，原始借款人客户id',
+
+	@Column(name="loan_no",updatable = false)
+	private String loanNo; //varchar(45) DEFAULT NULL COMMENT '投标，满标，回款，等等对应借款合同编号',
+
+	@Column(name="new_order_type",updatable = false)
+	private String newOrderType; //char(10) DEFAULT '' COMMENT '新资金类型',
+
+	@Column(name="trade_type",updatable = false)
+	private String tradeType; //char(10) DEFAULT '' COMMENT '交易类型',
 
 
 	public Long getId() {
@@ -195,4 +217,68 @@ public class FundOrderEntity implements java.io.Serializable {
     public void setChargeAmount(BigDecimal chargeAmount) {
         this.chargeAmount = chargeAmount;
     }
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public String getLendNo() {
+		return lendNo;
+	}
+
+	public void setLendNo(String lendNo) {
+		this.lendNo = lendNo;
+	}
+
+	public Long getToCustId() {
+		return toCustId;
+	}
+
+	public void setToCustId(Long toCustId) {
+		this.toCustId = toCustId;
+	}
+
+	public String getToLendNo() {
+		return toLendNo;
+	}
+
+	public void setToLendNo(String toLendNo) {
+		this.toLendNo = toLendNo;
+	}
+
+	public Long getLoanCustId() {
+		return loanCustId;
+	}
+
+	public void setLoanCustId(Long loanCustId) {
+		this.loanCustId = loanCustId;
+	}
+
+	public String getLoanNo() {
+		return loanNo;
+	}
+
+	public void setLoanNo(String loanNo) {
+		this.loanNo = loanNo;
+	}
+
+	public String getNewOrderType() {
+		return newOrderType;
+	}
+
+	public void setNewOrderType(String newOrderType) {
+		this.newOrderType = newOrderType;
+	}
+
+	public String getTradeType() {
+		return tradeType;
+	}
+
+	public void setTradeType(String tradeType) {
+		this.tradeType = tradeType;
+	}
 }

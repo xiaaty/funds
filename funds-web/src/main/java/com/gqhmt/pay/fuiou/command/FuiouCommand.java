@@ -3,6 +3,7 @@ package com.gqhmt.pay.fuiou.command;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.ResourceUtil;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.AbstractThirdpartyCommand;
 import com.gqhmt.pay.core.command.CommandResponse;
@@ -14,7 +15,6 @@ import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.pay.fuiou.connection.ConnectionFuiou;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 
 import java.util.*;
 
@@ -46,12 +46,13 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
             response = new CommandResponse();
             long i = (long) (Math.random()*20);
             System.out.println(i);
-            if(i  == 11){
+            if(PayCommondConstants.COMMAND_TRADE_WITHHOLDING.equals(apiKey) &&  i  == 11){
                 response.setCode("100017");
                 response.setThirdReturnCode("100017");
                 response.setMsg("余额不足");
             }else{
                 response.setCode("0000");
+                response.setThirdReturnCode("0000");
                 response.setMsg("成功");
             }
 

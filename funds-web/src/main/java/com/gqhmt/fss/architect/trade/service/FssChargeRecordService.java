@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GenerateBeanUtil;
+import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.trade.entity.FssChargeRecordEntity;
 import com.gqhmt.fss.architect.trade.mapper.write.FssChargeRecordWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -42,60 +44,56 @@ public class FssChargeRecordService {
 	 *创建收费记录
 	 * @param fromEntity
 	 * @param toEntiry
-	 * @param amount
-	 * @param memo
-	 * @param actionType
-	 * @param accountType
+	 * @param amt
 	 * @param loanType
 	 * @param bustType
      * @throws FssException
      */
-	public void addChargeRecord(FundAccountEntity fromEntity, FundAccountEntity toEntiry, BigDecimal amount, String memo, int actionType, int accountType, String loanType, Integer bustType, FundSequenceEntity fundSequenceEntity) throws FssException{
-		FssChargeRecordEntity entity=new FssChargeRecordEntity();
-		Map<Integer,String> busiTypeMap=new HashMap<Integer,String>();
-		busiTypeMap.put(0,"主账户");
-		busiTypeMap.put(1,"借款账户");
-		busiTypeMap.put(2,"线下出借账户");
-		busiTypeMap.put(3,"线上出借账户");
-		busiTypeMap.put(96,"应付账户");
-		busiTypeMap.put(99,"冻结金账户");
+	public FssChargeRecordEntity addChargeRecord(FundAccountEntity fromEntity, FundAccountEntity toEntiry,BigDecimal amt,String loanType, String bustType,String tradeType,String seqNo,String busiNo,String fromAccType,String toAccType,String summary) throws FssException{
+		FssChargeRecordEntity entity= GenerateBeanUtil.GenerateClassInstance(FssChargeRecordEntity.class);
 		Map<String,String> platFormMap=new HashMap<String,String>();
 		platFormMap.put("10040001","北京");
 		platFormMap.put("10040002","天津");
 		platFormMap.put("10040003","上海");
 		platFormMap.put("10040099","其他城市");
-		entity.setSeqNo(fundSequenceEntity.getOrderNo());
 		entity.setFromAccNo(fromEntity.getAccountNo());
 		entity.setFromCustNo(String.valueOf(fromEntity.getCustId()));
 		entity.setFromCustName(fromEntity.getCustName());
+		entity.setFromAccType(fromAccType);
 		entity.setToAccNo(toEntiry.getAccountNo());
 		entity.setToCustNo(String.valueOf(toEntiry.getCustId()));
+		entity.setToAccType(toAccType);
 		entity.setToCustName(toEntiry.getCustName());
-		entity.setChargeType(Application.getInstance().getDictName(String.valueOf(accountType)));
-		entity.setCharge(amount);
-		entity.setBusiType(busiTypeMap.get(bustType));
-		entity.setTradeType(String.valueOf(actionType));
-		entity.setTradeState("10030002");
-		entity.setTradeResult("10080002");
+		entity.setAmt(amt);
+		entity.setSeqNo(seqNo);
+		entity.setBusiNo(busiNo);
+		entity.setBusiType(bustType);
+		entity.setTradeType(tradeType);
+		entity.setChargeType(tradeType);//费用类型
 		entity.setTradeTime(new Date());
+		entity.setCreateTime(new Date());
+		entity.setModifyTime(new Date());
 		entity.setPlatform(platFormMap.get(loanType));
-		entity.setSumary(fundSequenceEntity.getSumary());
-		entity.setRespCode("0000");
-		entity.setRespMsg("成功");
+		entity.setSumary(summary);
 		try {
 			fssChargeRecordWriteMapper.insert(entity);
+			return entity;
 		}catch (Exception e){
-			entity.setTradeState("10030003");
-			entity.setTradeResult("10080010");
-			entity.setRespCode("10080010");
-			entity.setRespMsg("失败");
-			fssChargeRecordWriteMapper.updateByPrimaryKey(entity);
 			throw new FssException("91009804");
 		}
 	}
 
-
-
+	/**
+	 *成功修改状态
+	 * @throws FssException
+     */
+    public void updateChargeRecord(FssChargeRecordEntity entity,String orderNo,String tradeResult) throws FssException{
+		entity.setTradeResult(tradeResult);
+		entity.setOrderNo(orderNo);
+		entity.setModifyTime(new Date());
+		entity.setRespMsg("成功");
+		fssChargeRecordWriteMapper.updateByPrimaryKey(entity);
+}
 
 
 

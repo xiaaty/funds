@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.depos.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -108,7 +109,13 @@ public class FssFinanceSumEntity implements Serializable {
 	private BigDecimal tCreditSum;                  //截止当日累计放款
 
 	@Column(name="status")
-	private String status;                  //截止当日累计放款
+	private String status;                  //状态
+
+	@Column(name = "create_time")
+	private Date createTime;
+
+	@Column(name = "modify_time")
+	private Date modifyTime;
 
 
 	public Long getId() {
@@ -319,5 +326,19 @@ public class FssFinanceSumEntity implements Serializable {
 		this.status = status;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
 
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 }

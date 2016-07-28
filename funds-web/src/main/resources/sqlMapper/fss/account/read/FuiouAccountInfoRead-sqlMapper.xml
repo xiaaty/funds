@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FuiouAccountInfoReadMapper">
+    <select id="queryAccountInfoList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
+        SELECT
+            id,
+            trade_type tradeType,
+            business_code businessCode,
+            trade_sources tradeSources,
+            contract_num contractNum,
+            batch,
+            batch_foiu_finance batchFoiuFinance,
+            trading_time tradingTime,
+            transaction_amount transactionAmount,
+            user_account userAccount,
+            user_name userName,
+            in_account inAccount,
+            in_user_name inUserName,
+            total_money totalMoney,
+            balance,
+            remark,
+            return_num returnNum,
+            state,
+            account_state accountState,
+            boolean_type booleanType
+        FROM t_gq_fss_fuiou_account_info t
+        WHERE (boolean_type != '-1' or boolean_type is null)
+        <if test="tradeType != null and tradeType != '' ">
+            AND  t.trade_type = #{tradeType}
+        </if>
+        <if test=" businessCode != null and businessCode != ''">
+            AND business_code = #{businessCode}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND user_name = #{userName}
+        </if>
+        <if test="tradingTime!=null and tradingTime!=''">
+            AND date_format(trading_time,'%Y-%m-%d') = #{tradingTime}
+        </if>
+            ORDER BY t.trading_time
+    </select>
+
+    <select id="queryAccountFailInfoList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
+        SELECT
+            id,
+            trade_type tradeType,
+            business_code businessCode,
+            trade_sources tradeSources,
+            contract_num contractNum,
+            batch,
+            batch_foiu_finance batchFoiuFinance,
+            trading_time tradingTime,
+            transaction_amount transactionAmount,
+            user_account userAccount,
+            user_name userName,
+            in_account inAccount,
+            in_user_name inUserName,
+            total_money totalMoney,
+            balance,
+            remark,
+            return_num returnNum,
+            state,
+            account_state accountState,
+            boolean_type booleanType
+        FROM t_gq_fss_fuiou_account_info t
+        WHERE boolean_type = '-1'
+        <if test="id!=null and id!='' and id!= 0">
+            AND t.id = cast(#{id} as signed int)
+        </if>
+        <if test="tradeType!=null and tradeType!=''">
+            AND  t.trade_type = #{tradeType}
+        </if>
+        <if test="tradingTime!=null and tradingTime != ''">
+            AND date_format(t.trading_time,'%Y-%m-%d') = #{tradingTime}
+        </if>
+        ORDER BY t.trading_time
+    </select>
+</mapper>

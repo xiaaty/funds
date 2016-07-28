@@ -79,9 +79,9 @@ public interface IFundsTrade {
      */
     public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException;
 
-    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
+    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild) throws FssException ;
 
-    public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
+    public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild) throws FssException ;
 
 //    public FundOrderEntity withholdingApplyNew(Long custId, String contractNo, BigDecimal amount, Long busiId) throws FssException ;
     /**
@@ -92,22 +92,30 @@ public interface IFundsTrade {
      */
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
 
-    public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
+    public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType,Integer tradeType,Integer tradeTypeChild) throws FssException;
 
 //    public FundOrderEntity withdrawApplyNew(int custID, int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
 
     /**
      * 转账接口
-     * @param transferDto
+     * @param from_cust_no
+     * @param from_user_no
+     * @param from_cust_type
+     * @param to_cust_no
+     * @param to_user_no
+     * @param to_cust_type
+     * @param amt
+     * @param funds_type
+     * @param busi_type
+     * @param busi_id
      * @return
      * @throws FssException
      */
-    public boolean transfer(TransferDto transferDto) throws FssException;
+    public boolean transfer(String mchn,String seq_no,String trade_type,Integer from_cust_no,Integer from_user_no,Integer from_cust_type,Integer to_cust_no,Integer to_user_no,Integer to_cust_type,BigDecimal amt,Integer  funds_type,Integer  busi_type,Long  busi_id,Integer actionType,String contract_no,String loan_type) throws FssException;
 
 
     /**
      * 转账接口,老账户提现 预留接口,新版账户提现,不设此接口
-     * @param thirdPartyType
      * @param fromCusID
      * @param fromType
      * @param toCusID
@@ -119,10 +127,10 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public FundOrderEntity transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+    public boolean transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException;
 
 
-    public FundOrderEntity transefer(String fromAccNo,String toAccno,BigDecimal amount,Integer orderType,Long busiId,int busiType) throws FssException;
+    public boolean transefer(String fromAccNo,String toAccno,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException;
 
 
     /**
@@ -154,19 +162,25 @@ public interface IFundsTrade {
     boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount,
                           Long busiId,int selletType) throws FssException;
 
-
-
     /**
-     * 冻结
-     * @param dto
+     * 资金冻结
+     * @param custId
+     * @param busiType
+     * @param amt
      * @return
      * @throws FssException
      */
-    public boolean froze(FreezeDto dto) throws FssException;
+    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
 
     /**
-     * 解冻
-     * @param dto
+     * 资金解冻
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_no
+     * @param user_no
+     * @param amt
+     * @param busi_type
      * @return
      * @throws FssException
      */
@@ -238,12 +252,6 @@ public interface IFundsTrade {
      */
     public void withdraw(WithdrawSuccessDto withdrawSuccessDto) throws FssException;
 
-    /* public boolean sstxBusiness(SstxDto sstx) throws FssException;
-
-     public boolean ssdkBusiness (SsdkDto ssdk) throws FssException;
- */
-    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
-
     /**
      * 充值提现金额变动通知
      *
@@ -267,4 +275,22 @@ public interface IFundsTrade {
      */
     public OfflineRechargeResponse OfflineRechargeApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
 
+    /**
+     * 债权转让
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param bid_id
+     * @param busi_bid_no
+     * @param tender_no
+     * @param cust_no
+     * @param busi_no
+     * @param amt
+     * @param o_tender_no
+     * @param o_cust_no
+     * @param o_busi_no
+     * @return
+     * @throws FssException
+     */
+    public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no,Integer acc_type,Integer to_acc_type,Integer fundType,Integer actionType) throws FssException;
 }

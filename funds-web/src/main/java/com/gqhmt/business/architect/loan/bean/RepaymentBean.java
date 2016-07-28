@@ -5,7 +5,8 @@ import java.math.BigDecimal;
 public class RepaymentBean {
 
 	// 1:A0,2:AX
-	private int customerId;
+	private Long id;
+	private Long customerId;
 	private BigDecimal repaymentPrincipal = BigDecimal.ZERO;             //本金
 	private BigDecimal repaymentInterest = BigDecimal.ZERO;              //利息
 	private BigDecimal repaymentAmount = BigDecimal.ZERO;               //本息
@@ -27,14 +28,16 @@ public class RepaymentBean {
 	private BigDecimal toPublicAmount  = BigDecimal.ZERO;
 
 	private Integer tenderId;
+
+	private String contractNo;
 	
 	
 
-	public int getCustomerId() {
+	public Long getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
 
@@ -147,5 +150,21 @@ public class RepaymentBean {
 
 	public void setToPublicAmount(BigDecimal toPublicAmount) {
 		this.toPublicAmount = toPublicAmount;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getContractNo() {
+		return contractNo;
+	}
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
 	}
 }

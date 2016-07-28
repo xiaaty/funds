@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.depos.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
+import com.gqhmt.fss.architect.depos.bean.FssProjectInfoBean;
 import com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity;
 /**
  * Filename:    com.gqhmt.quartz.mapper.write.FssQuartzWriteMapper
@@ -19,4 +20,10 @@ import com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity;
  * 16/3/14  柯禹来      1.0     1.0 Version
  */
 public interface FssProjectInfoWriteMapper extends ReadAndWriteMapper<FssProjectInfoEntity> {
+    /**
+     * jhz
+     * 添加项目信息
+     * @param fssProjectInfoBean
+     */
+   public void insertProjectInfo(FssProjectInfoBean fssProjectInfoBean);
 }

@@ -136,7 +136,7 @@ public class dealChannelController {
         String optionName = request.getParameter("optionName");
         String optionValue = request.getParameter("optionValue");
         response.setContentType("text/text; charset=utf-8");
-        System.out.println(orgId);
+
         ChannelMerchantEntity channelMerchantEntity = new ChannelMerchantEntity();
         channelMerchantEntity.setOptionName(optionName);
         channelMerchantEntity.setOptionValue(optionValue);
@@ -285,7 +285,6 @@ public class dealChannelController {
         String channelType = request.getParameter("channelType");
         String channelPaymentMode = request.getParameter("channelPaymentMode");
         response.setContentType("text/text; charset=utf-8");
-        System.out.println("channelPaymentMode: "+channelPaymentMode);
         ChannelOrgEntity channelOrgEntity = new ChannelOrgEntity();
         channelOrgEntity.setId(id);
         channelOrgEntity.setChannelCondition(channelCondition);

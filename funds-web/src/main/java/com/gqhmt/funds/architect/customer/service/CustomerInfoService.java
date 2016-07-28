@@ -333,21 +333,16 @@ public class CustomerInfoService {
 	 * @return
 	 */
 	public CustomerInfoEntity queryCustomerInfoByCertNo(String certNo) {
-		CustomerInfoEntity entity = new CustomerInfoEntity();
-		entity.setCertNo(certNo);
-		return customerInfoReadMapper.selectOne(entity);
+		return this.searchCustomerInfoByCertNo(certNo);
 	}
 
-	/**//**
-	 * 根据省份证号查询客户信息
-	 *
+	/**
+	 * 根据身份份证号查询客户信息
 	 * @param certNo
 	 * @return
 	 */
 	public CustomerInfoEntity searchCustomerInfoByCertNo(String certNo) {
-		CustomerInfoEntity entity = new CustomerInfoEntity();
-		entity.setCertNo(certNo);
-		return customerInfoReadMapper.selectOne(entity);
+		return customerInfoReadMapper.queryCustomerByCertNo(certNo);
 	}
 
 	/**
@@ -1132,7 +1127,6 @@ public class CustomerInfoService {
 	public CustomerInfoEntity createCustomerInfo(CreateLoanAccountDto loanAccountDto) throws FssException{
 		return this.createCustomer(loanAccountDto.getCert_no(),loanAccountDto.getName(),loanAccountDto.getMobile());
 	}
-
 	/**
 	 * 生成UUid
 	 * @return

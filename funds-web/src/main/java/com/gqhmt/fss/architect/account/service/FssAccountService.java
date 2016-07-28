@@ -194,7 +194,7 @@ public class FssAccountService {
             busiNo = fssCustomerEntity.getCustNo();
         }else{//如果,线下出借,借款,保理,则业务编号不能为空
             if(busiNo == null || "".equals(busiNo)){
-                throw new FssException("90002016");
+                throw new FssException("90002016");   //todo  未设定error类型  抛出业务编号为空
             }
         }
         //判断是否存在该账户
@@ -224,7 +224,7 @@ public class FssAccountService {
             }
             fssAccountWriteMapper.insert(fssAccountEntity);
         }
-        return fssAccountEntity;
+    	return fssAccountEntity;
     }
 
 
@@ -237,15 +237,15 @@ public class FssAccountService {
 	 */
 	public FssFuiouAccountEntity createFuiouAccount(String mchn,FssCustomerEntity fssCustomerEntity,String bankNo) throws FssException {
         FssFuiouAccountEntity fssFuiouAccountEntity=fssFuiouAccountReadMapper.getFuiouAccountByCustNo(String.valueOf(fssCustomerEntity.getCustNo()));
-        if(fssFuiouAccountEntity==null) {
+        if(fssFuiouAccountEntity==null){
             try {
                 fssFuiouAccountEntity = GenerateBeanUtil.GenerateClassInstance(FssFuiouAccountEntity.class);
                 fssFuiouAccountEntity.setCusNo(String.valueOf(fssCustomerEntity.getCustNo()));
                 fssFuiouAccountEntity.setUserNo(fssCustomerEntity.getUserId());
                 fssFuiouAccountEntity.setAccNo(fssCustomerEntity.getMobile());
-                if (fssCustomerEntity.getCustId() < 100) {
+                if(fssCustomerEntity.getCustId()<100){
                     fssFuiouAccountEntity.setAccUserName(GlobalConstants.COMPANY_ACCOUNT_REAL_NAME.get(fssCustomerEntity.getCustId()));
-                } else {
+                }else {
                     fssFuiouAccountEntity.setAccUserName(fssCustomerEntity.getName());
                 }
                 fssFuiouAccountEntity.setBankCardNo(bankNo);
@@ -259,14 +259,17 @@ public class FssAccountService {
             }
         }
         return fssFuiouAccountEntity;
-    }
+
+	}
 
 
     public FssAccountEntity getAccountByAccNo(String accNo){
         return accountReadMapper.getFssAccountByAccNo(accNo);
     }
+
     public FssAccountEntity getAccountByBusiNo(String busiNo,String accType){
         return accountReadMapper.getAccountByBusiNo(busiNo,Integer.valueOf(accType));
     }
+
 
 }

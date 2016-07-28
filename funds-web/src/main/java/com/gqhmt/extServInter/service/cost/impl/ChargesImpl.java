@@ -22,7 +22,8 @@ public class ChargesImpl implements ICharges {
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
         Response response = new Response();
         try {
-            costImpl.charge((CostDto)dto);
+            CostDto cdto=(CostDto)dto;
+            costImpl.charge(cdto.getPlatform(), cdto.getTrade_type(), cdto.getCust_no(), cdto.getBusi_type(),cdto.getAmt(),cdto.getAccounts_type());
             response.setResp_code("0000");
         } catch (FssException e) {
             LogUtil.info(this.getClass(), e.getMessage());

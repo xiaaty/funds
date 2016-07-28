@@ -11,7 +11,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,29 +41,18 @@ public class FundsTradeRecordController {
 	 */
 	@RequestMapping(value = "/trade/record/{type}",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-	public String queryWithdrawList(HttpServletRequest request,ModelMap model,FssTradeRecordEntity traderecorder,@PathVariable Integer  type) throws Exception {
-		traderecorder.setTradeType(type);//充值(1103),提现(1104)
-		if(traderecorder.getAccNo()!=null && !"".equals(traderecorder.getAccNo())){
-			traderecorder.setAccNo(traderecorder.getAccNo());
-		}else{
-			traderecorder.setAccNo(null);
-		}
-		if(traderecorder.getTradeState()!=null && !"".equals(traderecorder.getTradeState())){
-			traderecorder.setTradeState(traderecorder.getTradeState());
-		}
-		if(traderecorder.getTradeResult()!=null && !"".equals(traderecorder.getTradeResult())){
-			traderecorder.setTradeState(traderecorder.getTradeResult());
-		}
-		List<FssTradeRecordEntity> traderecorderlist = tradeRecordService.queryRechargeList(traderecorder);
-		model.addAttribute("page", traderecorderlist);
-		model.addAttribute("traderecorder", traderecorder);
+	public String queryWithdrawList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, @PathVariable Integer type) throws Exception {
+		map.put("type",String.valueOf(type));
+		List<FssTradeRecordEntity> list = tradeRecordService.queryRechargeList(map);
+		model.addAttribute("page", list);
+		model.put("map", map);
 		if(type==1103){//充值
 			return "fss/trade/trade_record/recharge_list";
 		}else{//提现
 			return "fss/trade/trade_record/withdraw_list";
 		}
 	}
-	
+
 	/**
 	 * author:柯禹来
 	 * function:转账交易记录
