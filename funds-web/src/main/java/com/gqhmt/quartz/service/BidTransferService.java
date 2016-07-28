@@ -137,9 +137,7 @@ public class BidTransferService {
                     for(FuiouFtpColomField fuiouFtpColomField : list){
                         transfer(fuiouFtpColomField,fuiouFtpOrder);
                     }
-                    fuiouFtpOrder.setFileSize(1);
-                    fuiouFtpOrder.setFileStatus(2);
-                    fuiouFtpOrder.setUploadStatus(3);
+
                     fuiouFtpOrder.setDownloadStatus(4);
                     fuiouFtpOrderService.update(fuiouFtpOrder);
                 } catch (FssException e) {
