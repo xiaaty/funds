@@ -314,6 +314,10 @@ public class TradeRecordService {
                 sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
 
+                if(fundOrderEntity.getOrderFrormId() != null && fundOrderEntity.getOrderFrormId() != 0){
+                    sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
+                    fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getId(),"0000");
+                }
             }catch (FssException e){
                 boolean isfundUk = false;
                 Throwable t = e.getCause();

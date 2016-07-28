@@ -180,7 +180,7 @@ public class FssOfflineRechargeService {
 		}
 		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		//创建回盘信息
-		fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeType());
+		//fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeType());
 	}
 
 
