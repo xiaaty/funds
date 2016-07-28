@@ -123,8 +123,8 @@ public class BidTransferService {
             fuiouFtpOrder.setFileSize(1);
             fuiouFtpOrder.setFileStatus(2);
             fuiouFtpOrder.setUploadStatus(3);
-            fuiouFtpOrderService.update(fuiouFtpOrder);
             fuiouFtpOrder.setDownloadStatus(4);
+            fuiouFtpOrderService.update(fuiouFtpOrder);
             Thread.sleep(1000);
         }catch (FssException e) {
             e.printStackTrace();
