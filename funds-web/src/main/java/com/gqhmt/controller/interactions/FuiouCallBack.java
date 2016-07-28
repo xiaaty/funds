@@ -506,7 +506,7 @@ public class FuiouCallBack {
 		String signValue = amt+"|"+ login_id + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark+"|"+resp_code;
 		//验签
 		boolean flag = SecurityUtils.verifySign(signValue, signature);
-		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue);
+		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue+":"+signature);
 		//返回富友接收结果
 		String result = "SUCCESS";
 		if (flag) {
