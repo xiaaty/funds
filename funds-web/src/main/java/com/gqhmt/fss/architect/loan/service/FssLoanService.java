@@ -482,12 +482,12 @@ public class FssLoanService {
 	 */
 	public void insertRepaymentDto(RePaymentDto rePaymentDto) throws FssException {
 		FssLoanEntity fssLoanEntity=new FssLoanEntity();
-		BigDecimal amt=BigDecimal.ZERO;
-		if(StringUtils.isNotEmpty(rePaymentDto.getMortgagee_user_id())){
-			amt=rePaymentDto.getPayment_amt();
-		}else{
-			amt=rePaymentDto.getContract_amt();
-		}
+//		BigDecimal amt=BigDecimal.ZERO;
+//		if(StringUtils.isNotEmpty(rePaymentDto.getMortgagee_user_id())){
+//			amt=rePaymentDto.getPayment_amt();
+//		}else{
+//			amt=rePaymentDto.getContract_amt();
+//		}
 		// 出账账户
 		FundAccountEntity fromEntity = fundAccountService.getFundAccount(rePaymentDto.getUser_id(), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		if(fromEntity==null ||fromEntity.getAmount().compareTo(amt)<0){
