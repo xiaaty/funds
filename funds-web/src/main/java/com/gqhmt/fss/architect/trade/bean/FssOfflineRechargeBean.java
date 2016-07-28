@@ -17,6 +17,9 @@ public class FssOfflineRechargeBean{
 	private String payStateType;//支付状态
 	private String payState;//支付状态
 	private BigDecimal amt;//充值金额
+	private String fyAccNm;//账户名
+	private String fyAccNo;//账号
+	private String fyBnakBranch;//支行名称
 
 	public Long getId() {
 		return id;
@@ -73,5 +76,29 @@ public class FssOfflineRechargeBean{
 
 	public void setPayStateType(String payStateType) {
 		this.payStateType = payStateType;
+	}
+
+	public String getFyAccNm() {
+		return fyAccNm;
+	}
+
+	public void setFyAccNm(String fyAccNm) {
+		this.fyAccNm = fyAccNm;
+	}
+
+	public String getFyAccNo() {
+		return fyAccNo;
+	}
+
+	public void setFyAccNo(String fyAccNo) {
+		this.fyAccNo = fyAccNo;
+	}
+
+	public String getFyBnakBranch() {
+		return fyBnakBranch;
+	}
+
+	public void setFyBnakBranch(String fyBnakBranch) {
+		this.fyBnakBranch = fyBnakBranch;
 	}
 }

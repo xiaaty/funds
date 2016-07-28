@@ -742,7 +742,7 @@ public class FssChangeCardService {
         newBankCardInfoEntity.setBankNo(bankNo);
         newBankCardInfoEntity.setCityId(cityId);
         newBankCardInfoEntity.setBankSortName(bankSortName);
-        newBankCardInfoEntity.setFilePath(filePath);
+//        newBankCardInfoEntity.setFilePath(filePath);
         bankCardinfoService.updateBankCardinfo(newBankCardInfoEntity);
     }
 
