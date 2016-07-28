@@ -124,7 +124,11 @@ public class BidTransferService {
             fuiouFtpOrder.setFileStatus(2);
             fuiouFtpOrder.setUploadStatus(3);
             fuiouFtpOrderService.update(fuiouFtpOrder);
+            fuiouFtpOrder.setDownloadStatus(4);
+            Thread.sleep(1000);
         }catch (FssException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         Runnable thread = new Runnable(){
@@ -138,8 +142,6 @@ public class BidTransferService {
                         transfer(fuiouFtpColomField,fuiouFtpOrder);
                     }
 
-                    fuiouFtpOrder.setDownloadStatus(4);
-                    fuiouFtpOrderService.update(fuiouFtpOrder);
                 } catch (FssException e) {
                     e.printStackTrace();
                 }
