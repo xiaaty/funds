@@ -118,7 +118,7 @@ public class BidRepaymentService extends BidSupper{
         }
 
         //账户资金余额验证   todo
-        if (sumRepay.multiply(new BigDecimal("100")).longValue() <= 0) {
+        if (sumRepay.multiply(new BigDecimal("100")).longValue() < 0) {
             try {
                 fundsTrade.transfer(3,0,cusId,1,sumRepay,GlobalConstants.ORDER_TRANSFER,0,0l, "1119", null,null,null,bid.getCustomerId().longValue(), bid.getContractNo());
             }catch (FssException e){
