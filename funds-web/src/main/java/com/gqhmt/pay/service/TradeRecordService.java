@@ -311,11 +311,15 @@ public class TradeRecordService {
             //充值成功，充值金额 "+amount+"元
             //充值操作
             try {
+
+                boolean isOffline = false;
+                if(fundOrderEntity.getOrderFrormId() != null && fundOrderEntity.getOrderFrormId() != 0){
+                    isOffline = true;
+                }
                 sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
 
-                if(fundOrderEntity.getOrderFrormId() != null && fundOrderEntity.getOrderFrormId() != 0){
-                    sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
+                if(isOffline){
                     fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getOrderFrormId(),"0000");
                 }
             }catch (FssException e){
