@@ -314,7 +314,8 @@ public class FssTradeApi {
 	 * @return
 	 */
 	@RequestMapping(value = "/bondTransfer",method = RequestMethod.POST)
-	public Object bondTransfer(@RequestBody BondTransferDto dto){
+//	public Object bondTransfer(@RequestBody BondTransferDto dto){
+	public Object bondTransfer(BondTransferDto dto){
 		Response response=new Response();
 		try {
 			response = bondTransferImpl.execute(dto);
