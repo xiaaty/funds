@@ -426,7 +426,10 @@ public class BankCardInfoService {
 	}
 	
 	public void delBankCard(Integer id){
-		this.bankCardinfoWriteMapper.deleteBankCardInfo(id);
+		BankCardInfoEntity bankCardInfoEntity=this.getBankCardInfoById(id);
+		bankCardInfoEntity.setModifyTime(new Date());
+		bankCardInfoEntity.setIsDel(0);
+		this.update(bankCardInfoEntity);
 	}
 	
 	public List<CustomerInfoEntity> getAllCustomers(CustomerInfoEntity customer){
@@ -553,8 +556,107 @@ public class BankCardInfoService {
 		}
 
 
-	public BankCardInfoEntity getBankCardByCustNo(Long custId){
-		return bankCardinfoReadMapper.queryBankCard(custId.intValue());
+	public List<BankCardInfoEntity> getBankCardByCustNo(String custId)throws  FssException{
+		return bankCardinfoReadMapper.queryBankCard(Integer.valueOf(custId));
 	}
-	 
+
+	/**
+	 * jhz
+	 * 添加银行卡
+	 * @param custNo
+	 * @param bankNo
+	 * @param bankId
+	 * @param bankAddr
+	 * @param bankCity
+	 * @param filePath
+	 * @param seqNo
+	 * @param tradeType
+     * @param mchn
+     * @throws FssException
+     */
+	 public void addCardInfo(String custNo, String bankNo, String bankId, String bankAddr, String bankCity, String filePath,String seqNo,String tradeType,String mchn) throws  FssException{
+		 BankCardInfoEntity bankCardInfo=new BankCardInfoEntity();
+		  CustomerInfoEntity customerInfoEntity  = customerInfoService.getCustomerById(Long.valueOf(custNo));
+		 if(customerInfoEntity == null){
+			 throw new FssException("90002007");
+		 }
+		if(bankCity.length()==6){
+			bankCity=Application.getInstance().getFourCode(bankCity);
+		}
+		 BankCardInfoEntity bankCardInfoEntity=this.creatBankInfoEntity(customerInfoEntity.getId(),customerInfoEntity.getCertNo(),customerInfoEntity.getMobilePhone(),customerInfoEntity.getCustomerName(),bankNo,bankId,bankCity,filePath,tradeType);
+		 bankCardinfoWriteMapper.insertSelective(bankCardInfoEntity);
+	 }
+
+	/**
+	 * jhz
+	 * 创建银行卡信息
+	 * @param custId
+	 * @param certNo
+	 * @param mobile
+	 * @param custName
+	 * @param bankNo
+	 * @param bankId
+	 * @param bankCity
+	 * @param filePath
+	 * @param tradeType
+     * @return
+     * @throws FssException
+     */
+	public BankCardInfoEntity creatBankInfoEntity(Long custId,String certNo,String mobile,String custName,String bankNo, String bankId, String bankCity, String filePath,String tradeType)throws  FssException{
+		BankCardInfoEntity bankCardInfoEntity=new BankCardInfoEntity();
+		bankCardInfoEntity.setCustId(custId.intValue());
+		bankCardInfoEntity.setCertNo(certNo);
+		bankCardInfoEntity.setMobile(mobile);
+		bankCardInfoEntity.setCertName(custName);
+		bankCardInfoEntity.setBankLongName(Application.getInstance().getDictName("9703"+bankId));
+		bankCardInfoEntity.setBankSortName(Application.getInstance().getDictName("9703"+bankId));
+		bankCardInfoEntity.setBankNo(bankNo);
+		bankCardInfoEntity.setIsPersonalCard(1);
+		bankCardInfoEntity.setCityId(bankCity);
+		bankCardInfoEntity.setCreateTime(new Date());
+		bankCardInfoEntity.setCreateUserId(1);
+		bankCardInfoEntity.setParentBankId(bankId);
+		bankCardInfoEntity.setModifyTime(new Date());
+		bankCardInfoEntity.setModifyUserId(1);
+//		bankCardInfoEntity.setFilePath(filePath);
+		bankCardInfoEntity.setChangeState(3); //3新增
+//		bankCardInfoEntity.setStatus("90004041");//90004041 银行卡未激活 90004043 已提交激活申请
+//		bankCardInfoEntity.setCardIndex("fuiou");
+		bankCardInfoEntity.setSource(tradeType);//存交易类型
+		return  bankCardInfoEntity;
+	}
+
+	/**
+	 * jhz
+	 * 删除银行卡信息
+	 * @param bankId
+	 * @throws FssException
+     */
+	public  void deleteBankCardInfo(String bankId)throws  FssException{
+		BankCardInfoEntity bankCardInfoEntity=this.getBankCardById(Integer.valueOf(bankId));
+		if(bankCardInfoEntity==null) throw  new FssException("银行卡信息不存在");
+		if(bankCardInfoEntity.getChangeState()==0) throw  new FssException("银行卡已绑定，不允许删除");
+		bankCardInfoEntity.setIsDel(0);
+		bankCardInfoEntity.setModifyTime(new Date());
+		this.update(bankCardInfoEntity);
+	}
+
+	/**
+	 * xdw
+	 * 根据银行卡号查询
+	 * @param bankCardInfoEntity
+	 * @throws FssException
+	 */
+	public void updateBankCardinfo(BankCardInfoEntity bankCardInfoEntity) throws FssException {
+		BankCardInfoEntity bankCardInfo=this.getBankCardById(bankCardInfoEntity.getId());
+		if(bankCardInfo==null) throw  new FssException("银行卡信息不存在");
+		if(bankCardInfo.getChangeState()==0) throw  new FssException("银行卡已绑定，不允许修改");
+		if(bankCardInfo.getChangeState()==1) throw  new FssException("银行卡变更中，不允许修改");
+		bankCardInfoEntity.setId(bankCardInfo.getId());
+		bankCardInfoEntity.setIsDel(0);
+		bankCardInfoEntity.setModifyTime(new Date());
+		this.update(bankCardInfoEntity);
+	}
+
+
 }

@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.funds.architect.customer.mapper.read.BankCardInfoReadMapper">
 	<sql id="fieldSql">
+		SELECT
+		t.id id,
+		t.cust_id  custId,
+		t.bank_long_name  bankLongName,
+		t.bank_sort_name bankSortName,
+		t.bank_no bankNo,
+		t.is_personal_card isPersonalCard,
+		t.cert_no  certNo,
+		t.mobile mobile,
+		t.cert_name certName,
+		t.card_index cardIndex,
+		t.city_id cityId,
+		t.parent_bank_id parentBankId,
+		t.create_user_id createUserId,
+		t.create_time createTime,
+		t.modify_user_id modifyUserId,
+		t.modify_time modifyTime,
+		t.deleted isDel,
+		t.change_state changeState,
+		t.memo memo,
+		t.source source
+		FROM t_gq_bank_info t
 	</sql>
 	<sql id="whereSql">
 	</sql>
@@ -25,28 +47,7 @@
 	
 	<!--银行卡管理 -->
 	<select id="selectBankCardList"  parameterType="java.util.Map" resultType="bankCardInfoEntity" >
-		SELECT 
-			t.id id,
-			t.cust_id  custId,
-			t.bank_long_name  bankLongName,
-			t.bank_sort_name bankSortName,
-			t.bank_no bankNo,
-			t.is_personal_card isPersonalCard,
-			t.cert_no  certNo,
-			t.mobile mobile,
-			t.cert_name certName,
-			t.card_index cardIndex,
-			t.city_id cityId,
-			t.parent_bank_id parentBankId,
-			t.create_user_id createUserId,
-			t.create_time createTime,
-			t.modify_user_id modifyUserId,
-			t.modify_time modifyTime,
-			t.deleted isDel,
-			t.change_state changeState,
-			t.memo memo,
-			t.source source
-		FROM t_gq_bank_info t
+		<include refid="fieldSql"/>
 		<where>
 	 	  	 <if test="certName != null and certName != ''">
                and t.cert_name like  CONCAT('%',#{certName},'%') 
@@ -68,67 +69,19 @@
 	</select>
 	
 	<select id="queryBankCardByBankNo" parameterType="java.lang.String" resultType="bankCardInfoEntity">
-		SELECT 
-			t.id id,
-			t.cust_id  custId,
-			t.bank_long_name  bankLongName,
-			t.bank_sort_name bankSortName,
-			t.bank_no bankNo,
-			t.is_personal_card isPersonalCard,
-			t.cert_no  certNo,
-			t.mobile mobile,
-			t.cert_name certName,
-			t.card_index cardIndex,
-			t.city_id cityId,
-			t.parent_bank_id parentBankId,
-			t.create_user_id createUserId,
-			t.create_time createTime,
-			t.modify_user_id modifyUserId,
-			t.modify_time modifyTime,
-			t.deleted isDel,
-			t.change_state changeState,
-			t.memo memo,
-			t.source source
-		FROM t_gq_bank_info t where t.bank_no=#{bankNo}
+		<include refid="fieldSql"/>
+		 where t.bank_no=#{bankNo}
 	</select>
 	
 	<select id="findBankCardByCustNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity">
-		SELECT
-			id id,
-			cert_Name certName,
-			bank_no bankNo,
-			bank_sort_name bankLongName,
-			parent_bank_id parentBankId,
-			change_state changeState
-		FROM 
-			t_gq_bank_info t 
-		WHERE t.cust_id=#{custNo}
+		<include refid="fieldSql"/>
+
+		WHERE t.cust_id=#{custNo} AND t.change_state=0
 	</select>
 
-	<select id="queryBankCard"  parameterType="java.lang.Integer" resultType="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity" >
-		SELECT
-		t.id id,
-		t.cust_id  custId,
-		t.bank_long_name  bankLongName,
-		t.bank_sort_name bankSortName,
-		t.bank_no bankNo,
-		t.is_personal_card isPersonalCard,
-		t.cert_no  certNo,
-		t.mobile mobile,
-		t.cert_name certName,
-		t.card_index cardIndex,
-		t.city_id cityId,
-		t.parent_bank_id parentBankId,
-		t.create_user_id createUserId,
-		t.create_time createTime,
-		t.modify_user_id modifyUserId,
-		t.modify_time modifyTime,
-		t.deleted isDel,
-		t.change_state changeState,
-		t.memo memo,
-		t.source source
-		FROM t_gq_bank_info t
-		WHERE t.cust_id=#{custNo}
+	<select id="queryBankCard"   resultType="com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity" >
+		<include refid="fieldSql"/>
+		WHERE t.cust_id=#{custNo} AND  (t.deleted is null or t.deleted =1 )
 	</select>
 	
 </mapper>

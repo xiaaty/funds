@@ -157,13 +157,13 @@ public class PaySuperByFuiou {
 
 
     /*=============================================转   账==============================================*/
-    public FundOrderEntity transerer(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int orderType,Long busiId,int busiType,final String newOrderType,final String tradeType,final String lendNo,final String toLendNo,final Long loanCustId,final String loanNo) throws FssException {
-        CommandResponse response = this.transerer(fromEntity,toEntity,amount,orderType,busiId,busiType,newOrderType,tradeType,lendNo,toLendNo,loanCustId,loanNo,"");
+    public FundOrderEntity transerer(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int orderType,Long busiId,Integer busiType,final String newOrderType,final String tradeType,final String lendNo,final String toLendNo,final Long loanCustId,final String loanNo) throws FssException {
+        CommandResponse response = this.transerer(fromEntity,toEntity,amount,orderType,busiId==null?0:busiId,busiType==null?0:busiType,newOrderType,tradeType,lendNo,toLendNo,loanCustId,loanNo,"");
         execExction(response,response.getFundOrderEntity());
         return response.getFundOrderEntity();
     }
 
-    public CommandResponse transerer(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int orderType,Long busiId,int busiType,final String newOrderType,final String tradeType,final String lendNo,final String toLendNo,final Long loanCustId,final String loanNo,String contractNo) throws FssException {
+    public CommandResponse transerer(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int orderType,Long busiId,Integer busiType,final String newOrderType,final String tradeType,final String lendNo,final String toLendNo,final Long loanCustId,final String loanNo,String contractNo) throws FssException {
         LogUtil.info(this.getClass(),"第三方转账:"+fromEntity.getAccountNo()+":"+toEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = this.createOrder(fromEntity,toEntity,amount,orderType,busiId,busiType,newOrderType,tradeType,lendNo,toLendNo,loanCustId,loanNo);
         CommandResponse response = null;
@@ -172,7 +172,15 @@ public class PaySuperByFuiou {
         }else {
             response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_TRANSFER, fundOrderEntity, fromEntity, toEntity, amount,contractNo);
         }
+
+        if("0000".equals(response.getCode())){
+            this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_SUCCESS,response.getThirdReturnCode(),response.getMsg());
+        }else{
+            this.updateOrder(fundOrderEntity,GlobalConstants.ORDER_STATUS_FAILED,response.getThirdReturnCode(),response.getMsg());
+            throw new FssException(toLocalCode(response.getThirdReturnCode()));
+        }
         response.setFundOrderEntity(fundOrderEntity);
+
         return response;
     }
 
@@ -192,7 +200,7 @@ public class PaySuperByFuiou {
 
     public FundOrderEntity canclePreAuth(FundAccountEntity fromEntity,FundAccountEntity toSFEntity,BigDecimal amount,int orderType,Long busiId,int busiType,String contactNo,String lendNo,String loanNo,Long loanCustId) throws FssException {
         LogUtil.info(this.getClass(),"第三方预授权:"+fromEntity.getAccountNo()+":"+toSFEntity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
-        FundOrderEntity fundOrderEntity = this.createOrder(fromEntity,null, amount, orderType, busiId, busiType,null,null,lendNo,null,loanCustId,loanNo);
+        FundOrderEntity fundOrderEntity = this.createOrder(fromEntity,null, amount, orderType, busiId, busiType,"1114","",lendNo,null,loanCustId,loanNo);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_INVEST_BID_CANCLE, fundOrderEntity, fromEntity, String.valueOf(busiId), amount, contactNo, toSFEntity);
         execExction(response,fundOrderEntity);
         return fundOrderEntity;
@@ -336,7 +344,7 @@ public class PaySuperByFuiou {
      * @throws CommandParmException
      * @throws FssException
      */
-    private final FundOrderEntity createOrder(final FundAccountEntity primaryAccount,final  FundAccountEntity toAccountEntity,final BigDecimal amount,final int orderType,final long sourceID, final int sourceType,final String newOrderType,final String tradeType,final String lendNo,final String toLendNo,final Long loanCustId,final String loanNo) throws CommandParmException, FssException {
+    private final FundOrderEntity createOrder(final FundAccountEntity primaryAccount,final  FundAccountEntity toAccountEntity,final BigDecimal amount,final int orderType,final Long sourceID, final Integer sourceType,final String newOrderType,final String tradeType,final String lendNo,final String toLendNo,final Long loanCustId,final String loanNo) throws CommandParmException, FssException {
         return fundOrderService.createOrder(primaryAccount,toAccountEntity,amount,BigDecimal.ZERO,orderType,sourceID,sourceType,newOrderType,tradeType,lendNo,toLendNo,loanCustId,loanNo);
     }
 

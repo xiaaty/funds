@@ -76,7 +76,13 @@ public class BankCardInfoEntity implements java.io.Serializable {
 	//来源
 	@Column(name = "source",updatable = false)
 	private String source;
-	
+	//状态
+//	@Column(name = "status")
+//	private String status;
+//	//上传图片文件路径
+//	@Column(name = "file_path")
+//	private String filePath;
+
 	// Property accessors
 	public Integer getId() {
 		return this.id;
@@ -241,5 +247,21 @@ public class BankCardInfoEntity implements java.io.Serializable {
 	public void setSource(String source) {
 		this.source = source;
 	}
+
+//	public String getStatus() {
+//		return status;
+//	}
+//
+//	public void setStatus(String status) {
+//		this.status = status;
+//	}
+//
+//	public String getFilePath() {
+//		return filePath;
+//	}
+//
+//	public void setFilePath(String filePath) {
+//		this.filePath = filePath;
+//	}
 
 }

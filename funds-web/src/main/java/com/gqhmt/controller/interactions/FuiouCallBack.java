@@ -76,6 +76,9 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, login_id, CommandEnum.FundsCommand.FUNDS_CHARGE, "", remark);
+
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
+
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -128,6 +131,7 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, login_id, CommandEnum.FundsCommand.FUNDS_WITHDRAW, "", remark);
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -182,6 +186,8 @@ public class FuiouCallBack {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID_NOT_ORDER, ThirdPartyType.FUIOU, mchnt_txn_ssn,
 //						"success", amt, mobile_no, CommandEnum.FundsCommand.FUNDS_CHARGE, remark);
+
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no);
 				plain.append("<resp_code>0000</resp_code>");
 			} catch (Exception e) {
 				plain.append("<resp_code>9999</resp_code>");
@@ -234,6 +240,8 @@ public class FuiouCallBack {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID_NOT_ORDER, ThirdPartyType.FUIOU, mchnt_txn_ssn,
 //						"success", amt, mobile_no, CommandEnum.FundsCommand.FUNDS_WITHDRAW, mchnt_txn_dt, remark);
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no);
+
 				plain.append("<resp_code>0000</resp_code>");
 			} catch (Exception e) {
 				plain.append("<resp_code>9999</resp_code>");
@@ -286,7 +294,8 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, CommandEnum.FundsCommand.FUNDS_WITHHOLDING);
-//					plain.append("<resp_code>0000</resp_code>");
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null);
+					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
 				}
@@ -339,7 +348,9 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, "", CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW);
-//					plain.append("<resp_code>0000</resp_code>");
+
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null);
+					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
 				}
@@ -482,7 +493,7 @@ public class FuiouCallBack {
 	 * @param resp_code
 	 * @param mchnt_cd
 	 * @param mchnt_txn_ssn
-	 * @param login_id
+	 * @param in_cust_no
 	 * @param amt
 	 * @param remark
 	 * @param signature
@@ -490,18 +501,18 @@ public class FuiouCallBack {
      */
 	@RequestMapping("/returnOfflineRechargeResult")
 	@ResponseBody
-	public String returnOfflineRechargeResult(String resp_code,String mchnt_cd,String mchnt_txn_ssn,String login_id,String amt,String remark,String signature) throws FssException{
+	public String returnOfflineRechargeResult(String resp_code,String mchnt_cd,String mchnt_txn_ssn,String in_cust_no,String amt,String remark,String signature) throws FssException{
 		//回调明文
-		String signValue = amt+"|"+ login_id + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark+"|"+resp_code;
+		String signValue = amt+"|"+ in_cust_no + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark+"|"+resp_code;
 		//验签
-		boolean flag = SecurityUtils.verifySign(signValue, signature);
-		System.out.println("fuiou callback returnWithhold:" + signValue);
-		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:" + signValue);
+		boolean flag = true;//SecurityUtils.verifySign(signValue, signature);
+		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue+":"+signature);
 		//返回富友接收结果
 		String result = "SUCCESS";
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,in_cust_no);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";

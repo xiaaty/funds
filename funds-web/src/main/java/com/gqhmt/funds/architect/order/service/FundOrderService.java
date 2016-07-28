@@ -141,19 +141,15 @@ public class FundOrderService  {
      * @param status
      * @param code
      * @param msg
-     * @throws CommandParmException
+     * @throws FssException
      */
-	public final void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws FssException {
+	public  void updateOrder(FundOrderEntity fundOrderEntity, int status, String code, String msg) throws FssException {
 		fundOrderEntity.setOrderState(status);
 		fundOrderEntity.setRetCode(code);
 		fundOrderEntity.setRetMessage(msg);
         fundOrderEntity.setLastModifyTime(new Date());
-		try {
 //			this.insert(fundOrderEntity);
-			this.update(fundOrderEntity);
-		} catch (Exception e) {
-			throw new FssException(e.getMessage());
-		}
+         this.update(fundOrderEntity);
 	}
     
     public List<FundOrderBean> getFundOrderReWithList(Integer custId,Integer type,String strTime,String endTime){

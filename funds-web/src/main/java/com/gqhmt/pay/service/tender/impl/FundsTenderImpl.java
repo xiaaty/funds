@@ -184,7 +184,7 @@ public class FundsTenderImpl  implements IFundsTender {
     private void hasEnoughBanlance(FundAccountEntity entity, BigDecimal amount) throws CommandParmException {
         BigDecimal bigDecimal = entity.getAmount();
         if (bigDecimal.compareTo(amount) < 0) {
-            throw new CommandParmException("9004007");
+            throw new CommandParmException("90004007");
         }
     }
 }

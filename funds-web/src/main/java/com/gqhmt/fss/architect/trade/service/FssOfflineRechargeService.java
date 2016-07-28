@@ -2,14 +2,15 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.fss.architect.trade.bean.FssOfflineRechargeBean;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssOfflineRechargeWriteMapper;
-import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -174,12 +175,37 @@ public class FssOfflineRechargeService {
      */
 	public void fuiouCallBack(Long id,String result) throws FssException{
 		FssOfflineRechargeEntity entity = fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+		if(entity == null){
+			LogUtil.info(this.getClass(),"未查到改笔充值码充值记录:"+id);
+		}
 		//修改成功状态
 		if("0000".equals(result)){
 			entity.setResultState("10120003");
 		}
 		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
 		//创建回盘信息
-		fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeType());
+		//fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeType());
+	}
+
+
+	/**
+	 * 根据客户id查询该客户线下充值记录
+	 * @param custId
+	 * @return
+	 */
+	public List<FssOfflineRechargeBean> getOfflineRechargeByCustId(String custId, String custType, String startTime, String endTime){
+		Map<String, String> map=new HashMap<String, String>();
+		map.put("custId",custId);
+		map.put("custType", custType);
+//		map.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+//		map.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		return fssOfflineRechargeReadMapper.getRecharegByCustId(map);
+	}
+
+
+	public FssOfflineRechargeEntity get(Long id){
+		return this.fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
 	}
 }

@@ -519,6 +519,7 @@ public class FssTradeApplyService {
 	 public int compare_date(String BespokeDate){
 		 return 0;
 	 }
+
 	public int compare_date(Date BespokeDate) throws FssException{
 		try{
 			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
