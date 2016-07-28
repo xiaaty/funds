@@ -6,6 +6,8 @@ import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.extServInter.dto.tender.BidDto;
 
+import java.math.BigDecimal;
+
 /**
  * Filename:    com.gq.funds.interaction.IFundsTender
  * Copyright:   Copyright (c)2015
@@ -59,11 +61,20 @@ public interface IFundsTender {
 
     /**
      * 投标，根据tender获取标的信息
-     * @param bidDto                支付渠道
+     * @param bid_id
+     * @param tender_no
+     * @param product_title
+     * @param cust_no
+     * @param invest_type
+     * @param real_Amount
+     * @param loan_cust_id
+     * @param moto_cust_id
+     * @param cust_no
+     * @param bonus_Amount
      * @return
      * @throws FssException
      */
-    public boolean bid(BidDto bidDto) throws FssException;
+    public boolean bid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no) throws FssException;
 
 
     /**

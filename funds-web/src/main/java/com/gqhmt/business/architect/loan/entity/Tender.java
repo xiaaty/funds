@@ -69,6 +69,9 @@ public class Tender {
     @Column(name="state")
     private Integer state;
 
+    private String contractNo;
+
+
     public Long getId() {
         return id;
     }
@@ -179,6 +182,14 @@ public class Tender {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 
 

@@ -21,5 +21,5 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
  */
 public interface IFundsBatchTrade {
 
-    public void batchTrade(FssTradeRecordEntity entity) throws FssException;
+    public void batchTrade(FssTradeRecordEntity entity,String contractNo,int custType) throws FssException;
 }

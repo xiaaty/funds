@@ -9,5 +9,14 @@
 		 AND DATE_FORMAT(t.create_time, '%Y%m%d') = DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m%d') 
 		 AND t.account_id = #{accountId}
 	</select>
+
+
+	<select id="getFundOrderByAccountId" parameterType="java.lang.Long" resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
+		 SELECT
+		 	t.order_no orderNo,
+		 	t.create_time createTime
+		 FROM t_gq_fund_order t
+		 WHERE t.account_id = #{accountId}
+	</select>
 </mapper>
  

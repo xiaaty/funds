@@ -86,7 +86,7 @@
                                                         <td class="tr">执行状态：</td>
                                                         <td>
                                                             <select id = "state" name = "state" style="width:150px;height: 30px;">
-										                    	<option value="">请选择</option>
+										                    	<option value="">所有</option>
 										                    	<option  <c:if test="${repayment.state==10090001}"> selected="selected" </c:if> value="10090001">新增</option>
 										                    	<option  <c:if test="${repayment.state==10090002}"> selected="selected" </c:if> value="10090002" >划扣中</option>
 										                    	<option  <c:if test="${repayment.state==10090003}"> selected="selected" </c:if> value="10090003" >划扣完成</option>
@@ -95,7 +95,7 @@
                                                         <td class="tr">执行结果：</td>
                                                         <td>
                                                            <select id = "resultState" name = "resultState" style="width:150px;height: 30px;" >
-										                    	<option value="">请选择</option>
+										                    	<option value="">所有</option>
 										                    	<option  <c:if test="${repayment.resultState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
 										                    	<option  <c:if test="${repayment.resultState==10080002}"> selected="selected" </c:if> value="10080002" >成功</option>
 										                    	<option  <c:if test="${repayment.resultState==10080003}"> selected="selected" </c:if> value="10080003" >部分成功</option>

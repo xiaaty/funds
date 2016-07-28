@@ -90,6 +90,11 @@ public class FundAccountEntity {
     @Column(name = "settle_type")
     private Integer settleType ;
 
+    @Column(name = "account_order_no")
+    private String accountOrderNo;//开户订单号
+    @Column(name = "account_time")
+    private Date accountTime;//富友开户时间
+
     @Transient
     private CustomerInfoEntity customerInfoEntity;
 
@@ -319,5 +324,21 @@ public class FundAccountEntity {
 
     public void setCustomerInfoEntity(CustomerInfoEntity customerInfoEntity) {
         this.customerInfoEntity = customerInfoEntity;
+    }
+
+    public String getAccountOrderNo() {
+        return accountOrderNo;
+    }
+
+    public void setAccountOrderNo(String accountOrderNo) {
+        this.accountOrderNo = accountOrderNo;
+    }
+
+    public Date getAccountTime() {
+        return accountTime;
+    }
+
+    public void setAccountTime(Date accountTime) {
+        this.accountTime = accountTime;
     }
 }

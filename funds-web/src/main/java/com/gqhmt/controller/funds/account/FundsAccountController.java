@@ -63,14 +63,7 @@ public class FundsAccountController {
 		List<FundAccountCustomerBean> acountList = fundAccountService.findAcountList(map);
 		model.addAttribute("page", acountList);
 		model.addAttribute("accMap", map);
-//    	System.out.println(custId+"****************");
-		if (custId > 100) {
-			//帐号管理
-			return "funds/account/accountList";
-		} else {
-			//对公账户列表
-			return "funds/account/accountBusinessList";
-		}
+		return "funds/account/accountList";
 	}
 
 	/**
