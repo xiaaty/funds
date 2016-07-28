@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.depos.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -83,6 +84,13 @@ public class FssAccountFileEntity implements Serializable{
 
 	@Column(name = "status")
 	private String status;
+
+	@Column(name = "create_time")
+	private Date createTime;
+
+	@Column(name = "modify_time")
+	private Date modifyTime;
+
 
 	public Long getId() {
 		return id;
@@ -236,4 +244,19 @@ public class FssAccountFileEntity implements Serializable{
 		this.parentId = parentId;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
 }

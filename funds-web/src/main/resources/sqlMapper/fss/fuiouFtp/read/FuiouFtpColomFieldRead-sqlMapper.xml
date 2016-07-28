@@ -18,13 +18,18 @@
 	t.seq_no seqNo,
 	t.order_id orderId,
 	t.order_no orderNo,
+	t.type,
 	t.return_Code returnCode,
 	t.return_msg returnMsg,
 	t.business_code businessCode,
 	t.input_date inputDate,
 	t.feild_order_no feildOrderNo,
 	t.feild_order_no_his feildOrderNoHis,
-	t.tender_id tenderId
+	t.tender_id tenderId,
+	lend_cust_id lendCustId,
+	lend_no lendNo,
+	loan_cust_id loanCustId,
+	loan_no loanNo
 	FROM t_fuiou_ftp_field t
 	
 	</sql>
@@ -49,6 +54,79 @@
 		<include refid="selectSql"/>
 		WHERE t.file_id = #{fileId} 
 	</select>
-	
+	<select id="selectFuiouFtpFieldList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
+		<include refid="selectSql"/>
+		WHERE 1 = 1
+		<if test="id!=null and id!=''">
+			AND t.id = CAST (#{id} AS signed INT )
+		</if>
+		<if test="fromAccountId!=null and fromAccountId!=''">
+			AND t.from_account_Id = CAST (#{fromAccountId} AS signed INT )
+		</if>
+		<if test="fromUserName!=null and fromUserName!=''">
+			AND t.from_userName = #{fromUserName}
+		</if>
+		<if test="fromCnUserName!=null and fromCnUserName!=''">
+			AND t.from_cn_userName = #{fromCnUserName}
+		</if>
+		<if test="toAccountId!=null and toAccountId!=''">
+			AND t.to_account_Id = CAST (#{toAccountId} AS signed INT )
+		</if>
+		<if test="toUserName!=null and toUserName!=''">
+			AND t.to_userName = #{toUserName}
+		</if>
+		<if test="toCnUserName!=null and toCnUserName!=''">
+			AND t.to_cn_userName = #{toCnUserName}
+		</if>
+		<if test="amt!=null and amt!=''">
+			AND t.amt = cast(#{amt} as signed decimal(38,2))
+		</if>
+		<if test="rem!=null and rem!=''">
+			AND t.rem = #{rem}
+		</if>
+		<if test="contractNo!=null and contractNo!=''">
+			AND t.contract_no = #{contractNo}
+		</if>
+		<if test="state!=null and state!=''">
+			AND t.state = CAST (#{state} as signed INT )
+		</if>
+		<if test="fileId!=null and fileId!=''">
+			AND t.file_id = CAST (#{fileId} AS signed INT )
+		</if>
+		<if test="seqNo!=null and seqNo!=''">
+			AND t.seq_no = #{seqNo}
+		</if>
+		<if test="orderId!=null and orderId!=''">
+			AND t.order_id = CAST (#{orderId} AS signed INT )
+		</if>
+		<if test="orderNo!=null and orderNo!=''">
+			AND t.order_no = #{orderNo}
+		</if>
+		<if test="type!=null and type!=''">
+			AND t.type = CAST (#{type} AS signed INT )
+		</if>
+		<if test="returnCode!=null and returnCode!=''">
+			AND t.return_Code = #{returnCode}
+		</if>
+		<if test="returnMsg!=null and returnMsg!=''">
+			AND t.return_msg = #{returnMsg}
+		</if>
+		<if test="businessCode!=null and businessCode!=''">
+			AND t.business_code = #{businessCode}
+		</if>
+		<if test="inputDate!=null and inputDate!=''">
+			AND date_format(t.input_date,'#Y-%m-%d') = #{inputDate}
+		</if>
+		<if test="feildOrderNo!=null and feildOrderNo!=''">
+			AND t.feild_order_no = #{feildOrderNo}
+		</if>
+		<if test="feildOrderNoHis!=null and feildOrderNoHis!=''">
+			AND t.feild_order_no_his = #{feildOrderNoHis}
+		</if>
+		<if test="tenderId!=null and tenderId!=''">
+			AND t.tender_id = CAST (#{tenderId} AS signed INT )
+		</if>
+		ORDER BY input_date
+	</select>
 
  </mapper>

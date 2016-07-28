@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.trade.mapper.read;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
@@ -60,4 +62,6 @@ public interface FssTradeRecordReadMapper extends ReadMapper<FssTradeRecordEntit
 	 * function：通过申请编号得到交易记录表信息
 	 */
 	List<FssTradeRecordEntity> getByApplyNo(@Param("applyNo")String applyNo);
+
+	List<FssTradeRecordEntity> getRecordList(Map map);
 }

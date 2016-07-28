@@ -31,7 +31,7 @@
 	<select id="queryFundAccountByCutId" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
 		<include refid="fieldSql" />
 
-		where cust_id = ${cusID} and busi_type = ${type}
+		where cust_id = #{cusID} and busi_type = #{type}
 	</select>
 
 	<!-- 账户管理 -->
@@ -62,7 +62,7 @@
 			<if test="customerName != null and customerName != ''">
 				and a.CUSTOMER_NAME like concat('%',#{customerName},'%')
 			</if>
-			<if test="mobilePhone!= null and  mobilePhone !=''">
+			<if test="mobilePhone!= null and  mobilePhone!=''">
 				and a.MOBILE_PHONE like concat('%',#{mobilePhone},'%')
 			</if>
 			<if test="startTime != null and startTime != '' ">
@@ -126,7 +126,11 @@
 		where busi_type = #{busi_type}
 		order by CREATE_TIME desc
 	</select>
-	
-	
-	
+
+	<select id="queryFundAccountByUserName" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		<include refid="fieldSql" />
+		where user_name=#{userName}
+		and busi_type = #{type}
+		order by CREATE_TIME desc
+	</select>
 </mapper>

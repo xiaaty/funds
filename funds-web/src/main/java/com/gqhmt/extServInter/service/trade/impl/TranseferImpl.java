@@ -1,5 +1,6 @@
 package com.gqhmt.extServInter.service.trade.impl;
 
+import com.gqhmt.annotations.APITradeTypeValid;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
@@ -11,6 +12,8 @@ import javax.annotation.Resource;
 
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 /**
  * 
@@ -33,12 +36,28 @@ public class TranseferImpl implements ITransefer{
 	
 	@Resource
 	private IFundsTrade fundsTrade;
-	
+
+	/**
+	 * 11080001：遗留转账
+	 * 11080004:个人账户之间转账
+	 * @param dto
+	 * @return
+     */
+	@APITradeTypeValid(value = "11080001,11080004")
+	@Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
-			fundsTrade.transfer((TransferDto)dto);
-			 response.setResp_code("00000000");
+			TransferDto cDto=(TransferDto)dto;
+			String contract_no=null;
+			String loan_type=null;
+			if(!"11080004".equals(cDto.getTrade_type())){
+				contract_no=cDto.getContract_no();
+				loan_type=cDto.getLoan_type();
+			}
+			fundsTrade.transfer(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getFrom_cust_no(),cDto.getFrom_user_no(),cDto.getFrom_cust_type(),cDto.getTo_cust_no(),
+								cDto.getTo_user_no(),cDto.getTo_cust_type(),cDto.getAmt(),cDto.getFunds_type(),cDto.getBusi_type(),cDto.getBusi_id(),3,contract_no,loan_type);
+			 response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

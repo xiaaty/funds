@@ -45,4 +45,13 @@ public interface FssProjectInfoReadMapper extends ReadMapper<FssProjectInfoEntit
 	 * function：根据状态查询项目信息列表
 	 */
 	public List<FssProjectInfoEntity> queryItemsInfosByStatus(@Param("status")String status);
+	/**
+	 * jhz
+	 * 查询项目编号是否唯一
+	 * @param itemNo
+	 * @return
+	 */
+	public int getCountByItemNo(@Param("itemNo")String itemNo);
+
+
 }

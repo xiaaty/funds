@@ -102,6 +102,7 @@ public class GlobalConstants {
     public static final int ORDER_DROP_USER = 39;
     public static final int ORDER_UPDATE_CARD_QUERY = 40;
 
+    public static final int ORDER_TRANSFER_BATCH = 1190020;
 
     public static final int ORDER_RECHARGE_OFFLINE = 40000001;
 
@@ -257,8 +258,9 @@ public class GlobalConstants {
     public static Map<Long,String> COMPANY_ACCOUNT_NAME =  new ConcurrentHashMap<>();
     public static Map<Long,String> COMPANY_ACCOUNT_REAL_NAME =  new ConcurrentHashMap<>();
 
+    //富有金账户对账文件信息类型
+    public static Map<String, String> FUYOU_ACCOUNT_INFO_TRADE_TYPE = new ConcurrentHashMap<>();
 
-	
 	public static Object getSession(HttpServletRequest request,String name){
 		return request.getSession(true).getAttribute(name);
 	}
@@ -517,7 +519,8 @@ public class GlobalConstants {
         fundsType.put(4011,"抵押标借款人扣除账户管理费");
         fundsType.put(4012,"风险备用金");
         fundsType.put(4013,"归还风险备用金");
-        fundsType.put(4014,"归还逆服务费");
+        fundsType.put(4014,"归还逆服务费");//代偿退回
+        fundsType.put(4015,"逆期代偿");
 
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");
@@ -762,5 +765,16 @@ public class GlobalConstants {
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11092001","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11091003","97010001");
         TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11040013","97010001");
+
+
+
+//        --------------富有金账户对账文件信息类型---------------------------------
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("DJJD","冻结/解冻");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("ZZ","转账");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("HB","划拨");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTCZ","委托充值");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("WTTX","委托提现");
+        FUYOU_ACCOUNT_INFO_TRADE_TYPE.put("YSQ","预授权交易");
+
 	}
 }

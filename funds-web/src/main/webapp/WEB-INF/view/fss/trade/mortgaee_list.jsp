@@ -99,7 +99,7 @@
                                                         <td>
                                                                 <label>
                                                                     <select id = "applyState" name = "applyState" style="width:150px;height: 30px;">
-                                                                        <option value="">请选择</option>
+                                                                        <option value="">所有</option>
                                                                         <option  <c:if test="${map.applyState==10100001}"> selected="selected" </c:if> value="10100001">新增</option>
                                                                         <option  <c:if test="${map.applyState==10100002}"> selected="selected" </c:if> value="10100002" >审核成功待执行</option>
                                                                         <option  <c:if test="${map.applyState==10100003}"> selected="selected" </c:if> value="10100003" >执行排队中</option>
@@ -113,7 +113,7 @@
                                                         <td class="tr">交易状态：</td>
                                                         <td>
                                                             <select id = "tradeState" name = "tradeState" style="width:150px;height: 30px;">
-                                                                <option value="">请选择</option>
+                                                                <option value="">所有</option>
                                                                 <option  <c:if test="${map.tradeState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
                                                                 <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002" >交易成功</option>
                                                                 <option  <c:if test="${map.tradeState==10080003}"> selected="selected" </c:if> value="10080003" >交易部分成功</option>
@@ -141,7 +141,8 @@
                                             </table>
                                         </div>
                                         <footer>
-                                          <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
+                                          <button class="btn btn-primary" onclick="querySub();">查&nbsp;&nbsp;&nbsp;询</button>
+                                            <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();" value="导&nbsp;&nbsp;&nbsp;出"/>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -255,6 +256,7 @@
     </div>
     </div>
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
+<script src="${contextPath}/js/jquery.form.js" ></script>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
@@ -325,6 +327,27 @@
             }, "json");
         }
     });
+
+     function exportExcel(){
+         var no = $('#borrow-rep-table12 tbody :checkbox:checked');
+         if (no.size() == 0) {
+             alert("请选择件数！");
+             return false;
+         }
+         var param = [];
+         no.each(function () {
+             param.push($(this).val());
+         });
+
+         $("#exportExcelBtn").unbind('click');
+         $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel/"+param);
+         $("#mortForm").submit();
+         // $("#mortForm table").find("tr:first").append("<td><input type=\"hidden\" name=\"buttonType\" value=\"exportExcel\" /></td>")
+
+     }
+     function querySub(){
+         $("#mortForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}");
+    }
 </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

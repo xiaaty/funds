@@ -107,6 +107,13 @@ public interface FssLoanReadMapper extends ReadMapper<FssLoanEntity> {
 	 * time:2016年4月25日
 	 * function：得到冠e通回调对象
 	 */
-	BidApplyResponse getBidApplyResponse(Map<String, String> map);	
-	
+	BidApplyResponse getBidApplyResponse(Map<String, String> map);
+
+	/**
+	 *
+	 * author:xdw
+	 * time:2016年4月25日
+	 * function：冠e通交易信息列表
+	 */
+	List<FssLoanEntity> selectFssLoanList(Map<String, String> map);
 }

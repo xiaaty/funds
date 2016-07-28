@@ -47,4 +47,42 @@
 		<include refid="field"/> 
 		WHERE t.result_status = 3 AND t.result != 0 AND t.return_result_status = 0 AND t.type != 3
 	</select>
+	<select id="selectFuiouFtpOrderList"  parameterType="java.util.Map"  resultType="FuiouFtpOrder">
+		<include refid="field"/>
+		WHERE 1 = 1
+		<if test="id != null and id != ''">
+			AND t.id = cast(#{id} as signed int)
+		</if>
+		<if test="orderNo != null and orderNo != ''">
+			AND t.order_no = #{orderNo}
+		</if>
+		<if test="fileSize != null and fileSize != ''">
+			AND t.file_size = cast(#{fileSize} as signed int)
+		</if>
+		<if test="fileStatus != null and fileStatus != ''">
+			AND t.file_status = cast(#{fileStatus} as signed int)
+		</if>
+		<if test="uploadStatus != null and uploadStatus != ''">
+			AND t.upload_status = cast(#{uploadStatus} as signed int)
+		</if>
+		<if test="downloadStatus != null and downloadStatus != ''">
+			AND t.download_status = cast(#{downloadStatus} as signed int)
+		</if>
+		<if test="resultStatus != null and resultStatus != ''">
+			AND t.result_status = cast(#{resultStatus} as signed int)
+		</if>
+		<if test="result != null and result != ''">
+			AND t.result = cast(#{result} as signed int)
+		</if>
+		<if test="type != null and type != ''">
+			AND t.type = cast(#{type} as signed int)
+		</if>
+		<if test="inputDate != null and inputDate != ''">
+			AND date_format(t.input_date,'%Y-%m-%d') = #{inputDate}
+		</if>
+		<if test="retrunResultStatus != null and retrunResultStatus != ''">
+			AND t.return_result_status = cast(#{retrunResultStatus} as signed int)
+		</if>
+		ORDER BY t.input_date
+	</select>
  </mapper>

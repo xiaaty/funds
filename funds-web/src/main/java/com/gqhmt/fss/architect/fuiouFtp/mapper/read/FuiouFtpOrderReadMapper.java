@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.fuiouFtp.mapper.read;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.fuiou.dao
@@ -37,5 +38,7 @@ public interface FuiouFtpOrderReadMapper extends ReadMapper<FuiouFtpOrder> {
     public List<FuiouFtpOrder> listAbort();
 
     public List<FuiouFtpOrder> listNoReturnResult();
+
+    public List<FuiouFtpOrder> selectFuiouFtpOrderList(Map<String, String> map);
 
 }

@@ -1,74 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+		<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.FssTradeRecordReadMapper">
-	<!--根据申请单号查询 代扣详细信息列表 -->
-	<sql id="selectSql">
-	SELECT 
-			t.id id,
-			t.cust_no custNo,
-			t.cust_id custId,
-			t.user_no userNo,
-			t.acc_no accNo,
-			t.trade_type tradeType,
-			t.trade_type_child tradeTypeChild,
-			t.amount amount,
-			t.charge charge,
-			t.thirdparyt_charge thirdparytCharge,
-			t.trade_date tradeDate,
-			t.bespoke_date bespokeDate,
-			t.trade_time tradeTime,
-			t.apply_no applyNo,
-			t.settle_type settleType,
-			t.trade_state tradeState,
-			t.trade_result tradeResult,
-			t.sumary sumary,
-			t.create_time createTime,
-			t.modify_time modifyTime,
-			t.mchn_parent mchnParent,
-			t.mchn_child mchnChild,
-			t.order_no orderNo,
-			t.channel_no channelNo,
-			t.cust_type custType
-		FROM t_gq_fss_trade_record t 
-	</sql>
-	
-	<select id="queryFssTradeRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
-		<include refid="selectSql"/>
-		<where>
-			<if test="applyNo != null and applyNo != ''">
-				AND t.apply_no=#{applyNo}
-			</if>
-			<if test="tradeState != null and tradeState != ''">
-				AND t.trade_state =#{tradeState}
-			</if>
-		</where>
-		order by t.create_time desc
-	</select>
-	<select id="selectByTradeState"   resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
-		<include refid="selectSql"/>
-		where t.trade_state =#{tradeState}
-		order by t.create_time desc
-	</select>
+<!--根据申请单号查询 代扣详细信息列表 -->
+<sql id="selectSql">
+	SELECT
+	t.id id,
+	t.cust_no custNo,
+	t.cust_id custId,
+	t.user_no userNo,
+	t.acc_no accNo,
+	t.trade_type tradeType,
+	t.trade_type_child tradeTypeChild,
+	t.amount amount,
+	t.charge charge,
+	t.thirdparyt_charge thirdparytCharge,
+	t.trade_date tradeDate,
+	t.bespoke_date bespokeDate,
+	t.trade_time tradeTime,
+	t.apply_no applyNo,
+	t.settle_type settleType,
+	t.trade_state tradeState,
+	t.trade_result tradeResult,
+	t.sumary sumary,
+	t.create_time createTime,
+	t.modify_time modifyTime,
+	t.mchn_parent mchnParent,
+	t.mchn_child mchnChild,
+	t.order_no orderNo,
+	t.channel_no channelNo,
+	t.cust_type custType
+	FROM t_gq_fss_trade_record t
+</sql>
+
+<select id="queryFssTradeRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+	<include refid="selectSql"/>
+	<where>
+		<if test="applyNo != null and applyNo != ''">
+			AND t.apply_no=#{applyNo}
+		</if>
+		<if test="tradeState != null and tradeState != ''">
+			AND t.trade_state =#{tradeState}
+		</if>
+	</where>
+	order by t.create_time desc
+</select>
+<select id="selectByTradeState"   resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+	<include refid="selectSql"/>
+	where t.trade_state =#{tradeState}
+	order by t.create_time desc
+</select>
 <!-- 	 * function：根据申请编号得到该批次成功条数 -->
-	<select id="getSuccessCount"   resultType="java.lang.Integer" >
-		select count(*) from t_gq_fss_trade_record t
-		where trade_result=98060001 and t.apply_no =#{applyNo}
-	</select>
+<select id="getSuccessCount"   resultType="java.lang.Integer" >
+	select count(*) from t_gq_fss_trade_record t
+	where trade_result=98060001 and t.apply_no =#{applyNo}
+</select>
 <!-- 	 * function：根据申请编号得到该批次条数 -->
-	<select id="getCountByApplyNo"   resultType="java.lang.Integer" >
-		select count(*) from t_gq_fss_trade_record t
-		where t.apply_no =#{applyNo}
-	</select>
+<select id="getCountByApplyNo"   resultType="java.lang.Integer" >
+	select count(*) from t_gq_fss_trade_record t
+	where t.apply_no =#{applyNo}
+</select>
 <!-- 	 * function：根据申请编号得到该批次交易成功总金额 -->
-	<select id="getSuccessAmt"   resultType="java.math.BigDecimal" >
-		select sum(t.amount) from t_gq_fss_trade_record t
-		where trade_result=98060001 and t.apply_no =#{applyNo}
-	</select>
-	<!-- 	 通过申请编号得到交易记录表信息 -->
-	<select id="getByApplyNo"   resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
-		<include refid="selectSql"/>
-			where t.apply_no=#{applyNo}
-		order by t.create_time desc
-	</select>
-	
+<select id="getSuccessAmt"   resultType="java.math.BigDecimal" >
+	select sum(t.amount) from t_gq_fss_trade_record t
+	where trade_result=98060001 and t.apply_no =#{applyNo}
+</select>
+<!-- 	 通过申请编号得到交易记录表信息 -->
+<select id="getByApplyNo"   resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+	<include refid="selectSql"/>
+	where t.apply_no=#{applyNo}
+	order by t.create_time desc
+</select>
+
+
+<select id="getRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
+	<include refid="selectSql"/>
+	<where>
+		<if test="applyNo!=null and applyNo!=''">
+			AND t.apply_no=#{applyNo}
+		</if>
+		<if test="accNo!=null and accNo!=''">
+			AND t.acc_no=#{accNo}
+		</if>
+		<if test="resultState!= null and resultState!=''">
+			AND t.trade_result=#{resultState}
+		</if>
+		<if test="startTime!=null and startTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+	</where>
+	order by t.create_time desc
+</select>
 </mapper>

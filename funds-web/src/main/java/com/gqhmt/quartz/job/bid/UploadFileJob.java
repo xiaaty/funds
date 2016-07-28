@@ -4,7 +4,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpUploadService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,8 +32,8 @@ public class UploadFileJob extends SupperJob{
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron="0/23 * 7-23  * * * ")
-    public void execute() throws PayChannelNotSupports {
+//    @Scheduled(cron="0/23 * 7-23  * * * ")
+public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
         }

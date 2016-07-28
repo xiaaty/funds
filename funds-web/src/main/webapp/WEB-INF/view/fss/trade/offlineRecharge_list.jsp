@@ -83,7 +83,7 @@
                                                 <td class="tr">交易状态：</td>
                                                 <td>
                                                     <select id = "resultState" name = "resultState" style="width:250px;height: 30px;">
-                                                        <option value="">请选择</option>
+                                                        <option value="">所有</option>
                                                         <option  <c:if test="${map.resultState==10120002}"> selected="selected" </c:if> value="10120002">充值码获取成功，待客户充值</option>
                                                         <option  <c:if test="${map.resultState==10120003}"> selected="selected" </c:if> value="10120003" >充值成功</option>
                                                         <option  <c:if test="${map.resultState==10120004}"> selected="selected" </c:if> value="10120004" >充值码获取失败</option>

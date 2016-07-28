@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.customer.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface CustomerInfoReadMapper extends ReadMapper<CustomerInfoEntity>{
 	public List<CustomerInfoEntity> selectNoChangeCustomer();
 	
 	public List<CustomerInfoEntity> queryCustomerInfoEntityList(CustomerInfoEntity customer);
+
+	public CustomerInfoEntity queryCustomerByCertNo(@Param("certNo") String certNo);
 }

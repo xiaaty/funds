@@ -1,5 +1,7 @@
 package com.gqhmt.fss.architect.account.entity;
 
+import com.gqhmt.annotations.AutoDate;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -36,7 +38,7 @@ public class FuiouAccountInfoEntity {
     private String businessCode;    //业务代码
 
     @Column(name = "trade_sources")
-    private String  tradeSources; //交易来源： 1:接口;2:页面单笔;3:批量上传;4:定时任务;5:app;
+    private String tradeSources; //交易来源： 1:接口;2:页面单笔;3:批量上传;4:定时任务;5:app;
 
     @Column(name = "contract_num")
     private String contractNum;    //合同号： 交易类型为'预授权交易'时才有
@@ -83,6 +85,16 @@ public class FuiouAccountInfoEntity {
     @Column(name = "account_state")
     private String accountState;        //状态 ，仅当交易类型为'预授权交易'时才有， 0: 冻结失败；1：已冻结；2：已解冻；3：已完成；
 
+    public String getBooleanType() {
+        return booleanType;
+    }
+
+    public void setBooleanType(String booleanType) {
+        this.booleanType = booleanType;
+    }
+
+    @Column(name = "boolean_type")
+    private String booleanType;         //抓取状态 ， -1 为失败 ， 其他为成功
 
     public int getId() {
         return id;

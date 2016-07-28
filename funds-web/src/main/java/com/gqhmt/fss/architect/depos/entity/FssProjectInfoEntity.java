@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.depos.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -124,7 +125,13 @@ public class FssProjectInfoEntity implements Serializable {
     private String certNo;            //借款人证件号码
 
     @Column(name = "status")
-    private String status;            //借款人证件号码
+    private String status;            //状态
+
+    @Column(name = "modify_time")
+    private Date modifyTime;
+
+    @Column(name = "create_time")
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -388,5 +395,21 @@ public class FssProjectInfoEntity implements Serializable {
 
     public void setLicenseNo(String licenseNo) {
         this.licenseNo = licenseNo;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

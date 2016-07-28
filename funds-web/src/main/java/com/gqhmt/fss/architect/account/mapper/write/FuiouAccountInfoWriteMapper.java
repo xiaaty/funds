@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.account.mapper.write;
 
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 
+import java.util.List;
+
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
  * Copyright:   Copyright (c)2015
@@ -20,5 +22,12 @@ import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
  */
 public interface FuiouAccountInfoWriteMapper {
 
+    //添加金账户对账文件记录
     public void addFuiouAccountInfoEntity(FuiouAccountInfoEntity file);
+
+    //手动抓取失败文件
+    public void updateFuiouAccountInfoEntity(FuiouAccountInfoEntity file);
+
+    //刪除fpt不存在的文件记录
+    public void deleteFuiouAccountInfoEntity(String id);
 }

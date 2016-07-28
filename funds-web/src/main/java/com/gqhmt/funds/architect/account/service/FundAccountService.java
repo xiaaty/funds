@@ -340,12 +340,6 @@ public class FundAccountService {
 	        return fssAccountReadMapper.selectOne(fssAccountEntity);
 	    }
 	
-	    public FssAccountEntity getFundsAccountByCustId(String custId) throws FssException{
-	    	FssAccountEntity fssAccountEntity=new FssAccountEntity();
-	    	fssAccountEntity.setCustId(Long.valueOf(custId));
-	    	return fssAccountReadMapper.selectOne(fssAccountEntity);
-	    }
-	    
 	    /**
 	     * 根据custId更新账户信息
 	     */
