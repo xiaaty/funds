@@ -684,7 +684,7 @@ public class GlobalConstants {
         TRADE_APPLY_NO__MAPPING.put("11030016","FQDK");//手续费分期代扣
         TRADE_APPLY_NO__MAPPING.put("11091003","TBZJ");//归还保证金提现
         TRADE_APPLY_NO__MAPPING.put("11040013","SHTX");//赎回提现
-
+        TRADE_APPLY_NO__MAPPING.put("11040014","XTLX");//续投利息赎回
         //根据账户类型匹配    1:借款账户，2:线下出借账户，3:线上出借账户，99:冻结金账户
         TRADE_BUSINESS_TYPE__MAPPING.put(10010001,3);
         TRADE_BUSINESS_TYPE__MAPPING.put(10010007,1);

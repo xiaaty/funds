@@ -80,7 +80,10 @@
 		t.`chg_cd` chgCd,
 		t.`chg_dt` chgDt,
 		t.`amt` amt,
-		t.`result_state` payStateType
+		t.`result_state` payStateType,
+		t.`fy_acc_nm` fyAccNm,
+		t.`fy_acc_no` fyAccNo,
+		t.`fy_bank_branch` fyBnakBranch
 		FROM `t_gq_fss_offline_recharge` t
 		WHERE t.`cust_id`=#{custId}
 		AND t.`cust_type`=#{custType}

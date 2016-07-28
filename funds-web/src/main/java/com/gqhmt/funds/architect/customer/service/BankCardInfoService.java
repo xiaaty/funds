@@ -618,10 +618,10 @@ public class BankCardInfoService {
 		bankCardInfoEntity.setParentBankId(bankId);
 		bankCardInfoEntity.setModifyTime(new Date());
 		bankCardInfoEntity.setModifyUserId(1);
-		bankCardInfoEntity.setFilePath(filePath);
+//		bankCardInfoEntity.setFilePath(filePath);
 		bankCardInfoEntity.setChangeState(3); //3新增
-		bankCardInfoEntity.setStatus("90004041");//90004041 银行卡未激活 90004043 已提交激活申请
-		bankCardInfoEntity.setCardIndex("fuiou");
+//		bankCardInfoEntity.setStatus("90004041");//90004041 银行卡未激活 90004043 已提交激活申请
+//		bankCardInfoEntity.setCardIndex("fuiou");
 		bankCardInfoEntity.setSource(tradeType);//存交易类型
 		return  bankCardInfoEntity;
 	}
