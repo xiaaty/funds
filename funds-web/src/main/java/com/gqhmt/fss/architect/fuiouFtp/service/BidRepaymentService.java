@@ -74,6 +74,7 @@ public class BidRepaymentService extends BidSupper{
     @Resource
     private FssBackplateService fssBackplateService;
 
+    @Resource
     private FundsTradeImpl fundsTrade;
 
 
