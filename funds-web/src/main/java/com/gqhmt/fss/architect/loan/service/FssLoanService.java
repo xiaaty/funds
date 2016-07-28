@@ -4,8 +4,8 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.extServInter.dto.loan.*;
-import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
 import com.gqhmt.extServInter.dto.p2p.BidApplyResponse;
+import com.gqhmt.extServInter.dto.p2p.BidRepayApplyDto;
 import com.gqhmt.extServInter.dto.p2p.FullBidApplyDto;
 import com.gqhmt.extServInter.dto.p2p.RePaymentDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -24,12 +24,9 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -489,10 +486,10 @@ public class FssLoanService {
 //			amt=rePaymentDto.getContract_amt();
 //		}
 		// 出账账户
-		FundAccountEntity fromEntity = fundAccountService.getFundAccount(rePaymentDto.getUser_id(), GlobalConstants.ACCOUNT_TYPE_LOAN);
-		if(fromEntity==null ||fromEntity.getAmount().compareTo(amt)<0){
-			throw new FssException("90004007");
-		}
+//		FundAccountEntity fromEntity = fundAccountService.getFundAccount(rePaymentDto.getUser_id(), GlobalConstants.ACCOUNT_TYPE_LOAN);
+//		if(fromEntity==null ||fromEntity.getAmount().compareTo(amt)<0){
+//			throw new FssException("90004007");
+//		}
 
 
 		//不允许重复提交（回款编号，交易类型，回款类型）
