@@ -493,7 +493,7 @@ public class FuiouCallBack {
 	 * @param resp_code
 	 * @param mchnt_cd
 	 * @param mchnt_txn_ssn
-	 * @param login_id
+	 * @param in_cust_no
 	 * @param amt
 	 * @param remark
 	 * @param signature
@@ -501,9 +501,9 @@ public class FuiouCallBack {
      */
 	@RequestMapping("/returnOfflineRechargeResult")
 	@ResponseBody
-	public String returnOfflineRechargeResult(String resp_code,String mchnt_cd,String mchnt_txn_ssn,String login_id,String amt,String remark,String signature) throws FssException{
+	public String returnOfflineRechargeResult(String resp_code,String mchnt_cd,String mchnt_txn_ssn,String in_cust_no,String amt,String remark,String signature) throws FssException{
 		//回调明文
-		String signValue = amt+"|"+ login_id + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark+"|"+resp_code;
+		String signValue = amt+"|"+ in_cust_no + "|"+ mchnt_cd +"|" +mchnt_txn_ssn+"|"+remark+"|"+resp_code;
 		//验签
 		boolean flag = SecurityUtils.verifySign(signValue, signature);
 		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue+":"+signature);
@@ -512,7 +512,7 @@ public class FuiouCallBack {
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
-				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,in_cust_no);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
