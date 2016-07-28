@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.bean.FssOfflineRechargeBean;
@@ -174,6 +175,9 @@ public class FssOfflineRechargeService {
      */
 	public void fuiouCallBack(Long id,String result) throws FssException{
 		FssOfflineRechargeEntity entity = fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+		if(entity == null){
+			LogUtil.info(this.getClass(),"未查到改笔充值码充值记录:"+id);
+		}
 		//修改成功状态
 		if("0000".equals(result)){
 			entity.setResultState("10120003");

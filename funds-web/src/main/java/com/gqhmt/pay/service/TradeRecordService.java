@@ -316,7 +316,7 @@ public class TradeRecordService {
 
                 if(fundOrderEntity.getOrderFrormId() != null && fundOrderEntity.getOrderFrormId() != 0){
                     sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(),  ThirdPartyType.FUIOU, fundOrderEntity);
-                    fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getId(),"0000");
+                    fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getOrderFrormId(),"0000");
                 }
             }catch (FssException e){
                 boolean isfundUk = false;
