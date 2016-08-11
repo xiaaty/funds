@@ -528,10 +528,10 @@ public class FssTradeApplyService {
 			Date bespDate=df.parse(dateTime1);
 			String dateTime2 = df.format(new Date());
 			Date today=df.parse(dateTime2);
-			if(bespDate.compareTo(today)>=0){//大于等于今天
-				return 0;
-			}else{
+			if(bespDate.compareTo(today)>0){//大于等于今天
 				return 1;
+			}else{
+				return 0;
 			}
 		}catch (Exception e){
 			throw new FssException("日期格式转换异常");

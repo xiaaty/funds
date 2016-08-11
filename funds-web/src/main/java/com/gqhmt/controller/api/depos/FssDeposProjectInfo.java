@@ -39,7 +39,6 @@ public class FssDeposProjectInfo {
      * @return
      */
     @RequestMapping(value = "/depos/projectInfo",method = {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
     public Object createAccount(@RequestBody ProjectInfoDto projectInfoDto){
         Response response=new Response();
         try {
