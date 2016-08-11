@@ -171,7 +171,7 @@ public class LoanApiTest extends SupperAPI {
     		repaymentChildDto.setContract_id("100001");
     		repaymentChildDto.setContract_no("JK2016032600031");
     		repaymentChildDto.setSerial_number("00000000000");
-    		repaymentChildDto.setCust_id("611293");
+    		repaymentChildDto.setAcc_no("611293");
     		repaymentChildDto.setAmt(new BigDecimal("60000.00"));
     		repaymentChildDto.setRemark("jax");
     		repay_list.add(repaymentChildDto);
@@ -180,7 +180,7 @@ public class LoanApiTest extends SupperAPI {
     		repaymentChildDto1.setContract_id("100001");
     		repaymentChildDto1.setContract_no("JK2016032600031");
     		repaymentChildDto1.setSerial_number("66666666");
-    		repaymentChildDto1.setCust_id("611295");
+    		repaymentChildDto1.setAcc_no("611295");
     		repaymentChildDto1.setAmt(new BigDecimal("60000.00"));
     		repaymentChildDto1.setRemark("jax");
     		repay_list.add(repaymentChildDto1);

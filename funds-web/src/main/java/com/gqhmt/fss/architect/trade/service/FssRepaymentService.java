@@ -200,7 +200,7 @@ public class FssRepaymentService {
 	 */
 	public FssRepaymentEntity createFssRepaymentEntity(RepaymentChildDto repyament,RepaymentDto repaymentDto,FssRepaymentParentEntity repaymentParent) throws FssException{
 		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
-		repaymentEntity.setAccNo(repyament.getCust_id());
+		repaymentEntity.setAccNo(repyament.getAcc_no());
 		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
 		repaymentEntity.setCreateTime(new Date());
 		repaymentEntity.setMotifyTime(new Date());
@@ -269,7 +269,7 @@ public class FssRepaymentService {
 		FssTradeApplyEntity fssTradeApplyEntity=null;
     	for (FssRepaymentEntity fssRepaymentEntity : repaymentlist) {
     		repaymentChild=new RepaymentChildDto();
-    		repaymentChild.setCust_id(fssRepaymentEntity.getAccNo());
+    		repaymentChild.setAcc_no(fssRepaymentEntity.getAccNo());
     		repaymentChild.setAmt(fssRepaymentEntity.getAmt());
 			fssTradeApplyEntity=fssTradeApplyService.queryForFromId(fssRepaymentEntity.getId(),fssRepaymentEntity.getTradeType());
 			repaymentChild.setReal_repay_amt(fssTradeApplyEntity.getRealTradeAmount());
