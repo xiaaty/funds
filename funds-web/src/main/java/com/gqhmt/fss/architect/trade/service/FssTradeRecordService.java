@@ -177,6 +177,9 @@ public class FssTradeRecordService {
 	 */
 	public BigDecimal  getBankLimit(Integer applyType,Long custId) throws FssException{
 		CustomerInfoEntity customerInfoEntity=customerInfoService.getCustomerById(custId);
+		if(customerInfoEntity==null){
+			throw new FssException("90004027");
+		}
 		BankCardInfoEntity bankCardInfo=null;
 		if(null!=customerInfoEntity.getBankId()&&!"".equals(customerInfoEntity.getBankId())) {
 			bankCardInfo = bankCardInfoService.getBankCardInfoById(customerInfoEntity.getBankId());

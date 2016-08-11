@@ -411,6 +411,9 @@ public class FssTradeApplyService {
 			throw new FssException("90004007");
 		}
 		FundAccountEntity toEntity = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+		if (toEntity == null) {
+			throw new FssException("90004006");
+		}
 		//提现前资金冻结
 		tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);//资金冻结
 		FssTradeApplyEntity fssTradeApplyEntity = this.createFssTradeApplyEntity(custNo,accNo,tradeType,amt,mchn,seqNo,custId,custType,contractNo,cId,settleType,1104,fromId,false);
