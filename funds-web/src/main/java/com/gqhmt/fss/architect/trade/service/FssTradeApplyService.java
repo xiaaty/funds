@@ -187,14 +187,15 @@ public class FssTradeApplyService {
 	 */
 	public void insertTradeApply(FssRepaymentEntity fssRepaymentEntity) throws FssException {
 		//修改状态
-		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssRepaymentEntity.getAccNo());
-		if (fssAccountByAccNo==null) throw new FssException("90002001");
+//		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssRepaymentEntity.getAccNo());
+//		if (fssAccountByAccNo==null) throw new FssException("90002001");
 		//修改状态
+
 		fssRepaymentEntity.setState("10090002");
 		fssRepaymentEntity.setMotifyTime(new Date());
 		fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
 		//添加代扣申请
-		this.whithholdingApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssRepaymentEntity.getTradeType(),fssRepaymentEntity.getAmt(),fssRepaymentEntity.getMchnChild(),fssRepaymentEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssRepaymentEntity.getContractNo(),fssRepaymentEntity.getContractId(),fssRepaymentEntity.getId(),true);
+		this.whithholdingApply(null,null,fssRepaymentEntity.getTradeType(),fssRepaymentEntity.getAmt(),fssRepaymentEntity.getMchnChild(),fssRepaymentEntity.getSeqNo(),Long.valueOf(fssRepaymentEntity.getAccNo()),1,fssRepaymentEntity.getContractNo(),fssRepaymentEntity.getContractId(),fssRepaymentEntity.getId(),true);
 	}
 	/**
 	 *

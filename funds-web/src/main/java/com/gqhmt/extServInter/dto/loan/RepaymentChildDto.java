@@ -29,8 +29,8 @@ public class RepaymentChildDto{
 	@APIValidNull(errorCode = "90002022")
 	private String contract_no;			//合同编号
 	
-	@APIValidNull(errorCode = "90002018")
-    private String acc_no;        //借款人资金平台账号
+	@APIValidNull(errorCode = "90002006")
+    private String cust_id;        //借款人资金平台账号
 	
 	@APIValidNull(errorCode = "90002020")
     private BigDecimal amt;       //还款金额
@@ -56,12 +56,15 @@ public class RepaymentChildDto{
 	public void setContract_id(String contract_id) {
 		this.contract_id = contract_id;
 	}
-	public String getAcc_no() {
-		return acc_no;
+
+	public String getCust_id() {
+		return cust_id;
 	}
-	public void setAcc_no(String acc_no) {
-		this.acc_no = acc_no;
+
+	public void setCust_id(String cust_id) {
+		this.cust_id = cust_id;
 	}
+
 	public BigDecimal getAmt() {
 		return amt;
 	}

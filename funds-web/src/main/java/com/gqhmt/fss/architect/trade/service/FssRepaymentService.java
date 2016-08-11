@@ -188,7 +188,7 @@ public class FssRepaymentService {
 				response.setResp_msg("执行成功！");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-			throw new FssException("还款划扣失败！");
+			throw new FssException(e.getMessage());
 		}
     	return response;
 	 }
@@ -200,7 +200,7 @@ public class FssRepaymentService {
 	 */
 	public FssRepaymentEntity createFssRepaymentEntity(RepaymentChildDto repyament,RepaymentDto repaymentDto,FssRepaymentParentEntity repaymentParent) throws FssException{
 		FssRepaymentEntity repaymentEntity = new FssRepaymentEntity();
-		repaymentEntity.setAccNo(repyament.getAcc_no());
+		repaymentEntity.setAccNo(repyament.getCust_id());
 		repaymentEntity.setTradeType(repaymentDto.getTrade_type());
 		repaymentEntity.setCreateTime(new Date());
 		repaymentEntity.setMotifyTime(new Date());
@@ -269,7 +269,7 @@ public class FssRepaymentService {
 		FssTradeApplyEntity fssTradeApplyEntity=null;
     	for (FssRepaymentEntity fssRepaymentEntity : repaymentlist) {
     		repaymentChild=new RepaymentChildDto();
-    		repaymentChild.setAcc_no(fssRepaymentEntity.getAccNo());
+    		repaymentChild.setCust_id(fssRepaymentEntity.getAccNo());
     		repaymentChild.setAmt(fssRepaymentEntity.getAmt());
 			fssTradeApplyEntity=fssTradeApplyService.queryForFromId(fssRepaymentEntity.getId(),fssRepaymentEntity.getTradeType());
 			repaymentChild.setReal_repay_amt(fssTradeApplyEntity.getRealTradeAmount());
