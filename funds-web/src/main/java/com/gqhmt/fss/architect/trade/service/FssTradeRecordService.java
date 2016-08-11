@@ -135,9 +135,13 @@ public class FssTradeRecordService {
 	 */
 	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity,BigDecimal tradeAmount) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
-		int settleType=1;
-		if(fssTradeApplyEntity.getBespokedate()!=null){//结算类型0：T+0,1：T+1
-			settleType=fssTradeApplyService.compare_date(fssTradeApplyEntity.getBespokedate());
+		Integer settleType=fssTradeApplyEntity.getSettleType();
+		if(settleType==null) {
+			if (fssTradeApplyEntity.getBespokedate() != null) {//结算类型0：T+0,1：T+1
+				settleType = fssTradeApplyService.compare_date(fssTradeApplyEntity.getBespokedate());
+			}else{
+				settleType=1;
+			}
 		}
 		tradeRecordEntity.setSettleType(settleType);
 		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
