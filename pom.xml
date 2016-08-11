@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>funds</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.8-SNAPSHOT</version>
+	<version>1.0.7-21</version>
 
 
 
@@ -17,7 +17,7 @@
 	<scm>
 		<connection>scm:git:http://git-jk:git-jk@bitbucket.gqihome.com/scm/fss/fund.git</connection>
 		<developerConnection>scm:git:http://git-jk:git-jk@bitbucket.gqihome.com/scm/fss/fund.git</developerConnection>
-		<tag>funds-1.0.7-16</tag>
+		<tag>funds-1.0.7-21</tag>
 	</scm>
 	<distributionManagement>
 		<site>
