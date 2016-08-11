@@ -209,9 +209,9 @@ public class FssTradeApplyService {
 		//添加代扣申请
 		if("11092001".equals(tradeType)){
 			FssAccountEntity fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
-			this.whithdrawApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
+			this.whithdrawApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),1);
 		}else if("11090006".equals(tradeType)){
-			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
+			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),1);
 		}else if("11090005".equals(tradeType)){
 			this.whithholdingApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
 		}
@@ -517,8 +517,20 @@ public class FssTradeApplyService {
      * 判断预约到账日期是否为今天
      */
 
-	 public int compare_date(String BespokeDate){
-		 return 0;
+	 public int compare_date(String BespokeDate)throws  FssException{
+		 try{
+			 SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+			 Date dateTime1 = df.parse(BespokeDate);
+			 String dateTime2 = df.format(new Date());
+			 Date today=df.parse(dateTime2);
+			 if(dateTime1.compareTo(today)>0){//大于等于今天
+				 return 1;
+			 }else{
+				 return 0;
+			 }
+		 }catch (Exception e){
+			 throw new FssException("日期格式转换异常");
+		 }
 	 }
 
 	public int compare_date(Date BespokeDate) throws FssException{
