@@ -171,8 +171,8 @@ public class LoanApiTest extends SupperAPI {
     		repaymentChildDto.setContract_id("100001");
     		repaymentChildDto.setContract_no("JK2016032600031");
     		repaymentChildDto.setSerial_number("00000000000");
-    		repaymentChildDto.setAcc_no("1302692985004666");
-    		repaymentChildDto.setAmt(new BigDecimal("600000.00"));
+    		repaymentChildDto.setCust_id("611293");
+    		repaymentChildDto.setAmt(new BigDecimal("60000.00"));
     		repaymentChildDto.setRemark("jax");
     		repay_list.add(repaymentChildDto);
     		
@@ -180,8 +180,8 @@ public class LoanApiTest extends SupperAPI {
     		repaymentChildDto1.setContract_id("100001");
     		repaymentChildDto1.setContract_no("JK2016032600031");
     		repaymentChildDto1.setSerial_number("66666666");
-    		repaymentChildDto1.setAcc_no("1302692985004666");
-    		repaymentChildDto1.setAmt(new BigDecimal("1000000.00"));
+    		repaymentChildDto1.setCust_id("611295");
+    		repaymentChildDto1.setAmt(new BigDecimal("60000.00"));
     		repaymentChildDto1.setRemark("jax");
     		repay_list.add(repaymentChildDto1);
     		
@@ -194,7 +194,7 @@ public class LoanApiTest extends SupperAPI {
     		
     		dto.setRepay_list(repay_list);
     		System.out.println(JsonUtil.getInstance().getJson(dto)+"*********");
-    		Response response = UrlConnectUtil.sendJsonDataReturnObjectUrl(Response.class,"http://localhost:8080/funds/api/createRefundDraw", JsonUtil.getInstance().getJson(dto))  ;
+    		Response response = UrlConnectUtil.sendJsonDataReturnObjectUrl(Response.class,"http://localhost:8080/api/createRefundDraw", JsonUtil.getInstance().getJson(dto))  ;
     		System.out.println(response.getResp_code()+":"+response.getResp_msg());
     		
 //            dto.setFee_list(feeList);
