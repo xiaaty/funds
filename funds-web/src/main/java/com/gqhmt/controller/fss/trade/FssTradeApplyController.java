@@ -207,6 +207,10 @@ public class FssTradeApplyController {
 				if(applyType==1104){//提现
 					if(StringUtils.isNotEmptyString(bespokedate)){
 						tradeapply.setBespokedate(sdf.parse(bespokedate));
+						int settleType=fssTradeApplyService.compare_date(bespokedate);
+						tradeapply.setSettleType(settleType);
+					}else{
+						tradeapply.setSettleType(tradeapply.getSettleType());
 					}
 				}
 			} catch (ParseException e) {
