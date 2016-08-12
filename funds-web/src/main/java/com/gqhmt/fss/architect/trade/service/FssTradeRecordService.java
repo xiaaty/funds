@@ -135,11 +135,15 @@ public class FssTradeRecordService {
 	 */
 	public FssTradeRecordEntity creatTradeRecordEntity(FssTradeApplyEntity fssTradeApplyEntity,BigDecimal tradeAmount) throws FssException{
 		FssTradeRecordEntity tradeRecordEntity=new FssTradeRecordEntity();
-		int settleType=0;
-		if(fssTradeApplyEntity.getBespokedate()!=null){//结算类型0：T+0,1：T+1
-			settleType=fssTradeApplyService.compare_date(fssTradeApplyEntity.getBespokedate());
-			tradeRecordEntity.setSettleType(settleType);
+		Integer settleType=fssTradeApplyEntity.getSettleType();
+		if(settleType==null) {
+			if (fssTradeApplyEntity.getBespokedate() != null) {//结算类型0：T+0,1：T+1
+				settleType = fssTradeApplyService.compare_date(fssTradeApplyEntity.getBespokedate());
+			}else{
+				settleType=1;
+			}
 		}
+		tradeRecordEntity.setSettleType(settleType);
 		tradeRecordEntity.setAccNo(fssTradeApplyEntity.getAccNo());
 		tradeRecordEntity.setTradeType(fssTradeApplyEntity.getApplyType());
 		tradeRecordEntity.setTradeTypeChild(Integer.valueOf(fssTradeApplyEntity.getBusiType()));
@@ -173,6 +177,9 @@ public class FssTradeRecordService {
 	 */
 	public BigDecimal  getBankLimit(Integer applyType,Long custId) throws FssException{
 		CustomerInfoEntity customerInfoEntity=customerInfoService.getCustomerById(custId);
+		if(customerInfoEntity==null){
+			throw new FssException("90004027");
+		}
 		BankCardInfoEntity bankCardInfo=null;
 		if(null!=customerInfoEntity.getBankId()&&!"".equals(customerInfoEntity.getBankId())) {
 			bankCardInfo = bankCardInfoService.getBankCardInfoById(customerInfoEntity.getBankId());

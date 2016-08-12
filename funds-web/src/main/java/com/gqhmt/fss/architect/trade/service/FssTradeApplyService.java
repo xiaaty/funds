@@ -187,14 +187,15 @@ public class FssTradeApplyService {
 	 */
 	public void insertTradeApply(FssRepaymentEntity fssRepaymentEntity) throws FssException {
 		//修改状态
-		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssRepaymentEntity.getAccNo());
-		if (fssAccountByAccNo==null) throw new FssException("90002001");
+//		FssAccountEntity fssAccountByAccNo = fssAccountService.getFssAccountByAccNo(fssRepaymentEntity.getAccNo());
+//		if (fssAccountByAccNo==null) throw new FssException("90002001");
 		//修改状态
+
 		fssRepaymentEntity.setState("10090002");
 		fssRepaymentEntity.setMotifyTime(new Date());
 		fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
 		//添加代扣申请
-		this.whithholdingApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssRepaymentEntity.getTradeType(),fssRepaymentEntity.getAmt(),fssRepaymentEntity.getMchnChild(),fssRepaymentEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssRepaymentEntity.getContractNo(),fssRepaymentEntity.getContractId(),fssRepaymentEntity.getId(),true);
+		this.whithholdingApply(null,null,fssRepaymentEntity.getTradeType(),fssRepaymentEntity.getAmt(),fssRepaymentEntity.getMchnChild(),fssRepaymentEntity.getSeqNo(),Long.valueOf(fssRepaymentEntity.getAccNo()),1,fssRepaymentEntity.getContractNo(),fssRepaymentEntity.getContractId(),fssRepaymentEntity.getId(),true);
 	}
 	/**
 	 *
@@ -208,9 +209,9 @@ public class FssTradeApplyService {
 		//添加代扣申请
 		if("11092001".equals(tradeType)){
 			FssAccountEntity fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
-			this.whithdrawApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
+			this.whithdrawApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),1);
 		}else if("11090006".equals(tradeType)){
-			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
+			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),1);
 		}else if("11090005".equals(tradeType)){
 			this.whithholdingApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
 		}
@@ -410,6 +411,9 @@ public class FssTradeApplyService {
 			throw new FssException("90004007");
 		}
 		FundAccountEntity toEntity = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+		if (toEntity == null) {
+			throw new FssException("90004006");
+		}
 		//提现前资金冻结
 		tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);//资金冻结
 		FssTradeApplyEntity fssTradeApplyEntity = this.createFssTradeApplyEntity(custNo,accNo,tradeType,amt,mchn,seqNo,custId,custType,contractNo,cId,settleType,1104,fromId,false);
@@ -516,8 +520,20 @@ public class FssTradeApplyService {
      * 判断预约到账日期是否为今天
      */
 
-	 public int compare_date(String BespokeDate){
-		 return 0;
+	 public int compare_date(String BespokeDate)throws  FssException{
+		 try{
+			 SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+			 Date dateTime1 = df.parse(BespokeDate);
+			 String dateTime2 = df.format(new Date());
+			 Date today=df.parse(dateTime2);
+			 if(dateTime1.compareTo(today)>0){//大于等于今天
+				 return 1;
+			 }else{
+				 return 0;
+			 }
+		 }catch (Exception e){
+			 throw new FssException("日期格式转换异常");
+		 }
 	 }
 
 	public int compare_date(Date BespokeDate) throws FssException{
@@ -527,10 +543,10 @@ public class FssTradeApplyService {
 			Date bespDate=df.parse(dateTime1);
 			String dateTime2 = df.format(new Date());
 			Date today=df.parse(dateTime2);
-			if(bespDate.compareTo(today)>=0){//大于等于今天
-				return 0;
-			}else{
+			if(bespDate.compareTo(today)>0){//大于等于今天
 				return 1;
+			}else{
+				return 0;
 			}
 		}catch (Exception e){
 			throw new FssException("日期格式转换异常");

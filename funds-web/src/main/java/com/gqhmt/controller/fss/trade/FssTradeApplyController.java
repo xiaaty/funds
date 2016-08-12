@@ -2,13 +2,10 @@ package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.core.util.Application;
-import com.gqhmt.core.util.CommonUtil;
-import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.*;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
@@ -21,24 +18,17 @@ import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import com.gqhmt.core.util.StringUtils;
-import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
-import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -215,15 +205,12 @@ public class FssTradeApplyController {
 		if(StringUtils.isNotEmptyString(applyStatus) && applyStatus.equals("4")){//通过
 			try {
 				if(applyType==1104){//提现
-					if(bespokedate==null || "".equals(bespokedate)){
-						tradeapply.setBespokedate(new Date());
-						tradeapply.setSettleType(0);
-					}else{
+					if(StringUtils.isNotEmptyString(bespokedate)){
 						tradeapply.setBespokedate(sdf.parse(bespokedate));
-						tradeapply.setSettleType(1);
 					}
 				}
 			} catch (ParseException e) {
+				LogUtil.debug(e.getClass(),e.getMessage());
 				e.printStackTrace();
 			}
 //			fssTradeRecordService.moneySplit(tradeapply);//金额拆分
@@ -312,7 +299,7 @@ public class FssTradeApplyController {
 			if("11030014".equals(tradeType)){//委托充值(账户直接充值)
 				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,false);
 			}else if("11040012".equals(tradeType)){//账户直接提现(账户类型)
-				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,0);
+				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,1);
 			}else if("11030015".equals(tradeType)){//线下充值
 				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(custType),null,amt);
 			}

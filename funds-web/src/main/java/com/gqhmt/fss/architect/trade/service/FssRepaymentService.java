@@ -188,7 +188,7 @@ public class FssRepaymentService {
 				response.setResp_msg("执行成功！");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
-			throw new FssException("还款划扣失败！");
+			throw new FssException(e.getMessage());
 		}
     	return response;
 	 }

@@ -134,7 +134,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new CommandParmException("90004009");
         }
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withholdDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,withholdDto.getAmt(),GlobalConstants.ORDER_CHARGE,0,0,"1104",withholdDto.getTrade_type(),null,null);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,withholdDto.getAmt(),GlobalConstants.ORDER_WITHHOLDING,0,0,"1103",withholdDto.getTrade_type(),null,null);
         //资金处理
         tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1002);
         return true;
@@ -154,7 +154,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.cashWithSetReq(primaryAccount.getCustId(),1);
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         this.hasEnoughBanlance(entity,withdrawDto.getAmt().add(withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt()));
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmt(),withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt(),GlobalConstants.ORDER_WITHDRAW,0l,0,"1104",withdrawDto.getTrade_type(),null,null);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmt(),withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt(),GlobalConstants.ORDER_AGENT_WITHDRAW,0l,0,"1104",withdrawDto.getTrade_type(),null,null);
         //资金处理
         tradeRecordService.withdraw(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1012);
         this.chargeAmount(fundOrderEntity);
@@ -273,7 +273,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.hasEnoughBanlance(entity,amount);
         checkwithholdingOrWithDraw(entity,2);
         this.cashWithSetReq(entity.getCustId(),selletType);
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_WITHHOLDING,busiId,GlobalConstants.BUSINESS_WITHHOLDING,null,null,null,null);
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_AGENT_WITHDRAW,busiId,GlobalConstants.BUSINESS_WITHHOLDING,null,null,null,null);
         //资金处理
         tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
         return true;
