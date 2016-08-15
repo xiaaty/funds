@@ -86,8 +86,8 @@ public class FundSequenceService {
      * @param accountType
      * @param amount
      */
-    public void charge(FundAccountEntity entity, int accountType, BigDecimal amount, ThirdPartyType thirdPartyType, FundOrderEntity orderEntity) throws FssException {
-        this.charge(entity,1,accountType,amount,0L,orderEntity,null,null,null,null,null,null,null);
+    public void charge(FundAccountEntity entity, int accountType, BigDecimal amount, ThirdPartyType thirdPartyType, FundOrderEntity orderEntity,String tradeType) throws FssException {
+        this.charge(entity,1,accountType,amount,0L,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
     /**
@@ -137,8 +137,8 @@ public class FundSequenceService {
      * @param orderEntity
      * @throws FssException
      */
-    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
-          this.refund(entity,2,accountType,amount,0l,orderEntity,null,null,null,null,null,null,null);
+    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,String tradeType) throws FssException {
+          this.refund(entity,2,accountType,amount,0l,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
     /**
@@ -334,7 +334,7 @@ public class FundSequenceService {
      * @throws FssException
      */
     public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,BigDecimal bounsAmount,String tradeType) throws FssException {
-        this.frozenAmt(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,bounsAmount,null,tradeType,null,null,null,null,null);
+        this.frozenAmt(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,bounsAmount,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
     /**
@@ -399,7 +399,7 @@ public class FundSequenceService {
      * @throws FssException
      */
     public void unfreeze(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,String tradeType) throws FssException {
-        this.unfreeze(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,null,tradeType,null,null,null,null,null);
+        this.unfreeze(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
 
