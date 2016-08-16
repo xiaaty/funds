@@ -64,7 +64,7 @@ public class APIValidAop {
 
         Long startTime = Calendar.getInstance().getTimeInMillis();
         Response response = null;
-        String code = "90099999";
+        String code = "90099998";
         SuperDto dto = null;
         Object targetClass = null;
         String methodName = null;
@@ -116,10 +116,14 @@ public class APIValidAop {
 
         if(resCode != null && resCode.matches("[0-9]*") &&  Integer.parseInt(resCode) == 0){
             resCode = "0000";
-            response.setResp_code(resCode);
         }
         String resMsg = Application.getInstance().getDictName(response.getResp_code());
         //处理成功返回值
+        if("数据字典未配置".equals(resMsg) || "null".equals(resMsg)){
+            resCode = "90099998";
+            resMsg = Application.getInstance().getDictName(response.getResp_code());
+        }
+        response.setResp_code(resCode);
         response.setResp_msg(resMsg);
 
 
