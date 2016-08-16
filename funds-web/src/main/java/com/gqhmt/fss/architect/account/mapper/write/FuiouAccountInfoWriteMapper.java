@@ -1,8 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.write;
 
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
-
-import java.util.List;
 
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
@@ -20,7 +19,7 @@ import java.util.List;
  * -----------------------------------------------------------------
  * 2016/6/27.  xdw         1.0     1.0 Version
  */
-public interface FuiouAccountInfoWriteMapper {
+public interface FuiouAccountInfoWriteMapper extends ReadAndWriteMapper<FuiouAccountInfoEntity> {
 
     //添加金账户对账文件记录
     public void addFuiouAccountInfoEntity(FuiouAccountInfoEntity file);

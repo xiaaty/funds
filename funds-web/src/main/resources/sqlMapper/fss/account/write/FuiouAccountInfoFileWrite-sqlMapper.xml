@@ -1,49 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.account.mapper.write.FuiouAccountInfoWriteMapper">
-    <insert id="addFuiouAccountInfoEntity" parameterType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
-        INSERT INTO t_gq_fss_fuiou_account_info (
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.write.FuiouAccountInfoFileWriteMapper">
+
+    <insert id="addFuiouAccountInfoFileEntity" keyProperty="id" useGeneratedKeys="true" parameterType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity">
+        INSERT INTO t_gq_fss_fuiou_account_info_file (
             trade_type,
-            business_code,
-            trade_sources,
-            contract_num,
-            seq_no,
-            batch_foiu_finance,
-            trade_time,
-            trade_amount,
-            user_account,
-            user_name,
-            in_account,
-            in_user_name,
-            total_money,
-            balance,
+            createfile_date,
             remark,
-            return_num,
-            state,
-            account_state,
-            file_id
+            boolean_type
         )
         VALUES
 	    (
             #{tradeType},
-            #{businessCode},
-            #{tradeSources},
-            #{contractNum},
-            #{seqNo},
-            #{batchFoiuFinance},
-            #{tradeTime},
-            #{tradeAmount},
-            #{userAccount},
-            #{userName},
-            #{inAccount},
-            #{inUserName},
-            #{totalMoney},
-            #{balance},
+            str_to_date(#{createFileDate},'%Y%m%d %H:%i:%s'),
             #{remark},
-            #{returnNum},
-            #{state},
-            #{accountState},
-            #{fileId}
+            cast(#{booleanType} AS signed int)
 		)
     </insert>
 
@@ -59,14 +30,14 @@
         <if test="contractNum != null and contractNum != ''">
             contract_num = #{contractNum},
         </if>
-        <if test="seqNo != null and seqNo != ''">
-            seq_no = #{seqNo},
+        <if test="batch != null and batch != ''">
+            batch = #{batch},
         </if>
         <if test="batchFoiuFinance != null and batchFoiuFinance != ''">
             batch_foiu_finance = #{batchFoiuFinance},
         </if>
-        <if test="tradeAmount != null and tradeAmount != ''">
-            trade_amount = #{tradeAmount},
+        <if test="transactionAmount != null and transactionAmount != ''">
+            transaction_amount = #{transactionAmount},
         </if>
         <if test="userAccount!=null and userAccount!=''">
             user_account = #{userAccount},
@@ -98,8 +69,8 @@
         <if test="accountState!=null and accountState!=''">
             account_state = #{accountState},
         </if>
-        <if test="fileId!=null and fileId!=''">
-            file_id = #{fileId}
+        <if test="booleanType!=null and booleanType!=''">
+            boolean_type = #{booleanType}
         </if>
         WHERE id = #{id}
     </update>
