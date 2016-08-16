@@ -54,7 +54,7 @@
                                 <h2>快速搜索</h2>
                             </header>
                             <div>
-                                <form class="smart-form" action="${contextPath}/account/info/accountInfoFialList"  method="post" id="Form">
+                                <form class="smart-form" action="${contextPath}/account/info/failAccInfoFileList"  method="post" id="Form">
                                     <div class="jarviswidget-editbox">
                                     </div>
                                     <div class="widget-body no-padding">
@@ -75,11 +75,11 @@
                                                             <input type="text" style="width:210px" name="tradeType" value="${map.tradeType}" />
                                                         </label>
                                                     </td>
-                                                    <td class="tr">交易/充值/提现日期：</td>
+                                                    <td class="tr">文件日期：</td>
                                                     <td>
                                                         <section class="fl">
                                                             <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                                <input type="text" maxlength="10" name="tradingTime" class="selectdate" placeholder="请选择时间" value="${map.tradingTime}">
+                                                                <input type="text" maxlength="10" name="createFileDate" class="selectdate" placeholder="请选择时间" value="${map.createFileDate}">
                                                             </label>
                                                         </section>
                                                     </td>
@@ -98,7 +98,7 @@
                     		</div>
                 		</div>
                 
-                
+
                 
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
@@ -126,8 +126,8 @@
                                          <tr>
                                              <td>序号</td>
                                              <td>信息类型</td>
-                                             <td>业务代码</td>
-                                             <td>失败日期</td>
+                                             <td>文件日期</td>
+                                             <td>备注</td>
                                              <td>操作</td>
                                          </tr>
                                          </thead>
@@ -136,10 +136,13 @@
                                              <tr>
                                                  <td>${Status.index}</td>
                                                  <td>${t.tradeType}</td>
-                                                 <td>${t.businessCode}</td>
-                                                 <td><fmt:formatDate value="${t.tradingTime}" pattern="yyyy-MM-dd"/></td>
+                                                 <td class="dateStr">${t.createFileDate}
+                                                         <%--<fmt:formatDate value='${t.createFileDate}' pattern="yyyy-MM-dd"/>--%>
+                                                 </td>
+                                                 <td>${t.remark}</td>
                                                  <td>
-                                                     <a href="${contextPath}/account/info/accountInfoEdit/${t.id}" class="redFont" title="点击手动抓取" onsubmit = "beforeManuallyCrawl()" >手动抓取</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <%-- <a href="${contextPath}/account/info/accountInfoEdit/${t.id}" class="redFont" title="点击手动抓取" onsubmit = "beforeManuallyCrawl()" >手动抓取</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                                                     <a href="${contextPath}/account/info/accountInfoEdit/${t.id}" class="redFont" title="点击手动抓取"  >手动抓取</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                      <a href="${contextPath}/account/info/accountInfoDelete/${t.id}" class="redFont"  title="点击删除" id="aDelete" onclick = "return beforeDelete(${t.id})" >删除</a>
                                                  </td>
                                              </tr>
@@ -165,6 +168,13 @@
     $(document).ready(function () {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
+
+        $(".dateStr").each(function(){
+            var text = $(this).text();
+            var pattern = /(\d{4})(\d{2})(\d{2})/;
+            var dateString = text.replace(pattern, '$1-$2-$3');
+            $(this).text(dateString);
+        });
     });
 
     $('.selectdate').datetimepicker({

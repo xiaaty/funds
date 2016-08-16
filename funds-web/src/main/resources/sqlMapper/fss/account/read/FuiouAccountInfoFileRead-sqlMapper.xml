@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FuiouAccountInfoFileReadMapper">
+    <sql id="selectSql">
+        SELECT
+            id,
+            trade_type tradeType,
+            DATE_FORMAT(createfile_date, '%Y%m%d') createFileDate,
+            remark,
+            boolean_type booleanType
+        FROM t_gq_fss_fuiou_account_info_file t
+    </sql>
+    <select id="queryAccountInfoFileList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity">
+        <include refid="selectSql"/>
+        WHERE 1=1
+        <if test="id != null and id != '' ">
+            AND  t.id = #{id}
+        </if>
+        <if test="tradeType != null and tradeType != '' ">
+            AND  t.trade_type = #{tradeType}
+        </if>
+        <if test="createFileDate!=null and createFileDate!=''">
+            AND date_format(createfile_date,'%Y%m%d') = #{createFileDate}
+        </if>
+        <if test="remark != null and remark != '' ">
+            AND  t.remark = #{remark}
+        </if>
+        <if test="booleanType != null and booleanType != '' ">
+            AND  t.boolean_type = #{booleanType}
+        </if>
+            ORDER BY t.createfile_date
+    </select>
+
+</mapper>

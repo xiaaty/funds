@@ -8,10 +8,10 @@
             business_code businessCode,
             trade_sources tradeSources,
             contract_num contractNum,
-            batch,
+            seq_no seqNo,
             batch_foiu_finance batchFoiuFinance,
-            trading_time tradingTime,
-            transaction_amount transactionAmount,
+            trade_time tradeTime,
+            trade_amount tradeAmount,
             user_account userAccount,
             user_name userName,
             in_account inAccount,
@@ -21,10 +21,9 @@
             remark,
             return_num returnNum,
             state,
-            account_state accountState,
-            boolean_type booleanType
+            account_state accountState
         FROM t_gq_fss_fuiou_account_info t
-        WHERE (boolean_type != '-1' or boolean_type is null)
+        WHERE 1=1
         <if test="tradeType != null and tradeType != '' ">
             AND  t.trade_type = #{tradeType}
         </if>
@@ -34,23 +33,26 @@
         <if test="userName!=null and userName!=''">
             AND user_name = #{userName}
         </if>
-        <if test="tradingTime!=null and tradingTime!=''">
-            AND date_format(trading_time,'%Y-%m-%d') = #{tradingTime}
+        <if test="tradeTime!=null and tradeTime!=''">
+            AND date_format(trade_time,'%Y-%m-%d') = #{tradeTime}
         </if>
-            ORDER BY t.trading_time
+        <if test="seqNo!=null and seqNo!=''">
+            AND seq_no = #{seqNo}
+        </if>
+            ORDER BY t.trade_time
     </select>
 
-    <select id="queryAccountFailInfoList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
+    <select id="queryAccountAllInfoList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
         SELECT
             id,
             trade_type tradeType,
             business_code businessCode,
             trade_sources tradeSources,
             contract_num contractNum,
-            batch,
+            seq_no seqNo,
             batch_foiu_finance batchFoiuFinance,
-            trading_time tradingTime,
-            transaction_amount transactionAmount,
+            trade_time tradeTime,
+            trade_amount tradeAmount,
             user_account userAccount,
             user_name userName,
             in_account inAccount,
@@ -60,19 +62,18 @@
             remark,
             return_num returnNum,
             state,
-            account_state accountState,
-            boolean_type booleanType
+            account_state accountState
         FROM t_gq_fss_fuiou_account_info t
-        WHERE boolean_type = '-1'
+        WHERE 1 = 1
         <if test="id!=null and id!='' and id!= 0">
             AND t.id = cast(#{id} as signed int)
         </if>
         <if test="tradeType!=null and tradeType!=''">
             AND  t.trade_type = #{tradeType}
         </if>
-        <if test="tradingTime!=null and tradingTime != ''">
-            AND date_format(t.trading_time,'%Y-%m-%d') = #{tradingTime}
+        <if test="tradeTime!=null and tradeTime != ''">
+            AND date_format(t.trade_time,'%Y-%m-%d') = #{tradeTime}
         </if>
-        ORDER BY t.trading_time
+        ORDER BY t.trade_time
     </select>
 </mapper>
