@@ -4,6 +4,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.core.util.XmlUtil;
 import com.gqhmt.pay.exception.ApplicationNotConnectionRemoteUrl;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
+import com.gqhmt.pay.unionPay.connection.Connection;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -39,15 +40,14 @@ public class ConnectionFuiou {
 
         String param = getParam(map);
 
-        System.out.println("thirdpaty__"+url+":send:"+param);
-        LogUtil.debug(ConnectionFuiou.class,"thirdpaty__"+url+":send:"+param);
-        try {
-            InputStream is = sendHttpRequest(url,param);
-            String result = parseResponse(is);
-            System.out.println("thirdpaty__"+url+":result:"+result);
+        LogUtil.debug(ConnectionFuiou.class,"第三方支付:"+url+":发送数据参数:"+(param == null?"无参数":param.replace("&","|")));
+//        LogUtil.debug(ConnectionFuiou.class,"thirdpaty__"+url+":send:"+param);
+        try{
+            String result = sendHttpRequest(url,param);
+            LogUtil.debug(ConnectionFuiou.class,"第三方支付:"+url+":result:"+result);
             Map reMap = getResult(result);
             Map apMap = (Map)reMap.get("ap");
-            System.out.println(apMap);
+            LogUtil.info(ConnectionFuiou.class,"返回结果:"+apMap);
             String sign = (String)apMap.get("signature");
             check(result,sign);
             Map resultMap = (Map)apMap.get("plain");
@@ -108,7 +108,6 @@ public class ConnectionFuiou {
 
 
     private static String parseResponse(InputStream is) throws IOException {
-
         if(is == null){
             throw new IOException("通道为空");
         }
@@ -121,7 +120,15 @@ public class ConnectionFuiou {
                 result += line;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LogUtil.error(ConnectionFuiou.class,e);
+        }finally {
+            if(in != null){
+                try {
+                    in.close();
+                }catch (Exception e){
+                    LogUtil.error(Connection.class,e);
+                }
+            }
         }
         return result;
     }
@@ -133,10 +140,11 @@ public class ConnectionFuiou {
      * @return
      * @throws Exception
      */
-    private static InputStream sendHttpRequest(String url, String param) throws IOException {
+    private static String sendHttpRequest(String url, String param) throws IOException {
         PrintWriter out = null;
         long startTime = new Date().getTime();
         String result = "";
+        InputStream is = null;
         URL realUrl = null;
         try {
             realUrl = new URL(url);
@@ -156,8 +164,10 @@ public class ConnectionFuiou {
             out.flush();
             // 定义输入流得到响应
             long endTime = new Date().getTime();
-            System.out.println("连接富友："+url+"?"+param+"时长"+(endTime-startTime));
-            return conn.getInputStream();
+            is =  conn.getInputStream();
+            LogUtil.info(ConnectionFuiou.class,"连接富友："+url+"?"+param+"时长"+(endTime-startTime));
+            result = parseResponse(is);
+            return result;
         } catch (MalformedURLException e) {
             throw e;
         } catch (IOException e) {
@@ -168,7 +178,14 @@ public class ConnectionFuiou {
                     out.close();
                 }
             } catch (Exception e) {
-                System.err.println("关闭POST请求错误!" + e);
+                LogUtil.error(ConnectionFuiou.class,"关闭POST请求错误!",e);
+            }
+            if(is != null){
+                try {
+                    is.close();
+                }catch (Exception e){
+                    LogUtil.error(ConnectionFuiou.class,"关闭相应结果流错误!",e);
+                }
             }
         }
 
