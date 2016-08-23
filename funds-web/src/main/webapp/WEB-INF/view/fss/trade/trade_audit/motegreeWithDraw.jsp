@@ -163,8 +163,8 @@
                                         <thead>
                                         <tr>
                                             <td>序号</td>
-                                            <td>抵押权人人资金平台账号</td>
                                             <td>交易流水号</td>
+                                            <td>抵押权人人资金平台账号</td>
                                             <td>合同编号</td>
                                             <td>提现金额 </td>
                                             <td>交易状态 </td>
@@ -178,8 +178,8 @@
                                         <c:forEach items="${page.list}" var="t">
                                                 <tr>
                                                     <td>${l.index+1}</td>
-                                                    <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.seqNo}</td>
+                                                    <td>${t.mortgageeAccNo}</td>
                                                     <td>${t.contractNo}</td>
                                                     <td>${t.contractAmt}</td>
                                                     <td> <fss:dictView key="${t.status}" /></td>

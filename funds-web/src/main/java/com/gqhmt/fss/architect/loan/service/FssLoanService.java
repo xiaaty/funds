@@ -335,7 +335,7 @@ public class FssLoanService {
 			String endTime = map.get("endTime");
 			map2.put("type",map.get("type"));
 			map2.put("status",map.get("status"));
-			map2.put("custNo",map.get("custNo"));
+			map2.put("seqNo",map.get("seqNo"));
 			map2.put("contractNo", map.get("contractNo"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
