@@ -170,14 +170,10 @@
                                         	<c:if test="${fuiouFtpOrder.type == '2'}">
                                                	<c:choose>
 									           		<c:when test="${map.failureFlag eq '1'}">
-									           			<td>
-									           				<button class="btn btn-primary" onclick="failureRetry('${fuiouFtpOrder.id}','${fuiouFtpOrder.orderNo}');">失败重试</button>
-									           			</td>
+									           			<button class="btn btn-primary" onclick="failureRetry('${fuiouFtpOrder.id}','${fuiouFtpOrder.orderNo}');">失败重试</button>
 									           		</c:when>
 									           		<c:otherwise>
-									           			<td>
-									           				<button class="btn" disabled="disabled" onclick="javascript:void(0);">失败重试</button>
-									           			</td>
+									           			<button class="btn" disabled="disabled" onclick="javascript:void(0);">失败重试</button>
 									       			</c:otherwise>
 									           </c:choose>
                                         	</c:if>
