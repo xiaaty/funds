@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,6 +83,20 @@ public class FssTradeRepayController {
             model.addAttribute("fuiouFtpOrder",fuiouFtpOrderList.get(0));
         }
         List<FuiouFtpColomField> fuiouFtpFieldList = fuiouFtpColomFieldService.selectFuiouFtpFieldList(map);
+        
+        //failureFlag:0 不存在失败重试的数据    1：存在失败重试的数据
+        map.put("failureFlag","0");
+        if(CollectionUtils.isNotEmpty(fuiouFtpFieldList)){
+        	for(FuiouFtpColomField ftpField:fuiouFtpFieldList){
+            	if((StringUtils.equals("3018", ftpField.getReturnCode()) 
+            			|| StringUtils.equals("91009999", ftpField.getReturnCode())) 
+            		&&  StringUtils.equals("10890004", ftpField.getState()+"")){
+            		map.put("failureFlag","1");
+            		break;
+            	}
+            }
+        }
+        
         model.addAttribute("page",fuiouFtpFieldList);
         model.put("map", map);
         return "fss/trade/trade_Repay/tradeFuiouFtpField";
@@ -93,11 +109,11 @@ public class FssTradeRepayController {
     	
     	try {
     		Long orderId = Long.valueOf(request.getParameter("orderId"));
-            Long fieldId = Long.valueOf(request.getParameter("fieldId"));
+    		String orderNo = request.getParameter("orderNo");
             //初始化t_fuiou_ftp_order状态
             fuiouFtpOrderService.failureRetry(orderId);
             //初始化t_fuiou_ftp_field状态
-            fuiouFtpColomFieldService.failureRetry(fieldId);
+            fuiouFtpColomFieldService.failureRetry(orderNo);
 		} catch (Exception e) {
 			return "fail";
 		}

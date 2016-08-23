@@ -8,4 +8,7 @@ import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
  */
 public interface FuiouFtpColomFieldWriteMapper extends ReadAndWriteMapper<FuiouFtpColomField> {
 	public void updateByFileSeqId(FuiouFtpColomField fuiouFtpColomField);
+	
+	public void failureRetryByOrderNo(String orderNo);
+	
 }
