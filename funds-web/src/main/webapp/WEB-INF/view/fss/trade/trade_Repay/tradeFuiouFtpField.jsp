@@ -224,6 +224,9 @@
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
+                                        <c:if test="${fuiouFtpOrder.type == '2'}">
+                                        	<col width="120"/>
+                                        </c:if>
                                         <thead>
                                         <tr>
                                             <td>序号</td>
@@ -251,6 +254,9 @@
                                             <td>出借编号，线上客户</td>
                                             <td>借款人id</td>
                                             <td>借款合同编号</td>
+                                            <c:if test="${fuiouFtpOrder.type == '2'}">
+                                        		<td>操作</td>
+                                        	</c:if>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -306,6 +312,25 @@
                                                 <td>${t.lendNo}</td>
                                                 <td>${t.loanCustId}</td>
                                                 <td>${t.loanNo}</td>
+                                                <c:if test="${fuiouFtpOrder.type == '2'}">
+                                                	<c:choose>
+										           		<c:when test="${t.returnCode eq '3018' && t.state eq '10890004'}">
+										           			<td>
+										           				<button class="btn btn-primary" onclick="failureRetry('${fuiouFtpOrder.id}','${t.id}');">失败重试</button>
+										           			</td>
+										           		</c:when>
+										           		<c:when test="${t.returnCode eq '91009999' && t.state eq '10890004'}">
+										           			<td>
+										           				<button class="btn btn-primary" onclick="failureRetry('${fuiouFtpOrder.id}','${t.id}');">失败重试</button>
+										           			</td>
+										           		</c:when>
+										           		<c:otherwise>
+										           			<td>
+										           				<button class="btn" disabled="disabled" onclick="javascript:void(0);">失败重试</button>
+										           			</td>
+										       			</c:otherwise>
+										           </c:choose>
+	                                        	</c:if>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -380,6 +405,33 @@
             }
         });
     }
+    
+ 	// 失败重试
+    function failureRetry(orderId,fieldId){
+    	if(window.confirm("您确定要执行此操作吗？")){
+    		$.ajax({
+    		 	url:"${contextPath}/trade/tradeRepay/ftpField/failureRetry",
+    		 	type:"post",
+    		 	async: false,
+    			data:{
+    				orderId:orderId,
+    				fieldId:fieldId
+    			},
+    			success:function(data){
+    				if (data == 'success') {
+    					alert("操作成功!");
+    					location.reload();
+    				} else {
+    					alert("操作失败!");
+    				}
+    			},
+    			error:function(){
+    				alert("操作异常!");
+    			}
+    		});
+    	}
+    }  
+    
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>

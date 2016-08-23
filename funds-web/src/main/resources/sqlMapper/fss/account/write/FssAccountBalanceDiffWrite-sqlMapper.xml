@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.write.FssAccountBalanceDiffWriteMapper">
+
+	<insert id="batchInsertOrUpdate" parameterType="java.util.List">
+        insert into t_gq_fss_account_balance_diff
+        	(biz_date, account_id, cust_id, user_name, cust_name, plat_amount,fuiou_amount)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.bizDate,jdbcType=TIMESTAMP}, #{item.accountId,jdbcType=INTEGER}, #{item.custId,jdbcType=INTEGER},
+            #{item.userName,jdbcType=VARCHAR}, #{item.custName,jdbcType=VARCHAR}, 
+            #{item.platAmount,jdbcType=DECIMAL}, #{item.fuiouAmount,jdbcType=DECIMAL})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        plat_amount = VALUES(`plat_amount`),
+        fuiou_amount = VALUES(`fuiou_amount`);
+    </insert>
+
+</mapper>

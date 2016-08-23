@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.write.FssAccountBalanceDiffFullDataWriteMapper">
+    
+	<insert id="initFullData">
+         insert into t_gq_fss_account_balance_diff_full_data
+         		(account_id,cust_id,user_name,cust_name)
+		 select DISTINCT a.id as account_id,
+			    s.cust_id,
+			    a.user_name,
+			    a.cust_name
+		   from t_gq_fund_sequence s
+		 inner join t_gq_fund_account a on s.cust_id = a.cust_id
+		  where a.busi_type = '0'
+		    and s.order_no != ''
+		    and s.cust_id > 100
+    </insert>
+
+	<update id="batchSetValidate"  parameterType="java.util.List">
+         update t_gq_fss_account_balance_diff_full_data
+            set is_validate = 1
+          where cust_id in 
+         <foreach collection="custIdList" item="item" index="index" open="(" separator="," close=")" >  
+         	#{item}
+         </foreach>
+    </update>
+
+</mapper>

@@ -250,7 +250,7 @@ public class PaySuperByFuiou {
      * @param primaryAccount
      * @return
      */
-    private CommandResponse banlance(FundAccountEntity primaryAccount ) throws FssException {
+    public CommandResponse banlance(FundAccountEntity primaryAccount ) throws FssException {
         FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_BALANCE,0,0,"","");
         Date date = new Date();
         DateFormat df =new SimpleDateFormat("yyyyMMdd");

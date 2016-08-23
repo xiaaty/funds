@@ -40,6 +40,10 @@ public class FuiouFtpColomFieldService {
     @Resource
     private FuiouFtpColomFieldWriteMapper fuiouFtpColomFieldWriteMapper;
 
+    public FuiouFtpColomField select(Long id) throws FssException{
+    	return fuiouFtpColomFieldReadMapper.selectByPrimaryKey(id);
+    }
+    
     public void insert(FuiouFtpColomField fuiouFtpColomField)throws FssException{
     	fuiouFtpColomFieldWriteMapper.insertSelective(fuiouFtpColomField);
     }
@@ -182,5 +186,18 @@ public class FuiouFtpColomFieldService {
      */
     public List<FuiouFtpColomField> selectFuiouFtpFieldList(Map<String, String> map) {
         return fuiouFtpColomFieldReadMapper.selectFuiouFtpFieldList(map);
+    }
+    
+    /**
+     * 失败重试
+     * @param id
+     * @throws FssException
+     */
+    public void failureRetry(Long id)throws FssException{
+    	FuiouFtpColomField record = this.select(id);
+    	if(record != null){
+    		record.setState(10890001);
+    		this.update(record);
+    	}
     }
 }
