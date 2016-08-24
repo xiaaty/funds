@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.fss.architect.depos.mapper.write.FssProjectInfoWriteMapper">
-    <insert id="insertProjectInfo" parameterType="com.gqhmt.fss.architect.depos.bean.FssProjectInfoBean">
+    <insert id="insertProjectInfo" parameterType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity">
        INSERT INTO `t_gq_fss_depos_fuiou_project_info`(
-       mchn,
        seq_no,
        item_no,
        loan_type,
@@ -26,7 +25,6 @@
        trade_status,
        period,
        prepare_amount,
-       pay_channel,
        bid_year_irr,
        borrow_type,
        license_no,
@@ -45,7 +43,6 @@
        bid_interest
        )
        VALUES(
-       #{mchn},
        #{seqNo},
        #{itemNo},
        #{loanType},
@@ -68,7 +65,6 @@
        #{tradeStatus},
        #{period},
        #{prepareAmount},
-       #{payChannel},
        #{bidYearIrr},
        #{borrowType},
        #{licenseNo},

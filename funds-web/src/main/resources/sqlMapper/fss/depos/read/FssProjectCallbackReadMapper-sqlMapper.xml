@@ -6,19 +6,26 @@
 			t.id id,
 			t.item_name itemName,
 			t.item_no itemNo,
-			t.pay_channel payChannel,
+			t.status status,
 			t.resp_code respCode,
 			t.resp_msg respMsg,
 			t.bid_id bidId,
 			t.failed_msg failedMsg,
-			t.status status
+			t.create_time createTime,
+			t.modify_time modifyTime,
+			t.repay_count repayCount,
+			t.repay_result repayResult
 		FROM `t_gq_fss_depos_fuiou_project_callback` t
 		</sql>
 	<select id="getByParentId"  resultType="com.gqhmt.fss.architect.depos.entity.FssProjectCallbackEntity" >
 			<include refid="selectSql" />
 			where t.parent_id=#{parentId}
 	</select>
-	
+	<select id="getByItemNo"  resultType="com.gqhmt.fss.architect.depos.entity.FssProjectCallbackEntity" >
+			<include refid="selectSql" />
+			where t.item_no=#{itemNo}
+	</select>
+
 	<select  id="queryFssProjectCallBackList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectCallbackEntity" >
 	 <include refid="selectSql" />
 	 <where>

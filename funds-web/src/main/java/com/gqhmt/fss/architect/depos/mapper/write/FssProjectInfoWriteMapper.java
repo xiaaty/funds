@@ -23,7 +23,7 @@ public interface FssProjectInfoWriteMapper extends ReadAndWriteMapper<FssProject
     /**
      * jhz
      * 添加项目信息
-     * @param fssProjectInfoBean
+     * @param fssProjectInfoEntity
      */
-   public void insertProjectInfo(FssProjectInfoBean fssProjectInfoBean);
+   public void insertProjectInfo(FssProjectInfoEntity fssProjectInfoEntity);
 }
