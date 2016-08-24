@@ -5,6 +5,14 @@
          update t_fuiou_ftp_field t set t.return_Code=#{reqCode},t.return_msg=#{msg},where t.id=#{fileSeq}
      	 
     </update>
+    
+    <update id="failureRetryByOrderNo" parameterType="String">  
+         update t_fuiou_ftp_field t 
+            set t.state = '10890001'
+          where t.order_no = #{orderNo}
+            and t.state = '10890004'
+     	 	and t.return_Code in ('3018','91009999')
+    </update>
 
 
 </mapper>

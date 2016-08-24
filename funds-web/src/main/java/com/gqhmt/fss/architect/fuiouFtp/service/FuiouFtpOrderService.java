@@ -203,5 +203,18 @@ public class FuiouFtpOrderService {
     public List<FuiouFtpOrder> selectFuiouFtpOrderList(Map<String, String> map){
         return fuiouFtpOrderReadMapper.selectFuiouFtpOrderList(map);
     }
+    
+    /**
+     * 失败重试
+     * @param id
+     * @throws FssException
+     */
+    public void failureRetry(Long id)throws FssException{
+    	FuiouFtpOrder record = this.select(id);
+    	if(record != null){
+    		record.setFileStatus(1);
+        	this.update(record);
+    	}
+    }
 
 }

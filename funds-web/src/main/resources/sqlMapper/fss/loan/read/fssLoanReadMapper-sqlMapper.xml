@@ -140,8 +140,8 @@
  			<if test="status!=null and status!=''"> 
  				and t.status = #{status}
 			</if> 
-			<if test="custNo!=null and custNo!=''">
-				and t.cust_no like concat('%',#{custNo},'%')
+			<if test="seqNo!=null and seqNo!=''">
+				and t.seq_no like concat('%',#{seqNo},'%')
  			</if> 
 			<if test="startTime!=null and startTime!=''">
 				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}

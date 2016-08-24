@@ -78,10 +78,10 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">客户编号：</td>
+                                                        <td class="tr" nowrap="nowrap">交易流水号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
-                                                                <input type="text" style="width:210px" name="custNo" value="${map.custNo}">
+                                                                <input type="text" style="width:210px" name="seqNo" value="${map.seqNo}">
                                                             </label>
                                                         </td>
                                                         <td class="tr" nowrap="nowrap">合同编号：</td>
@@ -172,7 +172,7 @@
                                             <td></td> 
                                             <%--<td>抵押权人资金平台账号</td>
                                             <td>借款人资金平台账号</td>--%>
-                                            <td>客户编号</td>
+                                            <td>交易流水号</td>
                                             <td>合同编号</td>
                                             <td>合同金额  </td>
                                             <td>放款金额   </td>
@@ -191,7 +191,7 @@
                                                     <td>${l.index+1}</td>
                                                     <%--<td>${t.mortgageeAccNo}</td>
                                                     <td>${t.accNo}</td>--%>
-                                                    <td>${t.custNo}</td>
+                                                    <td>${t.seqNo}</td>
                                                     <td>${t.contractNo}</td>
                                                     <td>
                                                         <fss:money money="${t.contractAmt}"/>

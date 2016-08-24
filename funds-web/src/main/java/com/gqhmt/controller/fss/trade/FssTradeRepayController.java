@@ -1,24 +1,30 @@
 package com.gqhmt.controller.fss.trade;
 
-import com.gqhmt.annotations.AutoPage;
-import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
-import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
-import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
-import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
-import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.exception.FssException;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpOrderService;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
@@ -77,9 +83,42 @@ public class FssTradeRepayController {
             model.addAttribute("fuiouFtpOrder",fuiouFtpOrderList.get(0));
         }
         List<FuiouFtpColomField> fuiouFtpFieldList = fuiouFtpColomFieldService.selectFuiouFtpFieldList(map);
+        
+        //failureFlag:0 不存在失败重试的数据    1：存在失败重试的数据
+        map.put("failureFlag","0");
+        if(CollectionUtils.isNotEmpty(fuiouFtpFieldList)){
+        	for(FuiouFtpColomField ftpField:fuiouFtpFieldList){
+            	if((StringUtils.equals("3018", ftpField.getReturnCode()) 
+            			|| StringUtils.equals("91009999", ftpField.getReturnCode())) 
+            		&&  StringUtils.equals("10890004", ftpField.getState()+"")){
+            		map.put("failureFlag","1");
+            		break;
+            	}
+            }
+        }
+        
         model.addAttribute("page",fuiouFtpFieldList);
         model.put("map", map);
         return "fss/trade/trade_Repay/tradeFuiouFtpField";
+    }
+    
+    //失败重试(目前只针对余额不足的情况进行处理)
+    @RequestMapping(value = "/trade/tradeRepay/ftpField/failureRetry",method = {RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public Object failureRetry(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws IOException ,FssException{
+    	
+    	try {
+    		Long orderId = Long.valueOf(request.getParameter("orderId"));
+    		String orderNo = request.getParameter("orderNo");
+            //初始化t_fuiou_ftp_order状态
+            fuiouFtpOrderService.failureRetry(orderId);
+            //初始化t_fuiou_ftp_field状态
+            fuiouFtpColomFieldService.failureRetry(orderNo);
+		} catch (Exception e) {
+			return "fail";
+		}
+
+        return "success";
     }
 
 }
