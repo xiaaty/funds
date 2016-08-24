@@ -9,6 +9,7 @@ import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.depos.bean.FssProjectInfoBean;
+import com.gqhmt.fss.architect.depos.entity.FssProjectCallbackEntity;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.pay.core.PayCommondConstants;
@@ -31,6 +32,8 @@ public class FssProjectInfoService {
 	private FssProjectInfoWriteMapper fssProjectInfoWriteMapper;
 	@Resource
 	private FundAccountService fundAccountService;
+	@Resource
+	private FssProjectInfoCallBackService fssProjectInfoCallBackService;
 
 	/**
 	 * 项目信息列表
@@ -61,67 +64,22 @@ public class FssProjectInfoService {
 	 * function：添加
 	 */
 	public void insertProjectInfo(FssProjectInfoEntity projectInfo) throws FssException{
-		fssProjectInfoWriteMapper.insertSelective(projectInfo);
-	}
-	/**
-	 *
-	 * author:jhz
-	 * time:2016年5月18日
-	 * function：添加
-	 */
-	public void updateProjectInfo(FssProjectInfoEntity projectInfo) throws FssException{
-		fssProjectInfoWriteMapper.updateByPrimaryKey(projectInfo);
-	}
-	/**
-	 *
-	 * author:jhz
-	 * time:2016年5月18日
-	 * function：创建项目信息并添加进数据库
-	 */
-	public void createProjectInfo(String seqNo,String itemNo,String loanType,
-								  String loanTittle,String organization,String description,
-								  Long loanAmt,Long expectedReturn,String productName,
-								  String repaymentType,String loanTime,String startDate,
-								  Long eachBidAmount,Integer minNum,Long maxAmount,String accNo,
-								  String accGoldNo,String loanItemDescription,Long feeType,
-								  String status,Integer period,Long prepareAmount,String payChannel,
-								  String bidYearIrr,String borrowType,String licenseNo,
-								  String custName,String certType,String certNo)throws FssException{
-		FssProjectInfoEntity projectInfo=new FssProjectInfoEntity();
-		projectInfo.setMchn("0001000F0279762");
-		projectInfo.setSeqNo(seqNo);
-		projectInfo.setItemNo(itemNo);
-		projectInfo.setLoanType(loanType);
-		projectInfo.setLoanTittle(loanTittle);
-		projectInfo.setOrganization(organization);
-		projectInfo.setDescription(description);
-		projectInfo.setLoanAmt(loanAmt);
-		projectInfo.setExpectedReturn(expectedReturn);
-		projectInfo.setProductName(productName);
-		projectInfo.setRepaymentType(repaymentType);
-		projectInfo.setLoanTime(loanTime);
-		projectInfo.setStartDate(startDate);
-		projectInfo.setEachBidAmount(eachBidAmount);
-		projectInfo.setMinNum(minNum);
-		projectInfo.setMaxAmount(maxAmount);
-		projectInfo.setAccNo(accNo);
-		projectInfo.setAccGoldNo(accGoldNo);
-		projectInfo.setLoanItemDescription(loanItemDescription);
-		projectInfo.setFeeType(feeType);
-		projectInfo.setStatus(status);
-		projectInfo.setPeriod(period);
-		projectInfo.setPrepareAmount(prepareAmount);
-		projectInfo.setPayChannel(payChannel);
-		projectInfo.setBidYearIrr(bidYearIrr);
-		projectInfo.setBorrowType(borrowType);
-		projectInfo.setLicenseNo(licenseNo);
-		projectInfo.setCustName(custName);
-		projectInfo.setCertType(certType);
-		projectInfo.setCertNo(certNo);
+		projectInfo.setStatus("10110001");//10110001未报备，10110002已报备
 		projectInfo.setCreateTime(new Date());
 		projectInfo.setModifyTime(new Date());
-		projectInfo.setCertNo(certNo);
-		this.insertProjectInfo(projectInfo);
+		fssProjectInfoWriteMapper.insertProjectInfo(projectInfo);
+	}
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月18日
+	 * function：修改
+	 */
+	public void updateProjectInfo(FssProjectInfoEntity projectInfo) throws FssException{
+		projectInfo.setStatus("10110001");//10110001未报备，10110002已报备
+		projectInfo.setModifyTime(new Date());
+		projectInfo.setAttachStatus("N");
+		fssProjectInfoWriteMapper.updateByPrimaryKey(projectInfo);
 	}
 	/**
 	 *
@@ -156,13 +114,16 @@ public class FssProjectInfoService {
 								  String tradeStatus,Integer period,Long prepareAmount,String payChannel,
 								  String bidYearIrr,String borrowType,String licenseNo,
 								  String custName,String certType,String certNo,String filePath,Integer custId,String busiNo,
-								  String contractNO,Long bidInterest) throws  FssException{
-		FssProjectInfoBean	fssProjectInfoBean=new FssProjectInfoBean();
-		Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
-		String mchn = (String)config.getValue("public.mchnt_cd.value");
-		String loanTimes= (String)config.getValue("sftp.loanTime.value");
-		String payChannels= (String)config.getValue("sftp.payChannel.value");
-		fssProjectInfoBean.setMchn(mchn);
+								  String contractNO,Long bidInterest) throws  FssException {
+		String itemNo = CommonUtil.getItemNo(contractNO);
+		FssProjectInfoEntity fssProjectInfoBean = this.getByItemNo(itemNo);
+		if (fssProjectInfoBean == null) {
+			fssProjectInfoBean = new FssProjectInfoEntity();
+		}
+		Config config = ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+		String mchn = (String) config.getValue("public.mchnt_cd.value");
+		String loanTimes = (String) config.getValue("sftp.loanTime.value");
+		String payChannels = (String) config.getValue("sftp.payChannel.value");
 		fssProjectInfoBean.setTradeType(tradeType);
 		fssProjectInfoBean.setOrderNo(orderNo);
 		fssProjectInfoBean.setMchnNo(mchnNo);
@@ -176,20 +137,20 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setRepaymentType(repaymentType);
 		fssProjectInfoBean.setStartDate(startDate);
 
-		if (startDate == null  || startDate.equals("")) {
-			throw  new FssException("投标起始日期为空");
+		if (startDate == null || startDate.equals("")) {
+			throw new FssException("投标起始日期为空");
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = null;
 		try {
 			date = sdf.parse(startDate);
 		} catch (ParseException e) {
-			LogUtil.debug(e.getClass(),e.getMessage());
+			LogUtil.debug(e.getClass(), e.getMessage());
 		}
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		int inputDayOfYear = cal.get(Calendar.DAY_OF_YEAR);
-		cal.set(Calendar.DAY_OF_YEAR , inputDayOfYear+Integer.parseInt(loanTimes));
+		cal.set(Calendar.DAY_OF_YEAR, inputDayOfYear + Integer.parseInt(loanTimes));
 		String pioDate = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
 		fssProjectInfoBean.setLoanTime(pioDate);
 
@@ -201,7 +162,6 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setTradeStatus(tradeStatus);
 		fssProjectInfoBean.setPeriod(period);
 		fssProjectInfoBean.setPrepareAmount(prepareAmount);
-		fssProjectInfoBean.setPayChannel(payChannels);
 		fssProjectInfoBean.setBidYearIrr(bidYearIrr);
 		fssProjectInfoBean.setBorrowType(borrowType);
 		fssProjectInfoBean.setLicenseNo(licenseNo);
@@ -213,29 +173,26 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setBusiNo(busiNo);
 		fssProjectInfoBean.setContractNo(contractNO);
 		fssProjectInfoBean.setBidInterest(bidInterest);
-		fssProjectInfoBean.setItemNo(this.getItemNo(contractNO));
-		FundAccountEntity fundAccountEntity=fundAccountService.getFundsAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_LOAN);
+		FundAccountEntity fundAccountEntity = fundAccountService.getFundsAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_LOAN);
 		fssProjectInfoBean.setAccNo(fundAccountEntity.getUserName());
 		fssProjectInfoBean.setAccGoldNo(fundAccountEntity.getUserName());
-		fssProjectInfoBean.setStatus("10110001");//10110001未报备，10110002已报备
-		fssProjectInfoBean.setCreateTime(new Date());
-		fssProjectInfoBean.setModifyTime(new Date());
-		fssProjectInfoWriteMapper.insertProjectInfo(fssProjectInfoBean);
+
+
+		if (fssProjectInfoBean.getId() != null) {
+			FssProjectCallbackEntity fssProjectCallbackEntity = fssProjectInfoCallBackService.getByItemNo(fssProjectInfoBean.getItemNo());
+			if (fssProjectCallbackEntity == null) throw new FssException("90004011");
+			if ("R".equals(fssProjectCallbackEntity.getStatus())) {
+				this.updateProjectInfo(fssProjectInfoBean);
+			} else {
+				throw new FssException("90004011");
+			}
+		} else {
+			fssProjectInfoBean.setItemNo(itemNo);
+			this.insertProjectInfo(fssProjectInfoBean);
+		}
 	}
 
-	/**
-	 * jhz
-	 * 得到项目编号
-	 * @return
-     */
-	public String getItemNo(String contractNo){
-		String itemNo=CommonUtil.getItemNo(contractNo);
-		int count=this.getCountByItemNo(itemNo);
-		if(count>0){
-			this.getItemNo(contractNo);
-		}
-		return itemNo;
-	}
+
 
 	/**
 	 * jhz
@@ -243,8 +200,8 @@ public class FssProjectInfoService {
 	 * @param itemNo
 	 * @return
      */
-	public int getCountByItemNo(String itemNo){
-		return  fssProjectInfoReadMapper.getCountByItemNo(itemNo);
+	public FssProjectInfoEntity getByItemNo(String itemNo)throws  FssException{
+		return  fssProjectInfoReadMapper.getByItemNo(itemNo);
 	}
 
 }

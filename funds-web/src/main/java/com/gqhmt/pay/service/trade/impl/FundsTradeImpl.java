@@ -136,7 +136,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withholdDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,withholdDto.getAmt(),GlobalConstants.ORDER_WITHHOLDING,0,0,"1103",withholdDto.getTrade_type(),null,null);
         //资金处理
-        tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1002);
+        tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1002,withholdDto.getTrade_type());
         return true;
     }
 
@@ -156,7 +156,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.hasEnoughBanlance(entity,withdrawDto.getAmt().add(withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt()));
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmt(),withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt(),GlobalConstants.ORDER_AGENT_WITHDRAW,0l,0,"1104",withdrawDto.getTrade_type(),null,null);
         //资金处理
-        tradeRecordService.withdraw(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1012);
+        tradeRecordService.withdraw(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1012,withdrawDto.getTrade_type());
         this.chargeAmount(fundOrderEntity);
         return true;
     }
@@ -256,7 +256,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
          fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
-        tradeRecordService.recharge(entity,amount,fundOrderEntity,1002);
+        tradeRecordService.recharge(entity,amount,fundOrderEntity,1002,tradeType==null?null:tradeType.toString());
         
         return  fundOrderEntity;
     }
@@ -425,11 +425,11 @@ public class FundsTradeImpl  implements IFundsTrade {
 	 * 资金冻结
 	 */
     @Override
-    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException {
+    public boolean froze(Long custId,Integer busiType,BigDecimal amt,String tradeType) throws FssException {
         FundAccountEntity fromEntity = this.getFundAccount(Integer.valueOf(custId.toString()),busiType);
         this.hasEnoughBanlance(fromEntity,amt);
         FundAccountEntity toEntity = this.getFundAccount(Integer.valueOf(custId.toString()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-        tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);
+        tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO,tradeType);
         return true;
     }
 
@@ -444,7 +444,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(cust_no),GlobalConstants.ACCOUNT_TYPE_FREEZE);
         this.hasEnoughBanlance(fromEntity,amt);
         FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(cust_no), busi_type);
-        tradeRecordService.unFrozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO);
+        tradeRecordService.unFrozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO,trade_type);
         return true;
     }
 
@@ -540,7 +540,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity entity=this.getFundAccount(Integer.parseInt(rechargeSuccessDto.getCust_no()),  GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(rechargeSuccessDto.getOrder_no());
         if("0000".equals(rechargeSuccessDto.getRespCode())) {
-            tradeRecordService.recharge(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001);
+            tradeRecordService.recharge(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001,rechargeSuccessDto.getTrade_type());
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
           //发送站内通知短信
@@ -562,7 +562,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity entity=fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if("0000".equals(withdrawSuccessDto.getRespCode())) {
 //            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1003);
-            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003);
+            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003,withdrawSuccessDto.getTrade_type());
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
             this.chargeAmount(fundOrderEntity);

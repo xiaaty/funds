@@ -1,7 +1,5 @@
 package com.gqhmt.fss.architect.account.entity;
 
-import com.gqhmt.annotations.AutoDate;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -43,17 +41,17 @@ public class FuiouAccountInfoEntity {
     @Column(name = "contract_num")
     private String contractNum;    //合同号： 交易类型为'预授权交易'时才有
 
-    @Column(name = "batch")
-    private String batch;           //交易流水号/充值流水号
+    @Column(name = "seq_no")
+    private String seqNo;           //交易流水号/充值流水号
 
     @Column(name = "batch_foiu_finance")
     private String batchFoiuFinance;  //富有财务流水号： 当交易类型为'委托充值'和'委托提现'时才有
 
-    @Column(name = "trading_time")
-    private Date tradingTime;      //交易时间/充值时间/提现时间
+    @Column(name = "trade_time")
+    private Date tradeTime;      //交易时间/充值时间/提现时间
 
-    @Column(name = "transaction_amount")
-    private BigDecimal transactionAmount;   //交易金额/充值金额/提现金额
+    @Column(name = "trade_amount")
+    private BigDecimal tradeAmount;   //交易金额/充值金额/提现金额
 
     @Column(name = "user_account")
     private String userAccount;         //用户账户/出账账户
@@ -85,16 +83,8 @@ public class FuiouAccountInfoEntity {
     @Column(name = "account_state")
     private String accountState;        //状态 ，仅当交易类型为'预授权交易'时才有， 0: 冻结失败；1：已冻结；2：已解冻；3：已完成；
 
-    public String getBooleanType() {
-        return booleanType;
-    }
-
-    public void setBooleanType(String booleanType) {
-        this.booleanType = booleanType;
-    }
-
-    @Column(name = "boolean_type")
-    private String booleanType;         //抓取状态 ， -1 为失败 ， 其他为成功
+    @Column(name = "file_id")
+    private int fileId;                 //文件id
 
     public int getId() {
         return id;
@@ -136,12 +126,12 @@ public class FuiouAccountInfoEntity {
         this.contractNum = contractNum;
     }
 
-    public String getBatch() {
-        return batch;
+    public String getSeqNo() {
+        return seqNo;
     }
 
-    public void setBatch(String batch) {
-        this.batch = batch;
+    public void setSeqNo(String seqNo) {
+        this.seqNo = seqNo;
     }
 
     public String getBatchFoiuFinance() {
@@ -152,20 +142,20 @@ public class FuiouAccountInfoEntity {
         this.batchFoiuFinance = batchFoiuFinance;
     }
 
-    public Date getTradingTime() {
-        return tradingTime;
+    public Date getTradeTime() {
+        return tradeTime;
     }
 
-    public void setTradingTime(Date tradingTime) {
-        this.tradingTime = tradingTime;
+    public void setTradeTime(Date tradeTime) {
+        this.tradeTime = tradeTime;
     }
 
-    public BigDecimal getTransactionAmount() {
-        return transactionAmount;
+    public BigDecimal getTradeAmount() {
+        return tradeAmount;
     }
 
-    public void setTransactionAmount(BigDecimal transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setTradeAmount(BigDecimal tradeAmount) {
+        this.tradeAmount = tradeAmount;
     }
 
     public String getUserAccount() {
@@ -246,5 +236,13 @@ public class FuiouAccountInfoEntity {
 
     public void setAccountState(String accountState) {
         this.accountState = accountState;
+    }
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
     }
 }

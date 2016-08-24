@@ -51,7 +51,7 @@ public interface FssProjectInfoReadMapper extends ReadMapper<FssProjectInfoEntit
 	 * @param itemNo
 	 * @return
 	 */
-	public int getCountByItemNo(@Param("itemNo")String itemNo);
+	public FssProjectInfoEntity getByItemNo(@Param("itemNo")String itemNo);
 
 
 }

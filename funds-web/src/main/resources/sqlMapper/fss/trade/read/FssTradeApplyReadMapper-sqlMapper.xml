@@ -60,11 +60,11 @@
 			t.success_count successCount,
 			t.real_trade_amount realTradeAmount,
 			t.channel_no channelNo,
-			c.`name` custName,
-			c.mobile custMobile,
+			c.`CUSTOMER_NAME` custName,
+			c.MOBILE_PHONE custMobile,
 			t.settle_type settleType
-			FROM t_gq_fss_trade_apply t left join t_gq_fss_customer c
-			ON t.cust_id=c.cust_id
+			FROM t_gq_fss_trade_apply t left join t_gq_customer_info c
+			ON t.cust_id=c.id
 	</sql>
 	
 	<!-- 根据申请类型和业务类型查询申请数据 -->
@@ -84,10 +84,10 @@
 				AND t.business_no=#{businessNo}
 			</if>
 			<if test="custName!=null and custName!=''">
-				AND c.`name`=#{custName}
+				AND c.`CUSTOMER_NAME`=#{custName}
 			</if>
 			<if test="custMobile!=null and custMobile!=''">
-				AND c.mobile=#{custMobile}
+				AND c.MOBILE_PHONE=#{custMobile}
 			</if>
 			<if test="applyState!=null and applyState!=''">
 				AND t.apply_state=#{applyState}

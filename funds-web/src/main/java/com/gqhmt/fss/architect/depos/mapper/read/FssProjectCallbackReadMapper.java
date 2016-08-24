@@ -33,6 +33,13 @@ public interface FssProjectCallbackReadMapper extends ReadMapper<FssProjectCallb
 	 * function：通过parent_id得到对象列表
 	 */
 	public List<FssProjectCallbackEntity> getByParentId(@Param("parentId") Long parentId);
+	/**
+	 *
+	 * author:jhz
+	 * time:2016年5月10日
+	 * function：通过itemNo得到对象列表
+	 */
+	public FssProjectCallbackEntity getByItemNo(@Param("itemNo") String itemNo);
 
 
 	public List<FssProjectCallbackEntity> queryFssProjectCallBackList(Map map);

@@ -4,16 +4,13 @@
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d %5p [%t] %c{1}:%M:%L - %m%n</pattern>
         </encoder>
     </appender>
-
-
 
     <logger name="com.gqhmt.core.aop" level="debug"></logger>
     <logger name="org.apache.ibatis" level="debug"></logger>
     <logger name="java.sql" level="debug"></logger>
-
 
     <root level="info">
         <appender-ref ref="STDOUT" />

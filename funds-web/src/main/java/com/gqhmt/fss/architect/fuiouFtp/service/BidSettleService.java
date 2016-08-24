@@ -112,6 +112,7 @@ public class BidSettleService extends BidSupper{
 
         FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(toEntity, loanEntity.getPayAmt(), GlobalConstants.ORDER_SETTLE_NEW, loanEntity.getId(), GlobalConstants.BUSINESS_SETTLE, "1109",loanEntity.getTradeType());
 
+
         Map<Long, String> map = fuiouPreauthService.getContractNo(bid.getId().longValue());
         BigDecimal bonusAmount = BigDecimal.ZERO;
 

@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
+import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -14,20 +14,16 @@ import java.util.Map;
  * @author xdw
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016/6/27.
+ * Create at:   2016/8/3.
  * Description:
  * <p/>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016/6/27.  xdw         1.0     1.0 Version
+ * 2016/8/3.  xdw         1.0     1.0 Version
  */
-public interface FuiouAccountInfoReadMapper extends ReadAndWriteMapper<FuiouAccountInfoEntity> {
+public interface FuiouAccountInfoFileReadMapper extends ReadAndWriteMapper<FuiouAccountInfoFileEntity> {
 
-    //查询金账户对账文件记录
-    public List<FuiouAccountInfoEntity> queryAccountInfoList(Map<String, String> map);
-
-    //查询抓取所有的金账户对账文件记录
-    public List<FuiouAccountInfoEntity> queryAccountAllInfoList(Map<String, String> map);
-
+    //查询金账户对账文件
+    public List<FuiouAccountInfoFileEntity> queryAccountInfoFileList(Map<String, String> map);
 }
