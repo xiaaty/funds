@@ -44,7 +44,7 @@ public class ConnectionFuiou {
 //        LogUtil.debug(ConnectionFuiou.class,"thirdpaty__"+url+":send:"+param);
         try{
             String result = sendHttpRequest(url,param);
-            LogUtil.debug(ConnectionFuiou.class,"第三方支付:"+url+":result:"+result);
+            LogUtil.info(ConnectionFuiou.class,"第三方支付:"+url+":result:"+result);
             Map reMap = getResult(result);
             Map apMap = (Map)reMap.get("ap");
             LogUtil.info(ConnectionFuiou.class,"返回结果:"+apMap);
@@ -165,8 +165,9 @@ public class ConnectionFuiou {
             // 定义输入流得到响应
             long endTime = new Date().getTime();
             is =  conn.getInputStream();
-            LogUtil.info(ConnectionFuiou.class,"连接富友："+url+"?"+param+"时长"+(endTime-startTime));
+
             result = parseResponse(is);
+            LogUtil.info(ConnectionFuiou.class,"连接富友："+url+"?"+param+":返回结果:"+result+"时长:"+(endTime-startTime));
             return result;
         } catch (MalformedURLException e) {
             throw e;
