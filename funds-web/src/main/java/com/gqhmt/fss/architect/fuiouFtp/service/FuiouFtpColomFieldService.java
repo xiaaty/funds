@@ -7,9 +7,13 @@ import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapp
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.exception.CommandParmException;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,6 +44,10 @@ public class FuiouFtpColomFieldService {
     @Resource
     private FuiouFtpColomFieldWriteMapper fuiouFtpColomFieldWriteMapper;
 
+    public FuiouFtpColomField select(Long id) throws FssException{
+    	return fuiouFtpColomFieldReadMapper.selectByPrimaryKey(id);
+    }
+    
     public void insert(FuiouFtpColomField fuiouFtpColomField)throws FssException{
     	fuiouFtpColomFieldWriteMapper.insertSelective(fuiouFtpColomField);
     }
@@ -182,5 +190,17 @@ public class FuiouFtpColomFieldService {
      */
     public List<FuiouFtpColomField> selectFuiouFtpFieldList(Map<String, String> map) {
         return fuiouFtpColomFieldReadMapper.selectFuiouFtpFieldList(map);
+    }
+    
+    /**
+     * 失败重试
+     * @param orderNo
+     * @throws FssException
+     */
+    public void failureRetry(String orderNo)throws FssException{
+    	if(StringUtils.isBlank(orderNo)){
+    		return;
+    	}
+    	fuiouFtpColomFieldWriteMapper.failureRetryByOrderNo(orderNo);
     }
 }

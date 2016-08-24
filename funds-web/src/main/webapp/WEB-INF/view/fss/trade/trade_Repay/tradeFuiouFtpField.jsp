@@ -58,7 +58,7 @@
                             <!-- widget div-->
                             <div>
 
-                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/loan/trade/${type}" method="post" >
+                                <form class="smart-form" id="mortgageePayment" method="post" >
 
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -167,8 +167,16 @@
                                             </table>
                                         </div>
                                         <footer>
-                                            <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
-                                            <%--<button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>--%>
+                                        	<c:if test="${fuiouFtpOrder.type == '2'}">
+                                               	<c:choose>
+									           		<c:when test="${map.failureFlag eq '1'}">
+									           			<button class="btn btn-primary" onclick="failureRetry('${fuiouFtpOrder.id}','${fuiouFtpOrder.orderNo}');">失败重试</button>
+									           		</c:when>
+									           		<c:otherwise>
+									           			<button class="btn" disabled="disabled" onclick="javascript:void(0);">失败重试</button>
+									       			</c:otherwise>
+									           </c:choose>
+                                        	</c:if>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -380,6 +388,33 @@
             }
         });
     }
+    
+ 	// 失败重试
+    function failureRetry(orderId,orderNo){
+    	if(window.confirm("您确定要执行此操作吗？")){
+    		$.ajax({
+    		 	url:"${contextPath}/trade/tradeRepay/ftpField/failureRetry",
+    		 	type:"post",
+    		 	async: false,
+    			data:{
+    				orderId:orderId,
+    				orderNo:orderNo
+    			},
+    			success:function(data){
+    				if (data == 'success') {
+    					alert("操作成功!");
+    					location.reload();
+    				} else {
+    					alert("操作失败!");
+    				}
+    			},
+    			error:function(){
+    				alert("操作异常!");
+    			}
+    		});
+    	}
+    }  
+    
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>

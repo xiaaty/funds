@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssAccountBalanceDiffReadMapper">
+    <select id="queryLastDayBusinessDealAccount" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBalanceDiffEntity">
+    	select DISTINCT a.id as accountId,
+			   s.cust_id as custId,
+			   a.user_name as userName,
+			   a.cust_name as custName,
+			   (a.amount + a.freeze_amount)*100 as platAmount
+		  from t_gq_fund_sequence s
+		inner join t_gq_fund_account a on s.cust_id = a.cust_id
+		where a.busi_type = '0'
+		  and s.s_order_no != ''
+		  and datediff(now(), s.MODIFY_TIME) = 1
+    </select>
+
+	<select id="queryBusinessDealAccountByCustIds" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBalanceDiffEntity">
+		select DISTINCT a.id as accountId,
+		a.cust_id as custId,
+		a.user_name as userName,
+		a.cust_name as custName,
+		(a.amount + a.freeze_amount)*100 as platAmount
+		from t_gq_fund_account a
+		where a.busi_type = '0'
+		and a.cust_id IN
+		<foreach collection="custIdList" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="queryAccBalanceDiffList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBalanceDiffEntity">
+		SELECT
+			t.biz_date AS bizDate,
+			t.account_id AS accountId,
+			t.cust_id AS custId,
+			t.user_name AS userName,
+			t.cust_name AS custName,
+			t.plat_amount AS platAmount,
+			t.fuiou_amount AS fuiouAmount,
+			t.create_time AS createTime,
+			t.modify_time AS modifyTime
+		FROM
+			t_gq_fss_account_balance_diff t
+		where 1=1
+			<if test="startTime != null and startTime != ''">
+				<if test="endTime != null and endTime != ''">
+					AND t.biz_date BETWEEN #{startTime} AND #{endTime}
+				</if>
+				<if test="endTime == null or endTime == ''">
+					AND t.biz_date BETWEEN #{startTime} AND SYSDATE()
+				</if>
+			</if>
+			<if test="endTime != null and endTime != '' and (startTime == null or startTime == '')">
+				AND t.biz_date &lt; #{endTime}
+			</if>
+			<if test="accountId != null and accountId != ''">
+				AND t.account_id = #{accountId}
+			</if>
+			<if test="custId != null and custId != ''">
+				AND t.cust_id = #{custId}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND t.user_name = #{userName}
+			</if>
+			<if test="custName != null and custName != ''">
+				AND t.cust_name = #{custName}
+			</if>
+			<if test="platAmount != null and platAmount != ''">
+				AND t.plat_amount = #{platAmount}
+			</if>
+			<if test="fuiouAmount != null and fuiouAmount != ''">
+				AND t.fuiou_amount = #{fuiouAmount}
+			</if>
+			<if test="createTime != null and createTime != ''">
+				AND t.create_time = #{createTime}
+			</if>
+			<if test="modifyTime != null and modifyTime != ''">
+				AND t.modify_time = #{modifyTime}
+			</if>
+    </select>
+
+</mapper>
