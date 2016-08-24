@@ -2,7 +2,6 @@ package com.gqhmt.quartz.job.account;
 
 import javax.annotation.Resource;
 
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +16,6 @@ import com.gqhmt.quartz.job.SupperJob;
  * @author zhaoenyue
  */
 @Component
-@PropertySource("classpath:config/appContext.properties")
 public class FssAccountBalanceDiffJob extends SupperJob {
 	
 	@Resource
@@ -26,7 +24,7 @@ public class FssAccountBalanceDiffJob extends SupperJob {
     private static boolean isRunning = false;
 
     //每天00:10执行
-    @Scheduled(cron="${jobs.FssAccountBalanceDiffJob.time}")
+    @Scheduled(cron="0 10 0 * * ?")
     public void executeJob() throws PayChannelNotSupports {
     	
     	LogUtil.info(getClass(), "init账户余额校验定时任务");
