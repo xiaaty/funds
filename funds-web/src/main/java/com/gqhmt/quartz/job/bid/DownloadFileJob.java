@@ -38,7 +38,7 @@ public class DownloadFileJob extends SupperJob{
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron="0/27 * *  * * * ")
+    @Scheduled(cron="* 9/5 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
@@ -52,8 +52,8 @@ public class DownloadFileJob extends SupperJob{
             //下载文件
             //结果分析
 
-            ftpDownloadFileService.downFile();
-            ftpResultService.parseDownloadResult();
+//            ftpDownloadFileService.downFile();
+//           、 ftpResultService.parseDownloadResult();
             ftpResultService.parseResult();
             ftpResultService.notReturnResult();
 
