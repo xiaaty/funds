@@ -1,14 +1,13 @@
 package com.gqhmt.core.aop;
 
 import com.gqhmt.core.util.LogUtil;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Filename:    com.gqhmt.core.aop.LogAop
@@ -35,31 +34,40 @@ public class LogAop {
     public LogAop(){
     }
 
-    @Pointcut("execution(* com.gqhmt.fss.architect.*.service.*(..))")
+    @Pointcut("execution(* com.gqhmt.*.architect.*.service.*.*(..))")
     public void point(){
 
     }
 
-    @Before("point()")
-    public void log(JoinPoint joinPoint){
-
-        if(LogUtil.isDebug(this.getClass())){
-            startTime.set(new Date().getTime());
-        }
-        LogUtil.info(this.getClass(),"aop");
-        LogUtil.info(joinPoint.getTarget().getClass(),"fss-method:"+joinPoint.getSignature());
-    }
-
-    @After("point()")
-    public void logEnd(JoinPoint joinPoint){
-        if(LogUtil.isDebug(this.getClass())){
-            long start =  startTime.get();
-            long end = new Date().getTime();
-            long time = end - start;
-            LogUtil.debug(this.getClass(),"method-time:"+Thread.currentThread()+":"+joinPoint.getSignature()+":"+time);
+    @Around("point()")
+    public void log(ProceedingJoinPoint joinPoint){
+        Long startTime = Calendar.getInstance().getTimeInMillis();
+        Object targetClass = null;
+        String methodName = null;
+        Object[] objects = null;
+        try {
+//            objects = joinPoint.getArgs();
+            targetClass = joinPoint.getTarget();
+            methodName = joinPoint.getSignature().getName();
+            joinPoint.proceed();
+        }catch (Throwable e){
+            LogUtil.error(this.getClass(),e);
         }
 
+        Long endTime = Calendar.getInstance().getTimeInMillis();
+        LogUtil.info(targetClass.getClass(),"方法执行:"+methodName+":执行时间:"+(endTime-startTime));
 
     }
+
+//    public void logEnd(JoinPoint joinPoint){
+//        if(LogUtil.isDebug(this.getClass())){
+//            long start =  startTime.get();
+//            long end = new Date().getTime();
+//            long time = end - start;
+//            LogUtil.debug(this.getClass(),"method-time:"+Thread.currentThread()+":"+joinPoint.getSignature()+":"+time);
+//        }
+//
+//
+//    }
 
 }
