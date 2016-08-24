@@ -5,7 +5,6 @@
 	SELECT 
     		t.id id,
 		    t.parent_id parentId,
-		    t.mchn mchn,
 		    t.seq_no seqNo,
 		    t.item_no itemNo,
 		    t.loan_type loanType,	
@@ -28,15 +27,23 @@
 		    t.trade_status tradeStatus,
 		    t.period period,
 		    t.prepare_amount prepareAmount,
-		    t.pay_channel payChannel,
 		    t.bid_year_irr bidYearIrr,
 		    t.borrow_type borrowType,
 		    t.license_no licenseNo,
 		    t.cust_name custName,
 		    t.cert_type certType,
 		    t.cert_no certNo,
-		    t.status status
-		FROM 
+		    t.order_no orderNo,
+		    t.file_path filePath,
+		    t.busi_no busiNo,
+		    t.contract_no contractNo,
+		    t.bid_interest bidInterest,
+		    t.attach_status attachStatus,
+		    t.offer_count offerCount,
+		    t.status status,
+		    t.create_time createTime,
+		    t.modify_time modifyTime
+		FROM
 			t_gq_fss_depos_fuiou_project_info t 
 			</sql>
 	<select id="getParentId" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity">
@@ -48,8 +55,8 @@
 		<include refid="selectSql"/>
 		WHERE t.status=#{status}
 	</select>
-	<select id="getCountByItemNo" resultType="java.lang.Integer">
-		select count(*) from t_gq_fss_depos_fuiou_project_info t
+	<select id="getByItemNo" resultType="com.gqhmt.fss.architect.depos.entity.FssProjectInfoEntity">
+		<include refid="selectSql"/>
 		WHERE t.item_no=#{itemNo}
 	</select>
 

@@ -89,7 +89,6 @@ public class CreateTXT  {
 //				    write.append( "借款人证件号码"+"|");
 //				    write.append(enter);
 				for (FssProjectInfoEntity info : queryItemsInfos) {
-					write.append(info.getMchn()+"|");
 					write.append(info.getSeqNo()+"|");
 					write.append(info.getItemNo()+"|");
 					write.append(info.getLoanType()+"|");
@@ -112,7 +111,6 @@ public class CreateTXT  {
 					write.append(info.getTradeStatus()+"|");
 					write.append(info.getPeriod()+"|");
 					write.append(info.getPrepareAmount()*100+"|");
-					write.append(info.getPayChannel()+"|");
 					write.append(info.getBidYearIrr()+"|");
 					write.append(info.getBorrowType()+"|");
 					write.append(info.getLicenseNo()+"|");

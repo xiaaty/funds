@@ -26,8 +26,6 @@ public class FssProjectInfoBean {
 
     private String tradeType;   //交易类型
 
-    private String mchn;  //商户号
-
     private String mchnNo;  //商户号
 
     private String orderNo; //订单号
@@ -76,8 +74,6 @@ public class FssProjectInfoBean {
 
     private Long prepareAmount;        //备用金额
 
-    private String payChannel;        //第三方支付公司ID
-
     private String bidYearIrr;            //发标年化利率
 
     private String borrowType;        //借款人类型01-个人; 02-企业
@@ -118,14 +114,6 @@ public class FssProjectInfoBean {
 
     public void setCustId(Integer custId) {
         this.custId = custId;
-    }
-
-    public String getMchn() {
-        return mchn;
-    }
-
-    public void setMchn(String mchn) {
-        this.mchn = mchn;
     }
 
     public String getSeqNo() {
@@ -302,14 +290,6 @@ public class FssProjectInfoBean {
 
     public void setPrepareAmount(Long prepareAmount) {
         this.prepareAmount = prepareAmount;
-    }
-
-    public String getPayChannel() {
-        return payChannel;
-    }
-
-    public void setPayChannel(String payChannel) {
-        this.payChannel = payChannel;
     }
 
     public String getBidYearIrr() {

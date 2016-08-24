@@ -34,104 +34,125 @@ public class FssProjectInfoEntity implements Serializable {
     @Column(name = "parent_id")
     private Long parentId;
 
-    @Column(name = "mchn")
-    private String mchn;  //商户号
-
     @Column(name = "seq_no")
-    private String seqNo;        //平台流水号
+    private String seqNo;       //平台流水号
 
     @Column(name = "item_no")
-    private String itemNo;   //项目编号
+    private String itemNo;      //项目编号
 
     @Column(name = "loan_type")
-    private String loanType;        //借款类型(0.抵押标   1.担保标  2.信用标  3.净值标 4.流转标  5.秒标 6.其他)
+    private String loanType;    //借款类型(0.抵押标   1.担保标  2.信用标  3.净值标 4.流转标  5.秒标 6.其他)
 
     @Column(name = "loan_tittle")
-    private String loanTittle;        //借款标题
+    private String loanTittle;  //借款标题
 
     @Column(name = "organization")
-    private String organization;        //推荐机构
+    private String organization;//推荐机构
 
     @Column(name = "description")
-    private String description;            //借款用途
+    private String description; //借款用途
 
     @Column(name = "loan_amt")
-    private Long loanAmt;        //借款金额
+    private Long loanAmt;       //借款金额
 
     @Column(name = "expected_return")
-    private Long expectedReturn;        //预期收益
+    private Long expectedReturn;//预期收益
 
     @Column(name = "product_name")
-    private String productName;            //产品名称
+    private String productName; //产品名称
 
     @Column(name = "repayment_type")
-    private String repaymentType;        //还款方式(0.一次性还本付息 1.先息后本 2.等额本息/等额本金 3.其他)
+    private String repaymentType;    //还款方式(0.一次性还本付息 1.先息后本 2.等额本息/等额本金 3.其他)
 
     @Column(name = "loan_time")
-    private String loanTime;        //借款期限
+    private String loanTime;    //借款期限  单位天
 
     @Column(name = "start_date")
-    private String startDate;        //筹标起始日
+    private String startDate;   //筹标起始日
 
     @Column(name = "each_bid_amount")
-    private Long eachBidAmount;            //每份投标金额
+    private Long eachBidAmount; //每份投标金额
 
     @Column(name = "min_num")
-    private int minNum;            //最低投标份数
+    private int minNum;         //最低投标份数
 
     @Column(name = "max_amount")
-    private Long maxAmount;            //最多投标金额
+    private Long maxAmount;     //最多投标金额
 
     @Column(name = "acc_no")
-    private String accNo;        //借款人平台用户名
+    private String accNo;       //借款人平台用户名
 
     @Column(name = "acc_gold_no")
-    private String accGoldNo;        //借款人金账户用户名
+    private String accGoldNo;   //借款人金账户用户名
 
     @Column(name = "loan_item_description")
-    private String loanItemDescription;        //借款人项目概述
+    private String loanItemDescription;    //借款人项目概述
 
     @Column(name = "fee_type")
-    private Long feeType;            //费用项
+    private Long feeType;       //费用项
 
     @Column(name = "trade_status")
-    private String tradeStatus;        //筹集情况
+    private String tradeStatus; //筹集情况
 
     @Column(name = "period")
-    private int period;            //还款期数
+    private int period;         //还款期数
 
     @Column(name = "prepare_amount")
-    private Long prepareAmount;        //备用金额
-
-    @Column(name = "pay_channel")
-    private String payChannel;        //第三方支付公司ID
+    private Long prepareAmount; //备用金额
 
     @Column(name = "bid_year_irr")
-    private String bidYearIrr;            //发标年化利率
+    private String bidYearIrr;  //发标年化利率
 
     @Column(name = "borrow_type")
-    private String borrowType;        //借款人类型01-个人; 02-企业
+    private String borrowType;  //借款人类型01-个人; 02-企业
 
     @Column(name = "license_no")
-    private String licenseNo;        //借款企业营业执照编号(借款人类型为02必填)',
+    private String licenseNo;   //借款企业营业执照编号(借款人类型为02必填),
 
     @Column(name = "cust_name")
-    private String custName;        //借款人名称',
+    private String custName;    //借款人名称,
 
     @Column(name = "cert_type")
-    private String certType;        //借款人证件类型
+    private String certType;    //借款人证件类型
 
     @Column(name = "cert_no")
-    private String certNo;            //借款人证件号码
+    private String certNo;      //借款人证件号码
 
     @Column(name = "status")
-    private String status;            //状态
-
-    @Column(name = "modify_time")
-    private Date modifyTime;
+    private String status;      //状态
 
     @Column(name = "create_time")
-    private Date createTime;
+    private Date createTime;	//创建时间
+
+    @Column(name = "modify_time")
+    private Date modifyTime;	//修改时间
+
+    @Column(name = "order_no")
+    private String orderNo;		//订单号
+
+    @Column(name = "trade_type")
+    private String tradeType;	//交易类型
+
+    @Column(name = "mchn_no")
+    private String mchnNo;		//来源商户号
+
+    @Column(name = "file_path")
+    private String filePath;	//附件的文件路径
+
+    @Column(name = "attach_status")
+    private String attachStatus;//附件状态  N未上传  Y已上传
+
+    @Column(name = "busi_no")
+    private String busiNo;		//标的编号
+
+    @Column(name = "offer_count")
+    private int offerCount;     //报盘次数
+
+    @Column(name = "contract_no")
+    private String contractNo;     //合同号
+
+    @Column(name = "bid_interest")
+    private Long bidInterest;     //利息
 
     public Long getId() {
         return id;
@@ -139,14 +160,6 @@ public class FssProjectInfoEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getMchn() {
-        return mchn;
-    }
-
-    public void setMchn(String mchn) {
-        this.mchn = mchn;
     }
 
     public String getSeqNo() {
@@ -325,14 +338,6 @@ public class FssProjectInfoEntity implements Serializable {
         this.prepareAmount = prepareAmount;
     }
 
-    public String getPayChannel() {
-        return payChannel;
-    }
-
-    public void setPayChannel(String payChannel) {
-        this.payChannel = payChannel;
-    }
-
     public String getBidYearIrr() {
         return bidYearIrr;
     }
@@ -411,5 +416,77 @@ public class FssProjectInfoEntity implements Serializable {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public String getTradeType() {
+        return tradeType;
+    }
+
+    public void setTradeType(String tradeType) {
+        this.tradeType = tradeType;
+    }
+
+    public String getMchnNo() {
+        return mchnNo;
+    }
+
+    public void setMchnNo(String mchnNo) {
+        this.mchnNo = mchnNo;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getAttachStatus() {
+        return attachStatus;
+    }
+
+    public void setAttachStatus(String attachStatus) {
+        this.attachStatus = attachStatus;
+    }
+
+    public String getBusiNo() {
+        return busiNo;
+    }
+
+    public void setBusiNo(String busiNo) {
+        this.busiNo = busiNo;
+    }
+
+    public int getOfferCount() {
+        return offerCount;
+    }
+
+    public void setOfferCount(int offerCount) {
+        this.offerCount = offerCount;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+
+    public Long getBidInterest() {
+        return bidInterest;
+    }
+
+    public void setBidInterest(Long bidInterest) {
+        this.bidInterest = bidInterest;
     }
 }
