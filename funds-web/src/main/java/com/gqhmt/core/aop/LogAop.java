@@ -40,7 +40,8 @@ public class LogAop {
     }
 
     @Around("point()")
-    public void log(ProceedingJoinPoint joinPoint){
+    public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object obj = null;
         Long startTime = Calendar.getInstance().getTimeInMillis();
         Object targetClass = null;
         String methodName = null;
@@ -49,14 +50,16 @@ public class LogAop {
 //            objects = joinPoint.getArgs();
             targetClass = joinPoint.getTarget();
             methodName = joinPoint.getSignature().getName();
-            joinPoint.proceed();
+            obj = joinPoint.proceed();
         }catch (Throwable e){
             LogUtil.error(this.getClass(),e);
+            throw e;
         }
 
         Long endTime = Calendar.getInstance().getTimeInMillis();
         LogUtil.info(targetClass.getClass(),"方法执行:"+methodName+":执行时间:"+(endTime-startTime));
 
+        return obj;
     }
 
 //    public void logEnd(JoinPoint joinPoint){
