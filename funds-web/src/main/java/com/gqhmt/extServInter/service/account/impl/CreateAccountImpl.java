@@ -49,8 +49,9 @@ public class CreateAccountImpl implements ICreateAccount{
 	 * 11020010:保理合同开户
 	 * 11020014:开互联网账户
 	 * 11020015:app开户
+	 * 11020017:新版wap开户
 	 */
-	@APITradeTypeValid(value = "11020001,11020002,11020003,11020004,11020005,11020006,11020007,11020008,11020009,11020010,11020014,11020015")
+	@APITradeTypeValid(value = "11020001,11020002,11020003,11020004,11020005,11020006,11020007,11020008,11020009,11020010,11020014,11020015,11020017")
     @Override
     public Response execute(SuperDto dto) {
     	CreateAccountResponse response = new CreateAccountResponse();
