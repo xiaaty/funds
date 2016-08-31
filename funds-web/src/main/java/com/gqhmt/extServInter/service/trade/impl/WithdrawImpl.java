@@ -34,7 +34,7 @@ public class WithdrawImpl implements IWithdraw{
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
-	@APITradeTypeValid(value = "11040002,11040003,11040004,11040005")
+	@APITradeTypeValid(value = "11040002,11040003,11040004,11040005,11040015")
 //	@APISignature
     @Override
     public Response execute(SuperDto dto) {

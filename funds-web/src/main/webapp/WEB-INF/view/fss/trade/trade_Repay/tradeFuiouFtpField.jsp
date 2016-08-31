@@ -167,7 +167,6 @@
                                             </table>
                                         </div>
                                         <footer>
-                                        	<c:if test="${fuiouFtpOrder.type == '2'}">
                                                	<c:choose>
 									           		<c:when test="${map.failureFlag eq '1'}">
 									           			<button class="btn btn-primary" onclick="failureRetry('${fuiouFtpOrder.id}','${fuiouFtpOrder.orderNo}');">失败重试</button>
@@ -176,7 +175,6 @@
 									           			<button class="btn" disabled="disabled" onclick="javascript:void(0);">失败重试</button>
 									       			</c:otherwise>
 									           </c:choose>
-                                        	</c:if>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->

@@ -35,7 +35,7 @@ public class RechargeImpl implements IRecharge {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
-	@APITradeTypeValid(value = "11030002,11030003,11030004,11030005")
+	@APITradeTypeValid(value = "11030002,11030003,11030004,11030005,11030018")
 	@APISignature
     @Override
     public Response execute(SuperDto dto) {
