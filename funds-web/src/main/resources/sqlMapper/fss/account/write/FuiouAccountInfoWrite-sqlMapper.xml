@@ -7,10 +7,10 @@
             business_code,
             trade_sources,
             contract_num,
-            batch,
+            seq_no,
             batch_foiu_finance,
-            trading_time,
-            transaction_amount,
+            trade_time,
+            trade_amount,
             user_account,
             user_name,
             in_account,
@@ -21,7 +21,7 @@
             return_num,
             state,
             account_state,
-            boolean_type
+            file_id
         )
         VALUES
 	    (
@@ -29,10 +29,10 @@
             #{businessCode},
             #{tradeSources},
             #{contractNum},
-            #{batch},
+            #{seqNo},
             #{batchFoiuFinance},
-            #{tradingTime},
-            #{transactionAmount},
+            #{tradeTime},
+            #{tradeAmount},
             #{userAccount},
             #{userName},
             #{inAccount},
@@ -43,7 +43,7 @@
             #{returnNum},
             #{state},
             #{accountState},
-            #{booleanType}
+            #{fileId}
 		)
     </insert>
 
@@ -59,14 +59,14 @@
         <if test="contractNum != null and contractNum != ''">
             contract_num = #{contractNum},
         </if>
-        <if test="batch != null and batch != ''">
-            batch = #{batch},
+        <if test="seqNo != null and seqNo != ''">
+            seq_no = #{seqNo},
         </if>
         <if test="batchFoiuFinance != null and batchFoiuFinance != ''">
             batch_foiu_finance = #{batchFoiuFinance},
         </if>
-        <if test="transactionAmount != null and transactionAmount != ''">
-            transaction_amount = #{transactionAmount},
+        <if test="tradeAmount != null and tradeAmount != ''">
+            trade_amount = #{tradeAmount},
         </if>
         <if test="userAccount!=null and userAccount!=''">
             user_account = #{userAccount},
@@ -98,8 +98,8 @@
         <if test="accountState!=null and accountState!=''">
             account_state = #{accountState},
         </if>
-        <if test="booleanType!=null and booleanType!=''">
-            boolean_type = #{booleanType}
+        <if test="fileId!=null and fileId!=''">
+            file_id = #{fileId}
         </if>
         WHERE id = #{id}
     </update>

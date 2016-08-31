@@ -2,18 +2,12 @@ package com.gqhmt.quartz.job.account;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
+import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
+import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpDownloadFileService;
-import com.gqhmt.quartz.service.FtpUploadService;
-import com.mysql.jdbc.log.Log;
-import org.apache.ibatis.logging.LogFactory;
-import org.apache.shiro.crypto.hash.Hash;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -49,125 +43,73 @@ public class AccountInfo extends SupperJob {
     @Resource
     private FuiouAccountInfoService fuiouAccountInfoService;
 
+    @Resource
+    private FuiouAccountInfoFileService fuiouAccountInfoFileService;
+
     private static boolean isRunning = false;
 
-    //@Scheduled(cron="0 15 10 ? * MON-FRI")
-    @Scheduled(cron="0 15 18 ? * MON-FRI")
+    @Scheduled(cron = "0 15 18 ? * MON-FRI")
     public void execute() throws PayChannelNotSupports {
         /*if(!isIp("upload")){
             return;
         }*/
 
-        if(isRunning) return;
+        if (isRunning) return;
 
         startLog("金账户对账文件ftp批量处理 下载及导入文件");
 
-
         isRunning = true;
 
+        Date date = new Date();
 
-        FuiouAccountInfoEntity fuiouAccountInfoEntityDJJD = new FuiouAccountInfoEntity();
-        FuiouAccountInfoEntity fuiouAccountInfoEntityZZ = new FuiouAccountInfoEntity();
-        FuiouAccountInfoEntity fuiouAccountInfoEntityHB = new FuiouAccountInfoEntity();
-        FuiouAccountInfoEntity fuiouAccountInfoEntityWTCZ = new FuiouAccountInfoEntity();
-        FuiouAccountInfoEntity fuiouAccountInfoEntityWTTX = new FuiouAccountInfoEntity();
-        FuiouAccountInfoEntity fuiouAccountInfoEntityYSQ = new FuiouAccountInfoEntity();
+        FuiouAccountInfoFileEntity entityDJJD = fuiouAccountInfoFileService.getFileEntity(date, "DJJD");
+        FuiouAccountInfoFileEntity entityZZ = fuiouAccountInfoFileService.getFileEntity(date, "ZZ");
+        FuiouAccountInfoFileEntity entityHB = fuiouAccountInfoFileService.getFileEntity(date, "HB");
+        FuiouAccountInfoFileEntity entityWTCZ = fuiouAccountInfoFileService.getFileEntity(date, "WTCZ");
+        FuiouAccountInfoFileEntity entityWTTX = fuiouAccountInfoFileService.getFileEntity(date, "WTTX");
+        FuiouAccountInfoFileEntity entityYSQ = fuiouAccountInfoFileService.getFileEntity(date, "YSQ");
 
+        try {
 
-        // 测试用的。
-        // String dateStr = "20150701";
-        // SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        boolean DJJD = false;
-        boolean ZZ = false;
-        boolean HB = false;
-        boolean WTCZ = false;
-        boolean WTTX = false;
-        boolean YSQ = false;
-        try{
-            //       java.util.Date date=sdf.parse(dateStr);
+            fuiouAccountInfoFileService.downFileAccountInfo(entityDJJD);
+            fuiouAccountInfoFileService.downFileAccountInfo(entityZZ);
+            fuiouAccountInfoFileService.downFileAccountInfo(entityHB);
+            fuiouAccountInfoFileService.downFileAccountInfo(entityWTCZ);
+            fuiouAccountInfoFileService.downFileAccountInfo(entityWTTX);
+            fuiouAccountInfoFileService.downFileAccountInfo(entityYSQ);
 
-            Date date = new Date();
-            fuiouAccountInfoEntityDJJD.setTradingTime(date);
-            fuiouAccountInfoEntityDJJD.setTradeType("DJJD");
-            DJJD = ftpDownloadFileService.downloadFuiouAccount(fuiouAccountInfoEntityDJJD);
-            if(!DJJD){
-                fuiouAccountInfoEntityDJJD.setBooleanType("-1");
-                fuiouAccountInfoService.addFuiouAccountInfoEntity(fuiouAccountInfoEntityDJJD);
-            }
-
-            fuiouAccountInfoEntityZZ.setTradingTime(date);
-            fuiouAccountInfoEntityZZ.setTradeType("ZZ");
-            ZZ = ftpDownloadFileService.downloadFuiouAccount(fuiouAccountInfoEntityZZ);
-            if(!ZZ){
-                fuiouAccountInfoEntityZZ.setBooleanType("-1");
-                fuiouAccountInfoService.addFuiouAccountInfoEntity(fuiouAccountInfoEntityZZ);
-            }
-
-            fuiouAccountInfoEntityHB.setTradingTime(date);
-            fuiouAccountInfoEntityHB.setTradeType("HB");
-            HB = ftpDownloadFileService.downloadFuiouAccount(fuiouAccountInfoEntityHB);
-            if(!HB){
-                fuiouAccountInfoEntityHB.setBooleanType("-1");
-                fuiouAccountInfoService.addFuiouAccountInfoEntity(fuiouAccountInfoEntityHB);
-            }
-
-            fuiouAccountInfoEntityWTCZ.setTradingTime(date);
-            fuiouAccountInfoEntityWTCZ.setTradeType("WTCZ");
-            WTCZ = ftpDownloadFileService.downloadFuiouAccount(fuiouAccountInfoEntityWTCZ);
-            if(!WTCZ){
-                fuiouAccountInfoEntityWTCZ.setBooleanType("-1");
-                fuiouAccountInfoService.addFuiouAccountInfoEntity(fuiouAccountInfoEntityWTCZ);
-            }
-
-            fuiouAccountInfoEntityWTTX.setTradingTime(date);
-            fuiouAccountInfoEntityWTTX.setTradeType("WTTX");
-            WTTX = ftpDownloadFileService.downloadFuiouAccount(fuiouAccountInfoEntityWTTX);
-            if(!WTTX){
-                fuiouAccountInfoEntityWTTX.setBooleanType("-1");
-                fuiouAccountInfoService.addFuiouAccountInfoEntity(fuiouAccountInfoEntityWTTX);
-            }
-
-            fuiouAccountInfoEntityYSQ.setTradingTime(date);
-            fuiouAccountInfoEntityYSQ.setTradeType("YSQ");
-            YSQ = ftpDownloadFileService.downloadFuiouAccount(fuiouAccountInfoEntityYSQ);
-            if(!YSQ){
-                fuiouAccountInfoEntityYSQ.setBooleanType("-1");
-                fuiouAccountInfoService.addFuiouAccountInfoEntity(fuiouAccountInfoEntityYSQ);
-            }
-        }catch (Exception e){
-            LogUtil.error(getClass(),e);
-        }finally {
+        } catch (Exception e) {
+            LogUtil.error(getClass(), e);
+        } finally {
             isRunning = false;
         }
 
         endtLog();
     }
 
-    @Scheduled(cron="0 15 20 ? * MON-FRI")
+    //如果抓取失败。 20点到22点会自动抓取，间隔五分钟
+    @Scheduled(cron = "0 0/5 20-22 ? * MON-FRI")
     public void inspect() throws FssException {
-        if(isRunning) return;
-        isRunning = true;
-        try{
-            Map<String,String> map = new HashMap<String,String>();
+        try {
+            Map<String, String> map = new HashMap<String, String>();
             Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             String dateStr = sdf.format(date);
-            map.put("tradingTime",dateStr);
+            map.put("createFileDate", dateStr);
+
             // 检测今天的抓取情况 如果有抓取失败的文件， 则重新抓取
-            List<FuiouAccountInfoEntity> accountInfoFailList = fuiouAccountInfoService.queryAccountFailInfoList(map);
-            if (accountInfoFailList.size()<0){
+            List<FuiouAccountInfoFileEntity> accountInfoFailList = fuiouAccountInfoFileService.queryFailAccInfoFileList(map);
+            List<FuiouAccountInfoFileEntity> accountInfoList = fuiouAccountInfoFileService.querySucceedAccInfoFiltList(map);
+
+            //判断 是否没有抓取失败记录 并且 抓取成功记录大于5
+            if (accountInfoFailList.size() <= 0 && accountInfoList.size() > 5) {
                 return;
             }
 
-            for(FuiouAccountInfoEntity accountInfoFail:accountInfoFailList){
-                ftpDownloadFileService.downloadFuiouAccount(accountInfoFail);
-            }
-        }catch (Exception e){
+            execute();
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            isRunning = false;
         }
-
     }
 
     @Override

@@ -48,4 +48,17 @@ public class FssProjectInfoCallBackService {
 	public void update(FssProjectCallbackEntity projectCallback) throws FssException{
 		fssPorjectCallbackWriteMapper.updateByPrimaryKey(projectCallback);
 	}
+
+	/**
+	 * jhz
+	 * 通过项目编号查到该标的回盘信息
+	 * @param itemNo
+	 * @return
+	 * @throws FssException
+     */
+	public FssProjectCallbackEntity getByItemNo(String itemNo) throws FssException{
+	return 	fssProjectInfoCallBackReadMapper.getByItemNo(itemNo);
+	}
+
+
 }

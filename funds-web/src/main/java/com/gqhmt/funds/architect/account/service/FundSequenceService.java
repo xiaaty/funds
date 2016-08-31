@@ -86,8 +86,8 @@ public class FundSequenceService {
      * @param accountType
      * @param amount
      */
-    public void charge(FundAccountEntity entity, int accountType, BigDecimal amount, ThirdPartyType thirdPartyType, FundOrderEntity orderEntity) throws FssException {
-        this.charge(entity,1,accountType,amount,0L,orderEntity,null,null,null,null,null,null,null);
+    public void charge(FundAccountEntity entity, int accountType, BigDecimal amount, ThirdPartyType thirdPartyType, FundOrderEntity orderEntity,String tradeType) throws FssException {
+        this.charge(entity,1,accountType,amount,0L,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
     /**
@@ -137,8 +137,8 @@ public class FundSequenceService {
      * @param orderEntity
      * @throws FssException
      */
-    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
-          this.refund(entity,2,accountType,amount,0l,orderEntity,null,null,null,null,null,null,null);
+    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,String tradeType) throws FssException {
+          this.refund(entity,2,accountType,amount,0l,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
     /**
@@ -333,8 +333,8 @@ public class FundSequenceService {
      * @param bounsAmount
      * @throws FssException
      */
-    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,BigDecimal bounsAmount) throws FssException {
-        this.frozenAmt(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,bounsAmount,null,null,null,null,null,null,null);
+    public void frozenAmt(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,BigDecimal bounsAmount,String tradeType) throws FssException {
+        this.frozenAmt(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,bounsAmount,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
     /**
@@ -366,7 +366,7 @@ public class FundSequenceService {
         //冻结金额需要小于账户余额
         long money = amount.multiply(new BigDecimal("10000")).longValue();
 //      FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(), 4, accountType, new BigDecimal(-money).divide(new BigDecimal("10000")),  orderEntity, frozenEntiry.getId(),orgEntity.getCustId());
-        FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),frozenEntiry.getId(),"1108","11080002",orgEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),frozenEntiry.getId(),"1108",tradeType,orgEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         orgFundSequenceEntity.setSumary("冻结");
         int frozenType = 2007;
         if(accountType==1007){
@@ -377,7 +377,7 @@ public class FundSequenceService {
             frozenType = 2001;
         }
 //      FundSequenceEntity frozenFundSequenceEntity = this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount,  orderEntity, orgEntity.getId(),frozenEntiry.getCustId());
-        FundSequenceEntity frozenFundSequenceEntity = this.getFundSequenceEntity(frozenEntiry.getId(),4,frozenType,amount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),orgEntity.getId(),"1108","11080002",frozenEntiry.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity frozenFundSequenceEntity = this.getFundSequenceEntity(frozenEntiry.getId(),4,frozenType,amount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),orgEntity.getId(),"1108",tradeType,frozenEntiry.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         frozenFundSequenceEntity.setSumary("冻结");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(orgFundSequenceEntity);
@@ -398,8 +398,8 @@ public class FundSequenceService {
      * @param orderEntity
      * @throws FssException
      */
-    public void unfreeze(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity) throws FssException {
-        this.unfreeze(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,null,null,null,null,null,null,null);
+    public void unfreeze(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,int accountType,String memo,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,String tradeType) throws FssException {
+        this.unfreeze(orgEntity,frozenEntiry,amount,accountType,memo,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
 
@@ -431,10 +431,10 @@ public class FundSequenceService {
             frozenType = 2002;
         }
 //      FundSequenceEntity orgFundSequenceEntity = this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),orderEntity,frozenEntiry.getId(),orgEntity.getCustId());
-        FundSequenceEntity orgFundSequenceEntity =this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),frozenEntiry.getId(),"1108","11080003",orgEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity orgFundSequenceEntity =this.getFundSequenceEntity(orgEntity.getId(),4,accountType,new BigDecimal(-money).divide(new BigDecimal("10000")),orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),frozenEntiry.getId(),"1108",tradeType,orgEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         orgFundSequenceEntity.setSumary("解冻");
 //      FundSequenceEntity frozenFundSequenceEntity =this.getFundSequenceEntity(frozenEntiry.getId(), 4, frozenType, amount, orderEntity, orgEntity.getId(),frozenEntiry.getCustId());
-        FundSequenceEntity frozenFundSequenceEntity =this.getFundSequenceEntity(frozenEntiry.getId(),4,frozenType,amount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),orgEntity.getId(),"1108","11080003",frozenEntiry.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity frozenFundSequenceEntity =this.getFundSequenceEntity(frozenEntiry.getId(),4,frozenType,amount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),orgEntity.getId(),"1108",tradeType,frozenEntiry.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         frozenFundSequenceEntity.setSumary("解冻");
         List<FundSequenceEntity> list = new ArrayList<>();
         list.add(orgFundSequenceEntity);

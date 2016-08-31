@@ -39,7 +39,7 @@ public class FreezeImpl implements IFreeze {
     	Response response = new Response();
         try {
             FreezeDto cdto=(FreezeDto)dto;
-            fundsTrade.froze(Long.valueOf(cdto.getCust_no()),cdto.getBusi_type(),cdto.getAmt());
+            fundsTrade.froze(Long.valueOf(cdto.getCust_no()),cdto.getBusi_type(),cdto.getAmt(),cdto.getTrade_type());
             response.setResp_code("0000");
         } catch (FssException e) {
             LogUtil.error(this.getClass(),e);

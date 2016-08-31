@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
+import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 
 import java.util.List;
@@ -21,12 +22,12 @@ import java.util.Map;
  * -----------------------------------------------------------------
  * 2016/6/27.  xdw         1.0     1.0 Version
  */
-public interface FuiouAccountInfoReadMapper {
+public interface FuiouAccountInfoReadMapper extends ReadAndWriteMapper<FuiouAccountInfoEntity> {
 
     //查询金账户对账文件记录
-    public List<FuiouAccountInfoEntity> queryAccountInfoList(Map<String,String> map);
+    public List<FuiouAccountInfoEntity> queryAccountInfoList(Map<String, String> map);
 
-    //查询抓取失败的金账户对账文件记录
-    public List<FuiouAccountInfoEntity> queryAccountFailInfoList(Map<String, String> map);
+    //查询抓取所有的金账户对账文件记录
+    public List<FuiouAccountInfoEntity> queryAccountAllInfoList(Map<String, String> map);
 
 }

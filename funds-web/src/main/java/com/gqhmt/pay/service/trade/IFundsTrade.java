@@ -170,7 +170,7 @@ public interface IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean froze(Long custId,Integer busiType,BigDecimal amt) throws FssException;
+    public boolean froze(Long custId,Integer busiType,BigDecimal amt,String tradeType) throws FssException;
 
     /**
      * 资金解冻

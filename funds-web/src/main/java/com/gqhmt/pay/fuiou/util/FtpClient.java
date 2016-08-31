@@ -1,5 +1,6 @@
 package com.gqhmt.pay.fuiou.util;
 
+import com.gqhmt.util.CommonUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.net.ftp.FTP;
@@ -7,8 +8,6 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPHTTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.util.TrustManagerUtils;
-
-import com.gqhmt.util.CommonUtil;
 
 import java.io.*;
 import java.net.SocketException;
@@ -19,6 +18,16 @@ import java.net.SocketException;
 public class FtpClient {
 
     private static final Log log = LogFactory.getLog(FtpClient.class);
+
+    private boolean isLogin = false;
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
+    }
 
 //    private boolean printHash = false;
 
@@ -33,7 +42,7 @@ public class FtpClient {
     private String trustmgr = "all";
     private String proxyHost = null;
     private int proxyPort = 80;
-    public FtpClient( String protocol, int ftpPort, String username, String password, String urlPath) {
+    public FtpClient(String protocol, int ftpPort, String username, String password, String urlPath) {
         super();
         this.protocol = protocol;
         this.username = username;
@@ -53,7 +62,7 @@ public class FtpClient {
 
     private int ftpPort = 0;
 
-    public FtpClient( int ftpPort, String username,String password, String urlPath) {
+    public FtpClient(int ftpPort, String username, String password, String urlPath) {
         this(null, ftpPort, username, password, urlPath);
     }
 
@@ -410,7 +419,7 @@ public class FtpClient {
         }
         //ftp登陆
 
-       boolean isLogin =  ftp.login(username, password);
+       isLogin =  ftp.login(username, password);
         if(!isLogin){
             throw new Exception("登录失败");
         }

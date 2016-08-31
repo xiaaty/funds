@@ -58,7 +58,6 @@ public class FundOrderService  {
      * @param orderType
      * @param sourceID
      * @param sourceType
-     * @param thirdPartyType
      * @return
      * @throws FssException
      */
