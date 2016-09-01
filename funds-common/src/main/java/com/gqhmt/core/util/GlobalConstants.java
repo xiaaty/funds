@@ -574,6 +574,7 @@ public class GlobalConstants {
         //线上开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020001","10010001");//web开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020002","10010001");//wap开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020017","10010001");//新版wap开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//andriod开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020004","10010001");//微信开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020005","10010001");//ios开户
