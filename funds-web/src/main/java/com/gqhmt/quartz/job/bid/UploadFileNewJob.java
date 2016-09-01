@@ -33,7 +33,7 @@ public class UploadFileNewJob extends SupperJob{
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron="0/23 * *  * * * ")
+    @Scheduled(cron="27 /4 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
