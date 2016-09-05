@@ -86,9 +86,9 @@ public class FundsTradeRecordController {
 		model.addAttribute("fundflow", fundflow);
 		return "fss/trade/trade_record/fundsflow_list";
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }
