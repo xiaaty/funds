@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FuiouAccountInfoFileReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FuiouAccountInfoFileWriteMapper;
@@ -108,6 +109,7 @@ public class FuiouAccountInfoFileService {
         if(!downType && fileEntity != null && fileEntity.getId() == 0 && ftpDownloadFileService.isHaveFile()){
             fileEntity.setBooleanType("-1");
             this.addFuiouAccountInfoFileEntity(fileEntity);
+            LogUtil.info(this.getClass(),"抓取文件: "+fileEntity.getTradeType()+fileEntity.getCreateFileDate()+"失败");
         }
         return downType;
     }

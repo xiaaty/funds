@@ -1,6 +1,7 @@
 package com.gqhmt.quartz.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
@@ -281,28 +282,28 @@ public class FtpDownloadFileService {
         String userName = (String)config.getValue("ftp.userName.value");
         String pwd = (String)config.getValue("ftp.pwd.value");
         FtpClient ftp = new FtpClient(Integer.parseInt(port),userName,pwd,url);
+
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        String date = file.getCreateFileDate();
-        String url1 = "/account/" + file.getTradeType()  + date +  ".txt";
-        if(ftp.isLogin()){
-            new FssException("登录失败");
-            return false;
-        }
-            boolean flag = ftp.exits(url1);
+        String dateStr = file.getCreateFileDate();
+
+        String fileName = file.getTradeType()  + dateStr +  ".txt";
+        String filePath = "/account/" + dateStr + "/" + fileName;
+
+        boolean flag = ftp.exits(filePath);
+
         if(!flag){
-            if(ftp.isLogin()){
-                haveFile = false;
-                new FssException("请确认文件名是否正确,请确认"+url1+"文件是否存在");
-            }
             return false;
         }
+
         String path = getClassPath();
-        File filepath  = new File(path+"/tmp/account");
-        if(filepath.exists()){
-            filepath.mkdirs();
+        File localFile  = new File(path+"/tmp/account/"+dateStr);
+        if(localFile.exists()){
+            localFile.mkdirs();
         }
-        String fileName= filepath+"/"+ file.getTradeType()  + date +  ".txt";
-        flag = ftp.getFile("/account/" + file.getTradeType()  + date +  ".txt",fileName);
+
+        String localFilePath = localFile+"/"+ fileName;
+        flag = ftp.getFile(filePath,localFilePath);
+
         parseFileFuiouAcount(file);
         return true;
     }
@@ -351,10 +352,10 @@ public class FtpDownloadFileService {
     private List<String> parseFileFuiouAcount(FuiouAccountInfoFileEntity file) throws FssException {
         List<String> returnList = new ArrayList();
 
-        String path = getClassPath();
-        File filepath  = new File(path+"/tmp/account");
-
         String date = file.getCreateFileDate();
+        String path = getClassPath();
+        File filepath  = new File(path+"/tmp/account/"+date);
+
 
         String fileName= filepath+"/"+file.getTradeType()+date+".txt";
         File localFile = new File(fileName);
@@ -550,6 +551,7 @@ public class FtpDownloadFileService {
         }
         file.setBooleanType("1");
         fuiouAccountInfoFileService.updateFuiouAccountInfoFileEntity(file);
+        LogUtil.info(this.getClass(),"抓取文件：" +file.getTradeType()+file.getCreateFileDate()+"成功");
     }
 
 }
