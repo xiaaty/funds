@@ -537,8 +537,9 @@ public class FundsTradeImpl  implements IFundsTrade {
      * function：充值成功入账
      */
     public void recharge(RechargeSuccessDto rechargeSuccessDto) throws FssException {
-        FundAccountEntity entity=this.getFundAccount(Integer.parseInt(rechargeSuccessDto.getCust_no()),  GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+//        FundAccountEntity entity=this.getFundAccount(Integer.parseInt(rechargeSuccessDto.getCust_no()),  GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(rechargeSuccessDto.getOrder_no());
+        FundAccountEntity entity=fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if("0000".equals(rechargeSuccessDto.getRespCode())) {
             tradeRecordService.recharge(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001,rechargeSuccessDto.getTrade_type());
             fundOrderEntity.setOrderState(2);
