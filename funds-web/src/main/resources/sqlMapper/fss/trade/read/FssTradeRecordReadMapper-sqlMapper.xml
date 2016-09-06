@@ -75,6 +75,9 @@
 <select id="getRecordList"  parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity" >
 	<include refid="selectSql"/>
 	<where>
+		<if test="type!=null and type!=''">
+			AND t.trade_type=#{type}
+		</if>
 		<if test="applyNo!=null and applyNo!=''">
 			AND t.apply_no=#{applyNo}
 		</if>
