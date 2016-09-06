@@ -38,7 +38,7 @@ public class DownloadFileJob extends SupperJob{
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron="* 9/5 *  * * * ")
+    @Scheduled(cron="9 0/5 *  * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;

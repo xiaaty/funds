@@ -88,7 +88,7 @@ public class FssTradeRepayController {
         map.put("failureFlag","0");
         if(CollectionUtils.isNotEmpty(fuiouFtpFieldList)){
         	for(FuiouFtpColomField ftpField:fuiouFtpFieldList){
-            	if((StringUtils.equals("3018", ftpField.getReturnCode()) 
+            	if((StringUtils.equals("91003018", ftpField.getReturnCode())
             			|| StringUtils.equals("91009999", ftpField.getReturnCode())) 
             		&&  StringUtils.equals("10890004", ftpField.getState()+"")){
             		map.put("failureFlag","1");

@@ -163,10 +163,11 @@ public class ConnectionFuiou {
             // 输出流缓冲
             out.flush();
             // 定义输入流得到响应
-            long endTime = new Date().getTime();
+
             is =  conn.getInputStream();
 
             result = parseResponse(is);
+            long endTime = new Date().getTime();
             LogUtil.info(ConnectionFuiou.class,"连接富友："+url+"?"+param+":返回结果:"+result+"时长:"+(endTime-startTime));
             return result;
         } catch (MalformedURLException e) {

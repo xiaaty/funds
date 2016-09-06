@@ -199,11 +199,6 @@
                                                                     查看借款跑批
                                                                 </a>
                                                             </c:when>
-                                                            <c:otherwise>
-                                                                <a href="" title="订单号是空值">
-                                                                    查看借款跑批
-                                                                </a>
-                                                            </c:otherwise>
                                                         </c:choose>
                                                     </td>
 
