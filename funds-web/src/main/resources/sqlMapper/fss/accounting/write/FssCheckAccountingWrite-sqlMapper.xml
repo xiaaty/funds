@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.write.FssCheckAccountingWriteMapper">
+    <insert id="addFuiouAccountInfoEntity" parameterType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity">
+        INSERT INTO t_gq_fss_fuiou_account_info (
+            trade_type,
+            business_code,
+            trade_sources,
+            contract_num,
+            seq_no,
+            batch_foiu_finance,
+            trade_time,
+            trade_amount,
+            user_account,
+            user_name,
+            in_account,
+            in_user_name,
+            total_money,
+            balance,
+            remark,
+            return_num,
+            state,
+            account_state,
+            file_id
+        )
+        VALUES
+	    (
+            #{tradeType},
+            #{businessCode},
+            #{tradeSources},
+            #{contractNum},
+            #{seqNo},
+            #{batchFoiuFinance},
+            #{tradeTime},
+            #{tradeAmount},
+            #{userAccount},
+            #{userName},
+            #{inAccount},
+            #{inUserName},
+            #{totalMoney},
+            #{balance},
+            #{remark},
+            #{returnNum},
+            #{state},
+            #{accountState},
+            #{fileId}
+		)
+    </insert>
+
+    <update id="updateFuiouAccountInfoEntity" parameterType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity" >
+        UPDATE t_gq_fss_fuiou_account_info t
+        SET
+        <if test="businessCode != null and businessCode != ''">
+          t.business_code = #{businessCode},
+        </if>
+        <if test="tradeSources != null and tradeSources != ''">
+            t.trade_sources = #{tradeSources},
+        </if>
+        <if test="contractNum != null and contractNum != ''">
+            contract_num = #{contractNum},
+        </if>
+        <if test="seqNo != null and seqNo != ''">
+            seq_no = #{seqNo},
+        </if>
+        <if test="batchFoiuFinance != null and batchFoiuFinance != ''">
+            batch_foiu_finance = #{batchFoiuFinance},
+        </if>
+        <if test="tradeAmount != null and tradeAmount != ''">
+            trade_amount = #{tradeAmount},
+        </if>
+        <if test="userAccount!=null and userAccount!=''">
+            user_account = #{userAccount},
+        </if>
+        <if test="userName!=null and userName!=''">
+            user_name = #{userName},
+        </if>
+        <if test="inAccount!=null and inAccount!=''">
+            in_account = #{inAccount},
+        </if>
+        <if test="inUserName!=null and inUserName!=''">
+            in_user_name = #{inUserName},
+        </if>
+        <if test="totalMoney!=null and totalMoney!=''">
+            total_money = #{totalMoney},
+        </if>
+        <if test="balance!=null and balance!=''">
+            balance = #{balance},
+        </if>
+        <if test="remark!=null and remark!=''">
+            remark = #{remark},
+        </if>
+        <if test="returnNum!=null and returnNum!=''">
+            return_num = #{returnNum},
+        </if>
+        <if test="state!=null and state!=''">
+            state = #{state},
+        </if>
+        <if test="accountState!=null and accountState!=''">
+            account_state = #{accountState},
+        </if>
+        <if test="fileId!=null and fileId!=''">
+            file_id = #{fileId}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteFuiouAccountInfoEntity" parameterType="java.lang.String" >
+        DELETE FROM t_gq_fss_fuiou_account_info
+        WHERE id = cast(#{id} as signed int)
+    </delete>
+
+</mapper>
