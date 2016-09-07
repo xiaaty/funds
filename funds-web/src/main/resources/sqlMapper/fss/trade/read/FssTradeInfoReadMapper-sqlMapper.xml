@@ -28,12 +28,6 @@
 			<if test="seqNo!=null and seqNo!=''">
 				AND t.seq_no=#{seqNo}
 			</if>
-			<if test="toAccTime != null and toAccTime != ''">
-				AND t.to_acc_time=#{toAccTime}
-			</if>
-			<if test="tradeTime!=null and tradeTime!=''">
-				AND t.trade_time=#{tradeTime}
-			</if>
 			<if test="chgCd!=null and chgCd!=''">
 				AND t.chg_cd = #{chgCd}
 			</if>
