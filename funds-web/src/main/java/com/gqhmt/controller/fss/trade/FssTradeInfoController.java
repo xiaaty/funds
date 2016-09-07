@@ -69,11 +69,8 @@ public class FssTradeInfoController {
         }
         if(!CollectionUtils.isEmpty(listTradeInfo)){
             fssTradeInfoService.insertListTradeInfo(listTradeInfo);
-            String contextPath = request.getContextPath();
-            String path = "redirect:"+contextPath+"/trade/tradeInfo/list";
-            return path;
         }
-        return null;
+        return "redirect:"+request.getContextPath()+"/trade/tradeInfo/list";
     }
 
 }
