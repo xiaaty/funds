@@ -287,6 +287,18 @@ public class ReadExcelUtil<T> {
             }
         }
 
+        if(numberType.value() == NumberTypeEnum.DECIMAL){
+            value = value.replace(",","");
+            BigDecimal money = new BigDecimal(value);
+            LogUtil.debug(this.getClass(),money);
+            try {
+                method.invoke(t,money);
+            } catch (IllegalAccessException e) {
+                LogUtil.error(this.getClass(), e.getMessage(), e);
+            } catch (InvocationTargetException e) {
+                LogUtil.error(this.getClass(), e.getMessage(), e);
+            }
+        }
 
 
     }
