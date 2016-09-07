@@ -189,10 +189,7 @@
                                                     <td>${t.toAccNo}</td>
                                                     <td>${t.amount}</td>
                                                     <td>${t.tradeSts}</td>
-                                                    <td>
-                                                        <c:if test="${t.cardVerify == '0'}"> 未校验 </c:if>
-                                                        <c:if test="${t.cardVerify == '1'}"> 以校验 </c:if>
-                                                    </td>
+                                                    <td>${t.cardVerify}</td>
                                                     <td><a href="#">操作</a></td>
                                                 </tr>
                                             </c:forEach>
