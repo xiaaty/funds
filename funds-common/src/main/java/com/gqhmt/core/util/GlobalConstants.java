@@ -102,6 +102,10 @@ public class GlobalConstants {
     public static final int ORDER_DROP_USER = 39;
     public static final int ORDER_UPDATE_CARD_QUERY = 40;
 
+    public static final int ORDER_TRADE_QUERY = 51;
+    public static final int ORDER_CZTX_QUERY = 52;
+    public static final int ORDER_USER_INFO_QUERY = 53;
+
     public static final int ORDER_TRANSFER_BATCH = 1190020;
 
     public static final int ORDER_RECHARGE_OFFLINE = 40000001;
