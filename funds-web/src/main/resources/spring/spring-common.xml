@@ -176,5 +176,17 @@
 
 	<aop:aspectj-autoproxy />
 
-
+	<!-- 引入配置文件 -->
+	<bean id="configProperties"
+		  class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:config/ftp.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="propertyCon"
+		  class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
 </beans>

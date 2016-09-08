@@ -57,7 +57,8 @@ public class FssTradeInfoController {
 
     @RequestMapping(value = "/trade/tradeInfo/loadExcel",method = {RequestMethod.GET, RequestMethod.POST})
     public Object tradeInfoloadExcel(HttpServletRequest request, ModelMap modelMap,@RequestParam(value = "infoFile") MultipartFile infoFile) throws ReadExcelErrorException, ReadExcelException, IOException {
-        ReadExcelUtil excelUtil = new ReadExcelUtil("F:\\Program Files (x86)\\excel\\",FssTradeInfoEntity.class);
+        String backExcelPath = request.getContextPath() + "/tmp/back/excel/" ;
+        ReadExcelUtil excelUtil = new ReadExcelUtil(backExcelPath, FssTradeInfoEntity.class);
         String[] columnName = new String[]{"dataSource","sysCode","orglSeqNo","seqNo","chgCd","toAccTime","tradeTime","toAccNm","toAccNo","amount","tradeSts","cardVerify"};
         int sheetsSize = excelUtil.getWorkBook(infoFile).getNumberOfSheets();
 

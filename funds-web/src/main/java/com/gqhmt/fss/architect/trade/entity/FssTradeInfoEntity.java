@@ -70,6 +70,9 @@ public class FssTradeInfoEntity {
     @Column(name = "card_verify")           //卡号校验 0 .未校验 1. 以校验
     private String cardVerify;
 
+    @Column(name = "file_id")               //file文件id;
+    private String fileId;
+
     public long getId() {
         return id;
     }
@@ -172,5 +175,13 @@ public class FssTradeInfoEntity {
 
     public void setCardVerify(String cardVerify) {
         this.cardVerify = cardVerify;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
     }
 }
