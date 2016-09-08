@@ -107,6 +107,20 @@
                                                 </label>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="tr" nowrap="nowrap">入账户名:</td>
+                                            <td nowrap="nowrap">
+                                                <label class="input"  style="width:250px" >
+                                                    <input type="text" name="toAccNm" value="${map.toAccNm}">
+                                                </label>
+                                            </td>
+                                            <td class="tr" nowrap="nowrap">入账卡号:</td>
+                                            <td nowrap="nowrap">
+                                                <label class="input"  style="width:250px" >
+                                                    <input type="text" name="toAccNo" value="${map.toAccNo}">
+                                                </label>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
