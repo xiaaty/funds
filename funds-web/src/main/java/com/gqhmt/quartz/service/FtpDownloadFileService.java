@@ -585,7 +585,6 @@ public class FtpDownloadFileService {
         SimpleDateFormat sdf2=new SimpleDateFormat("yyyyMMddHHmm");
         String pathDateStr = sdf.format(date);
         String fileDateStr = sdf2.format(date);
-        System.out.println(pathDateStr);
         String filePath = path  + pathDateStr + "/";
         String fileName = prefixFileName + "-" + fileDateStr + ".xls";
 
@@ -601,10 +600,6 @@ public class FtpDownloadFileService {
         }
         String localFile = localFilepath + "/" + fileName;
 
-        System.out.println(localFilepath);
-        System.out.println(filePath);
-        System.out.println(filePath + fileName);
-        System.out.println(localFile);
         flag = ftp.getFile(filePath + fileName, localFile);
         parseFileTradeInfo(localFile);
         return true;
@@ -626,9 +621,11 @@ public class FtpDownloadFileService {
         if(infoFileEntity != null && "1".equals(infoFileEntity.getUploadSts()))return;
 
         try {
+
             String backExcelPath = getClassPath() + "/tmp/back/excel/" ;
             ReadExcelUtil excelUtil = new ReadExcelUtil(backExcelPath,FssTradeInfoEntity.class);
             String[] columnName = new String[]{"dataSource","sysCode","orglSeqNo","seqNo","chgCd","toAccTime","tradeTime","toAccNm","toAccNo","amount","tradeSts","cardVerify"};
+
             int sheetsSize = excelUtil.getWorkBook(localFile).getNumberOfSheets();
 
             List<FssTradeInfoEntity> listTradeInfo = new ArrayList<FssTradeInfoEntity>();
@@ -637,6 +634,7 @@ public class FtpDownloadFileService {
                     listTradeInfo.addAll((List<FssTradeInfoEntity>) excelUtil.getExcelData(localFile, columnName, i));
                 }
             }
+
             if(!CollectionUtils.isEmpty(listTradeInfo)){
 
                 FssTradeInfoFileEntity tradeInfoFile = new FssTradeInfoFileEntity();
