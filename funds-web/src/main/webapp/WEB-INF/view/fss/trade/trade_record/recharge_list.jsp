@@ -136,10 +136,10 @@
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1800px;">
                                         <col width="100" />
+                                        <col width="100" />
                                         <col width="200" />
                                         <col width="150" />
                                         <col width="150" />
-                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -150,10 +150,10 @@
                                         <thead>
                                         <tr>
                                               <td>编号</td>
+                                              <td>申请编号</td>
                                               <td>客户账号</td>
                                               <td>交易类型</td>
                                               <td>交易金额</td>
-                                              <td>申请编号</td>
                                               <td>交易状态</td>
                                               <td>交易结果</td>
                                               <td>交易描述</td>
@@ -167,10 +167,10 @@
                                              <c:forEach items="${page.list}" var="t">
                                                 <tr>
                                                     <td>${t.id}</td>
+                                                    <td>${t.applyNo}</td>
                                                     <td>${t.accNo}</td>
                                                     <td><fss:dictView key="${t.tradeTypeChild}" /></td>
                                                     <td>${t.amount}</td>
-                                                    <td>${t.applyNo}</td>
                                                     <td><fss:dictView key="${t.tradeState}" /></td>
                                                     <td><fss:dictView key="${t.tradeResult}" /></td>
                                                     <td>${t.sumary}</td>

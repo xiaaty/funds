@@ -220,6 +220,7 @@ public class TradeRecordService {
         if(map!=null){
             String startTime = map.get("startTime");
             String endTime = map.get("endTime");
+            map2.put("type",map.get("type"));
             map2.put("applyNo", map.get("applyNo"));
             map2.put("accNo", map.get("accNo"));
             map2.put("resultState", map.get("resultState"));
