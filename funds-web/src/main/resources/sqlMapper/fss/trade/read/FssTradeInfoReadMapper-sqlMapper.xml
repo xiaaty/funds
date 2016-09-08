@@ -28,12 +28,6 @@
 			<if test="seqNo!=null and seqNo!=''">
 				AND t.seq_no=#{seqNo}
 			</if>
-			<!--<if test="toAccTime != null and toAccTime != ''">
-				AND t.to_acc_time=#{toAccTime}
-			</if>
-			<if test="tradeTime!=null and tradeTime!=''">
-				AND t.trade_time=#{tradeTime}
-			</if>-->
 			<if test="chgCd!=null and chgCd!=''">
 				AND t.chg_cd = #{chgCd}
 			</if>
@@ -42,6 +36,12 @@
 			</if>
 			<if test="cardVerify != null and cardVerify != ''">
 				AND t.card_verify = #{cardVerify}
+			</if>
+			<if test="toAccNm!=null and toAccNm!=''">
+				AND t.to_acc_nm=#{toAccNm}
+			</if>
+			<if test="toAccNo != null and toAccNo != ''">
+				AND t.to_acc_no = #{toAccNo}
 			</if>
 		ORDER BY t.trade_time DESC
 	</select>
