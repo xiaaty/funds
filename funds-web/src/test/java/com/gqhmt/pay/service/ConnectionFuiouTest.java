@@ -53,7 +53,7 @@ public class ConnectionFuiouTest extends TestService{
         FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custNid,0);
         try {
 
-            CommandResponse response  = paySuperByFuiou.tradeCZZTXQuery("PW11",fundAccountEntity,"2016-09-01","2016-09-07",1);
+            CommandResponse response  = paySuperByFuiou.tradeCZZTXQuery("PW11",fundAccountEntity,"2016-08-10","2016-09-08",1);
             System.out.println(response.getMap());
             assert response.getMap() != null;
         } catch (FssException e) {
@@ -74,6 +74,20 @@ public class ConnectionFuiouTest extends TestService{
         } catch (FssException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public  void testBalance(){
+        FundAccountEntity fundAccountEntity = fundAccountService.getFundAccount(custNid,0);
+        try {
+            CommandResponse response = paySuperByFuiou.banlance(fundAccountEntity);
+            System.out.println(response);
+
+            assert response.getMap() != null;
+        } catch (FssException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
