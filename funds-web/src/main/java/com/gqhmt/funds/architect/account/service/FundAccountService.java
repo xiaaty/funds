@@ -316,7 +316,16 @@ public class FundAccountService {
 		}
 		return fundaccount;
 	}
-	
+	/**
+	 * jhz
+	 * 获取客户的所有账户信息
+	 * @param custId
+	 * @return
+	 */
+	public List<FundAccountEntity> getFundsAccountsByCustId(Long custId) throws FssException {
+		return fundsAccountReadMapper.queryFundAccountsByCutId(custId);
+	}
+
 	   /**
 	    * 
 	    * author:柯禹来

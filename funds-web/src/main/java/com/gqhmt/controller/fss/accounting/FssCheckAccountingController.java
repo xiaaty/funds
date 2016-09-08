@@ -10,10 +10,14 @@ import com.gqhmt.fss.architect.accounting.entity.*;
 import com.gqhmt.fss.architect.accounting.service.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.util.ReadExcelUtil;
 import com.gqhmt.util.exception.ReadExcelErrorException;
 import com.gqhmt.util.exception.ReadExcelException;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -24,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +57,8 @@ public class FssCheckAccountingController {
     private FundAccountService fundAccountService;
     @Resource
     private FundOrderService fundOrderService;
+    @Resource
+    private CustomerInfoService customerInfoService;
 
     /**
      * jhz
@@ -90,6 +97,8 @@ public class FssCheckAccountingController {
     public Object importData(HttpServletRequest request,
                               @RequestParam(value="file",required=true)MultipartFile multipartFile,
                               @PathVariable String type) throws FssException {
+        int i=0;
+        int j=0;
         Map map= Maps.newHashMap();
         String basePath = request.getSession().getServletContext().getRealPath("/")+"upload";
         LogUtil.debug(this.getClass(),basePath);
@@ -149,9 +158,17 @@ public class FssCheckAccountingController {
                 entity=fssCheckAccountingService.createChecking(entity,type);
                 enList.add(entity);
             }
-            fssCheckAccountingService.insertList(enList);
+            i=enList.size();
+            for (FssCheckAccountingEntity entity:enList) {
+                try {
+                    fssCheckAccountingService.insert(entity);
+                    j++;
+                }catch (FssException e){
+                    continue;
+                }
+            }
             map.put("code","0000");
-            map.put("msg","导入成功！");
+            map.put("msg","共有"+i+"条，导入成功"+j+"条");
         } catch (ReadExcelErrorException e) {
             LogUtil.error(this.getClass(),e.getMessage());
             e.printStackTrace();
@@ -164,7 +181,7 @@ public class FssCheckAccountingController {
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage());
             map.put("code","0001");
-            map.put("msg","导入失败！");
+            map.put("msg","共有"+i+"条，导入成功"+j+"条");
         }
         return map;
     }
@@ -180,8 +197,32 @@ public class FssCheckAccountingController {
      */
     @RequestMapping(value = "/checkAccounting/singleTransfer", method = {RequestMethod.GET, RequestMethod.POST})
     @AutoPage
-    public Object singleTransfer(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
+    public String singleTransfer(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
+        Map<String,String> returnMap=Maps.newHashMap();
+        CustomerInfoEntity customerInfoEntity=null;
+        if (map!=null){
+            if(StringUtils.isNotEmpty((String)map.get("mobile"))){
+                customerInfoEntity= customerInfoService.searchCustomerInfoByMobile((String)map.get("mobile"));
+            }
+        }
+        List<FundAccountEntity> list=Lists.newArrayList();
+        if (customerInfoEntity!=null) {
+            list= fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
+        }
 
-        return null;
+       List<Long> accNos=null;
+        if(list.size()>0){
+            accNos=Lists.newArrayList();
+            for (FundAccountEntity entity:list) {
+                accNos.add(entity.getId());
+            }
+        }
+        List<FundOrderEntity> orderEntities=Lists.newArrayList();
+        if(CollectionUtils.isNotEmpty(accNos)){
+            orderEntities= fundOrderService.findfundOrdesrs(map,accNos);
+        }
+        model.addAttribute("page", orderEntities);
+        model.put("map", map);
+        return "fss/accounting/checkAccounting/singleTransfer";
     }
 }

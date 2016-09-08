@@ -42,7 +42,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>对账管理</li>
-            <li>交易对账</li>
+            <li>掉单管理</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -58,7 +58,7 @@
                             <!-- widget div-->
                             <div>
                            
-                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/checkAccounting/checkAccountList" method="post" >
+                                <form class="smart-form" id="mortgageePayment" action="${contextPath}/checkAccounting/singleTransfer" method="post" >
                               
                                     <!-- widget edit box -->
                                     <div class="jarviswidget-editbox">
@@ -84,30 +84,11 @@
                                                                 <input type="text" style="width:210px" name="orderNo" value="${map.orderNo}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">用户名称：</td>
+                                                        <td class="tr" nowrap="nowrap">手机号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="userName" value="${map.userName}">
+                                                                <input type="text" name="mobile" value="${map.mobile}">
                                                             </label>
-                                                        </td>
-                                                        <td class="tr" nowrap="nowrap">用户名：</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input" style="width:210px" >
-                                                                <input type="text" name="accName" value="${map.accName}">
-                                                            </label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                    <td class="tr" nowrap="nowrap">交易类型：</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="select">
-							                                <select class="select02" style="width:202px;" name="type" id="status">
-                                                                   <option value="">所有</option>
-							                                   <fss:dictOrder var="order" dictOrder="checkTradeType">
-                                                                   <option value="${order.key}"  <c:if test="${order.key==map.type}">selected</c:if> >${order.value}</option>
-                                                               </fss:dictOrder>
-							                                </select>
-                                                                </label>
                                                         </td>
                                                         <td class="tr">交易日期：</td>
                                                         <td colspan="3">
@@ -128,7 +109,6 @@
                                             </table>
                                         </div>
                                         <footer>
-                                            <!-- <button class="btn btn-default" onclick="window.history.back();" type="button">重&nbsp;&nbsp;&nbsp;置</button> -->
                                             <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
@@ -150,7 +130,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>交易对账</h2>
+                            <h2>调单管理</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -161,15 +141,9 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
-                                        <input type="hidden" id="type" value="">
-                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="withDraw"><i class="fa fa-plus"></i>&nbsp;提现交易导入</button>&nbsp;
-                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="withDrawBack"><i class="fa fa-plus"></i>&nbsp;提现退票导入</button>&nbsp;
-                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="withHold"><i class="fa fa-plus"></i>&nbsp;充值交易导入</button>&nbsp;
-                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="transfer"><i class="fa fa-plus"></i>&nbsp;转账交易导入</button>&nbsp;
-                                        <%-- <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_detail"><i class="fa fa-list-ul"></i>&nbsp;详情</button>--%>
                                     </div>
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4350px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4000px;">
                                         <col width="50" />
                                         <col width="200" />
                                         <col width="150" />
@@ -190,75 +164,62 @@
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
-                                        <col width="150"/>
-                                        <col width="200"/>
                                         <col width="200"/>
                                         <thead>
                                         <tr>
                                             <td></td> 
-                                            <td>交易流水号</td>
-                                            <td>交易时间</td>
-                                            <td>记账流水  </td>
-                                            <td>记账日期   </td>
-                                            <td>充值方式</td>
-                                            <td>交易金额(元) </td>
-                                            <td>客户ID</td>
-                                            <td>账户</td>
-                                            <td>用户名 </td>
-                                            <td>用户名称 </td>
-                                            <td>入账客户ID </td>
-                                            <td>入账账户 </td>
-                                            <td>入账用户名 </td>
-                                            <td>入账用户名称 </td>
-                                            <td>业务合同号 </td>
-                                            <td>项目号 </td>
-                                            <td>备注 </td>
-                                            <td>状态 </td>
+                                            <td>出账账户编号</td>
+                                            <td>入账账户编号</td>
+                                            <td>订单编号</td>
+                                            <td>订单类型 </td>
+                                            <td>订单来源编号   </td>
+                                            <td>来源类型</td>
+                                            <td>订单金额(元) </td>
+                                            <td>订单状态</td>
+                                            <td>第三方返回代码</td>
+                                            <td>第三方返回信息 </td>
+                                            <td>订单创建时间 </td>
+                                            <td>最后更新时间 </td>
+                                            <td>第三方支付类型 </td>
+                                            <td>手续费 </td>
+                                            <td>出账客户id </td>
+                                            <td>出账出借编号 </td>
+                                            <td>合同编号 </td>
+                                            <td>新订单类型 </td>
                                             <td>交易类型 </td>
-                                            <td>是否对账 </td>
-                                            <td>对账结果 </td>
-                                            <td>导入日期 </td>
-                                            <td>修改日期 </td>
+                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t"  varStatus="l">
                                                 <tr>
                                                     <td>${l.index+1}</td>
-                                                    <%--<td>${t.mortgageeAccNo}</td>
-                                                    <td>${t.accNo}</td>--%>
+                                                    <td>${t.accountId}</td>
+                                                    <td>${t.toAccountId}</td>
                                                     <td>${t.orderNo}</td>
-                                                    <td>${t.tradeTime}</td>
-                                                    <td>${t.accountingNo}</td>
-                                                    <td>${t.accountingTime}</td>
-                                                    <td>${t.rechargeWay}</td>
+                                                    <td>${t.orderType}</td>
+                                                    <td>${t.orderFrormId}</td>
+                                                    <td>${t.orderSource}</td>
                                                     <td>
-                                                        <fss:money money="${t.amount}"/>
+                                                        <fss:money money="${t.orderAmount}"/>
+                                                    </td>
+                                                    <td>${t.orderState}</td>
+                                                    <td>${t.retCode}</td>
+                                                    <td>${t.retMessage}</td>
+                                                    <td><fss:fmtDate value="${t.createTime}" /></td>
+                                                    <td><fss:fmtDate value="${t.lastModifyTime}" /></td>
+                                                    <td>${t.thirdPartyType}</td>
+                                                    <td>
+                                                        <fss:money money="${t.chargeAmount}"/>
                                                     </td>
                                                     <td>${t.custId}</td>
-                                                    <td>${t.accNo}</td>
-                                                    <td>${t.accName}</td>
-                                                    <td>${t.userName}</td>
-                                                    <td>${t.toCustId}</td>
-                                                    <td>${t.toAccNo}</td>
-                                                    <td>${t.toAccName}</td>
-                                                    <td>${t.toUserName}</td>
-                                                    <td>${t.contractNo}</td>
-                                                    <td>${t.itemNo}</td>
-                                                    <td>${t.remark}</td>
-                                                    <td>${t.status}</td>
+                                                    <td>${t.lendNo}</td>
+                                                    <td>${t.loanNo}</td>
+                                                    <td>${t.newOrderType}</td>
+                                                    <td>${t.tradeType}</td>
                                                     <td>
-	                                                    <fss:dictView key="${t.accountingStatus}" />
+                                                        <a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
                                                     </td>
-                                                    <td>
-	                                                    <fss:dictView key="${t.accountingResult}" />
-                                                    </td>
-                                                    <td>
-                                                        <fss:dictView key="${t.tradeType}" />
-                                                    </td>
-
-                                                    <td><fss:fmtDate value="${t.createTime}" /></td>
-                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -276,25 +237,6 @@
 </div>
 
 
-<div class="pop" style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
-    <form id="uploadForm" method="post"  enctype="multipart/form-data">
-        <h1 class="f18">请从下方导入数据</h1>
-        <p class="mt30 mb10">数据格式请参考导入模版</p>
-
-        <div class="mb25 pr">
-            <input type="text" id="file_pa" value="" class="input01 file_pa" style="width:280px; height:30px;"/>
-            <a class="icon btn09 file_icon" href="#" title="文件夹"><span>文件夹</span></a>
-            <input type="file" name="file" class="input01 file_fi" style="width:400px;height: 38px;"
-                   onchange="document.getElementById('file_pa').value=this.value"/>
-        </div>
-        <div class="mb20" id="wid-id-713">
-            <button class="btn btn-primary " id="import" type="button" title="导入">导&nbsp;入</button>&nbsp;&nbsp;
-            <button class="btn btn-default fl mr30" id=""  type="button"  title="取消">取&nbsp;消</button>
-            <%--<div class="mt20"><a class="btn_import fl" href="#" id="import" title="导入">导&nbsp;入</a>--%>
-            <%--<a id="aaaaa" class="fl btn_cancel ml30" href="#" title="取消">取&nbsp;消</a>--%>
-        </div>
-    </form>
-</div>
 <%@include file= "../../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
@@ -304,71 +246,6 @@
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortgageePayment"));
     });
-    $(function () {
-        $('#withDraw').click(function () {
-            $('.mask').show();
-            $('.pop').show();
-            $("#type").val("10980001");
-        })
-        $('#withDrawBack').click(function () {
-            $('.mask').show();
-            $('.pop').show();
-            $("#type").val("10980002");
-        })
-        $('#withHold').click(function () {
-            $('.mask').show();
-            $('.pop').show();
-            $("#type").val("10980003");
-        })
-        $('#transfer').click(function () {
-            $('.mask').show();
-            $('.pop').show();
-            $("#type").val("10980004");
-        })
-
-        $(".mr30").click(function () {
-            $('.mask').show();
-            $('.pop').hide();
-        })
-
-        $("#import").click(function () {
-            var file_pa = $("#file_pa").val();
-            if (file_pa == "") {
-                alert("请选择导入的文件！");
-                return;
-            }
-            var url="${contextPath}/upload/"+$("#type").val();
-            upload(url);
-        });
-
-        selectedInit();
-    });
-    function selectedInit() {
-
-    }
-    $('#search').click(function () {
-        $("#firstFlg").val("1");
-        $("#customerForm").submit();
-    })
-
-    function upload(formUlr) {
-            $("#uploadForm").ajaxSubmit({
-                url:formUlr,
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                dataType: "json",
-                success: function (data) {
-                    if (data.code == '0000') {
-                        alert(data.msg);
-                        $('.pop').hide();
-                        location.reload();
-                    } else {
-                        alert(data.msg);
-                        $('.pop').hide();
-                    }
-
-                }
-            });
-    };
     //校验函数
     function validateCheck() {
         return true;
