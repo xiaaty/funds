@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.trade.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.trade.entity.FssTradeInfoEntity;
+import com.gqhmt.fss.architect.trade.entity.FssTradeInfoFileEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,9 @@ import java.util.Map;
  * -----------------------------------------------------------------
  * 2016/9/6.  xdw         1.0     1.0 Version
  */
-public interface FssTradeInfoReadMapper extends ReadMapper<FssTradeInfoEntity>{
+public interface FssTradeInfoFileReadMapper extends ReadMapper<FssTradeInfoFileEntity> {
 
-    public List<FssTradeInfoEntity> listTradeInfo(Map<String, String> map);
+    public List<FssTradeInfoFileEntity> listTradeInfoFile(Map<String, String> map);
+
+    public FssTradeInfoFileEntity queryFileByFileName(String fileName);
 }

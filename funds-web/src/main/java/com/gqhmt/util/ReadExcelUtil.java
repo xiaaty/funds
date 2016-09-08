@@ -1,10 +1,6 @@
 package com.gqhmt.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -143,6 +139,78 @@ public class ReadExcelUtil<T> {
 
 
     /**
+     *
+     * @param file
+     * @param columnNames
+     * @param index
+     * @return
+     * @throws ReadExcelException
+     */
+    public List<T> getExcelData(File file, String[] columnNames, int index) throws ReadExcelException, ReadExcelErrorException {
+
+        if(file == null){
+            throw new ReadExcelException("0001");
+        }
+        boolean error = false;
+
+        List<T> list = new ArrayList<T>();
+        try {
+            Workbook wb = getWorkBook(file);
+            Sheet sheet  = wb.getSheetAt(index);
+            if(sheet == null  || sheet.getRow(0).getLastCellNum()<columnNames.length){
+                throw new ReadExcelException("0004");
+
+            }
+            int nullLineNumber = 0;
+            for(int i = 1;i<=sheet.getLastRowNum();i++){
+                Row row = sheet.getRow(i);
+                if(nullLineNumber>=5){
+                    break;
+                }
+                if (isNull(row)){
+                    nullLineNumber++;
+                    continue;
+                }
+                try {
+                    T t = readLine(row, columnNames);
+                    list.add(t);
+                }catch (ReadExcelException e){
+                    error = true;
+                }
+            }
+
+            if(error){
+                try {
+                    String fileName=System.currentTimeMillis()+file.getName().substring(file.getName().lastIndexOf("."));
+                    LogUtil.debug(this.getClass(),baseDir);
+                    File uploadFile=new File(baseDir);
+                    if(!uploadFile.exists())
+                        uploadFile.mkdirs();
+                    OutputStream out=new FileOutputStream(new File(baseDir,fileName));
+                    wb.write(out);
+                    out.close();
+                    throw new ReadExcelErrorException(fileName);
+                } catch (FileNotFoundException e) {
+                    LogUtil.error(this.getClass(), e.getMessage(), e);
+                    throw new ReadExcelException("0005");
+                } catch (IOException e) {
+                    LogUtil.error(this.getClass(), e.getMessage(), e);
+                    throw new ReadExcelException("0006");
+                }
+            }
+
+        } catch (IOException e) {
+            LogUtil.error(this.getClass(), e.getMessage(), e);
+        }
+
+
+
+        return list;
+
+    }
+
+
+    /**
      * 根据文件获取POI workbook对象
      * @param file
      * @return
@@ -162,6 +230,29 @@ public class ReadExcelUtil<T> {
         errorStyle = getErrrorStyle(wb);
         return wb;
     }
+
+    /**
+     * 根据 file 获取POI workbook对象
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public Workbook getWorkBook(File file) throws IOException {
+        Workbook wb = null;
+        InputStream is = new FileInputStream(file);
+        try {
+            if (file.getName().endsWith("xls")) {
+                wb = new HSSFWorkbook(is);
+            } else {
+                wb = new XSSFWorkbook(is);
+            }
+        }catch (IOException e){
+            throw e;
+        }
+        errorStyle = getErrrorStyle(wb);
+        return wb;
+    }
+
 
     public T readLine(Row row ,String[] columnNames) throws ReadExcelException {
         T t = null;
