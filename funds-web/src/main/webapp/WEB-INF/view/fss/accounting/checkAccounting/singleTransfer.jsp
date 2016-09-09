@@ -218,7 +218,8 @@
                                                     <td>${t.newOrderType}</td>
                                                     <td>${t.tradeType}</td>
                                                     <td>
-                                                        <a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
+                                                        <%--<a href="${contextPath}/checkAccounting/queryForFuiou/${t.id}">对账</a>--%>
+                                                        <a onclick="query(${t.id})">对账</a>
                                                     </td>
                                                 </tr>
                                         </c:forEach>
@@ -261,7 +262,23 @@
         minView: 2,
         forceParse: 0
     });
+    function  query(id) {
+        $.ajax({
+            url:"${contextPath}/checkAccounting/queryForFuiou/"+id,
+            method:"get",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success:function(data){
+                if (data.code == '0000') {
+                    alert(data.msg);
+                    location.reload();
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
 
+    }
 
 </script>
 

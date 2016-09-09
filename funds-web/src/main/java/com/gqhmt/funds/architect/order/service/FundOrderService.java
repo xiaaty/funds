@@ -56,6 +56,16 @@ public class FundOrderService  {
     }
 
     /**
+     *
+     * @param id
+     * @return
+     * @throws FssException
+     */
+    public FundOrderEntity select(Long id) throws FssException{
+      return  fundOrderReadMapper.selectByPrimaryKey(id);
+    }
+
+    /**
      * 创建交易订单
      * @param primaryAccount
      * @param toAccountEntity

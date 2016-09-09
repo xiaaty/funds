@@ -57,6 +57,9 @@ public class FundAccountService {
     public void delete(Long id) {
     	fundAccountWriteMapper.deleteByPrimaryKey(id);
     }
+    public FundAccountEntity select(Long id) {
+		return  fundsAccountReadMapper.selectByPrimaryKey(id);
+    }
 
 
     /**
