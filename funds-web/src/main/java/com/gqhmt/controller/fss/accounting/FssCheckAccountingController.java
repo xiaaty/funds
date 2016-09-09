@@ -10,7 +10,6 @@ import com.gqhmt.fss.architect.accounting.entity.*;
 import com.gqhmt.fss.architect.accounting.service.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
@@ -21,12 +20,12 @@ import com.gqhmt.util.DateUtil;
 import com.gqhmt.util.ReadExcelUtil;
 import com.gqhmt.util.exception.ReadExcelErrorException;
 import com.gqhmt.util.exception.ReadExcelException;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -201,30 +200,30 @@ public class FssCheckAccountingController {
      * @throws FssException
      */
     @RequestMapping(value = "/checkAccounting/singleTransfer", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object singleTransfer(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
+       String accNos=null;
+        if(StringUtils.isNotEmpty((String)map.get("mobile"))){
+            accNos= fundAccountService.getFundsAccountIds((String)map.get("mobile"));
+        }
+        map.put("accNos", accNos);
+        return  new ModelAndView("redirect:/checkAccounting/singleTransfers",map);
+    }
+    @RequestMapping(value = "/checkAccounting/singleTransfers", method = {RequestMethod.GET, RequestMethod.POST})
     @AutoPage
-    public String singleTransfer(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
-        Map<String,String> returnMap=Maps.newHashMap();
-        CustomerInfoEntity customerInfoEntity=null;
-        if (map!=null){
-            if(StringUtils.isNotEmpty((String)map.get("mobile"))){
-                customerInfoEntity= customerInfoService.searchCustomerInfoByMobile((String)map.get("mobile"));
-            }
-        }
-        List<FundAccountEntity> list=Lists.newArrayList();
-        if (customerInfoEntity!=null) {
-            list= fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
-        }
-
-       List<Long> accNos=null;
-        if(list.size()>0){
-            accNos=Lists.newArrayList();
-            for (FundAccountEntity entity:list) {
-                accNos.add(entity.getId());
-            }
-        }
+    public String singleTransfers(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
         List<FundOrderEntity> orderEntities=Lists.newArrayList();
-        if(CollectionUtils.isNotEmpty(accNos)){
-            orderEntities= fundOrderService.findfundOrdesrs(map,accNos);
+        String accNos=  map.get("accNos");
+        List<Long> accIds=Lists.newArrayList();
+        if(StringUtils.isNotEmpty(accNos)){
+            String[] accNo=accNos.split(",");
+            for(int i=0;i<accNo.length;i++){
+                if(StringUtils.isNotEmpty(accNo[i])){
+                    accIds.add(Long.valueOf(accNo[i]));
+                }
+            }
+        }
+        if(accIds.size()>0){
+            orderEntities= fundOrderService.findfundOrdesrs(map,accIds);
         }
         model.addAttribute("page", orderEntities);
         model.put("map", map);
@@ -244,7 +243,7 @@ public class FssCheckAccountingController {
     public Object queryForFuiou(HttpServletRequest request, ModelMap model, @PathVariable Long id) throws FssException{
         FundOrderEntity orderEntity=fundOrderService.select(id);
         if(StringUtils.isEmpty(orderEntity.getTradeType())){
-            orderEntity.setTradeType("11030001");
+            orderEntity.setTradeType(null);
         }
         Map<String,String> returnMap=Maps.newHashMap();
         if(orderEntity!=null){

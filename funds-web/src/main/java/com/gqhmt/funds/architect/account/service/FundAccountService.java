@@ -2,6 +2,7 @@ package com.gqhmt.funds.architect.account.service;
 
 
 import com.github.pagehelper.Page;
+import com.google.common.collect.Lists;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.StringUtils;
@@ -15,7 +16,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
-import com.gqhmt.pay.service.trade.IFundsTrade;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,8 @@ public class FundAccountService {
     private  FssAssetReadMapper assetReadMapper;
     @Resource
     private FssAccountReadMapper fssAccountReadMapper;
+	@Resource
+	private CustomerInfoService customerInfoService;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -327,6 +330,28 @@ public class FundAccountService {
 	 */
 	public List<FundAccountEntity> getFundsAccountsByCustId(Long custId) throws FssException {
 		return fundsAccountReadMapper.queryFundAccountsByCutId(custId);
+	}
+	/**
+	 * jhz
+	 * 获取客户手机号所有账户id
+	 * @param mobile
+	 * @return
+	 */
+	public String getFundsAccountIds(String mobile) throws FssException {
+		CustomerInfoEntity  customerInfoEntity= customerInfoService.searchCustomerInfoByMobile(mobile);
+		List<FundAccountEntity> list= Lists.newArrayList();
+		if (customerInfoEntity!=null) {
+			list= this.getFundsAccountsByCustId(customerInfoEntity.getId());
+		}
+
+		String accNos="";
+		if(list.size()>0){
+			for (FundAccountEntity entity:list) {
+//				accNos.add(entity.getId());
+				accNos+=entity.getId().toString()+",";
+			}
+		}
+		return accNos;
 	}
 
 	   /**
