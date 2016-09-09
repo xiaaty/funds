@@ -357,6 +357,27 @@ public class FssTradeApplyService {
 		fssTradeApplyWriteMapper.updateByPrimaryKey(applyEntity);
 	}
 	/**
+	 * jhz
+	 * 根据申请编号进行批量体现
+	 * @param applyNos
+	 * @return
+	 * @throws FssException
+     */
+	public int withNumbers(String applyNos)throws FssException{
+		FssTradeApplyEntity tradeapply=null;
+		String[] applyNo = applyNos.split(",");
+		int count=0;
+		for (int i = 0; i < applyNo.length; i++) {
+			tradeapply=this.getFssTradeApplyEntityByApplyNo(applyNo[i]);
+			if("10100001".equals(tradeapply.getApplyState())){
+				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
+				this.updateTradeApply(tradeapply,"10100002","10080001");
+				count++;
+			}
+		}
+		return (applyNo.length-count);
+	}
+	/**
 	 *
 	 * author:jhz
 	 * time:2016年5月26日
