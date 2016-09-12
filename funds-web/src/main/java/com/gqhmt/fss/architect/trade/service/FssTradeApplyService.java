@@ -591,7 +591,6 @@ public class FssTradeApplyService {
 			}
 		}
 
-		//SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		String path = getClassPath();
 		File filepath = new File(path + File.separator +"excel");
@@ -602,7 +601,7 @@ public class FssTradeApplyService {
 		OutputStream out = new FileOutputStream(fileName);
 		System.out.println("导出路径： " + fileName);
 		String[] headers =
-				{"业务编号", "申请单号", "客户姓名", "客户电话", "交易金额", "单次交易金额", "创建时间"};
+				{"序号", "业务编号", "申请单号", "客户姓名", "客户电话", "交易金额", "单次交易金额", "创建时间", "单笔交易金额", "交易时间"};
 		ExportExcel<Map> ex = new ExportExcel<Map>();
 		try {
 			ex.exportExcel("tradeApply", headers, mapList, out);

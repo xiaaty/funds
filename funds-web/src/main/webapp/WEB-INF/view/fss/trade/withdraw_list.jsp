@@ -335,21 +335,28 @@
     });
 
     function exportExcel(){
-        var no = $('#borrow-rep-table12 tbody :checkbox:checked');
-        if (no.size() == 0) {
-            alert("请选择件数！");
-            return false;
-        }
-        var param = [];
-        no.each(function () {
-            param.push($(this).val());
-        });
-        $("#checkAll").removeAttr("checked");
-        $("#withDrawForm").unbind('click');
-        $("#withDrawForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel/"+param);
-        $("#withDrawForm").submit();
+        var url = "${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel";
 
+        var form = $('<form></form>');
+
+        var map = "${map}";
+        form.attr('action', url);
+
+        form.attr('method', 'post');
+
+        form.attr('target', '_self');
+
+        var input = $('<input type="hidden" name="map" />');
+
+        input.attr('value', map);
+        // 附加到Form
+        form.append(input);
+        // 提交表单
+        form.submit();
+
+        //  return false;
     }
+
     function querySub(){
         $("#withDrawForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}");
     }
