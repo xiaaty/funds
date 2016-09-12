@@ -524,7 +524,7 @@ public class GlobalConstants {
         fundsType.put(4012,"风险备用金");
         fundsType.put(4013,"归还风险备用金");
         fundsType.put(4014,"归还逆服务费");//代偿退回
-        fundsType.put(4015,"利息代偿");
+        fundsType.put(4015,"利息");
 
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");
