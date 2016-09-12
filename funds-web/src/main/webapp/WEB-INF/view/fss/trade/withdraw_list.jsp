@@ -335,15 +335,13 @@
     });
 
     function exportExcel(){
+
         var url = "${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel";
-
         var form = $('<form></form>');
-
         var map = "${map}";
+
         form.attr('action', url);
-
         form.attr('method', 'post');
-
         form.attr('target', '_self');
 
         var input = $('<input type="hidden" name="map" />');
