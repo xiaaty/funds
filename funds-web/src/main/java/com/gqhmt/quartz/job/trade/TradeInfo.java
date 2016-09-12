@@ -86,6 +86,8 @@ public class TradeInfo extends SupperJob {
         for(int i=0; i<fileCreateTime.size(); i++){
             ftpOfflineResultService.downloadTradeInfo(fileCreateTime.get(i),prefixFileName,tradeInfoPath);
         }
+
+        endtLog();
     }
 
 }
