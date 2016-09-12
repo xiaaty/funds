@@ -277,7 +277,7 @@ public class TradeRecordService {
 
     }
 
-    private void  asynCommand(FundOrderEntity fundOrderEntity,String state) throws  FssException{
+    public void  asynCommand(FundOrderEntity fundOrderEntity,String state) throws  FssException{
         if(!"success".equalsIgnoreCase(state)){
             paySuperByFuiou.updateOrder(fundOrderEntity,3,"10000","失败");
             this.asynSequenceFailed(fundOrderEntity);
