@@ -10,18 +10,11 @@ import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouUploadFileService;
-import com.gqhmt.fss.architect.trade.entity.FssTradeInfoEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeInfoFileEntity;
-import com.gqhmt.fss.architect.trade.service.FssTradeInfoFileService;
-import com.gqhmt.fss.architect.trade.service.FssTradeInfoService;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.pay.fuiou.util.FtpClient;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
-import com.gqhmt.util.ReadExcelUtil;
-import com.gqhmt.util.exception.ReadExcelErrorException;
-import com.gqhmt.util.exception.ReadExcelException;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -62,12 +55,6 @@ public class FtpDownloadFileService {
 
     @Resource
     private FuiouAccountInfoFileService fuiouAccountInfoFileService;
-
-    @Resource
-    private FssTradeInfoService fssTradeInfoService;
-
-    @Resource
-    private FssTradeInfoFileService fssTradeInfoFileService;
 
     //判断文件是否存在
     private boolean haveFile = true;
@@ -310,7 +297,7 @@ public class FtpDownloadFileService {
 
         String path = getClassPath();
         File localFile  = new File(path+"/tmp/account/"+dateStr);
-        if(!localFile.exists()){
+        if(localFile.exists()){
             localFile.mkdirs();
         }
 
@@ -565,103 +552,6 @@ public class FtpDownloadFileService {
         file.setBooleanType("1");
         fuiouAccountInfoFileService.updateFuiouAccountInfoFileEntity(file);
         LogUtil.info(this.getClass(),"抓取文件：" +file.getTradeType()+file.getCreateFileDate()+"成功");
-    }
-
-    /**
-     * ftp下载线下回盘交易记录，存在失败可能，失败重新下载
-     * @param  date, path
-     * @return
-     * @throws FssException
-     */
-    public boolean downloadTradeInfo(Date date,String prefixFileName,String path) throws FssException {
-        Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
-        String url = (String)config.getValue("ftp.url.value");
-        String port = (String)config.getValue("ftp.port.value");
-        String userName = (String)config.getValue("ftp.userName.value");
-        String pwd = (String)config.getValue("ftp.pwd.value");
-
-        FtpClient ftp = new FtpClient(Integer.parseInt(port),userName,pwd,url);
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat sdf2=new SimpleDateFormat("yyyyMMddHHmm");
-        String pathDateStr = sdf.format(date);
-        String fileDateStr = sdf2.format(date);
-        String filePath = path  + pathDateStr + "/";
-        String fileName = prefixFileName + "-" + fileDateStr + ".xls";
-
-        boolean flag = ftp.exits(filePath+fileName);
-        if(!flag){
-            return false;
-        }
-
-        String contextPath = getClassPath();
-        File localFilepath  = new File(contextPath+"/tmp/"+filePath);
-        if(!localFilepath.exists()){
-            localFilepath.mkdirs();
-        }
-        String localFile = localFilepath + "/" + fileName;
-
-        flag = ftp.getFile(filePath + fileName, localFile);
-        parseFileTradeInfo(localFile);
-        return true;
-    }
-
-    /**
-     * 对已下载金账户对账文件处理
-     * @param localFilePath
-     * @throws FssException
-     */
-    private void parseFileTradeInfo(String localFilePath) throws FssException {
-
-        File localFile  = new File(localFilePath);
-
-        String spString[] = localFilePath.split("/");
-        String fileName = spString[spString.length-1];
-        FssTradeInfoFileEntity infoFileEntity = fssTradeInfoFileService.queryFileByFileName(fileName);
-        //查询文件是否存在
-        if(infoFileEntity != null && "1".equals(infoFileEntity.getUploadSts()))return;
-
-        try {
-
-            String backExcelPath = getClassPath() + "/tmp/back/excel/" ;
-            ReadExcelUtil excelUtil = new ReadExcelUtil(backExcelPath,FssTradeInfoEntity.class);
-            String[] columnName = new String[]{"dataSource","sysCode","orglSeqNo","seqNo","chgCd","toAccTime","tradeTime","toAccNm","toAccNo","amount","tradeSts","cardVerify"};
-
-            int sheetsSize = excelUtil.getWorkBook(localFile).getNumberOfSheets();
-
-            List<FssTradeInfoEntity> listTradeInfo = new ArrayList<FssTradeInfoEntity>();
-            if(sheetsSize>0){
-                for(int i=0; i<sheetsSize; i++){
-                    listTradeInfo.addAll((List<FssTradeInfoEntity>) excelUtil.getExcelData(localFile, columnName, i));
-                }
-            }
-
-            if(!CollectionUtils.isEmpty(listTradeInfo)){
-
-                FssTradeInfoFileEntity tradeInfoFile = new FssTradeInfoFileEntity();
-                tradeInfoFile.setFileName(fileName);
-                tradeInfoFile.setCreateTime(new Date());
-                tradeInfoFile.setUploadSts("1");
-                tradeInfoFile.setFilePath(localFilePath);
-
-                fssTradeInfoFileService.insertTradeInfoFile(tradeInfoFile);
-
-                String fileId = new Long(tradeInfoFile.getId()).toString();
-
-                for(FssTradeInfoEntity tradeInf : listTradeInfo){
-                    tradeInf.setFileId(fileId);
-                }
-
-                fssTradeInfoService.insertListTradeInfo(listTradeInfo);
-
-                LogUtil.info(this.getClass(),"抓取文件 \""+ fileName + "\" 成功");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ReadExcelException ree){
-            ree.printStackTrace();
-        } catch (ReadExcelErrorException reee){
-            reee.printStackTrace();
-        }
     }
 
 }
