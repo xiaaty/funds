@@ -1,11 +1,9 @@
 package com.gqhmt.quartz.job.trade;
 
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
-import com.gqhmt.quartz.service.FtpDownloadFileService;
+import com.gqhmt.quartz.service.FtpOfflineResultService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +11,6 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +34,7 @@ import java.util.List;
 public class TradeInfo extends SupperJob {
 
     @Resource
-    private FtpDownloadFileService ftpDownloadFileService;
+    private FtpOfflineResultService ftpOfflineResultService;
 
     @Value("#{configProperties['tradeInfoPath']}")
     private String tradeInfoPath;
@@ -54,11 +51,23 @@ public class TradeInfo extends SupperJob {
         return isRunning;
     }
 
-    @Scheduled(cron = "0 0/10 18-22 * * *")
-    public void execute() throws FssException, ParseException {
+    @Scheduled(cron = "0 0/10 09-12 * * *")
+    public void executeAm() throws FssException, ParseException {
+        run();
+    }
+
+    @Scheduled(cron = "0 0/10 16-19 * * *")
+    public void executePm() throws FssException, ParseException {
+        run();
+    }
+
+    private void run() throws ParseException, FssException {
+
         if(isRunning) return;
+
         startLog("线下充值回盘记录");
         isRunning = true;
+
         String[] timeAll = createTime.split(",");
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -74,11 +83,8 @@ public class TradeInfo extends SupperJob {
             fileCreateTime.add(sdf2.parse(createTimeStr));
         }
 
-
-        System.out.println(tradeInfoPath);
-        System.out.println(prefixFileName);
         for(int i=0; i<fileCreateTime.size(); i++){
-            ftpDownloadFileService.downloadTradeInfo(fileCreateTime.get(i),prefixFileName,tradeInfoPath);
+            ftpOfflineResultService.downloadTradeInfo(fileCreateTime.get(i),prefixFileName,tradeInfoPath);
         }
     }
 
