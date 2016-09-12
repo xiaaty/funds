@@ -258,6 +258,52 @@ public class PaySuperByFuiou {
         execExction(response,fundOrderEntity);
         return response;
     }
+
+    /**
+     * 交易查询
+     * @param tradeType  PWPC 转账  PW13 预授权 PWCF 预授权撤销 PW03 划拨 PW14 转账冻结 PW15 划拨冻结  PWDJ 冻结	 PWJD 解冻PW19 冻结付款到冻结
+     * @param primaryAccount
+     * @param orderNo
+     * @param startTime   20100101
+     * @param endTime     20100101
+     * * @param pageNo      起始页,默认值为1,一次最多返回100条记录
+     * @return
+     * @throws FssException
+     */
+    public CommandResponse tradeQuery(String  tradeType,FundAccountEntity primaryAccount ,String orderNo,String startTime,String endTime,Integer pageNo) throws FssException {
+        FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_TRADE_QUERY,0,0,"","");
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_TRADE, fundOrderEntity,tradeType, startTime,endTime,orderNo,primaryAccount.getUserName(),"1",null,String.valueOf(pageNo),"100");
+        execExction(response,fundOrderEntity);
+        return response;
+    }
+
+    /**
+     * 充值提现查询
+     * @param tradeType  PW11 充值  PWTX 提现
+     * @param primaryAccount
+     * @param startTime   起始时间  2010-01-01
+     * @param endTime     结束时间  2010-01-01
+     * @param pageNo      起始页,默认值为1,一次最多返回100条记录
+     * @return
+     * @throws FssException
+     */
+    public CommandResponse tradeCZZTXQuery(String  tradeType,FundAccountEntity primaryAccount ,String startTime,String endTime,Integer pageNo) throws FssException {
+        FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_CZTX_QUERY,0,0,"","");
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_CZTX, fundOrderEntity,tradeType, startTime+" 00:00:00",endTime+" 23:59:59",primaryAccount.getUserName(),"1",String.valueOf(pageNo),"100");
+        execExction(response,fundOrderEntity);
+        return response;
+    }
+
+    public CommandResponse userInfoQuery(FundAccountEntity primaryAccount ) throws FssException {
+        FundOrderEntity fundOrderEntity = this.createOrder(primaryAccount,BigDecimal.ZERO,GlobalConstants.ORDER_USER_INFO_QUERY,0,0,"","");
+        Date date = new Date();
+        DateFormat df =new SimpleDateFormat("yyyyMMdd");
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_ACCOUNT_FUIOU_USER_INFO, fundOrderEntity, df.format(date),primaryAccount.getUserName());
+        execExction(response,fundOrderEntity);
+        return response;
+    }
+
+
     /*=============================================余额查询结束============================================*/
 
 

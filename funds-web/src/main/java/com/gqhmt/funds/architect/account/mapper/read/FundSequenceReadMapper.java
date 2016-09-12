@@ -67,5 +67,13 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	public  List<FundFlowBean> selectAllFundFlow(FundFlowBean fundflow);
 	
 	public FssStatisticsEntity queryMonthTotal(@Param("custId") String custId);
-	
+
+	/**
+	 * jhz
+	 * 通过订单号查询流水列表
+	 * @param orderNo
+	 * @return
+     */
+	public List<FundSequenceEntity> queryByOrderNo(@Param("orderNo") String orderNo);
+
 }

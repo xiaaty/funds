@@ -818,5 +818,14 @@ public class FundSequenceService {
     public FssStatisticsEntity getStatisticsByType(String custId) throws FssException{
     	return fundSequenceReadMapper.queryMonthTotal(custId);
     }
-   
+    /**
+     * jhz
+     * 通过订单号查询流水列表
+     * @param orderNo
+     * @return
+     */
+    public List<FundSequenceEntity>  queryByOrderNo(String orderNo) throws FssException{
+    	return fundSequenceReadMapper.queryByOrderNo(orderNo);
+    }
+
 }

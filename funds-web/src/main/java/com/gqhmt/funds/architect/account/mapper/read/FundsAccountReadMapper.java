@@ -54,7 +54,14 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
     public Page queryLoanFundsAccountList(FundsAccountBean fundsAcctBean);
 
     public FundAccountEntity queryFundAccountByCutId(@Param("cusID") Long cusID, @Param("type")int type);
-    
+	/**
+	 * jhz
+	 * 获取客户的所有账户信息
+	 * @param custId
+	 * @return
+	 */
+    public List<FundAccountEntity> queryFundAccountsByCutId(@Param("custId") Long custId);
+
     public FundAccountEntity getAccountBanlance(@Param("cust_no") Long cust_no, @Param("busi_type")int busi_type);
     
     public FundAccountEntity queryFundAccountByUserName(@Param("userName") String userName,@Param("type") int type);

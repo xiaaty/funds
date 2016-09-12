@@ -69,7 +69,7 @@ public class FssOfflineRechargeService {
 	 * 保存线下充值申请信息
 	 * @throws FssException
      */
-	public FssOfflineRechargeEntity createOfflineRecharge(String applyType,Long custId,String custName,String custType,BigDecimal amt,String trade_type,String seqNo,String mchn)throws FssException{
+	public FssOfflineRechargeEntity createOfflineRecharge(String applyType,Long custId,String custName,String custType,BigDecimal amt,String trade_type,String seqNo,String mchn,String busi_no)throws FssException{
 			FssOfflineRechargeEntity fssOfflineRechargeEntity=new FssOfflineRechargeEntity();
 			fssOfflineRechargeEntity.setApplyNo(CommonUtil.getTradeApplyNo(trade_type));
 			fssOfflineRechargeEntity.setApplyType(Integer.valueOf(applyType));
@@ -83,6 +83,7 @@ public class FssOfflineRechargeService {
 			fssOfflineRechargeEntity.setSeqNo(seqNo);
 			fssOfflineRechargeEntity.setMchn(mchn);
 			fssOfflineRechargeEntity.setChannelNo("9701");
+			fssOfflineRechargeEntity.setBusiNo(busi_no);
 		try{
 			fssOfflineRechargeWriteMapper.insertSelective(fssOfflineRechargeEntity);
 			return fssOfflineRechargeEntity;

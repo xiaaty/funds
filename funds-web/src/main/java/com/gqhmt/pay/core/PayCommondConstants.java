@@ -39,6 +39,10 @@ public class PayCommondConstants {
     public static final String COMMAND_ACCOUNT_FUIOU_MMS = "0132";              //富友短信配置
     public static final String COMMAND_ACCOUNT_FUIOU_CASHWITHSET = "0133";      //提现时效
 
+
+    public static final String COMMAND_ACCOUNT_FUIOU_TRADE = "0196";            //富友账户交易(转账、划拨等)查询
+    public static final String COMMAND_ACCOUNT_FUIOU_CZTX = "0197";             //富友账户充值提现交易查询
+    public static final String COMMAND_ACCOUNT_FUIOU_USER_INFO = "0198";        //富友账户信息查询
     public static final String COMMAND_ACCOUNT_FUIOU_BALANCE = "0199";          //富友账户余额查询
     /**
      * 异步回调处理
