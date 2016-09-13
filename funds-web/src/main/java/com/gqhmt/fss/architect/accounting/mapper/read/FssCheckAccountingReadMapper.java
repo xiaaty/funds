@@ -34,5 +34,11 @@ public interface FssCheckAccountingReadMapper extends ReadMapper<FssCheckAccount
      * @return
      */
     public List<FssCheckAccountingEntity> queryList(Map map);
+    /**
+     * jhz
+     * 查询充值体现列表
+     * @return
+     */
+    public List<FssCheckAccountingEntity> queryWithList();
 
 }

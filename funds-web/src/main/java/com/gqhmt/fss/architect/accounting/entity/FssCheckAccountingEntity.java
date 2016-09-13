@@ -80,6 +80,9 @@ public class FssCheckAccountingEntity {
 	@Column(name = "accounting_result")
 	private String accountingResult;        //对账结果
 
+	@Column(name="abnormal_state")
+	private String abnormalState; //异常状态,'98080001'正常,'98080002'异常
+
 	@Column(name = "create_time")
 	private Date createTime;		//创建时间
 
@@ -277,5 +280,13 @@ public class FssCheckAccountingEntity {
 
 	public void setItemNo(String itemNo) {
 		this.itemNo = itemNo;
+	}
+
+	public String getAbnormalState() {
+		return abnormalState;
+	}
+
+	public void setAbnormalState(String abnormalState) {
+		this.abnormalState = abnormalState;
 	}
 }

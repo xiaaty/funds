@@ -87,20 +87,20 @@
                                                         <td class="tr" nowrap="nowrap">手机号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input" style="width:210px" >
-                                                                <input type="text" name="mobile" value="${map.mobile}">
+                                                                <input type="text" name="mobile" id="mobile" value="${map.mobile}">
                                                             </label>
                                                         </td>
                                                         <td class="tr">交易日期：</td>
                                                         <td colspan="3">
                                                             <section class="fl">
                                                                 <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                                    <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
+                                                                    <input type="text" maxlength="10" readonly="readonly" id="startTime"  name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
                                                                 </label>
                                                             </section>
                                                             <span class="fl">&nbsp;至&nbsp;</span>
                                                             <section class="fl">
                                                                 <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                                    <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
+                                                                    <input type="text" maxlength="10" readonly="readonly"  id="endTime" name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
                                                                 </label>
                                                             </section>
                                                         </td>
@@ -141,9 +141,10 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                                        <button class="btn btn-default fl table-nobg-btn"  id="check" type="button">核&nbsp;&nbsp;&nbsp;对</button>
                                     </div>
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4000px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:3800px;">
                                         <col width="50" />
                                         <col width="200" />
                                         <col width="150" />
@@ -159,7 +160,6 @@
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="150"/>
-                                        <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
@@ -187,7 +187,6 @@
                                             <td>合同编号 </td>
                                             <td>新订单类型 </td>
                                             <td>交易类型 </td>
-                                            <td>操作</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -200,7 +199,7 @@
                                                     <td>${t.orderType}</td>
                                                     <td>${t.orderFrormId}</td>
                                                     <td>${t.orderSource}</td>
-                                                    <td>
+                                                    <td align="left">
                                                         <fss:money money="${t.orderAmount}"/>
                                                     </td>
                                                     <td>${t.orderState}</td>
@@ -217,10 +216,6 @@
                                                     <td>${t.loanNo}</td>
                                                     <td>${t.newOrderType}</td>
                                                     <td>${t.tradeType}</td>
-                                                    <td>
-                                                        <%--<a href="${contextPath}/checkAccounting/queryForFuiou/${t.id}">对账</a>--%>
-                                                        <a onclick="query(${t.id})">对账</a>
-                                                    </td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
@@ -262,23 +257,39 @@
         minView: 2,
         forceParse: 0
     });
-    function  query(id) {
+    $('#check').click(function () {
+//        var endTime=$("#endTime").val();
+//        var startTime=$("#startTime").val();
+//        var mobile=$("#mobile").val();
+//        alert(endTime);
+        if($("#mobile").val()=='' || $("#startTime").val()=='' || $("#endTime").val() ==''){
+            alert("请填写手机号和日期");
+            return;
+        }
         $.ajax({
-            url:"${contextPath}/checkAccounting/queryForFuiou/"+id,
-            method:"get",
+            url:"${contextPath}/checkAccounting/queryForFuiou",
+            method:"post",
+            data:{mobile:$("#mobile").val(),startTime:$("#startTime").val(),endTime:$("#endTime").val()},
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            dataType: "json",
-            success:function(data){
+            dateType:"json",
+            success : function (data){
                 if (data.code == '0000') {
                     alert(data.msg);
-                    location.reload();
-                } else {
+                }else{
                     alert(data.msg);
                 }
+            },
+            error : function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(textStatus);
+                console.log(errorThrown);
+                alert(textStatus);
+                alert(errorThrown);
             }
         })
 
-    }
+
+    })
 
 </script>
 
