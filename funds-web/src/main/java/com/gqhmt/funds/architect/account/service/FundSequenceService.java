@@ -381,7 +381,7 @@ public class FundSequenceService {
         list.add(orgFundSequenceEntity);
         list.add(frozenFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType, memo,bounsAmount);
+        this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType, "资金冻结，冻结金额："+amount+"元",bounsAmount);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
@@ -438,7 +438,7 @@ public class FundSequenceService {
         list.add(orgFundSequenceEntity);
         list.add(frozenFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(orgEntity, amount, BigDecimal.ZERO, accountType, memo,BigDecimal.ZERO);
+        this.fundTradeService.addFundTrade(orgEntity, amount, BigDecimal.ZERO, accountType, "资金解冻，解冻金额："+amount+"元",BigDecimal.ZERO);
     }
 
 
