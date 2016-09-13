@@ -25,6 +25,7 @@
 		t.trade_type tradeType,
 		t.accounting_status accountingStatus,
 		t.accounting_result accountingResult,
+		t.abnormal_state abnormalState,
 		t.create_time createTime,
 		t.modify_time modifyTime
 		FROM t_gq_fss_check_accounting t
@@ -45,6 +46,9 @@
 		<if test="username != null and username != ''">
 			and t.user_name like concat('%',#{username},'%')
 		</if>
+		<if test="abnormalState != null and abnormalState != ''">
+			and t.abnormal_state like concat('%',#{abnormalState},'%')
+		</if>
 		<if test="accName != null and accName != ''">
 			and t.acc_name like concat('%',#{accName},'%')
 		</if>
@@ -55,6 +59,11 @@
 			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 		</if>
 		</where>
+		ORDER  BY  t.create_time DESC
+    </select>
+	<select id="queryWithList"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
+    	<include refid="field"/>
+		WHERE t.trade_type IN (10980001,10980003) AND t.`accounting_status`=98010002
 		ORDER  BY  t.create_time DESC
     </select>
 </mapper>

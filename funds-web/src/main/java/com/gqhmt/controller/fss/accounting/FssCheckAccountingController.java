@@ -10,13 +10,10 @@ import com.gqhmt.fss.architect.accounting.entity.*;
 import com.gqhmt.fss.architect.accounting.service.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
-import com.gqhmt.pay.core.command.CommandResponse;
-import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
-import com.gqhmt.util.DateUtil;
 import com.gqhmt.util.ReadExcelUtil;
 import com.gqhmt.util.exception.ReadExcelErrorException;
 import com.gqhmt.util.exception.ReadExcelException;
@@ -58,11 +55,9 @@ public class FssCheckAccountingController {
     @Resource
     private FundOrderService fundOrderService;
     @Resource
-    private CustomerInfoService customerInfoService;
-    @Resource
-    private PaySuperByFuiou paySuperByFuiou;
-    @Resource
     private TradeRecordService tradeRecordService;
+    @Resource
+    private FundSequenceService fundSequenceService;
 
     /**
      * jhz
@@ -208,6 +203,16 @@ public class FssCheckAccountingController {
         map.put("accNos", accNos);
         return  new ModelAndView("redirect:/checkAccounting/singleTransfers",map);
     }
+    /**
+     * jhz
+     * 充值/提现调单对账
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+
     @RequestMapping(value = "/checkAccounting/singleTransfers", method = {RequestMethod.GET, RequestMethod.POST})
     @AutoPage
     public String singleTransfers(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
@@ -234,76 +239,47 @@ public class FssCheckAccountingController {
      * 查询富有
      * @param request
      * @param model
-     * @param id
      * @return
      * @throws FssException
      */
-    @RequestMapping(value = "/checkAccounting/queryForFuiou/{id}", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/checkAccounting/queryForFuiou", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public Object queryForFuiou(HttpServletRequest request, ModelMap model, @PathVariable Long id) throws FssException{
-        FundOrderEntity orderEntity=fundOrderService.select(id);
-        if(StringUtils.isEmpty(orderEntity.getTradeType())){
-            orderEntity.setTradeType(null);
-        }
+    public Object queryForFuiou(HttpServletRequest request, ModelMap model, String  mobile,String startTime,String endTime) throws FssException{
         Map<String,String> returnMap=Maps.newHashMap();
-        if(orderEntity!=null){
-            FundAccountEntity entity= fundAccountService.select(orderEntity.getAccountId());
-            String startTime= DateUtil.dateToString(orderEntity.getCreateTime());
-            String endTime=DateUtil.dateToString(orderEntity.getLastModifyTime());
-            if(entity!=null){
-                CommandResponse response=null;
-                try{
-                    response =paySuperByFuiou.tradeCZZTXQuery("PW11",entity,startTime,endTime,1);
-                }catch (FssException e){
-                    returnMap.put("code","0001");
-                    returnMap.put("msg","查询富友失败！");
-                    return returnMap;
-                }
-                Map<String, Object> map=response.getMap();
-                if(map==null&& map.get("results")!=null){
-                    returnMap.put("code","0001");
-                    returnMap.put("msg","该日富友不存在充值记录！");
-                    return returnMap;
-                }else if(Integer.parseInt(map.get("total_number").toString())==0){
-                    returnMap.put("code","0001");
-                    returnMap.put("msg","该日富友不存在充值记录！");
-                    return returnMap;
-                }else if(Integer.parseInt(map.get("total_number").toString())==1){
-                        Map<String, Object> resultsMap=(Map<String, Object>) map.get("results");
-                        Map<String, String> resultMap=(Map<String, String>)resultsMap.get(("result"));
-                        if(StringUtils.equals(orderEntity.getOrderNo(),resultMap.get("mchnt_ssn"))){
-                            if(StringUtils.equals(orderEntity.getRetCode(),resultMap.get("txn_rsp_cd"))){
-                                returnMap.put("code","0001");
-                                returnMap.put("msg","富友返回码与当前一致！");
-                                return returnMap;
-                            }
-                            tradeRecordService.asynCommand(orderEntity,"0000".equals(resultMap.get("txn_rsp_cd")) ? "success" : "failed");
-                            returnMap.put("code","0000");
-                            returnMap.put("msg","已重新入账");
-                    }
-                }else{
-                    List<Map<String,String>> resultList=(List<Map<String,String>>)map.get("results");
-                    for (Map<String,String> resultMap:resultList) {
-                        if(StringUtils.equals(orderEntity.getOrderNo(),resultMap.get("mchnt_ssn"))){
-                            if(StringUtils.equals(orderEntity.getRetCode(),resultMap.get("txn_rsp_cd"))){
-                                returnMap.put("code","0001");
-                                returnMap.put("msg","富友返回码与当前一致！");
-                                return returnMap;
-                            }
-                            tradeRecordService.asynCommand(orderEntity,"0000".equals(resultMap.get("txn_rsp_cd")) ? "success" : "failed");
-                            returnMap.put("code","0000");
-                            returnMap.put("msg","现已重新入账");
-                        }
-                    }
 
+        List<Map<String,String >> list = fssCheckAccountingService.getfuiouTradeCz(mobile,startTime,endTime);
+        LogUtil.info(this.getClass(),"调单核对，获取"+startTime+"-"+endTime+"日期内富友交易订单总数："+list.size());
+        int i=0;
+        for(Map<String,String > map:list){
+            String orderNo = map.get("mchnt_ssn");
+            LogUtil.info(this.getClass(),"调单核对："+orderNo);
+            int size = fundSequenceService.getSizeByOrderNo(orderNo);
+            if(size == 1 ) {
+                continue;
+            }else if(size > 1){
+                FssCheckAccountingEntity entity= fssCheckAccountingService.createChecking(orderNo,map.get("txn_date"),map.get("mchnt_ssn"),map.get("txn_date"),map.get("txn_amt"),null,map.get("out_fuiou_acct_no"),map.get("out_cust_no"),map.get("out_artif_nm"),map.get("remark"),map.get("txn_rsp_cd"),"10980003","10130006","98010001");
+                entity.setRechargeWay(map.get("src_tp"));
+                try {
+                    fssCheckAccountingService.insert(entity);
+                }catch (Exception e){
+                    LogUtil.error(this.getClass(),e.getMessage());
+                    returnMap.put("code","0001");
+                    returnMap.put("msg","请您确认是否是第二次对账");
+                    return returnMap;
                 }
+            }else{
+                FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
+                if(orderEntity != null && orderEntity.getOrderState() == 2){
+                    fundOrderService.updateOrder(orderEntity,3,"0001","交易核对订单无流水记录,改为失败状态");
                 }
+                tradeRecordService.asynCommand(orderEntity,"0000".equals(map.get("txn_rsp_cd")) ? "success" : "failed");
+                i++;
             }
+        }
+        returnMap.put("code","0000");
+        returnMap.put("msg","共有"+i+"条数据重新入账");
         return returnMap;
     }
-
-
-
 
 
 }

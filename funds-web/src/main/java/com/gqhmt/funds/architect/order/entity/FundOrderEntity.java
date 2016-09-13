@@ -88,14 +88,6 @@ public class FundOrderEntity implements java.io.Serializable {
 	@Column(name="trade_type",updatable = false)
 	private String tradeType; //char(10) DEFAULT '' COMMENT '交易类型',
 
-	@Column(name="accounting_status")
-	private String accountingStatus; //对账状态，'98010002未对帐，98010001已对账'
-
-	@Column(name="accounting_result")
-	private String accountingResult; //对账结果
-
-	@Column(name="abnormal_state")
-	private String abnormalState; //异常状态,'98080001'正常,'98080002'异常
 
 
 	public Long getId() {
@@ -291,27 +283,4 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.tradeType = tradeType;
 	}
 
-	public String getAccountingStatus() {
-		return accountingStatus;
-	}
-
-	public void setAccountingStatus(String accountingStatus) {
-		this.accountingStatus = accountingStatus;
-	}
-
-	public String getAccountingResult() {
-		return accountingResult;
-	}
-
-	public void setAccountingResult(String accountingResult) {
-		this.accountingResult = accountingResult;
-	}
-
-	public String getAbnormalState() {
-		return abnormalState;
-	}
-
-	public void setAbnormalState(String abnormalState) {
-		this.abnormalState = abnormalState;
-	}
 }
