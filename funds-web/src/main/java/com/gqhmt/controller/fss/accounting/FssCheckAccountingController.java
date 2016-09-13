@@ -248,6 +248,11 @@ public class FssCheckAccountingController {
         Map<String,String> returnMap=Maps.newHashMap();
 
         List<Map<String,String >> list = fssCheckAccountingService.getfuiouTradeCz(mobile,startTime,endTime);
+        if(list == null){
+            returnMap.put("code","0001");
+            returnMap.put("msg","未查询到富友信息");
+            return returnMap;
+        }
         LogUtil.info(this.getClass(),"调单核对，获取"+startTime+"-"+endTime+"日期内富友交易订单总数："+list.size());
         int i=0;
         for(Map<String,String > map:list){
