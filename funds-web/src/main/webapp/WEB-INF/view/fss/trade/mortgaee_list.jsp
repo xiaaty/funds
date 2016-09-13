@@ -301,7 +301,7 @@
     }
     //批量代扣按钮
     $('#btn_rech').click(function () {
-        var no = $('#checkAll');
+        var no = $('#borrow-rep-table12 tbody :checkbox:checked');
         if (no.size() == 0) {
             alert("请选择件数！");
             return false;
