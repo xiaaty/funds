@@ -353,13 +353,13 @@ public class CostImpl  implements ICost{
                 fundType=4007;
                 actionType=3;
             }else if("11060007".equals(trade_type) || "11060008".equals(trade_type)){//逆服务费
-                fundType=4014;
+                fundType=4015;
                 actionType=3;
             }else if("11130001".equals(trade_type) || "11130002".equals(trade_type) || "11130003".equals(trade_type) || "11130004".equals(trade_type) || "11130005".equals(trade_type)){//红包返现
                 fundType=1013;
                 actionType=3;
             }else if("11070001".equals(trade_type) || "11070002".equals(trade_type) || "11070003".equals(trade_type) || "11070004".equals(trade_type)){//代偿
-                fundType=4015;
+                fundType=4016;
                 actionType=3;
             }
             tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,lendNo==null?null:String.valueOf(lendNo),toEntity.getCustId(),null,Long.valueOf(cust_id),loanNo==null?null:String.valueOf(loanNo));
