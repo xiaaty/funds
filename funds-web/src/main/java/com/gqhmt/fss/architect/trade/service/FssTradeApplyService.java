@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.trade.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.WithDrawApplyResponse;
 import com.gqhmt.extServInter.dto.p2p.WithHoldApplyResponse;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -31,11 +32,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -365,10 +363,16 @@ public class FssTradeApplyService {
      */
 	public int withNumbers(String applyNos)throws FssException{
 		FssTradeApplyEntity tradeapply=null;
+		LogUtil.info(this.getClass(),"申请编号字符串为："+applyNos);
 		String[] applyNo = applyNos.split(",");
 		int count=0;
 		for (int i = 0; i < applyNo.length; i++) {
+			LogUtil.info(this.getClass(),"查询编号为："+applyNo[i]);
+
 			tradeapply=this.getFssTradeApplyEntityByApplyNo(applyNo[i]);
+			if(tradeapply==null){
+				continue;
+			}
 			if("10100001".equals(tradeapply.getApplyState())){
 				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
 				this.updateTradeApply(tradeapply,"10100002","10080001");
