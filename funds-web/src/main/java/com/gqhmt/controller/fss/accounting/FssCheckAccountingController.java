@@ -250,7 +250,7 @@ public class FssCheckAccountingController {
         List<Map<String,String >> list = fssCheckAccountingService.getfuiouTradeCz(mobile,startTime,endTime);
         if(list == null){
             returnMap.put("code","0001");
-            returnMap.put("msg","未查询到富友信息");
+            returnMap.put("msg","未查询到富友信息，请核对您的日期是否在31天以内或31天以外之间");
             return returnMap;
         }
         LogUtil.info(this.getClass(),"调单核对，获取"+startTime+"-"+endTime+"日期内富友交易订单总数："+list.size());
