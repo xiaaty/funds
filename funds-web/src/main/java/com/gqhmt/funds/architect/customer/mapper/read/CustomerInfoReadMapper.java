@@ -16,5 +16,18 @@ public interface CustomerInfoReadMapper extends ReadMapper<CustomerInfoEntity>{
 	
 	public List<CustomerInfoEntity> queryCustomerInfoEntityList(CustomerInfoEntity customer);
 
+	/**
+	 * jhz
+	 *
+	 * @param certNo
+	 * @return
+     */
 	public CustomerInfoEntity queryCustomerByCertNo(@Param("certNo") String certNo);
+	/**
+	 * jhz
+	 * 根据手机号号查询客户信息
+	 * @param mobile
+	 * @return
+	 */
+	public CustomerInfoEntity searchCustomerInfoByMobile(@Param("mobile") String mobile);
 }

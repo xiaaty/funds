@@ -3,6 +3,7 @@ package com.gqhmt.controller.fss.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.*;
+import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
@@ -24,15 +25,15 @@ import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.controller.fss.trade.FssTradeApplyController
@@ -98,8 +99,6 @@ public class FssTradeApplyController {
 		}
     	map.put("applyType",type.toString());
 		map.put("busiType", bus);
-//		String token = TokenProccessor.getInstance().makeToken();//创建令牌
-//		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
         List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
@@ -327,23 +326,16 @@ public class FssTradeApplyController {
 	@ResponseBody
 	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
-		FssTradeApplyEntity tradeapply=null;
-		String[] applyNos = no.split(",");
-		int count=0;
-		for (int i = 0; i < applyNos.length; i++) {
-			tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNos[i]);
-			if("10100001".equals(tradeapply.getApplyState())){
-				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
-				fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
-				count++;
-			}
+		int count=1;
+		if(StringUtils.isNotEmptyString(no)){
+			 count=fssTradeApplyService.withNumbers(no);
 		}
-		if(applyNos.length==count){
+		if(count==0){
 			map.put("code", "0000");
 			map.put("message", "success");
 		}else{
 			map.put("code", "0001");
-			map.put("message", "有"+count+"条成功，其他不符合代扣或提现状态");
+			map.put("message", "共有"+count+"条数据失败，其不符合代扣或提现状态");
 		}
 
 		return map;
@@ -444,24 +436,21 @@ public class FssTradeApplyController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel/{no}",method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody void exportExcel(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus, RedirectAttributes attr, @PathVariable String no) throws Exception {
-		HttpSession httpSession = request.getSession();
-		map.put("applyType",type.toString());
-		map.put("busiType", bus);
-
-		FssTradeApplyBean tradeapply=null;
-		List<FssTradeApplyBean> tradeApplyList = new ArrayList<FssTradeApplyBean>();
-		String[] applyNos = no.split(",");
-		int count=0;
-		for (int i = 0; i < applyNos.length; i++) {
-			tradeapply = fssTradeApplyService.getFssTradeApply(applyNos[i]);
-			tradeApplyList.add(tradeapply);
+	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportExcel",method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody void exportExcel(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus) throws Exception {
+		Map<String, String> maps = new HashMap<String, String>();
+		String mapStr = map.get("map");
+        if(!StringUtils.isEmpty(mapStr)){
+            maps = StringUtils.transStringToMap(mapStr);
 		}
+
+		maps.put("applyType",type.toString());
+		maps.put("busiType", bus);
+
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(maps);
 
 		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
 
-		//return new ModelAndView("redirect:"+request.getContextPath()+"/trade/tradeApply/"+type+"/"+bus, map);
 	}
 
 }

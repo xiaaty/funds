@@ -4,6 +4,14 @@
 .bg{background: url(../img/login/bg.png) no-repeat;}
 html,body{height: 100%;position: relative;font-family: 'microsoft yahei';color:#555555;font-size: 12px;}
 /*login*/
+.pop{display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;}
+.pop h1{font-size: 18px;color: #000;}
+.pop .btn_import, .pop .btn_cancel{width:80px;height:32px;line-height:32px;color:#fff;text-align:center;border:1px solid #2fa2db;display:block;background:#2fa2db;}
+.file_pa{position:absolute;top:0;left:0;}
+.file_fi{ position:relative;top:0;left:0; z-index:100; opacity:0;filter:alpha(opacity=0);}
+.pop .file_icon{width:30px;height: 27px; display: block;position: absolute;right:12px;top:5px;cursor:pointer;background: url(../images/file_icon.png) no-repeat;}
+a.file_icon span{display: inline-block;text-indent: -9999px;}
+
 .login{position: relative;margin-top: 140px;}
 .login .body{height:600px;background-image:url(../img/login/login_bg.jpg);}
 .login .body .box2{width:1000px; margin:0 auto; height:600px;background:url(../img/login/login.png) no-repeat;}

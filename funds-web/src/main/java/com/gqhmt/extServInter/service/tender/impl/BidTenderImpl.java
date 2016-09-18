@@ -36,7 +36,7 @@ public class BidTenderImpl implements IBidTender {
 	@Resource
 	private IFundsTender fundsTenderImpl;
 	@Override
-	@APITradeTypeValid(value = "11050001,11050002,11050003,11050004,11050005,11050006")
+	@APITradeTypeValid(value = "11050001,11050002,11050003,11050004,11050005,11050006,11050007")
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {

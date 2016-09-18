@@ -19,16 +19,6 @@ public class FtpClient {
 
     private static final Log log = LogFactory.getLog(FtpClient.class);
 
-    private boolean isLogin = false;
-
-    public boolean isLogin() {
-        return isLogin;
-    }
-
-    public void setLogin(boolean login) {
-        isLogin = login;
-    }
-
 //    private boolean printHash = false;
 
 //    private boolean hidden = false;
@@ -418,11 +408,8 @@ public class FtpClient {
             log.debug("ftpLogin");
         }
         //ftp登陆
+       ftp.login(username, password);
 
-       isLogin =  ftp.login(username, password);
-        if(!isLogin){
-            throw new Exception("登录失败");
-        }
     }
 
     //断开ftp连接

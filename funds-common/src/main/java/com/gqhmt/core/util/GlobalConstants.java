@@ -524,7 +524,8 @@ public class GlobalConstants {
         fundsType.put(4012,"风险备用金");
         fundsType.put(4013,"归还风险备用金");
         fundsType.put(4014,"归还逆服务费");//代偿退回
-        fundsType.put(4015,"逆期代偿");
+        fundsType.put(4015,"利息");
+        fundsType.put(4016,"利息代偿");
 
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");
@@ -578,6 +579,7 @@ public class GlobalConstants {
         //线上开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020001","10010001");//web开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020002","10010001");//wap开户
+        TRADE_ACCOUNT_TYPE_MAPPING.put("11020017","10010001");//新版wap开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020003","10010001");//andriod开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020004","10010001");//微信开户
         TRADE_ACCOUNT_TYPE_MAPPING.put("11020005","10010001");//ios开户
@@ -622,6 +624,7 @@ public class GlobalConstants {
           TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020012","97010001");
           TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020013","97010001");
           TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020014","97010001");
+          TRADE_ACCOUNT_PAY_CHANNEL_MAPPING.put("11020017","97010001");
 
 
 

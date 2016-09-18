@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper">
+	<sql id="filedSql">
+		SELECT
+			t.id id,
+			t.actionType actionType,
+			t.ACCOUNT_ID accountId,
+			t.fund_type fundType,
+			t.amount amount,
+			t.currency currency,
+			t.CREATE_TIME createTime,
+			t.MODIFY_TIME modifyTime,
+			t.thirdparty_type thirdPartyType,
+			t.order_no orderNo,
+			t.sumary sumary,
+			t.O_ACCOUNT_ID oAccountId,
+			t.token token,
+			t.s_order_no sOrderNo,
+			t.cust_id custId,
+			t.lend_no lendNo,
+			t.to_cust_id toCustId,
+			t.to_lend_no toLendNo,
+			t.loan_cust_id loanCustId,
+			t.loan_no loanNo,
+			t.new_fund_type newFundType,
+			t.trade_type tradeType
+		  FROM  t_gq_fund_sequence t
+	</sql>
 	<select id="selectAccountSequenceList" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean">
 		SELECT 
 		b.id id,
@@ -140,5 +166,10 @@
 			and t.fund_type =2003 
 			and date_format(t.CREATE_TIME,'%Y-%m') = date_format(now(),'%Y-%m')) withdrawTotal
 	</select>
-	 
+	 <!-- 统计当月充值、提现总金额 -->
+	 <select id="queryByOrderNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
+		<include refid="filedSql"/>
+		 WHERE t.order_no =#{orderNo}
+	 </select>
+
 </mapper>
