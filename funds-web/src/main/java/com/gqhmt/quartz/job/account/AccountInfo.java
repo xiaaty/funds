@@ -50,9 +50,10 @@ public class AccountInfo extends SupperJob {
 
     @Scheduled(cron = "0 15 18 ? * MON-FRI")
     public void execute() throws PayChannelNotSupports {
-        /*if(!isIp("upload")){
+
+        if(!isIp("upload")){
             return;
-        }*/
+        }
 
         if (isRunning) return;
 
@@ -83,7 +84,6 @@ public class AccountInfo extends SupperJob {
         } finally {
             isRunning = false;
         }
-
         endtLog();
     }
 
