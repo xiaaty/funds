@@ -63,6 +63,7 @@ public class TradeInfo extends SupperJob {
         if(isRunning) return;
 
         startLog("线下充值回盘记录");
+
         isRunning = true;
 
         String[] timeAll = createTime.split(",");
