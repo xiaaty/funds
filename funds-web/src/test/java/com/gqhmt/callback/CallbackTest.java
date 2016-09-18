@@ -1,8 +1,6 @@
 package com.gqhmt.callback;
 
 import com.gqhmt.TestService;
-import com.gqhmt.core.exception.FssException;
-import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.quartz.job.callback.CallbackJob;
 import org.junit.Test;
@@ -35,13 +33,15 @@ public class CallbackTest  extends TestService{
 
     @Test
     public void test(){
-    	try {
-        FssBackplateEntity entity = backplateService.get(85l);
+//    	try {
+//        FssBackplateEntity entity = backplateService.get(85l);
+//
+//            callbackJob.callback(entity);
+//            assert true;
+//        } catch (FssException e) {
+//            assert  false;
+//        }
 
-            callbackJob.callback(entity);
-            assert true;
-        } catch (FssException e) {
-            assert  false;
-        }
+
     }
 }
