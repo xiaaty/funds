@@ -48,7 +48,7 @@ public class AccountInfo extends SupperJob {
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron = "0 18 15 ? * MON-FRI")
+    @Scheduled(cron = "0 18 15 * * *")
     public void execute() throws PayChannelNotSupports {
 
         if(!isIp("upload")){
@@ -88,7 +88,7 @@ public class AccountInfo extends SupperJob {
     }
 
     //如果抓取失败。 20点到22点会自动抓取，间隔五分钟
-    @Scheduled(cron = "0 0/5 20-22 ? * MON-FRI")
+    @Scheduled(cron = "0 0/5 20-22 * * *")
     public void inspect() throws FssException {
         try {
             Map<String, String> map = new HashMap<String, String>();
