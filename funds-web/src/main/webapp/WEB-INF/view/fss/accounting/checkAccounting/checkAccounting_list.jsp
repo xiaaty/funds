@@ -109,6 +109,17 @@
 							                                </select>
                                                                 </label>
                                                         </td>
+                                                        <td class="tr" nowrap="nowrap">异常状态：</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="select">
+                                                                <select class="select02" style="width:202px;" name="abnormalState" id="abnormalState">
+                                                                    <option value="">所有</option>
+                                                                    <fss:dictOrder var="order" dictOrder="abnormalState">
+                                                                        <option value="${order.key}"  <c:if test="${order.key==map.abnormalState}">selected</c:if> >${order.value}</option>
+                                                                    </fss:dictOrder>
+                                                                </select>
+                                                            </label>
+                                                        </td>
                                                         <td class="tr">交易日期：</td>
                                                         <td colspan="3">
                                                             <section class="fl">
@@ -169,7 +180,7 @@
                                         <%-- <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_detail"><i class="fa fa-list-ul"></i>&nbsp;详情</button>--%>
                                     </div>
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4350px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4550px;">
                                         <col width="50" />
                                         <col width="200" />
                                         <col width="150" />
@@ -191,6 +202,7 @@
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="150"/>
+                                        <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
                                         <thead>
@@ -217,6 +229,7 @@
                                             <td>交易类型 </td>
                                             <td>是否对账 </td>
                                             <td>对账结果 </td>
+                                            <td>异常状态 </td>
                                             <td>导入日期 </td>
                                             <td>修改日期 </td>
                                         </tr>
@@ -248,17 +261,20 @@
                                                     <td>${t.remark}</td>
                                                     <td>${t.status}</td>
                                                     <td>
+                                                        <fss:dictView key="${t.tradeType}" />
+                                                    </td>
+                                                    <td>
 	                                                    <fss:dictView key="${t.accountingStatus}" />
                                                     </td>
                                                     <td>
 	                                                    <fss:dictView key="${t.accountingResult}" />
                                                     </td>
                                                     <td>
-                                                        <fss:dictView key="${t.tradeType}" />
+	                                                    <fss:dictView key="${t.abnormalState}" />
                                                     </td>
 
                                                     <td><fss:fmtDate value="${t.createTime}" /></td>
-                                                    <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td><fss:fmtDate value="${t.modifyTime}" /></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

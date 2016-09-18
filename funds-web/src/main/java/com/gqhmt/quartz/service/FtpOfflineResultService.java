@@ -57,12 +57,13 @@ public class FtpOfflineResultService {
      * @return
      * @throws FssException
      */
-    public boolean downloadTradeInfo(Date date, String prefixFileName, String path) throws FssException {
+    public boolean downloadTradeInfo(Date date, String path) throws FssException {
         Config config = ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         String url = (String) config.getValue("ftp.url.value");
         String port = (String) config.getValue("ftp.port.value");
         String userName = (String) config.getValue("ftp.userName.value");
         String pwd = (String) config.getValue("ftp.pwd.value");
+        String prefixFileName = (String) config.getValue("public.mchnt_cd.value");
 
         FtpClient ftp = new FtpClient(Integer.parseInt(port), userName, pwd, url);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

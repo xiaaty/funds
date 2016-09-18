@@ -39,9 +39,6 @@ public class TradeInfo extends SupperJob {
     @Value("#{configProperties['tradeInfoPath']}")
     private String tradeInfoPath;
 
-    @Value("#{configProperties['prefixFileName']}")
-    private String prefixFileName;
-
     @Value("#{configProperties['createTime']}")
     private String createTime;
 
@@ -84,8 +81,10 @@ public class TradeInfo extends SupperJob {
         }
 
         for(int i=0; i<fileCreateTime.size(); i++){
-            ftpOfflineResultService.downloadTradeInfo(fileCreateTime.get(i),prefixFileName,tradeInfoPath);
+            ftpOfflineResultService.downloadTradeInfo(fileCreateTime.get(i),tradeInfoPath);
         }
+
+        endtLog();
     }
 
 }

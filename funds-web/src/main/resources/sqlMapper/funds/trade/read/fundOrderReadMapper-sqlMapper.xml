@@ -25,10 +25,7 @@
 			t.loan_cust_id loanCustId,
 			t.loan_no loanNo,
 			t.new_order_type newOrderType,
-			t.trade_type tradeType,
-			t.accounting_status accountingStatus,
-			t.accounting_result accountingResult,
-			t.abnormal_state abnormalState
+			t.trade_type tradeType
 		FROM t_gq_fund_order t
 	</sql>
 	<select id="getWithdrawNum" parameterType="java.lang.Long" resultType="int">
@@ -71,6 +68,20 @@
 	<select id="queryFundOrdesrs"  resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
 		 <include refid="filedSql"/>
 		where t.order_type in(1,2,9,11,12) AND t.abnormal_state NOT IN ('98080001','98080002')
+		ORDER BY  t.create_time DESC
+	</select>
+	<select id="getFundOrders"  resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
+		 <include refid="filedSql"/>
+		where t.abnormal_state=98080002
+		<if test="map.orderNo != null and map.orderNo != '' ">
+			AND t.`order_no` like CONCAT('%',#{map.orderNo},'%')
+		</if>
+		<if test="map.startTime != null and map.startTime != '' ">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{map.startTime}
+		</if>
+		<if test="map.endTime != null and map.endTime != '' ">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{map.endTime}
+		</if>
 		ORDER BY  t.create_time DESC
 	</select>
 </mapper>
