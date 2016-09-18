@@ -21,7 +21,7 @@
 	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
 
 
-	<context:component-scan base-package="com.gqhmt.*.architect;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter;com.gqhmt.extServInter;com.gqhmt.quartz;com.gqhmt.DataMigration;com.gqhmt.event">
+	<context:component-scan base-package="com.gqhmt.*.architect;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter;com.gqhmt.extServInter;com.gqhmt.quartz;com.gqhmt.business.architect;com.gqhmt.event">
 
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
 
@@ -176,5 +176,17 @@
 
 	<aop:aspectj-autoproxy />
 
-
+	<!-- 引入配置文件 -->
+	<bean id="configProperties"
+		  class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:config/ftp.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="propertyCon"
+		  class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
 </beans>

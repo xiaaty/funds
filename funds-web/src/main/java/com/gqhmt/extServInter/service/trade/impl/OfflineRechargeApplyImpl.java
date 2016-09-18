@@ -32,7 +32,7 @@ import javax.annotation.Resource;
 public class OfflineRechargeApplyImpl implements IOfflineRechargeApply {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
-	@APITradeTypeValid(value = "11030015")
+	@APITradeTypeValid(value = "11030015,11030017")
     @Override
     public Response execute(SuperDto dto) {
     	OfflineRechargeResponse response = new OfflineRechargeResponse();

@@ -106,7 +106,7 @@ public class TradeRecordService {
 
     public void frozen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,int fundType,FundOrderEntity fundOrderEntity,String memo,BigDecimal boundsAmout,String tradeType) throws FssException {
         sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity,boundsAmout,tradeType);
-//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+//        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "冻结账户资金 " + amount + "元" + (boundsAmout !=null ? ",红包抵扣资金 " + boundsAmout + "元" : ""), (boundsAmout != null? boundsAmout : BigDecimal.ZERO));
     }
 
     /**
@@ -220,6 +220,7 @@ public class TradeRecordService {
         if(map!=null){
             String startTime = map.get("startTime");
             String endTime = map.get("endTime");
+            map2.put("type",map.get("type"));
             map2.put("applyNo", map.get("applyNo"));
             map2.put("accNo", map.get("accNo"));
             map2.put("resultState", map.get("resultState"));
@@ -276,7 +277,7 @@ public class TradeRecordService {
 
     }
 
-    private void  asynCommand(FundOrderEntity fundOrderEntity,String state) throws  FssException{
+    public void  asynCommand(FundOrderEntity fundOrderEntity,String state) throws  FssException{
         if(!"success".equalsIgnoreCase(state)){
             paySuperByFuiou.updateOrder(fundOrderEntity,3,"10000","失败");
             this.asynSequenceFailed(fundOrderEntity);

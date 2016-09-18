@@ -89,6 +89,7 @@ public class FundOrderEntity implements java.io.Serializable {
 	private String tradeType; //char(10) DEFAULT '' COMMENT '交易类型',
 
 
+
 	public Long getId() {
 		return this.id;
 	}
@@ -281,4 +282,5 @@ public class FundOrderEntity implements java.io.Serializable {
 	public void setTradeType(String tradeType) {
 		this.tradeType = tradeType;
 	}
+
 }

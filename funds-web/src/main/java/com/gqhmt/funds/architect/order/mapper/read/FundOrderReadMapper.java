@@ -30,6 +30,15 @@ public interface FundOrderReadMapper extends ReadMapper<FundOrderEntity> {
 
     public FundOrderEntity getFundOrder(@Param("orderNo") String orderNo);
 
+    /**
+     * jhz
+     * 根据处长帐号查询所有交易订单
+     * @param map
+     * @param accNos
+     * @return
+     */
+    public List<FundOrderEntity> findfundOrdesrs(@Param("map")Map map,@Param("accNos") List<Long> accNos);
+
     public List<FundOrderEntity> queryFundOrder(Map<Object,Object> map);
 
     public int getWithdrawNum(@Param("accountID") Long accountId);

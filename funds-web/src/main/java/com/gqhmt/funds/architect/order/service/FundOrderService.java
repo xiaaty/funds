@@ -1,13 +1,17 @@
 package com.gqhmt.funds.architect.order.service;
 
+import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.bean.FundOrderBean;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
 import com.gqhmt.pay.exception.CommandParmException;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -39,7 +43,9 @@ public class FundOrderService  {
     private FundOrderReadMapper fundOrderReadMapper;
     @Resource
     private FundOrderWriteMapper fundOrderWriteMapper;
-    
+    @Resource
+    private FundSequenceService fundSequenceService;
+
     public void insert(FundOrderEntity entity) throws FssException{
         fundOrderWriteMapper.insertSelective(entity);
     }
@@ -47,6 +53,16 @@ public class FundOrderService  {
     public void update(FundOrderEntity entity) throws FssException{
         entity.setLastModifyTime(new Date());
         fundOrderWriteMapper.updateByPrimaryKeySelective(entity);
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     * @throws FssException
+     */
+    public FundOrderEntity select(Long id) throws FssException{
+      return  fundOrderReadMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -108,6 +124,26 @@ public class FundOrderService  {
         return fundOrderReadMapper.getFundOrder(order);
     }
 
+    /**
+     * jhz
+     * 根据出账帐号查询所有充值代扣交易订单
+     * @param map
+     * @return
+     */
+    public List<FundOrderEntity> findfundOrdesrs(Map<String,String> map,List<Long> accNos) {
+        Map<String, String> map2= Maps.newHashMap();
+        String startTime = map.get("startTime");
+        String endTime = map.get("endTime");
+        map2.put("orderNo",map.get("orderNo"));
+        map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+        map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+        return fundOrderReadMapper.findfundOrdesrs(map2,accNos);
+    }
+
+    /**
+     * 得到订单号
+     * @return
+     */
     public String getOrderNo(){
         Date date = new Date();
         String year  = String.format("%tY",date);
