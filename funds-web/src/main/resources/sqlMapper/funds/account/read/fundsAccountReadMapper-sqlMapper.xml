@@ -30,8 +30,12 @@
 
 	<select id="queryFundAccountByCutId" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
 		<include refid="fieldSql" />
-
 		where cust_id = #{cusID} and busi_type = #{type}
+	</select>
+
+	<select id="queryFundAccountsByCutId" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		<include refid="fieldSql" />
+		where cust_id = #{custId}
 	</select>
 
 	<!-- 账户管理 -->

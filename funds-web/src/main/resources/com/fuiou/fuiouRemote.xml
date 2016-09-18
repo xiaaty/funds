@@ -50,9 +50,9 @@
     </api>
     <!-- 2.	明细查询接口 -->
     <api api_name="query.action">
-        <user_ids />
-        <start_day />
-        <end_day />
+        <user_ids source="string" paramIndex="0"/>
+        <start_day source="string" paramIndex="0"/>
+        <end_day source="string" paramIndex="0"/>
     </api>
     <!--3.	余额查询-->
     <api api_name="BalanceAction.action">
@@ -155,14 +155,18 @@
         <!--汇总-->
         <hz_tp must="true" source="string" paramIndex="4"/>
     </api>
+    <!-- 用户注销接口 -->
     <api api_name="cancelUserReq.action">
         <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" />
         <busi_tp source="string" paramIndex="1"/>
     </api>
+
+    <!-- 设置提现交易T0T1时效-->
     <api api_name="cashWithSetReq.action">
         <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName" />
         <cash_way source="string" paramIndex="1"/>
     </api>
+    <!-- 银行卡变更结果查询 -->
     <api api_name="queryChangeCard.action">
         <login_id source="string" paramIndex="1"/>
         <txn_ssn source="string" paramIndex="2"/>
@@ -174,4 +178,74 @@
         <amt source="amountToLong100"/>
         <page_notify_url source="properties">${page_notify_url.url}</page_notify_url>
     </api>
+
+    <!-- 交易查询接口 -->
+    <api api_name="queryTxn.action">
+        <!-- 交易类型 -->
+        <!--
+            PWPC 转账
+            PW13 预授权
+            PWCF 预授权撤销
+            PW03 划拨
+            PW14 转账冻结
+            PW15 划拨冻结
+            PWDJ 冻结
+            PWJD 解冻
+            PW19 冻结付款到冻结
+        -->
+        <busi_tp source="string" paramIndex="0"/>
+        <!-- 起始时间 -->
+        <start_day source="string" paramIndex="1"/>
+        <!-- 截止时间 -->
+        <end_day source="string" paramIndex="2"/>
+        <!-- 交易流水 -->
+        <txn_ssn source="string" paramIndex="3"/>
+        <!--交易用户-->
+        <cust_no source="string" paramIndex="4"/>
+        <!-- 交易状态 -->
+        <txn_st source="string" paramIndex="5"/>
+        <!-- 交易备注 -->
+        <remark source="string" paramIndex="6"/>
+        <!--页码-->
+        <page_no source="string" paramIndex="7"/>
+        <!--每页条数-->
+        <page_size source="string" paramIndex="8"/>
+    </api>
+    <!-- 充值提现查询接口 -->
+    <api api_name="querycztx.action">
+        <!-- 交易类型 -->
+        <!--
+            PWPC 转账
+            PW13 预授权
+            PWCF 预授权撤销
+            PW03 划拨
+            PW14 转账冻结
+            PW15 划拨冻结
+            PWDJ 冻结
+            PWJD 解冻
+            PW19 冻结付款到冻结
+        -->
+        <busi_tp source="string" paramIndex="0"/>
+        <!-- 起始时间 -->
+        <start_time source="string" paramIndex="1"/>
+        <!-- 截止时间 -->
+        <end_time source="string" paramIndex="2"/>
+        <!--交易用户-->
+        <cust_no source="string" paramIndex="3"/>
+        <!-- 交易状态 -->
+        <txn_st source="string" paramIndex="4"/>
+        <!--页码-->
+        <page_no source="string" paramIndex="5"/>
+        <!--每页条数-->
+        <page_size source="string" paramIndex="6"/>
+    </api>
+    <!-- 用户信息查询接口 -->
+    <api api_name="queryUserInfs.action">
+
+        <!--交易日期-->
+        <mchnt_txn_dt source="string" paramIndex="0"/>
+        <!--待查询的登录帐户列表-->
+        <user_ids source="string" paramIndex="1"/>
+    </api>
+
 </root>

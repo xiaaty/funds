@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssCheckAccountingReadMapper">
+	<sql id="field">
+		SELECT
+		t.id id,
+		t.order_no orderNo,
+		t.trade_time tradeTime,
+		t.accounting_no accountingNo,
+		t.accounting_time accountingTime,
+		t.recharge_way rechargeWay,
+		t.amount amount,
+		t.cust_id custId,
+		t.acc_no accNo,
+		t.acc_name accName,
+		t.user_name userName,
+		t.to_cust_id toCustId,
+		t.to_acc_no toAccNo,
+		t.to_acc_name toAccName,
+		t.to_user_name toUserName,
+		t.contract_no contractNo,
+		t.item_no itemNo,
+		t.remark remark,
+		t.status status,
+		t.trade_type tradeType,
+		t.accounting_status accountingStatus,
+		t.accounting_result accountingResult,
+		t.abnormal_state abnormalState,
+		t.create_time createTime,
+		t.modify_time modifyTime
+		FROM t_gq_fss_check_accounting t
+	</sql>
+
+	<select id="queryList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
+    	<include refid="field"/>
+		<where>
+		<if test="orderNo!=null and orderNo!=''">
+			AND t.`order_no` like CONCAT('%',#{orderNo},'%')
+		</if>
+		<if test="type!=null and type!=''">
+			AND t.`trade_type` like CONCAT('%',#{type},'%')
+		</if>
+		<if test="contractNo!=null and contractNo!=''">
+			AND t.`contract_no` like CONCAT('%',#{contractNo},'%')
+		</if>
+		<if test="username != null and username != ''">
+			and t.user_name like concat('%',#{username},'%')
+		</if>
+		<if test="abnormalState != null and abnormalState != ''">
+			and t.abnormal_state like concat('%',#{abnormalState},'%')
+		</if>
+		<if test="accName != null and accName != ''">
+			and t.acc_name like concat('%',#{accName},'%')
+		</if>
+		<if test="startTime != null and startTime != '' ">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+		</where>
+		ORDER  BY  t.create_time DESC
+    </select>
+	<select id="queryWithList"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
+    	<include refid="field"/>
+		WHERE t.trade_type IN (10980001,10980003) AND t.`accounting_status`=98010002
+		ORDER  BY  t.create_time DESC
+    </select>
+</mapper>

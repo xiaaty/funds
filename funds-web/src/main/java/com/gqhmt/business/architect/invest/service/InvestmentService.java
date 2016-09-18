@@ -6,6 +6,8 @@ import com.gqhmt.business.architect.invest.mapper.write.InvestmentWriteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * 
  * com.gq.p2p
@@ -17,9 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvestmentService {
 	
-	@Autowired
+	@Resource
 	private InvestmentReadMapper investmentReadMapper;
-	@Autowired
+	@Resource
 	private InvestmentWriteMapper investmentWriteMapper;
 	
 	public InvestmentInfo select(InvestmentInfo investmentInfo) {

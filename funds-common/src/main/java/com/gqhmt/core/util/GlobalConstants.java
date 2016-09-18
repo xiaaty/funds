@@ -102,6 +102,10 @@ public class GlobalConstants {
     public static final int ORDER_DROP_USER = 39;
     public static final int ORDER_UPDATE_CARD_QUERY = 40;
 
+    public static final int ORDER_TRADE_QUERY = 51;
+    public static final int ORDER_CZTX_QUERY = 52;
+    public static final int ORDER_USER_INFO_QUERY = 53;
+
     public static final int ORDER_TRANSFER_BATCH = 1190020;
 
     public static final int ORDER_RECHARGE_OFFLINE = 40000001;
@@ -520,7 +524,8 @@ public class GlobalConstants {
         fundsType.put(4012,"风险备用金");
         fundsType.put(4013,"归还风险备用金");
         fundsType.put(4014,"归还逆服务费");//代偿退回
-        fundsType.put(4015,"逆期代偿");
+        fundsType.put(4015,"利息");
+        fundsType.put(4016,"利息代偿");
 
         thirdpartyType.put(1,"大钱");
         thirdpartyType.put(2,"富友");

@@ -62,12 +62,7 @@ public class CustomerInfoService {
 		return null;
 	}
 	*/
-	
-	public CustomerInfoEntity searchCustomerInfoByMobile(CreateLoanAccountDto loanAccountDto) throws FssException {
-		CustomerInfoEntity customerInfoEntity = searchCustomerInfoByCertNo(loanAccountDto.getCert_no());
-		return customerInfoEntity;
-	}
-	
+
 	/**
 	 * 添加客户信息
 	 *
@@ -343,6 +338,15 @@ public class CustomerInfoService {
 	 */
 	public CustomerInfoEntity searchCustomerInfoByCertNo(String certNo) {
 		return customerInfoReadMapper.queryCustomerByCertNo(certNo);
+	}
+	/**
+	 * jhz
+	 * 根据手机号号查询客户信息
+	 * @param mobile
+	 * @return
+	 */
+	public CustomerInfoEntity searchCustomerInfoByMobile(String mobile) {
+		return customerInfoReadMapper.searchCustomerInfoByMobile(mobile);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package com.gqhmt.controller.fss.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.*;
+import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
@@ -98,8 +99,6 @@ public class FssTradeApplyController {
 		}
     	map.put("applyType",type.toString());
 		map.put("busiType", bus);
-//		String token = TokenProccessor.getInstance().makeToken();//创建令牌
-//		request.getSession().setAttribute("token", token);  //在服务器使用session保存token(令牌)
         List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(map);
         model.addAttribute("page", tradeApplyList);
         model.addAttribute("tradeapply", tradeApply);
@@ -327,23 +326,16 @@ public class FssTradeApplyController {
 	@ResponseBody
 	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
-		FssTradeApplyEntity tradeapply=null;
-		String[] applyNos = no.split(",");
-		int count=0;
-		for (int i = 0; i < applyNos.length; i++) {
-			tradeapply=fssTradeApplyService.getFssTradeApplyEntityByApplyNo(applyNos[i]);
-			if("10100001".equals(tradeapply.getApplyState())){
-				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
-				fssTradeApplyService.updateTradeApply(tradeapply,"10100002","10080001");
-				count++;
-			}
+		int count=1;
+		if(StringUtils.isNotEmptyString(no)){
+			 count=fssTradeApplyService.withNumbers(no);
 		}
-		if(applyNos.length==count){
+		if(count==0){
 			map.put("code", "0000");
 			map.put("message", "success");
 		}else{
 			map.put("code", "0001");
-			map.put("message", "有"+count+"条成功，其他不符合代扣或提现状态");
+			map.put("message", "共有"+count+"条数据失败，其不符合代扣或提现状态");
 		}
 
 		return map;

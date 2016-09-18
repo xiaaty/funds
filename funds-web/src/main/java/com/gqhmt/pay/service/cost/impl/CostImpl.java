@@ -162,10 +162,10 @@ public class CostImpl  implements ICost{
         map.put("11060007_10040003",3l);
         map.put("11060007_10040099",3l);
 
-        map.put("11060008_10040001",1l);  //逆服务费（垫付利息）
-        map.put("11060008_10040002",6l);
-        map.put("11060008_10040003",9l);
-        map.put("11060008_10040099",1l);
+        map.put("11060008_10040001",3l);  //逆服务费（垫付利息从公司3账户出）
+        map.put("11060008_10040002",3l);
+        map.put("11060008_10040003",3l);
+        map.put("11060008_10040099",3l);
 
 //代偿11070001、11070002、11070003、11070004
         map.put("11070001_10040001",3l);  //借款人逾期代偿
@@ -353,24 +353,23 @@ public class CostImpl  implements ICost{
                 fundType=4007;
                 actionType=3;
             }else if("11060007".equals(trade_type) || "11060008".equals(trade_type)){//逆服务费
-                fundType=4014;
+                fundType=4015;
                 actionType=3;
             }else if("11130001".equals(trade_type) || "11130002".equals(trade_type) || "11130003".equals(trade_type) || "11130004".equals(trade_type) || "11130005".equals(trade_type)){//红包返现
-                fundType=4014;
+                fundType=1013;
                 actionType=3;
-            }else if("11070001".equals(trade_type) || "11070002".equals(trade_type) || "11070003".equals(trade_type) || "11070004".equals(trade_type)){//红包返现
-                fundType=4015;
+            }else if("11070001".equals(trade_type) || "11070002".equals(trade_type) || "11070003".equals(trade_type) || "11070004".equals(trade_type)){//代偿
+                fundType=4016;
                 actionType=3;
             }
             tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,lendNo==null?null:String.valueOf(lendNo),toEntity.getCustId(),null,Long.valueOf(cust_id),loanNo==null?null:String.valueOf(loanNo));
-            //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,fundOrderEntity.getOrderNo(),"10080002");
+            //添加交易记录
+            fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amt,fundType,"资金转出:"+amt+"元",BigDecimal.ZERO);
+            fundTradeService.addFundTrade(toEntity,amt, BigDecimal.ZERO,fundType,"资金转入:"+amt+"元");
         }catch (Exception e){
             throw new FssException("费用收取失败");
             //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
         }
-        //添加交易记录
-//      fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,fundOrderEntity.getChargeAmount(),4014, "资金转出",BigDecimal.ZERO);
-//      fundTradeService.addFundTrade(toEntity,fundOrderEntity.getChargeAmount(), BigDecimal.ZERO,4015,"资金转入");
         return true;
     }
 
