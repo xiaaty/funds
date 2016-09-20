@@ -1,8 +1,16 @@
 package com.gqhmt.fss.architect.account.entity;
 
+import com.gqhmt.annotations.AutoDate;
+import com.gqhmt.core.exception.FssException;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
@@ -68,6 +76,7 @@ public class FuiouAccountInfoEntity {
     @Column(name = "total_money")
     private BigDecimal totalMoney;      //总金额: 当交类型为'预授权交易'时才有
 
+    @AutoDate
     @Column(name = "balance")
     private BigDecimal balance;         //余额： 当交类型为'预授权交易'时才有
 
@@ -245,4 +254,94 @@ public class FuiouAccountInfoEntity {
     public void setFileId(int fileId) {
         this.fileId = fileId;
     }
+
+    /**
+     *  富有提供的 字符串 和tradeType 直接设置实体类参数
+     */
+    public void setAccountInfo(String str, String tradeType) throws ParseException {
+
+        String[] aStr = str.split("\\|");
+        if(str.matches(".*\\|$")){
+            aStr = Arrays.copyOf(aStr, aStr.length+1);
+            aStr[aStr.length-1] = "";
+        }
+
+        setTradeType(tradeType);
+        setBusinessCode(aStr[0]);
+
+        switch (tradeType) {
+            case "DJJD":
+                setTradeSources(aStr[1]);
+                setSeqNo(aStr[2]);
+                setTradeTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(aStr[3]));
+                setTradeAmount(new BigDecimal(aStr[4]));
+                setUserAccount(aStr[5]);
+                setUserName(aStr[6]);
+                setRemark(aStr[7]);
+                setReturnNum(aStr[8]);
+                break;
+            case "ZZ":
+                setTradeSources(aStr[1]);
+                setSeqNo(aStr[2]);
+                setTradeTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(aStr[3]));
+                setTradeAmount(new BigDecimal(aStr[4]));
+                setUserAccount(aStr[5]);
+                setUserName(aStr[6]);
+                setInAccount(aStr[7]);
+                setInUserName(aStr[8]);
+                setRemark(aStr[9]);
+                setReturnNum(aStr[10]);
+                break;
+            case "HB":
+                setTradeSources(aStr[1]);
+                setSeqNo(aStr[2]);
+                setTradeTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(aStr[3]));
+                setTradeAmount(new BigDecimal(aStr[4]));
+                setUserAccount(aStr[5]);
+                setUserName(aStr[6]);
+                setInAccount(aStr[7]);
+                setInUserName(aStr[8]);
+                setRemark(aStr[9]);
+                setReturnNum(aStr[10]);
+                break;
+            case "WTCZ":
+                setTradeSources(aStr[1]);
+                setSeqNo(aStr[2]);
+                setBatchFoiuFinance(aStr[3]);
+                setTradeTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(aStr[4]));
+                setTradeAmount(new BigDecimal(aStr[5]));
+                setUserAccount(aStr[6]);
+                setUserName(aStr[7]);
+                setRemark(aStr[8]);
+                setState(aStr[9]);
+                break;
+            case "WTTX":
+                setTradeSources(aStr[1]);
+                setSeqNo(aStr[2]);
+                setBatchFoiuFinance(aStr[3]);
+                setTradeTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(aStr[4]));
+                setTradeAmount(new BigDecimal(aStr[5]));
+                setUserAccount(aStr[6]);
+                setUserName(aStr[7]);
+                setRemark(aStr[8]);
+                setState(aStr[9]);
+                break;
+            case "YSQ":
+                setContractNum(aStr[1]);
+                setUserAccount(aStr[2]);
+                setUserName(aStr[3]);
+                setInAccount(aStr[4]);
+                setInUserName(aStr[5]);
+                setTotalMoney(new BigDecimal(aStr[6]));
+                setBalance(new BigDecimal(aStr[7]));
+                setRemark(aStr[8]);
+                setAccountState(aStr[9]);
+                break;
+            default:
+                new FssException("类型错误,请检查类型是否定义");
+                return;
+        }
+
+    }
+
 }

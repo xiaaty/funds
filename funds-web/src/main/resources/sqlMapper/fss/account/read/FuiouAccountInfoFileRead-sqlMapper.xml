@@ -5,7 +5,7 @@
         SELECT
             id,
             trade_type tradeType,
-            DATE_FORMAT(createfile_date, '%Y%m%d') createFileDate,
+            create_time createTime,
             remark,
             boolean_type booleanType
         FROM t_gq_fss_fuiou_account_info_file t
@@ -19,8 +19,8 @@
         <if test="tradeType != null and tradeType != '' ">
             AND  t.trade_type = #{tradeType}
         </if>
-        <if test="createFileDate!=null and createFileDate!=''">
-            AND date_format(createfile_date,'%Y%m%d') = #{createFileDate}
+        <if test="createTime!=null and createTime!=''">
+            AND date_format(create_time,'%Y%m%d') = #{createTime}
         </if>
         <if test="remark != null and remark != '' ">
             AND  t.remark = #{remark}
@@ -28,7 +28,7 @@
         <if test="booleanType != null and booleanType != '' ">
             AND  t.boolean_type = #{booleanType}
         </if>
-            ORDER BY t.createfile_date
+            ORDER BY t.create_time
     </select>
 
 </mapper>

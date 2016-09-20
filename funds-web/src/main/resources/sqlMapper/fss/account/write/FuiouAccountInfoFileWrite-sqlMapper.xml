@@ -5,14 +5,12 @@
     <insert id="addFuiouAccountInfoFileEntity" keyProperty="id" useGeneratedKeys="true" parameterType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity">
         INSERT INTO t_gq_fss_fuiou_account_info_file (
             trade_type,
-            createfile_date,
             remark,
             boolean_type
         )
         VALUES
 	    (
             #{tradeType},
-            str_to_date(#{createFileDate},'%Y%m%d %H:%i:%s'),
             #{remark},
             cast(#{booleanType} AS signed int)
 		)

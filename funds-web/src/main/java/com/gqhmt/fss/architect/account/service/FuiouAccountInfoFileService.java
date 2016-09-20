@@ -82,35 +82,42 @@ public class FuiouAccountInfoFileService {
         return listFileEntity;
     }
 
-    public FuiouAccountInfoFileEntity getFileEntity(Date createFileDate, String tradeType){
+    public FuiouAccountInfoFileEntity getFileEntity(Date creatTime, String tradeType){
+
         FuiouAccountInfoFileEntity fileEntity = new FuiouAccountInfoFileEntity();
+
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        String dateStr = sdf.format(createFileDate);
+        String dateStr = sdf.format(creatTime);
         Map<String,String> map = new HashMap<String,String>();
 
-        map.put("createFileDate",dateStr);
+        map.put("creatTime",dateStr);
         map.put("tradeType",tradeType);
 
         List<FuiouAccountInfoFileEntity> acctounInfoFileList = this.queryAccountInfoFileList(map);
         if(!CollectionUtils.isEmpty(acctounInfoFileList)){
             fileEntity = acctounInfoFileList.get(0);
         }else{
-            fileEntity.setCreateFileDate(dateStr);
+            fileEntity.setCreateTime(creatTime);
             fileEntity.setTradeType(tradeType);
         }
-
         return fileEntity;
     }
 
     //抓取FTP 对账文件
     public boolean downFileAccountInfo(FuiouAccountInfoFileEntity fileEntity) throws FssException {
-        boolean downType = false;
-        downType = ftpDownloadFileService.downloadFuiouAccount(fileEntity);
-        if(!downType && fileEntity != null && fileEntity.getId() == 0 && ftpDownloadFileService.isHaveFile()){
-            fileEntity.setBooleanType("-1");
-            this.addFuiouAccountInfoFileEntity(fileEntity);
-            LogUtil.info(this.getClass(),"抓取文件: "+fileEntity.getTradeType()+fileEntity.getCreateFileDate()+"失败");
+
+        if(fileEntity.getId()!=0 && "1".equals(fileEntity.getBooleanType())){
+            LogUtil.info(this.getClass(),"抓取文件: "+fileEntity.getTradeType()+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(fileEntity.getCreateTime())+"已经抓取成功");
+            return true;
         }
-        return downType;
+
+        if(!ftpDownloadFileService.downloadFuiouAccount(fileEntity)){
+            LogUtil.info(this.getClass(),"文件: "+fileEntity.getTradeType()+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(fileEntity.getCreateTime())+" 下载到本地失败，请检查文件是否存在！");
+            return false;
+        }
+
+        boolean paseType = ftpDownloadFileService.parseFileFuiouAcount(fileEntity);
+
+        return paseType;
     }
 }
