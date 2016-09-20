@@ -51,9 +51,9 @@ public class AccountInfo extends SupperJob {
     @Scheduled(cron = "0 18 15 * * *")
     public void execute() throws PayChannelNotSupports {
 
-/*        if(!isIp("upload")){
+        if(!isIp("upload")){
             return;
-        }*/
+        }
 
         if (isRunning) return;
 
