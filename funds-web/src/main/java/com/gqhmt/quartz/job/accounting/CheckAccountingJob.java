@@ -26,7 +26,7 @@ public class CheckAccountingJob extends SupperJob {
 	
 	 private static boolean isRunning = false;
     //每天00:05执行一次
-	@Scheduled(cron="0 5 0 * * ?")
+//	@Scheduled(cron="0 5 0 * * ?")
     public void execute( ) throws JobExecutionException, FssException {
         if(!isIp("upload")){
             return;
