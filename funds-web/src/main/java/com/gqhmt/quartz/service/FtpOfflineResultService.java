@@ -110,7 +110,7 @@ public class FtpOfflineResultService {
 
             String backExcelPath = getClassPath() + "/tmp/back/excel/";
             ReadExcelUtil excelUtil = new ReadExcelUtil(backExcelPath, FssTradeInfoEntity.class);
-            String[] columnName = new String[]{"dataSource", "sysCode", "orglSeqNo", "seqNo", "chgCd", "toAccTime", "tradeTime", "toAccNm", "toAccNo", "amount", "tradeSts", "cardVerify"};
+            String[] columnName = new String[]{"dataSource", "sysCode", "orglSeqNo", "chgCd", "toAccTime", "tradeTime", "toAccNm", "toAccNo", "amount", "tradeSts", "cardVerify"};
 
             int sheetsSize = excelUtil.getWorkBook(localFile).getNumberOfSheets();
 

@@ -412,6 +412,9 @@ public class ReadExcelUtil<T> {
                 DateFormat df = new SimpleDateFormat("yyyyMMdd");
                 Date str =df.parse(value);
                 method.invoke(t,df.format(str));
+            }else if(field.getType().getName().equals("java.util.Date") && dateType.value() == DateTypeEnum.DATE_TIME_FOURTEEN){
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                method.invoke(t,df.parse(value));
             }else if(field.getType().getName().equals("java.util.Date") ){
                 DateFormat df = new SimpleDateFormat("yyyyMMdd");
                 method.invoke(t,df.parse(value));
