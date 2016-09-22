@@ -40,18 +40,15 @@ public class FssTradeInfoEntity {
     @Column(name = "orgl_seq_no")           //原交易流水号
     private String orglSeqNo;
 
-    @Column(name = "seq_no")                //交易流水号
-    private String seqNo;
-
     @Column(name = "chg_cd")                //充值码
     private String chgCd;
 
     @Column(name = "to_acc_time")           //入账时间
-    @DateType(value = DateTypeEnum.DATE_STRING_EIGHT, memo = "入账时间")
+    @DateType(value = DateTypeEnum.DATE_TIME_FOURTEEN, memo = "入账时间")
     private Date toAccTime;
 
     @Column(name = "trade_time")            //交易时间
-    @DateType(value = DateTypeEnum.DATE_STRING_EIGHT, memo = "交易时间")
+    @DateType(value = DateTypeEnum.DATE_TIME_FOURTEEN, memo = "交易时间")
     private Date tradeTime;
 
     @Column(name = "to_acc_nm")             //入账户名
@@ -103,14 +100,6 @@ public class FssTradeInfoEntity {
 
     public void setOrglSeqNo(String orglSeqNo) {
         this.orglSeqNo = orglSeqNo;
-    }
-
-    public String getSeqNo() {
-        return seqNo;
-    }
-
-    public void setSeqNo(String seqNo) {
-        this.seqNo = seqNo;
     }
 
     public String getChgCd() {
