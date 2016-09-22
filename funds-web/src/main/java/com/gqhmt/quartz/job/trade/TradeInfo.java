@@ -71,25 +71,13 @@ public class TradeInfo extends SupperJob {
 
         isRunning = true;
 
-        String[] timeAll = createTime.split(",");
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         Date date = new Date();
         String today = sdf.format(date);
 
-        List<Date> fileCreateTime = new ArrayList<Date>();
-
         try {
-            for(int i=0; i<timeAll.length; i++){
-                String createTimeStr = today+ " " +timeAll[i];
-                fileCreateTime.add(sdf2.parse(createTimeStr));
-            }
-
-            for(int i=0; i<fileCreateTime.size(); i++){
-                ftpOfflineResultService.downloadTradeInfo(fileCreateTime.get(i),tradeInfoPath);
-            }
+            downloadTradeInfo(today);
         } catch (FssException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -98,6 +86,25 @@ public class TradeInfo extends SupperJob {
             isRunning = false;
         }
         endtLog();
+    }
+
+    public void downloadTradeInfo(String today) throws ParseException, FssException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        List<Date> fileCreateTime = new ArrayList<Date>();
+
+        String[] timeAll = createTime.split(",");
+
+        for(int i=0; i<timeAll.length; i++){
+            String createTimeStr = today+ " " +timeAll[i];
+            fileCreateTime.add(sdf.parse(createTimeStr));
+        }
+
+        for(int i=0; i<fileCreateTime.size(); i++){
+            ftpOfflineResultService.downloadTradeInfo(fileCreateTime.get(i),tradeInfoPath);
+        }
+
     }
 
 }
