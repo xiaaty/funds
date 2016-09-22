@@ -368,16 +368,19 @@
     })
 
     function upload(formUlr) {
+        wait("正在导入中，请耐心等待...");
             $("#uploadForm").ajaxSubmit({
                 url:formUlr,
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 dataType: "json",
                 success: function (data) {
+                    $.unblockUI();
                     if (data.code == '0000') {
                         alert(data.msg);
                         $('.pop').hide();
                         location.reload();
                     } else {
+
                         alert(data.msg);
                         $('.pop').hide();
                     }
@@ -385,6 +388,27 @@
                 }
             });
     };
+    /**
+     * 遮罩栏
+     * @param msg
+     */
+    function wait(msg){
+        $.blockUI({
+            css: {
+                border: 'none',
+                padding: '15px',
+                // backgroundColor: '#000',
+                '-webkit-border-radius': '10px',
+                '-moz-border-radius': '10px',
+                //   opacity: .7,
+                bindEvents: true,
+                constrainTabKey: false,
+                color: '#000'
+
+            },baseZ:999999,
+            message: '<img src="${contextPath}/img/loading.gif" />&nbsp;' + msg
+        });
+    }
     //校验函数
     function validateCheck() {
         return true;

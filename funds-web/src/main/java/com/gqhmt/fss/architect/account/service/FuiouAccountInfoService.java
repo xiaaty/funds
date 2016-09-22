@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.account.service;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FuiouAccountInfoReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FuiouAccountInfoWriteMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,11 +35,6 @@ public class FuiouAccountInfoService {
     @Resource
     FuiouAccountInfoReadMapper fuiouAccountInfoReadMapper;
 
-    //添加AccountInfoEntity 到数据库
-    public void addFuiouAccountInfoEntity(FuiouAccountInfoEntity file){
-        fuiouAccountInfoWriteMapper.addFuiouAccountInfoEntity(file);
-    }
-
     //查询AccountInfoEntity
     public List<FuiouAccountInfoEntity> queryAccountInfoList(Map<String,String> map) throws ParseException {
         return fuiouAccountInfoReadMapper.queryAccountInfoList(map);
@@ -62,4 +58,11 @@ public class FuiouAccountInfoService {
         return fuiouAccountInfoReadMapper.selectOne(accountInfo);
     }
 
+    public void addFuiouAccountInfoList(List<FuiouAccountInfoEntity> accInfoList) {
+
+        if(!CollectionUtils.isEmpty(accInfoList)){
+            fuiouAccountInfoWriteMapper.insertList(accInfoList);
+        }
+
+    }
 }

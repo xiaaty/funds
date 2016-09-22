@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,14 +119,15 @@ public class FuiouAccountInfoController {
         }else{
             if(!StringUtils.isEmpty(map.get("createFileDate")) && !StringUtils.isEmpty(map.get("tradeType"))){
                 String date = map.get("createFileDate");
+                Date createTime = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 
                 if(!("-1".equals(id))){
                     model.addAttribute("createFileDate",date);
                 }
 
-                String createFileDate = date.replaceAll("-","");
-                failAccInfoFile.setCreateFileDate(createFileDate);
+                failAccInfoFile.setCreateTime(createTime);
                 failAccInfoFile.setTradeType(map.get("tradeType"));
+
             }else{
                 return "redirect:"+request.getContextPath()+"/account/info/failAccInfoFileList";
             }
