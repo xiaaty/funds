@@ -499,7 +499,7 @@ public class GlobalConstants {
         3009:流标退款
          */
         fundsType.put(3001,"出借");
-        fundsType.put(3002,"投标清算成功转入");
+        fundsType.put(3002,"出借清算成功转入");
         fundsType.put(3003,"还款本金（借款出）");
         fundsType.put(3004,"还款利息（借款出）");
         fundsType.put(3005,"收款本金（出借入）");
