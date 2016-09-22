@@ -4,12 +4,11 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.trade.entity.FssTradeInfoEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeInfoService;
+import com.gqhmt.quartz.job.trade.TradeInfo;
 import com.gqhmt.util.ReadExcelUtil;
 import com.gqhmt.util.exception.ReadExcelErrorException;
 import com.gqhmt.util.exception.ReadExcelException;
 import org.apache.commons.collections.CollectionUtils;
-import org.bouncycastle.asn1.ocsp.Request;
-import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +45,9 @@ public class FssTradeInfoController {
 
     @Resource
     private FssTradeInfoService fssTradeInfoService;
+
+    @Resource
+    private TradeInfo tradeInfo;
 
     @RequestMapping(value = "/trade/tradeInfo/list",method = {RequestMethod.GET, RequestMethod.POST})
     @AutoPage
@@ -72,6 +75,19 @@ public class FssTradeInfoController {
             fssTradeInfoService.insertListTradeInfo(listTradeInfo);
         }
         return "redirect:"+request.getContextPath()+"/trade/tradeInfo/list";
+    }
+
+    @RequestMapping(value = "/trade/tradeInfo/getFtp",method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String tradeInfoGetFtpByTime(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException, ParseException {
+        String createTime = map.get("createTime");
+
+        tradeInfo.downloadTradeInfo(createTime);
+
+        String contextpath = request.getContextPath();
+
+        model.addAttribute("map",map);
+        return "redirect:"+ contextpath +"/trade/tradeInfo/list";
     }
 
 }

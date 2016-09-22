@@ -6,7 +6,6 @@ import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
-import com.gqhmt.quartz.service.FtpDownloadFileService;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,9 +46,6 @@ public class FuiouAccountInfoController {
 
     @Resource
     private FuiouAccountInfoService fuiouAccountInfoService;
-
-    @Resource
-    private FtpDownloadFileService ftpDownloadFileService;
 
     @Resource
     private FuiouAccountInfoFileService fuiouAccountInfoFileService;
@@ -132,7 +128,7 @@ public class FuiouAccountInfoController {
                 return "redirect:"+request.getContextPath()+"/account/info/failAccInfoFileList";
             }
         }
-        boolean booleanType = ftpDownloadFileService.downloadFuiouAccount(failAccInfoFile);
+        boolean booleanType = fuiouAccountInfoFileService.downFileAccountInfo(failAccInfoFile);
 
         String grabState = null;
         if(booleanType == true){
