@@ -1,6 +1,5 @@
 package com.gqhmt.api;
 
-import com.gqhmt.business.architect.loan.bean.RepaymentBean;
 import com.gqhmt.core.connection.UrlConnectUtil;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.JsonUtil;
@@ -12,9 +11,8 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 /**
  * Filename:    com.gqhmt.api.LoanApiTest
@@ -274,9 +272,13 @@ public class LoanApiTest extends SupperAPI {
 
     @Test
     public void test() throws FssException {
-        Map<String,String > repParamMap = new HashMap<>();
-        repParamMap.put("id","7524");
-        List<RepaymentBean> list  = UrlConnectUtil.sendDataReturnObjectList(RepaymentBean.class,"revicePayment",repParamMap);
+//        Map<String,String > repParamMap = new HashMap<>();
+//        repParamMap.put("id","7524");
+//        List<RepaymentBean> list  = UrlConnectUtil.sendDataReturnObjectList(RepaymentBean.class,"revicePayment",repParamMap);
 
+
+        String uuid =  UUID.randomUUID().toString();
+
+        System.out.println(uuid);
     }
 }

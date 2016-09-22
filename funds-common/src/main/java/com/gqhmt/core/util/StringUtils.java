@@ -3,7 +3,7 @@ package com.gqhmt.core.util;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.*;
-import java.util.Date;
+import java.util.*;
 
 public class StringUtils {
 	public static boolean isNotEmptyString(String str) {
@@ -102,4 +102,44 @@ public class StringUtils {
         nf.format(length);
         return nf.format(length);
     }
+
+	/**
+	 * 方法名称:transMapToString
+	 * 传入参数:map
+	 * 返回值:String 形如 {username=chenziwen, password=1234}
+	 */
+	public static String transMapToString(Map map){
+		java.util.Map.Entry entry;
+		StringBuffer sb = new StringBuffer();
+		for(Iterator iterator = map.entrySet().iterator(); iterator.hasNext();)
+		{
+			entry = (java.util.Map.Entry)iterator.next();
+			sb.append(entry.getKey().toString()).append( "=" ).append(null==entry.getValue()?"":
+					entry.getValue().toString()).append (iterator.hasNext() ? "," : "");
+		}
+		return "{" + sb.toString() + "}";
+	}
+
+	/**
+	 * 方法名称:transStringToMap
+	 * 传入参数:mapString 形如 username=chenziwen, password=1234
+	 * 返回值:Map
+	 */
+	public static Map transStringToMap(String mapStr){
+
+		mapStr = mapStr.replace("\\{","");
+		mapStr = mapStr.replace("\\}","");
+
+		Map map = new HashMap();
+
+		java.util.StringTokenizer items;
+
+		for(StringTokenizer entrys = new StringTokenizer(mapStr, ","); entrys.hasMoreTokens();
+			map.put(items.nextToken(), items.hasMoreTokens() ? ((Object) (items.nextToken())) : null))
+			items = new StringTokenizer(entrys.nextToken(), "=");
+
+		return map;
+
+	}
+
 }

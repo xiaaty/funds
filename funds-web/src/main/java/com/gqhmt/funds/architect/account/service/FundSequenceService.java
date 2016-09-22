@@ -305,8 +305,6 @@ public class FundSequenceService {
             toActionType = 4004;
         }else if(accountType == 4005){
             toActionType = 1009;
-        }else if(accountType == 4014){
-            toActionType = 4015;
         }
 
         FundSequenceEntity fromFundSequenceEntity=this.getFundSequenceEntity(fromEntity.getId(),actionType,accountType,new BigDecimal("-" + amount.toPlainString()),orderNo,newOrderNo,toEntity.getId(),newFundsType,tradeType,fromEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
@@ -318,7 +316,7 @@ public class FundSequenceService {
         list.add(toFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
 //      this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
-//      this.fundTradeService.addFundTrade(toEntiry,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
+//      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
     }
 
     /**
@@ -383,7 +381,7 @@ public class FundSequenceService {
         list.add(orgFundSequenceEntity);
         list.add(frozenFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType, memo,bounsAmount);
+        this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType,memo,bounsAmount);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
@@ -440,7 +438,7 @@ public class FundSequenceService {
         list.add(orgFundSequenceEntity);
         list.add(frozenFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
-        this.fundTradeService.addFundTrade(orgEntity, amount, BigDecimal.ZERO, accountType, memo,BigDecimal.ZERO);
+        this.fundTradeService.addFundTrade(frozenEntiry, amount, BigDecimal.ZERO, accountType,memo,BigDecimal.ZERO);
     }
 
 
