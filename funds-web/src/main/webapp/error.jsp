@@ -6,10 +6,10 @@
 	String mes="";
    if(error==null||"".equals(error)){
           mes="未知异常";
-       
+
    }else{
    		mes="没有权限";
-     
+
     }
  %>
 <head>
