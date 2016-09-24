@@ -28,7 +28,7 @@ public interface FssBonusParentReadMapper extends ReadMapper<FssBonusParentEntit
     * @param mchn
     * @param seqNo
     * @return
-     */
+    */
    public FssBonusParentEntity queryBonusParent(@Param("mchn") String mchn,@Param("seqNo") String seqNo);
 
 }
