@@ -1,14 +1,13 @@
 package com.gqhmt.controller.api.trade;
 
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.callback.p2p.WithHoldApplyCallback;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.bonus.BonusDto;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.extServInter.service.bonus.IBonus;
 import com.gqhmt.extServInter.service.cost.ICharges;
 import com.gqhmt.extServInter.service.trade.*;
-import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,21 +45,17 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/api")
 public class FssGetTradeApi {
 
-    @Resource
-    private ApplicationContext applicationContext;
 	@Resource
 	private IWithHoldApply withHoldApplyImpl;
 	@Resource
 	private IGetWithDrawApply getWithDrawApplyImpl;
 	
 	@Resource
-	private FundsBatchTradeImpl fundsBatchTradeImpl;
-	@Resource
-	private WithHoldApplyCallback withHoldApplyCallback;
-	@Resource
 	private ICharges chargesImpl;
 	@Resource
 	private ICompensation compensationImpl;
+	@Resource
+	private IBonus bonusImpl;
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
@@ -107,7 +102,7 @@ public class FssGetTradeApi {
 
 
 	/**
-	 * 资金代偿、费用收取、红包提现 公共接口
+	 * 资金代偿、费用收取、 公共接口
 	 * @param dto
 	 * @return
      */
@@ -116,6 +111,22 @@ public class FssGetTradeApi {
 		Response response=new Response();
 		try {
 			response = compensationImpl.execute(dto);
+		} catch (Exception e) {
+			response = this.execute(e);
+		}
+		return response;
+	}
+
+	/**
+	 * 红包提现
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/bonusWithDraw",method = {RequestMethod.POST,RequestMethod.GET})
+	public Object compensation(@RequestBody BonusDto dto){
+		Response response=new Response();
+		try {
+			response = bonusImpl.execute(dto);
 		} catch (Exception e) {
 			response = this.execute(e);
 		}
