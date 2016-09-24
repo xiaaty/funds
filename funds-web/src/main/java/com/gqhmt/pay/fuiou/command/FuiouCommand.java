@@ -56,6 +56,21 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
                 response.setMsg("成功");
             }
 
+            String timeOut = (String) config.getValue("url.testTimeOut.value");
+            if(timeOut == null){
+                timeOut = "0";
+            }
+            int tOut = Integer.parseInt(timeOut);
+            if(tOut >0 ){
+                long time = (long) (Math.random() * tOut *1000);
+                LogUtil.info(this.getClass(),"未连接富友模拟富友延迟时间："+time);
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
             return response;
         }
 
