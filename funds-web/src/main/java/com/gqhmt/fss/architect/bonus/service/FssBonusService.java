@@ -8,10 +8,8 @@ import com.gqhmt.extServInter.dto.bonus.BonusResponse;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.bonus.bean.BonusBatchBean;
-import com.gqhmt.fss.architect.bonus.bean.BonusBean;
 import com.gqhmt.fss.architect.bonus.entity.FssBonusEntity;
 import com.gqhmt.fss.architect.bonus.entity.FssBonusParentEntity;
-import com.gqhmt.fss.architect.bonus.mapper.read.FssBonusParentReadMapper;
 import com.gqhmt.fss.architect.bonus.mapper.read.FssBonusReadMapper;
 import com.gqhmt.fss.architect.bonus.mapper.write.FssBonusParentWriteMapper;
 import com.gqhmt.fss.architect.bonus.mapper.write.FssBonusWriteMapper;
@@ -55,8 +53,8 @@ public class FssBonusService {
 	private FssBonusReadMapper fssBonusReadMapper;
 	@Resource
 	private FssBonusWriteMapper fssBonusWriteMapper;
-	@Resource
-	private FssBonusParentReadMapper fssBonusParentReadMapper;
+//	@Resource
+//	private FssBonusParentReadMapper fssBonusParentReadMapper;
 	@Resource
 	private FssBonusParentWriteMapper fssBonusParentWriteMapper;
 	@Resource
@@ -259,7 +257,8 @@ public class FssBonusService {
 	 * @return
      */
 	public FssBonusParentEntity getParentById(Long id){
-		return  fssBonusParentReadMapper.selectByPrimaryKey(id);
+//		return  fssBonusParentReadMapper.selectByPrimaryKey(id);
+		return  null;
 	}
 
 	/**
@@ -302,7 +301,8 @@ public class FssBonusService {
 		BonusResponse response=new BonusResponse();
 		List<BonusBatchBean> bonus_list= Lists.newArrayList();
 		BonusBatchBean bean=null;
-		FssBonusParentEntity parentEntity=fssBonusParentReadMapper.queryBonusParent(mchn,seqNo);
+		FssBonusParentEntity parentEntity=null;
+//				fssBonusParentReadMapper.queryBonusParent(mchn,seqNo);
 		if(parentEntity==null) {
 			LogUtil.error(this.getClass(),"未查到主表信息");
 			return null;
