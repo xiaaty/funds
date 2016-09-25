@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.bonus.mapper.read.FssBonusReadMapper">
+ <sql id="field">
+  SELECT
+  t.id id,
+  t.parent_id parentId,
+  t.cust_id custId,
+  t.trade_type tradeType,
+  t.busi_type busiType,
+  t.amount amount,
+  t.mchn mchn,
+  t.seq_no seqNo,
+  t.busi_no busiNo,
+  t.trade_state tradeState,
+  t.trade_result tradeResult,
+  t.trade_type tradeType,
+  t.create_time createTime,
+  t.modify_time modifyTime
+  FROM t_gq_fss_bonus t
+ </sql>
+
+ <select id="queryBondTransferList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.bonus.entity.FssBonusEntity">
+  <include refid="field"/>
+  <where>
+   <if test="type!=null and type!=''">
+    AND t.`trade_type` like CONCAT('%',#{type},'%')
+   </if>
+   <if test="startTime != null and startTime != '' ">
+    and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+   </if>
+   <if test="endTime != null and endTime != '' ">
+    and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+   </if>
+  </where>
+  ORDER  BY  t.create_time DESC
+ </select>
+ <select id="queryBonusList"  resultType="com.gqhmt.fss.architect.bonus.entity.FssBonusEntity">
+  <include refid="field"/>
+  WHERE t.trade_state =10100002
+ </select>
+ <select id="selectByParentId"  resultType="com.gqhmt.fss.architect.bonus.entity.FssBonusEntity">
+  <include refid="field"/>
+  WHERE t.parent_id =#{parentId}
+ </select>
+ </mapper>
