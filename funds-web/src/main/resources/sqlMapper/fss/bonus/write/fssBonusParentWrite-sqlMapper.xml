@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.bonus.mapper.write.FssBonusParentWriteMapper">
+
+    <update id="updateExuCount" parameterType="com.gqhmt.fss.architect.bonus.entity.FssBonusParentEntity">
+        UPDATE
+        t_gq_fss_bonus_parent t
+        SET
+        t.execute_count= t.execute_count+1,
+        t.modify_time= SYSDATE()
+        WHERE t.id=#{parentId}
+    </update>
+	
+</mapper>
