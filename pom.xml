@@ -409,7 +409,7 @@
 			</exclusions>
 		</dependency>
 
-		<!--<dependency> <groupId>org.quartz-scheduler</groupId> <artifactId>quartz</artifactId> 
+		<!--<dependency> <groupId>org.quartz-scheduler</groupId> <artifactId>quartz</artifactId>
 			<version>${quartz.varsion}</version> </dependency> -->
 
 		<dependency>

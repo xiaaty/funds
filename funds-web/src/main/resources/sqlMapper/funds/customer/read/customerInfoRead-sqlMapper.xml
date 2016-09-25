@@ -2,23 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper">
 	<sql id="fieldSql">
-		SELECT t.id id,
+		SELECT
+			t.id id,
 			t.CUSTOMER_NAME customerName,
-			t.MOBILE_PHONE mobilePhone,
-			t.CERT_NO certNo,
 			t.CUSTOMER_TYPE customerType,
+			t.MOBILE_PHONE mobilePhone,
 			t.CERT_TYPE certType,
+			t.CERT_NO certNo,
+			t.CERT_ISSUE_DATE certIssueDate,
+			t.CERT_FAIL_DATE certFailDate,
 			t.SEX sex,
+			t.address address,
 			t.user_id userId,
 			t.isvalid isvalid,
 			t.has_acount hasAccount,
 			t.bank_id bankId,
+			t.CREATE_TIME createTime,
+			t.MODIFY_TIME modifyTime,
 			t.BIRTHDATE birthdate,
 			t.EDUCATION education,
 			t.MARITAL_STATUS maritalStatus,
 			t.EMER_CONTACT emerContact,
 			t.EMER_CONTACT_MOBILE emerContactMobile
 		FROM `t_gq_customer_info` t
+	</sql>
+	<sql id="selectSql">
+		SELECT
+			t.id id,
+			t.CUSTOMER_NAME customerName,
+			t.CUSTOMER_TYPE customerType,
+			t.MOBILE_PHONE mobilePhone,
+			t.CERT_TYPE certType,
+			t.CERT_NO certNo,
+			t.CERT_ISSUE_DATE certIssueDate,
+			t.CERT_FAIL_DATE certFailDate,
+			t.SEX sex,
+			t.address address,
+			t.user_id userId,
+			t.isvalid isvalid,
+			t.has_acount hasAccount,
+			t.bank_id bankId,
+			t.CREATE_TIME createTime,
+			t.MODIFY_TIME modifyTime,
+			t.BIRTHDATE birthdate,
+			t.EDUCATION education,
+			t.MARITAL_STATUS maritalStatus,
+			t.EMER_CONTACT emerContact,
+			t.EMER_CONTACT_MOBILE emerContactMobile,
+			b.bank_long_name bankLongName,
+			b.bank_no bankNo
+		FROM `t_gq_customer_info` t LEFT JOIN `t_gq_bank_info` b ON  t.id=b.cust_id
 	</sql>
 	<sql id="whereSql">
 	</sql>
@@ -81,6 +114,34 @@
 	<select id="searchCustomerInfoByMobile" parameterType="java.lang.String" resultType="customerInfoEntity">
 		<include refid="fieldSql"/>
 		WHERE t.MOBILE_PHONE=#{mobile}
+	</select>
+	<select id="queryCustomerinfoList" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean">
+		<include refid="selectSql"/>
+		<where>
+			<if test="id != null and id != ''">
+				and t.id like  CONCAT('%',#{id},'%')
+			</if>
+			<if test="name != null and name != ''">
+				and t.CUSTOMER_NAME like  CONCAT('%',#{name},'%')
+			</if>
+			<if test="certNo != null and certNo != ''">
+				and t.CERT_NO like CONCAT('%',#{certNo},'%')
+			</if>
+			<if test="mobile != null and mobile != ''">
+				and t.MOBILE_PHONE like CONCAT('%',#{mobile},'%')
+			</if>
+			<if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
+		</where>
+		order by t.create_time desc
+	</select>
+	<select id="queryCustomerinfoById" parameterType="java.lang.Integer" resultType="com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean">
+		<include refid="selectSql"/>
+		WHERE t.id=#{id}
 	</select>
 
 </mapper>

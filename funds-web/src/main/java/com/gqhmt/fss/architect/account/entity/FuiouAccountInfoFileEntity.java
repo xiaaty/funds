@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.account.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
@@ -28,16 +29,19 @@ public class FuiouAccountInfoFileEntity {
     private int id;
 
     @Column(name = "trade_type")
-    private String tradeType;   //交易类型：  1.冻结/解冻 - DJJD . 2 .转账 - zz . 3.划拨 - HB . 4.委托充值 - WTCZ . 5.委托提现 - WTTX . 6.预授权交易 - YSQ
+    private String tradeType;           //交易类型：  1.冻结/解冻 - DJJD . 2 .转账 - zz . 3.划拨 - HB . 4.委托充值 - WTCZ . 5.委托提现 - WTTX . 6.预授权交易 - YSQ
 
-    @Column(name = "createfile_date")
-    private String createFileDate;  //FTP 文件日期
+    //不存储创建时间，仅做取文件用， 数据库自动生成创建时间;
+    private Date createTime;
 
     @Column(name = "remark")
-    private String remark;          //备注
+    private String remark;              //备注
 
     @Column(name = "boolean_type")
-    private String booleanType;          //抓取状态 -1为抓取失败， 其他为抓取成功
+    private String booleanType;         //抓取状态 -1为抓取失败， 其他为抓取成功
+
+    @Column(name = "file_path")
+    private String filePath;            //文件本地路径
 
     public int getId() {
         return id;
@@ -55,12 +59,12 @@ public class FuiouAccountInfoFileEntity {
         this.tradeType = tradeType;
     }
 
-    public String getCreateFileDate() {
-        return createFileDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateFileDate(String createFileDate) {
-        this.createFileDate = createFileDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getRemark() {
@@ -77,5 +81,13 @@ public class FuiouAccountInfoFileEntity {
 
     public void setBooleanType(String booleanType) {
         this.booleanType = booleanType;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
