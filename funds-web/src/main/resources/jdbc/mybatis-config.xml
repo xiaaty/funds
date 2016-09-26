@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-co
 	    <typeAlias type="com.gqhmt.fss.architect.account.entity.FssAccountEntity" alias="fssAccountEntity"/>
 	    <typeAlias type="com.gqhmt.funds.architect.customer.entity.BankEntity" alias="bankEntity"/>
 	    <typeAlias type="com.gqhmt.fss.architect.asset.entity.FssAssetEntity" alias="fssAssetEntity"/>
+		<typeAlias type="com.gqhmt.fss.architect.account.entity.FssRedAccountEntity" alias="fssRedAccountEntity"/>
 	    
 	    <!-- 账户相关 end -->
 	    <!-- 交易相关 -->

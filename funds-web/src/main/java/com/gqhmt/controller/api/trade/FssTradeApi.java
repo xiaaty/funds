@@ -294,7 +294,7 @@ public class FssTradeApi {
 	 * @param dto
 	 * @return
      */
-	@RequestMapping(value = "/offlineRechargeApply",method = RequestMethod.POST)
+	@RequestMapping(value = "/offlineRechargeApply",method = {RequestMethod.GET,RequestMethod.POST})
 	public Object offlineRechargeApply(OfflineRechargeApplyDto dto){
 
 		Response response=new Response();

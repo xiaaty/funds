@@ -125,7 +125,27 @@ public class BidSettleService extends BidSupper{
             }
         }
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
-            FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+//            FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+            FundAccountEntity fromEntity=null;
+            //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
+            List<FundAccountEntity> redAccountList=fundAccountService.getRedAccountList();
+            Map<String,Object> map2=new HashMap<String,Object>();
+            if(redAccountList!=null && redAccountList.size()>0){
+                for(FundAccountEntity entity:redAccountList){
+                    if (entity.getAmount().compareTo(bonusAmount)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
+                        map2.put("account",entity);
+                        break;
+                    }
+                }
+                FundAccountEntity redAccountEntity=(FundAccountEntity)map2.get("account");//获取到金额大于红包金额的红包账户
+                if(redAccountEntity==null){//如果运营红包中的金额都比红包金额小，则从冠群红包账户 custId=4 账户中出钱
+                    fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//冠群红包账户 custId=4
+                }else{
+                    fromEntity=redAccountEntity;
+                }
+            }else{
+                fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//冠群红包账户 custId=4
+            }
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", "",-1l,null,null,bid.getCustomerId().longValue(),bid.getContractNo()));
         }
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);

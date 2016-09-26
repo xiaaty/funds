@@ -398,5 +398,12 @@ public class FundAccountService {
 			return fundsAccountReadMapper.getFundsAccountByBusiType(busi_type);
 		}
 
+		/**
+		 * 查询红包账户
+		 * @return
+		 */
+		public List<FundAccountEntity> getRedAccountList(){
+			return fundsAccountReadMapper.getRedAccountList();
+		}
 }
 
