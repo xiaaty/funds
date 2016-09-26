@@ -11,7 +11,8 @@
 		t.`create_time` createTime,
 		t.`creater` creater,
 		t.`modify_time` modifyTime,
-		t.`updater` updater
+		t.`updater` updater,
+		t.`is_valid` isValid
 		FROM t_gq_fss_red_account t
 		<where>
 			<if test="custId!=null and custId!=''">
@@ -19,6 +20,9 @@
 			</if>
 			<if test="accountName!=null and accountName!=''">
 				AND t.`account_name`=#{accountName}
+			</if>
+			<if test="isValid!=null and isValid!=''">
+				AND t.`is_valid`=#{isValid}
 			</if>
 			<if test="startTime != null and startTime != '' ">
 				and date_format(ta.create_time,'%Y%m%d') &gt;= #{startTime}

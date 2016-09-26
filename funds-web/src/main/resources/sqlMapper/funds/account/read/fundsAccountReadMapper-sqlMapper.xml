@@ -163,7 +163,7 @@
 		  FROM
 			 t_gq_fss_red_account red
 		  left join t_gq_fund_account acc ON acc.cust_id=red.cust_id
-		  WHERE acc.busi_type=0
+		  WHERE acc.busi_type=0 and red.is_valid='0'
 		  ORDER BY red.id asc
 	</select>
 

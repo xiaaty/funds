@@ -47,7 +47,7 @@
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
  				<!-- NEW WIDGET START -->
-                      <div class="jarviswidget" id="oldAccMsg"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                      <div class="jarviswidget" id="redAccMsg"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
                                 <h2>快速搜索</h2>
                             </header>
@@ -65,7 +65,6 @@
                                                 <col width="100" />
                                                 <col />
                                                 <tbody>
-                                                    <tr></tr>
                                                     <tr>
                                                         <td class="tr">客户编号：</td>
                                                         <td>
@@ -73,26 +72,36 @@
                                                                 <input type="text" style="width:200px" name="custId" value="${map.custId}" />
                                                             </label>
                                                         </td>
-                                                         <td class="tr">账户名称：</td>
+                                                        <td class="tr">账户名称：</td>
                                                         <td>
                                                             <label class="input" style="width:200px" >
                                                                 <input type="text" name="accountName" value="${map.accountName}" />
                                                             </label>
                                                         </td>
-                                                        <td class="tr">创建日期：</td>
-			                                            <td colspan="5">
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" name="startDate" class="selectdate" placeholder="请选择时间" value="${Customer.create_time}">
-			                                                    </label>
-			                                                </section>
-			                                                <span class="fl">&nbsp;至&nbsp;</span>
-			                                                <section class="fl">
-			                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-			                                                        <input type="text" maxlength="10" name="endDate" class="selectdate" placeholder="请选择时间" value="${Customer.modify_time}">
-			                                                    </label>
-			                                                </section>
-			                                            </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <td class="tr">账户状态：</td>
+                                                        <td>
+                                                                <select id = "isValid" name = "isValid" style="width:200px;height: 30px;">
+                                                                    <option value="">所有</option>
+                                                                    <option  <c:if test="${map.isValid==0}"> selected="selected" </c:if> value="0">有效</option>
+                                                                    <option  <c:if test="${map.isValid==1}"> selected="selected" </c:if> value="1" >无效</option>
+                                                                </select>
+                                                        </td>
+                                                        <td class="tr">创建时间：</td>
+                                                        <td colspan="3">
+                                                            <section class="fl">
+                                                                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                    <input type="text" maxlength="10" readonly="readonly" name="startTime" class="selectdate" placeholder="请选择时间" value="${map.startTime}">
+                                                                </label>
+                                                            </section>
+                                                            <span class="fl">&nbsp;至&nbsp;</span>
+                                                            <section class="fl">
+                                                                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                    <input type="text" maxlength="10" readonly="readonly"  name="endTime" class="selectdate" placeholder="请选择时间" value="${map.endTime}">
+                                                                </label>
+                                                            </section>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -127,24 +136,26 @@
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;height: 40px;">
                                         <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
                                     </div>
-                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1250px;">
+                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1400px;">
                                         <col width="50" />
                                         <col width="100" />
                                         <col width="150" />
+                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="150" />
                                         <col width="200" />
-                                         <col width="150" />
-                                         <col width="200" />
-                                        <col width="50" />
+                                        <col width="150" />
+                                        <col width="200" />
+                                        <col width="100" />
                                         <thead>
                                         <tr>
-                                            <td>序号</td>
+                                              <td>序号</td>
                                               <td>客户编号</td>
                                               <td>账户名称</td>
                                               <td>账户类型</td>
                                               <td>交易类型</td>
+                                              <td>账户状态</td>
                                               <td>创建人</td>
                                               <td>创建日期</td>
                                               <td>修改人</td>
@@ -160,6 +171,7 @@
                                                     <td>${t.accountName}</td>
                                                     <td>${t.accountType==0?"主账户":"其他账户"}</td>
                                                     <td>${t.tradeType}</td>
+                                                    <td>${t.isValid==0?"有效":"无效"}</td>
                                                     <td>${t.creater}</td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>${t.updater}</td>
@@ -187,6 +199,38 @@
 	     pageSetUp();
 	     DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
 	 });
+
+     $('.selectdate').datetimepicker({
+         language:  'zh-CN',
+         weekStart: 1,
+         autoclose: 1,
+         format:'yyyy-mm-dd',
+         todayHighlight: 1,
+         startView: 2,
+         minView: 2,
+         forceParse: 0
+     });
+     function verify(){
+         var a=document.getElementsByName("startTime");
+         var b=document.getElementsByName("endTime");
+         if(b[0].value!=null&&b[0].value!=''){
+             if(a[0].value>b[0].value){
+                 alert("请检查您输入的日期");
+             }else{
+                 $("#Form").submit();
+             }
+         }else{
+             var d = new Date();
+             var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+             if(a[0].value>str){
+                 alert("请检查您输入的日期");
+             }else{
+                 $("#Form").submit();
+             }
+         }
+     }
+
+
 
      //添加红包账户
      $("#btn_add").button().click(function() {

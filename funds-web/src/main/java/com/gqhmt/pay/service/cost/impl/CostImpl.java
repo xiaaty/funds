@@ -2,6 +2,7 @@ package com.gqhmt.pay.service.cost.impl;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
@@ -315,8 +316,8 @@ public class CostImpl  implements ICost{
                          break;
                      }
                  }
-                 System.out.print("==============="+map.get("account")+"\n");
                  FundAccountEntity redAccountEntity=(FundAccountEntity)map.get("account");//获取到金额大于红包金额的红包账户
+                 LogUtil.info(this.getClass(),"红包账户信息:"+redAccountEntity.getCustId()+":"+redAccountEntity.getAccountNo()+":"+redAccountEntity.getAmount()+":"+redAccountEntity.getCustName()+":"+redAccountEntity.getAccountType());
                  if(redAccountEntity==null){//如果运营红包中的金额都比红包金额小，则从冠群红包账户 custId=4 账户中出钱
                      publicAccount = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//冠群红包账户 custId=4
                  }else{

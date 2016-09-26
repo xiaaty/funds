@@ -46,6 +46,7 @@ public class FssRedAccountService {
             String startTime = map.get("startTime");
             String endTime = map.get("endTime");
             map2.put("custId", map.get("custId"));
+            map2.put("isValid", map.get("isValid"));
             map2.put("accountName", map.get("accountName"));
             map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
             map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
@@ -71,6 +72,7 @@ public class FssRedAccountService {
            redAccountEntity.setCreateTime(new Date());
            redAccountEntity.setUpdater(creator);
            redAccountEntity.setModifyTime(new Date());
+           redAccountEntity.setIsValid("0");
            fssRedAccountWriteMapper.insertUseGeneratedKeys(redAccountEntity);
        }catch (Exception e){
            LogUtil.error(this.getClass(), e);
@@ -78,9 +80,16 @@ public class FssRedAccountService {
        }
     }
 
+    /**
+     * 删除红包账户
+     * @param id
+     * @throws FssException
+     */
     public void delRedAccountById(long id) throws FssException{
-    try {
-        fssRedAccountWriteMapper.deleteByPrimaryKey(id);
+     try {
+        FssRedAccountEntity redAccountEntity=fssRedAccountReadMapper.selectByPrimaryKey(id);
+        redAccountEntity.setIsValid("1");
+        fssRedAccountWriteMapper.updateByPrimaryKey(redAccountEntity);
     }catch (Exception e){
         LogUtil.error(this.getClass(), e);
         throw new FssException("91009805");

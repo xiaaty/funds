@@ -39,6 +39,10 @@ public class FssRedAccountEntity {
     @Column(name = "updater")
     private String updater; //修改人
 
+    @Column(name = "is_valid")
+    private String isValid; //是否有效
+
+
     public long getId() {
         return id;
     }
@@ -109,5 +113,13 @@ public class FssRedAccountEntity {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public String getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(String isValid) {
+        this.isValid = isValid;
     }
 }
