@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssRedAccountReadMapper">
+	<select id="queryRedAccountList" parameterType="java.util.Map" resultType="fssRedAccountEntity">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`account_name` accountName,
+		t.`account_type` accountType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid
+		FROM t_gq_fss_red_account t
+		<where>
+			<if test="custId!=null and custId!=''">
+				AND t.`cust_id`=#{custId}
+			</if>
+			<if test="accountName!=null and accountName!=''">
+				AND t.`account_name`=#{accountName}
+			</if>
+			<if test="isValid!=null and isValid!=''">
+				AND t.`is_valid`=#{isValid}
+			</if>
+			<if test="startTime != null and startTime != '' ">
+				and date_format(ta.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(ta.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
+		</where>
+		order by t.`id` ASC
+	</select>
+
+</mapper>
