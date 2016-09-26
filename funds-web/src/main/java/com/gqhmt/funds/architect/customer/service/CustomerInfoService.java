@@ -1,27 +1,26 @@
 package com.gqhmt.funds.architect.customer.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
-import com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper;
-import com.gqhmt.fss.architect.customer.service.FssChangeCardService;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.CustomerInfoWriteMapper;
 import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
-import com.gqhmt.pay.service.account.impl.FundsAccountImpl;
+import com.gqhmt.pay.core.command.CommandResponse;
+import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  *
@@ -42,17 +41,13 @@ public class CustomerInfoService {
 	@Resource
 	private FundAccountService fundAccountService;
 	@Resource
-	private FssChangeCardService changeCardService;
-	@Resource
 	private GqUserWriteMapper gqUserWriteMapper;
-	@Resource
-	private FssAccountWriteMapper fssAccountWriteMapper;
-	@Resource
-	private FundsAccountImpl fundsAccountImpl;
 	@Resource
     private GqUserService gqUserService;
 	@Resource
 	private BankCardInfoService bankCardinfoService;
+	@Resource
+	private PaySuperByFuiou paySuperByFuiou;
 /*
 	*//**
 	 * 查询客户管理列表
@@ -1149,4 +1144,97 @@ public class CustomerInfoService {
 		 map.put("bankId", Integer.valueOf(bankId).intValue());
 		 customerInfoWriteMapper.updateCustomer(map);
 	 }
+
+	/**
+	 * jhz
+	 * 查询客户信息表
+	 * @param map
+	 * @return
+     */
+	public List<CustomerInfoDetialBean> queryCustomerinfoList(Map<String,String> map){
+		Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");
+			map2.put("id",map.get("id")!=null ? map.get("id") : null);
+			map2.put("name",map.get("name")!=null ? map.get("name") : null);
+			map2.put("certNo", map.get("certNo")!=null ? map.get("certNo") : null);
+			map2.put("mobile", map.get("mobile")!=null ? map.get("mobile") : null);
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+		return customerInfoReadMapper.queryCustomerinfoList(map2);
+	}
+	/**
+	 * jhz
+	 * 查询客户信息
+	 * @param id
+	 * @return
+     */
+	public CustomerInfoDetialBean queryCustomerinfoById(Integer id){
+		return customerInfoReadMapper.queryCustomerinfoById(id);
+	}
+	/**
+	 * jhz
+	 * 查询富友
+	 * @param custId
+	 * @return
+     */
+	public Map<String,String > userInfoQuery(String  custId) throws FssException{
+		FundAccountEntity entity= fundAccountService.getFundAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+		Map<String,String> customerMap = null;
+		CommandResponse response=null;
+		try{
+			response =paySuperByFuiou.userInfoQuery(entity);
+			Map<String, Object> map=response.getMap();
+			if(map == null || map.get("results") == null){
+				return null;
+			}
+			Map<String, Object> resultsMap = (Map<String, Object>) map.get("results");
+			if(resultsMap.get("result") == null){
+				return null;
+			}
+			 customerMap = (Map<String, String>) resultsMap.get(("result"));
+			return customerMap;
+
+		}catch (FssException e){
+			LogUtil.error(this.getClass(),e.getMessage());
+
+		}
+
+		return null;
+	}
+	/**
+	 * jhz
+	 * 进行销户
+	 * @param custId
+	 * @return
+     */
+	public Boolean dropAccount(String  custId) throws FssException{
+		FundAccountEntity entity= fundAccountService.getFundAccount(Long.valueOf(custId), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+			Boolean result=false;
+			try{
+				result=paySuperByFuiou.dropAccount(entity,"2");
+
+			return result;
+
+		}catch (FssException e){
+			LogUtil.error(this.getClass(),e.getMessage());
+
+		}
+
+		return result;
+	}
+
+	/**
+	 * jhz
+	 * 更新用户状态
+	 * @param entity
+	 * @param isvalid
+     */
+	public void updateCustomerInfo(CustomerInfoEntity entity,int isvalid){
+		entity.setIsvalid(1);
+		entity.setModifyTime(new Date());
+		this.update(entity);
+	}
 }

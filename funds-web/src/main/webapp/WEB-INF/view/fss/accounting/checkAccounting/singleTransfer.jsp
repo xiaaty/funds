@@ -109,6 +109,7 @@
                                             </table>
                                         </div>
                                         <footer>
+                                            <button class="btn btn-default fl table-nobg-btn"  id="check" type="button">核&nbsp;&nbsp;&nbsp;对</button>
                                             <button class="btn btn-primary" onclick="javascript:void(0);">查&nbsp;&nbsp;&nbsp;询</button>
                                         </footer>
                                     </div>
@@ -141,7 +142,7 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
-                                        <button class="btn btn-default fl table-nobg-btn"  id="check" type="button">核&nbsp;&nbsp;&nbsp;对</button>
+                                        <%--<button class="btn btn-default fl table-nobg-btn"  id="check" type="button">核&nbsp;&nbsp;&nbsp;对</button>--%>
                                     </div>
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:3800px;">
