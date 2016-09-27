@@ -124,7 +124,7 @@ public class FssCheckAccountingController {
             //循环便利集合得到客户表id并添加进对象
             List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList,type);
             i=list.size();
-            j=fssCheckAccountingService.insertList(enList);
+            j=fssCheckAccountingService.insertCheckList(enList);
             LogUtil.info(this.getClass(),"成功导入数据库"+j+"条");
             map.put("code","0000");
             map.put("msg","共有"+i+"条，导入成功"+j+"条");
