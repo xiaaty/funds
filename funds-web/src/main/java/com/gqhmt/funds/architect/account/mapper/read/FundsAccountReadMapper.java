@@ -99,5 +99,10 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 
 	public List<FundAccountEntity> getRedAccountList();
 
+	/**
+	 * 查询红包出账账户
+	 * @return
+     */
+	public FundAccountEntity getRedAccountByOrderNo(@Param("orderNo") String orderNo);
 
 }

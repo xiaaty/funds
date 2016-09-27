@@ -405,5 +405,20 @@ public class FundAccountService {
 		public List<FundAccountEntity> getRedAccountList(){
 			return fundsAccountReadMapper.getRedAccountList();
 		}
+
+		/**
+		 * 查询红包出账账户
+		 * @param orderNo
+		 * @return
+		 */
+		public FundAccountEntity getRedAccountByOrderNo(String orderNo) throws FssException{
+			FundAccountEntity accountEntity=null;
+			try {
+				accountEntity=fundsAccountReadMapper.getRedAccountByOrderNo(orderNo);
+			}catch (Exception e){
+				LogUtil.error(this.getClass(), e.getMessage());
+			}
+			return accountEntity;
+		}
 }
 
