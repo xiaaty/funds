@@ -79,12 +79,6 @@ public class FssTradeApi {
 	private ITransefer transeferImpl;
     
 	@Resource
-	private ISstxTrade sstxTradeImpl;
-	
-	@Resource
-	private ISsdkTrade ssdkTradeImpl;
-
-	@Resource
 	private IOfflineRechargeApply offRechargeApplyImpl;
 
 	@Resource
