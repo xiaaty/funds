@@ -268,6 +268,7 @@
                 <td align="right">银行卡号：</td>
                 <td>
                     <label class="input">
+                        <input type="hidden" maxlength="50" readonly="readonly" style="border:none" id="capAcntNos"  style="width:256px;" />
                         <input type="text" maxlength="50" readonly="readonly" style="border:none" id="capAcntNo" name="capAcntNo"  style="width:256px;" />
                     </label>
                 </td>
@@ -440,11 +441,12 @@
             url:"${contextPath}/checkCustomerInfo/checkbankNo/"+id,
             method:"post",
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data:{bankCode:$("#bankCode").val(),bankNo:$("#capAcntNo").val(),bankName: $("#bank_nm").val()},
+            data:{bankCode:$("#bankCode").val(),bankNo:$("#capAcntNos").val(),bankName: $("#bank_nm").val()},
             dateType:"json",
             success : function (data){
                 if (data.code == '0000') {
                     alert(data.msg);
+                    location.reload();
                 }else{
                     alert(data.msg);
                 }
@@ -491,6 +493,8 @@
                     $("#mobile_no").val(transferTo(data.custmerMap.mobile_no));
                     $("#certif_id").val(transferTo(data.custmerMap.certif_id));
                     $("#bank_nm").val(data.custmerMap.bank_nm);
+
+                    $("#capAcntNos").val(data.custmerMap.capAcntNo);
                     $("#capAcntNo").val(transferTo(data.custmerMap.capAcntNo));
                     $("#card_pwd_verify_st").val(data.custmerMap.card_pwd_verify_st);
                     if($("#card_pwd_verify_st").val() == 0){
@@ -549,6 +553,8 @@
                     }else{
                         $("#certNo").css("color","red")
                     }
+                }else{
+                    alert(data.msg);
                 }
 
             }
