@@ -59,8 +59,8 @@
 			and t.trade_time &lt;= #{endTime}
 		</if>
 		</where>
-
-    </select>
+		ORDER  BY t.trade_time DESC
+	</select>
 	<select id="queryWithList"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
     	<include refid="field"/>
 		WHERE t.trade_type IN (10980001,10980003) AND t.`accounting_status`=98010002
