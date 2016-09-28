@@ -1,6 +1,8 @@
 package com.gqhmt.core.util;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.customer.entity.FssAreaMappingEntity;
 import com.gqhmt.fss.architect.customer.service.FssAreaMappingService;
 import com.gqhmt.fss.architect.merchant.entity.MerchantEntity;
@@ -44,7 +46,7 @@ public class Application {
     private final Map<String,String> dictOrder = new ConcurrentHashMap<>();
 
     private final Map<String,MerchantEntity>   merchantEntityMap = new ConcurrentHashMap<>();
-    
+    private final Map<String,FssMappingEntity>   mappingEntityMap = new ConcurrentHashMap<>();
     private final Map<String,BankDealamountLimitEntity>   bankAmountLimitMap = new ConcurrentHashMap<>();
     
     private final Map<String,String>   fourCodemap = new ConcurrentHashMap<>();
@@ -68,7 +70,9 @@ public class Application {
         LogUtil.debug(this.getClass(),sixCodemap.toString());
         LogUtil.debug(this.getClass(),fourCodemap.toString());
         LogUtil.debug(this.getClass(),merchantRepayConfigEntityMap.toString());
+        LogUtil.debug(this.getClass(),mappingEntityMap.toString());
 //        LogUtil.debug(this.getClass(),bankEntitymap.toString());
+
     }
 
     public void reload() throws FssException{
@@ -82,6 +86,7 @@ public class Application {
             eightCodemap.clear();
             //回盘地址
             merchantRepayConfigEntityMap.clear();
+            mappingEntityMap.clear();
 //            bankEntitymap.clear();
             update();
         }
@@ -95,6 +100,7 @@ public class Application {
         //回盘地址
         initMerchantRepayConfigEntity();
 //        initBankList();
+        initFssMapping();
     }
 
     /*======================================数据字典初始化及应用========================================================*/
@@ -459,4 +465,24 @@ public class Application {
     }
 
     /*======================================菜单初始化及应用结束========================================================*/
+
+    /*=====================================映射配置初始化及应用========================================================*/
+
+    private void initFssMapping(){
+        FssMappingService fssMappingService = ServiceLoader.get(FssMappingService.class);
+
+        List<FssMappingEntity> findAll = fssMappingService.findAll();
+        for(FssMappingEntity fssMappingEntity:findAll) {
+            mappingEntityMap.put(fssMappingEntity.getTradeType(),fssMappingEntity);
+        }
+    }
+
+    public String getMappingTypeByTradeType(String tradeType) throws FssException {
+        FssMappingEntity fssMappingEntity = mappingEntityMap.get(tradeType);
+        if(fssMappingEntity == null){
+            throw new FssException("90099009");
+        }
+        return fssMappingEntity.getMappingType();
+    }
+    /*======================================映射配置初始化及应用========================================================*/
 }

@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
-import com.gqhmt.fss.architect.account.entity.FssRedAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 
 /**
  * Filename:    com.gqhmt.fss.architect.account.mapper.write.FssAccountWriteMapper
@@ -18,5 +18,5 @@ import com.gqhmt.fss.architect.account.entity.FssRedAccountEntity;
  * -----------------------------------------------------------------
  * 16/9/4  keyulai      1.0     1.0 Version
  */
-public interface FssRedAccountWriteMapper extends ReadAndWriteMapper<FssRedAccountEntity> {
+public interface FssMappingWriteMapper extends ReadAndWriteMapper<FssMappingEntity> {
 }

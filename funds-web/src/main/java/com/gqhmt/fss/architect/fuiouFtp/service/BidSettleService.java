@@ -7,6 +7,8 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -73,10 +75,8 @@ public class BidSettleService extends BidSupper{
     @Resource
     private FssBackplateService fssBackplateService;
 
-
-
-
-
+    @Resource
+    private FssMappingService fssMappingService;
 
     public void settle(FssLoanEntity loanEntity) throws FssException {
         Map<String,String > paramMap = new HashMap<>();
@@ -128,7 +128,13 @@ public class BidSettleService extends BidSupper{
 //            FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
             FundAccountEntity fromEntity=null;
             //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
-            List<FundAccountEntity> redAccountList=fundAccountService.getRedAccountList();
+//            List<FundAccountEntity> redAccountList=fundAccountService.getRedAccountList();
+            List<FssMappingEntity> mappinglist=fssMappingService.getMappingListByType("10010006");
+            List list3=list=new ArrayList();
+            for(FssMappingEntity  mappingEntity:mappinglist){
+                list3.add(mappingEntity.getCustId());
+            }
+            List<FundAccountEntity> redAccountList=fundAccountService.getRedAccountList(list3);
             Map<String,Object> map2=new HashMap<String,Object>();
             if(redAccountList!=null && redAccountList.size()>0){
                 for(FundAccountEntity entity:redAccountList){
