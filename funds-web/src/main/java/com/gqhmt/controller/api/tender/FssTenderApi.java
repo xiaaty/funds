@@ -4,6 +4,7 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.tender.BidDto;
 import com.gqhmt.extServInter.service.tender.IBidTender;
+import com.gqhmt.extServInter.service.tender.INewBidTender;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,7 +38,9 @@ public class FssTenderApi {
     
     @Resource
     private IBidTender bidImpl;
-    
+    @Resource
+    private INewBidTender newBidImpl;
+
     /**
      * 
      * author:柯禹来
@@ -51,6 +54,23 @@ public class FssTenderApi {
 //            FssSeqOrderEntity fssSeqOrderEntity = GenerateBeanUtil.GenerateClassInstance(FssSeqOrderEntity.class,createAccountByFuiou);
 //            applicationContext.publishEvent(new CreateAccountEvent(fssSeqOrderEntity));
     		response = bidImpl.execute(bidDto);
+    	} catch (Exception e) {
+			response = this.execute(e);
+    	}
+    	return response;
+    }
+
+	/**
+	 * jhz
+	 * 新手标投标
+	 * @param bidDto
+	 * @return
+     */
+    @RequestMapping(value = "/newHandBid",method = RequestMethod.POST)
+    public Object newHandBid(@RequestBody BidDto bidDto){
+    	Response response=new Response();
+    	try {
+    		response = newBidImpl.execute(bidDto);
     	} catch (Exception e) {
 			response = this.execute(e);
     	}
