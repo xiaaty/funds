@@ -12,9 +12,6 @@ import com.gqhmt.extServInter.service.loan.ICreateLoan;
 import com.gqhmt.extServInter.service.loan.ILoadWithDraw;
 import com.gqhmt.extServInter.service.loan.IMarginSendBack;
 import com.gqhmt.extServInter.service.loan.IRepayment;
-import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.pay.service.account.IFundsAccount;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,14 +38,10 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping(value = "/api")
 public class LoanAccountApi {
-	@Resource
-	private ApplicationContext applicationContext;
     @Resource
     private ICreateLoan createLoanImpl;
     @Resource
     private IChangeCard changeCardImpl;
-    @Resource
-    private IFundsAccount fundsAccountImpl;
     @Resource
     private ILoadWithDraw loadWithDrawImpl;
     @Resource
@@ -56,9 +49,7 @@ public class LoanAccountApi {
     @Resource
     private IRepayment repaymentImpl;
     
-    @Resource
-    private FssAccountService fssAccountService;
-    
+
     /**
      * author:柯禹来
      * time:2016年3月7日
