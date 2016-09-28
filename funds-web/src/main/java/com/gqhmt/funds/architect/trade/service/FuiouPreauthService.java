@@ -95,7 +95,9 @@ public class FuiouPreauthService {
         fuiouPreauth.setUserName(fromEntity.getUserName());
         fuiouPreauth.setState(1);
         fuiouPreauth.setUseAmount(BigDecimal.ZERO);
-        fuiouPreauth.setToUserName(toSFEntity.getUserName());
+        if(toSFEntity!=null) {
+            fuiouPreauth.setToUserName(toSFEntity.getUserName());
+        }
         fuiouPreauth.setContractNo(contractNo);
         fuiouPreauth.setOrderNo(fundOrderEntity.getOrderNo());
         insert(fuiouPreauth);
