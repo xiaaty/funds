@@ -17,7 +17,7 @@
 			t.repayment_id repaymentId,
 			t.bonus_amount bonusAmount
 		FROM t_gq_fund_trade t,t_gq_fund_account f
-		WHERE  t.account_id = f.id AND f.cust_id = #{cust_no} AND (f.busi_type = 3 OR f.busi_type = 99)
+		WHERE  t.account_id = f.id AND f.cust_id = #{cust_no} AND f.busi_type = 3
 		<if test="str_trade_time != null and str_trade_time !='' "> <![CDATA[and STR_TO_DATE(t.trade_time,'%Y-%m-%d') >= STR_TO_DATE(#{str_trade_time},'%Y-%m-%d')]]> </if>
 		<if test="end_trade_time != null and end_trade_time !='' "><![CDATA[ and STR_TO_DATE(t.trade_time,'%Y-%m-%d') <= STR_TO_DATE(#{end_trade_time},'%Y-%m-%d')]]> </if>
 		AND t.trade_type IN
