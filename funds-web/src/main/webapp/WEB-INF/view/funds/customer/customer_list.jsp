@@ -549,6 +549,8 @@
                     }else{
                         $("#certNo").css("color","red")
                     }
+                }else{
+                    alert(data.msg);
                 }
 
             }
