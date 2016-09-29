@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>账户管理--映射配置信息--冠群驰骋投资管理(北京)有限公司</title>
+    <title>系统配置--映射配置信息--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
@@ -35,7 +35,7 @@
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
-            <li>账户管理</li>
+            <li>系统配置</li>
             <li>映射配置信息</li>
         </ol>
         <!-- end breadcrumb -->
