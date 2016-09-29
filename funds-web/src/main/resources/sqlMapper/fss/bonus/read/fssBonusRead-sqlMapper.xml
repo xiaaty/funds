@@ -43,4 +43,9 @@
   <include refid="field"/>
   WHERE t.parent_id =#{parentId}
  </select>
+ <select id="selectCountBySeqNo"  resultType="java.lang.Integer">
+  SELECT count(*) FROM  t_gq_fss_bonus t
+  WHERE t.seq_no =#{seqNo}
+ </select>
+
  </mapper>

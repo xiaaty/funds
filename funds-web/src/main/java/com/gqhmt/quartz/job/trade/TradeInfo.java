@@ -1,6 +1,7 @@
 package com.gqhmt.quartz.job.trade;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import com.gqhmt.quartz.service.FtpOfflineResultService;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,42 +50,61 @@ public class TradeInfo extends SupperJob {
     }
 
     @Scheduled(cron = "0 0/10 09-12 * * *")
-    public void executeAm() throws FssException, ParseException {
+    public void executeAm() throws PayChannelNotSupports {
         run();
     }
 
     @Scheduled(cron = "0 0/10 16-19 * * *")
-    public void executePm() throws FssException, ParseException {
+    public void executePm() throws PayChannelNotSupports {
         run();
     }
 
-    private void run() throws ParseException, FssException {
+    private void run() throws PayChannelNotSupports {
+
+        if(!isIp("upload")){
+            return;
+        }
 
         if(isRunning) return;
 
         startLog("线下充值回盘记录");
+
         isRunning = true;
 
-        String[] timeAll = createTime.split(",");
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         Date date = new Date();
         String today = sdf.format(date);
 
+        try {
+            downloadTradeInfo(today);
+        } catch (FssException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } finally {
+            isRunning = false;
+        }
+        endtLog();
+    }
+
+    public void downloadTradeInfo(String today) throws ParseException, FssException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
         List<Date> fileCreateTime = new ArrayList<Date>();
+
+        String[] timeAll = createTime.split(",");
 
         for(int i=0; i<timeAll.length; i++){
             String createTimeStr = today+ " " +timeAll[i];
-            fileCreateTime.add(sdf2.parse(createTimeStr));
+            fileCreateTime.add(sdf.parse(createTimeStr));
         }
 
         for(int i=0; i<fileCreateTime.size(); i++){
             ftpOfflineResultService.downloadTradeInfo(fileCreateTime.get(i),tradeInfoPath);
         }
 
-        endtLog();
     }
 
 }

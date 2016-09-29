@@ -53,14 +53,14 @@
 			and t.acc_name like concat('%',#{accName},'%')
 		</if>
 		<if test="startTime != null and startTime != '' ">
-			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+			and t.trade_time &gt;= #{startTime}
 		</if>
 		<if test="endTime != null and endTime != '' ">
-			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+			and t.trade_time &lt;= #{endTime}
 		</if>
 		</where>
-		ORDER  BY  t.create_time DESC
-    </select>
+		ORDER  BY t.trade_time DESC
+	</select>
 	<select id="queryWithList"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
     	<include refid="field"/>
 		WHERE t.trade_type IN (10980001,10980003) AND t.`accounting_status`=98010002

@@ -5,10 +5,8 @@ import com.google.common.collect.Maps;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.fss.architect.accounting.entity.*;
 import com.gqhmt.fss.architect.accounting.service.*;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -26,8 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Filename:    com.gqhmt.controller.fss.trade.FssTradeApplyController
@@ -58,6 +55,8 @@ public class FssCheckAccountingController {
     private TradeRecordService tradeRecordService;
     @Resource
     private FundSequenceService fundSequenceService;
+    @Resource
+    private FssImportDataService fssImportDataService;
 
     /**
      * jhz
@@ -100,9 +99,8 @@ public class FssCheckAccountingController {
         int j=0;
         Map map= Maps.newHashMap();
         String basePath = request.getSession().getServletContext().getRealPath("/")+"upload";
-        LogUtil.debug(this.getClass(),basePath);
+        LogUtil.info(this.getClass(),basePath);
         ReadExcelUtil<FssCheckAccountingEntity> excelUtil = new ReadExcelUtil<FssCheckAccountingEntity>(basePath,FssCheckAccountingEntity.class);
-
         String[] columns = null;
         if ("10980001".equals(type)||"10980002".equals(type)){
             //提现和体现退票
@@ -118,54 +116,16 @@ public class FssCheckAccountingController {
                     "toUserName", "contractNo","itemNo","remark","status"};
         }
         try {
-            //通过反射得到导入的对账列表
+            //得到导入的对账列表
             List<FssCheckAccountingEntity> list = excelUtil.getExcelData(multipartFile,columns, 0);
-            LogUtil.debug(this.getClass(),list.toString());
-
+//            List<FssCheckAccountingEntity> list = fssImportDataService.readExcelWithTitle(multipartFile,basePath,type);
+            LogUtil.info(this.getClass(),"需要导入的对账信息有："+list.size()+"条");
+            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list);
             //循环便利集合得到客户表id并添加进对象
-            List<FssCheckAccountingEntity> enList= Lists.newArrayList();
-            FundAccountEntity fundAccountEntity=null;
-            FundAccountEntity toFundAccountEntity=null;
-            String accName=null;
-            String  toAccName=null;
-            Map<String,String> map1=ResourceUtil.list("config.account");
-            for (FssCheckAccountingEntity entity: list) {
-                if(map1!=null){
-                    accName = map1.get(entity.getAccName());
-                }
-                if(StringUtils.isNotEmpty(accName)){
-                    fundAccountEntity= fundAccountService.getFundAccount(accName,1);
-                }else {
-                    fundAccountEntity = fundAccountService.getFundAccount(entity.getAccName(), 1);
-                }
-                if(fundAccountEntity!=null) {
-                    entity.setCustId(fundAccountEntity.getCustId().toString());
-                }
-                if(StringUtils.isNotEmpty(entity.getToAccName())){
-                    if(map1!=null){
-                        toAccName = map1.get(entity.getToAccName());
-                    }
-                    if(StringUtils.isNotEmpty(toAccName)){
-                        toFundAccountEntity= fundAccountService.getFundAccount(toAccName,1);
-                    }else {
-                        toFundAccountEntity = fundAccountService.getFundAccount(entity.getToAccName(), 1);
-                    }
-                    if(toFundAccountEntity!=null) {
-                        entity.setToCustId(toFundAccountEntity.getCustId().toString());
-                    }
-                }
-                entity=fssCheckAccountingService.createChecking(entity,type);
-                enList.add(entity);
-            }
-            i=enList.size();
-            for (FssCheckAccountingEntity entity:enList) {
-                try {
-                    fssCheckAccountingService.insert(entity);
-                    j++;
-                }catch (FssException e){
-                    continue;
-                }
-            }
+            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList,type);
+            i=list.size();
+            j=fssCheckAccountingService.insertCheckList(enList);
+            LogUtil.info(this.getClass(),"成功导入数据库"+j+"条");
             map.put("code","0000");
             map.put("msg","共有"+i+"条，导入成功"+j+"条");
         } catch (ReadExcelErrorException e) {

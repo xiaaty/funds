@@ -1,10 +1,12 @@
 package com.gqhmt.funds.architect.customer.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CustomerInfoReadMapper extends ReadMapper<CustomerInfoEntity>{
 	
@@ -30,4 +32,18 @@ public interface CustomerInfoReadMapper extends ReadMapper<CustomerInfoEntity>{
 	 * @return
 	 */
 	public CustomerInfoEntity searchCustomerInfoByMobile(@Param("mobile") String mobile);
+	/**
+	 * jhz
+	 * 查询客户信息表
+	 * @param map
+	 * @return
+	 */
+	public List<CustomerInfoDetialBean> queryCustomerinfoList(Map map);
+	/**
+	 * jhz
+	 * 查询客户信息
+	 * @param id
+	 * @return
+	 */
+	public CustomerInfoDetialBean queryCustomerinfoById(@Param("id") Integer id);
 }

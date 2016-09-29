@@ -36,5 +36,10 @@ public interface FssBonusReadMapper extends ReadMapper<FssBonusEntity>{
     * @return
      */
    public List<FssBonusEntity> selectByParentId(@Param("parentId") Long parentId);
+   /**
+    * jhz
+    * @return
+    */
+   public int selectCountBySeqNo(@Param("seqNo") String seqNo);
 
 }
