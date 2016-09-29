@@ -633,7 +633,7 @@ public class FundSequenceService {
       if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
           FundAccountEntity  fromEntity=null;
 //          FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-          //查询红包金从哪个运营商的红包账户出
+          //查询红包金额从哪个运营商的红包账户出
            fromEntity =fundAccountService.getRedAccountByOrderNo(fundOrderEntity.getOrderNo());
 
           //this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);

@@ -4,12 +4,13 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
-import com.gqhmt.fss.architect.account.entity.FssRedAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.account.service.FssRedAccountService;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.UserEntity;
+import com.gqhmt.sys.entity.DictEntity;
+import com.gqhmt.sys.service.SystemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +41,11 @@ public class FssAccountController {
 	@Resource
     private FssAccountService fssAccountService;
 	@Resource
-    private FssRedAccountService fssRedAccountService;
+    private FssMappingService fssMappingService;
 	@Resource
 	private FundAccountService fundAccountService;
+	@Resource
+	private SystemService systemService;
     /**
      * 账户信息
      * @param request
@@ -60,7 +63,7 @@ public class FssAccountController {
     }
 
 	/**
-	 * 红包账户列表信息
+	 * 映射配置列表信息
 	 * @param request
 	 * @param model
 	 * @return
@@ -68,14 +71,14 @@ public class FssAccountController {
 	@RequestMapping(value = "/account/redaccountlist",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public Object redAccountList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-		List<FssRedAccountEntity> redacclist = fssRedAccountService.queryRedAccountList(map);
-		model.addAttribute("page", redacclist);
+		List<FssMappingEntity> list = fssMappingService.queryRedAccountList(map);
+		model.addAttribute("page", list);
 		model.put("map", map);
-		return "fss/account/redAccountList";
+		return "fss/account/mappingList";
 	}
 
 	/**
-	 * 添加红包账户
+	 * 添加映射配置
 	 * @param request
 	 * @param model
 	 * @return
@@ -83,7 +86,10 @@ public class FssAccountController {
      */
 	@RequestMapping(value = "/account/addRedAccount", method = {RequestMethod.GET, RequestMethod.POST})
 	public Object AddAccountInfo(HttpServletRequest request, ModelMap model) throws FssException {
-		return "fss/account/addRedAccount";
+		List<DictEntity> list= systemService.getDictList();
+		//获取商户列表
+		model.addAttribute("list",list);
+		return "fss/account/addMapping";
 	}
 
 	/**
@@ -112,8 +118,7 @@ public class FssAccountController {
 
 
 	/**
-	 * 保存账户信息
-	 *
+	 * 保存映射配置信息
 	 * @param request
 	 * @param map
 	 * @return
@@ -124,12 +129,21 @@ public class FssAccountController {
 		HttpSession session=  request.getSession();
 		String creator = (String)session.getAttribute("userName");
 		String custId = map.get("custId");
-		String accountName = map.get("accountName");
+		String remark = map.get("remark");
+		String mappingType = map.get("mappingType");
+		String tradeType = map.get("tradeType");
+		String sort = map.get("sort");
 		Map<String, String> map2 = new HashMap<String, String>();
 		try {
-			fssRedAccountService.saveRedAccount(custId,accountName,creator);
-			map2.put("code", "0000");
-			map2.put("message", "success");
+			FssMappingEntity entity=fssMappingService.getMappingByCustId(custId);
+			if(entity==null){
+				fssMappingService.saveRedAccount(custId,remark,creator,mappingType,tradeType,sort);
+				map2.put("code", "0000");
+				map2.put("message", "success");
+			}else{
+				map2.put("code", "1002");
+				map2.put("message", "success");
+			}
 		} catch (FssException e) {//保存失败
 			String resp_msg = Application.getInstance().getDictName(e.getMessage());
 			map.put("code", e.getMessage());
@@ -139,7 +153,7 @@ public class FssAccountController {
 	}
 
 	/**
-	 * 删除红包账户信息
+	 * 删除映射配置信息
 	 * @param request
 	 * @return
 	 * @throws FssException
@@ -150,7 +164,7 @@ public class FssAccountController {
 		long id=Long.valueOf(request.getParameter("id"));
 		Map<String, String> map = new HashMap<String, String>();
 		try {
-			fssRedAccountService.delRedAccountById(id);
+			fssMappingService.delRedAccountById(id);
 			map.put("code", "0000");
 			map.put("message", "删除成功");
 		} catch (FssException e) {
@@ -160,15 +174,4 @@ public class FssAccountController {
 		}
 		return map;
 	}
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -7,8 +7,8 @@ import java.util.Date;
  * 红包账户实体类
  */
 @Entity
-@Table(name = "t_gq_fss_red_account")
-public class FssRedAccountEntity {
+@Table(name = "t_gq_fss_mapping")
+public class FssMappingEntity {
 
     @Id
     @Column(name = "id")
@@ -18,11 +18,11 @@ public class FssRedAccountEntity {
     @Column(name = "cust_id")
     private long custId;    //客户编号
 
-    @Column(name = "account_name")
-    private String accountName;//账户名称
+    @Column(name = "remark")
+    private String remark;//备注
 
-    @Column(name = "account_type")
-    private String accountType;      //账户类型
+    @Column(name = "mapping_type")
+    private String mappingType;      //映射类型
 
     @Column(name = "trade_type")
     private String tradeType;   //交易类型
@@ -42,6 +42,8 @@ public class FssRedAccountEntity {
     @Column(name = "is_valid")
     private String isValid; //是否有效
 
+    @Column(name = "sort")
+    private String sort; //排序
 
     public long getId() {
         return id;
@@ -57,22 +59,6 @@ public class FssRedAccountEntity {
 
     public void setCustId(long custId) {
         this.custId = custId;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
     }
 
     public String getTradeType() {
@@ -121,5 +107,29 @@ public class FssRedAccountEntity {
 
     public void setIsValid(String isValid) {
         this.isValid = isValid;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getMappingType() {
+        return mappingType;
+    }
+
+    public void setMappingType(String mappingType) {
+        this.mappingType = mappingType;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 }

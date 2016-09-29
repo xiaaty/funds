@@ -1,8 +1,9 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.account.entity.FssRedAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +22,18 @@ import java.util.Map;
  * -----------------------------------------------------------------
  * 16/1/4  柯禹来      1.0     1.0 Version
  */
-public interface FssRedAccountReadMapper extends ReadMapper<FssRedAccountEntity> {
+public interface FssMappingReadMapper extends ReadMapper<FssMappingEntity> {
 	
 	/**
 	 * 获取红包账户信息
 	 * @param map
 	 * @return
 	 */
-	public List<FssRedAccountEntity> queryRedAccountList(Map map);
+	public List<FssMappingEntity> queryRedAccountList(Map map);
+	public List<FssMappingEntity> findAllMapping();
+	public List<FssMappingEntity> getMappingByType(@Param("mappingType") String mappingType);
+	public FssMappingEntity getMappingByCustId(@Param("custId") String custId);
+
 
 
 }

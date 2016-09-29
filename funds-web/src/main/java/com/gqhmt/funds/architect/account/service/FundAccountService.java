@@ -402,8 +402,8 @@ public class FundAccountService {
 		 * 查询红包账户
 		 * @return
 		 */
-		public List<FundAccountEntity> getRedAccountList(){
-			return fundsAccountReadMapper.getRedAccountList();
+		public List<FundAccountEntity> getRedAccountList(List list){
+			return fundsAccountReadMapper.getRedAccountList(list);
 		}
 
 		/**
