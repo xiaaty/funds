@@ -3,13 +3,12 @@ package com.gqhmt.controller.funds.customer;
 import com.google.common.collect.Maps;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
-import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -103,6 +102,7 @@ public class CustomerInfoController {
 			return  returnMap;
 		}
 		entity.setBankLongName(bankName);
+		entity.setBankSortName(Application.getInstance().getDictName("9703"+bankCode));
 		entity.setModifyTime(new Date());
 		entity.setBankNo(bankNo);
 		entity.setParentBankId(bankCode);

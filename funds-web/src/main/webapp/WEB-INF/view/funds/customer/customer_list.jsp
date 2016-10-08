@@ -268,6 +268,7 @@
                 <td align="right">银行卡号：</td>
                 <td>
                     <label class="input">
+                        <input type="hidden" maxlength="50" readonly="readonly" style="border:none" id="bankCode"  style="width:256px;" />
                         <input type="hidden" maxlength="50" readonly="readonly" style="border:none" id="capAcntNos"  style="width:256px;" />
                         <input type="text" maxlength="50" readonly="readonly" style="border:none" id="capAcntNo" name="capAcntNo"  style="width:256px;" />
                     </label>
@@ -490,6 +491,7 @@
 
                     //富有返回信息
                     $("#cust_nm").val(data.custmerMap.cust_nm);
+                    $("#bankCode").val(data.custmerMap.parent_bank_id);
                     $("#mobile_no").val(transferTo(data.custmerMap.mobile_no));
                     $("#certif_id").val(transferTo(data.custmerMap.certif_id));
                     $("#bank_nm").val(data.custmerMap.bank_nm);

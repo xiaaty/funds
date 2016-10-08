@@ -83,14 +83,18 @@ public class FssMappingService {
     }
 
     /**
-     * 删除红包账户
+     * 修改红包账户状态
      * @param id
      * @throws FssException
      */
     public void delRedAccountById(long id) throws FssException{
      try {
         FssMappingEntity redAccountEntity= fssMappingReadMapper.selectByPrimaryKey(id);
-        redAccountEntity.setIsValid("1");
+         if(redAccountEntity.getIsValid().equals("1")){
+             redAccountEntity.setIsValid("0");
+         }else{
+             redAccountEntity.setIsValid("1");
+         }
         fssMappingWriteMapper.updateByPrimaryKey(redAccountEntity);
     }catch (Exception e){
         LogUtil.error(this.getClass(), e);
