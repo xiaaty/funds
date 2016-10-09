@@ -33,7 +33,5 @@ public interface FssMappingReadMapper extends ReadMapper<FssMappingEntity> {
 	public List<FssMappingEntity> findAllMapping();
 	public List<FssMappingEntity> getMappingByType(@Param("mappingType") String mappingType);
 	public FssMappingEntity getMappingByCustId(@Param("custId") String custId);
-
-
-
+	public FssMappingEntity getMappingBySort(@Param("sort") String sort);
 }

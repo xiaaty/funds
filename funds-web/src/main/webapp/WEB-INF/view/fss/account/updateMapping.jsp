@@ -36,7 +36,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>系统配置</li>
-            <li>新增映射配置信息</li>
+            <li>修改映射配置信息</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -45,16 +45,16 @@
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
-                <form id="addAccountForm" action="${contextPath}/account/saveRedAccount" method="post">
+                <form id="updateAccountForm" action="${contextPath}/account/updateAndSaveRedAccount" method="post">
                     <article class="col-sm-12 col-md-12 sortable-grid ui-sortable">
-                        <div class="jarviswidget" id="customerAdd" data-widget-deletebutton="false" data-widget-editbutton="false">
+                        <div class="jarviswidget" id="customerupdate" data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
-                                <h2><i class="fa fa-edit pr10"></i>新增映射配置信息<font class="pl10 f12 color07"></font></h2>
+                                <h2><i class="fa fa-edit pr10"></i>修改映射配置信息<font class="pl10 f12 color07"></font></h2>
                                 <span class="tip02 color03">”*“为必填项</span>
                             </header>
                             <div>
                                 <div class="smart-form">
-
+                                    <input type="hidden" name="id" value="${mappingEntity.id}"/>
                                     <!-- widget content -->
                                     <div class="widget-body no-padding">
                                         <div class="mt10 mb10 ml30">
@@ -68,7 +68,7 @@
                                                     <td align="right"><span class="emphasis emphasis_txtx01 pr5">*</span>客户编号：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" id="custId" name="custId" value="${map.custId}" style="width:202px;" onblur="getCustName()"/>
+                                                            ${mappingEntity.custId}
                                                         </label>
                                                     </td>
                                                 </tr>
@@ -78,7 +78,7 @@
                                                         <label class="select">
                                                             <select class="select02" style="width:202px;" name="mappingType" id="mappingType">
                                                                 <fss:dictOrder var="order" dictOrder="mappingType">
-                                                                    <option value="${order.key}"  <c:if test="${order.key==map.mappingType}">selected</c:if> >${order.value}</option>
+                                                                    <option value="${order.key}"  <c:if test="${order.key==mappingEntity.mappingType}">selected</c:if> >${order.value}</option>
                                                                 </fss:dictOrder>
                                                             </select>
                                                         </label>
@@ -97,26 +97,21 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right">客户名称：</td>
+                                                    <td align="right">是否有效：</td>
                                                     <td>
-                                                        <label class="input">
-                                                            <input type="text" readonly="readonly" maxlength="50" id="custName" name="custName" value="${map.custName}" style="width:202px;"/>
-                                                        </label>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tr" nowrap="nowrap"><span class="emphasis emphasis_txtx01 pr5">*</span>备注：</td>
-                                                    <td>
-                                                        <label class="input">
-                                                            <input type="text" maxlength="50" id="remark" name="remark" value="${map.remark}" style="width:202px;"/>
-                                                        </label>
+                                                        <label>
+                                                            <select id ="isValid" name ="isValid" value="${mappingEntity.isValid}" style="width:202px;height: 30px;">
+                                                                <option  <c:if test="${mappingEntity.isValid=='0'}"></c:if> value="有效">有效</option>
+                                                                <option  <c:if test="${mappingEntity.isValid=='1'}"></c:if> value="无效" >无效</option>
+                                                            </select>
+                                                            <label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="tr" nowrap="nowrap"><span class="emphasis emphasis_txtx01 pr5">*</span>排序号：</td>
                                                     <td>
                                                         <label class="input">
-                                                            <input type="text" maxlength="50" id="sort" name="sort" value="${map.sort}" style="width:202px;">
+                                                            <input type="text" maxlength="50" id="sort" name="sort" value="${mappingEntity.sort}" style="width:202px;">
                                                         </label>
                                                         <span class="emphasis emphasis_txtx01 pr5">排序号从1开始依次递增，并且不能和列表中已存在的排序号重复</span>
                                                     </td>
@@ -146,26 +141,16 @@
     $(document).ready(function() {
         $("#addAccount").click(function () {
             if (validateCheck()) {
-                $("#addAccountForm").ajaxSubmit({
+                $("#updateAccountForm").ajaxSubmit({
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
                         debugger;
                         if (data.code == '0000') {
-                            jAlert("添加成功!", '信息提示');
+                            jAlert("修改成功!", '信息提示');
                             parent.location.href="${contextPath}/account/redaccountlist";
-                        }else if(data.code == '1002'){
-                            jAlert("添加失败!该客户编号已存在", '消息提示');
-                            return;
-                        } else if(data.code == '1003'){
-                            jAlert("添加失败!排序号不能重复", '消息提示');
-                            return;
-                        }else if(data.code == '1004'){
-                            jAlert("添加失败!该账户不存在", '消息提示');
-                            return;
-                        }
-                        else {
-                            jAlert("添加失败!", '消息提示');
+                        } else {
+                            jAlert("修改失败!", '消息提示');
                             return;
                         }
                     }
@@ -177,36 +162,6 @@
     function validateCheck() {
         return true;
     }
-
-    /**
-     * 根据输入的客户id获取客户名
-     * @param customerId
-     */
-    function getCustName(){
-        var custId=$("#custId").val();
-        if(custId==null || custId.length==0){
-            jAlert("客户编号不能为空","消息提示");
-            return;
-        }else{
-            $.ajax({
-                url:"${contextPath}/account/getCustomerById?custId="+custId,
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                dataType:"json",
-                success: function (data) {
-                    if (data.code == '0000') {
-                        document.getElementById("custName").value =data.custName;
-                    } else {
-                        jAlert(data.message, '信息提示');
-                        return;
-                    }
-                },
-                error:function (data) {
-                    jAlert(data.message, '信息提示');
-                }
-            });
-        }
-    }
-
 </script>
 </body>
 </html>

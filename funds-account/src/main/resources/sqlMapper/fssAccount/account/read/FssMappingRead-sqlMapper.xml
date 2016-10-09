@@ -76,4 +76,21 @@
 		FROM t_gq_fss_mapping t
 		WHERE t.`cust_id`=#{custId}
 	</select>
+
+	<select id="getMappingBySort" parameterType="java.lang.String" resultType="fssMappingEntity">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark
+		FROM t_gq_fss_mapping t
+		WHERE t.`sort`=#{sort}
+	</select>
 </mapper>

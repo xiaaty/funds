@@ -7,6 +7,7 @@ import com.gqhmt.fss.architect.account.mapper.read.FssMappingReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssMappingWriteMapper;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -119,5 +120,41 @@ public class FssMappingService {
    public FssMappingEntity getMappingByCustId(String custId){
        FssMappingEntity entity=fssMappingReadMapper.getMappingByCustId(custId);
        return entity;
+    }
+
+    public FssMappingEntity getMappingEntityById(long id){
+        FssMappingEntity entity=fssMappingReadMapper.selectByPrimaryKey(id);
+        return entity;
+    }
+
+    public FssMappingEntity getMappingBySort(String sort){
+        FssMappingEntity entity=fssMappingReadMapper.getMappingBySort(sort);
+        return entity;
+    }
+
+    /**
+     * 修改映射状态是否有效
+     * @param id
+     * @param mappingType
+     * @param tradeType
+     * @param isValid
+     * @param sort
+     * @param updater
+     * @throws FssException
+     */
+    public void updateMappingValid(String id,String mappingType,String tradeType,String isValid,String sort,String updater) throws FssException{
+        FssMappingEntity entity=fssMappingReadMapper.selectByPrimaryKey(Long.valueOf(id));
+        try{
+            entity.setIsValid(isValid);
+            entity.setMappingType(mappingType);
+            entity.setTradeType(tradeType);
+            entity.setSort(sort);
+            entity.setUpdater(updater);
+            entity.setModifyTime(new Date());
+            fssMappingWriteMapper.updateByPrimaryKey(entity);
+        }catch (Exception e){
+            LogUtil.error(this.getClass(), e);
+            throw new FssException("91009805");
+        }
     }
 }
