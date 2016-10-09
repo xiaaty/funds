@@ -185,7 +185,12 @@
                                                     <td>${t.updater}</td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                        <a href="javascript:void(0)" onclick="delRedAccount('${t.id}')">修改状态</a>
+                                                        <c:if test="${t.isValid=='1'}">
+                                                            <a href="javascript:void(0)" onclick="delRedAccount('${t.id}')">启用</a>
+                                                        </c:if>
+                                                        <c:if test="${t.isValid=='0'}">
+                                                            <a href="javascript:void(0)" onclick="delRedAccount('${t.id}')">禁用</a>
+                                                        </c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -240,8 +245,6 @@
          }
      }
 
-
-
      //添加红包账户
      $("#btn_add").button().click(function() {
          window.open("${contextPath}/account/addRedAccount","_self");
@@ -251,19 +254,18 @@
       修改
       **/
      function delRedAccount(id){
-         debugger;
-         if(confirm( '确定要修改该条信息状态吗？')==true){
+         if(confirm( '确定要修改该账户有效状态吗？')==true){
              $.ajax({
                  url : "${contextPath}/account/deleteRedAccount?id="+id,
                  contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                  dataType: "json",
                  success: function (data) {
                      if (data.code == '0000') {
-                         alert(data.message, '消息提示');
+                         jAlert(data.message, '信息提示');
                          //自动跳转
                          parent.location.href="${contextPath}/account/redaccountlist";
                      } else {
-                         alert(data.message, '消息提示');
+                         jAlert(data.message, '消息提示');
                          return;
                      }
                  }

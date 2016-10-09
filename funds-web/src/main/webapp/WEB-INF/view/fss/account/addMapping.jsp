@@ -183,7 +183,6 @@
      * @param customerId
      */
     function getCustName(){
-        debugger;
         var custId=$("#custId").val();
         if(custId==null || custId.length==0){
             jAlert("客户编号不能为空","消息提示");
