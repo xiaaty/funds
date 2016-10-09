@@ -153,7 +153,7 @@ public class FssAccountController {
 	}
 
 	/**
-	 * 删除映射配置信息
+	 * 修改映射配置信息状态
 	 * @param request
 	 * @return
 	 * @throws FssException
@@ -166,7 +166,7 @@ public class FssAccountController {
 		try {
 			fssMappingService.delRedAccountById(id);
 			map.put("code", "0000");
-			map.put("message", "删除成功");
+			map.put("message", "修改成功");
 		} catch (FssException e) {
 			String resp_msg = Application.getInstance().getDictName(e.getMessage());
 			map.put("code", e.getMessage());

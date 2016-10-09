@@ -102,6 +102,9 @@ public class CustomerInfoDetialBean {
 	//是否变更富友银行卡
 	private String isChangeBankCard;
 
+	//是否签署第三方协议 0 没有 1 有
+	private Integer hasThirdAgreement;
+
 	private String imageFileName;
 	//创建时间
 	private Date createTime;
@@ -461,6 +464,14 @@ public class CustomerInfoDetialBean {
 
 	public String getImageFileName() {
 		return imageFileName;
+	}
+
+	public Integer getHasThirdAgreement() {
+		return hasThirdAgreement;
+	}
+
+	public void setHasThirdAgreement(Integer hasThirdAgreement) {
+		this.hasThirdAgreement = hasThirdAgreement;
 	}
 
 	public void setImageFileName(String imageFileName) {
