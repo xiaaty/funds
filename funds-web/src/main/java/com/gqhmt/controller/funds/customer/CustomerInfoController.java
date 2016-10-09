@@ -7,6 +7,7 @@ import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.springframework.stereotype.Controller;
@@ -110,6 +111,30 @@ public class CustomerInfoController {
 		LogUtil.info(this.getClass(),"cust_id为"+id+"的客户的银行卡信息已更新为："+bankNo);
 		returnMap.put("code","0000");
 		returnMap.put("msg","银行卡信息不一致，已更新");
+		return returnMap;
+	}
+	/**
+	 * jhz
+	 * 查询富有核对银行卡信息
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws FssException
+	 */
+	@RequestMapping(value = "/checkCustomerInfo/checkCustState/{id}", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public Object checkCustState(HttpServletRequest request, ModelMap model, @PathVariable Long  id) throws FssException{
+		Map<String,String> returnMap= Maps.newHashMap();
+		CustomerInfoEntity entity= customerInfoService.queryCustomeById(id);
+		if (entity==null){
+			returnMap.put("code","0001");
+			returnMap.put("msg","该客户不存在");
+			return returnMap;
+		}
+		customerInfoService.updateState(entity);
+		LogUtil.info(this.getClass(),"cust_id为"+id+"的客户的状态已更新");
+		returnMap.put("code","0000");
+		returnMap.put("msg","客户状态不一致，已更新");
 		return returnMap;
 	}
 

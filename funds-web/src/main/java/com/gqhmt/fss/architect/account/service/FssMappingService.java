@@ -95,6 +95,7 @@ public class FssMappingService {
          }else{
              redAccountEntity.setIsValid("1");
          }
+         redAccountEntity.setModifyTime(new Date());
         fssMappingWriteMapper.updateByPrimaryKey(redAccountEntity);
     }catch (Exception e){
         LogUtil.error(this.getClass(), e);
