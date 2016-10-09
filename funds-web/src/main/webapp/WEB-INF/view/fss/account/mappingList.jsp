@@ -178,13 +178,16 @@
                                                     <td>${t.mappingType}</td>
                                                     <td>${t.tradeType}</td>
                                                     <td>${t.remark}</td>
-                                                    <td>${t.isValid==0?"有效":"无效"}</td>
+                                                    <td>${t.isValid=="0"?"有效":"无效"}</td>
                                                     <td>${t.sort}</td>
                                                     <td>${t.creater}</td>
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>${t.updater}</td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td><a href="javascript:void(0)" onclick="delRedAccount('${t.id}')">删除</a></td>
+                                                    <td>
+                                                        <a href="${contextPath}/account/updateMapping/${t.id}">修改</a>
+                                                        <%--<a href="javascript:void(0)" onclick="delRedAccount('${t.id}')">删除</a>--%>
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -249,7 +252,6 @@
       删除
       **/
      function delRedAccount(id){
-         debugger;
          if(confirm( '确定要删除该条信息？')==true){
              $.ajax({
                  url : "${contextPath}/account/deleteRedAccount?id="+id,

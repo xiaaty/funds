@@ -9,6 +9,7 @@ import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.service.SystemService;
 import org.springframework.stereotype.Controller;
@@ -135,15 +136,29 @@ public class FssAccountController {
 		String sort = map.get("sort");
 		Map<String, String> map2 = new HashMap<String, String>();
 		try {
-			FssMappingEntity entity=fssMappingService.getMappingByCustId(custId);
-			if(entity==null){
-				fssMappingService.saveRedAccount(custId,remark,creator,mappingType,tradeType,sort);
-				map2.put("code", "0000");
-				map2.put("message", "success");
+			FundAccountEntity account = fundAccountService.getFundAccount(Long.valueOf(custId),0);
+			if(account!=null){
+				FssMappingEntity entity=fssMappingService.getMappingByCustId(custId);
+				if(entity==null){
+					//判断排序号是否存在
+					FssMappingEntity mappingEntity=fssMappingService.getMappingBySort(sort);
+					if(mappingEntity==null){
+						fssMappingService.saveRedAccount(custId,remark,creator,mappingType,tradeType,sort);
+						map2.put("code", "0000");
+						map2.put("message", "success");
+					}else{
+						map2.put("code", "1003");
+						map2.put("message", "success");
+					}
+				}else{
+					map2.put("code", "1002");
+					map2.put("message", "success");
+				}
 			}else{
-				map2.put("code", "1002");
-				map2.put("message", "success");
+				map.put("code", "1004");
+				map.put("message","success");
 			}
+
 		} catch (FssException e) {//保存失败
 			String resp_msg = Application.getInstance().getDictName(e.getMessage());
 			map.put("code", e.getMessage());
@@ -173,5 +188,52 @@ public class FssAccountController {
 			map.put("message", resp_msg);
 		}
 		return map;
+	}
+
+	/**
+	 * 修改映射配置状态（是否有效）
+	 * @param request
+	 * @param model
+	 * @param id
+	 * @return
+	 * @throws FssException
+     */
+
+	@RequestMapping(value = "/account/updateMapping/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object RedAccountUpdate(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws FssException {
+		FssMappingEntity mappingEntity =fssMappingService.getMappingEntityById(id);
+		List<DictEntity> list= systemService.getDictList();
+		//获取商户列表
+		model.addAttribute("list",list);
+		model.addAttribute("mappingEntity", mappingEntity);
+		return "fss/account/updateMapping";
+	}
+
+	/**
+	 * 修改保存映射信息
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = "/account/updateAndSaveRedAccount", method = {RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public Object accountUpdate(HttpServletRequest request, @RequestParam Map<String, String> map) throws FssException {
+		HttpSession session=  request.getSession();
+		String updater = (String)session.getAttribute("userName");
+		String id = map.get("id");
+		String mappingType = map.get("mappingType");
+		String tradeType = map.get("tradeType");
+		String isValid = map.get("isValid");
+		String sort = map.get("sort");
+		Map<String, String> map2 = new HashMap<String, String>();
+		try {
+			fssMappingService.updateMappingValid(id,mappingType,tradeType,isValid,sort,updater);
+			map2.put("code", "0000");
+			map2.put("message", "success");
+		} catch (FssException e) {
+			String resp_msg = Application.getInstance().getDictName(e.getMessage());
+			map.put("code", e.getMessage());
+			map.put("message", resp_msg);
+		}
+		return map2;
 	}
 }
