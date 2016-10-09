@@ -185,8 +185,7 @@
                                                     <td>${t.updater}</td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                        <a href="${contextPath}/account/updateMapping/${t.id}">修改</a>
-                                                        <%--<a href="javascript:void(0)" onclick="delRedAccount('${t.id}')">删除</a>--%>
+                                                        <a href="javascript:void(0)" onclick="delRedAccount('${t.id}')">修改状态</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -249,10 +248,11 @@
      });
 
      /**
-      删除
+      修改
       **/
      function delRedAccount(id){
-         if(confirm( '确定要删除该条信息？')==true){
+         debugger;
+         if(confirm( '确定要修改该条信息状态吗？')==true){
              $.ajax({
                  url : "${contextPath}/account/deleteRedAccount?id="+id,
                  contentType: "application/x-www-form-urlencoded; charset=UTF-8",

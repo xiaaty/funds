@@ -144,7 +144,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2850px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:3050px;">
                                         <col width="50" />
                                         <col width="100" />
                                         <col width="150" />
@@ -157,6 +157,7 @@
                                         <col width="200" />
                                         <col width="150" />
                                         <col width="150" />
+                                        <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
@@ -176,6 +177,7 @@
                                             <td>地址</td>
                                             <td>生日</td>
                                             <td>是否有效</td>
+                                            <td>是否签署第三方协议</td>
                                             <td>银行名称</td>
                                             <td>银行卡号</td>
                                             <td>创建日期</td>
@@ -198,6 +200,7 @@
                                                 <td>${t.address}</td>
                                                 <td>${t.birthdate}</td>
                                                 <td>${t.isvalid==0?"有":"没有"}</td>
+                                                <td>${t.hasThirdAgreement==0?"没有":"有"}</td>
                                                 <td>${t.bankLongName}</td>
                                                 <td><fss:fmtData value="${t.bankNo}"/></td>
                                                 <td><fss:fmtDate value="${t.createTime}" /></td>
@@ -268,6 +271,8 @@
                 <td align="right">银行卡号：</td>
                 <td>
                     <label class="input">
+                        <input type="hidden" maxlength="50" readonly="readonly" style="border:none" id="bankCode"  style="width:256px;" />
+                        <input type="hidden" maxlength="50" readonly="readonly" style="border:none" id="capAcntNos"  style="width:256px;" />
                         <input type="text" maxlength="50" readonly="readonly" style="border:none" id="capAcntNo" name="capAcntNo"  style="width:256px;" />
                     </label>
                 </td>
@@ -440,19 +445,34 @@
             url:"${contextPath}/checkCustomerInfo/checkbankNo/"+id,
             method:"post",
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data:{bankCode:$("#bankCode").val(),bankNo:$("#capAcntNo").val(),bankName: $("#bank_nm").val()},
+            data:{bankCode:$("#bankCode").val(),bankNo:$("#capAcntNos").val(),bankName: $("#bank_nm").val()},
             dateType:"json",
             success : function (data){
                 if (data.code == '0000') {
                     alert(data.msg);
+                    location.reload();
                 }else{
                     alert(data.msg);
                 }
             }
         })
     }
-    function checkState(id) {
-        alert("请去冠e通后台进行账户状态核对");
+    function checkState() {
+        var id=$("#id").val();
+        $.ajax({
+            url:"${contextPath}/checkCustomerInfo/checkCustState/"+id,
+            method:"post",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dateType:"json",
+            success : function (data){
+                if (data.code == '0000') {
+                    alert(data.msg);
+                    location.reload();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        })
     }
     function hideDiv() {
         $('.box_pop').hide();
@@ -488,9 +508,12 @@
 
                     //富有返回信息
                     $("#cust_nm").val(data.custmerMap.cust_nm);
+                    $("#bankCode").val(data.custmerMap.parent_bank_id);
                     $("#mobile_no").val(transferTo(data.custmerMap.mobile_no));
                     $("#certif_id").val(transferTo(data.custmerMap.certif_id));
                     $("#bank_nm").val(data.custmerMap.bank_nm);
+
+                    $("#capAcntNos").val(data.custmerMap.capAcntNo);
                     $("#capAcntNo").val(transferTo(data.custmerMap.capAcntNo));
                     $("#card_pwd_verify_st").val(data.custmerMap.card_pwd_verify_st);
                     if($("#card_pwd_verify_st").val() == 0){
@@ -507,16 +530,20 @@
                         $("#id_nm_verify_sts").val("已验证");
                     }
                     $("#contract_st").val(data.custmerMap.contract_st);
+
                     if($("#contract_st").val()=='0'){
-                        $("#checkState").show();
                         $("#contract_sts").val("未通过");
                     }else if($("#contract_st").val() =='1'){
                         $("#contract_sts").val("通过");
-
                     }else{
-                        $("#checkState").show();
                         $("#contract_sts").val("待验证");
                     }
+                    if($("#contract_st").val()==data.bean.hasThirdAgreement){
+                    }else{
+                        $("#contract_sts").css("color","red")
+                        $("#checkState").show();
+                    }
+
                     $("#user_st").val(data.custmerMap.user_st);
                     if($("#user_st").val()=='1'){
                         $("#user_sts").val("正常");
@@ -549,6 +576,8 @@
                     }else{
                         $("#certNo").css("color","red")
                     }
+                }else{
+                    alert(data.msg);
                 }
 
             }

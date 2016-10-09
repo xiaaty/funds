@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.bonus.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -81,6 +82,14 @@ public class FssBonusService {
 		fssBonusWriteMapper.updateByPrimaryKey(fssBonusEntity);
 	}
 	/**
+	 * jhz
+	 * 批量插入
+	 * @param bonusEntityList
+     */
+	public void insertList(List<FssBonusEntity> bonusEntityList){
+		fssBonusWriteMapper.insertList(bonusEntityList);
+	}
+	/**
 	 * 查询所有债权转让信息
 	 * @param map
 	 * @return
@@ -125,11 +134,6 @@ public class FssBonusService {
 		entity.setTradeResult("10080001");
 		entity.setCreateTime(new Date());
 		entity.setModifyTime(new Date());
-		try {
-			fssBonusWriteMapper.insertSelective(entity);
-		}catch (Exception e){
-			throw new FssException("90099005");
-		}
 		return entity;
 	}
 
@@ -323,5 +327,27 @@ public class FssBonusService {
 		response.setTrade_type(parentEntity.getTradeType());
 		response.setBonus_list(bonus_list);
 		return response;
+	}
+
+	/**
+	 * jhz
+	 * 查询红包是否存在
+	 * “0000”不存在
+	 * “0001”存在
+	 * @param seqNos
+	 * @return
+	 * @throws FssException
+     */
+	public Map<String,String> getResult(String seqNos)throws FssException{
+		Map<String,String> map= Maps.newHashMap();
+		String[] seqNo=seqNos.split(",");
+		for (int i=0;i<seqNo.length;i++){
+			if(fssBonusReadMapper.selectCountBySeqNo(seqNo[i])>0){
+				map.put(seqNo[i],"0001");
+			}else{
+				map.put(seqNo[i],"0000");
+			}
+		}
+		return map;
 	}
 }

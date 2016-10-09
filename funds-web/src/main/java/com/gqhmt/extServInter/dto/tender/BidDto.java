@@ -38,8 +38,6 @@ public class BidDto extends SuperDto{
 	@APIValidNull(errorCode = "90004014")
 	private String cust_no;		//客户编号
 
-
-	@APIValidNull(errorCode = "90004014")
 	private String  loan_cust_id;
 
 	private String  moto_cust_id;

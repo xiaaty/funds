@@ -90,6 +90,7 @@ public class FundOrderService  {
         }
         fundOrderEntity.setOrderNo(this.getOrderNo());
         fundOrderEntity.setCreateTime(new Date());
+        fundOrderEntity.setLastModifyTime(new Date());
         fundOrderEntity.setOrderAmount(amount);
         fundOrderEntity.setOrderSource(sourceType);
         fundOrderEntity.setOrderFrormId(sourceID);
