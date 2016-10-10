@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.*;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssMappingReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssMappingWriteMapper;
@@ -112,8 +113,8 @@ public class FssMappingService {
         return fssMappingReadMapper.findAllMapping();
     }
 
-    public List<FssMappingEntity> getMappingListByType(String mappingType){
-        List<FssMappingEntity> list=fssMappingReadMapper.getMappingByType(mappingType);
+    public List<FssMappingBean> getMappingListByType(String mappingType){
+        List<FssMappingBean> list=fssMappingReadMapper.getMappingByType(mappingType);
         return list;
     }
 

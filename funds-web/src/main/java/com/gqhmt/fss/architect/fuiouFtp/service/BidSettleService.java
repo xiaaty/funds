@@ -7,6 +7,7 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
@@ -125,33 +126,16 @@ public class BidSettleService extends BidSupper{
             }
         }
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
-//            FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
             FundAccountEntity fromEntity=null;
             //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
-//            List<FundAccountEntity> redAccountList=fundAccountService.getRedAccountList();
-            List<FssMappingEntity> mappinglist=fssMappingService.getMappingListByType("10010006");
-            List list3=new ArrayList();
-            for(FssMappingEntity  mappingEntity:mappinglist){
-                list3.add(mappingEntity.getCustId());
-            }
-            List<FundAccountEntity> redAccountList=fundAccountService.getRedAccountList(list3);
-            Map<String,Object> map2=new HashMap<String,Object>();
-            if(redAccountList!=null && redAccountList.size()>0){
-                for(FundAccountEntity entity:redAccountList){
+            List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType("10010006");
+            if(mappinglist.size()>0){
+                for(FssMappingBean  entity:mappinglist){
                     if (entity.getAmount().compareTo(bonusAmount)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
-                        map2.put("account",entity);
+                        fromEntity=fundAccountService.getFundAccountById(entity.getAccountId());
                         break;
                     }
                 }
-                FundAccountEntity redAccountEntity=(FundAccountEntity)map2.get("account");//获取到金额大于红包金额的红包账户
-//                LogUtil.info(this.getClass(),"红包账户信息:"+redAccountEntity.getCustId()+":"+redAccountEntity.getAccountNo()+":"+redAccountEntity.getAmount()+":"+redAccountEntity.getCustName()+":"+redAccountEntity.getAccountType());
-                if(redAccountEntity==null){//如果运营红包中的金额都比红包金额小，则从冠群红包账户 custId=4 账户中出钱
-                    fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//冠群红包账户 custId=4
-                }else{
-                    fromEntity=redAccountEntity;
-                }
-            }else{
-                fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//冠群红包账户 custId=4
             }
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", "",-1l,null,null,bid.getCustomerId().longValue(),bid.getContractNo()));
         }
