@@ -195,6 +195,6 @@
  		FROM t_gq_fund_account account where id=(
 		SELECT acc.id
 		FROM t_gq_fund_account acc,t_gq_fss_mapping m,(select t.from_account_Id as id from t_fuiou_ftp_field t where t.order_no=#{orderNo}) ftp
-		WHERE acc.id=ftp.id and m.cust_id=acc.cust_id and acc.busi_type=0 and m.is_valid='0');
+		WHERE acc.id=ftp.id and m.cust_id=acc.cust_id and acc.busi_type=0)
 	</select>
 </mapper>
