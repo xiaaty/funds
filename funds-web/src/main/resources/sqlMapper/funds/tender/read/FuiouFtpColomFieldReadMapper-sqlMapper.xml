@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper">
+
+	<select id="getFuiouFtpByOrderNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
+		SELECT t.from_account_Id fromAccountId
+		FROM t_fuiou_ftp_field t
+		WHERE t.order_no=#{orderNo}
+		AND t.tender_id=-1
+		AND t.lend_cust_id IS NULL
+		AND t.lend_no IS NULL
+	</select>
+</mapper>

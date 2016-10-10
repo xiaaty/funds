@@ -634,8 +634,11 @@ public class FundSequenceService {
           FundAccountEntity  fromEntity=null;
 //          FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
           //查询红包金额从哪个运营商的红包账户出
-           fromEntity =fundAccountService.getRedAccountByOrderNo(fundOrderEntity.getOrderNo());
 
+          FuiouFtpColomField fuiouFtpColomField= fuiouFtpColomFieldService.getFuiouFtpFiledByOrderNo(fundOrderEntity.getOrderNo());
+          if(fuiouFtpColomField!=null){
+              fromEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
+          }
           //this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
           this.transfer(fromEntity,toEntity,6,2006,bonusAmount,null,fundOrderEntity.getOrderNo(),map.get(-1l),"1105",null,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo());
 
