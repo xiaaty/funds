@@ -203,4 +203,8 @@ public class FuiouFtpColomFieldService {
     	}
     	fuiouFtpColomFieldWriteMapper.failureRetryByOrderNo(orderNo);
     }
+
+    public FuiouFtpColomField getFuiouFtpFiledByOrderNo(String orderNo){
+        return fuiouFtpColomFieldReadMapper.getFuiouFtpByOrderNo(orderNo);
+    }
 }

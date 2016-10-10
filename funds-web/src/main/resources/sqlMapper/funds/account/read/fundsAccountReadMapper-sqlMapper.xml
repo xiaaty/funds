@@ -169,32 +169,4 @@
 		</foreach>
 		  AND acc.busi_type=0
 	</select>
-
-	<!--查询满标红包账户-->
-	<select id="getRedAccountByOrderNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
-		SELECT
-			account.id id,
-			account.cust_id custId,
-			account.amount amount,
-			account.freeze_amount freezeAmount,
-			account.account_type accountType,
-			account.busi_type busiType,
-			account.parent_id parentId,
-			account.CREATE_TIME createTime,
-			account.MODIFY_TIME modifyTime,
-			account.account_no accountNo,
-			account.user_id userId,
-			account.has_Third_Account hasThirdAccount,
-			account.user_name userName,
-			account.cust_name custName,
-			account.settle_type settleType,
-			account.is_change_bank_card ishangeBankCard,
-			account.bankNo,
-			account.parent_bank_id parentBankId,
-			account.city_id cityId
- 		FROM t_gq_fund_account account where id=(
-		SELECT acc.id
-		FROM t_gq_fund_account acc,t_gq_fss_mapping m,(select t.from_account_Id as id from t_fuiou_ftp_field t where t.order_no=#{orderNo}) ftp
-		WHERE acc.id=ftp.id and m.cust_id=acc.cust_id and acc.busi_type=0 and m.is_valid='0');
-	</select>
 </mapper>
