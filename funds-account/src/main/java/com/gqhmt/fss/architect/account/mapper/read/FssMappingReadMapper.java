@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.account.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,7 +32,7 @@ public interface FssMappingReadMapper extends ReadMapper<FssMappingEntity> {
 	 */
 	public List<FssMappingEntity> queryRedAccountList(Map map);
 	public List<FssMappingEntity> findAllMapping();
-	public List<FssMappingEntity> getMappingByType(@Param("mappingType") String mappingType);
+	public List<FssMappingBean> getMappingByType(@Param("mappingType") String mappingType);
 	public FssMappingEntity getMappingByCustId(@Param("custId") String custId);
 	public FssMappingEntity getMappingBySort(@Param("sort") String sort);
 }

@@ -43,7 +43,7 @@
 	</select>
 
 
-	<select id="getMappingByType" parameterType="java.lang.String" resultType="fssMappingEntity">
+	<select id="getMappingByType" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.bean.FssMappingBean">
 		SELECT
 		t.`id` id,
 		t.`cust_id` custId,
@@ -55,9 +55,12 @@
 		t.`updater` updater,
 		t.`is_valid` isValid,
 		t.`sort` sort,
-		t.`remark` remark
-		FROM t_gq_fss_mapping t
-		WHERE t.mapping_type=#{mappingType} and t.is_valid=0 ORDER BY t.`sort` desc
+		t.`remark` remark,
+		acc.id accountId,
+		acc.amount amount
+		FROM t_gq_fss_mapping t left join t_gq_fund_account acc on t.cust_id=acc.cust_id
+		WHERE t.mapping_type=#{mappingType} and t.is_valid=0 and acc.busi_type=0
+		ORDER BY t.`sort` desc
 	</select>
 
 	<select id="getMappingByCustId" parameterType="java.lang.String" resultType="fssMappingEntity">
