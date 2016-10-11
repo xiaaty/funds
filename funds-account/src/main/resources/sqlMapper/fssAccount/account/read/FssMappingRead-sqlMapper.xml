@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssMappingReadMapper">
+	<select id="queryRedAccountList" parameterType="java.util.Map" resultType="fssMappingEntity">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark
+		FROM t_gq_fss_mapping t
+		<where>
+			<if test="custId!=null and custId!=''">
+				AND t.`cust_id`=#{custId}
+			</if>
+			<if test="mappingType!=null and mappingType!=''">
+				AND t.`mapping_type`=#{mappingType}
+			</if>
+			<if test="isValid!=null and isValid!=''">
+				AND t.`is_valid`=#{isValid}
+			</if>
+			<if test="startTime != null and startTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+			</if>
+		</where>
+		order by t.`sort` ASC
+	</select>
+
+	<select id="findAllMapping" parameterType="java.util.Map" resultType="fssMappingEntity">
+		SELECT
+			t.`trade_type` tradeType,
+			t.`mapping_type` mappingType
+		FROM t_gq_fss_mapping t
+	</select>
+
+
+	<select id="getMappingByType" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.bean.FssMappingBean">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark,
+		acc.id accountId,
+		acc.amount amount
+		FROM t_gq_fss_mapping t left join t_gq_fund_account acc on t.cust_id=acc.cust_id
+		WHERE t.mapping_type=#{mappingType} and t.is_valid=0 and acc.busi_type=0
+		ORDER BY t.`sort` desc
+	</select>
+
+	<select id="getMappingByCustId" parameterType="java.lang.String" resultType="fssMappingEntity">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark
+		FROM t_gq_fss_mapping t
+		WHERE t.`cust_id`=#{custId}
+	</select>
+
+	<select id="getMappingBySort" parameterType="java.lang.String" resultType="fssMappingEntity">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark
+		FROM t_gq_fss_mapping t
+		WHERE t.`sort`=#{sort}
+	</select>
+</mapper>

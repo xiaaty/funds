@@ -31,7 +31,6 @@ public interface SystemReadMapper extends ReadMapper<DictEntity> {
     public List<DictEntity> selectDictByOrderList(List list);
     
     public List<DictEntity> selectDictOrderList(List list);
-    
-    
 
+    public List<DictEntity> getDictNameList();
 }

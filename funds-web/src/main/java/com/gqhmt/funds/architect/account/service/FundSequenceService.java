@@ -7,6 +7,7 @@ import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.asset.entity.FssStatisticsEntity;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.fss.architect.trade.bean.FundFlowBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
@@ -630,11 +631,15 @@ public class FundSequenceService {
 
       //红包账户出账，使用红包汇总 2015.07.31 于泳
       if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
-          FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+//          FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+          //查询红包金额从哪个运营商的红包账户出
+          FuiouFtpColomField fuiouFtpColomField= fuiouFtpColomFieldService.getFuiouFtpFiledByOrderNo(fundOrderEntity.getOrderNo());
+          if(fuiouFtpColomField!=null){
+              FundAccountEntity  fromEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
           //this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
-          this.transfer(fromEntity,toEntity,6,2006,bonusAmount,null,fundOrderEntity.getOrderNo(),map.get(-1l),"1105",null,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo());
-
-          this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
+              this.transfer(fromEntity,toEntity,6,2006,bonusAmount,null,fundOrderEntity.getOrderNo(),map.get(-1l),"1105",null,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+              this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
+          }
       }
 
   }
