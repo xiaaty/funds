@@ -26,10 +26,10 @@
 				AND t.`is_valid`=#{isValid}
 			</if>
 			<if test="startTime != null and startTime != '' ">
-				and date_format(ta.create_time,'%Y%m%d') &gt;= #{startTime}
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
 			</if>
 			<if test="endTime != null and endTime != '' ">
-				and date_format(ta.create_time,'%Y%m%d') &lt;= #{endTime}
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
 		</where>
 		order by t.`sort` ASC
