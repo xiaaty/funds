@@ -6,6 +6,8 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.bonus.BonusResponse;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.bonus.bean.BonusBatchBean;
@@ -71,7 +73,8 @@ public class FssBonusService {
 	private PaySuperByFuiou paySuperByFuiou;
 	@Resource
 	private FssBackplateService fssBackplateService;
-
+	@Resource
+	private FssMappingService fssMappingService;
 	/**
 	 * jhz
 	 * 更新
@@ -167,12 +170,21 @@ public class FssBonusService {
 	 * @throws FssException
 	 */
 	public void compensation(String trade_type,Integer cust_id,Integer busi_type,BigDecimal amt,Long busi_no) throws FssException{
-		//红包
-		Long pubCustId = 4L;
-		if(pubCustId.intValue() == cust_id.intValue()){
+		FundAccountEntity  fromEntity=null;
+		List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType("10010006");//获取所有运营商的红包账户
+		if(mappinglist.size()>0){
+			for(FssMappingBean entity:mappinglist){
+				if (entity.getAmount().compareTo(amt)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
+					fromEntity=fundAccountService.getFundAccountById(entity.getAccountId());
+					break;
+				}
+			}
+		}else{
+			throw new FssException("90004007");
+		}
+		if(fromEntity.getCustId().intValue() == cust_id.intValue()){
 			throw  new FssException("90004017");
 		}
-		FundAccountEntity  fromEntity = fundAccountService.getFundAccount(pubCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//对公账户
 		FundAccountEntity  toEntity = fundsTradeImpl.getFundAccount(cust_id,busi_type);//个人账户
 		//判断是从对公账户转入到个人账户还是从个人账户转入对公账户
 		FundOrderEntity fundOrderEntity=null;
