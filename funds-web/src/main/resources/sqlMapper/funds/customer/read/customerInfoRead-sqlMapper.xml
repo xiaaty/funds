@@ -48,6 +48,7 @@
 			t.EDUCATION education,
 			t.MARITAL_STATUS maritalStatus,
 			t.EMER_CONTACT emerContact,
+			t.has_third_agreement hasThirdAgreement,
 			t.EMER_CONTACT_MOBILE emerContactMobile,
 			b.bank_long_name bankLongName,
 			b.bank_no bankNo

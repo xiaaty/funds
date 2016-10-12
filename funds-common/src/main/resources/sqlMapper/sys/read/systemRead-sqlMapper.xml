@@ -57,7 +57,14 @@
        </foreach>
 
 	</select>
-	
+
+	<select id="getDictNameList" resultType="com.gqhmt.sys.entity.DictEntity">
+		SELECT
+		t.dict_id dictId,
+		t.dict_name dictName
+		FROM `t_gq_fss_dict` t WHERE t.dict_id in(11130001,11130002,11130003,11130004,11130005)
+	</select>
+
 	
 
 </mapper>

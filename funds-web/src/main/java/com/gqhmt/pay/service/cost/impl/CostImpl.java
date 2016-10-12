@@ -1,10 +1,15 @@
 package com.gqhmt.pay.service.cost.impl;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.cost.CostDto;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.trade.entity.FssChargeRecordEntity;
 import com.gqhmt.fss.architect.trade.service.FssChargeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -22,6 +27,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -63,6 +71,8 @@ public class CostImpl  implements ICost{
     private FundsTradeImpl fundsTradeImpl;
     @Resource
     private FssChargeRecordService fssChargeRecordService;
+    @Resource
+    private FssMappingService fssMappingService;
     private  final Map<String,Long> map = new ConcurrentHashMap<>();
 
     private CostImpl(){
@@ -300,13 +310,32 @@ public class CostImpl  implements ICost{
         }else{
             loanType=platform;
         }
-        //代偿、红包
-        Long pubCustId = this.map.get(trade_type+"_"+loanType);
-        if(pubCustId == null) throw new FssException("90002001");
-        if(pubCustId.intValue() == cust_id.intValue()){
-            throw  new FssException("90004017");
+        FundAccountEntity  publicAccount=null;
+        //红包
+        if("11130001".equals(trade_type) || "11130002".equals(trade_type) || "11130003".equals(trade_type) || "11130004".equals(trade_type) || "11130005".equals(trade_type)){//红包返现
+            //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
+            String mappingType = Application.getInstance().getMappingTypeByTradeType(trade_type);
+            List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType(mappingType);
+            if(mappinglist.size()>0){
+                for(FssMappingBean entity:mappinglist){
+                    if (entity.getAmount().compareTo(amt)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
+                        publicAccount=fundAccountService.getFundAccountById(entity.getAccountId());
+                        break;
+                    }
+                }
+            }else{
+                throw new FssException("90004007");
+            }
+        }else{
+            //代偿,费用收取
+            Long pubCustId = this.map.get(trade_type+"_"+loanType);
+            if(pubCustId == null) throw new FssException("90002001");
+            if(pubCustId.intValue() == cust_id.intValue()){
+                throw  new FssException("90004017");
+            }
+              publicAccount = fundAccountService.getFundAccount(pubCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//对公账户
         }
-        FundAccountEntity  publicAccount = fundAccountService.getFundAccount(pubCustId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);//对公账户
+
         FundAccountEntity  personalAccount = fundsTradeImpl.getFundAccount(cust_id,busi_type);//个人账户
         //判断是从对公账户转入到个人账户还是从个人账户转入对公账户
         if("11070002".equals(trade_type) || "11070004".equals(trade_type) || "11060001".equals(trade_type) || "11060002".equals(trade_type) || "11060003".equals(trade_type) || "11060004".equals(trade_type) || "11060005".equals(trade_type)){//借款人逾期代偿资金退回、委托出借代偿退回及费用收取

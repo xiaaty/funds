@@ -40,7 +40,7 @@ public class BussAndAccountBean implements Serializable{
     private String modifyUserId;
 	private Date createTime;                           //datetime DEFAULT NULL COMMENT '创建时间',
 	private Date modifyTime;                           // datetime DEFAULT NULL COMMENT '最后修改时间',
-	
+
 	public String getAccNo() {
 		return accNo;
 	}
@@ -197,5 +197,5 @@ public class BussAndAccountBean implements Serializable{
 	public void setModifyUserId(String modifyUserId) {
 		this.modifyUserId = modifyUserId;
 	}
-	
+
 }

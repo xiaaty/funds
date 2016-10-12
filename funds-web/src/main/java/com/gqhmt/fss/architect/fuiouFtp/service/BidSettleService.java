@@ -7,6 +7,9 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -73,10 +76,8 @@ public class BidSettleService extends BidSupper{
     @Resource
     private FssBackplateService fssBackplateService;
 
-
-
-
-
+    @Resource
+    private FssMappingService fssMappingService;
 
     public void settle(FssLoanEntity loanEntity) throws FssException {
         Map<String,String > paramMap = new HashMap<>();
@@ -125,7 +126,17 @@ public class BidSettleService extends BidSupper{
             }
         }
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
-            FundAccountEntity fromEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
+            FundAccountEntity fromEntity=null;
+            //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
+            List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType("10010006");
+            if(mappinglist.size()>0){
+                for(FssMappingBean  entity:mappinglist){
+                    if (entity.getAmount().compareTo(bonusAmount)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
+                        fromEntity=fundAccountService.getFundAccountById(entity.getAccountId());
+                        break;
+                    }
+                }
+            }
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bonusAmount, 2, "", "",-1l,null,null,bid.getCustomerId().longValue(),bid.getContractNo()));
         }
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);

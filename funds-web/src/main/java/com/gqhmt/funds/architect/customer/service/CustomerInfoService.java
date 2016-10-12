@@ -998,6 +998,20 @@ public class CustomerInfoService {
 	public void update(CustomerInfoEntity entity) {
 		this.customerInfoWriteMapper.updateByPrimaryKeySelective(entity);
 	}
+
+	/**
+	 * 修改客户状态
+	 * @param entity
+     */
+	public void updateState(CustomerInfoEntity entity) throws FssException{
+		if(entity.getHasThirdAgreement()==0){
+			entity.setHasThirdAgreement(1);
+		}else{
+			entity.setHasThirdAgreement(0);
+		}
+		entity.setModifyTime(new Date());
+		customerInfoWriteMapper.updateByPrimaryKeySelective(entity);
+	}
 	/**
 	 *
 	 * author:jhz

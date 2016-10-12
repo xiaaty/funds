@@ -137,4 +137,36 @@
 		and busi_type = #{type}
 		order by CREATE_TIME desc
 	</select>
+
+	<!--查询所有的红包账户 -->
+	<select id="getRedAccountList" parameterType="java.util.List" resultType="com.gqhmt.funds.architect.account.entity.FundAccountEntity">
+		SELECT
+		  	 acc.id id,
+			 acc.cust_id custId,
+			 acc.amount amount,
+			 acc.freeze_amount freezeAmount,
+			 acc.account_type accountType,
+			 acc.busi_type busiType,
+			 acc.parent_id parentId,
+			 acc.CREATE_TIME createTime,
+			 acc.MODIFY_TIME modifyTime,
+			 acc.account_no accountNo,
+			 acc.user_id userId,
+			 acc.has_Third_Account hasThirdAccount,
+			 acc.user_name userName,
+			 acc.cust_name custName,
+			 acc.settle_type settleType,
+			 acc.is_change_bank_card ishangeBankCard,
+			 acc.bankNo,
+			 acc.parent_bank_id parentBankId,
+			 acc.city_id cityId
+		  FROM
+			 t_gq_fund_account acc
+		  WHERE acc.cust_id in
+		<foreach collection="list" item="custId" index="index"
+				 open="(" close=")" separator=",">
+			#{custId}
+		</foreach>
+		  AND acc.busi_type=0
+	</select>
 </mapper>
