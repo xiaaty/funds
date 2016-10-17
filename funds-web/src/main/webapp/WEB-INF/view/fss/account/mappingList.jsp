@@ -85,14 +85,17 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                    <td class="tr">是否有效：</td>
-                                                        <td>
-                                                                <select id = "isValid" name = "isValid" style="width:200px;height: 30px;">
+                                                        <td class="tr" nowrap="nowrap">是否有效：</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="select">
+                                                                <select class="select02" style="width:202px;" name="isValid" id="isValid">
                                                                     <option value="">所有</option>
-                                                                    <option  <c:if test="${map.isValid==0}"> selected="selected" </c:if> value="0">有效</option>
-                                                                    <option  <c:if test="${map.isValid==1}"> selected="selected" </c:if> value="1" >无效</option>
+                                                                    <option  <c:if test="${map.isValid=='0'}"> selected="selected" </c:if> value="0">有效</option>
+                                                                    <option  <c:if test="${map.isValid=='1'}"> selected="selected" </c:if> value="1" >无效</option>
                                                                 </select>
+                                                            </label>
                                                         </td>
+
                                                         <td class="tr">创建时间：</td>
                                                         <td colspan="3">
                                                             <section class="fl">
@@ -172,7 +175,7 @@
                                         </thead>
                                         <tbody>
                                              <c:forEach items="${page.list}" var="t">
-                                                <tr class="success">
+                                                <tr class="">
                                                     <td>${t.id}</td>
                                                     <td>${t.custId}</td>
                                                     <td>${t.mappingType}</td>
