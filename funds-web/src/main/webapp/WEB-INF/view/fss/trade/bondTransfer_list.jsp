@@ -74,6 +74,24 @@
                                                         <input type="text" style="width:200px" name="busiNo" value="${map.busiNo}" />
                                                     </label>
                                                 </td>
+                                                <td class="tr">客户名称：</td>
+                                                <td>
+                                                    <label class="input">
+                                                        <input type="text" style="width:200px" name="custName" value="${map.custName}" />
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tr">交易状态：</td>
+                                                <td>
+                                                    <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
+                                                        <option value="">所有</option>
+                                                        <option  <c:if test="${map.tradeState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
+                                                        <option  <c:if test="${map.tradeState==10080002}"> selected="selected" </c:if> value="10080002">交易成功</option>
+                                                        <option  <c:if test="${map.tradeState==10080010}"> selected="selected" </c:if> value="10080010">交易失败</option>
+                                                    </select>
+                                                </td>
+
                                                 <td class="tr">创建日期：</td>
                                                 <td colspan="3">
                                                     <section class="fl">
@@ -116,7 +134,8 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1400px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1500px;">
+                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -130,20 +149,21 @@
                                         <col width="200" />
                                         <col width="200" />
                                         <thead>
-                                        <tr>
-                                            <td>客户编号</td>
-                                            <td>客户名称</td>
-                                            <td>资金账号</td>
-                                            <td>标的业务编号</td>
-                                            <td>借款合同编号</td>
-                                            <td>转让总金额</td>
-                                            <td>业务编号</td>
-                                            <td>交易类型</td>
-                                            <td>所属商户</td>
-                                            <td>流水号</td>
-                                            <td>创建时间</td>
-                                            <td>修改时间</td>
-                                        </tr>
+                                            <tr>
+                                                <td>客户编号</td>
+                                                <td>客户名称</td>
+                                                <td>资金账号</td>
+                                                <td>标的业务编号</td>
+                                                <td>借款合同编号</td>
+                                                <td>转让总金额</td>
+                                                <td>业务编号</td>
+                                                <td>交易类型</td>
+                                                <td>交易状态</td>
+                                                <td>所属商户</td>
+                                                <td>流水号</td>
+                                                <td>创建时间</td>
+                                                <td>修改时间</td>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
@@ -156,6 +176,7 @@
                                                 <td><fss:money money="${t.amount}"/></td>
                                                 <td>${t.busiNo}</td>
                                                 <td><fss:dictView key="${t.tradeType}"/></td>
+                                                <td><fss:dictView key="${t.tradeState}"/></td>
                                                 <td>${t.mchn}</td>
                                                 <td>${t.seqNo}</td>
                                                 <td><fss:fmtDate value="${t.createTime}"/></td>
