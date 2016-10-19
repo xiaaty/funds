@@ -209,4 +209,22 @@ public class FssOfflineRechargeService {
 	public FssOfflineRechargeEntity get(Long id){
 		return this.fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
 	}
+
+	/**
+	 * 修改交易状态
+	 * @param id
+	 * @param orderNo
+	 * @throws FssException
+     */
+	public void updateState(Long id,String orderNo,String resultState) throws FssException{
+		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+		entity.setOrderNo(orderNo);
+		entity.setResultState(resultState);
+		try{
+			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+		}catch (Exception e){
+			throw new FssException("91009804");
+		}
+	}
+
 }

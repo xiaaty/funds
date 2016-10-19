@@ -390,7 +390,6 @@ public class FundsTradeImpl  implements IFundsTrade {
         return true;
     }
 
-
     public void transfer(Integer fromCustid,Integer fromType,Integer toCustId,Integer toType,BigDecimal amt,Integer orderType,Integer sourceType,Long SourceId,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo) throws FssException {
         FundAccountEntity  fromEntity = this.getFundAccount(fromCustid,fromType);//转出账户
         FundAccountEntity  toEntity = this.getFundAccount(toCustId,toType);//转入账户
@@ -751,4 +750,68 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         return true;
     }*/
+
+    /**
+     * pos充值订单创建
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @param amt
+     * @return
+     * @throws FssException
+     */
+    public PosCallBackResponse PosOrderCreateApply(String mchn, String seq_no, String trade_type, String cust_id, String cust_type, String busi_no, BigDecimal amt) throws FssException {
+        PosCallBackResponse posResponse=new PosCallBackResponse();
+        FundAccountEntity primaryAccount = this.getFundAccount(Integer.parseInt(cust_id),Integer.valueOf(cust_type));
+        if (primaryAccount.getIshangeBankCard()==1){
+            throw new CommandParmException("90004009");
+        }
+        //创建充值记录信息
+        FssOfflineRechargeEntity  fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge("2101", primaryAccount.getCustId(), primaryAccount.getCustName(),cust_type,amt,trade_type,seq_no,mchn,busi_no);
+        CommandResponse response = paySuperByFuiou.posOrderCreate(primaryAccount,amt,GlobalConstants.ORDER_CHARGE,fssOfflineRechargeEntity.getId(),0,trade_type);
+        //根据返回码判断是否成功
+        if("0000".equals(response.getCode())){//成功
+            fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo(),"13010001");
+            posResponse.setLogin_id(primaryAccount.getUserName());
+            posResponse.setAmt(amt);
+            posResponse.setOrder_no(response.getFundOrderEntity().getOrderNo());
+            posResponse.setRem(String.valueOf(response.getMap().get("rem")));
+        }else{//失败
+            fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo(),"13010002");
+        }
+        return posResponse;
+    }
+
+    /**
+     * 签约
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @return
+     * @throws FssException
+     */
+    public PosSignedResponse PosSigned(String mchn, String seq_no, String trade_type, String cust_id, String cust_type, String busi_no) throws FssException {
+            PosSignedResponse posResponse=new PosSignedResponse();
+            FundAccountEntity primaryAccount = this.getFundAccount(Integer.parseInt(cust_id),Integer.valueOf(cust_type));
+            if (primaryAccount.getIshangeBankCard()==1){
+                throw new CommandParmException("90004009");
+            }
+            FssOfflineRechargeEntity fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge("1102",primaryAccount.getCustId(), primaryAccount.getCustName(),cust_type,null,trade_type,seq_no,mchn,busi_no);
+            CommandResponse response = paySuperByFuiou.posSigned(primaryAccount,GlobalConstants.ORDER_POS_SIGNED,fssOfflineRechargeEntity.getId(),0,trade_type);
+            if("0000".equals(response.getCode())){//成功
+                fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo(),"13010003");
+                posResponse.setLogin_id(primaryAccount.getUserName());
+                posResponse.setOrder_no(response.getFundOrderEntity().getOrderNo());
+                posResponse.setRem(String.valueOf(response.getMap().get("rem")));
+            }else{//失败
+                fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo(),"13010004");
+            }
+            return posResponse;
+    }
 }
