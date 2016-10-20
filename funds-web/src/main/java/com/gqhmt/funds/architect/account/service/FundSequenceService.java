@@ -766,7 +766,7 @@ public class FundSequenceService {
                         LogUtil.error(this.getClass(), e);
                     }
                     try {
-                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentExtrinterest(), BigDecimal.ZERO, 3012, title + " 收到提前还款利息补偿 " + bean.getRepaymentInterest() + "元");
+                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentExtrinterest(), BigDecimal.ZERO, 3006, title + " 加息券利息 " + bean.getRepaymentInterest() + "元");
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
