@@ -98,20 +98,32 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                         <td class="tr">交易日期：</td>
-                                            <td colspan="3">
-                                                <section class="fl">
-                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly" name="creatTime" class="selectdate" placeholder="请选择时间" value="${map.creatTime}">
-                                                    </label>
-                                                </section>
-                                                <span class="fl">&nbsp;至&nbsp;</span>
-                                                <section class="fl">
-                                                    <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                                                        <input type="text" maxlength="10" readonly="readonly"  name="modifyTime" class="selectdate" placeholder="请选择时间" value="${map.modifyTime}">
-                                                    </label>
-                                                </section>
-                                            </td>
+                                                        <td class="tr" nowrap="nowrap">交易状态：</td>
+                                                        <td nowrap="nowrap">
+                                                            <label class="select">
+                                                                <select class="select02" style="width:202px;" name="status" id="status">
+                                                                    <option value="">所有</option>
+                                                                    <fss:dictOrder var="order" dictOrder="tradeStatus">
+
+                                                                        <option value="${order.key}"  <c:if test="${order.key==map.status}">selected</c:if> >${order.value}</option>
+                                                                    </fss:dictOrder>
+                                                                </select>
+                                                            </label>
+                                                        </td>
+                                                        <td class="tr">交易日期：</td>
+                                                        <td colspan="3">
+                                                        <section class="fl">
+                                                            <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                <input type="text" maxlength="10" readonly="readonly" name="creatTime" class="selectdate" placeholder="请选择时间" value="${map.creatTime}">
+                                                            </label>
+                                                        </section>
+                                                        <span class="fl">&nbsp;至&nbsp;</span>
+                                                        <section class="fl">
+                                                            <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                                                                <input type="text" maxlength="10" readonly="readonly"  name="modifyTime" class="selectdate" placeholder="请选择时间" value="${map.modifyTime}">
+                                                            </label>
+                                                        </section>
+                                                    </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

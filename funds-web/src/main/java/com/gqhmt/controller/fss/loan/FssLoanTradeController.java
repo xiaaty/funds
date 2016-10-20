@@ -431,10 +431,10 @@ public class FssLoanTradeController {
 
 	@RequestMapping("/loan/trade/backplat")
 	@AutoPage
-	public String queryBackPlat(HttpServletRequest request, ModelMap model,FssBackplateEntity fssBackplateEntity) {
-		List<FssBackplateEntity> backplateList = fssBackplateService.getBackPlate(fssBackplateEntity);
+	public String queryBackPlat(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) {
+		List<FssBackplateEntity> backplateList = fssBackplateService.getBackPlate(map);
 		model.addAttribute("page", backplateList);
-		model.addAttribute("fssBackplateEntity",fssBackplateEntity);
+		model.addAttribute("map",map);
 		return "fss/trade/backplateList";
 	}
 	
@@ -530,10 +530,28 @@ public class FssLoanTradeController {
 		return map;
 	}
 
-
-
-
-
-
+	/**
+	 * 回盘失败重新回盘
+	 * @param request
+	 * @param model
+     * @return
+     */
+	@RequestMapping("/loan/trade/backToDisk")
+	@ResponseBody
+	public Object backToDisk(HttpServletRequest request, ModelMap model) throws FssException{
+		Map<String, String> map = new HashMap<String, String>();
+		try{
+			Long id=Long.valueOf(request.getParameter("id"));
+			FssBackplateEntity entity=fssBackplateService.getBackPlateById(id);
+			fssBackplateService.updatebackplate(entity);
+			map.put("code", "0000");
+			map.put("message", "成功");
+		}catch (FssException e){
+			map.put("code", "0001");
+			map.put("message", e.getMessage());
+			LogUtil.info(this.getClass(), e.getMessage());
+		}
+		return map;
+	}
 
 }

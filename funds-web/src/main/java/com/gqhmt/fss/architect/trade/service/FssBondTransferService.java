@@ -50,6 +50,7 @@ public class FssBondTransferService {
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");
 			map2.put("busiNo", map.get("busiNo"));
+			map2.put("custName", map.get("custName"));
 			map2.put("tradeState", map.get("tradeState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
