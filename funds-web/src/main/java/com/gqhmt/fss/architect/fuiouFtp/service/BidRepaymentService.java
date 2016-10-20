@@ -7,6 +7,8 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
@@ -76,7 +78,8 @@ public class BidRepaymentService extends BidSupper{
 
     @Resource
     private FundsTradeImpl fundsTrade;
-
+    @Resource
+    private FssMappingService fssMappingService;
 
     public void BidRepayment(FssLoanEntity loanEntity) throws FssException {
         Map<String,String > paramMap = new HashMap<>();
@@ -142,8 +145,26 @@ public class BidRepaymentService extends BidSupper{
             if (bean.getRepaymentAmount().multiply(new BigDecimal("100")).longValue() <= 0) {
                 continue;
             }
-//            super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
             fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(fromEntity, toEntity, fundOrderEntity, bean.getRepaymentAmount(), 3, "", "",bean.getId(),bean.getCustomerId(),bean.getContractNo(),bid.getCustomerId().longValue(),bid.getContractNo()));
+            //额外利息
+            if(bean.getRepaymentExtrinterest().multiply(new BigDecimal("100")).longValue()<= 0){//额外利息不为0
+                continue;
+            }
+            //获取红包账户
+            FundAccountEntity  BondAccountEntity=null;
+            List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType("10010006");//获取所有运营商的红包账户
+            if(mappinglist.size()>0){
+                for(FssMappingBean entity:mappinglist){
+                    if (entity.getAmount().compareTo(bean.getRepaymentExtrinterest())>=0){//账户余额大于红包金额，则从该账户扣除红包金额
+                        BondAccountEntity=fundAccountService.getFundAccountById(entity.getAccountId());
+                        break;
+                    }
+                }
+            }else{
+                throw new FssException("90004007");
+            }
+            fuiouFtpColomFields.add(fuiouFtpColomFieldService.addColomFieldByNotInsert(BondAccountEntity, toEntity, fundOrderEntity, bean.getRepaymentExtrinterest(), 3, "", "",-bean.getId(),bean.getCustomerId(),bean.getContractNo(),bid.getCustomerId().longValue(),bid.getContractNo()));
+//          super.fundsRecordService.add(fromEntity, toEntity, fundOrderEntity, bid.getId().longValue(), null, 2, "产品" + title + "，还款本金" + bean.getRepaymentPrincipal() + "元，还款利息" + bean.getRepaymentInterest() + "元,合计：" + bean.getRepaymentAmount() + "元");
         }
 
         fuiouFtpColomFieldService.insertList(fuiouFtpColomFields);

@@ -753,11 +753,15 @@ public class FundSequenceService {
                         LogUtil.error(this.getClass(), e);
                     }
                 }
-                if (bean.getRepaymentExtrinterest().compareTo(BigDecimal.ZERO) > 0) {
+                if (bean.getRepaymentExtrinterest().compareTo(BigDecimal.ZERO) > 0) {//额外利息
                     try {
                        // this.transfer(fromEntity, toEntity, bean.getRepaymentExtrinterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
-                        this.transfer(fromEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
-
+                        //查询红包金额从哪个运营商的红包账户出
+                        FuiouFtpColomField fuiouFtpColomField= fuiouFtpColomFieldService.getFuiouFtpFiledByParam(fundOrderEntity.getOrderNo(),bean.getId());
+                        if(fuiouFtpColomField!=null){
+                            FundAccountEntity  BondAccountEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
+                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                        }
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
