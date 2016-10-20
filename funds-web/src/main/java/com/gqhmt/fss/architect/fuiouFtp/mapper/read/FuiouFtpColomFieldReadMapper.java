@@ -25,4 +25,5 @@ public interface FuiouFtpColomFieldReadMapper extends ReadMapper<FuiouFtpColomFi
 	public List<FuiouFtpColomField> selectFuiouFtpFieldList(Map<String, String> map);
 
 	public FuiouFtpColomField getFuiouFtpByOrderNo(@Param("orderNo") String orderNo);
+	public FuiouFtpColomField getFuiouFtpByParam(@Param("orderNo") String orderNo,@Param("tenderId")Long tenderId);
 }
