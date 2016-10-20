@@ -1251,4 +1251,20 @@ public class CustomerInfoService {
 		entity.setModifyTime(new Date());
 		this.update(entity);
 	}
+
+	/**
+	 * 修改客户签约状态
+	 * @param login_id
+	 * @throws FssException
+     */
+	public void updateCustThirdAgreement(String login_id) throws FssException{
+		try{
+			CustomerInfoEntity customerInfoEntity=customerInfoReadMapper.searchCustomerInfoByMobile(login_id);
+			customerInfoEntity.setHasThirdAgreement(1);
+			customerInfoWriteMapper.updateByPrimaryKey(customerInfoEntity);
+		}catch (Exception e){
+			LogUtil.error(this.getClass(),e.getMessage());
+		}
+	}
+
 }

@@ -80,9 +80,13 @@ public class FssTradeApi {
     
 	@Resource
 	private IOfflineRechargeApply offRechargeApplyImpl;
-
 	@Resource
 	private IBondTransfer bondTransferImpl;
+	@Resource
+	private IPosOrderCreate posOrderCreateImpl;
+	@Resource
+	private IPosSigned posSignedImpl;
+
     /**
      * 
      * author:jhz
@@ -319,11 +323,47 @@ public class FssTradeApi {
 		return response;
 	}
 
+	/**
+	 * pos充值订单创建接口
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/posOrderCreateApply",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object posOrderCreateApply(LoanApplyDto dto){
+
+		Response response=new Response();
+		try {
+			response = posOrderCreateImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+
+	/**
+	 * 签约
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/posSigned",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createSigned(LoanApplyDto dto){
+
+		Response response=new Response();
+		try {
+			response = posSignedImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+
+
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
 		response.setResp_code(e.getMessage());
 		return response;
 	}
-
 }

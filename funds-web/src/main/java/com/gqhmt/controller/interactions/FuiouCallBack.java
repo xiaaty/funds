@@ -4,6 +4,7 @@ package com.gqhmt.controller.interactions;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
 import com.gqhmt.pay.service.PaySuperByFuiou;
@@ -43,7 +44,8 @@ public class FuiouCallBack {
 	private FundOrderService fundOrderService;
 	@Resource
 	private FundAccountService fundAccountService;
-
+	@Resource
+	private CustomerInfoService customerInfoService;
 
 //	@Autowired
 //	private ChangeCardService changeCardService;
@@ -522,4 +524,79 @@ public class FuiouCallBack {
 		}
 		return  result;
 	}
+
+	/**
+	 * 根据据富有有返回结果进行处理
+	 * @param login_id
+	 * @param amt
+	 * @param resp_code
+	 * @param resp_desc
+	 * @param mchnt_cd
+	 * @param mchnt_txn_ssn
+	 * @param rem
+	 * @param signature
+     * @return
+     * @throws FssException
+     */
+	@RequestMapping("/returnPosRechargeResult")
+	@ResponseBody
+	public String returnPosRechargeResult(String login_id,String amt,String resp_code,String resp_desc,String mchnt_cd,String mchnt_txn_ssn,String rem,String signature) throws FssException{
+		//回调明文
+		String signValue = amt+"|"+login_id+"|"+mchnt_cd+"|"+mchnt_txn_ssn+"|"+rem+"|"+resp_code+"|"+resp_desc;
+		//验签
+		boolean flag = true;//SecurityUtils.verifySign(signValue, signature);
+		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue+":"+signature);
+		//返回富友接收结果
+		String result = "SUCCESS";
+		if (flag) {
+			try {
+//				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
+			} catch (Exception e) {
+				LogUtil.error(this.getClass(), e);
+				result = "FAIL";
+			}
+		} else {
+			result = "FAIL SIGNVALUE";
+		}
+		return  result;
+	}
+
+	/**
+	 * pos签约
+	 * @param login_id
+	 * @param mchnt_cd
+	 * @param mchnt_txn_ssn
+	 * @param page_notify_url
+	 * @param rem
+	 * @param signature
+	 * @param resp_code
+	 * @param amt
+     * @return
+     * @throws FssException
+     */
+	@RequestMapping("/returnSignedResult")
+	@ResponseBody
+	public String returnSignedResult(String login_id,String mchnt_cd,String mchnt_txn_ssn,String page_notify_url,String rem,String signature,String resp_code,String amt) throws FssException{
+		//回调明文
+		String signValue = login_id+"|"+mchnt_cd+"|"+mchnt_txn_ssn+"|"+page_notify_url+"|"+rem;
+		//验签
+		boolean flag = true;//SecurityUtils.verifySign(signValue, signature);
+		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue+":"+signature);
+		//返回富友接收结果
+		String result = "SUCCESS";
+		if (flag) {
+			try {
+				//修改对应的客户表的签约状态
+				customerInfoService.updateCustThirdAgreement(login_id);
+			} catch (Exception e) {
+				LogUtil.error(this.getClass(), e);
+				result = "FAIL";
+			}
+		} else {
+			result = "FAIL SIGNVALUE";
+		}
+		return  result;
+	}
+
 }

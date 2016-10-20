@@ -293,4 +293,31 @@ public interface IFundsTrade {
      * @throws FssException
      */
     public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no,Integer acc_type,Integer to_acc_type,Integer fundType,Integer actionType) throws FssException;
+
+    /**
+     * pos充值订单创建
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @param amt
+     * @return
+     * @throws FssException
+     */
+    public PosCallBackResponse PosOrderCreateApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
+
+    /**
+     * 签约
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param cust_id
+     * @param cust_type
+     * @param busi_no
+     * @return
+     * @throws FssException
+     */
+    public PosSignedResponse PosSigned(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no) throws FssException;
 }

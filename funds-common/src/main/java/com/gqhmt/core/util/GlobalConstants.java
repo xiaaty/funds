@@ -101,7 +101,7 @@ public class GlobalConstants {
 
     public static final int ORDER_DROP_USER = 39;
     public static final int ORDER_UPDATE_CARD_QUERY = 40;
-
+    public static final int ORDER_POS_SIGNED = 41;//pos签约
     public static final int ORDER_TRADE_QUERY = 51;
     public static final int ORDER_CZTX_QUERY = 52;
     public static final int ORDER_USER_INFO_QUERY = 53;
@@ -695,6 +695,9 @@ public class GlobalConstants {
         TRADE_APPLY_NO__MAPPING.put("11091003","TBZJ");//归还保证金提现
         TRADE_APPLY_NO__MAPPING.put("11040013","SHTX");//赎回提现
         TRADE_APPLY_NO__MAPPING.put("11040014","XTLX");//续投利息赎回
+        TRADE_APPLY_NO__MAPPING.put("21010004","PSCZ");//pos充值订单创建
+        TRADE_APPLY_NO__MAPPING.put("11020018","PSQY");//pos签约
+
         //根据账户类型匹配    1:借款账户，2:线下出借账户，3:线上出借账户，99:冻结金账户
         TRADE_BUSINESS_TYPE__MAPPING.put(10010001,3);
         TRADE_BUSINESS_TYPE__MAPPING.put(10010007,1);
