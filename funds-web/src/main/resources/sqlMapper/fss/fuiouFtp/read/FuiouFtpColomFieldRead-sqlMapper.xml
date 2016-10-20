@@ -142,7 +142,6 @@
 		SELECT t.from_account_Id fromAccountId
 		FROM t_fuiou_ftp_field t
 		WHERE t.order_no=#{orderNo}
-		AND t.tender_id &lt; 0
 		AND t.tender_id=#{tenderId}
 	</select>
 
