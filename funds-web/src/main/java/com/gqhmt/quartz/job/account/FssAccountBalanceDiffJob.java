@@ -24,7 +24,7 @@ public class FssAccountBalanceDiffJob extends SupperJob {
     private static boolean isRunning = false;
 
     //每天00:10执行
-    @Scheduled(cron="0 10 0 * * ?")
+    @Scheduled(cron="0 10 3 * * ?")
     public void executeJob() throws PayChannelNotSupports {
     	
     	LogUtil.info(getClass(), "init账户余额校验定时任务");
