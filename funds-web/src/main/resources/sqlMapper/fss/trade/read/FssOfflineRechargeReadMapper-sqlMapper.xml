@@ -6,6 +6,7 @@
 		  t.`id` id,
 		  t.`apply_no` applyNo,
 		  t.`apply_type` applyType,
+		  t.`trade_type` tradeType,
 		  t.`cust_id` custId,
 		  t.`cust_type` custType,
 		  t.`cust_name` custName,
@@ -39,6 +40,12 @@
 			<where>
 				<if test="applyNo != null and applyNo != ''">
 					AND t.apply_no like CONCAT('%',#{applyNo},'%')
+				</if>
+				<if test="orderNo != null and orderNo != ''">
+					AND t.order_no like CONCAT('%',#{orderNo},'%')
+				</if>
+				<if test="applyType != null and applyType != ''">
+					AND t.apply_type =#{applyType}
 				</if>
 				<if test="busiNo!=null and busiNo!=''">
 					AND t.busi_no like CONCAT('%',#{busiNo},'%')
@@ -95,5 +102,12 @@
 		</if>
 		ORDER BY t.`id` DESC
 	</select>
+
+	<select id="getOfflineRechargeResult" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity">
+		<include refid="selectSql"/>
+		WHERE t.`order_no`=#{order_no}
+		AND t.`trade_type`=#{trade_type}
+	</select>
+
 
 </mapper>

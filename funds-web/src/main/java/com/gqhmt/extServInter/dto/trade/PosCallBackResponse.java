@@ -24,7 +24,6 @@ public class PosCallBackResponse extends Response {
     private String order_no;//订单号
     private String login_id;//交易用户
     private BigDecimal amt;//交易金额
-    private String rem;//备注
 
     @JsonSerialize(using = BigDecimalSerialize.class)
     public BigDecimal getAmt() {
@@ -41,14 +40,6 @@ public class PosCallBackResponse extends Response {
 
     public void setOrder_no(String order_no) {
         this.order_no = order_no;
-    }
-
-    public String getRem() {
-        return rem;
-    }
-
-    public void setRem(String rem) {
-        this.rem = rem;
     }
 
     public String getLogin_id() {

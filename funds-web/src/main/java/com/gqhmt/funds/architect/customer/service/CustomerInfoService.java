@@ -1254,12 +1254,12 @@ public class CustomerInfoService {
 
 	/**
 	 * 修改客户签约状态
-	 * @param login_id
+	 * @param id
 	 * @throws FssException
      */
-	public void updateCustThirdAgreement(String login_id) throws FssException{
+	public void updateCustThirdAgreement(Long id) throws FssException{
 		try{
-			CustomerInfoEntity customerInfoEntity=customerInfoReadMapper.searchCustomerInfoByMobile(login_id);
+			CustomerInfoEntity customerInfoEntity=customerInfoReadMapper.selectByPrimaryKey(id);
 			customerInfoEntity.setHasThirdAgreement(1);
 			customerInfoWriteMapper.updateByPrimaryKey(customerInfoEntity);
 		}catch (Exception e){

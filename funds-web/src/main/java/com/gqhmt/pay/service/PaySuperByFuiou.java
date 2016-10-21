@@ -445,7 +445,7 @@ public class PaySuperByFuiou {
      * @throws FssException
      */
     public CommandResponse posOrderCreate(FundAccountEntity entity,BigDecimal amount,int orderType,long busiId,int busiType,String trade_type) throws FssException {
-        LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
+        LogUtil.info(this.getClass(),"POS充值订单创建:"+entity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
         FundOrderEntity fundOrderEntity = this.createOrder(entity,amount,orderType,busiId,busiType,"1103",trade_type);
         CommandResponse response = ThirdpartyFactory.command(thirdPartyType,PayCommondConstants.COMMAND_PAYMENT_ORDER, fundOrderEntity, entity, amount,"pos充值订单金额 "+amount.toPlainString()+"元");
         execExction(response,fundOrderEntity);
@@ -472,5 +472,4 @@ public class PaySuperByFuiou {
         this.updateOrder(fundOrderEntity,1,response.getThirdReturnCode(),response.getMsg());
         return response;
     }
-
 }

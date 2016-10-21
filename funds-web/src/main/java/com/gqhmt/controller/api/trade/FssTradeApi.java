@@ -86,6 +86,8 @@ public class FssTradeApi {
 	private IPosOrderCreate posOrderCreateImpl;
 	@Resource
 	private IPosSigned posSignedImpl;
+	@Resource
+	private IPosCallBack posCallbackImpl;
 
     /**
      * 
@@ -347,7 +349,7 @@ public class FssTradeApi {
 	 * @return
      */
 	@RequestMapping(value = "/posSigned",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object createSigned(LoanApplyDto dto){
+	public Object createSigned(PosSignedDto dto){
 
 		Response response=new Response();
 		try {
@@ -359,6 +361,22 @@ public class FssTradeApi {
 		return response;
 	}
 
+	/**
+	 * po充值成功通知回调业务系统
+	 * @param
+	 * @return
+     */
+	@RequestMapping(value = "/posRechargeCallBack",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object posNotice(PosCallBackDto dto){
+		Response response=new Response();
+		try {
+			response = posCallbackImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
 
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
