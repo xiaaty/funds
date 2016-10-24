@@ -8,6 +8,7 @@ import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.mapper.read.FssCustomerReadMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssBankCardInfoWriteMapper;
 import com.gqhmt.fss.architect.customer.mapper.write.FssCustomerWriteMapper;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -175,6 +176,5 @@ public class FssCustomerService {
             throw new FssException("更新失败",e.getCause());
         }
     }*/
-
 
 }

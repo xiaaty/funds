@@ -56,6 +56,8 @@ public class FssOfflineRechargeService {
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");
 			map2.put("applyNo", map.get("applyNo"));
+			map2.put("orderNo", map.get("orderNo"));
+			map2.put("applyType", map.get("applyType"));
 			map2.put("busiNo", map.get("busiNo"));
 			map2.put("resultState", map.get("resultState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
@@ -225,6 +227,14 @@ public class FssOfflineRechargeService {
 		}catch (Exception e){
 			throw new FssException("91009804");
 		}
+	}
+
+	public FssOfflineRechargeEntity getOffineRechargeByParam(String trade_type,String order_no){
+		Map map=new HashMap();
+		map.put("trade_type",trade_type);
+		map.put("order_no",order_no);
+		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.getOfflineRechargeResult(map);
+		return entity;
 	}
 
 }

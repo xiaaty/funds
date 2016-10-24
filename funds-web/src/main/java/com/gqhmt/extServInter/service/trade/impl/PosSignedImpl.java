@@ -7,6 +7,7 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.LoanApplyDto;
 import com.gqhmt.extServInter.dto.trade.PosCallBackResponse;
+import com.gqhmt.extServInter.dto.trade.PosSignedDto;
 import com.gqhmt.extServInter.dto.trade.PosSignedResponse;
 import com.gqhmt.extServInter.service.trade.IPosSigned;
 import com.gqhmt.pay.service.trade.IFundsTrade;
@@ -33,13 +34,13 @@ import javax.annotation.Resource;
 public class PosSignedImpl implements IPosSigned {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
-	@APITradeTypeValid(value = "11020018")//11030020:签约
+	@APITradeTypeValid(value = "11020018")//11020018:签约
     @Override
     public Response execute(SuperDto dto) {
 		PosSignedResponse response = new PosSignedResponse();
     	try {
-			LoanApplyDto cDto = (LoanApplyDto)dto;
-			response=fundsTradeImpl.PosSigned(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getCust_id(),cDto.getCust_type(),cDto.getBusi_no());
+			PosSignedDto cDto = (PosSignedDto) dto;
+			response=fundsTradeImpl.PosSigned(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getCust_id(),cDto.getCust_type());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

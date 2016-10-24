@@ -2,6 +2,7 @@ package com.gqhmt.pay.service.trade;
 
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -299,14 +300,14 @@ public interface IFundsTrade {
      * @param mchn
      * @param seq_no
      * @param trade_type
-     * @param cust_id
-     * @param cust_type
+     * @param cert_no
      * @param busi_no
      * @param amt
+     * @param busi_type
      * @return
      * @throws FssException
      */
-    public PosCallBackResponse PosOrderCreateApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
+    public PosCallBackResponse PosOrderCreateApply(String mchn,String seq_no,String trade_type,String cert_no,String busi_no,BigDecimal amt,String busi_type) throws FssException;
 
     /**
      * 签约
@@ -315,9 +316,11 @@ public interface IFundsTrade {
      * @param trade_type
      * @param cust_id
      * @param cust_type
-     * @param busi_no
      * @return
      * @throws FssException
      */
-    public PosSignedResponse PosSigned(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no) throws FssException;
+    public PosSignedResponse PosSigned(String mchn,String seq_no,String trade_type,String cust_id,String cust_type) throws FssException;
+
+    public Response PosRechargeCallback(String trade_type, String order_no) throws FssException;
+
 }
