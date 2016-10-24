@@ -527,7 +527,7 @@ public class FuiouCallBack {
 	}
 
 	/**
-	 * pos充值订单创建富友返回结果处理
+	 * pos充值成功富友返回结果处理
 	 * @param login_id
 	 * @param amt
 	 * @param resp_code

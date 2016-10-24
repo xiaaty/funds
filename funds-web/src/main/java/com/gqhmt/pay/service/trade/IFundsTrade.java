@@ -300,14 +300,14 @@ public interface IFundsTrade {
      * @param mchn
      * @param seq_no
      * @param trade_type
-     * @param cust_id
-     * @param cust_type
+     * @param cert_no
      * @param busi_no
      * @param amt
+     * @param busi_type
      * @return
      * @throws FssException
      */
-    public PosCallBackResponse PosOrderCreateApply(String mchn,String seq_no,String trade_type,String cust_id,String cust_type,String busi_no,BigDecimal amt) throws FssException;
+    public PosCallBackResponse PosOrderCreateApply(String mchn,String seq_no,String trade_type,String cert_no,String busi_no,BigDecimal amt,String busi_type) throws FssException;
 
     /**
      * 签约

@@ -331,7 +331,7 @@ public class FssTradeApi {
 	 * @return
      */
 	@RequestMapping(value = "/posOrderCreateApply",method = {RequestMethod.GET,RequestMethod.POST})
-	public Object posOrderCreateApply(LoanApplyDto dto){
+	public Object posOrderCreateApply(PosOrderCreateDto dto){
 
 		Response response=new Response();
 		try {
@@ -344,7 +344,7 @@ public class FssTradeApi {
 	}
 
 	/**
-	 * 签约
+	 * pos签约订单创建
 	 * @param dto
 	 * @return
      */

@@ -34,7 +34,7 @@ import javax.annotation.Resource;
 public class PosSignedImpl implements IPosSigned {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
-	@APITradeTypeValid(value = "11020018")//11030020:签约
+	@APITradeTypeValid(value = "11020018")//11020018:签约
     @Override
     public Response execute(SuperDto dto) {
 		PosSignedResponse response = new PosSignedResponse();

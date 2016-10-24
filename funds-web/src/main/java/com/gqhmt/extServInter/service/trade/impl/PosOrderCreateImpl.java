@@ -5,10 +5,7 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.trade.LoanApplyDto;
-import com.gqhmt.extServInter.dto.trade.OfflineRechargeApplyDto;
-import com.gqhmt.extServInter.dto.trade.OfflineRechargeResponse;
-import com.gqhmt.extServInter.dto.trade.PosCallBackResponse;
+import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.extServInter.service.trade.IOfflineRechargeApply;
 import com.gqhmt.extServInter.service.trade.IPosOrderCreate;
 import com.gqhmt.pay.service.trade.IFundsTrade;
@@ -40,8 +37,8 @@ public class PosOrderCreateImpl implements IPosOrderCreate {
     public Response execute(SuperDto dto) {
 		PosCallBackResponse response = new PosCallBackResponse();
     	try {
-			LoanApplyDto cDto = (LoanApplyDto)dto;
-			response=fundsTradeImpl.PosOrderCreateApply(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getCust_id(),cDto.getCust_type(),cDto.getBusi_no(),cDto.getAmt());
+			PosOrderCreateDto cDto = (PosOrderCreateDto)dto;
+			response=fundsTradeImpl.PosOrderCreateApply(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getCert_no(),cDto.getBusi_no(),cDto.getAmt(),cDto.getBusi_type());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
