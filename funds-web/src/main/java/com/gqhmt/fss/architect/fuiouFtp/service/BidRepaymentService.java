@@ -114,11 +114,7 @@ public class BidRepaymentService extends BidSupper{
 
 
 
-        for (RepaymentBean bean : list) {
-            if (bean.getRepaymentAmount().multiply(new BigDecimal("100")).longValue() <= 0) {
-                sumRepay = sumRepay.add(bean.getRepaymentAmount());
-            }
-        }
+
 
         //账户资金余额验证   todo
         if (sumRepay.multiply(new BigDecimal("100")).longValue() < 0) {
