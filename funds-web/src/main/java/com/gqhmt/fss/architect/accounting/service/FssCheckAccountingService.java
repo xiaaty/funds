@@ -63,14 +63,31 @@ public class FssCheckAccountingService {
     public void insert(FssCheckAccountingEntity checkAccountingEntity)throws FssException{
         fssCheckAccountingWriteMapper.insertSelective(checkAccountingEntity);
     }
+    /**
+     * jhz
+     * 添加
+     * @param enList
+     */
+    public int insertCheckList(List<FssCheckAccountingEntity> enList)throws FssException{
+        int i=0;
+        for (FssCheckAccountingEntity entity:enList) {
+            try {
+                this.insert(entity);
+                i++;
+            }catch (FssException e){
+                continue;
+            }
+        }
+        return i;
+    }
 
     /***
      * jhz
      * 批量添加
      * @param list
      */
-    public void insertList(List<FssCheckAccountingEntity> list)throws FssException{
-        fssCheckAccountingWriteMapper.insertList(list);
+    public int insertList(List<FssCheckAccountingEntity> list)throws FssException{
+        return fssCheckAccountingWriteMapper.insertList(list);
     }
     /**
      * jhz
@@ -149,6 +166,11 @@ public class FssCheckAccountingService {
         return fssCheckAccountingReadMapper.queryWithList();
     }
 
+    /**
+     * jhz
+     * 充值体现对账
+     * @throws FssException
+     */
     public void checkAccounting() throws  FssException{
         List<FssCheckAccountingEntity> list=this.queryWithList();
         for (FssCheckAccountingEntity entity:list) {

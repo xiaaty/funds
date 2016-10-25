@@ -1,19 +1,27 @@
 package com.gqhmt.controller.api.trade;
 
+import com.google.common.collect.Maps;
+import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.JsonUtil;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.callback.p2p.WithHoldApplyCallback;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.bonus.BonusCheckDto;
+import com.gqhmt.extServInter.dto.bonus.BonusDto;
 import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.extServInter.dto.trade.*;
+import com.gqhmt.extServInter.service.bonus.IBonus;
 import com.gqhmt.extServInter.service.cost.ICharges;
 import com.gqhmt.extServInter.service.trade.*;
-import com.gqhmt.pay.service.trade.impl.FundsBatchTradeImpl;
-import org.springframework.context.ApplicationContext;
+import com.gqhmt.fss.architect.bonus.service.FssBonusService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * stController
@@ -46,21 +54,19 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/api")
 public class FssGetTradeApi {
 
-    @Resource
-    private ApplicationContext applicationContext;
 	@Resource
 	private IWithHoldApply withHoldApplyImpl;
 	@Resource
 	private IGetWithDrawApply getWithDrawApplyImpl;
 	
 	@Resource
-	private FundsBatchTradeImpl fundsBatchTradeImpl;
-	@Resource
-	private WithHoldApplyCallback withHoldApplyCallback;
-	@Resource
 	private ICharges chargesImpl;
 	@Resource
 	private ICompensation compensationImpl;
+	@Resource
+	private IBonus bonusImpl;
+	@Resource
+	private FssBonusService fssBonusService;
 	/*
 	 * 冠E通后台--代扣申请接口
 	 */
@@ -107,7 +113,7 @@ public class FssGetTradeApi {
 
 
 	/**
-	 * 资金代偿、费用收取、红包提现 公共接口
+	 * 资金代偿、费用收取、 公共接口
 	 * @param dto
 	 * @return
      */
@@ -120,6 +126,32 @@ public class FssGetTradeApi {
 			response = this.execute(e);
 		}
 		return response;
+	}
+
+	/**
+	 * 红包提现
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/bonusWithDraw",method = {RequestMethod.POST,RequestMethod.GET})
+	public Object compensation(@RequestBody BonusDto dto){
+		Response response=new Response();
+		try {
+			response = bonusImpl.execute(dto);
+		} catch (Exception e) {
+			response = this.execute(e);
+		}
+		return response;
+	}
+	/**
+	 * 红包查询接口
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/bonusCheck",method = {RequestMethod.POST})
+	public Object bonusCheck(@RequestBody BonusCheckDto dto)throws FssException{
+		if(dto==null) throw new FssException("传过来的红包seqNos为空");
+		return fssBonusService.getResult(dto.getParams());
 	}
 
 	private Response execute(Exception e){

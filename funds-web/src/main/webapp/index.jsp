@@ -38,7 +38,7 @@
             <div class="box1 pr clearfix">
                 <div class="login_box bg">
                     <h1>登录资金清结算系统</h1>
-                    <% 
+                    <%
 							String errorCode=RequestUtil.getStringDefault(request, "errorCode","");
 							String codeMess="";
 							String mess="";
@@ -82,7 +82,7 @@
 <script type="text/javascript" charset="utf-8">
     $(function(){
         $(".user_login li").eq(2).css('padding-bottom','10px');
-    	
+
         if($(window).height() < 700){
             $(".login").css("margin-top","10px");
         }else{

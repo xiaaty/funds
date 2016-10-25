@@ -3,9 +3,10 @@
     <propertieses>
         <properties>com.fuiou.fuiouRemote</properties>
     </propertieses>
-    <url >
+    <url>
         <connection source="properties">${url}</connection>
         <isConnection source="properties">${fuiou.isConnection}</isConnection>
+        <testTimeOut source="properties">${fuiou.testTimeout}</testTimeOut>
     </url>
     <job>
         <ip source="properties">${job.ip}</ip>

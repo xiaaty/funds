@@ -1,6 +1,9 @@
 package com.gqhmt.funds.architect.customer.bean;
 
 
+import javax.persistence.Column;
+import java.util.Date;
+
 public class CustomerInfoDetialBean {
 	private Integer id;
 	//客户姓名
@@ -18,13 +21,13 @@ public class CustomerInfoDetialBean {
 	//发证机关所在地
 	private String certAddress;
 	//签发日期
-	private String certIssueDateView;
+	private String certIssueDate;
 	//失效日期
-	private String certFailDateView;
+	private String certFailDate;
 	//性别 1-男 2-女
 	private Integer sex;
 	//出生日期
-	private String birthdateView;
+	private String birthdate;
 	//学历
 	private String education;
 	//婚姻状况 1：未婚 2：已婚  3：离异 4：丧偶
@@ -81,7 +84,9 @@ public class CustomerInfoDetialBean {
 	
 	//是否创建账户 0-未开户 1-已创建
 	private Integer hasAcount;
-	
+	//是否创建账户 0-未开户 1-已创建
+	private Integer isvalid;
+
 	//开户行行别(富友开户用)
 	private String parentBankCode;
 	
@@ -97,8 +102,14 @@ public class CustomerInfoDetialBean {
 	//是否变更富友银行卡
 	private String isChangeBankCard;
 
-	private String imageFileName;
+	//是否签署第三方协议 0 没有 1 有
+	private Integer hasThirdAgreement;
 
+	private String imageFileName;
+	//创建时间
+	private Date createTime;
+	//修改时间
+	private Date modifyTime;
 
 	
 	public Integer getId() {
@@ -143,36 +154,53 @@ public class CustomerInfoDetialBean {
 	public void setCertNo(String certNo) {
 		this.certNo = certNo;
 	}
+
+	public Integer getIsvalid() {
+		return isvalid;
+	}
+
+	public void setIsvalid(Integer isvalid) {
+		this.isvalid = isvalid;
+	}
+
 	public String getCertAddress() {
 		return certAddress;
 	}
 	public void setCertAddress(String certAddress) {
 		this.certAddress = certAddress;
 	}
-	public String getCertIssueDateView() {
-		return certIssueDateView;
+
+	public String getCertIssueDate() {
+		return certIssueDate;
 	}
-	public void setCertIssueDateView(String certIssueDateView) {
-		this.certIssueDateView = certIssueDateView;
+
+	public void setCertIssueDate(String certIssueDate) {
+		this.certIssueDate = certIssueDate;
 	}
-	public String getCertFailDateView() {
-		return certFailDateView;
+
+	public String getCertFailDate() {
+		return certFailDate;
 	}
-	public void setCertFailDateView(String certFailDateView) {
-		this.certFailDateView = certFailDateView;
+
+	public void setCertFailDate(String certFailDate) {
+		this.certFailDate = certFailDate;
 	}
+
 	public Integer getSex() {
 		return sex;
 	}
 	public void setSex(Integer sex) {
 		this.sex = sex;
 	}
-	public String getBirthdateView() {
-		return birthdateView;
+
+	public String getBirthdate() {
+		return birthdate;
 	}
-	public void setBirthdateView(String birthdateView) {
-		this.birthdateView = birthdateView;
+
+	public void setBirthdate(String birthdate) {
+		this.birthdate = birthdate;
 	}
+
 	public String getEducation() {
 		return education;
 	}
@@ -338,6 +366,23 @@ public class CustomerInfoDetialBean {
 	public String getCityCode() {
 		return cityCode;
 	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
 	/**
 	 * @param cityCode the cityCode to set
 	 */
@@ -419,6 +464,14 @@ public class CustomerInfoDetialBean {
 
 	public String getImageFileName() {
 		return imageFileName;
+	}
+
+	public Integer getHasThirdAgreement() {
+		return hasThirdAgreement;
+	}
+
+	public void setHasThirdAgreement(Integer hasThirdAgreement) {
+		this.hasThirdAgreement = hasThirdAgreement;
 	}
 
 	public void setImageFileName(String imageFileName) {

@@ -6,7 +6,6 @@ import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
-import com.gqhmt.quartz.service.FtpDownloadFileService;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,9 +46,6 @@ public class FuiouAccountInfoController {
 
     @Resource
     private FuiouAccountInfoService fuiouAccountInfoService;
-
-    @Resource
-    private FtpDownloadFileService ftpDownloadFileService;
 
     @Resource
     private FuiouAccountInfoFileService fuiouAccountInfoFileService;
@@ -117,19 +115,20 @@ public class FuiouAccountInfoController {
         }else{
             if(!StringUtils.isEmpty(map.get("createFileDate")) && !StringUtils.isEmpty(map.get("tradeType"))){
                 String date = map.get("createFileDate");
+                Date createTime = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 
                 if(!("-1".equals(id))){
                     model.addAttribute("createFileDate",date);
                 }
 
-                String createFileDate = date.replaceAll("-","");
-                failAccInfoFile.setCreateFileDate(createFileDate);
+                failAccInfoFile.setCreateTime(createTime);
                 failAccInfoFile.setTradeType(map.get("tradeType"));
+
             }else{
                 return "redirect:"+request.getContextPath()+"/account/info/failAccInfoFileList";
             }
         }
-        boolean booleanType = ftpDownloadFileService.downloadFuiouAccount(failAccInfoFile);
+        boolean booleanType = fuiouAccountInfoFileService.downFileAccountInfo(failAccInfoFile);
 
         String grabState = null;
         if(booleanType == true){

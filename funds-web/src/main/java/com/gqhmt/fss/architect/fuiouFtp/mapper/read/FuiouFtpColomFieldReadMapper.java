@@ -23,4 +23,6 @@ public interface FuiouFtpColomFieldReadMapper extends ReadMapper<FuiouFtpColomFi
 	public List<FuiouFtpColomField> selectByFileId(@Param("fileId")Long fileId);
 
 	public List<FuiouFtpColomField> selectFuiouFtpFieldList(Map<String, String> map);
+
+	public FuiouFtpColomField getFuiouFtpByOrderNo(@Param("orderNo") String orderNo);
 }

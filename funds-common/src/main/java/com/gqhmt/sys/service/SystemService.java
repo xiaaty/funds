@@ -129,5 +129,9 @@ public class SystemService {
    public void insertDictList(List<DictEntity> list){
        this.systemWriteMapper.insertList(list);
    }
+
+    public List<DictEntity> getDictList(){
+        return  this.systemReadMapper.getDictNameList();
+    }
    
 }

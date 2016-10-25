@@ -109,6 +109,24 @@ public class FundsTenderImpl  implements IFundsTender {
         tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no);
         return true;
     }
+	/**
+	 * 信用标投标
+	 */
+    public boolean newHandBid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no) throws FssException {
+
+        FundAccountEntity fromEntity = this.getFundAccount(Long.valueOf(cust_no), invest_type == 1 ? 3 : 2);
+        this.hasEnoughBanlance(fromEntity,real_Amount);
+        // 冻结账户
+        FundAccountEntity toEntity = this.getFundAccount(Long.valueOf(cust_no), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        BigDecimal amount = real_Amount;//  bid.getRealAmount();
+        BigDecimal boundsAmount = bonus_Amount;// tender.getBonusAmount();
+        FundOrderEntity fundOrderEntity = paySuperByFuiou.createOrder(fromEntity, null, amount,GlobalConstants.ORDER_BID, Long.parseLong(bid_id),GlobalConstants.BUSINESS_BID,"1105",tradeType,busi_no,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no);
+
+        //后续处理
+        fuiouPreauthService.addFuiouPreauth(fromEntity, null, real_Amount,Integer.parseInt(bid_id),Integer.parseInt(tender_no),"", fundOrderEntity);
+        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,fundOrderEntity,"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no);
+        return true;
+    }
 
 
 
