@@ -153,11 +153,33 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         this.cashWithSetReq(primaryAccount.getCustId(),1);
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
-        this.hasEnoughBanlance(entity,withdrawDto.getAmt().add(withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt()));
-        FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,withdrawDto.getAmt(),withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt(),GlobalConstants.ORDER_AGENT_WITHDRAW,0l,0,"1104",withdrawDto.getTrade_type(),null,null);
-        //资金处理
-        tradeRecordService.withdraw(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1012,withdrawDto.getTrade_type());
-        this.chargeAmount(fundOrderEntity);
+        FundAccountEntity freezeEntity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        BigDecimal withdrawAmt = withdrawDto.getAmt().add(withdrawDto.getCharge_amt() == null?BigDecimal.ZERO:withdrawDto.getCharge_amt());
+
+        if(withdrawAmt.equals(BigDecimal.ZERO)){
+            throw new FssException("90004014");
+        }
+        this.hasEnoughBanlance(entity,withdrawAmt);
+        tradeRecordService.frozen(entity,freezeEntity,withdrawDto.getAmt() ,1012,null,"提现成功，提现金额 " + withdrawDto.getAmt() + "元",BigDecimal.ZERO,withdrawDto.getTrade_type());
+        tradeRecordService.frozen(entity,freezeEntity,withdrawDto.getCharge_amt(),4010,null,"收取提现手续费" ,BigDecimal.ZERO,withdrawDto.getTrade_type());
+        //二次校验账户状态，如果账户为负数，则提现存在问题，无法提现
+        entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+        if(entity.getAmount().compareTo(BigDecimal.ZERO)<0){
+            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type());
+            throw new FssException("90004007");
+
+        }
+        try {
+            FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
+            tradeRecordService.withdrawByFroze(freezeEntity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);
+            this.chargeAmount(fundOrderEntity);
+        }catch(Exception e) {
+            //资金处理
+            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type());
+            throw new FssException("90004007");
+        }
+
+
         return true;
     }
     /**

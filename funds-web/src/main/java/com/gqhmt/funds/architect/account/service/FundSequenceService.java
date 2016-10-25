@@ -220,13 +220,13 @@ public class FundSequenceService {
         if(amount.multiply(new BigDecimal("100")).longValue()<0){
             throw new AmountFailException("传入金额不能小于0");
         }
-        amount = new BigDecimal("-"+amount.toPlainString());
+        BigDecimal refundAmount = new BigDecimal("-"+amount.toPlainString());
 //      FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(frozeEntity.getId(), 2, accountType, amount,  orderEntity, entity.getId(),frozeEntity.getCustId());
-        FundSequenceEntity fundSequenceEntity=this.getFundSequenceEntity(frozeEntity.getId(),actionType,accountType,amount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),oAccountId,newFundsType,tradeType,frozeEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity fundSequenceEntity=this.getFundSequenceEntity(frozeEntity.getId(),actionType,accountType,refundAmount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),oAccountId,newFundsType,tradeType,frozeEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
-        this.fundTradeService.addFundTrade(entity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
+        this.fundTradeService.addFundTrade(frozeEntity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
     }
 
     /**
