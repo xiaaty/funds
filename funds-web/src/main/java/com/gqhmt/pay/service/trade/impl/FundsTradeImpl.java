@@ -160,10 +160,10 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new FssException("90004014");
         }
         this.hasEnoughBanlance(entity,withdrawAmt);
-        tradeRecordService.frozen(entity,freezeEntity,withdrawDto.getAmt() ,1012,null,"提现成功，提现金额 " + withdrawDto.getAmt() + "元",BigDecimal.ZERO,withdrawDto.getTrade_type());
-        if(withdrawDto.getCharge_amt().compareTo(BigDecimal.ZERO)>0) {//处理提现手续费
-            tradeRecordService.frozen(entity, freezeEntity, withdrawDto.getCharge_amt(), 4010, null, "收取提现手续费", BigDecimal.ZERO, withdrawDto.getTrade_type());
-        }
+        tradeRecordService.frozen(entity,freezeEntity,withdrawDto.getAmt() ,1012,null,"提现成功，提现金额 " + withdrawDto.getAmt() + "元,收取提现手续费"+withdrawDto.getCharge_amt(),BigDecimal.ZERO,withdrawDto.getTrade_type());
+//        if(withdrawDto.getCharge_amt().compareTo(BigDecimal.ZERO)>0) {//处理提现手续费
+//            tradeRecordService.frozen(entity, freezeEntity, withdrawDto.getCharge_amt(), 4010, null, "收取提现手续费", BigDecimal.ZERO, withdrawDto.getTrade_type());
+//        }
         //二次校验账户状态，如果账户为负数，则提现存在问题，无法提现
         entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         if(entity.getAmount().compareTo(BigDecimal.ZERO)<0){
