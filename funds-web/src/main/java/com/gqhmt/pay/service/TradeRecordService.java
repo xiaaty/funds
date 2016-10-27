@@ -109,6 +109,10 @@ public class TradeRecordService {
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "冻结账户资金 " + amount + "元" + (boundsAmout !=null ? ",红包抵扣资金 " + boundsAmout + "元" : ""), (boundsAmout != null? boundsAmout : BigDecimal.ZERO));
     }
 
+    public void refundFeozzen(FundAccountEntity fromEntity,FundAccountEntity toEntity,BigDecimal amount,BigDecimal chargeAmount,String tradeType) throws FssException {
+        sequenceService.frozenAmtByRefund(fromEntity,toEntity,amount,chargeAmount,tradeType);
+    }
+
     /**
      * 冻结重载
      * @param fromEntity
