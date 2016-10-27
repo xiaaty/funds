@@ -320,6 +320,14 @@ public class FundSequenceService {
 //      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
     }
 
+    public void frozenAmtByRefund(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,BigDecimal chargeAmount,String tradeType) throws FssException {
+//        tradeRecordService.frozen(entity,freezeEntity,withdrawAmt ,1012,null,"提现成功，提现金额 " + withdrawDto.getAmt() + "元,收取提现手续费"+withdrawDto.getCharge_amt(),BigDecimal.ZERO,withdrawDto.getTrade_type());
+        frozenAmt(orgEntity, frozenEntiry, amount, 1012, "提现成功，提现金额 " + amount, ThirdPartyType.FUIOU,null,null,tradeType);
+        if(chargeAmount.compareTo(BigDecimal.ZERO)>0){
+            frozenAmt(orgEntity, frozenEntiry, chargeAmount, 4010, "收取提现手续费 " + chargeAmount, ThirdPartyType.FUIOU,null,null,tradeType);
+        }
+    }
+
     /**
      * 冻结金额
      * @param orgEntity
