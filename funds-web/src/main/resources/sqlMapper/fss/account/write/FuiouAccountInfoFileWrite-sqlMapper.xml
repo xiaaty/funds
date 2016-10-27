@@ -6,13 +6,15 @@
         INSERT INTO t_gq_fss_fuiou_account_info_file (
             trade_type,
             remark,
-            boolean_type
+            boolean_type,
+            create_time
         )
         VALUES
 	    (
             #{tradeType},
             #{remark},
-            cast(#{booleanType} AS signed int)
+            cast(#{booleanType} AS signed int),
+            NOW()
 		)
     </insert>
 

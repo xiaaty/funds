@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.account.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,6 @@ public interface FuiouAccountInfoFileReadMapper extends ReadAndWriteMapper<Fuiou
 
     //查询金账户对账文件
     public List<FuiouAccountInfoFileEntity> queryAccountInfoFileList(Map<String, String> map);
+
+    public List<FuiouAccountInfoFileEntity> queryAccountInfoFile(@Param("createfileDate") String createfileDate, @Param("tradeType") String tradeType);
 }

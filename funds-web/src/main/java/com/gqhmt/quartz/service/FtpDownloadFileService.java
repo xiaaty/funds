@@ -283,9 +283,7 @@ public class FtpDownloadFileService {
         String pwd = (String)config.getValue("ftp.pwd.value");
         FtpClient ftp = new FtpClient(Integer.parseInt(port),userName,pwd,url);
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        Date createTime = file.getCreateTime();
-        String dateStr = sdf.format(createTime);
+        String dateStr = file.getCreatefileDate();
 
         String fileName = file.getTradeType()  + dateStr +  ".txt";
         String filePath = "/account/" + dateStr + "/" + fileName;
@@ -317,10 +315,8 @@ public class FtpDownloadFileService {
         boolean parseType = false;
 
         List<String> returnList = new ArrayList();
-        Date createTime = file.getCreateTime();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 
-        String date = sdf.format(createTime);
+        String date = file.getCreatefileDate();
 
         String path = getClassPath();
         File filepath  = new File(path+"/tmp/account/"+date);
@@ -376,6 +372,7 @@ public class FtpDownloadFileService {
 
                 // 如果不是存在的对象， 数据库也查不到则添加
                 file.setBooleanType("-1");
+                file.setCreateTime(new Date());
                 fuiouAccountInfoFileService.addFuiouAccountInfoFileEntity(file);
                 fileId = file.getId();
         }
@@ -394,12 +391,11 @@ public class FtpDownloadFileService {
             accInfoList.add(accountInfo);
 
         }
-
+        file.setBooleanType("1");
         fuiouAccountInfoService.addFuiouAccountInfoList(accInfoList);
 
-        file.setBooleanType("1");
         fuiouAccountInfoFileService.updateFuiouAccountInfoFileEntity(file);
-        LogUtil.info(this.getClass(),"抓取文件：" + file.getTradeType() + new SimpleDateFormat("yyyyMMdd").format(file.getCreateTime())+".txt 成功");
+        LogUtil.info(this.getClass(),"抓取文件：" + file.getTradeType() + file.getCreatefileDate() +".txt 成功");
     }
 
 }
