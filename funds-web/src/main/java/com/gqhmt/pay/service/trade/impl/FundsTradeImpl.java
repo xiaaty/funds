@@ -160,7 +160,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new FssException("90004014");
         }
         this.hasEnoughBanlance(entity,withdrawAmt);
-        tradeRecordService.frozen(entity,freezeEntity,withdrawAmt ,1012,null,"提现成功，提现金额 " + withdrawDto.getAmt() + "元,收取提现手续费"+withdrawDto.getCharge_amt(),BigDecimal.ZERO,withdrawDto.getTrade_type());
+        tradeRecordService.refundFeozzen(entity,freezeEntity,withdrawDto.getAmt(),withdrawDto.getCharge_amt(),withdrawDto.getTrade_type());
 //        if(withdrawDto.getCharge_amt().compareTo(BigDecimal.ZERO)>0) {//处理提现手续费
 //            tradeRecordService.frozen(entity, freezeEntity, withdrawDto.getCharge_amt(), 4010, null, "收取提现手续费", BigDecimal.ZERO, withdrawDto.getTrade_type());
 //        }
