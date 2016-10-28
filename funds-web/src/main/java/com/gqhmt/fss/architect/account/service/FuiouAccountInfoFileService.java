@@ -48,6 +48,11 @@ public class FuiouAccountInfoFileService {
         return fuiouAccountInfoFileReadMapper.queryAccountInfoFileList(map);
     }
 
+    //查询 AccountInfoEntity
+    public List<FuiouAccountInfoFileEntity> queryAccountInfoFile(String createfileDate, String tradeType) {
+        return fuiouAccountInfoFileReadMapper.queryAccountInfoFile(createfileDate,tradeType);
+    }
+
     //查询 查询成功的对账文件
     public List<FuiouAccountInfoFileEntity> querySucceedAccInfoFiltList(Map<String, String> map) {
         String booleanType = null;
@@ -82,22 +87,19 @@ public class FuiouAccountInfoFileService {
         return listFileEntity;
     }
 
-    public FuiouAccountInfoFileEntity getFileEntity(Date creatTime, String tradeType){
+    public FuiouAccountInfoFileEntity getFileEntity(Date createTime, String tradeType){
 
-        FuiouAccountInfoFileEntity fileEntity = new FuiouAccountInfoFileEntity();
+        FuiouAccountInfoFileEntity fileEntity;
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        String dateStr = sdf.format(creatTime);
-        Map<String,String> map = new HashMap<String,String>();
+        String dateStr = sdf.format(createTime);
 
-        map.put("creatTime",dateStr);
-        map.put("tradeType",tradeType);
-
-        List<FuiouAccountInfoFileEntity> acctounInfoFileList = this.queryAccountInfoFileList(map);
+        List<FuiouAccountInfoFileEntity> acctounInfoFileList = this.queryAccountInfoFile(dateStr,tradeType);
         if(!CollectionUtils.isEmpty(acctounInfoFileList)){
             fileEntity = acctounInfoFileList.get(0);
         }else{
-            fileEntity.setCreateTime(creatTime);
+            fileEntity = new FuiouAccountInfoFileEntity();
+            fileEntity.setCreatefileDate(dateStr);
             fileEntity.setTradeType(tradeType);
         }
         return fileEntity;
@@ -107,12 +109,12 @@ public class FuiouAccountInfoFileService {
     public boolean downFileAccountInfo(FuiouAccountInfoFileEntity fileEntity) throws FssException {
 
         if(fileEntity.getId()!=0 && "1".equals(fileEntity.getBooleanType())){
-            LogUtil.info(this.getClass(),"抓取文件: "+fileEntity.getTradeType()+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(fileEntity.getCreateTime())+"已经抓取成功");
+            LogUtil.info(this.getClass(),"抓取文件: "+fileEntity.getTradeType()+fileEntity.getCreatefileDate()+"已经抓取成功");
             return true;
         }
 
         if(!ftpDownloadFileService.downloadFuiouAccount(fileEntity)){
-            LogUtil.info(this.getClass(),"文件: "+fileEntity.getTradeType()+new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(fileEntity.getCreateTime())+" 下载到本地失败，请检查文件是否存在！");
+            LogUtil.info(this.getClass(),"文件: "+fileEntity.getTradeType()+fileEntity.getCreatefileDate()+" 下载到本地失败，请检查文件是否存在！");
             return false;
         }
 
