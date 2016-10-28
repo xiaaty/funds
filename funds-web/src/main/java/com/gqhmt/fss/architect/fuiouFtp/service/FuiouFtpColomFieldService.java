@@ -207,4 +207,8 @@ public class FuiouFtpColomFieldService {
     public FuiouFtpColomField getFuiouFtpFiledByOrderNo(String orderNo){
         return fuiouFtpColomFieldReadMapper.getFuiouFtpByOrderNo(orderNo);
     }
+
+    public FuiouFtpColomField getFuiouFtpFiledByParam(String orderNo,Long tenderId){
+        return fuiouFtpColomFieldReadMapper.getFuiouFtpByParam(orderNo,tenderId);
+    }
 }
