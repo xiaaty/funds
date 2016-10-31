@@ -134,7 +134,7 @@
 		t.`updater` updater,
 		t.`is_valid` isValid,
 		t.`sort` sort,
-		t.`remark` remark,
+		t.`remark` remark
 		FROM t_gq_fss_mapping t
 		WHERE t.mapping_type=#{mappingType} and t.is_valid=0
 	</select>

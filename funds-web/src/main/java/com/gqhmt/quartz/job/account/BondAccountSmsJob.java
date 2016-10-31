@@ -57,8 +57,6 @@ public class BondAccountSmsJob extends SupperJob {
             List<Map<String, String>> balist = new ArrayList<Map<String, String>>();
             Map<String, String> baMap = new HashMap<String, String>();
             baMap.put("sysCode", CoreConstants.ZJ_SYS_CODE);	//商户系统编码，在平台系统查看
-            baMap.put("tempCode", CoreConstants.FUND_BOND_TEMPCODE);	//商户模板编码，在平台系统查看
-            baMap.put("sendType", "1");     //1-短信
             balist.add(baMap);
             if(list!=null && list.size()>0){
                 for (FssMappingBean bean:list){
@@ -66,11 +64,13 @@ public class BondAccountSmsJob extends SupperJob {
                     if(bean!=null && bean.getMobile()!=null){
                         map.put("phoneNo", bean.getMobile());	//手机号，多个用","分开
                         map.put("0", sumAmount.movePointLeft(4).setScale(2, BigDecimal.ROUND_HALF_UP).toString());     //模板内容账户余额（万元）
+                        map.put("tempCode", CoreConstants.FUND_BOND_TEMPCODE);	//商户模板编码，在平台系统查看
+                        map.put("sendType", "1");     //1-短信
                         balist.add(map);
-                        //批量发送短信
-                        String result = HttpClientUtil.sendBody(CoreConstants.BACKEND_NOTICE_URL,balist);
                     }
                 }
+                String result = HttpClientUtil.sendBody(CoreConstants.BACKEND_NOTICE_URL,balist);
+                System.out.print("返回结果："+result);
             }
         } catch (Exception e) {
             LogUtil.error(getClass(),e);
