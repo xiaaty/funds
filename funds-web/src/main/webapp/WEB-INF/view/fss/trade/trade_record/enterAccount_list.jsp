@@ -88,11 +88,17 @@
                                                                 <input type="text" name="tradeType" value="${map.tradeType}">
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">执行状态:</td>
-                                                        <td nowrap="nowrap">
-                                                            <label class="input"  style="width:210px" >
-                                                                <input type="text" name="resultState" value="${map.resultState}">
-                                                            </label>
+
+
+                                                        <td class="tr">执行结果：</td>
+                                                        <td>
+                                                            <select id = "resultState" name = "resultState" style="width:200px;height: 30px;" >
+                                                                <option value="">所有</option>
+                                                                <option  <c:if test="${map.resultState==10080001}"> selected="selected" </c:if> value="10080001">新增</option>
+                                                                <option  <c:if test="${map.resultState==10080002}"> selected="selected" </c:if> value="10080002" >成功</option>
+                                                                <option  <c:if test="${map.resultState==10080003}"> selected="selected" </c:if> value="10080003" >部分成功</option>
+                                                                <option  <c:if test="${map.resultState==10080010}"> selected="selected" </c:if> value="10080010" >失败</option>
+                                                            </select>
                                                         </td>
                                                     </tr>
                                                 </tbody>

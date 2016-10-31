@@ -24,7 +24,7 @@
 		WHERE t.repay_count=${repayCount} AND DATE_ADD(t.modify_time,INTERVAL ${timeType} MINUTE) &lt; NOW() and t.repay_result=98060003
 	</select>
 
-	<select id="selectBackPlateByParam" parameterType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
+	<select id="selectBackPlateByParam" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity" >
 		SELECT
 		t.id id,
 		t.seq_no seqNo,
@@ -38,6 +38,15 @@
 		<where>
 			<if test="seqNo!=null and seqNo!=''">
 				and t.seq_no like  concat('%',#{seqNo},'%')
+			</if>
+			<if test="repayResult!=null and repayResult!=''">
+				AND t.repay_result=#{repayResult}
+			</if>
+			<if test="startTime != null and startTime!=''">
+				and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime!=''">
+				and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
 			</if>
 		</where>
 	</select>
