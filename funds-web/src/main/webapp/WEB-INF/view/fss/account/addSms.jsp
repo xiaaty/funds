@@ -84,7 +84,7 @@
                                             </table>
                                             <div class="mb20" id="wid-id-713">
                                                 <button class="btn btn-default table-nobg-btn" type="button" id="addSms">保存</button>
-                                                <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/account/redaccountlist'">取消</button>
+                                                <button class="btn btn-default table-nobg-btn" type="button" onclick="location.href='${contextPath}/account/smsNotification'">取消</button>
                                             </div>
                                         </div>
                                     </div>

@@ -42,7 +42,7 @@ public class BondAccountSmsJob extends SupperJob {
     private CustomerInfoService customerInfoService;
 
     private static boolean isRunning = false;
-    @Scheduled(cron="53 0/5 *  * * * ")
+    @Scheduled(cron="0 0 10 * * ?")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
