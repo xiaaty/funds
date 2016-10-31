@@ -84,6 +84,9 @@
 		<if test="accNo!=null and accNo!=''">
 			AND t.acc_no=#{accNo}
 		</if>
+		<if test="tradeState!= null and tradeState!=''">
+			AND t.trade_state=#{tradeState}
+		</if>
 		<if test="resultState!= null and resultState!=''">
 			AND t.trade_result=#{resultState}
 		</if>
