@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>系统配置--映射配置信息--冠群驰骋投资管理(北京)有限公司</title>
+    <title>系统配置--短信通知配置信息--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -36,7 +36,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>系统配置</li>
-            <li>映射配置信息</li>
+            <li>短信通知配置信息</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -47,12 +47,12 @@
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <!-- NEW WIDGET START -->
-                    <div class="jarviswidget" id="redAccMsg"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget" id="SmsNoticeMsg"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <h2>快速搜索</h2>
                         </header>
                         <div>
-                            <form class="smart-form" action=""  method="post" id="Form">
+                            <form class="smart-form" action="${contextPath}/account/smsNotification"  method="post" id="smsForm">
                                 <div class="jarviswidget-editbox">
                                 </div>
                                 <div class="widget-body no-padding">
@@ -66,25 +66,12 @@
                                             <col />
                                             <tbody>
                                             <tr>
-                                                <td class="tr">客户编号：</td>
+                                                <td class="tr">手机号：</td>
                                                 <td>
                                                     <label class="input">
-                                                        <input type="text" style="width:200px" name="custId" value="${map.custId}" />
+                                                        <input type="text" style="width:150px" name="custId" value="${map.custId}" />
                                                     </label>
                                                 </td>
-                                                <td class="tr" nowrap="nowrap">映射类型：</td>
-                                                <td nowrap="nowrap">
-                                                    <label class="select">
-                                                        <select class="select02" style="width:202px;" name="mappingType" id="mappingType">
-                                                            <option value="">所有</option>
-                                                            <fss:dictOrder var="order" dictOrder="mappingType">
-                                                                <option value="${order.key}"  <c:if test="${order.key==map.mappingType}">selected</c:if> >${order.value}</option>
-                                                            </fss:dictOrder>
-                                                        </select>
-                                                    </label>
-                                                </td>
-                                            </tr>
-                                            <tr>
                                                 <td class="tr" nowrap="nowrap">是否有效：</td>
                                                 <td nowrap="nowrap">
                                                     <label class="select">
@@ -127,10 +114,10 @@
 
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-7201"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-8201"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>映射配置信息列表</h2>
+                            <h2>短信通知配置信息列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -142,15 +129,14 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;height: 40px;">
-                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
+                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="msm_add"><i class="fa fa-plus"></i>&nbsp;添加</button>
                                     </div>
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1400px;">
                                         <col width="50" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="150" />
-                                        <col width="100" />
                                         <col width="100" />
                                         <col width="150" />
                                         <col width="200" />
@@ -160,12 +146,11 @@
                                         <thead>
                                         <tr>
                                             <td>序号</td>
-                                            <td>客户编号</td>
+                                            <td>手机号</td>
                                             <td>映射类型</td>
                                             <td>交易类型</td>
                                             <td>备注</td>
                                             <td>是否有效</td>
-                                            <td>排序</td>
                                             <td>创建人</td>
                                             <td>创建日期</td>
                                             <td>修改人</td>
@@ -175,14 +160,13 @@
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t">
-                                            <tr class="">
+                                            <tr>
                                                 <td>${t.id}</td>
                                                 <td>${t.custId}</td>
                                                 <td>${t.mappingType}</td>
                                                 <td>${t.tradeType}</td>
                                                 <td>${t.remark}</td>
                                                 <td>${t.isValid=="0"?"有效":"无效"}</td>
-                                                <td>${t.sort}</td>
                                                 <td>${t.creater}</td>
                                                 <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                 <td>${t.updater}</td>
@@ -215,7 +199,7 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#Form"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#smsForm"));
     });
 
     $('.selectdate').datetimepicker({
@@ -235,7 +219,7 @@
             if(a[0].value>b[0].value){
                 alert("请检查您输入的日期");
             }else{
-                $("#Form").submit();
+                $("#smsForm").submit();
             }
         }else{
             var d = new Date();
@@ -243,21 +227,21 @@
             if(a[0].value>str){
                 alert("请检查您输入的日期");
             }else{
-                $("#Form").submit();
+                $("#smsForm").submit();
             }
         }
     }
 
-    //添加红包账户
-    $("#btn_add").button().click(function() {
-        window.open("${contextPath}/account/addRedAccount/1","_self");
+    //添加手机号码配置
+    $("#msm_add").button().click(function() {
+        window.open("${contextPath}/account/addRedAccount/2","_self");
     });
 
     /**
      修改
      **/
     function delRedAccount(id){
-        if(confirm( '确定要修改该账户有效状态吗？')==true){
+        if(confirm( '确定要修改该数据效状态吗？')==true){
             $.ajax({
                 url : "${contextPath}/account/deleteRedAccount?id="+id,
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -266,7 +250,7 @@
                     if (data.code == '0000') {
                         jAlert(data.message, '信息提示');
                         //自动跳转
-                        parent.location.href="${contextPath}/account/redaccountlist";
+                        parent.location.href="${contextPath}/account/smsNotification";
                     } else {
                         jAlert(data.message, '消息提示');
                         return;

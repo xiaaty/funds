@@ -34,7 +34,8 @@ public class CoreConstants {
 	/**
 	 * 短信系统接口参数
 	 */
-   public static final String SYS_CODE=sysConfig.getProperty("funds.sysCode") ;//用到
+   public static final String SYS_CODE=sysConfig.getProperty("funds.sysCode") ;//用到(之前使用的和冠E同相同的code)
+   public static final String ZJ_SYS_CODE=sysConfig.getProperty("funds.zj.sysCode") ;
    public static final String BACKEND_NOTICE_URL = sysConfig.getProperty("backend_notice_url");//用到
    public static final String BACKEND_SMS_URL=sysConfig.getProperty("back_end_sms_url");//用到
    public static final String FUND_CHARGE_TEMPCODE = sysConfig.getProperty("fund_charge_tempCode");
@@ -46,4 +47,8 @@ public class CoreConstants {
    public static final String FUND_WITHDRAW_TEMPCODE = sysConfig.getProperty("fund_withdraw_tempCode");
    public static final Integer SMS_DX=1;//用到
    public static final Integer SMS_NOTICE=2;//用到
+   public static final String FUND_BOND_TEMPCODE = sysConfig.getProperty("fund_balance_tempCode");//对公红包余额
+
+
+
 }

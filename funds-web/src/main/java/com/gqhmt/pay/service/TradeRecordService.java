@@ -227,6 +227,7 @@ public class TradeRecordService {
             map2.put("type",map.get("type"));
             map2.put("applyNo", map.get("applyNo"));
             map2.put("accNo", map.get("accNo"));
+            map2.put("tradeState", map.get("tradeState"));
             map2.put("resultState", map.get("resultState"));
             map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
             map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
