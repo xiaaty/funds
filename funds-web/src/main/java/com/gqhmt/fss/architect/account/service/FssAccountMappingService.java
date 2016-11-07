@@ -3,10 +3,9 @@ package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
-import com.gqhmt.fss.architect.account.entity.FssAccountMappingEntity;
+import com.gqhmt.fss.architect.account.entity.FssAccountBondEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountMappingReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountMappingWriteMapper;
-import com.gqhmt.util.Excel;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class FssAccountMappingService {
      * @param map
      * @return
      */
-    public List<FssAccountMappingEntity> queryAccountMappingList(Map<String,String> map){
+    public List<FssAccountBondEntity> queryAccountMappingList(Map<String,String> map){
 
        return fundsAccountReadMapper.queryAccountMapping(map);
     }
@@ -59,10 +58,10 @@ public class FssAccountMappingService {
      * @return
      * @throws FssException
      */
-    public FssAccountMappingEntity createFssAccountMapping(Long busi_id,Integer busi_type) throws FssException{
-        FssAccountMappingEntity mappingEntity=null;
+    public FssAccountBondEntity createFssAccountMapping(Long busi_id, Integer busi_type) throws FssException{
+        FssAccountBondEntity mappingEntity=null;
         try {
-            mappingEntity= GenerateBeanUtil.GenerateClassInstance(FssAccountMappingEntity.class);;
+            mappingEntity= GenerateBeanUtil.GenerateClassInstance(FssAccountBondEntity.class);;
             mappingEntity.setBusiId(busi_id);
             mappingEntity.setBusiType(busi_type);
             mappingEntity.setStatus("0");

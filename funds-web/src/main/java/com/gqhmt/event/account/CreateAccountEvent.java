@@ -1,12 +1,12 @@
 package com.gqhmt.event.account;
 
+import com.gqhmt.amq.AmqSendAndReceive;
+import com.gqhmt.amq.AmqSender;
+import com.gqhmt.amq.exception.AmqException;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.customer.entity.FssCustBankCardEntity;
-import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustBankCardService;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -21,6 +21,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
 import java.util.Date;
 import java.util.List;
 

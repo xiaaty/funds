@@ -1,8 +1,6 @@
 package com.gqhmt.quartz.job.account;
 
-import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.account.entity.FssAccountMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountMappingService;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;

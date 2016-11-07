@@ -26,8 +26,8 @@ import java.util.Date;
  * 2016/11/3.  kyl        1.0     1.0 Version
  */
 @Entity
-@Table(name = "t_gq_fss_account_mapping")
-public class FssAccountMappingEntity {
+@Table(name = "t_gq_fss_account_bond")
+public class FssAccountBondEntity {
 
     @Id
     @Column(name = "id")

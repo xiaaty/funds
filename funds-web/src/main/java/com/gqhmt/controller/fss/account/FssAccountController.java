@@ -4,14 +4,13 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
-import com.gqhmt.fss.architect.account.entity.FssAccountMappingEntity;
+import com.gqhmt.fss.architect.account.entity.FssAccountBondEntity;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountMappingService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.service.SystemService;
 import org.springframework.stereotype.Controller;
@@ -308,7 +307,7 @@ public class FssAccountController {
 	@RequestMapping(value = "/account/fssAccountMapping",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public Object accountMappingList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-		List<FssAccountMappingEntity> list = fssAccountMappingService.queryAccountMappingList(map);
+		List<FssAccountBondEntity> list = fssAccountMappingService.queryAccountMappingList(map);
 		model.addAttribute("page", list);
 		model.put("map", map);
 		return "fss/account/accountmappingList";
