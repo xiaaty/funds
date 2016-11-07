@@ -169,4 +169,17 @@
 		</foreach>
 		  AND acc.busi_type=0
 	</select>
+
+	<select id="findAllFundAcountList" resultType="com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean">
+		SELECT
+			c.id id,
+			c.customer_name customerName,
+			c.customer_type customerType,
+			c.cert_no certNo,
+			c.cert_type certType,
+			t.account_type accountType,
+			t.busi_type busiType,
+			t.cust_id custId
+		FROM `t_gq_fund_account` t LEFT JOIN `t_gq_customer_info`c on c.id=t.cust_id
+	</select>
 </mapper>

@@ -499,7 +499,11 @@
 			<version>2.3</version>
 			<classifier>jdk15</classifier>
 		</dependency>
+
+		<dependency>
+			<groupId>com.gqhmt</groupId>
+			<artifactId>gq-tyzf-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
-
-
 </project>

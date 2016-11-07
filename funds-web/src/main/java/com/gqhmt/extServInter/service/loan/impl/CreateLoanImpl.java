@@ -55,10 +55,9 @@ public class CreateLoanImpl implements ICreateLoan{
     	LoanAccountResponse response = new LoanAccountResponse();
     	try {
 			CreateLoanAccountDto loanDto = 	(CreateLoanAccountDto)dto;
-    		//String accNo=loanImpl.createLoanAccount((CreateLoanAccountDto)dto);
-			FssAccountEntity fssAccountEntity = createAccountEvent.createAccount(loanDto.getTrade_type(),loanDto.getName(),loanDto.getMobile(),loanDto.getCert_no(),
+			Integer bankId  = createAccountEvent.createAccount(loanDto.getTrade_type(),loanDto.getName(),loanDto.getMobile(),loanDto.getCert_no(),
 					null,loanDto.getMchn(),loanDto.getBank_id(),loanDto.getBank_card(),loanDto.getCity_id(),loanDto.getContract_no(),null);
-    		response.setAccNo(fssAccountEntity.getAccNo());
+//    		response.setAccNo(bankId);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());
