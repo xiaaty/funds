@@ -1,8 +1,6 @@
 package com.gqhmt.amq;
-
-import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
-import com.gqhmt.tyzf.common.frame.util.log.LogUtil;
-
+import com.gqhmt.amq.exception.AmqException;
+import com.gqhmt.core.util.LogUtil;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -25,7 +23,7 @@ public class MessageListenerImpl implements MessageListener {
 			try {
 				System.out.println("接收到的msg = " + tm.getText());
 			} catch (JMSException e) {
-				LogUtil.getInstance().error(e);
+				LogUtil.error(this.getClass(),e);
 			}
 			try {
 				System.out.println("msgId = " + message.getJMSMessageID());
@@ -33,11 +31,11 @@ public class MessageListenerImpl implements MessageListener {
 				if (message.getJMSCorrelationID() == null)
 					message.setJMSCorrelationID(message.getJMSMessageID());
 			} catch (JMSException e) {
-				LogUtil.getInstance().error(e);
+				LogUtil.error(this.getClass(),e);
 			}
 			this.amqSender.sendMsg(message);
-		} catch (AmqException e) {
-			LogUtil.getInstance().error(e);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(),e);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssAccountMappingReadMapper">
-    <select id="queryAccountMapping" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBondEntity">
+<mapper namespace="com.gqhmt.fss.architect.account.mapper.read.FssAccountBindReadMapper">
+    <select id="queryAccountBindList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBindEntity">
 		SELECT
 		  t.`id` id,
 		  t.`busi_id` busiId,
@@ -14,6 +14,6 @@
 		  t.`contract_no` contractNo,
 		  t.`create_time` createTime,
 		  t.`modify_time` modifyTime
-		FROM `t_gq_fss_account_bond` t
+		FROM `t_gq_fss_account_bind` t
     </select>
 </mapper>

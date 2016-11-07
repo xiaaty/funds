@@ -4,9 +4,9 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
-import com.gqhmt.fss.architect.account.entity.FssAccountBondEntity;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
-import com.gqhmt.fss.architect.account.service.FssAccountMappingService;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -49,7 +49,7 @@ public class FssAccountController {
 	@Resource
 	private SystemService systemService;
 	@Resource
-	private FssAccountMappingService fssAccountMappingService;
+	private FssAccountBindService fssAccountBindService;
     /**
      * 账户信息
      * @param request
@@ -304,10 +304,10 @@ public class FssAccountController {
 	 * @return
 	 * @throws FssException
      */
-	@RequestMapping(value = "/account/fssAccountMapping",method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/account/fssAccountBind",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-	public Object accountMappingList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
-		List<FssAccountBondEntity> list = fssAccountMappingService.queryAccountMappingList(map);
+	public Object accountBindList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+		List<FssAccountBindEntity> list = fssAccountBindService.queryAccountBindList(map);
 		model.addAttribute("page", list);
 		model.put("map", map);
 		return "fss/account/accountmappingList";

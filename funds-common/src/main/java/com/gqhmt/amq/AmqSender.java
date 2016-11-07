@@ -1,8 +1,7 @@
 package com.gqhmt.amq;
 
-import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
-import com.gqhmt.tyzf.common.frame.util.log.LogUtil;
-
+import com.gqhmt.amq.exception.AmqException;
+import com.gqhmt.core.util.LogUtil;
 import javax.jms.*;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -24,12 +23,12 @@ public class AmqSender extends BaseAmqSendAndReceive {
 		try {
 			sendQueue = session.createQueue(this.sendToQueue);
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		try {
 			p = session.createProducer(sendQueue);
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		return p;
 	}
@@ -39,7 +38,7 @@ public class AmqSender extends BaseAmqSendAndReceive {
 		try {
 			p = session.createProducer(destination);
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		return p;
 	}
@@ -50,7 +49,7 @@ public class AmqSender extends BaseAmqSendAndReceive {
 		try {
 			receiveQueue = session.createQueue(this.receiveFromQueue);
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		try {
 			if ((filter == null) || (filter.trim().length() <= 0))
@@ -59,7 +58,7 @@ public class AmqSender extends BaseAmqSendAndReceive {
 				consumer = session.createConsumer(receiveQueue, filter);
 			}
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		return consumer;
 	}
@@ -142,7 +141,7 @@ public class AmqSender extends BaseAmqSendAndReceive {
 			if (this.sendToQueue != null)
 				queue = session.createQueue(this.sendToQueue);
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		MessageProducer p = createProducer(queue, session);
 		try {
@@ -162,7 +161,7 @@ public class AmqSender extends BaseAmqSendAndReceive {
 			if (queue == null)
 				queue = session.createQueue(queueName);
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		MessageProducer p = createProducer(queue, session);
 		try {

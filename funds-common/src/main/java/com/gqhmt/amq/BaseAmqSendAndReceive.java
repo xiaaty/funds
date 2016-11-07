@@ -1,9 +1,8 @@
 package com.gqhmt.amq;
 
 
-import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
-import com.gqhmt.tyzf.common.frame.util.log.LogUtil;
-
+import com.gqhmt.amq.exception.AmqException;
+import com.gqhmt.core.util.LogUtil;
 import javax.jms.*;
 
 
@@ -28,7 +27,7 @@ public class BaseAmqSendAndReceive implements AmqSendAndReceive {
 		try {
 			receiveQueue = session.createQueue(receiveFromQueue);
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		try {
 			if ((filter == null) || (filter.trim().length() <= 0))
@@ -37,7 +36,7 @@ public class BaseAmqSendAndReceive implements AmqSendAndReceive {
 				consumer = session.createConsumer(receiveQueue, filter);
 			}
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 		return consumer;
 	}
@@ -56,7 +55,7 @@ public class BaseAmqSendAndReceive implements AmqSendAndReceive {
 		try {
 			session.close();
 		} catch (JMSException e) {
-			LogUtil.getInstance().error(e);
+			LogUtil.error(this.getClass(),e);
 		}
 	}
 

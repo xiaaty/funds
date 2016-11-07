@@ -1,7 +1,7 @@
 package com.gqhmt.quartz.job.account;
 
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.account.service.FssAccountMappingService;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
@@ -35,7 +35,7 @@ public class CreateAccountJob extends SupperJob {
     @Resource
     private CustomerInfoService customerInfoService;
     @Resource
-    private FssAccountMappingService fssAccountMappingService;
+    private FssAccountBindService fssAccountMappingService;
 
     private static boolean isRunning = false;
     @Scheduled(cron="0 0 9 * * ?")
