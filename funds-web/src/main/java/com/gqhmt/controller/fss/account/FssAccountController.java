@@ -4,7 +4,9 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
+import com.gqhmt.fss.architect.account.entity.FssAccountMappingEntity;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountMappingService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -47,6 +49,8 @@ public class FssAccountController {
 	private FundAccountService fundAccountService;
 	@Resource
 	private SystemService systemService;
+	@Resource
+	private FssAccountMappingService fssAccountMappingService;
     /**
      * 账户信息
      * @param request
@@ -292,5 +296,23 @@ public class FssAccountController {
 		}
 		return map2;
 	}
+
+	/**
+	 * 统一支付账户映射表数据
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+	 * @throws FssException
+     */
+	@RequestMapping(value = "/account/fssAccountMapping",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public Object accountMappingList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+		List<FssAccountMappingEntity> list = fssAccountMappingService.queryAccountMappingList(map);
+		model.addAttribute("page", list);
+		model.put("map", map);
+		return "fss/account/accountmappingList";
+	}
+
 
 }

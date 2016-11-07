@@ -66,9 +66,24 @@ public class CreateAccountEvent {
     @Resource
     private BankCardInfoService bankCardInfoService;
 
-
-    public FssAccountEntity createAccount(String tradeType,String  name,String  mobile,String certNo,Long orgcustId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
-        FssCustomerEntity fssCustomerEntity = fssCustomerService.getFssCustomerEntityByCertNo(certNo);
+    /**
+     * 开户接口
+     * @param tradeType
+     * @param name
+     * @param mobile
+     * @param certNo
+     * @param orgcustId
+     * @param mchn
+     * @param bankType
+     * @param bankNo
+     * @param area
+     * @param busiNo
+     * @param createTime
+     * @return
+     * @throws FssException
+     */
+    public Integer createAccount(String tradeType,String  name,String  mobile,String certNo,Long orgcustId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime) throws FssException {
+        CustomerInfoEntity customerInfoEntity = null;
         if(area.length()==6){
             area= Application.getInstance().getFourCode(area);
         }
@@ -77,22 +92,13 @@ public class CreateAccountEvent {
         }
         Long custId = orgcustId;
 
-        if(fssCustomerEntity == null){
-            //首次开户,验证银行卡信息
-            if(bankType == null || bankNo == null || area == null){
-                throw new FssException("90002031");
-            }
-            //验证手机号是否存在
-        }
-
-
         //判断是否走旧版账户，11020011 为纯线下开户，不需在冠e通开户
         boolean isOldAccount = true;
         if("11020011".equals(tradeType)){
             isOldAccount = false;
         }
         FundAccountEntity primaryAccount = null;
-        CustomerInfoEntity customerInfoEntity = null;
+
         //生成旧版账户
         if(isOldAccount){
             Integer userId = null;
@@ -122,7 +128,6 @@ public class CreateAccountEvent {
                 if(primaryAccount == null){
                     primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
                 }
-
             } catch (FssException e) {
                 if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
                     primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
@@ -132,23 +137,7 @@ public class CreateAccountEvent {
 
             }
         }
-        FssAccountEntity fssAccountEntity = null;
         try {
-            //生成新版客户信息记录
-            if (fssCustomerEntity == null){
-                fssCustomerEntity = fssCustomerService.createFssCustomerEntity(name,mobile,certNo,custId,mchn);//生成客户信息
-            }else{
-                if(fssCustomerEntity.getCustId()  == null){
-                    fssCustomerService.updateCustId(fssCustomerEntity,custId);
-                }
-                //校验客户姓名和手机号，如果不同，需要修改，客户信息添加锁定字段，如果实名验证完成，则不允许修改客户姓名。手机号允许修改
-                //更新新版账户的客户名及其他信息
-                fssCustomerEntity.setCertNo(customerInfoEntity.getCertNo());
-                fssCustomerEntity.setName(customerInfoEntity.getCustomerName());
-                fssCustomerEntity.setMobile(customerInfoEntity.getMobilePhone());
-                fssCustomerEntity.setModifyTime(new Date());
-                fssCustomerService.updateCustId(fssCustomerEntity,customerInfoEntity.getId());
-            }
             //生成富有账户
             if(isOldAccount){
                 if (primaryAccount.getHasThirdAccount() ==1){//富友
@@ -159,13 +148,10 @@ public class CreateAccountEvent {
                     primaryAccount.setAccountOrderNo(fundOrderEntity!=null ? fundOrderEntity.getOrderNo():null);
                     primaryAccount.setAccountTime(fundOrderEntity!=null ? fundOrderEntity.getCreateTime():null);
                     fundAccountService.update(primaryAccount);
-                    fssAccountService.createFuiouAccount(mchn,fssCustomerEntity,bankNo);
                 }
                 //跟新所有与该cust_id相同的账户名称
                 fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
             }
-            //生成新版账户
-            fssAccountEntity = fssAccountService.createNewFssAccountEntity(fssCustomerEntity,tradeType,busiNo,mchn,null,createTime);
         } catch (FssException e) {
             if(!e.getMessage().contains("busi_no_uk")) {
                 throw new FssException(e.getMessage(), e);
@@ -175,30 +161,22 @@ public class CreateAccountEvent {
         //银行卡信息生成
         //旧版银行卡信息生成
         //创建银行卡信息
-//       List<BankCardInfoEntity> listbankcard=bankCardInfoService.getBankCardByCustId(custId.intValue());
-       if(isOldAccount) {
-           List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
-           BankCardInfoEntity    bankCardInfoEntity=null;
-           if(CollectionUtils.isEmpty(bankCardInfoList)){
+        BankCardInfoEntity bankCardInfoEntity=null;
+        if(isOldAccount) {
+            List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
+
+            if(CollectionUtils.isEmpty(bankCardInfoList)){
                 bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
-           }else{
-               bankCardInfoEntity=bankCardInfoList.get(0);
-           }
-           fssAccountEntity.setBankId(bankCardInfoEntity.getId().longValue());
-           //判断是否为借款系统开户，如果是借款系统开户，则更新customerInfo中的bankId;
-           if(orgcustId==null){
-               customerInfoEntity.setBankId(bankCardInfoEntity.getId());
-               customerInfoEntity.setHasAcount(1);
-               customerInfoService.update(customerInfoEntity);
-           }
-       }
-        //新版银行卡信息生成  增加判断，是否存在
-        FssCustBankCardEntity fssCustBankCardEntity = fssCustBankCardService.getFssCustBankCardByCustNo(fssCustomerEntity.getCustNo());
-        if(fssCustBankCardEntity==null){
-            fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerEntity);
+            }else{
+                bankCardInfoEntity=bankCardInfoList.get(0);
+            }
+            //判断是否为借款系统开户，如果是借款系统开户，则更新customerInfo中的bankId;
+            if(orgcustId==null){
+                customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+                customerInfoEntity.setHasAcount(1);
+                customerInfoService.update(customerInfoEntity);
+            }
         }
-        return  fssAccountEntity;
+         return bankCardInfoEntity.getId();
     }
-
-
 }

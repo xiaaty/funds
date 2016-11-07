@@ -10,6 +10,7 @@ import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,9 +58,9 @@ public class CreateAccountImpl implements ICreateAccount{
     	CreateAccountResponse response = new CreateAccountResponse();
     	try {
 			CreateAccountDto cDto = (CreateAccountDto)dto;
-			FssAccountEntity fssAccountEntity = createAccountEvent.createAccount(cDto.getTrade_type(),cDto.getName(),cDto.getMobile(),cDto.getCert_no(),
+			Integer bankId = createAccountEvent.createAccount(cDto.getTrade_type(),cDto.getName(),cDto.getMobile(),cDto.getCert_no(),
 					Long.parseLong(cDto.getCust_no()),cDto.getMchn(),cDto.getBank_id(),cDto.getBank_card(),cDto.getCity_id(),cDto.getBusi_no(),null);
-    		response.setId(fssAccountEntity.getBankId().intValue());
+    		response.setId(bankId);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.debug(this.getClass(), e);

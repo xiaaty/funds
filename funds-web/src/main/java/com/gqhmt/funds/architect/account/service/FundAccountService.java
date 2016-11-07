@@ -409,5 +409,15 @@ public class FundAccountService {
 		public FundAccountEntity getFundAccountById(Long id){
 			return fundsAccountReadMapper.selectByPrimaryKey(id);
 		}
+
+
+		/**
+		 * 查询所有账号信息
+		 * @return
+		 */
+		public List<FundAccountCustomerBean> findAllFundAcountList() {
+			List<FundAccountCustomerBean> list=fundsAccountReadMapper.findAllFundAcountList();
+			return list;
+	}
 }
 

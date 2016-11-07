@@ -13,13 +13,15 @@ public class FundAccountCustomerBean implements java.io.Serializable{
 		
 		private Long id;
 	    private Integer custId;			//客户编号
+		private String customerType;
 	    private Integer accountType;	//账户类型 ' 1： 客户账户 2 ：A0  3： AX     ',
 	    private Integer busiType;		//业务类型   '1借款客户   2 线下出借客户 3线上出借客户 96线下用应付款账户 99冻结金账户'
 	    private String customerName;     //客户姓名 
         private int sex;				 // 客户性别    1-男 2-女
         private String  mobilePhone; 	//手机号码 
         private String certNo;           //证件号码 
-        private String accountNo; 		// 账户编号 
+        private String certType;         //证件类型
+        private String accountNo; 		// 账户编号
         private Double amount;			// 账户余额 
         private Double freezeAmount;	// 冻结金额 
         private int hasThirdAccount; 	//是否创建第三方账户  1，未创建'
@@ -109,6 +111,20 @@ public class FundAccountCustomerBean implements java.io.Serializable{
 		public void setModifyTime(Date modifyTime) {
 			this.modifyTime = modifyTime;
 		}
-		
-        
+
+		public String getCertType() {
+			return certType;
+		}
+
+		public void setCertType(String certType) {
+			this.certType = certType;
+		}
+
+		public String getCustomerType() {
+			return customerType;
+		}
+
+		public void setCustomerType(String customerType) {
+			this.customerType = customerType;
+		}
 }
