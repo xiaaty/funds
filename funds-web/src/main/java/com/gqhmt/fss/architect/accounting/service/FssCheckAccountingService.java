@@ -7,18 +7,29 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
 import com.gqhmt.fss.architect.accounting.mapper.read.FssCheckAccountingReadMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssCheckAccountingWriteMapper;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpOrderReadMapper;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -47,6 +58,18 @@ public class FssCheckAccountingService {
     private FssCheckAccountingWriteMapper fssCheckAccountingWriteMapper;
 
     @Resource
+    private FuiouFtpOrderReadMapper fuiouFtpOrderReadMapper;
+
+    @Resource
+    private FuiouFtpColomFieldReadMapper fuiouFtpColomFieldReadMapper;
+
+    @Resource
+    private FuiouFtpColomFieldWriteMapper fuiouFtpColomFieldWriteMapper;
+
+    @Resource
+    private FundSequenceReadMapper sequenceReadMapper;
+
+    @Resource
     private FundSequenceService fundSequenceService;
 
     @Resource
@@ -54,6 +77,9 @@ public class FssCheckAccountingService {
 
     @Resource
     private FundAccountService fundAccountService;
+
+    @Resource
+    private FssCheckDateService fssCheckDateService;
 
     /**
      * jhz
@@ -240,5 +266,108 @@ public class FssCheckAccountingService {
         }
 
         return null;
+    }
+
+    /**
+     * 满标回款查询对账定时任务
+     */
+    public void checkHistoryAccounting() throws FssException {
+        String inputDate = "";
+        try {
+            inputDate = fssCheckDateService.queryInputDate();
+            if (StringUtils.isNotEmpty(inputDate))
+                queryOrderNo(inputDate);
+        } catch (FssException e) {
+            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[" + inputDate +"]");
+        }
+    }
+
+    /**
+     * 查询历史标的当日对账数据对账
+     * @param inputDate
+     * @throws FssException
+     */
+    public void queryOrderNo(String inputDate) throws FssException {
+        List<FuiouFtpColomField> fuiouFtpColomFieldList = new ArrayList<FuiouFtpColomField>();
+        List<FundSequenceEntity> sequenceList = new ArrayList<FundSequenceEntity>();
+        String orderNo = "";
+        //一天内富友对账数据
+        List<FssCheckAccountingEntity> checkAccountingList = fssCheckAccountingReadMapper.queryCheckAcctListByDate(inputDate);
+        //一天内ftp对账数据
+        List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(inputDate);
+        //当天每一笔订单对账
+        for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
+            orderNo = fuiouFtpOrder.getOrderNo();
+            if (StringUtils.isEmpty(orderNo))
+                continue;
+            //sequence本地平台内所需对账数据
+            fuiouFtpColomFieldList = fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
+            sequenceList  = sequenceReadMapper.queryByOrderNo(orderNo);//本地对账数据sequence
+            //遍历field，1.匹配checkAccounting  2.核对sequence总金额
+            //1.ftp-field与check-accounting每一笔对账（金额、入户、出户），账不平，记录field表异常--9808
+            if (!checkAcctAndField(fuiouFtpColomFieldList, checkAccountingList,inputDate)){
+                updateFieldStatus(orderNo);
+                return;
+            }
+            //2.ftp-field所有订单总金额与sequence正或负订单总金额对账，不平则记录field异常
+            if (checkSequenceAndField(fuiouFtpColomFieldList, sequenceList))
+                updateFieldStatus(orderNo);
+        }
+
+
+    }
+
+    /**
+     * 校验checkAccounting与field金额、出户、入户
+     * @param fuiouFtpColomFieldList
+     * @param checkAccountingList
+     * @return
+     */
+    public boolean checkAcctAndField(List<FuiouFtpColomField> fuiouFtpColomFieldList,
+                                     List<FssCheckAccountingEntity> checkAccountingList, String inputDate) {
+        //更新ftp-order为已对账状态
+        fssCheckDateService.updateInputDate(inputDate);
+        for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
+            for (FssCheckAccountingEntity checkAccounting : checkAccountingList) {
+                if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
+                        !fuiouFtpColomField.getToUserName().equals(checkAccounting.getToAccName()) &&
+                        !fuiouFtpColomField.getAmt().equals(checkAccounting.getAmount()))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 校验本地Sequence与Field所有订单总金额
+     * @param fuiouFtpColomFieldList
+     * @param sequenceList
+     * @return
+     */
+    public boolean checkSequenceAndField(List<FuiouFtpColomField> fuiouFtpColomFieldList, List<FundSequenceEntity> sequenceList) {
+        BigDecimal sumSequenceAmount = null;
+        BigDecimal sumFieldAmount = null;
+        for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
+            if (fuiouFtpColomField.getAmt() != null && fuiouFtpColomField.getAmt().compareTo(new BigDecimal("0")) > 0)
+                sumFieldAmount = sumFieldAmount.add(fuiouFtpColomField.getAmt());
+        }
+        for (FundSequenceEntity sequence : sequenceList) {
+            if (sequence.getAmount() != null && sequence.getAmount().compareTo(new BigDecimal("0")) > 0)
+                sumSequenceAmount = sumSequenceAmount.add(sequence.getAmount());
+        }
+        if (sumFieldAmount.compareTo(sumSequenceAmount) != 0) //校验金额
+            return false;
+        return true;
+    }
+
+    /**
+     * 更新field差异状态
+     * @param orderNo
+     * @throws FssException
+     */
+    public void updateFieldStatus(String orderNo) throws FssException {
+        int result = fuiouFtpColomFieldWriteMapper.updateStatusByorderNo(orderNo);
+        if (1 != result)
+            throw new FssException("差异帐处理更新异常失败！订单号：[" + orderNo + "]");
     }
 }

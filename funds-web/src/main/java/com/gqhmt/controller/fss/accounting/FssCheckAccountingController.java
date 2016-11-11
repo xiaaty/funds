@@ -7,6 +7,8 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.accounting.entity.*;
 import com.gqhmt.fss.architect.accounting.service.*;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -57,6 +59,8 @@ public class FssCheckAccountingController {
     private FundSequenceService fundSequenceService;
     @Resource
     private FssImportDataService fssImportDataService;
+    @Resource
+    private FuiouFtpColomFieldService fuiouFtpColomFieldService;
 
     /**
      * jhz
@@ -79,6 +83,15 @@ public class FssCheckAccountingController {
         model.put("map", map);
 
         return "fss/accounting/checkAccounting/checkAccounting_list";
+    }
+
+    @RequestMapping(value = "/checkAccounting/checkHistoryAccountList", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String queryHistoryCheckAccounting(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
+        List<FuiouFtpColomField> checkFuiouFtpColomFieldList = fuiouFtpColomFieldService.selectFuiouFtpFieldList(map);
+        model.addAttribute("page", checkFuiouFtpColomFieldList);
+        model.put("map", map);
+        return "fss/accounting/checkAccounting/checkHistoryAccounting_list";
     }
 
     /**

@@ -5,10 +5,22 @@
 		SELECT
 		t.id id,
 		t.order_date orderDate,
-		t.intput_date intputDate,
+		t.input_date inputDate,
 		t.input_user_state inputUserState,
 		t.order_user_state orderUserState
 		FROM t_gq_fss_check_date t
 	</sql>
 
+	<select id="queryInputDate" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
+		SELECT
+			t.id id,
+			t.order_date orderDate,
+			MIN(t.input_date) inputDate,
+			t.input_user_state inputUserState,
+			t.order_user_state orderUserState
+		FROM
+		    t_gq_fss_check_date t
+		WHERE t.input_user_state = '98010002'
+		AND t.input_date &gt;= '20150601'AND t.input_date IS NOT NULL
+	</select>
 </mapper>

@@ -10,5 +10,7 @@ public interface FuiouFtpColomFieldWriteMapper extends ReadAndWriteMapper<FuiouF
 	public void updateByFileSeqId(FuiouFtpColomField fuiouFtpColomField);
 	
 	public void failureRetryByOrderNo(String orderNo);
+
+	public int updateStatusByorderNo(String orderNo);
 	
 }

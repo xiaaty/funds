@@ -66,4 +66,8 @@
 		WHERE t.trade_type IN (10980001,10980003) AND t.`accounting_status`=98010002
 		ORDER  BY  t.create_time DESC
     </select>
+	<select id="queryCheckAcctListByDate" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
+		<include refid="field"/>
+		WHERE t.trade_time = #{tradeTime}
+	</select>
 </mapper>

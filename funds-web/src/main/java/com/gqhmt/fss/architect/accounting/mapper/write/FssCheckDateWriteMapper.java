@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.accounting.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
+import org.springframework.stereotype.Repository;
 
 /**
  * Filename:    com.gq.funds.service.ChangeCardService
@@ -19,6 +20,9 @@ import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
  * -----------------------------------------------------------------
  * 2016/6/27.  jhz         1.0     1.0 Version
  */
+@Repository
 public interface FssCheckDateWriteMapper extends ReadAndWriteMapper<FssCheckAccountingEntity> {
+
+    public int updateInputState(String inputDate);
 
 }
