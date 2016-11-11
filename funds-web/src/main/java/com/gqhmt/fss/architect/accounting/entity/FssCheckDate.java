@@ -29,8 +29,8 @@ public class FssCheckDate {
     @Column(name = "order_date")
     private String orderDate;   		//对账订单表用
 
-    @Column(name = "intput_date")
-    private String intputDate;   		//对账ftp_filed用
+    @Column(name = "input_date")
+    private String inputDate;   		//对账ftp_filed用
 
     @Column(name = "input_user_state")
     private String inputUserState;   		    //状态
@@ -54,12 +54,12 @@ public class FssCheckDate {
         this.orderDate = orderDate;
     }
 
-    public String getIntputDate() {
-        return intputDate;
+    public String getInputDate() {
+        return inputDate;
     }
 
-    public void setIntputDate(String intputDate) {
-        this.intputDate = intputDate;
+    public void setInputDate(String inputDate) {
+        this.inputDate = inputDate;
     }
 
     public String getInputUserState() {

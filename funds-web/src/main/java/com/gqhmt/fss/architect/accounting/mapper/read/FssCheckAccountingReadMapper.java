@@ -2,8 +2,10 @@ package com.gqhmt.fss.architect.accounting.mapper.read;/**
  * Created by yuyonf on 15/11/30.
  */
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -40,5 +42,20 @@ public interface FssCheckAccountingReadMapper extends ReadMapper<FssCheckAccount
      * @return
      */
     public List<FssCheckAccountingEntity> queryWithList();
+    /**
+     * jhz
+     * 查询前一天未对帐的充值体现
+     * @return
+     */
+    public List<FssCheckAccountingEntity> getCheckAccounts(@Param("orderDate") String orderDate);
+    /**
+     * jhz
+     * 通过orderNo查询对账数据
+     * @param orderNo
+     * @return
+     * @throws FssException
+     */
+    public FssCheckAccountingEntity queryByOrderNo(@Param("orderNo") String orderNo);
+    public List<FssCheckAccountingEntity> getCheckList(@Param("orderNos")List<String> orderNos);
 
 }
