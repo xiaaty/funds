@@ -23,6 +23,7 @@
 
     <select id="getBindAccByParam" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBindEntity">
         <include refid="selectSql"/>
-        WHERE t.`busi_id`=#{busiId} AND t.`busi_type`=#{busiType}
+        WHERE t.`busi_id`=#{busiId}
+		AND t.`busi_type`=#{busiType}
     </select>
 </mapper>

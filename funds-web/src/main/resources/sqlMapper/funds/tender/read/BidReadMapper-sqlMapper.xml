@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.business.architect.loan.mapper.read.BidReadMapper">
+	<select id="getBidByContractNo" parameterType="java.lang.String" resultType="com.gqhmt.business.architect.loan.entity.Bid">
+		SELECT
+		t.`id` id,
+		t.`customer_id` customerId,
+		t.`contract_no` contractNo,
+		t.`bid_no` bidNo
+		FROM `t_gq_bid` t WHERE t.`contract_no`=#{contractNo}
+	</select>
+</mapper>
