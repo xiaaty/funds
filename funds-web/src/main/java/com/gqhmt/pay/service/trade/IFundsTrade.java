@@ -293,4 +293,37 @@ public interface IFundsTrade {
      * @throws FssException
      */
     public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no,Integer acc_type,Integer to_acc_type,Integer fundType,Integer actionType) throws FssException;
+
+    /**
+     * 统一支付充值
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param accountId
+     * @param busi_type
+     * @param contract_no
+     * @throws FssException
+     */
+    public void tyzfRecharge(String mchn,String seq_no,String trade_type,String accountId,String busi_type,String contract_no,BigDecimal amt) throws FssException;
+
+    /**
+     * 统一支付提现
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param ithdrawAccountId
+     * @param WithdrawCrdrFlag
+     * @param CapitalAccountId
+     * @param capitalCrdrFlag
+     * @param postingAmount
+     * @param psotingCurrency
+     * @param rate
+     * @param accountType
+     * @param postingType
+     * @throws FssException
+     */
+    public void tyzfWithdraw(String mchn,String seq_no,String trade_type,String ithdrawAccountId,String WithdrawCrdrFlag,String CapitalAccountId,String capitalCrdrFlag,String postingAmount,String psotingCurrency,BigDecimal rate,String accountType,String postingType) throws FssException;
+
+    public void tyzfTransfer(String mchn,String seq_no,String trade_type,String fromAccountId,String toAccountId,BigDecimal amount,String crdrFlag,String postingCurrency,String rate,String accountType,String postingType) throws FssException;
+
 }

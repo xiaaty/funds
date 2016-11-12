@@ -3,11 +3,17 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
+import com.gqhmt.conversion.bean.request.*;
+import com.gqhmt.conversion.bean.response.PmtIdResponse;
+import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.StringUtils;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
+import com.gqhmt.fss.architect.account.service.ConversionService;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
@@ -17,10 +23,16 @@ import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
+import com.gqhmt.tyzf.common.frame.amq.AmqSender;
+import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
+import com.gqhmt.util.ConvertReportEnum;
+import com.gqhmt.util.ConvertUtils;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -53,6 +65,10 @@ public class FundAccountService {
     private FssAccountReadMapper fssAccountReadMapper;
 	@Resource
 	private CustomerInfoService customerInfoService;
+	@Resource
+	private FssAccountBindService fssAccountBindService;
+	@Resource
+	private ConversionService conversionService;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -418,6 +434,79 @@ public class FundAccountService {
 		public List<FundAccountCustomerBean> findAllFundAcountList() {
 			List<FundAccountCustomerBean> list=fundsAccountReadMapper.findAllFundAcountList();
 			return list;
+		}
+
+		/**
+		 * 调用统一支付进行开户
+		 * @param customerId 客户编号
+		 * @param custName 客户姓名
+		 * @param tradeType 交易类型
+		 * @param custType 客户类型（个人，内部企业，外部企业)
+		 * @param certType 证件类型（01-身份证，02-护照，03-军官证等）
+		 * @param certNo 证件号
+		 */
+		public void createTyzfAccount(String tradeType,Long customerId,String custName,String custType,String certNo,String certType,String mchn,String accType, String busiNo,String orderNo,String seq_no) throws FssException{
+			ReqContentResponse transContentResponse=null;
+			List list=new ArrayList();
+			//判断开户类型（冠E通线上开通出借账户）
+			if("10010001".equals(accType)){//线上出借，开通线上出借账户（3）busi_type=3;
+				 list.add(3);
+			}
+			if("10010002".equals(accType)){//线下出借，开通线下出借账户（2）、应付款账户（96）busi_type=2;busi_type=96;
+				list.add(2);
+				list.add(96);
+			}
+			if("10010003".equals(accType) || "10019002".equals(accType)){//借款，开通借款账户（1）和标的账户（90）busi_type=1,90;
+				list.add(1);
+				list.add(90);
+			}
+			for(Object busi_type:list){
+				//创建映射账户
+				FssAccountBindEntity fssAccountBindEntity = fssAccountBindService.createFssAccountMapping(customerId,Integer.valueOf(busi_type.toString()),tradeType,null,seq_no,null,busiNo==null?null:busiNo);
+				try {
+					ConverBean bean = new ConverBean();
+					bean.setService_id("0001");//服务号
+					bean.setTxnTp(tradeType);//交易类型
+					bean.setOrderId(orderNo == null ? "" : orderNo);//业务订单号
+					bean.setCdtrId("fuiou_1");//通道编号
+					bean.setExMerchId("88721657SUKQ");//通道商户号
+					bean.setChnlID("1");//线上线下类型
+					bean.setCdtr_Nm("zhangsan");//客户姓名
+					bean.setCdtr_PorO(custType == null ? "" : custType);//客户类型
+					bean.setCdtrAcct_IssrCd("10001");//存管银行编号
+					bean.setCdtrAcct_IdTp(busi_type==null ? "":String.valueOf(busi_type));//账户类型
+					bean.setCdtr_ContractNo(busiNo == null ? "" : busiNo);//合同编号（标的账户需要）
+					bean.setCdtrAcct_Ccy("RMB");//货币类型
+					bean.setCdtrAcct_Branch("12345");//机构号
+					bean.setMerchID("88721657SUKQ");//商户号
+					transContentResponse = conversionService.sendAndReceiveMsg(bean,true);
+					//统一支付开户成功返回结果
+					List<PmtIdResponse> PmtIdlist= transContentResponse.getRequestMsg().getPmtID();
+					String respCode=null;
+					String busiId=null;
+					String accountId=null;
+					if(PmtIdlist.size()>0){
+						for(PmtIdResponse pmtIdResponse:PmtIdlist){
+							respCode=pmtIdResponse.getRespCode();//统一支付返回码0000成功，其他失败
+						}
+						if("0000".equals(respCode)){
+							List<CdtrAcct> cdtrAcctList= transContentResponse.getRequestMsg().getCdtrAcct();
+							if(cdtrAcctList.size()>0){
+								for(CdtrAcct cdtrAcct:cdtrAcctList){
+									accountId= cdtrAcct.getId();//统一支付返回的账号
+								}
+							}
+						}
+						//修改映射账户信息
+						fssAccountBindEntity.setAccNo(accountId);
+						fssAccountBindEntity.setStatus("1");
+						fssAccountBindEntity.setOpenAccTime(String.valueOf(new Date()));
+						fssAccountBindService.updateBindAccount(fssAccountBindEntity);
+					}
+				}catch (Exception e){
+					throw new FssException(e.getMessage());
+				}
+			}
 	}
 }
 

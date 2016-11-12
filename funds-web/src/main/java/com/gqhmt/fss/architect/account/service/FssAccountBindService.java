@@ -51,15 +51,19 @@ public class FssAccountBindService {
      * @return
      * @throws FssException
      */
-    public FssAccountBindEntity createFssAccountMapping(Long busi_id, Integer busi_type) throws FssException{
+    public FssAccountBindEntity createFssAccountMapping(Long busi_id, Integer busi_type,String tradeType,String accNo,String seqNo,String openAccTime,String contractNo) throws FssException{
         FssAccountBindEntity mappingEntity=null;
         try {
             mappingEntity= GenerateBeanUtil.GenerateClassInstance(FssAccountBindEntity.class);;
             mappingEntity.setBusiId(busi_id);
             mappingEntity.setBusiType(busi_type);
             mappingEntity.setStatus("0");
-            mappingEntity.getCreateTime(new Date());
-            mappingEntity.setModifyTime(new Date());
+            mappingEntity.setAccNo(accNo);
+            mappingEntity.setTradeType(tradeType);
+            mappingEntity.setOpenAccTime(openAccTime);
+            mappingEntity.setContractNo(contractNo);
+//            mappingEntity.getCreateTime(new Date());
+//            mappingEntity.setModifyTime(new Date());
             fssAccountBindWriteMapper.insertUseGeneratedKeys(mappingEntity);
         }catch (Exception e){
             LogUtil.debug(this.getClass(),mappingEntity+":"+mappingEntity.getId());
@@ -68,5 +72,28 @@ public class FssAccountBindService {
         return mappingEntity;
     }
 
+    /**
+     * 根据客户号（或标的号）、账户类型查询映射账户信息
+     * @param busiId
+     * @param busiType
+     * @return
+     */
+    public FssAccountBindEntity getBindAccountByParam(String busiId,String busiType){
+        FssAccountBindEntity bindAccountEntity=fssAccountBindReadMapper.getBindAccByParam(busiId,busiType);
+        return bindAccountEntity;
+    }
+
+    /**
+     * 修改客户编号与统一支付账号绑定
+     * @param fssAccountBindEntity
+     * @throws FssException
+     */
+   public void updateBindAccount(FssAccountBindEntity fssAccountBindEntity) throws FssException {
+        try {
+            fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
+        }catch (Exception e){
+            throw new FssException("91009804");
+        }
+    }
   }
 

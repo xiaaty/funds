@@ -56,7 +56,7 @@ public class CreateLoanImpl implements ICreateLoan{
     	try {
 			CreateLoanAccountDto loanDto = 	(CreateLoanAccountDto)dto;
 			Integer bankId  = createAccountEvent.createAccount(loanDto.getTrade_type(),loanDto.getName(),loanDto.getMobile(),loanDto.getCert_no(),
-					null,loanDto.getMchn(),loanDto.getBank_id(),loanDto.getBank_card(),loanDto.getCity_id(),loanDto.getContract_no(),null);
+					null,loanDto.getMchn(),loanDto.getBank_id(),loanDto.getBank_card(),loanDto.getCity_id(),loanDto.getContract_no(),null,loanDto.getSeq_no());
 //    		response.setAccNo(bankId);
 			response.setResp_code("0000");
 		} catch (FssException e) {

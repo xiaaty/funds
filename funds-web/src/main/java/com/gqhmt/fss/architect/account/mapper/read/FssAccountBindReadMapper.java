@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.account.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,5 +13,7 @@ import java.util.Map;
 public interface FssAccountBindReadMapper extends ReadMapper<FssAccountBindEntity>{
 
 	public List<FssAccountBindEntity> queryAccountBindList(Map map);
+
+	public FssAccountBindEntity getBindAccByParam(@Param("busiId")String busiId,@Param("busiType")String busiType);
 
 }

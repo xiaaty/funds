@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<req targetClass = "com.gqhmt.conversion.response.TransContentBF0040001">
+	<requestHeader source="param" paramIndex="0" />
+	<trans_reqDatas source="param" paramIndex="1" />
+</req>
+

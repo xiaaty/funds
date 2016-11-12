@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data_content targetClass = "com.gqhmt.pay.trade.framework.bean.unite.UniteReport">
+	<txnSubType source="class" class="com.gqhmt.pay.trade.framework.bean.baofoo.BaofooReportTestA" key = "txn_sub_type" />
+	<bizTp source="class" class="com.gqhmt.pay.trade.framework.bean.baofoo.BaofooReportTestA" key = "biz_type" />
+	<orderId source="class" class="com.gqhmt.pay.trade.framework.bean.baofoo.BaofooReportTestA" key = "terminal_id" />
+	<msgId source="class" class="com.gqhmt.pay.trade.framework.bean.baofoo.BaofooReportTestA" key = "member_id" />
+	<fmtVersion source="class" class="com.gqhmt.pay.trade.framework.bean.baofoo.BaofooReportTestA" key = "trans_serial_no" />
+	<txnId source="class" class="com.gqhmt.pay.trade.framework.bean.baofoo.BaofooReportTestA" key = "orig_trans_id" />
+	<splitFlg1 source="class" class="com.gqhmt.pay.trade.framework.bean.baofoo.BaofooReportTestA" key = "trade_date" />
+	<splitFlg2 source="param" paramIndex="0" />
+	<custId source="param" paramIndex="1" />
+</data_content> 
+

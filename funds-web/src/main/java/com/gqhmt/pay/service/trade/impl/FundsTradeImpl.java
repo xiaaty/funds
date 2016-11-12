@@ -1,11 +1,15 @@
 package com.gqhmt.pay.service.trade.impl;
 
+import com.gqhmt.conversion.bean.request.ConverBean;
+import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.service.ConversionService;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
@@ -25,6 +29,7 @@ import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
 import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
+import com.gqhmt.conversion.bean.response.PmtIdResponse;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.core.factory.ConfigFactory;
@@ -34,9 +39,14 @@ import com.gqhmt.pay.fuiou.util.HttpClientUtil;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
+import com.gqhmt.tyzf.common.frame.amq.AmqSender;
+import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
+import com.gqhmt.util.XmlUtil;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,32 +63,22 @@ public class FundsTradeImpl  implements IFundsTrade {
 
     @Resource
     private PaySuperByFuiou paySuperByFuiou;
-
     @Resource
     private FundAccountService fundAccountService;
-
     @Resource
     private TradeRecordService tradeRecordService;
-
     @Resource
     private FundOrderService fundOrderService;
-
     @Resource
     private WithholdApplyService withholdApplyService;
-
     @Resource
     private WithdrawApplyService withdrawApplyService;
-
     @Resource
     private FssBackplateService fssBackplateService;
-
-
     @Resource
     private FundWithrawChargeService fundWithrawChargeService;
-
     @Resource
     private FssAccountService fssAccountService;
-
     @Resource
     private NoticeService noticeService;
     @Resource
@@ -89,7 +89,10 @@ public class FundsTradeImpl  implements IFundsTrade {
     private FundTradeService fundTradeService;
     @Resource
     private FssBondTransferService fssBondTransferService;
-
+    @Resource
+    private ConversionService conversionService;
+    @Resource
+    private FssAccountBindService fssAccountBindService;
     /**
      * 生成web提现订单
      * @param withdrawOrderDto            支付渠道
@@ -282,7 +285,6 @@ public class FundsTradeImpl  implements IFundsTrade {
          fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
         tradeRecordService.recharge(entity,amount,fundOrderEntity,1002,tradeType==null?null:tradeType.toString());
-        
         return  fundOrderEntity;
     }
 
@@ -570,12 +572,11 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(rechargeSuccessDto.getOrder_no());
         FundAccountEntity entity=fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if("0000".equals(rechargeSuccessDto.getRespCode())) {
-            tradeRecordService.recharge(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001,rechargeSuccessDto.getTrade_type());
+            tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001,rechargeSuccessDto.getTrade_type());
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
           //发送站内通知短信
             this.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE,NoticeService.NoticeType.FUND_CHARGE,entity,fundOrderEntity.getOrderAmount(),BigDecimal.ZERO);
-
         }else{
             fundOrderEntity.setOrderState(3);
             fundOrderService.update(fundOrderEntity);
@@ -634,6 +635,8 @@ public class FundsTradeImpl  implements IFundsTrade {
         if(fundOrderEntityCharge == null) return;
         fundWithrawChargeService.add(fundOrderEntity.getOrderNo(), entity, fundOrderEntity.getOrderAmount(), fundOrderEntity.getChargeAmount());
         tradeRecordService.chargeAmount(entity,toEntity,fundOrderEntity,fundOrderEntityCharge);
+
+
     }
 
     /**
@@ -776,4 +779,56 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         return true;
     }*/
+
+    /**
+     * 调用统一支付充值
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param accountId
+     * @param busi_type
+     * @param contract_no
+     * @throws FssException
+     */
+    public void tyzfRecharge(String mchn,String seq_no,String trade_type,String accountId,String busi_type,String contract_no,BigDecimal amt) throws FssException {
+//        tradeRecordService.tyzfRechargeAccounting();
+    }
+
+    /**
+     * 统一支付提现
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param ithdrawAccountId
+     * @param WithdrawCrdrFlag
+     * @param CapitalAccountId
+     * @param capitalCrdrFlag
+     * @param postingAmount
+     * @param psotingCurrency
+     * @param accountType
+     * @param postingType
+     * @throws FssException
+     */
+    public void tyzfWithdraw(String mchn, String seq_no, String trade_type, String ithdrawAccountId, String WithdrawCrdrFlag, String CapitalAccountId, String capitalCrdrFlag, String postingAmount, String psotingCurrency, BigDecimal rate, String accountType, String postingType) throws FssException {
+//        tradeRecordService.tyzfWithdrawAccounting();
+    }
+
+    /**
+     * 统一支付转账
+     * @param mchn
+     * @param seq_no
+     * @param trade_type
+     * @param fromAccountId
+     * @param toAccountId
+     * @param amount
+     * @param crdrFlag
+     * @param postingCurrency
+     * @param rate
+     * @param accountType
+     * @param postingType
+     * @throws FssException
+     */
+    public void tyzfTransfer(String mchn,String seq_no,String trade_type,String fromAccountId,String toAccountId,BigDecimal amount,String crdrFlag,String postingCurrency,String rate,String accountType,String postingType) throws FssException {
+//        tradeRecordService.tyzfTransfer();
+    }
 }

@@ -502,7 +502,7 @@
 
 		<dependency>
 			<groupId>com.gqhmt</groupId>
-			<artifactId>gq-tyzf-common</artifactId>
+			<artifactId>gq-tyzf-common-frame</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

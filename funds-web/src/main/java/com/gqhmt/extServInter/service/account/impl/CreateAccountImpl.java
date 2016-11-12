@@ -59,7 +59,7 @@ public class CreateAccountImpl implements ICreateAccount{
     	try {
 			CreateAccountDto cDto = (CreateAccountDto)dto;
 			Integer bankId = createAccountEvent.createAccount(cDto.getTrade_type(),cDto.getName(),cDto.getMobile(),cDto.getCert_no(),
-					Long.parseLong(cDto.getCust_no()),cDto.getMchn(),cDto.getBank_id(),cDto.getBank_card(),cDto.getCity_id(),cDto.getBusi_no(),null);
+					Long.parseLong(cDto.getCust_no()),cDto.getMchn(),cDto.getBank_id(),cDto.getBank_card(),cDto.getCity_id(),cDto.getBusi_no(),null,cDto.getSeq_no());
     		response.setId(bankId);
 			response.setResp_code("0000");
 		} catch (FssException e) {

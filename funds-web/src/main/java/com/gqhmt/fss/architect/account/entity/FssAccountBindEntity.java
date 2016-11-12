@@ -1,13 +1,6 @@
 package com.gqhmt.fss.architect.account.entity;
 
-import com.gqhmt.annotations.AutoDate;
-import com.gqhmt.core.exception.FssException;
-
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -64,6 +57,9 @@ public class FssAccountBindEntity {
     @Column(name = "modify_time")
     private Date modifyTime;
 
+    @Column(name = "chnl")
+    private String chnl;
+
     public int getId() {
         return id;
     }
@@ -104,22 +100,6 @@ public class FssAccountBindEntity {
         this.status = status;
     }
 
-    public Date getCreateTime(Date date) {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
     public String getTradeType() {
         return tradeType;
     }
@@ -150,5 +130,29 @@ public class FssAccountBindEntity {
 
     public void setContractNo(String contractNo) {
         this.contractNo = contractNo;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public String getChnl() {
+        return chnl;
+    }
+
+    public void setChnl(String chnl) {
+        this.chnl = chnl;
     }
 }
