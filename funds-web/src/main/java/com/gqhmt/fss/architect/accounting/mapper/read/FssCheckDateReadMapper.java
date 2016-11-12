@@ -3,12 +3,25 @@ package com.gqhmt.fss.architect.accounting.mapper.read;/**
  */
 
 import com.gqhmt.core.mybatis.ReadMapper;
-import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
+import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
+import org.apache.ibatis.annotations.Param;
 
 /**
  *
  */
-public interface FssCheckDateReadMapper extends ReadMapper<FssCheckAccountingEntity> {
+public interface FssCheckDateReadMapper extends ReadMapper<FssCheckDate> {
+    /**
+     * jhz
+     * 获得订单表跑批日期
+     * @return
+     */
+    public FssCheckDate getOrderDate();
+    /**
+     * jhz
+     * 获得订单表跑批日期
+     * @return
+     */
+    public int selectOrderDate(@Param("orderDate")String orderDate);
 
 
 }

@@ -66,4 +66,20 @@
 		WHERE t.trade_type IN (10980001,10980003) AND t.`accounting_status`=98010002
 		ORDER  BY  t.create_time DESC
     </select>
+	<select id="queryByOrderNo"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
+    	<include refid="field"/>
+		WHERE t.order_no like concat('%',#{orderNo},'%')
+    </select>
+	<select id="getCheckList"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
+    	<include refid="field"/>
+		WHERE t.order_no  in
+		<foreach collection="orderNos" item="orderNo" open="(" close=")" separator=",">
+			#{orderNo}
+		</foreach>
+    </select>
+	<select id="getCheckAccounts"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity">
+    	<include refid="field"/>
+		WHERE t.trade_type IN (10980001,10980003,10980004) AND t.`accounting_status`=98010002
+			AND t.trade_time =#{orderDate}
+	</select>
 </mapper>

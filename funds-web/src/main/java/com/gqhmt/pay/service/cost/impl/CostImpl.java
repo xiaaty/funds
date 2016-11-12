@@ -396,7 +396,7 @@ public class CostImpl  implements ICost{
             fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amt,fundType,"资金转出:"+amt+"元",BigDecimal.ZERO);
             fundTradeService.addFundTrade(toEntity,amt, BigDecimal.ZERO,fundType,"资金转入:"+amt+"元");
         }catch (Exception e){
-            throw new FssException("费用收取失败");
+            throw new FssException("90004044",e);
             //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
         }
         return true;
