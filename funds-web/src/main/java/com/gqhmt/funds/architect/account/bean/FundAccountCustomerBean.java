@@ -127,4 +127,9 @@ public class FundAccountCustomerBean implements java.io.Serializable{
 		public void setCustomerType(String customerType) {
 			this.customerType = customerType;
 		}
+
+	@Override
+	public String toString() {
+		return id+"/"+custId+"/"+customerName+"/"+customerType+"/"+busiType+"/"+amount+"/"+freezeAmount+"/"+mobilePhone;
+	}
 }

@@ -1,8 +1,5 @@
 package com.gqhmt.event.account;
 
-import com.gqhmt.amq.AmqSendAndReceive;
-import com.gqhmt.amq.AmqSender;
-import com.gqhmt.amq.exception.AmqException;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
@@ -21,8 +18,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
 import java.util.Date;
 import java.util.List;
 

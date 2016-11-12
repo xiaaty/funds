@@ -1,10 +1,11 @@
 package com.gqhmt.business.architect.loan.mapper.read;
 
-import java.util.List;
-
 import com.github.pagehelper.Page;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.core.mybatis.ReadMapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface BidReadMapper extends ReadMapper<Bid> {
 
@@ -26,7 +27,7 @@ public interface BidReadMapper extends ReadMapper<Bid> {
      */
     public Long queryUserBidInfo(String customerId, String bidId, String mortgageNumber, String loanType);
 
-    
+    public List<Bid> queryBidByDate(@Param("date") String date);
     
     
 }

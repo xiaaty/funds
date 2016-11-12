@@ -419,5 +419,14 @@ public class FundAccountService {
 			List<FundAccountCustomerBean> list=fundsAccountReadMapper.findAllFundAcountList();
 			return list;
 	}
+
+
+	public List<FundAccountCustomerBean> findFundAccountByDate( String date){
+
+		return fundsAccountReadMapper.findFundAccountByDate(date);
+
+	}
+
+
 }
 

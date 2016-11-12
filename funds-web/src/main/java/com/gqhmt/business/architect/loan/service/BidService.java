@@ -1,13 +1,14 @@
 package com.gqhmt.business.architect.loan.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.Page;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.mapper.read.BidReadMapper;
 import com.gqhmt.business.architect.loan.mapper.read.TenderReadMapper;
 import com.gqhmt.business.architect.loan.mapper.write.BidWriteMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 标的管理
@@ -70,6 +71,17 @@ public class BidService {
     public void updateBid(Bid bid){
     	bidWriteMapper.updateByPrimaryKeySelective(bid);
     }
+
+	public int queryBidByCustId(Integer custId){
+		Bid bid=new Bid();
+		bid.setCustomerId(custId);
+		int res = bidReadMapper.selectCount(bid);
+		return res;
+	}
+
+	public List<Bid> queryBidByDate(String date){
+		return bidReadMapper.queryBidByDate(date);
+	}
     
     
 }

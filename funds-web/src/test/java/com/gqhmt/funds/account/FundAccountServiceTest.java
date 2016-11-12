@@ -2,12 +2,15 @@ package com.gqhmt.funds.account;
 
 import com.gqhmt.TestService;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.funds.account.FundAccountServiceTest
@@ -47,6 +50,15 @@ public class FundAccountServiceTest extends TestService {
 
         assert true;
 
+    }
+
+
+
+    @Test
+    public void findFundAccountByDateTest(){
+        List<FundAccountCustomerBean> list = fundAccountService.findFundAccountByDate("20161107");
+        LogUtil.info(this.getClass(),list.toString());
+        assert list.size()>0;
     }
 
 }
