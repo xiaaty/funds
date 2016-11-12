@@ -19,6 +19,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.TyzfTradeService;
 import com.gqhmt.util.XmlUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class CreateAccountEvent {
     private BankCardInfoService bankCardInfoService;
 
     @Resource
-    private FssAccountBindService fssAccountBindService;
+    private TyzfTradeService tyzfTradeService;
 
     /**
      * 开户接口
@@ -150,15 +151,8 @@ public class CreateAccountEvent {
             bankCardInfoEntity=bankCardInfoList.get(0);
         }
         try{
-            String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(tradeType);//设置账户类型
-            //如果,线下出借,借款,保理,则业务编号不能为空
-            if("10010002".equals(accType) || "10010003".equals(accType) || "10010004".equals(accType) || "10019002".equals(accType) || "10019001".equals(accType)) {
-                if(busiNo == null || "".equals(busiNo)){
-                    throw new FssException("90002016");
-                }
-            }
             //调用统一支付开户
-            fundAccountService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),mchn,accType,busiNo,primaryAccount.getAccountOrderNo(),seq_no);
+            tyzfTradeService.createTyzfAccount(tradeType,null,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,primaryAccount.getAccountOrderNo(),seq_no);
         }catch (Exception e){
             throw new FssException("91005344");
         }

@@ -83,15 +83,6 @@ public class FssTradeApi {
 
 	@Resource
 	private IBondTransfer bondTransferImpl;
-
-	@Resource
-	private ITyzfRecharge tyzfRechargeImpl;
-
-	@Resource
-	private ITyzfWithdraw tyzfWithdrawImpl;
-
-	@Resource
-	private ITyzfTransefer tyzfTranseferImpl;
     /**
      * 
      * author:jhz
@@ -332,57 +323,6 @@ public class FssTradeApi {
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();
 		response.setResp_code(e.getMessage());
-		return response;
-	}
-
-	/**
-	 * 统一支付充值接口
-	 * @param dto
-	 * @return
-     */
-	@RequestMapping(value = "/tyzfRecharge",method = {RequestMethod.POST,RequestMethod.GET})
-	public Object tyzfRecharge(TyzfRechargeDto dto){
-		Response response=new Response();
-		try {
-			response = tyzfRechargeImpl.execute(dto);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
-		}
-		return response;
-	}
-
-	/**
-	 * 统一支付提现接口
-	 * @param withdrawSuccessDto
-	 * @return
-     */
-	@RequestMapping(value = "/tyzfWithdraw",method = {RequestMethod.POST,RequestMethod.GET})
-	public Object tyzfWithDrawInter(WithdrawSuccessDto withdrawSuccessDto){
-		Response response=new Response();
-		try {
-			response = tyzfWithdrawImpl.execute(withdrawSuccessDto);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
-		}
-		return response;
-	}
-
-	/**
-	 * 统一支付转账接口
-	 * @param dto
-	 * @return
-     */
-	@RequestMapping(value = "/tyzfTransfer",method = {RequestMethod.POST,RequestMethod.GET})
-	public Object transfer(@RequestBody TyzfTransferDto dto){
-		Response response= null;
-		try {
-			response = tyzfTranseferImpl.execute(dto);
-		} catch (Exception e) {
-			LogUtil.error(this.getClass(), e);
-			response.setResp_code(e.getMessage());
-		}
 		return response;
 	}
 

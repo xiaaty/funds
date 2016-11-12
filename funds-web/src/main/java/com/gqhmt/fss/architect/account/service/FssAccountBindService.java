@@ -49,21 +49,19 @@ public class FssAccountBindService {
      * @param busi_id
      * @param busi_type
      * @return
-     * @throws FssException
+     * @throws FssException                                busi_Id,Integer.valueOf(busi_type.toString()),tradeType,seq_no,null,busiNo
      */
-    public FssAccountBindEntity createFssAccountMapping(Long busi_id, Integer busi_type,String tradeType,String accNo,String seqNo,String openAccTime,String contractNo) throws FssException{
+    public FssAccountBindEntity createFssAccountMapping(Long busi_id,Integer busi_type,String tradeType,String seqNo,String contractNo) throws FssException{
         FssAccountBindEntity mappingEntity=null;
         try {
             mappingEntity= GenerateBeanUtil.GenerateClassInstance(FssAccountBindEntity.class);;
             mappingEntity.setBusiId(busi_id);
             mappingEntity.setBusiType(busi_type);
             mappingEntity.setStatus("0");
-            mappingEntity.setAccNo(accNo);
             mappingEntity.setTradeType(tradeType);
-            mappingEntity.setOpenAccTime(openAccTime);
             mappingEntity.setContractNo(contractNo);
-//            mappingEntity.getCreateTime(new Date());
-//            mappingEntity.setModifyTime(new Date());
+//          mappingEntity.getCreateTime(new Date());
+//          mappingEntity.setModifyTime(new Date());
             fssAccountBindWriteMapper.insertUseGeneratedKeys(mappingEntity);
         }catch (Exception e){
             LogUtil.debug(this.getClass(),mappingEntity+":"+mappingEntity.getId());

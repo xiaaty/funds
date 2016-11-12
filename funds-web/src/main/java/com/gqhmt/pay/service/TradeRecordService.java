@@ -1,11 +1,8 @@
 package com.gqhmt.pay.service;
 
-import com.gqhmt.conversion.bean.request.ConverBean;
-import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
@@ -26,11 +23,8 @@ import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.util.ThirdPartyType;
-import com.gqhmt.util.XmlUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -88,8 +82,6 @@ public class TradeRecordService {
     public void recharge(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, String tradeType) throws FssException {
         try {
             sequenceService.charge(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType);
-//            -----------------------调用统一支付进行记账----------------
-            this.asynchronousCallRecharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1001,null,"充值");
         } catch (Exception e) {
             String tmp = e.getMessage();
             if (tmp != null && tmp.contains("funds_token_uk")) {
@@ -102,28 +94,20 @@ public class TradeRecordService {
 
     public void withdraw(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, final String tradeType) throws FssException {
         sequenceService.refund(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType);
-//        ---------------------------异步调用统一支付---------------------------
-//        this.asynchronousCallWithDraw(entity, fundOrderEntity.getOrderAmount(),fundOrderEntity,1001,null,"提现");
     }
 
     public void withdrawByFroze(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType) throws FssException {
         sequenceService.refundByFroze(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity);
-//        ---------------------------批量代付异步调用统一支付-----------------
-//        this.asynchronousCallTyzf();
     }
 
 
     public void frozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String tradeType) throws FssException {
         sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity, boundsAmout, tradeType);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "冻结账户资金 " + amount + "元" + (boundsAmout !=null ? ",红包抵扣资金 " + boundsAmout + "元" : ""), (boundsAmout != null? boundsAmout : BigDecimal.ZERO));
-//        ---------------------------异步调用统一支付处理冻结-------------------------
-//        this.asynchronousCallTyzf();
     }
 
     public void refundFeozzen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, BigDecimal chargeAmount, String tradeType) throws FssException {
         sequenceService.frozenAmtByRefund(fromEntity, toEntity, amount, chargeAmount, tradeType);
-//        --------------调用统一支付处理冻结--------------------
-//        this.asynchronousCallTyzf();
     }
 
     /**
@@ -140,8 +124,6 @@ public class TradeRecordService {
      */
     public void frozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo) throws FssException {
         sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity, boundsAmout, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
-//        --------------------异步调用统一支付处理投标冻结-----------------------------
-//        this.asynchronousCallTyzf();
     }
 
     /**
@@ -158,10 +140,6 @@ public class TradeRecordService {
      */
     public void unFrozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String tradeType) throws FssException {
         sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity, tradeType);
-//        --------------------异步冻调用统一支付处理解-----------------------
-//        this.asynchronousCallTyzf();
-
-
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
@@ -169,15 +147,10 @@ public class TradeRecordService {
 //        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity,"1108",null,lendNo,fromEntity.getCustId(),toEntity.getCustId(),null,loanNo);
         sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity, "1108", null, lendNo, fromEntity.getCustId(), null, loanCustId, loanNo);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
-//       ---------------------------- 流标调用统一支付------------------------
-//        this.asynchronousCallTyzf();
-
     }
 
     public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType) throws FssException {
         sequenceService.transfer(fromAcc, toAcc, amount, actionType, fundType, null, ThirdPartyType.FUIOU, fundOrderEntity);
-        //----------------------------调用统一支付------------------
-//        this.asynchronousCallTyzf();
     }
 
     /**
@@ -201,8 +174,6 @@ public class TradeRecordService {
      */
     public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType, String memo, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo) throws FssException {
         sequenceService.transfer(fromAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
-//        异步调用统一支付处理转账
-//        this.asynchronousCallTyzf();
     }
 
     /**
@@ -222,9 +193,6 @@ public class TradeRecordService {
         this.fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(), 3);
         this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO, fundOrderEntity.getChargeAmount(), 4010, "收取手续费", BigDecimal.ZERO);
         this.fundTradeService.addFundTrade(toEntity, fundOrderEntity.getChargeAmount(), BigDecimal.ZERO, 4010, "收取手续费");
-//        ------------提现手续费-------------
-//        this.asynchronousCallTyzf();
-
     }
 
     /**
@@ -530,120 +498,4 @@ public class TradeRecordService {
 
         return businessType;
     }
-
-
-
-
-
-    public void asynchronousCallRecharge(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,int fundType,String tradeType,String flag) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId().toString(), entity.getBusiType().toString());
-        ConverBean bean = new ConverBean();
-        //参数传入
-        if ("充值".equals(flag)) {//参数待定
-            bean.setOrderId(bindEntity.getAccNo());
-            bean.setProdID(bindEntity.getBusiType().toString());
-        }
-        ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
-    }
-
-
-
-
-    public void asynchronousCallWithHold(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, String tradeType, String flag) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId().toString(), entity.getBusiType().toString());
-        ConverBean bean = new ConverBean();
-        //参数传入
-        if ("提现".equals(flag)) {//参数待定
-            bean.setOrderId(bindEntity.getAccNo());
-            bean.setProdID(bindEntity.getBusiType().toString());
-        }
-        ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
-    }
-
-    /**
-     * 异步调用统一支付记账处理
-     * @param entity
-     * @param amount
-     * @param fundOrderEntity
-     * @param fundType
-     * @param tradeType
-     * @param flag 用来区分是充值、提现、转账、投标、满标、回款 交易
-     * @throws FssException
-     */
-    public void asynchronousCallTyzf(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, String tradeType, String flag) throws FssException {
-        //TODO: 2016/11/11 需要考虑记账账户类型
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId().toString(), entity.getBusiType().toString());
-        ConverBean bean = new ConverBean();
-        //参数传入
-        if ("充值".equals(flag)) {//参数待定
-            bean.setOrderId(bindEntity.getAccNo());
-            bean.setProdID(bindEntity.getBusiType().toString());
-        }
-        if ("提现".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("转账".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("投标".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("满标".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("回款".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
-    }
-
-    /**
-     * 统一支付提现
-     *
-     * @param mchn
-     * @param seq_no
-     * @param trade_type
-     * @param ithdrawAccountId
-     * @param WithdrawCrdrFlag
-     * @param CapitalAccountId
-     * @param capitalCrdrFlag
-     * @param postingAmount
-     * @param psotingCurrency
-     * @param accountType
-     * @param postingType
-     * @throws FssException
-     */
-    public void tyzfWithdrawAccounting(String mchn, String seq_no, String trade_type, String ithdrawAccountId, String WithdrawCrdrFlag, String CapitalAccountId, String capitalCrdrFlag, String postingAmount, String psotingCurrency, BigDecimal rate, String accountType, String postingType) throws FssException {
-        //// TODO: 2016/11/11
-    }
-
-    /**
-     * 统一支付转账
-     * @param mchn
-     * @param seq_no
-     * @param trade_type
-     * @param fromAccountId
-     * @param toAccountId
-     * @param amount
-     * @param crdrFlag
-     * @param postingCurrency
-     * @param rate
-     * @param accountType
-     * @param postingType
-     * @throws FssException
-     */
-    public void tyzfTransfer(String mchn, String seq_no, String trade_type, String fromAccountId, String toAccountId, BigDecimal amount, String crdrFlag, String postingCurrency, String rate, String accountType, String postingType) throws FssException {
-        //// TODO: 2016/11/11
-    }
-
 }
-
-
-
-
-
