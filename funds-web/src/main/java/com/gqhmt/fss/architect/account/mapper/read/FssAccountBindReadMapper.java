@@ -14,6 +14,6 @@ public interface FssAccountBindReadMapper extends ReadMapper<FssAccountBindEntit
 
 	public List<FssAccountBindEntity> queryAccountBindList(Map map);
 
-	public FssAccountBindEntity getBindAccByParam(@Param("busiId")String busiId,@Param("busiType")String busiType);
+	public FssAccountBindEntity getBindAccByParam(@Param("busiId")Long busiId,@Param("busiType")Integer busiType);
 
 }

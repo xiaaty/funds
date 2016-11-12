@@ -76,7 +76,7 @@ public class FssAccountBindService {
      * @param busiType
      * @return
      */
-    public FssAccountBindEntity getBindAccountByParam(String busiId,String busiType){
+    public FssAccountBindEntity getBindAccountByParam(Long busiId,Integer busiType){
         FssAccountBindEntity bindAccountEntity=fssAccountBindReadMapper.getBindAccByParam(busiId,busiType);
         return bindAccountEntity;
     }
@@ -93,5 +93,6 @@ public class FssAccountBindService {
             throw new FssException("91009804");
         }
     }
-  }
+
+}
 

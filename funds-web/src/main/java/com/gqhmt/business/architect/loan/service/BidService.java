@@ -70,6 +70,13 @@ public class BidService {
     public void updateBid(Bid bid){
     	bidWriteMapper.updateByPrimaryKeySelective(bid);
     }
-    
-    
+
+	/**
+	 * 根据合同号查询标的
+	 * @param contractNo
+	 * @return
+     */
+    public Bid getBidByContractNo(String contractNo){
+		return bidReadMapper.getBidByContractNo(contractNo);
+	}
 }
