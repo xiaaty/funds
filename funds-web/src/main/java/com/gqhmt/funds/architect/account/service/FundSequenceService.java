@@ -23,6 +23,7 @@ import com.gqhmt.funds.architect.account.mapper.write.FundSequenceWriteMapper;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.core.util.Encriptor;
+import com.gqhmt.pay.service.TyzfTradeService;
 import com.gqhmt.util.ThirdPartyType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,9 @@ public class FundSequenceService {
 
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
+
+    @Resource
+    private TyzfTradeService tyzfTradeService;
 
  /**
      * 查询流水
@@ -127,6 +131,8 @@ public class FundSequenceService {
             throw new FssException("90004013");
         }
         this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "充值成功，充值金额 " + amount + "元");
+        //            -----------------------调用统一支付进行记账----------------
+//        tyzfTradeService.asynchronousCallRecharge();
     }
 
     /**
@@ -180,6 +186,9 @@ public class FundSequenceService {
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
+
+          //        ---------------------------异步调用统一支付---------------------------
+//          tyzfTradeService.asynchronousCallWithDraw(entity, fundOrderEntity.getOrderAmount(),fundOrderEntity,1001,null,"提现");
     }
 
 
@@ -228,6 +237,8 @@ public class FundSequenceService {
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(frozeEntity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
+        //---------------------------调用统一支付冻结-----------------
+//        tyzfTradeService.asynchronousCallTyzf();
     }
 
     /**
@@ -318,6 +329,8 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertList(list);
 //      this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
 //      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
+        //----------------------------调用统一支付------------------
+//        tyzfTradeService.asynchronousCallTyzf();
     }
 
     public void frozenAmtByRefund(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,BigDecimal chargeAmount,String tradeType) throws FssException {
@@ -392,6 +405,10 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertList(list);
         this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType,memo,bounsAmount);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
+        //        ---------------------------异步调用统一支付处理冻结-------------------------
+//        tyzfTradeService.asynchronousCallTyzf();
+
+
     }
 
     /**
@@ -448,6 +465,8 @@ public class FundSequenceService {
         list.add(frozenFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
         this.fundTradeService.addFundTrade(frozenEntiry, amount, BigDecimal.ZERO, accountType,memo,BigDecimal.ZERO);
+        //        --------------------调用统一支付处理解-----------------------
+//        tyzfTradeService.asynchronousCallTyzf();
     }
 
 

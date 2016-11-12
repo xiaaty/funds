@@ -1,9 +1,11 @@
 package com.gqhmt.controller.api.account;
 
+import com.gqhmt.conversion.bean.request.ConverBean;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +45,9 @@ public class FssAccountApi {
 
     @Resource
     private IFundsAccount fundsAccountImpl;
-    
+
+    @Resource
+    private ConversionService conversionService;
     
     
     /**

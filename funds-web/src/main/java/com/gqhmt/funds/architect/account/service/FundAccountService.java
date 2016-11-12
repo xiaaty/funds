@@ -3,11 +3,17 @@ package com.gqhmt.funds.architect.account.service;
 
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
+import com.gqhmt.conversion.bean.request.*;
+import com.gqhmt.conversion.bean.response.PmtIdResponse;
+import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.StringUtils;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
+import com.gqhmt.fss.architect.account.service.ConversionService;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
@@ -17,10 +23,16 @@ import com.gqhmt.funds.architect.account.mapper.read.FundsAccountReadMapper;
 import com.gqhmt.funds.architect.account.mapper.write.FundsAccountWriteMapper;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
+import com.gqhmt.tyzf.common.frame.amq.AmqSender;
+import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
+import com.gqhmt.util.ConvertReportEnum;
+import com.gqhmt.util.ConvertUtils;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
+import javax.jms.JMSException;
+import javax.jms.TextMessage;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -53,6 +65,10 @@ public class FundAccountService {
     private FssAccountReadMapper fssAccountReadMapper;
 	@Resource
 	private CustomerInfoService customerInfoService;
+	@Resource
+	private FssAccountBindService fssAccountBindService;
+	@Resource
+	private ConversionService conversionService;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);
@@ -418,6 +434,6 @@ public class FundAccountService {
 		public List<FundAccountCustomerBean> findAllFundAcountList() {
 			List<FundAccountCustomerBean> list=fundsAccountReadMapper.findAllFundAcountList();
 			return list;
-	}
+		}
 }
 
