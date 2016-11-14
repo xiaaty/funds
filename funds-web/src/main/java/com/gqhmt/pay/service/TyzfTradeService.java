@@ -250,7 +250,6 @@ public class TyzfTradeService {
             ReqContentResponse transContentResponse=null;
             //发送报文调用统一支付开户
             ConverBean bean = new ConverBean();
-            bean.setService_id("0001");//服务号
             bean.setTxnTp(tradeType);//交易类型
             bean.setOrderId(orderNo == null ? "" : orderNo);//业务订单号
             bean.setChnlID("");//线上线下类型
@@ -288,23 +287,34 @@ public class TyzfTradeService {
     }
 
     /**
-     *充值
+     * 充值
      * @param entity
      * @param amount
      * @param fundOrderEntity
      * @param fundType
      * @param tradeType
-     * @param flag
      * @throws FssException
      */
-    public void asynchronousCallRecharge(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,int fundType,String tradeType,String flag) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
+    public void tyzfRecharge(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType,String tradeType,
+                             String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(),entity.getBusiType());
         ConverBean bean = new ConverBean();
         //参数传入
-        if ("充值".equals(flag)) {//参数待定
-            bean.setOrderId(bindEntity.getAccNo());
-            bean.setProdID(bindEntity.getBusiType().toString());
-        }
+        bean.setTxnTp(tradeType);//交易类型
+        bean.setBizTp(fundType);//业务类型
+        bean.setOrderId(fundOrderEntity.getOrderNo()==null ? "" : fundOrderEntity.getOrderNo());//业务订单号
+        bean.setCdtrId("");//通道编号
+        bean.setExMerchId("");//通道商户号
+        bean.setChnlID("1");//线上线下类型
+        bean.setCdtrAcct_Tp(String.valueOf(bindEntity.getBusiType()));//充值账户类型
+        bean.setCdtrAcct_Id(bindEntity.getAccNo());//充值账户号
+        bean.setDbtrAcct_Tp("");//商户账户类型
+        bean.setDbtrAcct_Id("");//商户账户号
+        bean.setOprtrID(String.valueOf(entity.getCustId()));//操作人
+        bean.setDbtrAcct_Ccy("RMB");//货币类型
+        bean.setIntrBkSttlmAmt(String.valueOf(amount));//交易金额
+        bean.setCardTp("j");//借贷标识
+        bean.setOperateType("");//记账类型
         ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
     }
 
@@ -315,66 +325,178 @@ public class TyzfTradeService {
      * @param fundOrderEntity
      * @param fundType
      * @param tradeType
-     * @param flag
+     * @param lendNo
+     * @param toCustId
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
      * @throws FssException
      */
-    public void asynchronousCallWithHold(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, String tradeType, String flag) throws FssException {
+    public void tyzfWithDraw(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,Integer fundType,String tradeType,
+                             String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
         FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
         ConverBean bean = new ConverBean();
         //参数传入
-        if ("提现".equals(flag)) {//参数待定
-            bean.setOrderId(bindEntity.getAccNo());
-            bean.setProdID(bindEntity.getBusiType().toString());
-        }
+        bean.setTxnTp(tradeType);//交易类型
+        bean.setBizTp(fundType.toString());//业务类型
+        bean.setCapTm(String.valueOf(fundOrderEntity.getCreateTime()));//交易日期
+        bean.setOrderId(fundOrderEntity.getOrderNo());
+        bean.setCdtrId("");
+        bean.setExMerchId("");
+        bean.setOprtrID(bindEntity.getBusiId().toString());
+        bean.setChnlID("1");
+        bean.setCdtrAcct_Id("");
+        bean.setDbtrAcct_Id("");
+        bean.setDbtrAcct_Ccy("");
+        bean.setIntrBkSttlmAmt("");
+        bean.setCardTp("");
+        bean.setOperateType("");
         ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
     }
 
     /**
-     * 异步调用统一支付记账处理
+     * 转账
+     * @param fromEntity
+     * @param toEntity
+     * @param fundType
+     * @param accountType
+     * @param amount
+     * @param orderNo
+     * @param tradeType
+     * @throws FssException
+     */
+    public void tyzfTransfer(FundAccountEntity fromEntity,FundAccountEntity toEntity,Integer fundType,Integer accountType,BigDecimal amount,String orderNo,String tradeType,
+            String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+        FssAccountBindEntity fromAccEntity = fssAccountBindService.getBindAccountByParam(fromEntity.getCustId(), fromEntity.getBusiType());
+        FssAccountBindEntity toAccEntity = fssAccountBindService.getBindAccountByParam(toEntity.getCustId(), toEntity.getBusiType());
+        ConverBean bean = new ConverBean();
+        //参数传入
+        bean.setService_id("00003");//充值服务号
+        bean.setTxnTp(tradeType);//交易类型
+        bean.setBizTp(fundType.toString());//业务类型
+        bean.setOrderId(orderNo== null ? "" : orderNo);//业务订单号
+
+        ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
+    }
+
+    /**
+     * 冻结
      * @param entity
      * @param amount
      * @param fundOrderEntity
      * @param fundType
      * @param tradeType
-     * @param flag 用来区分是充值、提现、转账、投标、满标、回款 交易
      * @throws FssException
      */
-    public void asynchronousCallTyzf(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, String tradeType, String flag) throws FssException {
-        //TODO: 2016/11/11 需要考虑记账账户类型
+    public void tyzfFroze(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType,String tradeType,
+                          String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
         FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
         ConverBean bean = new ConverBean();
         //参数传入
-        if ("充值".equals(flag)) {//参数待定
-            bean.setOrderId(bindEntity.getAccNo());
-            bean.setProdID(bindEntity.getBusiType().toString());
-        }
-        if ("提现".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("转账".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("投标".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("满标".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
-        if ("回款".equals(flag)) {//参数待定
-            bean.setCustID("");
-            bean.setProdID("");
-        }
+        bean.setTxnTp("");
+        bean.setBizTp("");
+        bean.setOrderId(bindEntity.getAccNo());
+        bean.setCapTm("");
+        bean.setCdtrId("");
+        bean.setExMerchId("");
+        bean.setOprtrID("");
+        bean.setChnlID("");
+        bean.setCdtrAcct_Id("");
+        bean.setDbtrAcct_Id("");
+        bean.setDbtrAcct_Ccy("");
+        bean.setIntrBkSttlmAmt("");
+        bean.setCardTp("");
+        bean.setOperateType("");
+        bean.setProdID(bindEntity.getBusiType().toString());
         ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
     }
 
+    /**
+     * 解冻
+     * @param entity
+     * @param amount
+     * @param fundOrderEntity
+     * @param fundType
+     * @param tradeType
+     * @throws FssException
+     */
+    public void tyzfUnFroze(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
+        ConverBean bean = new ConverBean();
+        //参数传入
+        bean.setTxnTp("");
+        bean.setBizTp("");
+        bean.setOrderId(bindEntity.getAccNo());
+        bean.setCapTm("");
+        bean.setCdtrId("");
+        bean.setExMerchId("");
+        bean.setOprtrID("");
+        bean.setChnlID("");
+        bean.setCdtrAcct_Id("");
+        bean.setDbtrAcct_Id("");
+        bean.setDbtrAcct_Ccy("");
+        bean.setIntrBkSttlmAmt("");
+        bean.setCardTp("");
+        bean.setOperateType("");
+        bean.setProdID(bindEntity.getBusiType().toString());
+        ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
+    }
 
+    /**
+     * 投标
+     * @param entity
+     * @param amount
+     * @param fundOrderEntity
+     * @param fundType
+     * @param tradeType
+     * @param lendNo
+     * @param toCustId
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
+     * @throws FssException
+     */
+    public void tender(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+    //// TODO: 2016/11/14
+
+    }
+
+    /**
+     * 满标
+     * @param entity
+     * @param amount
+     * @param fundOrderEntity
+     * @param fundType
+     * @param tradeType
+     * @param lendNo
+     * @param toCustId
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
+     * @throws FssException
+     */
+    public void fullStandard(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+    //// TODO: 2016/11/14
+
+    }
+
+    /**
+     * 回款
+     * @param entity
+     * @param amount
+     * @param fundOrderEntity
+     * @param fundType
+     * @param tradeType
+     * @param lendNo
+     * @param toCustId
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
+     * @throws FssException
+     */
+    public void backSection(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+    //// TODO: 2016/11/14
+
+
+    }
 }
-
-
-
-
-

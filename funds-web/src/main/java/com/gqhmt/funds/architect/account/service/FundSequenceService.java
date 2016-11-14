@@ -60,14 +60,12 @@ public class FundSequenceService {
     private FundAccountService fundAccountService;
     @Resource
     private FundTradeService fundTradeService;
-
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
-
     @Resource
     private TyzfTradeService tyzfTradeService;
 
- /**
+    /**
      * 查询流水
      * @param entity
      * @return
@@ -132,7 +130,7 @@ public class FundSequenceService {
         }
         this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "充值成功，充值金额 " + amount + "元");
         //            -----------------------调用统一支付进行记账----------------
-//        tyzfTradeService.asynchronousCallRecharge();
+         tyzfTradeService.tyzfRecharge(entity,amount,orderEntity,String.valueOf(actionType),tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
     /**
@@ -187,8 +185,8 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
 
-          //        ---------------------------异步调用统一支付---------------------------
-//          tyzfTradeService.asynchronousCallWithDraw(entity, fundOrderEntity.getOrderAmount(),fundOrderEntity,1001,null,"提现");
+//                  ---------------------------异步调用统一支付---------------------------
+          tyzfTradeService.tyzfWithDraw(entity,orderEntity.getOrderAmount(),orderEntity,accountType,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
 
@@ -238,7 +236,7 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(frozeEntity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
         //---------------------------调用统一支付冻结-----------------
-//        tyzfTradeService.asynchronousCallTyzf();
+        tyzfTradeService.tyzfFroze(entity,amount,orderEntity,String.valueOf(accountType),tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
     /**
@@ -330,7 +328,7 @@ public class FundSequenceService {
 //      this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
 //      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
         //----------------------------调用统一支付------------------
-//        tyzfTradeService.asynchronousCallTyzf();
+        tyzfTradeService.tyzfTransfer(fromEntity,toEntity,actionType,accountType,amount,orderNo,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
     public void frozenAmtByRefund(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,BigDecimal chargeAmount,String tradeType) throws FssException {
@@ -406,9 +404,7 @@ public class FundSequenceService {
         this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType,memo,bounsAmount);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
         //        ---------------------------异步调用统一支付处理冻结-------------------------
-//        tyzfTradeService.asynchronousCallTyzf();
-
-
+        tyzfTradeService.tyzfFroze(orgEntity,amount,orderEntity,"2001",tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
     /**
@@ -465,8 +461,8 @@ public class FundSequenceService {
         list.add(frozenFundSequenceEntity);
         this.fundSequenceWriteMapper.insertList(list);
         this.fundTradeService.addFundTrade(frozenEntiry, amount, BigDecimal.ZERO, accountType,memo,BigDecimal.ZERO);
-        //        --------------------调用统一支付处理解-----------------------
-//        tyzfTradeService.asynchronousCallTyzf();
+        //        --------------------解冻调用统一支付处理-----------------------
+        tyzfTradeService.tyzfUnFroze(orgEntity,amount,orderEntity,"2008",tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
 
@@ -668,7 +664,6 @@ public class FundSequenceService {
               this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
           }
       }
-
   }
 
 
