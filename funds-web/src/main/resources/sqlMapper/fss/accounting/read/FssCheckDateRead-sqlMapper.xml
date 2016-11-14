@@ -23,4 +23,22 @@
 		WHERE t.input_user_state = '98010002'
 		AND t.input_date &gt;= '20150601'AND t.input_date IS NOT NULL
 	</select>
+	<select id="getOrderDate"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
+		select
+		t.id id,
+		MIN(t.order_date) orderDate,
+		t.input_date inputDate,
+		t.input_user_state inputUserState,
+		t.order_user_state orderUserState
+		FROM t_gq_fss_check_date t
+		WHERE t.order_date IS NOT NULL
+		AND t.order_user_state ='98010002'
+	</select>
+	<select id="selectOrderDate"  resultType="java.lang.Integer">
+		<include refid="field"/>
+		select
+		count(t.order_date)
+		FROM t_gq_fss_check_date t
+		WHERE t.order_date =#{selectOrderDate}
+	</select>
 </mapper>

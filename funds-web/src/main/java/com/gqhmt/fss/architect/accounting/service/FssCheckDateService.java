@@ -2,12 +2,16 @@ package com.gqhmt.fss.architect.accounting.service;
 
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
+import com.gqhmt.core.exception.FssException;
+import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
 import com.gqhmt.fss.architect.accounting.mapper.read.FssCheckDateReadMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssCheckDateWriteMapper;
 import org.apache.commons.lang3.StringUtils;
+import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -52,5 +56,70 @@ public class FssCheckDateService {
     public int updateInputDate(String inputDate) {
         return fssCheckDateWriteMapper.updateInputState(inputDate);
     }
+    /**
+     * jhz
+     * 添加
+     * @param checkDate
+     * @throws FssException
+     */
+    public void insert(FssCheckDate checkDate)throws FssException{
+        fssCheckDateWriteMapper.insert(checkDate);
+    }
+    /**
+     * jhz
+     * 修改
+     * @param checkDate
+     * @throws FssException
+     */
+    public void update(FssCheckDate checkDate)throws FssException{
+        fssCheckDateWriteMapper.updateByPrimaryKey(checkDate);
+    }
+    /**
+     * jhz
+     * 获得订单表跑批日期
+     * @return
+     */
+    public FssCheckDate getOrderDate(){
+        return fssCheckDateReadMapper.getOrderDate();
+    }
+    /**
+     * jhz
+     * 获得订单表跑批日期
+     * @return
+     */
+    public int selectOrderDate(String orderDate)throws FssException{
+        return fssCheckDateReadMapper.selectOrderDate(orderDate);
+    }
+    /**
+     * jhz
+     * 添加日期
+     * @return
+     */
+    public void insertDate()throws FssException{
+        Date date=new Date();
+        String orderDate=DateUtil.dateTostring(date);
+        int result=this.selectOrderDate(orderDate);
+        if(result==0){
+            FssCheckDate checkDate= this.creatCheckDate(orderDate,"98010002");
+            this.insert(checkDate);
+        }
+    }
+
+    /**
+     * jhz
+     * @param orderDate
+     * @param orderDateState
+     * @return
+     * @throws FssException
+     */
+    public FssCheckDate creatCheckDate(String orderDate,String orderDateState)throws FssException{
+        FssCheckDate checkDate=new FssCheckDate();
+        checkDate.setOrderDate(orderDate);
+        checkDate.setOrderUserState(orderDateState);
+        return checkDate;
+    }
+
+
+
 
 }

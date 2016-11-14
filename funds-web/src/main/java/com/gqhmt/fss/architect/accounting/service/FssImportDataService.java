@@ -168,11 +168,10 @@ public class FssImportDataService {
      * jhz
      * 给需要导入的数据添加cust_id
      * @param list
-     * @param type
      * @return
      * @throws FssException
      */
-    public List<FssCheckAccountingEntity> list(List<FssCheckAccountingEntity>  list,String type)throws FssException{
+    public List<FssCheckAccountingEntity> list(List<FssCheckAccountingEntity>  list)throws FssException{
     //循环便利集合得到客户表id并添加进对象
     List<FssCheckAccountingEntity> enList= Lists.newArrayList();
     FundAccountEntity fundAccountEntity=null;
@@ -206,7 +205,7 @@ public class FssImportDataService {
                 entity.setToCustId(toFundAccountEntity.getCustId().toString());
             }
         }
-        fssCheckAccountingService.createChecking(entity,type);
+        fssCheckAccountingService.createChecking(entity);
         enList.add(entity);
     }
     return  enList;
@@ -218,11 +217,12 @@ public class FssImportDataService {
      * @param list
      * @return
      */
-    public List<FssCheckAccountingEntity> repeatClear(List<FssCheckAccountingEntity>  list){
+    public List<FssCheckAccountingEntity> repeatClear(List<FssCheckAccountingEntity>  list,String tradeType){
        Map<String,FssCheckAccountingEntity> map=Maps.newHashMap();
         for (FssCheckAccountingEntity entity:list) {
             BigDecimal b=new BigDecimal(entity.getAmount());
             entity.setAmount(b.toString());
+            entity.setTradeType(tradeType);
             map.put(entity.getOrderNo(),entity);
         }
         return new ArrayList<>(map.values());
