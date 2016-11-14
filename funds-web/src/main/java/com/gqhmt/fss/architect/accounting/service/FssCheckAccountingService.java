@@ -319,6 +319,7 @@ public class FssCheckAccountingService {
     }
 
     /**
+     * wanggp
      * 满标回款查询对账定时任务
      */
     public void checkHistoryAccounting() throws FssException {
@@ -333,6 +334,7 @@ public class FssCheckAccountingService {
     }
 
     /**
+     * wanggp
      * 查询历史标的当日对账数据对账
      * @param inputDate
      * @throws FssException
@@ -341,9 +343,7 @@ public class FssCheckAccountingService {
         List<FuiouFtpColomField> fuiouFtpColomFieldList = new ArrayList<FuiouFtpColomField>();
         List<FundSequenceEntity> sequenceList = new ArrayList<FundSequenceEntity>();
         String orderNo = "";
-        //一天内富友对账数据
         List<FssCheckAccountingEntity> checkAccountingList = fssCheckAccountingReadMapper.queryCheckAcctListByDate(inputDate);
-        //一天内ftp对账数据
         List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(inputDate);
         //当天每一笔订单对账
         for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
@@ -363,11 +363,10 @@ public class FssCheckAccountingService {
             if (checkSequenceAndField(fuiouFtpColomFieldList, sequenceList))
                 updateFieldStatus(orderNo);
         }
-
-
     }
 
     /**
+     * wanggp
      * 校验checkAccounting与field金额、出户、入户
      * @param fuiouFtpColomFieldList
      * @param checkAccountingList
@@ -389,7 +388,8 @@ public class FssCheckAccountingService {
     }
 
     /**
-     * 校验本地Sequence与Field所有订单总金额
+     * wanggp
+     * 校验本地Sequence与Field订单总金额
      * @param fuiouFtpColomFieldList
      * @param sequenceList
      * @return
@@ -411,6 +411,7 @@ public class FssCheckAccountingService {
     }
 
     /**
+     * wanggp
      * 更新field差异状态
      * @param orderNo
      * @throws FssException
