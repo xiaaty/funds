@@ -77,4 +77,15 @@ public class FssCheckDate {
     public void setOrderUserState(String orderUserState) {
         this.orderUserState = orderUserState;
     }
+
+    @Override
+    public String toString() {
+        return "FssCheckDate{" +
+                "id=" + id +
+                ", orderDate='" + orderDate + '\'' +
+                ", inputDate='" + inputDate + '\'' +
+                ", inputUserState='" + inputUserState + '\'' +
+                ", orderUserState='" + orderUserState + '\'' +
+                '}';
+    }
 }

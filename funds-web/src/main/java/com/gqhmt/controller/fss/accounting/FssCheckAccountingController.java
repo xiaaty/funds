@@ -7,6 +7,8 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.accounting.entity.*;
 import com.gqhmt.fss.architect.accounting.service.*;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
@@ -58,6 +60,8 @@ public class FssCheckAccountingController {
     private FundSequenceService fundSequenceService;
     @Resource
     private FssImportDataService fssImportDataService;
+    @Resource
+    private FuiouFtpColomFieldService fuiouFtpColomFieldService;
 
     /**
      * jhz
@@ -80,6 +84,15 @@ public class FssCheckAccountingController {
         model.put("map", map);
 
         return "fss/accounting/checkAccounting/checkAccounting_list";
+    }
+
+    @RequestMapping(value = "/checkAccounting/checkHistoryAccountList", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String queryHistoryCheckAccounting(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
+        List<FuiouFtpColomField> checkFuiouFtpColomFieldList = fuiouFtpColomFieldService.selectFuiouFtpFieldList(map);
+        model.addAttribute("page", checkFuiouFtpColomFieldList);
+        model.put("map", map);
+        return "fss/accounting/checkAccounting/checkHistoryAccounting_list";
     }
 
     /**
@@ -121,9 +134,9 @@ public class FssCheckAccountingController {
             List<FssCheckAccountingEntity> list = excelUtil.getExcelData(multipartFile,columns, 0);
 //            List<FssCheckAccountingEntity> list = fssImportDataService.readExcelWithTitle(multipartFile,basePath,type);
             LogUtil.info(this.getClass(),"需要导入的对账信息有："+list.size()+"条");
-            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list,type);
+            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list);
             //循环便利集合得到客户表id并添加进对象
-            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList);
+            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList,type);
             i=list.size();
             j=fssCheckAccountingService.insertCheckList(enList);
             LogUtil.info(this.getClass(),"成功导入数据库"+j+"条");

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssCheckDateReadMapper">
+	<update id="updateInputDate" parameterType="String">
+		UPDATE t_gq_fss_check_date t
+		SET t.input_user_state = '98010001'
+		WHERE t.input_date = #{inputDate}
+	</update>
+</mapper>
