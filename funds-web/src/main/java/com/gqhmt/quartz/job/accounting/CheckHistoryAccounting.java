@@ -33,7 +33,7 @@ public class CheckHistoryAccounting extends SupperJob {
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron="20 0/1 * * * *")
+    @Scheduled(cron="0 0/5 02-06 * * *")
     public void execute() throws FssException {
         /*if(!isIp("upload")){
             return;
