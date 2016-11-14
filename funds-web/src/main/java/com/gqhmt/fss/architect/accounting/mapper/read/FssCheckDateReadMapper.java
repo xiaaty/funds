@@ -4,15 +4,13 @@ package com.gqhmt.fss.architect.accounting.mapper.read;/**
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
-import org.springframework.stereotype.Repository;
-import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  */
 @Repository
-public interface FssCheckDateReadMapper extends ReadMapper<FssCheckDate> {
 public interface FssCheckDateReadMapper extends ReadMapper<FssCheckDate> {
     /**
      * jhz

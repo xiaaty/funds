@@ -27,15 +27,14 @@ import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -85,6 +84,12 @@ public class FssCheckAccountingService {
 
     @Resource
     private FssCheckDateService fssCheckDateService;
+
+    @Resource
+    private FundOrderService fundOrderService;
+
+    @Resource
+    private TradeRecordService tradeRecordService;
 
     /**
      * jhz
