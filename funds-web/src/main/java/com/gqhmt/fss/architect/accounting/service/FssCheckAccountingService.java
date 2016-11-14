@@ -327,7 +327,7 @@ public class FssCheckAccountingService {
         try {
             inputDate = fssCheckDateService.queryInputDate();
             if (StringUtils.isNotEmpty(inputDate))
-                queryOrderNo(inputDate);
+                checkHistoryAccount(inputDate);
         } catch (FssException e) {
             throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[" + inputDate +"]");
         }
@@ -339,7 +339,7 @@ public class FssCheckAccountingService {
      * @param inputDate
      * @throws FssException
      */
-    public void queryOrderNo(String inputDate) throws FssException {
+    public void checkHistoryAccount(String inputDate) throws FssException {
         List<FuiouFtpColomField> fuiouFtpColomFieldList = new ArrayList<FuiouFtpColomField>();
         List<FundSequenceEntity> sequenceList = new ArrayList<FundSequenceEntity>();
         String orderNo = "";
