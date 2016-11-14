@@ -86,10 +86,19 @@ public class FssCheckAccountingController {
         return "fss/accounting/checkAccounting/checkAccounting_list";
     }
 
+    /**
+     * wanggp
+     * 满标回款历史数据对账
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
     @RequestMapping(value = "/checkAccounting/checkHistoryAccountList", method = {RequestMethod.GET, RequestMethod.POST})
     @AutoPage
     public String queryHistoryCheckAccounting(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
-        List<FuiouFtpColomField> checkFuiouFtpColomFieldList = fuiouFtpColomFieldService.selectFuiouFtpFieldList(map);
+        List<FuiouFtpColomField> checkFuiouFtpColomFieldList = fuiouFtpColomFieldService.getgetFuiouFtpByInputDate(map);
         model.addAttribute("page", checkFuiouFtpColomFieldList);
         model.put("map", map);
         return "fss/accounting/checkAccounting/checkHistoryAccounting_list";
@@ -369,5 +378,19 @@ public class FssCheckAccountingController {
         return "fss/accounting/checkAccounting/handleAccounting_list";
     }
 
-    //public String addAccounting()
+    /**
+     * wanggp
+     * 入账
+     * @param request
+     * @param model
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping(value = "/checkAccounting/addAccounting/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String addAccounting(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
+        FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
+        tradeRecordService.asynCommand(orderEntity, "success");
+        return "redirect:/checkAccounting/fundsOrder/" + type;
+    }
 }

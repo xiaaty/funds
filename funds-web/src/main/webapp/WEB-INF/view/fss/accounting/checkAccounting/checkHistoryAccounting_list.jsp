@@ -96,7 +96,7 @@
                                                     <label>
                                                         <select id = "state" name = "state" style="width:150px;height: 30px;">
                                                             <option value="">所有</option>
-                                                            <option  <c:if test="${map.state=='9808'}"> selected="selected" </c:if> value="9808" >异常</option>
+                                                            <option  <c:if test="${map.state=='98080002'}"> selected="selected" </c:if> value="98080002" >异常</option>
                                                         </select>
                                                     </label>
                                                 </td>
@@ -110,8 +110,6 @@
                                 </div>
                             </form>
                         </div>
-
-
                     </div>
                     <div id="content">
                         <section id="widget-grid" class="">
@@ -121,7 +119,7 @@
                                     <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                                         <header>
                                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                                            <h2>异常列表</h2>
+                                            <h2>满标回款历史标的对账异常列表</h2>
                                         </header>
                                         <div>
                                             <form class="smart-form" id="">
@@ -134,27 +132,19 @@
                                                         <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4400px;">
                                                             <col width="50" />
                                                             <col width="100" />
+                                                            <col width="100" />
+                                                            <col width="100" />
+                                                            <col width="100" />
+                                                            <col width="100" />
+                                                            <col width="100" />
+                                                            <col width="100" />
+                                                            <col width="100" />
+                                                            <col width="100" />
                                                             <col width="150" />
-                                                            <col width="150" />
-                                                            <col width="150" />
-                                                            <col width="200" />
-                                                            <col width="200" />
-                                                            <col width="200" />
-                                                            <col width="200" />
-                                                            <col width="200" />
-                                                            <col width="150" />
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="150"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
-                                                            <col width="200"/>
+                                                            <col width="100"/>
+                                                            <col width="100"/>
+                                                            <col width="100"/>
+                                                            <%--<col width="150"/>--%>
                                                             <thead>
                                                             <tr>
                                                                 <td></td>
@@ -171,7 +161,7 @@
                                                                 <td>出借编号 </td>
                                                                 <td>合同编号 </td>
                                                                 <td>异常状态 </td>
-                                                                <td>操作</td>
+                                                                <%--<td>操作</td>--%>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -190,25 +180,23 @@
                                                                         <td>${t.inputDate}</td>
                                                                         <td>${t.tenderId}</td>
                                                                         <td>${t.lendCustId}</td>
-                                                                        <td>${t.lendCustId}</td>
                                                                         <td>${t.lendNo}</td>
                                                                         <td>${t.loanNo}</td>
                                                                         <td><fss:dictView key="${t.state}" /></td>
-                                                                        <td>
+                                                                        <%--<td>
                                                                             <a href="${contextPath}/checkAccounting/checkHistoryAccountList/${t.orderNo}">查看</a>
-                                                                            <%--<a href="" onclick="returnTrade(${t.orderNo})">反交易</a>--%>
-                                                                        </td>
+                                                                        </td>--%>
                                                                     </tr>
                                                                 </c:forEach>
                                                             </tbody>
                                                         </table>
                                                     </div>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
                                 </article>
                             </div>
-
                         </section>
                     </div>
                 </article>
@@ -239,25 +227,6 @@
                     minView: 2,
                     forceParse: 0
                 });
-                <%--function returnTrade(orderNo) {--%>
-                    <%--$.ajax({--%>
-                        <%--url:"${contextPath}/checkAccounting/queryForFuiou",--%>
-                        <%--method:"post",--%>
-                        <%--data:{orderNo:orderNo},--%>
-                        <%--contentType: "application/x-www-form-urlencoded; charset=UTF-8",--%>
-                        <%--dateType:"json",--%>
-                        <%--success : function (data){--%>
-                            <%--if (data.code == '0000') {--%>
-                                <%--alert(data.msg);--%>
-                            <%--}else{--%>
-                                <%--alert(data.msg);--%>
-                            <%--}--%>
-                        <%--},--%>
-                        <%--error : function (XMLHttpRequest, textStatus, errorThrown) {--%>
-                        <%--}--%>
-                    <%--})--%>
-                <%--}--%>
-
             </script>
 
 

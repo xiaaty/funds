@@ -16,7 +16,7 @@
     
     <update id="updateStatusByorderNo" parameterType="String">
         update t_fuiou_ftp_field t
-            set t.state = '9808'
+            set t.state = '98080002'
           where t.order_no = #{orderNo}
     </update>
 

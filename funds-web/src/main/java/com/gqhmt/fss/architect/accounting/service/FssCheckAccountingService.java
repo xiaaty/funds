@@ -354,7 +354,7 @@ public class FssCheckAccountingService {
             fuiouFtpColomFieldList = fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
             sequenceList  = sequenceReadMapper.queryByOrderNo(orderNo);//本地对账数据sequence
             //遍历field，1.匹配checkAccounting  2.核对sequence总金额
-            //1.ftp-field与check-accounting每一笔对账（金额、入户、出户），账不平，记录field表异常--9808
+            //1.ftp-field与check-accounting每一笔对账（金额、入户、出户），账不平，记录field表异常
             if (!checkAcctAndField(fuiouFtpColomFieldList, checkAccountingList,inputDate)){
                 updateFieldStatus(orderNo);
                 return;

@@ -211,4 +211,13 @@ public class FuiouFtpColomFieldService {
     public FuiouFtpColomField getFuiouFtpFiledByParam(String orderNo,Long tenderId){
         return fuiouFtpColomFieldReadMapper.getFuiouFtpByParam(orderNo,tenderId);
     }
+
+    /**
+     * 查询异常对账信息列表
+     * @param map
+     * @return
+     */
+    public List<FuiouFtpColomField> getgetFuiouFtpByInputDate(Map<String, String> map) {
+        return fuiouFtpColomFieldReadMapper.getgetFuiouFtpByInputDate(map);
+    }
 }
