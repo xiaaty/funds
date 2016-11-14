@@ -489,8 +489,8 @@ public class FssCheckAccountingService {
                                 fundOrderService.updateFundsOrder(order,"98080002","98010002");
                             }else{
                                 //流水表无记录的话进行流水添加
-                                tradeRecordService.asynCommand(order,"success");
-                                fundOrderService.updateFundsOrder(order,"98080002","98010001");
+//                                tradeRecordService.asynCommand(order,"success");
+                                fundOrderService.updateFundsOrder(order,"98080002","98010002");
                             }
                         }
                     }
@@ -499,8 +499,8 @@ public class FssCheckAccountingService {
                     int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
                     //充值提现进行记账
                     if(order.getOrderType() != 5 && order.getOrderType()!=11990049 && order.getOrderType()!=11990048){
-                        tradeRecordService.asynCommand(order,"success");
-                        fundOrderService.updateFundsOrder(order,"98080002","98010001");
+//                        tradeRecordService.asynCommand(order,"success");
+                        fundOrderService.updateFundsOrder(order,"98080002","98010002");
                     //转账进行反交易
                     }else{
 //                        FundAccountEntity toAcc= fundAccountService.select(order.getAccountId());

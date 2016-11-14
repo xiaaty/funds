@@ -134,9 +134,9 @@ public class FssCheckAccountingController {
             List<FssCheckAccountingEntity> list = excelUtil.getExcelData(multipartFile,columns, 0);
 //            List<FssCheckAccountingEntity> list = fssImportDataService.readExcelWithTitle(multipartFile,basePath,type);
             LogUtil.info(this.getClass(),"需要导入的对账信息有："+list.size()+"条");
-            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list);
+            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list,type);
             //循环便利集合得到客户表id并添加进对象
-            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList,type);
+            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList);
             i=list.size();
             j=fssCheckAccountingService.insertCheckList(enList);
             LogUtil.info(this.getClass(),"成功导入数据库"+j+"条");
@@ -368,4 +368,6 @@ public class FssCheckAccountingController {
         model.addAttribute("page", checkAccountingEntity);
         return "fss/accounting/checkAccounting/handleAccounting_list";
     }
+
+    //public String addAccounting()
 }
