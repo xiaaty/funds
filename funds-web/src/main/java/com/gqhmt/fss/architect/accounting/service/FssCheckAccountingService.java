@@ -362,7 +362,6 @@ public class FssCheckAccountingService {
                 //遍历field，1.匹配checkAccounting
                 for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
                     for (int i=0; i<checkAccountingList.size(); i++) {
-                        LogUtil.info(this.getClass(),checkAccounting.getAmount() + "----------fuiouFtpColomField.getAmt()" +fuiouFtpColomField.getAmt());
                         checkAccounting = checkAccountingList.get(i);
                         if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
                                 !fuiouFtpColomField.getToUserName().equals(checkAccounting.getToAccName()) &&
