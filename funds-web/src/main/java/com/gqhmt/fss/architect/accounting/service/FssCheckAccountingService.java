@@ -323,35 +323,35 @@ public class FssCheckAccountingService {
      * 满标回款查询对账定时任务
      */
     public void checkHistoryAccounting() throws FssException {
-        String inputDate = "";
+        String orderDate = "";
         try {
-            inputDate = fssCheckDateService.queryInputDate();
-            if (StringUtils.isNotEmpty(inputDate))
-                checkHistoryAccount(inputDate);
+            orderDate = fssCheckDateService.queryOrderDate(); //20150601之后的日期
+            if (StringUtils.isNotEmpty(orderDate))
+                checkHistoryAccount(orderDate);
         } catch (FssException e) {
-            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[" + inputDate +"]");
+            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[" + orderDate +"]");
         }
     }
 
     /**
      * wanggp
      * 查询历史标的当日对账数据对账
-     * @param inputDate
+     * @param orderDate
      * @throws FssException
      */
-    public void checkHistoryAccount(String inputDate) throws FssException {
+    public void checkHistoryAccount(String orderDate) throws FssException {
         List<FuiouFtpColomField> fuiouFtpColomFieldList = new ArrayList<FuiouFtpColomField>();
         List<FundSequenceEntity> sequenceList = new ArrayList<FundSequenceEntity>();
         String orderNo = "";
         BigDecimal sumSequenceAmount = new BigDecimal("0");
         BigDecimal sumFieldAmount = new BigDecimal("0");
-        List<FssCheckAccountingEntity> checkAccountingList = fssCheckAccountingReadMapper.queryCheckAcctListByDate(inputDate);
+        List<FssCheckAccountingEntity> checkAccountingList = fssCheckAccountingReadMapper.queryCheckAcctListByDate(orderDate);
         int checkAcctSize = checkAccountingList.size() - 1;
         FssCheckAccountingEntity checkAccounting = new FssCheckAccountingEntity();
-        List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(inputDate);
+        List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(orderDate);
         //当天每一笔订单对账
         for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
-            fssCheckDateService.updateInputUserState(inputDate);//更新对账日期为已对账
+            fssCheckDateService.updateInputUserState(orderDate);//更新对账日期为已对账
             orderNo = fuiouFtpOrder.getOrderNo();
             if (StringUtils.isEmpty(orderNo))
                 continue;

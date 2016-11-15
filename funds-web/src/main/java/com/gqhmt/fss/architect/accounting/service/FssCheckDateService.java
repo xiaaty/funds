@@ -42,10 +42,10 @@ public class FssCheckDateService {
      * 查询对账日期
      * @return
      */
-    public String queryInputDate() {
-        FssCheckDate fssCheckDate = fssCheckDateReadMapper.queryInputDate();
-        String inputDate = StringUtils.isEmpty(fssCheckDate.getInputDate()) ? "" : fssCheckDate.getInputDate();
-        return inputDate;
+    public String queryOrderDate() {
+        FssCheckDate fssCheckDate = fssCheckDateReadMapper.queryOrderDate();
+        String orderDate = StringUtils.isEmpty(fssCheckDate.getOrderDate()) ? "" : fssCheckDate.getOrderDate();
+        return orderDate;
     }
 
     /**
@@ -56,6 +56,7 @@ public class FssCheckDateService {
     public int updateInputUserState(String inputDate) {
         FssCheckDate fssCheckDate = new FssCheckDate();
         fssCheckDate.setInputDate(inputDate);
+
         return fssCheckDateWriteMapper.updateInputUserState(fssCheckDate);
     }
     /**

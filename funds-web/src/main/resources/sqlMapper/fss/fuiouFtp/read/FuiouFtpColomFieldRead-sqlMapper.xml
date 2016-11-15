@@ -145,7 +145,7 @@
 		AND t.tender_id=#{tenderId}
 	</select>
 	
-	<select id="getgetFuiouFtpByInputDate" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
+	<select id="getFuiouFtpByInputDate" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField">
 		<include refid="selectSql"/>
 		WHERE 1 = 1
 		<if test="id!=null and id!=''">

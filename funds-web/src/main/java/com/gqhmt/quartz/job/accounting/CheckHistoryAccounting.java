@@ -33,11 +33,11 @@ public class CheckHistoryAccounting extends SupperJob {
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron="0 0/5 02-06 * * *")
+    @Scheduled(cron="0 0/1 02-06 * * *")
     public void execute() throws FssException {
-        /*if(!isIp("upload")){
+        if(!isIp("upload")){
             return;
-        }*/
+        }
         if(isRunning) return;
 
         startLog("满标回款历史标的对账");

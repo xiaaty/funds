@@ -25,5 +25,5 @@ public interface FssCheckDateReadMapper extends ReadMapper<FssCheckDate> {
      */
     public int selectOrderDate(@Param("orderDate")String orderDate);
 
-    public FssCheckDate queryInputDate();
+    public FssCheckDate queryOrderDate();
 }
