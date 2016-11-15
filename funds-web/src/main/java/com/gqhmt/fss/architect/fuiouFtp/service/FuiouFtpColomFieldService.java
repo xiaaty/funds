@@ -218,6 +218,6 @@ public class FuiouFtpColomFieldService {
      * @return
      */
     public List<FuiouFtpColomField> getgetFuiouFtpByInputDate(Map<String, String> map) {
-        return fuiouFtpColomFieldReadMapper.getgetFuiouFtpByInputDate(map);
+        return fuiouFtpColomFieldReadMapper.getFuiouFtpByInputDate(map);
     }
 }

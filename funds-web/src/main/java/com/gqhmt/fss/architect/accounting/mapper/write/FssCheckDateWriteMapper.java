@@ -23,6 +23,6 @@ import org.springframework.stereotype.Repository;
  */
 public interface FssCheckDateWriteMapper extends ReadAndWriteMapper<FssCheckDate> {
 
-    public int updateInputState(String inputDate);
+    public int updateInputUserState(FssCheckDate fssCheckDate);
 
 }
