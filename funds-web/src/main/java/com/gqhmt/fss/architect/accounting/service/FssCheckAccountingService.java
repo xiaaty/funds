@@ -437,6 +437,9 @@ public class FssCheckAccountingService {
 //        List<FundOrderEntity> orderEntities=fundOrderService.getOrders();
 //        List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts();
             FssCheckAccountingEntity account=checkAccMap.get(order.getOrderNo());
+            if(StringUtils.equals("交易成功",account.getStatus())){
+                account.setStatus("0000");
+            }
             if(account!=null){
                 if(order.getRetCode().equals(account.getStatus())){
                     if(StringUtils.equals("0000",order.getRetCode())){
@@ -479,7 +482,7 @@ public class FssCheckAccountingService {
                         }
                     }
                     //富友成功，本地失败
-                }else if(!"0000".equals(account.getStatus())){
+                }else if(!"0000".equals(order.getRetCode()) && "0000".equals(account.getStatus())){
                     int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
                     //充值提现进行记账
                     if(order.getOrderType() != 5 && order.getOrderType()!=11990049 && order.getOrderType()!=11990048){
