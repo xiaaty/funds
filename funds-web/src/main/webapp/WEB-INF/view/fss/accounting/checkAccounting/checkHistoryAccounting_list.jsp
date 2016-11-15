@@ -73,8 +73,6 @@
                                             <col width="220" />
                                             <col width="100" />
                                             <col width="220" />
-                                            <col width="100" />
-                                            <col width="220" />
                                             <col />
                                             <tbody>
                                             <tr></tr>
@@ -85,10 +83,10 @@
                                                         <input type="text" style="width:210px" name="orderNo" value="${map.orderNo}">
                                                     </label>
                                                 </td>
-                                                <td class="tr" nowrap="nowrap">日期：</td>
+                                                <td class="tr" nowrap="nowrap">交易日期：</td>
                                                 <td nowrap="nowrap">
-                                                    <label class="input" style="width:210px" >
-                                                        <input type="text" name="inputDate" id="inputDate" value="${map.inputDate}">
+                                                    <label class="input" style="width:210px" > <i class="icon-append fa fa-calendar"></i>
+                                                        <input type="text" readonly="readonly" name="inputDate" id="inputDate" class="selectdate" placeholder="请选择时间" value="${map.inputDate}">
                                                     </label>
                                                 </td>
                                                 <td class="tr" nowrap="nowrap">是否异常：</td>
@@ -129,11 +127,11 @@
                                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
                                                     </div>
                                                     <div class="widget-body">
-                                                        <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4400px;">
+                                                        <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1450px;">
                                                             <col width="50" />
                                                             <col width="100" />
                                                             <col width="100" />
-                                                            <col width="100" />
+                                                            <col width="150" />
                                                             <col width="100" />
                                                             <col width="100" />
                                                             <col width="100" />
@@ -177,7 +175,8 @@
                                                                         <td>${t.type}</td>
                                                                         <td>${t.returnCode}</td>
                                                                         <td>${t.returnMsg}</td>
-                                                                        <td>${t.inputDate}</td>
+                                                                        <td><fss:fmtDate value="${t.inputDate}" /></td>
+                                                                        <%--<td>${t.inputDate}</td>--%>
                                                                         <td>${t.tenderId}</td>
                                                                         <td>${t.lendCustId}</td>
                                                                         <td>${t.lendNo}</td>
