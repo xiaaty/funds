@@ -124,7 +124,7 @@ public class FundOrderService  {
     	return fundOrderReadMapper.selectByPrimaryKey(id);
     }
 
-    public FundOrderEntity findfundOrder(String order) {
+    public FundOrderEntity findfundOrder(String order)throws FssException {
         return fundOrderReadMapper.getByOrderNo(order);
     }
 
