@@ -290,7 +290,7 @@ public class FssTradeApplyService {
 			 }
 			if(!"10080002".equals(tradeStatus) && 1104==applyEntity.getApplyType()) {
 				//代付失败进行资金解冻
-				fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType());
+				fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType(),applyEntity.getSeqNo());
 			}
 				FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
 				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
@@ -440,7 +440,7 @@ public class FssTradeApplyService {
 			throw new FssException("90004006");
 		}
 		//提现前资金冻结
-		tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO,tradeType);//资金冻结
+		tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO,tradeType,seqNo);//资金冻结
 		FssTradeApplyEntity fssTradeApplyEntity = this.createFssTradeApplyEntity(custNo,accNo,tradeType,amt,mchn,seqNo,custId,custType,contractNo,cId,settleType,1104,fromId,false);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);

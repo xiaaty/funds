@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,7 +227,8 @@ public class FssTradeApplyController {
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10080010");
 			//审核不通过进行资金解冻
 			if(applyType==1104){
-				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
+				String seqNo=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());//流水号
+				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType(),seqNo);
 			}
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
