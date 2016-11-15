@@ -1,7 +1,5 @@
 package com.gqhmt.pay.service.trade.impl;
 
-import com.gqhmt.conversion.bean.request.ConverBean;
-import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -29,7 +27,6 @@ import com.gqhmt.funds.architect.trade.entity.WithholdApplyEntity;
 import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.funds.architect.trade.service.WithdrawApplyService;
 import com.gqhmt.funds.architect.trade.service.WithholdApplyService;
-import com.gqhmt.conversion.bean.response.PmtIdResponse;
 import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.core.factory.ConfigFactory;
@@ -39,14 +36,8 @@ import com.gqhmt.pay.fuiou.util.HttpClientUtil;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
-import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
-import com.gqhmt.tyzf.common.frame.amq.AmqSender;
-import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
-import com.gqhmt.util.XmlUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import javax.jms.JMSException;
-import javax.jms.TextMessage;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -74,8 +65,6 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Resource
     private WithdrawApplyService withdrawApplyService;
     @Resource
-    private FssBackplateService fssBackplateService;
-    @Resource
     private FundWithrawChargeService fundWithrawChargeService;
     @Resource
     private FssAccountService fssAccountService;
@@ -83,8 +72,6 @@ public class FundsTradeImpl  implements IFundsTrade {
     private NoticeService noticeService;
     @Resource
     private FssOfflineRechargeService fssOfflineRechargeService;
-    @Resource
-    private FundSequenceService fundSequenceService;
     @Resource
     private FundTradeService fundTradeService;
     @Resource

@@ -9,10 +9,13 @@ import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -45,6 +48,11 @@ public class TyzfTradeService {
     private FssAccountBindService fssAccountBindService;
     @Resource
     private BidService bidService;
+    @Resource
+    private FundAccountService fundAccountService;
+
+    @Resource
+    private FssMappingService fssMappingService;
 
     /**
      * 统一支付进行开户
@@ -531,57 +539,64 @@ public class TyzfTradeService {
 
     /**
      * 投标
-     * @param entity
-     * @param amount
-     * @param fundOrderEntity
-     * @param fundType
-     * @param tradeType
-     * @param lendNo
-     * @param toCustId
-     * @param toLendNo
-     * @param loanCustId
-     * @param loanNo
+     * @param fromAccEntity    //出账账户
+     * @param amount    //实际出账金额
+     * @param boundsAmount  //红包金额
+     * @param tradeType //交易类型
+     * @param bidId     //标的Id
+     * @param seqNo     //流水号
      * @throws FssException
      */
-    public void tender(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+    public void tender(FundAccountEntity fromAccEntity,BigDecimal amount,BigDecimal boundsAmount,
+                        String tradeType,String bidId,String seqNo) throws FssException {
     //// TODO: 2016/11/14
-
+        this.tyzfTransfer(fromAccEntity.getCustId(),fromAccEntity.getBusiType(),Long.valueOf(bidId),90,amount,tradeType,seqNo);
+        //红包账户
+        if (boundsAmount.compareTo(BigDecimal.ZERO) > 0) {
+            FundAccountEntity fromEntity=null;
+            //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
+            List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType("10010006");
+            if(mappinglist.size()>0){
+                for(FssMappingBean  entity:mappinglist){
+                    if (entity.getAmount().compareTo(boundsAmount)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
+                        fromEntity=fundAccountService.getFundAccountById(entity.getAccountId());
+                        break;
+                    }
+                }
+            }
+            this.tyzfTransfer(fromEntity.getCustId(),7,Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo);
+        }
     }
 
     /**
+     * jhz
      * 满标
-     * @param entity
+     * @param toAccEntity
      * @param amount
-     * @param fundOrderEntity
-     * @param fundType
      * @param tradeType
-     * @param lendNo
-     * @param toCustId
-     * @param toLendNo
-     * @param loanCustId
-     * @param loanNo
+     * @param bidId
+     * @param seqNo
      * @throws FssException
      */
-    public void fullStandard(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
-    //// TODO: 2016/11/14
-
+    public void fullStandard(String bidId,FundAccountEntity toAccEntity,BigDecimal amount,
+                             String tradeType,String seqNo) throws FssException {
+        //// TODO: 2016/11/14
+        this.tyzfTransfer(Long.valueOf(bidId),90,toAccEntity.getCustId(),toAccEntity.getBusiType(),amount,tradeType,seqNo);
     }
 
     /**
+     * jhz
      * 回款
-     * @param entity
-     * @param amount
-     * @param fundOrderEntity
-     * @param fundType
-     * @param tradeType
-     * @param lendNo
+     * @param fromCustId
+     * @param fromAccountType
      * @param toCustId
-     * @param toLendNo
-     * @param loanCustId
-     * @param loanNo
+     * @param toAccountType
+     * @param amount
+     * @param tradeType
+     * @param seqNo
      * @throws FssException
      */
-    public void backSection(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+    public void backSection(Long fromCustId,Integer fromAccountType,Long toCustId,Integer toAccountType,BigDecimal amount,String tradeType,String seqNo) throws FssException {
     //// TODO: 2016/11/14
 
     }
