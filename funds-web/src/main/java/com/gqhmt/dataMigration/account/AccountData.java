@@ -9,6 +9,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.pay.service.TyzfTradeService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -41,6 +42,9 @@ public class AccountData {
 
     @Resource
     private InvestmentService investmentService;
+
+    @Resource
+    private TyzfTradeService tyzfTradeService;
 
     @Resource
     private BidService bidService;
@@ -83,7 +87,7 @@ public class AccountData {
      * @param customerInfoEntity
      */
     public void createInternetAccount(CustomerInfoEntity customerInfoEntity){
-
+//        tyzfTradeService.createInternetAccount()
     }
 
 
