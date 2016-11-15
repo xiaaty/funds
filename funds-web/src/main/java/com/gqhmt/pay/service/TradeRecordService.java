@@ -79,9 +79,9 @@ public class TradeRecordService {
     private FssAccountBindService fssAccountBindService;
 
 
-    public void recharge(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, String tradeType) throws FssException {
+    public void recharge(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, String tradeType,String seqNo) throws FssException {
         try {
-            sequenceService.charge(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType);
+            sequenceService.charge(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType,seqNo);
         } catch (Exception e) {
             String tmp = e.getMessage();
             if (tmp != null && tmp.contains("funds_token_uk")) {
@@ -92,22 +92,22 @@ public class TradeRecordService {
         //super.sendNotice(NoticeService.NoticeType.FUND_CHARGE, entity, amount,BigDecimal.ZERO);
     }
 
-    public void withdraw(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, final String tradeType) throws FssException {
-        sequenceService.refund(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType);
+    public void withdraw(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, final String tradeType,final String seqNo) throws FssException {
+        sequenceService.refund(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType,seqNo);
     }
 
-    public void withdrawByFroze(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType) throws FssException {
-        sequenceService.refundByFroze(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity);
+    public void withdrawByFroze(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType,String seqNo) throws FssException {
+        sequenceService.refundByFroze(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity,seqNo);
     }
 
 
-    public void frozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String tradeType) throws FssException {
-        sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity, boundsAmout, tradeType);
+    public void frozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String tradeType,String seqNo) throws FssException {
+        sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity, boundsAmout, tradeType,seqNo);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "冻结账户资金 " + amount + "元" + (boundsAmout !=null ? ",红包抵扣资金 " + boundsAmout + "元" : ""), (boundsAmout != null? boundsAmout : BigDecimal.ZERO));
     }
 
-    public void refundFeozzen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, BigDecimal chargeAmount, String tradeType) throws FssException {
-        sequenceService.frozenAmtByRefund(fromEntity, toEntity, amount, chargeAmount, tradeType);
+    public void refundFeozzen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, BigDecimal chargeAmount, String tradeType,String seqNo) throws FssException {
+        sequenceService.frozenAmtByRefund(fromEntity, toEntity, amount, chargeAmount, tradeType,seqNo);
     }
 
     /**
@@ -122,8 +122,8 @@ public class TradeRecordService {
      * @param boundsAmout
      * @throws FssException
      */
-    public void frozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo) throws FssException {
-        sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity, boundsAmout, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
+    public void frozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo,String seqNo) throws FssException {
+        sequenceService.frozenAmt(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity, boundsAmout, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo,seqNo);
     }
 
     /**
@@ -138,14 +138,14 @@ public class TradeRecordService {
      * @param boundsAmout
      * @throws FssException
      */
-    public void unFrozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String tradeType) throws FssException {
-        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity, tradeType);
+    public void unFrozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String tradeType,String seqNo) throws FssException {
+        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, ThirdPartyType.FUIOU, fundOrderEntity, tradeType,seqNo);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
-    public void unFrozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String lendNo, String loanNo, Long loanCustId) throws FssException {
+    public void unFrozen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, int fundType, FundOrderEntity fundOrderEntity, String memo, BigDecimal boundsAmout, String lendNo, String loanNo, Long loanCustId,String seqNo) throws FssException {
 //        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity,"1108",null,lendNo,fromEntity.getCustId(),toEntity.getCustId(),null,loanNo);
-        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity, "1108", null, lendNo, fromEntity.getCustId(), null, loanCustId, loanNo);
+        sequenceService.unfreeze(fromEntity, toEntity, amount, fundType, memo, fundOrderEntity, "1108", null, lendNo, fromEntity.getCustId(), null, loanCustId, loanNo,seqNo);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
@@ -262,7 +262,7 @@ public class TradeRecordService {
      * @param amt
      * @param mobile
      */
-    public void asynNotOrderCommand(String orderNo, String state, String amt, String mobile) throws FssException {
+    public void asynNotOrderCommand(String orderNo, String state, String amt, String mobile,String seqNo) throws FssException {
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
 
         if (fundOrderEntity == null) {
@@ -275,10 +275,10 @@ public class TradeRecordService {
             fundOrderEntity = paySuperByFuiou.createOrder(entity, amount, soruceType, 0, 0, "", "");
             fundOrderEntity.setOrderNo(orderNo);
         }
-        asynCommand(fundOrderEntity, state);
+        asynCommand(fundOrderEntity, state,seqNo);
     }
 
-    private void asynCommand(String orderNo, String state, String amt) throws FssException {
+    private void asynCommand(String orderNo, String state, String amt,String seqNo) throws FssException {
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
         if (fundOrderEntity == null) {
             LogUtil.info(this.getClass(), "未找到订单号:" + orderNo);
@@ -287,18 +287,18 @@ public class TradeRecordService {
         if (fundOrderEntity == null) {
             throw new FssException(orderNo + "订单获取失败");
         }
-        asynCommand(fundOrderEntity, state);
+        asynCommand(fundOrderEntity, state,seqNo);
 
     }
 
-    public void asynCommand(FundOrderEntity fundOrderEntity, String state) throws FssException {
+    public void asynCommand(FundOrderEntity fundOrderEntity, String state,String seqNo) throws FssException {
         if (!"success".equalsIgnoreCase(state)) {
             paySuperByFuiou.updateOrder(fundOrderEntity, 3, "10000", "失败");
             this.asynSequenceFailed(fundOrderEntity);
             throw new FssException("交易失败，请重新交易，如已成功，请勿重读操作");
         }
 
-        this.asynSequence(fundOrderEntity);
+        this.asynSequence(fundOrderEntity,seqNo);
     }
 
     /**
@@ -306,7 +306,7 @@ public class TradeRecordService {
      *
      * @param fundOrderEntity
      */
-    private void asynSequence(FundOrderEntity fundOrderEntity) throws FssException {
+    private void asynSequence(FundOrderEntity fundOrderEntity,String seqNo) throws FssException {
         FundAccountEntity entity = fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if (entity == null) {
             throw new FssException("未获取到相关账户信息");
@@ -332,7 +332,7 @@ public class TradeRecordService {
                 if (fundOrderEntity.getOrderFrormId() != null && fundOrderEntity.getOrderFrormId() != 0) {
                     isOffline = true;
                 }
-                sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType());
+                sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
 
                 if (isOffline) {
@@ -356,7 +356,7 @@ public class TradeRecordService {
             LogUtil.info(this.getClass(), entity.getCustName() + " 订单:" + fundOrderEntity.getOrderNo() + " 提现成功 " + fundOrderEntity.getOrderAmount().toPlainString());
             //提现
             try {
-                sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType());
+                sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
                 fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(), 2);
                 //提现手续费收取实现方法
@@ -382,7 +382,7 @@ public class TradeRecordService {
             LogUtil.info(this.getClass(), entity.getCustName() + " 订单:" + fundOrderEntity.getOrderNo() + " 充值成功 " + fundOrderEntity.getOrderAmount().toPlainString());
 
             //代扣
-            sequenceService.charge(entity, 1002, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType());
+            sequenceService.charge(entity, 1002, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
             fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
             if (entity.getBusiType().intValue() == GlobalConstants.ACCOUNT_TYPE_LEND_ON) {
                 //首充红包or冠钱派发
@@ -398,7 +398,7 @@ public class TradeRecordService {
             LogUtil.info(this.getClass(), entity.getCustName() + " 订单:" + fundOrderEntity.getOrderNo() + " 提现成功 " + fundOrderEntity.getOrderAmount().toPlainString());
 
             //代付
-            sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType());
+            sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
             if (fundOrderEntity.getOrderSource() != null && fundOrderEntity.getOrderSource() == GlobalConstants.BUSINESS_WITHDRAW) {
                 try {
                     fssTradeRecordService.updateTradeRecord(fundOrderEntity.getOrderFrormId(), "0");
@@ -408,7 +408,7 @@ public class TradeRecordService {
             }
             fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
         } else if (fundOrderEntity.getOrderType() == GlobalConstants.ORDER_RECHARGE_OFFLINE) {
-            sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType());
+            sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
             fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getId(), "0000");
 
         }

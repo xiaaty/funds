@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +122,8 @@ public class FundsAccountController {
 	public Object withdraw(HttpServletRequest request, HttpServletResponse response, ModelMap modell, Integer custId, int businessType, BigDecimal amount) throws FssException, IOException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null,1);
+			String seqNo=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());//流水号
+			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null,1,seqNo);
 			map.put("tips", "提现成功!!");
 
 		} catch (FssException e) {
@@ -159,7 +162,8 @@ public class FundsAccountController {
 //                    throw new Exception("客户无对应的银行信息");
 //                }
 		try {
-			fundsTradeImpl.withholdingApply(custId, businessType, null, amount, null);
+			String seqNo= new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());//流水号
+			fundsTradeImpl.withholdingApply(custId, businessType, null, amount, null,seqNo);
 			map.put("tips", "代扣成功!!");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e.getMessage(), e);
@@ -192,7 +196,8 @@ public class FundsAccountController {
 	public Object accountWithdraw(HttpServletRequest request, HttpServletResponse response, ModelMap model, Integer custId, int businessType, BigDecimal amount) throws FssException, IOException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null,1);
+			String seqNo=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());//流水号
+			fundsTradeImpl.withdrawApply(custId, businessType, null, amount, null,1,seqNo);
 			map.put("tips", "提现成功!!");
 
 		} catch (Exception e) {

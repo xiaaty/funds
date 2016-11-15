@@ -203,7 +203,29 @@ public class GlobalConstants {
 	public static final String ROLE_MAP="roleMap";
 	public static final String FUNC_MAP="funcMap";
 	public static final String USER_MAP="userMap";
-	
+//	==================统一支付类型定义=======================
+// -------   交易类型：开户：30120010，充值:30120020，提现:30120030，转账:30120040,冻结:30120050
+    public static final String TYZF_ACCTYPE="30120010";
+    public static final String TYZF_RECHARGE="30120020";
+    public static final String TYZF_WITHDRAW="30120030";
+    public static final String TYZF_TRANSFER="30120040";
+    public static final String TYZF_FRZEN="30120050";
+    public static final String TYZF_UNFRZEN="30120060";
+    // -------   客户类型：--------------------------------------
+    public static final String TYZF_PERSONCUST="30030001";//个人客户
+    public static final String TYZF_COMPCUST="30030002";//企业客户
+    //-----------账户主体类型------------------------------------
+    public static final String TYZF_PERSON="30090001";//个人
+    public static final String TYZF_COMPANY="30090002";//企业
+    public static final String TYZF_PLATFORM="30090003";//平台
+    //------借贷标识-------------------------
+    public static final String TYZF_JIE="30110001";//借
+    public static final String TYZF_DAI="30110002";//贷
+    //    -------------记账类型------------------------------------
+    public static final String TYZF_SUPPLEMENT_ACCOUNTING="30050001";//补录记账
+    public static final String TYZF_NORMAL_ACCOUNTING="30050002";//正常记账
+
+//	==================统一支付类型定义=======================
 	public static Map<Long,String> bankAccountMap = new LinkedHashMap<>();
     public static Map<Long,String> thirdAccountMap = new LinkedHashMap<>();
 	public static Map<Long,SysUsers> usersMap=new ConcurrentHashMap<Long,SysUsers>();
@@ -241,7 +263,6 @@ public class GlobalConstants {
     public static Map<Integer,String> pointType=new ConcurrentHashMap<Integer,String>();
 
 
-
     //开户账户账号规则匹配(前四位,随意生成,无任何含义,未来改为通过配置表生成)
     public static Map<String,String> ACCOUNT_TYPE_MAPPING = new ConcurrentHashMap<>();
 
@@ -264,6 +285,8 @@ public class GlobalConstants {
 
     //富有金账户对账文件信息类型
     public static Map<String, String> FUYOU_ACCOUNT_INFO_TRADE_TYPE = new ConcurrentHashMap<>();
+
+    public static Map<Integer,String> tyzfAcountType=new ConcurrentHashMap<Integer,String>();
 
 	public static Object getSession(HttpServletRequest request,String name){
 		return request.getSession(true).getAttribute(name);
@@ -542,8 +565,6 @@ public class GlobalConstants {
         pointType.put(2001,"投标返现冻结");
         pointType.put(2002,"解冻结");
         pointType.put(3001,"满标返现出账");
-
-
 
         ACCOUNT_TYPE_MAPPING.put("10010001","1306");            //互联网账户
         ACCOUNT_TYPE_MAPPING.put("10010002","1308");            //委托出借账户

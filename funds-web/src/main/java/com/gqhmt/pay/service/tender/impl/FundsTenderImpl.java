@@ -72,7 +72,7 @@ public class FundsTenderImpl  implements IFundsTender {
 	 * 投标
 	 */
     @Override
-    public boolean bid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no) throws FssException {
+    public boolean bid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no,String seqNo) throws FssException {
        /* Tender tender = this.tenderService.findById(Integer.parseInt(bidDto.getTender_no()));
         tender.setBonusAmount(bidDto.getBonus_Amount());
         tender.setRealAmount(bidDto.getReal_Amount());
@@ -106,13 +106,13 @@ public class FundsTenderImpl  implements IFundsTender {
         CommandResponse response = paySuperByFuiou.preAuth(fromEntity,toSFEntity,amount,GlobalConstants.ORDER_BID,Long.parseLong(bid_id),GlobalConstants.BUSINESS_BID,tradeType,busi_bid_no,busi_no,loan_cust_id);
         //后续处理
         fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, real_Amount,Integer.parseInt(bid_id),Integer.parseInt(tender_no), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
-        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no);
+        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no,seqNo);
         return true;
     }
 	/**
 	 * 信用标投标
 	 */
-    public boolean newHandBid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no) throws FssException {
+    public boolean newHandBid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no,String seqNo) throws FssException {
 
         FundAccountEntity fromEntity = this.getFundAccount(Long.valueOf(cust_no), invest_type == 1 ? 3 : 2);
         this.hasEnoughBanlance(fromEntity,real_Amount);
@@ -124,7 +124,7 @@ public class FundsTenderImpl  implements IFundsTender {
 
         //后续处理
         fuiouPreauthService.addFuiouPreauth(fromEntity, null, real_Amount,Integer.parseInt(bid_id),Integer.parseInt(tender_no),"", fundOrderEntity);
-        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,fundOrderEntity,"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no);
+        tradeRecordService.frozen(fromEntity,toEntity,amount,3001,fundOrderEntity,"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no,seqNo);
         return true;
     }
 
@@ -152,7 +152,7 @@ public class FundsTenderImpl  implements IFundsTender {
     /**
      * 退款
      */
-    public void abortLoop(Bid bid,Tender tender, String contactNo) throws FssException {
+    public void abortLoop(Bid bid,Tender tender, String contactNo,String seqNo) throws FssException {
         // {
         // 实际出账账户
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), tender.getInvestType() == 1 ? 3 : 2);
@@ -179,7 +179,7 @@ public class FundsTenderImpl  implements IFundsTender {
         // 冻结账户
         FundAccountEntity toEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         FundOrderEntity orderEntity = paySuperByFuiou.canclePreAuth(fromEntity,toSFEntity,tender.getRealAmount(),7,tender.getId(),0,contactNo,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue());
-        tradeRecordService.unFrozen(toEntity, fromEntity,tender.getRealAmount(), 3011, orderEntity,title + " 流标退款 " + new BigDecimal(tender.getRealAmount().toString()) + "元",BigDecimal.ZERO,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue());
+        tradeRecordService.unFrozen(toEntity, fromEntity,tender.getRealAmount(), 3011, orderEntity,title + " 流标退款 " + new BigDecimal(tender.getRealAmount().toString()) + "元",BigDecimal.ZERO,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue(),seqNo);
     }
 
 
