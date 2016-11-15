@@ -328,7 +328,7 @@ public class FundSequenceService {
 //      this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
 //      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
         //----------------------------调用统一支付------------------
-        tyzfTradeService.tyzfTransfer(fromEntity,toEntity,actionType,accountType,amount,orderNo,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
+//        tyzfTradeService.tyzfTransfer(fromEntity,toEntity,actionType,accountType,amount,orderNo,tradeType,lendNo,toCustId,toLendNo,loanCustId,loanNo);
     }
 
     public void frozenAmtByRefund(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,BigDecimal chargeAmount,String tradeType) throws FssException {

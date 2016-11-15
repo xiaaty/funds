@@ -16,6 +16,7 @@ import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.pay.service.TyzfTradeService;
 import com.gqhmt.pay.service.tender.IFundsTender;
 import org.springframework.stereotype.Service;
 
@@ -56,9 +57,6 @@ public class FundsTenderImpl  implements IFundsTender {
     private BidService bidService;
 
     @Resource
-    private FundOrderService fundOrderService;
-
-    @Resource
     private FuiouPreauthService fuiouPreauthService;
 
 
@@ -66,13 +64,13 @@ public class FundsTenderImpl  implements IFundsTender {
     private TradeRecordService tradeRecordService;
 
     @Resource
-    private FetchDataService fetchDataService;
+    private TyzfTradeService tyzfTradeService;
 
 	/**
 	 * 投标
 	 */
     @Override
-    public boolean bid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no) throws FssException {
+    public boolean bid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no,String seqNo) throws FssException {
        /* Tender tender = this.tenderService.findById(Integer.parseInt(bidDto.getTender_no()));
         tender.setBonusAmount(bidDto.getBonus_Amount());
         tender.setRealAmount(bidDto.getReal_Amount());
@@ -107,6 +105,9 @@ public class FundsTenderImpl  implements IFundsTender {
         //后续处理
         fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, real_Amount,Integer.parseInt(bid_id),Integer.parseInt(tender_no), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
         tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no);
+        //        ---------------------------异步调用统一支付处理冻结-------------------------
+//        tyzfTradeService.asynchronousCallTyzf(fromEntity,amount,null,invest_type == 1 ? 3 : 2,tradeType,"",seqNo,"出借" + product_title + " 资金 " + amount + "元");
+        tyzfTradeService.tender(fromEntity,amount,boundsAmount,invest_type == 1 ? 3 : 2,tradeType,bid_id,seqNo);
         return true;
     }
 	/**

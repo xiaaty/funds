@@ -354,30 +354,44 @@ public class TyzfTradeService {
         ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
     }
 
-    /**
-     * 转账
-     * @param fromEntity
-     * @param toEntity
-     * @param fundType
-     * @param accountType
-     * @param amount
-     * @param orderNo
-     * @param tradeType
-     * @throws FssException
-     */
-    public void tyzfTransfer(FundAccountEntity fromEntity,FundAccountEntity toEntity,Integer fundType,Integer accountType,BigDecimal amount,String orderNo,String tradeType,
-            String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
-        FssAccountBindEntity fromAccEntity = fssAccountBindService.getBindAccountByParam(fromEntity.getCustId(), fromEntity.getBusiType());
-        FssAccountBindEntity toAccEntity = fssAccountBindService.getBindAccountByParam(toEntity.getCustId(), toEntity.getBusiType());
-        ConverBean bean = new ConverBean();
-        //参数传入
-        bean.setService_id("00003");//充值服务号
-        bean.setTxnTp(tradeType);//交易类型
-        bean.setBizTp(fundType.toString());//业务类型
-        bean.setOrderId(orderNo== null ? "" : orderNo);//业务订单号
-
-        ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
-    }
+//    /**
+//     * 转账
+//     * @param fromAccountId
+//     * @param toAccountId
+//     * @param fundType
+//     * @param amount
+//     * @param orderNo
+//     * @param tradeType
+//     * @param crdrFlag
+//     * @param postingType
+//     * @param seqNo
+//     * @throws FssException
+//     */
+//    public void tyzfTransfer(String  fromAccountId,String toAccountId,Integer fundType,BigDecimal amount,String orderNo,String tradeType,
+//            String crdrFlag,String postingType,String seqNo,String summary) throws FssException {
+//        ConverBean bean = new ConverBean();
+//        //参数传入
+//        bean.setTxnTp(tradeType);
+//        bean.setBizTp(fundType.toString());//业务类型
+//        bean.setCapTm("");//转账交易时间
+//        bean.setOrderId(seqNo);
+//        bean.setCdtrId("富友");   //第三方编号表示，如富友，阿里等
+//        bean.setExMerchId("");     //第三方为商户开立的商户编号
+//        bean.setOprtrID("");    //如果是个人则上送个人客户编号，如果是后台则上送后台管理人员编号
+//        bean.setChnlID("");     //冠e通公司本身的账户类型划分方式，和公司性质相关,可以存储渠道编码，这样可以将该信息划分的更详细
+//        bean.setDbtrAcct_Id(fromAccountId);//转出账户
+//        bean.setCdtrAcct_Id(toAccountId);//转入账户
+//        bean.setIntrBkSttlmCcy("");//货币类型
+//        bean.setIntrBkSttlmAmt(amount.toString());//交易金额
+//        bean.setCardTp(crdrFlag);     //个人账户记账借贷标识
+//        bean.setOperateType(postingType);    //记账类型:补账，正常记账
+//
+//
+//        bean.setService_id("00003");//充值服务号
+//        bean.setOrderId(orderNo== null ? "" : orderNo);//业务订单号
+//
+//        ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean,false);
+//    }
 
     /**
      * 冻结
@@ -444,20 +458,30 @@ public class TyzfTradeService {
 
     /**
      * 投标
-     * @param entity
-     * @param amount
-     * @param fundOrderEntity
-     * @param fundType
-     * @param tradeType
-     * @param lendNo
-     * @param toCustId
-     * @param toLendNo
-     * @param loanCustId
-     * @param loanNo
+     * @param entity    //出账账户
+     * @param amount    //实际出账金额
+     * @param boundsAmount  //红包金额
+     * @param fundType  //账户类型
+     * @param tradeType //交易类型
+     * @param bidId     //标的Id
+     * @param seqNo     //流水号
+     * @param summary     //摘要
      * @throws FssException
      */
-    public void tender(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException {
+    public void tender(FundAccountEntity entity,BigDecimal amount,BigDecimal boundsAmount,
+                       Integer fundType, String tradeType,String bidId,String seqNo,
+                       String orderNo,String summary) throws FssException {
     //// TODO: 2016/11/14
+        //出借人账户
+        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
+        //标的账户
+        FssAccountBindEntity bidEntity = fssAccountBindService.getBindAccountByParam(Long.valueOf(bidId),90);
+//        this.tyzfTransfer(bindEntity.getAccNo(),bidEntity.getAccNo(),fundType,amount,orderNo,tradeType,"","",seqNo,summary);
+        //红包账户
+        if(BigDecimal.ZERO.compareTo(boundsAmount)>0){
+            FssAccountBindEntity boundEntity = fssAccountBindService.getBindAccountByParam(Long.valueOf(bidId),90);
+        }
+
 
     }
 

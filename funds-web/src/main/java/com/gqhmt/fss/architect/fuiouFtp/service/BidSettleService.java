@@ -204,6 +204,9 @@ public class BidSettleService extends BidSupper{
         loanEntity.setStatus("10050009");
         loanEntity.setModifyTime(new Date());
         fssLoanService.update(loanEntity);
+
+
+
     }
 
 //
