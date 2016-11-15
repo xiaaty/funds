@@ -47,6 +47,9 @@ public class CheckAccountingJob extends SupperJob {
 
 		startLog("充值体现转账对账跑批");
         FssCheckDate orderDate= fssCheckDateService.getOrderDate();
+        if (orderDate==null){
+            return;
+        }
         isRunning = true;
         try {
             //查询所有充值体现转账新版满标新版回款数据
