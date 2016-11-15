@@ -50,16 +50,14 @@ public class CheckAccountingJob extends SupperJob {
         isRunning = true;
         try {
             //查询所有充值体现转账新版满标新版回款数据
-            List<FundOrderEntity> orderEntities=fundOrderService.getOrders(orderDate.getOrderDate());
+//            List<FundOrderEntity> orderEntities=fundOrderService.getOrders(orderDate.getOrderDate());
             //查询富友对账信息
             List<FssCheckAccountingEntity> checkAccountings=fssCheckAccountingService.getCheckAccounts(orderDate.getOrderDate());
-            if(CollectionUtils.isEmpty(orderEntities)||CollectionUtils.isEmpty(checkAccountings)){
+            if(CollectionUtils.isEmpty(checkAccountings)){
                 return;
             }
-            //把富友对账信息转换成map
-            Map<String, FssCheckAccountingEntity> checkAccMap=fssCheckAccountingService.convertToFundSOrderMap(checkAccountings);
-            for (FundOrderEntity order:orderEntities) {
-                ThreadExecutor.execute(runnableProcess(order,checkAccMap));
+            for (FssCheckAccountingEntity check:checkAccountings) {
+                ThreadExecutor.execute(runnableProcess(check));
             }
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
@@ -79,15 +77,15 @@ public class CheckAccountingJob extends SupperJob {
 	}
     /**
      * 创建线程
-     * @param order
+     * @param check
      * @return
      */
-    public Runnable runnableProcess(final FundOrderEntity order, final Map<String, FssCheckAccountingEntity> checkAccMap){
+    public Runnable runnableProcess(final  FssCheckAccountingEntity check){
         Runnable thread = new Runnable() {
             @Override
             public void run() {
                 try {
-                    fssCheckAccountingService.checkFundOrder(order,checkAccMap);
+                    fssCheckAccountingService.checkFundOrder(check);
                 } catch (Exception e) {
                     LogUtil.error(getClass(),e);
                 }

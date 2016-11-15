@@ -433,10 +433,10 @@ public class FssCheckAccountingService {
      * jhz
      * 核对订单表状态和对账文件状态是否一致
      */
-    public void checkFundOrder(FundOrderEntity order,Map<String, FssCheckAccountingEntity> checkAccMap)throws FssException{
+    public void checkFundOrder(FssCheckAccountingEntity account)throws FssException{
 //        List<FundOrderEntity> orderEntities=fundOrderService.getOrders();
 //        List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts();
-            FssCheckAccountingEntity account=checkAccMap.get(order.getOrderNo());
+        FundOrderEntity order=fundOrderService.findfundOrder(account.getOrderNo());
             if(StringUtils.equals("交易成功",account.getStatus())){
                 account.setStatus("0000");
             }
