@@ -374,7 +374,7 @@ public class FssCheckAccountingService {
                 //遍历field，1.匹配checkAccounting
                 for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
                     //是否旧数据
-                    if (StringUtils.isEmpty(fuiouFtpColomField.getFeildOrderNo()))
+                    if (StringUtils.isNotEmpty(fuiouFtpColomField.getFeildOrderNo()))
                         continue;
                     LogUtil.info(this.getClass(),"满标回款历史对账，ftpField订单号：" + fuiouFtpColomField.getOrderNo());
                     for (int i=0; i<checkAccountingList.size(); i++) {
