@@ -482,7 +482,7 @@ public class FssCheckAccountingService {
                         }
                     }
                     //富友成功，本地失败
-                }else if(!"0000".equals(order.getRetCode())){
+                }else if(!"0000".equals(order.getRetCode()) && "0000".equals(account.getStatus())){
                     int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
                     //充值提现进行记账
                     if(order.getOrderType() != 5 && order.getOrderType()!=11990049 && order.getOrderType()!=11990048){
