@@ -26,12 +26,16 @@ public class CreateAccountDto extends SuperDto {
 
 	private String user_no;			//用户编号
 	
-	private String busi_no;			//业务编号
+	private String busi_no;			//合同编号（标的开户）
 
 	@APIValidNull(errorCode = "90002009")
     private String mobile;			//手机号
 	@APIValidNull(errorCode = "90002010")
+
     private String cert_no;			//身份证号
+
+    private String cert_type;		//证件类型
+
 	@APIValidNull(errorCode = "90002011")
     private String name;			//客户姓名
 
@@ -44,8 +48,8 @@ public class CreateAccountDto extends SuperDto {
     @APIValidNull(errorCode = "90002014")
     private String city_id;			//开户地区
     
-    private String contract_no;		//合同编号
-    
+    private String contract_no;
+
     public String getMobile() {
         return mobile;
     }
@@ -125,5 +129,12 @@ public class CreateAccountDto extends SuperDto {
 	public void setContract_no(String contract_no) {
 		this.contract_no = contract_no;
 	}
-    
+
+    public String getCert_type() {
+        return cert_type;
+    }
+
+    public void setCert_type(String cert_type) {
+        this.cert_type = cert_type;
+    }
 }

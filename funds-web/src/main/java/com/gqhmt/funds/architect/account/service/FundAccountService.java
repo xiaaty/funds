@@ -8,6 +8,8 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountReadMapper;
+import com.gqhmt.fss.architect.account.service.ConversionService;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.asset.entity.FssAssetEntity;
 import com.gqhmt.fss.architect.asset.mapper.read.FssAssetReadMapper;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
@@ -53,6 +55,10 @@ public class FundAccountService {
     private FssAccountReadMapper fssAccountReadMapper;
 	@Resource
 	private CustomerInfoService customerInfoService;
+	@Resource
+	private FssAccountBindService fssAccountBindService;
+	@Resource
+	private ConversionService conversionService;
 
     public void update(FundAccountEntity entity) {
     	fundAccountWriteMapper.updateByPrimaryKeySelective(entity);

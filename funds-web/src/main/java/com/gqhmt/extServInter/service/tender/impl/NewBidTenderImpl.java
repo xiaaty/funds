@@ -52,7 +52,7 @@ public class NewBidTenderImpl implements INewBidTender {
     	Response response = new Response();
     	try {
 			BidDto bidDto=(BidDto) dto;
-			fundsTenderImpl.newHandBid(bidDto.getTrade_type(), bidDto.getBid_id(),bidDto.getTender_no(),bidDto.getProduct_title(),bidDto.getCust_no(),bidDto.getInvest_type(),bidDto.getReal_Amount(),bidDto.getLoan_cust_id(),bidDto.getMoto_cust_id(),bidDto.getBonus_Amount(),bidDto.getBusi_bid_no(),bidDto.getBusi_no());
+			fundsTenderImpl.newHandBid(bidDto.getTrade_type(), bidDto.getBid_id(),bidDto.getTender_no(),bidDto.getProduct_title(),bidDto.getCust_no(),bidDto.getInvest_type(),bidDto.getReal_Amount(),bidDto.getLoan_cust_id(),bidDto.getMoto_cust_id(),bidDto.getBonus_Amount(),bidDto.getBusi_bid_no(),bidDto.getBusi_no(),bidDto.getSeq_no());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

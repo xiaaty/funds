@@ -40,7 +40,7 @@ public class UnFreezeImpl implements IUnFreeze {
         Response response = new Response();
         try {
             UnFreezeDto cDto = (UnFreezeDto)dto;
-            fundsTrade.unFroze(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getCust_no(),cDto.getUser_no(),cDto.getAmt(),cDto.getBusi_type());
+            fundsTrade.unFroze(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(),cDto.getCust_no(),cDto.getUser_no(),cDto.getAmt(),cDto.getBusi_type(),cDto.getSeq_no());
             response.setResp_code("0000");
         } catch (FssException e) {
             LogUtil.error(this.getClass(),e);
