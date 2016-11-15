@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.accounting.service;
 
+import com.google.common.collect.Maps;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
 import com.gqhmt.core.exception.FssException;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -39,6 +42,7 @@ public class FssCheckDateService {
     private FssCheckDateWriteMapper fssCheckDateWriteMapper;
 
     /**
+     * wanggp
      * 查询对账日期
      * @return
      */
@@ -49,14 +53,14 @@ public class FssCheckDateService {
     }
 
     /**
+     * wanggp
      * 更新已对账日期状态
-     * @param inputDate
+     * @param orderDate
      * @return
      */
-    public int updateInputUserState(String inputDate) {
+    public int updateInputUserState(String orderDate) {
         FssCheckDate fssCheckDate = new FssCheckDate();
-        fssCheckDate.setInputDate(inputDate);
-
+        fssCheckDate.setInputDate(orderDate);
         return fssCheckDateWriteMapper.updateInputUserState(fssCheckDate);
     }
     /**
@@ -122,7 +126,15 @@ public class FssCheckDateService {
         return checkDate;
     }
 
-
+    public List<FssCheckDate> getFssCheckDate(Map<String,String> map) {
+        Map<String, String> map2= Maps.newHashMap();
+        if (map != null) {
+            map2.put("orderDate",map.get("orderDate"));
+            map2.put("inputUserState",map.get("inputUserState"));
+            map2.put("orderUserState",map.get("orderUserState"));
+        }
+        return fssCheckDateReadMapper.selectFssCheckDateList(map2);
+    }
 
 
 }

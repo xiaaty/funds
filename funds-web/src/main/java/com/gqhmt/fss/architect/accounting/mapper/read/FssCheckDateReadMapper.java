@@ -7,6 +7,9 @@ import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  */
@@ -26,4 +29,6 @@ public interface FssCheckDateReadMapper extends ReadMapper<FssCheckDate> {
     public int selectOrderDate(@Param("orderDate")String orderDate);
 
     public FssCheckDate queryOrderDate();
+
+    public List<FssCheckDate> selectFssCheckDateList(Map map);
 }

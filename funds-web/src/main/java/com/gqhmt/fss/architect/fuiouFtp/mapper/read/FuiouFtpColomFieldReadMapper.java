@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by yuyong on 15/4/6.
  */
+@Repository
 public interface FuiouFtpColomFieldReadMapper extends ReadMapper<FuiouFtpColomField> {
 
     public List<Long> getOrder();

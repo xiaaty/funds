@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.fuiouFtp.mapper.write;
 
 import com.gqhmt.core.mybatis.ReadAndWriteMapper;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by yuyong on 15/4/6.

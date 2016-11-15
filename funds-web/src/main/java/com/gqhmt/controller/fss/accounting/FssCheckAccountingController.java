@@ -62,6 +62,8 @@ public class FssCheckAccountingController {
     private FssImportDataService fssImportDataService;
     @Resource
     private FuiouFtpColomFieldService fuiouFtpColomFieldService;
+    @Resource
+    private FssCheckDateService fssCheckDateService;
 
     /**
      * jhz
@@ -392,5 +394,24 @@ public class FssCheckAccountingController {
         FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
         tradeRecordService.asynCommand(orderEntity, "success");
         return "redirect:/checkAccounting/fundsOrder/" + type;
+    }
+
+
+    /**
+     * wannggp
+     *
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/accounting/checkedAcct/dateList",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryCheckAccountDate(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+        List<FssCheckDate> fssCheckDateList = fssCheckDateService.getFssCheckDate(map);
+        model.addAttribute("page", fssCheckDateList);
+        model.put("map", map);
+        return "fss/accounting/checkAccounting/checkedAccountingDate_list";
     }
 }

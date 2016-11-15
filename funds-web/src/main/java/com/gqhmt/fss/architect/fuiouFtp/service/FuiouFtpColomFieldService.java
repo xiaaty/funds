@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
+import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
@@ -218,6 +219,14 @@ public class FuiouFtpColomFieldService {
      * @return
      */
     public List<FuiouFtpColomField> getgetFuiouFtpByInputDate(Map<String, String> map) {
-        return fuiouFtpColomFieldReadMapper.getFuiouFtpByInputDate(map);
+        Map<String, String> map2= Maps.newHashMap();
+        if (map != null) {
+            String orderDate = map.get("orderDate");
+            map2.put("orderNo",map.get("orderNo"));
+            map2.put("inputDate", orderDate);
+            map2.put("state", map.get("state"));
+        }
+        return fuiouFtpColomFieldReadMapper.getFuiouFtpByInputDate(map2);
     }
+
 }
