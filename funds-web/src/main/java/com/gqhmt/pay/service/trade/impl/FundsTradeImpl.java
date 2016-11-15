@@ -139,7 +139,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity entity = this.getFundAccount(Integer.parseInt(withholdDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withholding(entity,withholdDto.getAmt(),GlobalConstants.ORDER_WITHHOLDING,0,0,"1103",withholdDto.getTrade_type(),null,null);
         //资金处理
-        tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1002,withholdDto.getTrade_type());
+        tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1002,withholdDto.getTrade_type(),withholdDto.getSeq_no());
         return true;
     }
 
@@ -163,25 +163,25 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new FssException("90004014");
         }
         this.hasEnoughBanlance(entity,withdrawAmt);
-        tradeRecordService.refundFeozzen(entity,freezeEntity,withdrawDto.getAmt(),withdrawDto.getCharge_amt(),withdrawDto.getTrade_type());
+        tradeRecordService.refundFeozzen(entity,freezeEntity,withdrawDto.getAmt(),withdrawDto.getCharge_amt(),withdrawDto.getTrade_type(),withdrawDto.getSeq_no());
 //        if(withdrawDto.getCharge_amt().compareTo(BigDecimal.ZERO)>0) {//处理提现手续费
 //            tradeRecordService.frozen(entity, freezeEntity, withdrawDto.getCharge_amt(), 4010, null, "收取提现手续费", BigDecimal.ZERO, withdrawDto.getTrade_type());
 //        }
         //二次校验账户状态，如果账户为负数，则提现存在问题，无法提现
         entity = this.getFundAccount(Integer.parseInt(withdrawDto.getCust_no()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         if(entity.getAmount().compareTo(BigDecimal.ZERO)<0){
-            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type());
+            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type(),withdrawDto.getSeq_no());
             throw new FssException("90004007");
         }
 
         //校验账户无问题，则进行真正的交易，发送提现指令到富友
         try {
             FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
-            tradeRecordService.withdrawByFroze(freezeEntity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);
+            tradeRecordService.withdrawByFroze(freezeEntity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003,withdrawDto.getSeq_no());
             this.chargeAmount(fundOrderEntity);
         }catch(Exception e) {
             //资金处理
-            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type());
+            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type(),withdrawDto.getSeq_no());
             throw new FssException("90004007");
         }
 
@@ -227,6 +227,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         return true;
     }
+
     /**
      *
      * author:jhz
@@ -234,18 +235,18 @@ public class FundsTradeImpl  implements IFundsTrade {
      * function：线下代扣充值
      */
     @Override
-    public boolean withholdingApply(int custID, int businessType, String busiNo, BigDecimal amount, Long busiId) throws FssException {
-        FundOrderEntity fundOrderEntity = this.withholdingApply(custID,businessType,busiNo,amount,busiId,GlobalConstants.BUSINESS_WITHHOLDING,null,null);
+    public boolean withholdingApply(int custID, int businessType, String busiNo, BigDecimal amount, Long busiId,String seqNo) throws FssException {
+        FundOrderEntity fundOrderEntity = this.withholdingApply(custID,businessType,busiNo,amount,busiId,GlobalConstants.BUSINESS_WITHHOLDING,null,null,seqNo);
         return  fundOrderEntity != null;
 
     }
 
-    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild) throws FssException {
-        FundOrderEntity fundOrderEntity = this.withholdingApply(custID,businessType,contractNo,amount,busiId,GlobalConstants.NEW_BUSINESS_WITHHOLDING,tradeType,tradeTypeChild);
+    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException {
+        FundOrderEntity fundOrderEntity = this.withholdingApply(custID,businessType,contractNo,amount,busiId,GlobalConstants.NEW_BUSINESS_WITHHOLDING,tradeType,tradeTypeChild,seqNo);
         return  fundOrderEntity;
     }
 
-    public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild) throws FssException {
+    public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException {
 
         FssAccountEntity fssAccountEntity  = this.fssAccountService.getFssAccountByAccNo(accNo);
         if (fssAccountEntity == null){
@@ -253,7 +254,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         int accType = fssAccountEntity.getAccType();
         int businessType = this.tradeRecordService.parseBusinessType(accType);
-        FundOrderEntity fundOrderEntity = this.withholdingApply(fssAccountEntity.getCustId().intValue(),businessType,contractNo,amount,busiId,GlobalConstants.NEW_BUSINESS_WITHHOLDING,tradeType,tradeTypeChild);
+        FundOrderEntity fundOrderEntity = this.withholdingApply(fssAccountEntity.getCustId().intValue(),businessType,contractNo,amount,busiId,GlobalConstants.NEW_BUSINESS_WITHHOLDING,tradeType,tradeTypeChild,seqNo);
         return  fundOrderEntity;
     }
 
@@ -268,7 +269,7 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @return
      * @throws FssException
      */
-    private FundOrderEntity withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,int busiTyep,Integer newOrderType,Integer tradeType) throws FssException {
+    private FundOrderEntity withholdingApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,int busiTyep,Integer newOrderType,Integer tradeType,String seqNo) throws FssException {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
         checkwithholdingOrWithDraw(entity,1);
         String lendNo=null;
@@ -284,7 +285,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
          fundOrderEntity = paySuperByFuiou.withholding(entity,amount,GlobalConstants.ORDER_WITHHOLDING,busiId,busiTyep,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
-        tradeRecordService.recharge(entity,amount,fundOrderEntity,1002,tradeType==null?null:tradeType.toString());
+        tradeRecordService.recharge(entity,amount,fundOrderEntity,1002,tradeType==null?null:tradeType.toString(),seqNo);
         return  fundOrderEntity;
     }
 
@@ -295,14 +296,14 @@ public class FundsTradeImpl  implements IFundsTrade {
      * function：线下提现代付
      */
     @Override
-    public boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,int selletType) throws FssException {
+    public boolean withdrawApply(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,int selletType,String seqNo) throws FssException {
         FundAccountEntity entity = this.getFundAccount(custID, businessType);
         this.hasEnoughBanlance(entity,amount);
         checkwithholdingOrWithDraw(entity,2);
         this.cashWithSetReq(entity.getCustId(),selletType);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_AGENT_WITHDRAW,busiId,GlobalConstants.BUSINESS_WITHHOLDING,null,null,null,null);
         //资金处理
-        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
+        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003,seqNo);
         return true;
     }
 
@@ -456,16 +457,16 @@ public class FundsTradeImpl  implements IFundsTrade {
 	 * 资金冻结
 	 */
     @Override
-    public boolean froze(Long custId,Integer busiType,BigDecimal amt,String tradeType) throws FssException {
+    public boolean froze(Long custId,Integer busiType,BigDecimal amt,String tradeType,String seqNo) throws FssException {
         FundAccountEntity fromEntity = this.getFundAccount(Integer.valueOf(custId.toString()),busiType);
         this.hasEnoughBanlance(fromEntity,amt);
         FundAccountEntity toEntity = this.getFundAccount(Integer.valueOf(custId.toString()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
-        tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"资金冻结，冻结金额："+amt+"元",BigDecimal.ZERO,tradeType);
+        tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"资金冻结，冻结金额："+amt+"元",BigDecimal.ZERO,tradeType,seqNo);
         return true;
     }
 
     @Override
-    public boolean unFroze(String mchn,String seq_no,String trade_type,String cust_no,String user_no,BigDecimal amt,Integer type) throws FssException {
+    public boolean unFroze(String mchn,String seq_no,String trade_type,String cust_no,String user_no,BigDecimal amt,Integer type,String seqNo) throws FssException {
         Integer busi_type=0;
         if(String.valueOf(type).length()>2){
             busi_type= GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(busi_type);
@@ -475,7 +476,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity fromEntity = this.getFundAccount(Integer.parseInt(cust_no),GlobalConstants.ACCOUNT_TYPE_FREEZE);
         this.hasEnoughBanlance(fromEntity,amt);
         FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(cust_no), busi_type);
-        tradeRecordService.unFrozen(fromEntity,toEntity,amt,1007,null,"资金解冻，解冻金额："+amt+"元",BigDecimal.ZERO,trade_type);
+        tradeRecordService.unFrozen(fromEntity,toEntity,amt,1007,null,"资金解冻，解冻金额："+amt+"元",BigDecimal.ZERO,trade_type,seqNo);
         return true;
     }
 
@@ -572,7 +573,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(rechargeSuccessDto.getOrder_no());
         FundAccountEntity entity=fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if("0000".equals(rechargeSuccessDto.getRespCode())) {
-            tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001,rechargeSuccessDto.getTrade_type());
+            tradeRecordService.recharge(entity,fundOrderEntity.getOrderAmount(), fundOrderEntity, 1001,rechargeSuccessDto.getTrade_type(),rechargeSuccessDto.getSeq_no());
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
           //发送站内通知短信
@@ -593,7 +594,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FundAccountEntity entity=fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if("0000".equals(withdrawSuccessDto.getRespCode())) {
 //            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 1003);
-            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003,withdrawSuccessDto.getTrade_type());
+            tradeRecordService.withdraw(entity, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003,withdrawSuccessDto.getTrade_type(),withdrawSuccessDto.getSeq_no());
             fundOrderEntity.setOrderState(2);
             fundOrderService.update(fundOrderEntity);
             this.chargeAmount(fundOrderEntity);
@@ -643,7 +644,7 @@ public class FundsTradeImpl  implements IFundsTrade {
      * 批量代付
      */
     @Override
-    public FundOrderEntity withdrawApplyNew(String accNo,String custID, Integer businessType, String contractNo, BigDecimal amount, Long busiId,int selletType,Integer newOrderType,Integer tradeType) throws FssException {
+    public FundOrderEntity withdrawApplyNew(String accNo,String custID, Integer businessType, String contractNo, BigDecimal amount, Long busiId,int selletType,Integer newOrderType,Integer tradeType,String seqNo) throws FssException {
     	FundOrderEntity fundOrderEntity=null;
     	if(accNo!=null &&!"".equals(accNo)){//账号不为空
     		FssAccountEntity fssAccountEntity  = this.fssAccountService.getFssAccountByAccNo(accNo);
@@ -668,7 +669,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_AGENT_WITHDRAW,busiId,GlobalConstants.BUSINESS_WITHHOLDING,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
-        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003);
+        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003,seqNo);
         return fundOrderEntity;
     }
 
@@ -779,4 +780,5 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         return true;
     }*/
+
 }

@@ -90,7 +90,7 @@ public interface IFundsTender {
      * @return
      * @throws FssException
      */
-    public boolean newHandBid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no) throws FssException;
+    public boolean newHandBid(String  tradeType ,String bid_id,String tender_no,String product_title,String cust_no,int invest_type,BigDecimal real_Amount,String  loan_cust_id,String  moto_cust_id,BigDecimal bonus_Amount,String busi_bid_no,String busi_no,String seqNo) throws FssException;
 
 
     /**
@@ -116,6 +116,6 @@ public interface IFundsTender {
 //    public boolean debtApply(String thirdPartyType,int custId);
 
 
-    public void abortLoop(Bid bid, Tender tender, String contractNo) throws FssException;
+    public void abortLoop(Bid bid, Tender tender, String contractNo,String seqNo) throws FssException;
 
 }
