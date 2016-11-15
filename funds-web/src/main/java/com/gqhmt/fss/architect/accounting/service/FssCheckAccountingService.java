@@ -363,6 +363,7 @@ public class FssCheckAccountingService {
                 throw new FssException("更新对账日期失败！");
 
             orderNo = fuiouFtpOrder.getOrderNo();
+            LogUtil.info(this.getClass(),"满标回款历史对账，查询ftpField和FtpOrder订单号" + orderNo);
             if (StringUtils.isEmpty(orderNo))
                 continue;
 
@@ -376,7 +377,8 @@ public class FssCheckAccountingService {
                     //是否旧数据
                     if (StringUtils.isNotEmpty(fuiouFtpColomField.getFeildOrderNo()))
                         continue;
-                    LogUtil.info(this.getClass(),"满标回款历史对账，ftpField订单号：" + fuiouFtpColomField.getOrderNo());
+                    LogUtil.info(this.getClass(),"满标回款历史对账，ftpField订单号：" + fuiouFtpColomField.getOrderNo()
+                            + "ftpField id:" + fuiouFtpColomField.getId());
                     for (int i=0; i<checkAccountingList.size(); i++) {
                         checkAccounting = checkAccountingList.get(i);
                         if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
