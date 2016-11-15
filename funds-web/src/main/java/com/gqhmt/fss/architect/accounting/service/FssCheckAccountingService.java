@@ -319,6 +319,7 @@ public class FssCheckAccountingService {
     }
 
     /**
+     * wanggp
      * 满标回款查询对账定时任务
      */
     public void checkHistoryAccounting() throws FssException {
@@ -326,91 +327,75 @@ public class FssCheckAccountingService {
         try {
             inputDate = fssCheckDateService.queryInputDate();
             if (StringUtils.isNotEmpty(inputDate))
-                queryOrderNo(inputDate);
+                checkHistoryAccount(inputDate);
         } catch (FssException e) {
             throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[" + inputDate +"]");
         }
     }
 
     /**
+     * wanggp
      * 查询历史标的当日对账数据对账
      * @param inputDate
      * @throws FssException
      */
-    public void queryOrderNo(String inputDate) throws FssException {
+    public void checkHistoryAccount(String inputDate) throws FssException {
         List<FuiouFtpColomField> fuiouFtpColomFieldList = new ArrayList<FuiouFtpColomField>();
         List<FundSequenceEntity> sequenceList = new ArrayList<FundSequenceEntity>();
         String orderNo = "";
-        //一天内富友对账数据
+        BigDecimal sumSequenceAmount = new BigDecimal("0");
+        BigDecimal sumFieldAmount = new BigDecimal("0");
         List<FssCheckAccountingEntity> checkAccountingList = fssCheckAccountingReadMapper.queryCheckAcctListByDate(inputDate);
-        //一天内ftp对账数据
+        int checkAcctSize = checkAccountingList.size() - 1;
+        FssCheckAccountingEntity checkAccounting = new FssCheckAccountingEntity();
         List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(inputDate);
         //当天每一笔订单对账
         for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
+            fssCheckDateService.updateInputUserState(inputDate);//更新对账日期为已对账
             orderNo = fuiouFtpOrder.getOrderNo();
             if (StringUtils.isEmpty(orderNo))
                 continue;
-            //sequence本地平台内所需对账数据
             fuiouFtpColomFieldList = fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
-            sequenceList  = sequenceReadMapper.queryByOrderNo(orderNo);//本地对账数据sequence
-            //遍历field，1.匹配checkAccounting  2.核对sequence总金额
-            //1.ftp-field与check-accounting每一笔对账（金额、入户、出户），账不平，记录field表异常--9808
-            if (!checkAcctAndField(fuiouFtpColomFieldList, checkAccountingList,inputDate)){
-                updateFieldStatus(orderNo);
-                return;
+            if (null == fuiouFtpColomFieldList && fuiouFtpColomFieldList.isEmpty()) {
+                continue;
+            } else {
+                //遍历field，1.匹配checkAccounting
+                for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
+                    for (int i=0; i<checkAccountingList.size(); i++) {
+                        checkAccounting = checkAccountingList.get(i);
+                        if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
+                                !fuiouFtpColomField.getToUserName().equals(checkAccounting.getToAccName()) &&
+                                fuiouFtpColomField.getAmt().compareTo(new BigDecimal(checkAccounting.getAmount())) != 0) {
+                            if (checkAcctSize == i) {//对比最后一条，无符合数据，则更新为异常
+                                updateFieldStatus(orderNo);
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    //获取field总金额
+                    if (fuiouFtpColomField.getAmt() != null && fuiouFtpColomField.getAmt().compareTo(new BigDecimal("0")) > 0)
+                        sumFieldAmount = sumFieldAmount.add(fuiouFtpColomField.getAmt());
+                }
+                //2.核对sequence总金额
+                sequenceList  = sequenceReadMapper.queryByOrderNo(orderNo);
+                if (null == sequenceList && sequenceList.isEmpty()) {
+                    continue;
+                } else {
+                    for (FundSequenceEntity sequence : sequenceList) {
+                        if (sequence.getAmount() != null && sequence.getAmount().compareTo(new BigDecimal("0")) > 0)
+                            sumSequenceAmount = sumSequenceAmount.add(sequence.getAmount());
+                    }
+                    if (sumFieldAmount.compareTo(sumSequenceAmount) != 0) //校验总金额
+                        updateFieldStatus(orderNo);
+                }
             }
-            //2.ftp-field所有订单总金额与sequence正或负订单总金额对账，不平则记录field异常
-            if (checkSequenceAndField(fuiouFtpColomFieldList, sequenceList))
-                updateFieldStatus(orderNo);
         }
-
-
     }
 
     /**
-     * 校验checkAccounting与field金额、出户、入户
-     * @param fuiouFtpColomFieldList
-     * @param checkAccountingList
-     * @return
-     */
-    public boolean checkAcctAndField(List<FuiouFtpColomField> fuiouFtpColomFieldList,
-                                     List<FssCheckAccountingEntity> checkAccountingList, String inputDate) {
-        //更新ftp-order为已对账状态
-        fssCheckDateService.updateInputDate(inputDate);
-        for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
-            for (FssCheckAccountingEntity checkAccounting : checkAccountingList) {
-                if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
-                        !fuiouFtpColomField.getToUserName().equals(checkAccounting.getToAccName()) &&
-                        !fuiouFtpColomField.getAmt().equals(checkAccounting.getAmount()))
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 校验本地Sequence与Field所有订单总金额
-     * @param fuiouFtpColomFieldList
-     * @param sequenceList
-     * @return
-     */
-    public boolean checkSequenceAndField(List<FuiouFtpColomField> fuiouFtpColomFieldList, List<FundSequenceEntity> sequenceList) {
-        BigDecimal sumSequenceAmount = null;
-        BigDecimal sumFieldAmount = null;
-        for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
-            if (fuiouFtpColomField.getAmt() != null && fuiouFtpColomField.getAmt().compareTo(new BigDecimal("0")) > 0)
-                sumFieldAmount = sumFieldAmount.add(fuiouFtpColomField.getAmt());
-        }
-        for (FundSequenceEntity sequence : sequenceList) {
-            if (sequence.getAmount() != null && sequence.getAmount().compareTo(new BigDecimal("0")) > 0)
-                sumSequenceAmount = sumSequenceAmount.add(sequence.getAmount());
-        }
-        if (sumFieldAmount.compareTo(sumSequenceAmount) != 0) //校验金额
-            return false;
-        return true;
-    }
-
-    /**
+     * wanggp
      * 更新field差异状态
      * @param orderNo
      * @throws FssException
@@ -488,8 +473,8 @@ public class FssCheckAccountingService {
                                 fundOrderService.updateFundsOrder(order,"98080002","98010002");
                             }else{
                                 //流水表无记录的话进行流水添加
-                                tradeRecordService.asynCommand(order,"success");
-                                fundOrderService.updateFundsOrder(order,"98080002","98010001");
+//                                tradeRecordService.asynCommand(order,"success");
+                                fundOrderService.updateFundsOrder(order,"98080002","98010002");
                             }
                         }
                     }
@@ -498,8 +483,8 @@ public class FssCheckAccountingService {
                     int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
                     //充值提现进行记账
                     if(order.getOrderType() != 5 && order.getOrderType()!=11990049 && order.getOrderType()!=11990048){
-                        tradeRecordService.asynCommand(order,"success");
-                        fundOrderService.updateFundsOrder(order,"98080002","98010001");
+//                        tradeRecordService.asynCommand(order,"success");
+                        fundOrderService.updateFundsOrder(order,"98080002","98010002");
                     //转账进行反交易
                     }else{
 //                        FundAccountEntity toAcc= fundAccountService.select(order.getAccountId());

@@ -130,6 +130,7 @@
 
 
                         </div>
+                    </article>
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
@@ -148,6 +149,7 @@
                                 <div class="widget-body">
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
                                     </div>
+                                </div>
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4400px;">
                                         <col width="50" />
@@ -175,7 +177,7 @@
                                         <col width="200"/>
                                         <thead>
                                         <tr>
-                                            <td></td> 
+                                            <td></td>
                                             <td>出账账户编号</td>
                                             <td>入账账户编号</td>
                                             <td>订单编号</td>
@@ -229,7 +231,10 @@
                                                     <td>${t.tradeType}</td>
                                                     <td><fss:dictView key="${t.abnormalState}" /></td>
                                                     <td><fss:dictView key="${t.handleState}" /></td>
-                                                    <td><a href="${contextPath}/checkAccounting/fundsOrder/${type}/${t.orderNo}">查看</a></td>
+                                                    <td>
+                                                        <a href="${contextPath}/checkAccounting/fundsOrder/${type}/${t.orderNo}">查看</a>
+                                                        <a href="${contextPath}/checkAccounting/addAccounting/${type}/${t.orderNo}">入账</a>
+                                                    </td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>

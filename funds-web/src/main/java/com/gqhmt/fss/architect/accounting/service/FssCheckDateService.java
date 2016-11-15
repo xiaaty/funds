@@ -53,8 +53,10 @@ public class FssCheckDateService {
      * @param inputDate
      * @return
      */
-    public int updateInputDate(String inputDate) {
-        return fssCheckDateWriteMapper.updateInputState(inputDate);
+    public int updateInputUserState(String inputDate) {
+        FssCheckDate fssCheckDate = new FssCheckDate();
+        fssCheckDate.setInputDate(inputDate);
+        return fssCheckDateWriteMapper.updateInputUserState(fssCheckDate);
     }
     /**
      * jhz

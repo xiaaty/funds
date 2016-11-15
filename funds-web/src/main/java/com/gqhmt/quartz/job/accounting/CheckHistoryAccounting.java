@@ -38,10 +38,9 @@ public class CheckHistoryAccounting extends SupperJob {
         /*if(!isIp("upload")){
             return;
         }*/
-        LogUtil.info(this.getClass(),"start--------------------历史标的对账开始");
         if(isRunning) return;
 
-        startLog("历史标的对账开始");
+        startLog("满标回款历史标的对账");
 
         isRunning = true;
         try {

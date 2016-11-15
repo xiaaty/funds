@@ -86,10 +86,19 @@ public class FssCheckAccountingController {
         return "fss/accounting/checkAccounting/checkAccounting_list";
     }
 
+    /**
+     * wanggp
+     * 满标回款历史数据对账
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
     @RequestMapping(value = "/checkAccounting/checkHistoryAccountList", method = {RequestMethod.GET, RequestMethod.POST})
     @AutoPage
     public String queryHistoryCheckAccounting(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
-        List<FuiouFtpColomField> checkFuiouFtpColomFieldList = fuiouFtpColomFieldService.selectFuiouFtpFieldList(map);
+        List<FuiouFtpColomField> checkFuiouFtpColomFieldList = fuiouFtpColomFieldService.getgetFuiouFtpByInputDate(map);
         model.addAttribute("page", checkFuiouFtpColomFieldList);
         model.put("map", map);
         return "fss/accounting/checkAccounting/checkHistoryAccounting_list";
@@ -134,9 +143,9 @@ public class FssCheckAccountingController {
             List<FssCheckAccountingEntity> list = excelUtil.getExcelData(multipartFile,columns, 0);
 //            List<FssCheckAccountingEntity> list = fssImportDataService.readExcelWithTitle(multipartFile,basePath,type);
             LogUtil.info(this.getClass(),"需要导入的对账信息有："+list.size()+"条");
-            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list);
+            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list,type);
             //循环便利集合得到客户表id并添加进对象
-            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList,type);
+            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList);
             i=list.size();
             j=fssCheckAccountingService.insertCheckList(enList);
             LogUtil.info(this.getClass(),"成功导入数据库"+j+"条");
@@ -367,5 +376,21 @@ public class FssCheckAccountingController {
         model.put("orderEntity",fundOrderEntity);
         model.addAttribute("page", checkAccountingEntity);
         return "fss/accounting/checkAccounting/handleAccounting_list";
+    }
+
+    /**
+     * wanggp
+     * 入账
+     * @param request
+     * @param model
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping(value = "/checkAccounting/addAccounting/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String addAccounting(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
+        FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
+        tradeRecordService.asynCommand(orderEntity, "success");
+        return "redirect:/checkAccounting/fundsOrder/" + type;
     }
 }
