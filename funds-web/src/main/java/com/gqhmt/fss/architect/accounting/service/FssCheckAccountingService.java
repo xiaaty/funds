@@ -365,6 +365,9 @@ public class FssCheckAccountingService {
             } else {
                 //遍历field，1.匹配checkAccounting
                 for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
+                    //是否旧数据
+                    if (StringUtils.isEmpty(fuiouFtpColomField.getFeildOrderNo()))
+                        continue;
                     for (int i=0; i<checkAccountingList.size(); i++) {
                         checkAccounting = checkAccountingList.get(i);
                         if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
@@ -441,6 +444,9 @@ public class FssCheckAccountingService {
 //        List<FundOrderEntity> orderEntities=fundOrderService.getOrders();
 //        List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts();
         FundOrderEntity order=fundOrderService.findfundOrder(account.getOrderNo());
+        if(order==null){
+            return;
+        }
             if(StringUtils.equals("交易成功",account.getStatus())){
                 account.setStatus("0000");
             }
