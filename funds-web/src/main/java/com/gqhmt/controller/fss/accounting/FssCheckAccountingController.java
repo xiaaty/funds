@@ -399,7 +399,7 @@ public class FssCheckAccountingController {
 
     /**
      * wannggp
-     *
+     * 对账记录列表
      * @param request
      * @param model
      * @param map
@@ -414,4 +414,10 @@ public class FssCheckAccountingController {
         model.put("map", map);
         return "fss/accounting/checkAccounting/checkedAccountingDate_list";
     }
+
+    /*@RequestMapping(value = "/checkAccounting/checkAccountList", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String checkHistoryAcct() {
+        return "";
+    }*/
 }
