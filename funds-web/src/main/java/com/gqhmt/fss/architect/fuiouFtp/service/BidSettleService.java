@@ -8,7 +8,6 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.fss.architect.account.bean.FssMappingBean;
-import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
@@ -21,6 +20,7 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.TyzfTradeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -78,6 +78,10 @@ public class BidSettleService extends BidSupper{
 
     @Resource
     private FssMappingService fssMappingService;
+
+
+    @Resource
+    private TyzfTradeService tyzfTradeService;
 
     public void settle(FssLoanEntity loanEntity) throws FssException {
         Map<String,String > paramMap = new HashMap<>();
@@ -192,7 +196,7 @@ public class BidSettleService extends BidSupper{
         } catch (FssException e) {
             LogUtil.error(this.getClass(), e);
         }
-        fundSequenceService.selletSequence(list,toEntity,fundOrderEntity,title,bid);
+        fundSequenceService.selletSequence(list,toEntity,fundOrderEntity,title,bid,loanEntity.getTradeType());
         //修改订单信息
         fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
 
@@ -204,6 +208,8 @@ public class BidSettleService extends BidSupper{
         loanEntity.setStatus("10050009");
         loanEntity.setModifyTime(new Date());
         fssLoanService.update(loanEntity);
+//        //        ---------------------------异步调用统一支付处理投标转账-------------------------
+        tyzfTradeService.fullStandard(loanEntity.getContractId(),toEntity,loanEntity.getContractAmt(),loanEntity.getTradeType(),loanEntity.getSeqNo());
     }
 
 //

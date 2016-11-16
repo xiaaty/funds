@@ -102,7 +102,7 @@ public class CustomerInfoController {
 			returnMap.put("msg","未查到该客户银行卡信息");
 			return  returnMap;
 		}
-		entity.setBankLongName(bankName);
+		entity.setBankLongName(Application.getInstance().getDictName("9703"+bankCode));
 		entity.setBankSortName(Application.getInstance().getDictName("9703"+bankCode));
 		entity.setModifyTime(new Date());
 		entity.setBankNo(bankNo);

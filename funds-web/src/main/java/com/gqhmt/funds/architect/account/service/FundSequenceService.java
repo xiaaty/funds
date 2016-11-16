@@ -326,8 +326,11 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertList(list);
 //      this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
 //      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
-        //----------------------------调用统一支付------------------
-        tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),amount,tradeType,orderNo);
+        //----------------------------当交易类型不为满标类型和回款类型时调用统一支付转账------------------
+        if( !StringUtils.equals("11090004",tradeType) && !StringUtils.equals("11090005",tradeType) &&  !StringUtils.equals("11090006",tradeType)
+         && !StringUtils.equals("11101001",tradeType) && !StringUtils.equals("11101002",tradeType)){
+            tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),amount,tradeType,orderNo);
+        }
     }
 
     public void frozenAmtByRefund(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,BigDecimal chargeAmount,String tradeType,String seqNo) throws FssException {
@@ -403,6 +406,10 @@ public class FundSequenceService {
         this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType,memo,bounsAmount);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
         //        ---------------------------异步调用统一支付处理冻结-------------------------
+        if(!StringUtils.equals("11050001",tradeType) &&  !StringUtils.equals("11050002",tradeType) &&  !StringUtils.equals("11050003",tradeType) &&  !StringUtils.equals("11050004",tradeType) &&  !StringUtils.equals("11050005",tradeType) &&  !StringUtils.equals("11050006",tradeType) &&  !StringUtils.equals("11050007",tradeType)
+        && !StringUtils.equals("11051001",tradeType) &&  !StringUtils.equals("11051002",tradeType) &&  !StringUtils.equals("11051003",tradeType) &&  !StringUtils.equals("11051004",tradeType) &&  !StringUtils.equals("11051005",tradeType) &&  !StringUtils.equals("11051006",tradeType) &&  !StringUtils.equals("11051007",tradeType)){
+            tyzfTradeService.tyzfFroze(orgEntity,amount,orderEntity,String.valueOf(frozenType),tradeType,seqNo);
+        }
         tyzfTradeService.tyzfFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,String.valueOf(frozenType),tradeType,seqNo);
     }
 
@@ -625,7 +632,7 @@ public class FundSequenceService {
   }
 
 
-  public void selletSequence(List<Tender> list,FundAccountEntity toEntity, FundOrderEntity fundOrderEntity ,String title,Bid bid) throws FssException {
+  public void selletSequence(List<Tender> list,FundAccountEntity toEntity, FundOrderEntity fundOrderEntity ,String title,Bid bid,String tradeType) throws FssException {
 
       Map<Long,String> map = fuiouFtpColomFieldService.getFuiouFtpColunmByOrderNo(fundOrderEntity.getOrderNo());
 
@@ -635,7 +642,7 @@ public class FundSequenceService {
           FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
           try {
 //              this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2006,null, ThirdPartyType.FUIOU, fundOrderEntity);
-              this.transfer(fromEntity,toEntity,6,2006,tender.getRealAmount(),null,fundOrderEntity.getOrderNo(),map.get(tender.getId()),"1105",null,tender.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+              this.transfer(fromEntity,toEntity,6,2006,tender.getRealAmount(),null,fundOrderEntity.getOrderNo(),map.get(tender.getId()),"1105",tradeType,tender.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
 
           } catch (FssException e) {
               LogUtil.error(this.getClass(), e.getMessage());
@@ -659,7 +666,7 @@ public class FundSequenceService {
           if(fuiouFtpColomField!=null){
               FundAccountEntity  fromEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
           //this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
-              this.transfer(fromEntity,toEntity,6,2006,bonusAmount,null,fundOrderEntity.getOrderNo(),map.get(-1l),"1105",null,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+              this.transfer(fromEntity,toEntity,6,2006,bonusAmount,null,fundOrderEntity.getOrderNo(),map.get(-1l),"1105",tradeType,null,null,null,bid.getCustomerId().longValue(),bid.getContractNo());
               this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
           }
       }
@@ -728,10 +735,14 @@ public class FundSequenceService {
     }
 
 
-    public void repaymentSequence(List<RepaymentBean> list,String title,FundAccountEntity fromEntity,FundOrderEntity fundOrderEntity,BigDecimal sumRepay,Bid bid) throws FssException {
+    public void repaymentSequence(List<RepaymentBean> list,String title,FundAccountEntity fromEntity,FundOrderEntity fundOrderEntity,BigDecimal sumRepay,Bid bid,BigDecimal sumAmount,String tradeType,String seqNo) throws FssException {
         //产品名称，如果产品名称为空，则去标的title
         Map<Long,String> map = fuiouFtpColomFieldService.getFuiouFtpColunmByOrderNo(fundOrderEntity.getOrderNo());
         ThirdPartyType thirdPartyType = ThirdPartyType.FUIOU;
+
+        //调用统一支付转账接口把借款人应还的本息和转入标的账户
+        tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getAccountType(),Long.valueOf(bid.getId().toString()),90,sumAmount,tradeType,seqNo);
+
         for (RepaymentBean bean : list) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
 
@@ -739,7 +750,10 @@ public class FundSequenceService {
                 if (bean.getRepaymentAmount().compareTo(BigDecimal.ZERO) > 0) {
                     try {
 //                        this.transfer(fromEntity, toEntity, bean.getRepaymentAmount(), 7, 4001,"",thirdPartyType, fundOrderEntity);
-                        this.transfer(fromEntity,toEntity,6,4001, bean.getRepaymentAmount(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1105",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                        this.transfer(fromEntity,toEntity,6,4001, bean.getRepaymentAmount(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1105",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+
+                        //调用统一支付转账接口把借款人应还的手续费转入费用账户
+                        tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),sumAmount,tradeType,seqNo);
 
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
@@ -749,7 +763,10 @@ public class FundSequenceService {
                 if (bean.getRepaymentPrincipal().compareTo(BigDecimal.ZERO) > 0) {
                     try {
 //                        this.transfer(fromEntity, toEntity, bean.getRepaymentPrincipal(), 7, 3003,null,thirdPartyType, fundOrderEntity);
-                        this.transfer(fromEntity,toEntity,7,3003, bean.getRepaymentPrincipal(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                        this.transfer(fromEntity,toEntity,7,3003, bean.getRepaymentPrincipal(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+
+                        //调用统一支付转账接口把出借人应得的本金从标的账户转入出借人账户
+                        tyzfTradeService.tyzfTransfer(Long.valueOf(bid.getId().toString()),90,toEntity.getCustId(),toEntity.getBusiType(),bean.getRepaymentPrincipal(),tradeType,seqNo);
 
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
@@ -763,7 +780,9 @@ public class FundSequenceService {
                 if (bean.getRepaymentInterest().compareTo(BigDecimal.ZERO) > 0) {
                     try {
                         //this.transfer(fromEntity, toEntity, bean.getRepaymentInterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
-                        this.transfer(fromEntity,toEntity,7,3004, bean.getRepaymentInterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                        this.transfer(fromEntity,toEntity,7,3004, bean.getRepaymentInterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                        //调用统一支付转账接口把出借人应得的利息从标的账户转入出借人账户
+                        tyzfTradeService.tyzfTransfer(Long.valueOf(bid.getId().toString()),90,toEntity.getCustId(),toEntity.getBusiType(),bean.getRepaymentInterest(),tradeType,seqNo);
 
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
@@ -781,7 +800,11 @@ public class FundSequenceService {
                         FuiouFtpColomField fuiouFtpColomField= fuiouFtpColomFieldService.getFuiouFtpFiledByParam(fundOrderEntity.getOrderNo(),bean.getId());
                         if(fuiouFtpColomField!=null){
                             FundAccountEntity  BondAccountEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
-                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+
+                            //调用统一支付转账接口把借款人应还的额外利息和转给出借人
+                            tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),sumAmount,tradeType,seqNo);
+
                         }
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
