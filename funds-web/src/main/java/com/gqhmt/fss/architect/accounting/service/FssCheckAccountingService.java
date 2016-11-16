@@ -7,6 +7,7 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
+import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
 import com.gqhmt.fss.architect.accounting.mapper.read.FssCheckAccountingReadMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssCheckAccountingWriteMapper;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
@@ -323,13 +324,16 @@ public class FssCheckAccountingService {
      * 满标回款查询对账定时任务
      */
     public void checkHistoryAccounting() throws FssException {
-        String orderDate = "";
+        FssCheckDate fssCheckDate;
         try {
-            orderDate = fssCheckDateService.queryOrderDate(); //20150601之后的日期
-            if (StringUtils.isNotEmpty(orderDate))
-                checkHistoryAccount(orderDate);
+            fssCheckDate = fssCheckDateService.getOrderDate(); //20150601之后的日期
+            if (null == fssCheckDate) {
+                return;
+            }
+            if (StringUtils.isNotEmpty(fssCheckDate.getOrderDate()))
+                checkHistoryAccount(fssCheckDate.getOrderDate());
         } catch (FssException e) {
-            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[" + orderDate +"]");
+            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[]");
         }
     }
 
@@ -361,6 +365,9 @@ public class FssCheckAccountingService {
             } else {
                 //遍历field，1.匹配checkAccounting
                 for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
+                    //是否旧数据
+                    if (StringUtils.isEmpty(fuiouFtpColomField.getFeildOrderNo()))
+                        continue;
                     for (int i=0; i<checkAccountingList.size(); i++) {
                         checkAccounting = checkAccountingList.get(i);
                         if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&

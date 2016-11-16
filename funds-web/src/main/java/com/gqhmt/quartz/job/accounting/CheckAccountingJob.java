@@ -2,18 +2,23 @@ package com.gqhmt.quartz.job.accounting;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.ThreadExecutor;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
 import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
 import com.gqhmt.fss.architect.accounting.service.FssCheckDateService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * jhz
@@ -42,7 +47,9 @@ public class CheckAccountingJob extends SupperJob {
 
 		startLog("充值体现转账对账跑批");
         FssCheckDate orderDate= fssCheckDateService.getOrderDate();
-
+        if (orderDate==null){
+            return;
+        }
         isRunning = true;
         try {
             //查询所有充值体现转账新版满标新版回款数据

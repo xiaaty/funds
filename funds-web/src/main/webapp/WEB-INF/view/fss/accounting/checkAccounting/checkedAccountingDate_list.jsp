@@ -69,7 +69,6 @@
                                     <div class="widget-body no-padding">
                                         <div class="mt10 mb10">
                                             <table class="table lh32">
-                                                <col width="50" />
                                                 <col width="100" />
                                                 <col width="220" />
                                                 <col width="220" />
@@ -157,8 +156,8 @@
                                                 <tr>
                                                     <td>${l.index+1}</td>
                                                     <td>${t.orderDate}</td>
-                                                    <td>${t.inputUserState}</td>
-                                                    <td>${t.orderUserState}</td>
+                                                    <td><fss:dictView key="${t.inputUserState}" /></td>
+                                                    <td><fss:dictView key="${t.orderUserState}" /></td>
                                                     <td>
                                                         <c:if test="${t.inputUserState == '98010002'}">
                                                             <a href="${contextPath}/checkAccounting/fundsOrder/${t.orderDate}">对账</a>

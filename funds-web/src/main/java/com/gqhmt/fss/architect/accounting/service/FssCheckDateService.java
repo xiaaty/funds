@@ -43,17 +43,6 @@ public class FssCheckDateService {
 
     /**
      * wanggp
-     * 查询对账日期
-     * @return
-     */
-    public String queryOrderDate() {
-        FssCheckDate fssCheckDate = fssCheckDateReadMapper.queryOrderDate();
-        String orderDate = StringUtils.isEmpty(fssCheckDate.getOrderDate()) ? "" : fssCheckDate.getOrderDate();
-        return orderDate;
-    }
-
-    /**
-     * wanggp
      * 更新已对账日期状态
      * @param orderDate
      * @return
