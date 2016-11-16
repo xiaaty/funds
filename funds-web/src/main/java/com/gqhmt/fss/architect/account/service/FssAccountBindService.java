@@ -58,10 +58,11 @@ public class FssAccountBindService {
             mappingEntity.setBusiId(busi_id);
             mappingEntity.setBusiType(busi_type);
             mappingEntity.setStatus("0");
+            mappingEntity.setSeqNo(seqNo);
             mappingEntity.setTradeType(tradeType);
             mappingEntity.setContractNo(contractNo);
-//          mappingEntity.getCreateTime(new Date());
-//          mappingEntity.setModifyTime(new Date());
+            mappingEntity.setCreateTime(new Date());
+            mappingEntity.setModifyTime(new Date());
             fssAccountBindWriteMapper.insertUseGeneratedKeys(mappingEntity);
         }catch (Exception e){
             LogUtil.debug(this.getClass(),mappingEntity+":"+mappingEntity.getId());
