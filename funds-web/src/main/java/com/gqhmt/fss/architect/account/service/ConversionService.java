@@ -3,14 +3,18 @@ package com.gqhmt.fss.architect.account.service;
 import com.gqhmt.conversion.bean.request.*;
 import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
 import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
 import com.gqhmt.tyzf.common.frame.amq.AmqSender;
+import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
 import com.gqhmt.util.ConvertReportEnum;
 import com.gqhmt.util.ConvertUtils;
 import com.gqhmt.util.XmlUtil;
 import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 import java.util.ArrayList;
 import java.util.List;
@@ -319,13 +323,19 @@ public class ConversionService {
      * @return
      */
     public ReqContentResponse sendAndReceiveMsg(ConverBean bean,boolean flag) throws FssException {
-        AmqSendAndReceive asr = new AmqSender("fund", "tradeCheck");//以后写入配置文件
+//        AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送
+//        AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//解析
+        AmqSendAndReceive asr = new AmqSender(null, "ACC.QB");//发送
+        AmqSendAndReceive receiver = new AmqReceiver("ACC.QD");//解析
         ReqContentResponse transContentResponse=null;
         String sendMessage = "";
         try {
-            sendMessage = this.ObjConversionXml(bean);//转换成XML统一报文
-            TextMessage msg = (TextMessage) asr.sendSynchronizeMessage(sendMessage, null,flag, 0L);//发送报文到MQ
-            transContentResponse = XmlUtil.xmlStringToObject(msg.getText()==null?null:msg.getText(),ReqContentResponse.class);//返回结果解析成对象
+                sendMessage = this.ObjConversionXml(bean);//转换成XML统一报文
+                asr.sendMsg(sendMessage);
+                TextMessage resiveMsg=(TextMessage)receiver.receiveMessage();//监听队列中的报文
+                String msg=resiveMsg.getText();
+                System.out.print("返回报文："+msg);
+                transContentResponse = XmlUtil.xmlStringToObject(msg==null?null:msg,ReqContentResponse.class);//返回结果解析成对象
         } catch (JMSException e){
             throw new FssException(e.getMessage());
         } catch (Exception e) {
@@ -333,4 +343,5 @@ public class ConversionService {
         }
         return transContentResponse;
     }
+
 }
