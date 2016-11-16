@@ -441,72 +441,67 @@ public class FssCheckAccountingService {
      * 核对订单表状态和对账文件状态是否一致
      */
     public void checkFundOrder(FssCheckAccountingEntity account)throws FssException{
-//        List<FundOrderEntity> orderEntities=fundOrderService.getOrders();
-//        List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts();
         FundOrderEntity order=fundOrderService.findfundOrder(account.getOrderNo());
         if(order==null){
             return;
         }
-            if(StringUtils.equals("交易成功",account.getStatus())){
-                account.setStatus("0000");
-            }
-            if(account!=null){
-                if(order.getRetCode().equals(account.getStatus())){
-                    if(StringUtils.equals("0000",order.getRetCode())){
-                    int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
-                        //普通转账对账
-                        if(order.getOrderType() == 5){
-                            if(size==2){
-                                fundOrderService.updateFundsOrder(order,"98080001","98010001");
-                            }else{
-                                fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                            }
-                            //满标转账回款转账对账
-                        }else if(order.getOrderType() == 11990049 || order.getOrderType()==11990048){
-                            List<FundSequenceEntity> sequenceEntities=fundSequenceService.queryByOrderNo(order.getOrderNo());
-                            if(CollectionUtils.isEmpty(sequenceEntities)){
-                                fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                            }
-                            BigDecimal sum=BigDecimal.ZERO;
-                            for (FundSequenceEntity se:sequenceEntities) {
-                                if(se.getAmount().compareTo(BigDecimal.ZERO)==1){
-                                    sum=sum.add(se.getAmount());
+        if(StringUtils.equals("交易成功",account.getStatus())){
+            account.setStatus("0000");
+        }
+        if(account!=null){
+            if(order.getRetCode().equals(account.getStatus())){
+                if(StringUtils.equals("0000",order.getRetCode())){
+                    if(StringUtils.equals("10980003",account.getTradeType())){
+                        //满标转账回款转账对账
+                        if (order.getOrderType()==1190020){
+                            int size=fundSequenceService.getSizeBySOrderNo(order.getOrderNo());
+                            List<FundSequenceEntity> sequenceEntities=fundSequenceService.queryBySOrderNo(order.getOrderNo());
+                            if(sequenceEntities.size()==0){
+                                fundOrderService.updateFundsOrder(order, "98080002", "98010002");
+                                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",回款数据异常");
+                            } else {
+                                if(order.getOrderAmount().compareTo(sequenceEntities.get(0).getAmount().abs())==0){
+                                    fundOrderService.updateFundsOrder(order, "98080001", "98010001");
+                                    LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",回款数据正常");
+                                } else {
+                                    fundOrderService.updateFundsOrder(order, "98080002", "98010002");
+                                    LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",回款数据异常");
                                 }
                             }
-                            if(sum.compareTo(order.getOrderAmount())==0){
-                                fundOrderService.updateFundsOrder(order,"98080001","98010001");
-                            }else {
-                                fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                            }
-                            //充值提现对账
-                        }else{
-                            if(size==1){
-                                fundOrderService.updateFundsOrder(order,"98080001","98010001");
-                            }else if(size>1){
-                                fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                            }else{
-                                //流水表无记录的话进行流水添加
-//                                tradeRecordService.asynCommand(order,"success");
-                                fundOrderService.updateFundsOrder(order,"98080002","98010002");
+                        //普通转账对账
+                        }else {
+                            int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
+                            if (size == 2) {
+                                fundOrderService.updateFundsOrder(order, "98080001", "98010001");
+                                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",转账数据正常");
+                            } else {
+                                fundOrderService.updateFundsOrder(order, "98080002", "98010002");
+                                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",转账数据异常");
                             }
                         }
                     }
-                    //富友成功，本地失败
-                }else if(!"0000".equals(order.getRetCode()) && "0000".equals(account.getStatus())){
+                //充值提现对账
+                }else{
                     int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
-                    //充值提现进行记账
-                    if(order.getOrderType() != 5 && order.getOrderType()!=11990049 && order.getOrderType()!=11990048){
-//                        tradeRecordService.asynCommand(order,"success");
+                    if(size==1){
+                        fundOrderService.updateFundsOrder(order,"98080001","98010001");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值提现数据正常");
+                    }else if(size>1){
                         fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                    //转账进行反交易
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值提现数据异常");
+
                     }else{
-//                        FundAccountEntity toAcc= fundAccountService.select(order.getAccountId());
-//                        FundAccountEntity acc= fundAccountService.select(order.getToAccountId());
-//                        paySuperByFuiou.transerer(acc,toAcc,order.getOrderAmount(),order.getOrderType(),order.getOrderFrormId(),order.getOrderSource(),order.getNewOrderType(),order.getTradeType(),order.getLendNo(),order.getToLendNo(),order.getLoanCustId(),order.getLoanNo());
+                        //流水表无记录的话进行流水添加
                         fundOrderService.updateFundsOrder(order,"98080002","98010002");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值提现数据异常");
                     }
                 }
             }
+                //富友成功，本地失败
+        }else if(!"0000".equals(order.getRetCode()) && "0000".equals(account.getStatus())){
+            fundOrderService.updateFundsOrder(order,"98080002","98010002");
+            LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+"数据异常");
+        }
     }
 
     /**
