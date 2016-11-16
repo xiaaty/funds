@@ -107,6 +107,8 @@ public class FundsTenderImpl  implements IFundsTender {
         //后续处理
         fuiouPreauthService.addFuiouPreauth(fromEntity, toSFEntity, real_Amount,Integer.parseInt(bid_id),Integer.parseInt(tender_no), response.getMap() != null ? (String) response.getMap().get("contract_no") : "", response.getFundOrderEntity());
         tradeRecordService.frozen(fromEntity,toEntity,amount,3001,response.getFundOrderEntity(),"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no,seqNo);
+
+
         return true;
     }
 	/**
