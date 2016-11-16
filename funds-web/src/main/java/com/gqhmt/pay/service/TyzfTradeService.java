@@ -12,8 +12,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
