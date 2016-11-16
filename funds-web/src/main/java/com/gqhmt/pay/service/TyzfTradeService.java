@@ -592,7 +592,20 @@ public class TyzfTradeService {
      * 检查账户是否已经开户
      * @param busiId
      * @param busiType
-     * 投标
+     */
+    public FssAccountBindEntity checkBindAccount(Long busiId,Integer busiType) throws FssException {
+        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(busiId, busiType);
+        if (bindEntity == null) throw new FssException("90004034");//账户未绑定
+        if (bindEntity != null) {
+            if ("1".equals(bindEntity.getStatus())) throw new FssException("90004034");
+        }
+        return bindEntity;
+    }
+
+
+
+
+     /** 投标
      * @param fromAccEntity    //出账账户
      * @param amount    //实际出账金额
      * @param boundsAmount  //红包金额
@@ -601,13 +614,6 @@ public class TyzfTradeService {
      * @param seqNo     //流水号
      * @throws FssException
      */
-    public FssAccountBindEntity checkBindAccount(Long busiId,Integer busiType) throws FssException{
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(busiId,busiType);
-        if(bindEntity==null) throw new FssException("90004034");//账户未绑定
-        if(bindEntity!=null){
-            if("1".equals(bindEntity.getStatus())) throw new FssException("90004034");
-        }
-        return bindEntity;
     public void tender(FundAccountEntity fromAccEntity,BigDecimal amount,BigDecimal boundsAmount,
                         String tradeType,String bidId,String seqNo) throws FssException {
     //// TODO: 2016/11/14

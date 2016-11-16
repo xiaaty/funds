@@ -408,9 +408,8 @@ public class FundSequenceService {
         //        ---------------------------异步调用统一支付处理冻结-------------------------
         if(!StringUtils.equals("11050001",tradeType) &&  !StringUtils.equals("11050002",tradeType) &&  !StringUtils.equals("11050003",tradeType) &&  !StringUtils.equals("11050004",tradeType) &&  !StringUtils.equals("11050005",tradeType) &&  !StringUtils.equals("11050006",tradeType) &&  !StringUtils.equals("11050007",tradeType)
         && !StringUtils.equals("11051001",tradeType) &&  !StringUtils.equals("11051002",tradeType) &&  !StringUtils.equals("11051003",tradeType) &&  !StringUtils.equals("11051004",tradeType) &&  !StringUtils.equals("11051005",tradeType) &&  !StringUtils.equals("11051006",tradeType) &&  !StringUtils.equals("11051007",tradeType)){
-            tyzfTradeService.tyzfFroze(orgEntity,amount,orderEntity,String.valueOf(frozenType),tradeType,seqNo);
+            tyzfTradeService.tyzfFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,String.valueOf(frozenType),tradeType,seqNo);
         }
-        tyzfTradeService.tyzfFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,String.valueOf(frozenType),tradeType,seqNo);
     }
 
     /**

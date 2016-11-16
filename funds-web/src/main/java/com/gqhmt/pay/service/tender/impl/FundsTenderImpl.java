@@ -16,6 +16,7 @@ import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.exception.CommandParmException;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.pay.service.TyzfTradeService;
 import com.gqhmt.pay.service.tender.IFundsTender;
 import org.springframework.stereotype.Service;
 
