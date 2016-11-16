@@ -362,16 +362,15 @@ public class TyzfTradeService {
 
     /**
      * 充值
-     * @param entity
+     * @param custId
+     * @param busiType
      * @param amount
-     * @param orderEntity
      * @param fundType
      * @param tradeType
      * @throws FssException
      */
-    public void tyzfRecharge(FundAccountEntity entity,BigDecimal amount, FundOrderEntity orderEntity, String fundType, String tradeType,String seqNo) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(),entity.getBusiType());
-        if(bindEntity==null) throw new FssException("90004034");//账户未绑定
+    public void tyzfRecharge(Long custId,Integer busiType,BigDecimal amount,String fundType,String tradeType,String seqNo) throws FssException {
+        FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
         String chnlId=null;
         if("11030006".equals(tradeType) || "11030015".equals(tradeType) || "11030017".equals(tradeType)){
             chnlId="30040002";//线下
@@ -389,7 +388,6 @@ public class TyzfTradeService {
         bean.setChnlID(chnlId);//线上线下类型
         bean.setCdtrAcct_Tp(String.valueOf(bindEntity.getBusiType()));//充值账户类型
         bean.setCdtrAcct_Id(bindEntity.getAccNo());//充值账户号
-        bean.setOprtrID(String.valueOf(entity.getCustId()));//操作人
         bean.setDbtrAcct_Ccy("30080001");//货币类型
         bean.setIntrBkSttlmAmt(String.valueOf(amount));//交易金额
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识
@@ -413,15 +411,15 @@ public class TyzfTradeService {
 
     /**
      * 提现
-     * @param entity
+     * @param custId
+     * @param busiType
      * @param amount
      * @param fundType
      * @param tradeType
      * @throws FssException
      */
-    public void tyzfWithDraw(FundAccountEntity entity,BigDecimal amount,Integer fundType,String tradeType,String seqNo) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
-        if(bindEntity==null) throw new FssException("90004034");//账户未绑定
+    public void tyzfWithDraw(Long custId,Integer busiType,BigDecimal amount,Integer fundType,String tradeType,String seqNo) throws FssException {
+        FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
         ConverBean bean = new ConverBean();
         //参数传入
         String capTm= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -502,17 +500,15 @@ public class TyzfTradeService {
 
     /**
      * 冻结
-     * @param entity
+     * @param custId
+     * @param busiType
      * @param amount
-     * @param fundOrderEntity
      * @param fundType
      * @param tradeType
      * @throws FssException
      */
-    public void tyzfFroze(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType,String tradeType,String seqNo) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
-
-        if(bindEntity==null) throw new FssException("90004034");
+    public void tyzfFroze(Long custId,Integer busiType,BigDecimal amount,String fundType,String tradeType,String seqNo) throws FssException {
+        FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
         ConverBean bean = new ConverBean();
         //参数传入
         String capTm= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -545,16 +541,15 @@ public class TyzfTradeService {
 
     /**
      * 解冻
-     * @param entity
+     * @param custId
+     * @param busiType
      * @param amount
-     * @param fundOrderEntity
      * @param fundType
      * @param tradeType
      * @throws FssException
      */
-    public void tyzfUnFroze(FundAccountEntity entity,BigDecimal amount,FundOrderEntity fundOrderEntity,String fundType, String tradeType,String seqNo) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(entity.getCustId(), entity.getBusiType());
-        if(bindEntity==null) throw new FssException("90004034");
+    public void tyzfUnFroze(Long custId,Integer busiType,BigDecimal amount,String fundType, String tradeType,String seqNo) throws FssException {
+        FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
         ConverBean bean = new ConverBean();
         //参数传入
         bean.setService_id("0001");
@@ -583,6 +578,21 @@ public class TyzfTradeService {
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
         }
+    }
+
+    /**
+     * 检查账户是否已经开户
+     * @param busiId
+     * @param busiType
+     * @throws FssException
+     */
+    public FssAccountBindEntity checkBindAccount(Long busiId,Integer busiType) throws FssException{
+        FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(busiId,busiType);
+        if(bindEntity==null) throw new FssException("90004034");//账户未绑定
+        if(bindEntity!=null){
+            if("1".equals(bindEntity.getStatus())) throw new FssException("90004034");
+        }
+        return bindEntity;
     }
 
 }

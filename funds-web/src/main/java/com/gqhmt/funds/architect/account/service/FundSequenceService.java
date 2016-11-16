@@ -130,7 +130,7 @@ public class FundSequenceService {
         }
         this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "充值成功，充值金额 " + amount + "元");
         //            -----------------------调用统一支付进行记账----------------
-         tyzfTradeService.tyzfRecharge(entity,amount,orderEntity,String.valueOf(actionType),tradeType,seqNo);
+         tyzfTradeService.tyzfRecharge(entity.getCustId(),entity.getBusiType(),amount,String.valueOf(actionType),tradeType,seqNo);
     }
 
     /**
@@ -184,9 +184,8 @@ public class FundSequenceService {
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
-
 //                  ---------------------------异步调用统一支付---------------------------
-          tyzfTradeService.tyzfWithDraw(entity,orderEntity.getOrderAmount(),accountType,tradeType,seqNo);
+          tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),amount,accountType,tradeType,seqNo);
     }
 
 
@@ -236,7 +235,7 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(frozeEntity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
         //---------------------------调用统一支付冻结-----------------
-        tyzfTradeService.tyzfFroze(entity,amount,orderEntity,String.valueOf(accountType),tradeType,seqNo);
+        tyzfTradeService.tyzfFroze(entity.getCustId(),entity.getBusiType(),amount,String.valueOf(accountType),tradeType,seqNo);
     }
 
     /**
@@ -404,7 +403,7 @@ public class FundSequenceService {
         this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType,memo,bounsAmount);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
         //        ---------------------------异步调用统一支付处理冻结-------------------------
-        tyzfTradeService.tyzfFroze(orgEntity,amount,orderEntity,String.valueOf(frozenType),tradeType,seqNo);
+        tyzfTradeService.tyzfFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,String.valueOf(frozenType),tradeType,seqNo);
     }
 
     /**
@@ -462,7 +461,7 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertList(list);
         this.fundTradeService.addFundTrade(frozenEntiry, amount, BigDecimal.ZERO, accountType,memo,BigDecimal.ZERO);
         //        --------------------解冻调用统一支付处理-----------------------
-        tyzfTradeService.tyzfUnFroze(orgEntity,amount,orderEntity,"2008",tradeType,seqNo);
+        tyzfTradeService.tyzfUnFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,"2008",tradeType,seqNo);
     }
 
 

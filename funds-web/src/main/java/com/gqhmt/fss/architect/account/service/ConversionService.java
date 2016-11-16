@@ -323,8 +323,10 @@ public class ConversionService {
      * @return
      */
     public ReqContentResponse sendAndReceiveMsg(ConverBean bean,boolean flag) throws FssException {
-        AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送
-        AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//解析
+//        AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送
+//        AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//解析
+        AmqSendAndReceive asr = new AmqSender(null, "ACC.QB");//发送
+        AmqSendAndReceive receiver = new AmqReceiver("ACC.QD");//解析
         ReqContentResponse transContentResponse=null;
         String sendMessage = "";
         try {
