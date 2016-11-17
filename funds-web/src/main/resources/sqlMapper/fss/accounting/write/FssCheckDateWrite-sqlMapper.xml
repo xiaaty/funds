@@ -4,6 +4,6 @@
 	<update id="updateInputUserState" parameterType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
 		UPDATE t_gq_fss_check_date t
 		SET t.input_user_state = '98010001'
-		WHERE t.input_date = #{inputDate}
+		WHERE t.order_date = #{orderDate}
 	</update>
 </mapper>
