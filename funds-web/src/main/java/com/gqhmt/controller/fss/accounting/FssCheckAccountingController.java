@@ -311,14 +311,13 @@ public class FssCheckAccountingController {
     @RequestMapping(value = "/checkAccounting/fundsOrder/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
    @AutoPage
     public String queryOrder(HttpServletRequest request, ModelMap model,@PathVariable String type,@PathVariable String orderNo) throws FssException {
-       List<String > orders=Lists.newArrayList();
-        orders.add(orderNo);
+        List<FundSequenceEntity> seList=fundSequenceService.queryByOrderNo(orderNo);
         //通过orderNo查询对账数据
-        List<FssCheckAccountingEntity> checkAccountingEntity= fssCheckAccountingService.getCheckList(orders);
+        FssCheckAccountingEntity checkAccountingEntity= fssCheckAccountingService.queryByOrderNo(orderNo);
        //通过orderNo查询订单数据
-        FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(orderNo);
-        model.put("orderEntity",fundOrderEntity);
-        model.addAttribute("page", checkAccountingEntity);
+//        FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(orderNo);
+        model.put("ckEntity",checkAccountingEntity);
+        model.addAttribute("page", seList);
         return "fss/accounting/checkAccounting/handleAccounting_list";
     }
 
@@ -382,7 +381,7 @@ public class FssCheckAccountingController {
 
     /**
      * wanggp
-     * 入账
+     * 充值提现入账
      * @param request
      * @param model
      * @param orderNo
@@ -393,6 +392,25 @@ public class FssCheckAccountingController {
     public String addAccounting(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
         FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
         tradeRecordService.asynCommand(orderEntity, "success");
+        orderEntity.setHandleState("98010001");
+        fundOrderService.update(orderEntity);
+
+        return "redirect:/checkAccounting/fundsOrder/" + type;
+    }
+    /**
+     * jhz
+     * 修改order状态为已处理
+     * @param request
+     * @param model
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping(value = "/checkAccounting/handleState/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String handleState(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
+        FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
+        orderEntity.setHandleState("98010001");
+        fundOrderService.update(orderEntity);
         return "redirect:/checkAccounting/fundsOrder/" + type;
     }
 
