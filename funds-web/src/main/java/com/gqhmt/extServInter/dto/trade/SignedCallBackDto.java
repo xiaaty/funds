@@ -12,41 +12,23 @@ import java.math.BigDecimal;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年10月20日
- * Description:pos回调参数
+ * Description:pos签约回调参数
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
  * 2016年10月20日  keyulai      1.0     1.0 Version
  */
-public class PosCallBackDto extends SuperDto{
+public class SignedCallBackDto extends SuperDto{
 
 	private String order_no;	//第三方返回订单号
-	private String busi_no;		//业务合同号
 	private String respCode;	//交易结果返回码（成功：0000）
-	private BigDecimal amt;		//金额
 
 	public String getOrder_no() {
 		return order_no;
 	}
 	public void setOrder_no(String order_no) {
 		this.order_no = order_no;
-	}
-
-	public String getBusi_no() {
-		return busi_no;
-	}
-
-	public void setBusi_no(String busi_no) {
-		this.busi_no = busi_no;
-	}
-
-	public BigDecimal getAmt() {
-		return amt;
-	}
-
-	public void setAmt(BigDecimal amt) {
-		this.amt = amt;
 	}
 
 	public String getRespCode() {

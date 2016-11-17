@@ -248,7 +248,6 @@ public class FssTradeApplyController {
 	@AutoPage
 	public String getOfflineRechargeApply(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
 		map.put("applyType","1103");
-		map.put("orderNo",null);
 		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
 		model.addAttribute("page", offlineRechargeList);
 		model.put("map", map);
@@ -466,7 +465,7 @@ public class FssTradeApplyController {
 	@RequestMapping(value = "/trade/tradeApply/posRechargeRecord",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public String getPosRecharge(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
-		map.put("applyType","2101");
+		map.put("applyType","1001");
 		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
 		model.addAttribute("page", offlineRechargeList);
 		model.put("map", map);

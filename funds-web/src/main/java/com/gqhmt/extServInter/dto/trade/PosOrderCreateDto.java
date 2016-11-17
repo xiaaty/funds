@@ -28,7 +28,7 @@ public class PosOrderCreateDto extends SuperDto{
 	@APIValidNull(errorCode = "90004033")
 	private String busi_type;//业务类型
 	@APIValidNull(errorCode = "90004014")
-	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
+//	@APIValid(type = APIValidType.MONEY,errorCode = "90004014")
     private BigDecimal amt;//交易金额
 
 	public String getBusi_type() {
