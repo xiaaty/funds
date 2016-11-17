@@ -70,6 +70,7 @@
                                         <div class="mt10 mb10">
                                             <table class="table lh32">
                                                 <col width="100" />
+                                                <col width="100" />
                                                 <col width="220" />
                                                 <col width="220" />
                                                 <col />
@@ -92,7 +93,7 @@
                                                                 </select>
                                                             </label>
                                                         </td>
-                                                        <td class="tr" nowrap="nowrap">历史是否已对账：</td>
+                                                        <td class="tr" nowrap="nowrap">历史标的是否已对账：</td>
                                                         <td nowrap="nowrap">
                                                             <label>
                                                                 <select id = "orderUserState" name = "orderUserState" style="width:150px;height: 30px;">
@@ -112,11 +113,8 @@
                                     </div>
                                 </form>
                             </div>
-
-
                         </div>
-                    </article>
-    <div id="content">
+                        <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
@@ -124,7 +122,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>充值提现异常列表</h2>
+                            <h2>对账记录列表</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -156,14 +154,14 @@
                                                 <tr>
                                                     <td>${l.index+1}</td>
                                                     <td>${t.orderDate}</td>
-                                                    <td><fss:dictView key="${t.inputUserState}" /></td>
                                                     <td><fss:dictView key="${t.orderUserState}" /></td>
+                                                    <td><fss:dictView key="${t.inputUserState}" /></td>
                                                     <td>
-                                                        <c:if test="${t.inputUserState == '98010002'}">
-                                                            <a href="${contextPath}/checkAccounting/fundsOrder/${t.orderDate}">对账</a>
-                                                        </c:if>
                                                         <c:if test="${t.orderUserState == '98010002'}">
-                                                            <a href="${contextPath}/checkAccounting/addAccounting/${t.orderDate}">历史对账</a>
+                                                            <a href="${contextPath}/checkAccounting/checkAccountOperate/${t.orderDate}/0">对账</a>
+                                                        </c:if>
+                                                        <c:if test="${t.inputUserState == '98010002'}">
+                                                            <a href="${contextPath}/checkAccounting/checkAccountOperate/${t.orderDate}/1">历史标的对账</a>
                                                         </c:if>
                                                     </td>
                                                 </tr>
@@ -180,6 +178,7 @@
 
         </section>
     </div>
+                    </article>
 </div>
 
 

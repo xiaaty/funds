@@ -31,4 +31,6 @@ public interface FssCheckDateReadMapper extends ReadMapper<FssCheckDate> {
     public FssCheckDate queryOrderDate();
 
     public List<FssCheckDate> selectFssCheckDateList(Map map);
+
+    public FssCheckDate getFssCheckDate(String orderDate);
 }

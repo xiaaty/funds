@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
  * -----------------------------------------------------------------
  * 2016/6/27.  jhz         1.0     1.0 Version
  */
+@Repository
 public interface FssCheckDateWriteMapper extends ReadAndWriteMapper<FssCheckDate> {
 
     public int updateInputUserState(FssCheckDate fssCheckDate);

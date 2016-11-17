@@ -30,7 +30,6 @@
 		SELECT
 			t.id id,
 			MIN(t.order_date) orderDate,
-			t.input_date inputDate,
 			t.input_user_state inputUserState,
 			t.order_user_state orderUserState
 		FROM
@@ -55,5 +54,9 @@
 		count(t.order_date)
 		FROM t_gq_fss_check_date t
 		WHERE t.order_date =#{selectOrderDate}
+	</select>
+	<select id="getFssCheckDate" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
+		<include refid="field"/>
+		where t.order_date =#{orderDate}
 	</select>
 </mapper>

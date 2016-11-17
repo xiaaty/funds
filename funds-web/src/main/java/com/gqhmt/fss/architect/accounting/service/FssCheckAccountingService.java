@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.ThreadExecutor;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
@@ -25,12 +26,14 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.quartz.job.accounting.CheckAccountingJob;
 import com.gqhmt.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -326,14 +329,15 @@ public class FssCheckAccountingService {
     public void checkHistoryAccounting() throws FssException {
         FssCheckDate fssCheckDate;
         try {
-            fssCheckDate = fssCheckDateService.getOrderDate(); //20150601之后的日期
+            fssCheckDate = fssCheckDateService.queryDate(); //20150601之后的日期
             if (null == fssCheckDate) {
                 return;
             }
+            LogUtil.info(this.getClass(),"满标回款历史对账，当前查询批次日期为：" + fssCheckDate.getOrderDate());
             if (StringUtils.isNotEmpty(fssCheckDate.getOrderDate()))
                 checkHistoryAccount(fssCheckDate.getOrderDate());
         } catch (FssException e) {
-            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[]");
+            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[]", e);
         }
     }
 
@@ -349,31 +353,41 @@ public class FssCheckAccountingService {
         String orderNo = "";
         BigDecimal sumSequenceAmount = new BigDecimal("0");
         BigDecimal sumFieldAmount = new BigDecimal("0");
+
         List<FssCheckAccountingEntity> checkAccountingList = fssCheckAccountingReadMapper.queryCheckAcctListByDate(orderDate);
         int checkAcctSize = checkAccountingList.size() - 1;
+
         FssCheckAccountingEntity checkAccounting = new FssCheckAccountingEntity();
         List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(orderDate);
         //当天每一笔订单对账
         for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
-            fssCheckDateService.updateInputUserState(orderDate);//更新对账日期为已对账
+            int ret = fssCheckDateService.updateInputUserState(orderDate);//更新对账日期为已对账
+            if (ret !=1)
+                throw new FssException("更新对账日期失败！");
+
             orderNo = fuiouFtpOrder.getOrderNo();
+            LogUtil.info(this.getClass(),"满标回款历史对账，查询ftpField和FtpOrder订单号" + orderNo);
             if (StringUtils.isEmpty(orderNo))
                 continue;
+
             fuiouFtpColomFieldList = fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
             if (null == fuiouFtpColomFieldList && fuiouFtpColomFieldList.isEmpty()) {
                 continue;
             } else {
+                LogUtil.info(this.getClass(),"满标回款历史对账，ftpField与checkAccounting 对账start：" + orderDate);
                 //遍历field，1.匹配checkAccounting
                 for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
                     //是否旧数据
-                    if (StringUtils.isEmpty(fuiouFtpColomField.getFeildOrderNo()))
+                    if (StringUtils.isNotEmpty(fuiouFtpColomField.getFeildOrderNo()))
                         continue;
+                    LogUtil.info(this.getClass(),"满标回款历史对账，ftpField订单号：" + fuiouFtpColomField.getOrderNo()
+                            + "ftpField id:" + fuiouFtpColomField.getId());
                     for (int i=0; i<checkAccountingList.size(); i++) {
                         checkAccounting = checkAccountingList.get(i);
                         if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
                                 !fuiouFtpColomField.getToUserName().equals(checkAccounting.getToAccName()) &&
                                 fuiouFtpColomField.getAmt().compareTo(new BigDecimal(checkAccounting.getAmount())) != 0) {
-                            if (checkAcctSize == i) {//对比最后一条，无符合数据，则更新为异常
+                            if (checkAcctSize == i) { //对比最后一条，无符合数据，则更新为异常
                                 updateFieldStatus(orderNo);
                                 break;
                             }
@@ -390,6 +404,7 @@ public class FssCheckAccountingService {
                 if (null == sequenceList && sequenceList.isEmpty()) {
                     continue;
                 } else {
+                    LogUtil.info(this.getClass(),"满标回款历史对账，ftpField与sequence 对账start：" + orderDate);
                     for (FundSequenceEntity sequence : sequenceList) {
                         if (sequence.getAmount() != null && sequence.getAmount().compareTo(new BigDecimal("0")) > 0)
                             sumSequenceAmount = sumSequenceAmount.add(sequence.getAmount());
@@ -408,6 +423,7 @@ public class FssCheckAccountingService {
      * @throws FssException
      */
     public void updateFieldStatus(String orderNo) throws FssException {
+        LogUtil.info(this.getClass(),"满标回款历史对账，更新ftpField对账异常状态，订单号：" + orderNo);
         int result = fuiouFtpColomFieldWriteMapper.updateStatusByorderNo(orderNo);
         if (1 != result)
             throw new FssException("差异帐处理更新异常失败！订单号：[" + orderNo + "]");
@@ -522,6 +538,31 @@ public class FssCheckAccountingService {
             return true;
         }else {
             return false;
+        }
+    }
+
+    /**
+     * wanggp
+     * 一般交易对账
+     * @param orderDate
+     * @throws FssException
+     */
+    public void checkAcctOperate(String orderDate) throws FssException {
+        FssCheckDate fssCheckDate = fssCheckDateService.getFssCheckDate(orderDate);
+        if (null == fssCheckDate)
+            return;
+        fssCheckDate.setOrderUserState("98010001");
+        fssCheckDateService.update(fssCheckDate);
+        try {
+            List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts(orderDate);
+            if(CollectionUtils.isEmpty(checkAccountings)){
+                return;
+            }
+            for (FssCheckAccountingEntity check:checkAccountings) {
+                this.checkFundOrder(check);
+            }
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
         }
     }
 }
