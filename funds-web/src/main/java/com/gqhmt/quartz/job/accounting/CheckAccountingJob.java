@@ -36,10 +36,10 @@ public class CheckAccountingJob extends SupperJob {
     private FssCheckDateService fssCheckDateService;
 
 	 private static boolean isRunning = false;
-    //每天2点到6点执行，每隔5分钟执行一次
-	@Scheduled(cron="0 0/5 02-06 * * *")
+    //每天2点到6点执行，每隔1分钟执行一次
+	@Scheduled(cron="30 0/1 02-06 * * *")
 //	@Scheduled(cron="25 0/1 * * * *")
-    public void execute( )throws PayChannelNotSupports,FssException {
+    public void execute( )throws FssException {
         if(!isIp("upload")){
             return;
         }
@@ -60,7 +60,7 @@ public class CheckAccountingJob extends SupperJob {
                 return;
             }
             for (FssCheckAccountingEntity check:checkAccountings) {
-                ThreadExecutor.execute(runnableProcess(check));
+                fssCheckAccountingService.checkFundOrder(check);
             }
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
@@ -74,26 +74,8 @@ public class CheckAccountingJob extends SupperJob {
 		endtLog();
     }
 
-	@Override
-	public boolean isRunning() {
-		return isRunning;
-	}
-    /**
-     * 创建线程
-     * @param check
-     * @return
-     */
-    public Runnable runnableProcess(final  FssCheckAccountingEntity check){
-        Runnable thread = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    fssCheckAccountingService.checkFundOrder(check);
-                } catch (Exception e) {
-                    LogUtil.error(getClass(),e);
-                }
-            }
-        };
-        return thread;
+    @Override
+    public boolean isRunning() {
+        return false;
     }
 }
