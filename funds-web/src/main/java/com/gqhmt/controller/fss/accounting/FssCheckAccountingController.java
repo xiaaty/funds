@@ -408,16 +408,32 @@ public class FssCheckAccountingController {
      */
     @RequestMapping(value = "/accounting/checkedAcct/dateList",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String queryCheckAccountDate(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+    public String queryCheckAccountDate(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
         List<FssCheckDate> fssCheckDateList = fssCheckDateService.getFssCheckDate(map);
         model.addAttribute("page", fssCheckDateList);
         model.put("map", map);
         return "fss/accounting/checkAccounting/checkedAccountingDate_list";
     }
 
-    /*@RequestMapping(value = "/checkAccounting/checkAccountList", method = {RequestMethod.GET, RequestMethod.POST})
+    /**
+     * wanggp
+     * 一般交易对账操作
+     * @param orderDate
+     * @return
+     */
+    @RequestMapping(value = "/checkAccounting/checkAccountOperate/{orderDate}/{checkFlag}", method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String checkHistoryAcct() {
-        return "";
-    }*/
+    public String checkAcct(@PathVariable String orderDate, @PathVariable String checkFlag) {
+        try {
+            if ("0".equals(checkFlag)) {
+                fssCheckAccountingService.checkAcctOperate(orderDate); // 一般交易对账操作
+            } else if ("1".equals(checkFlag)) {
+                fssCheckAccountingService.checkHistoryAccount(orderDate); // 历史标的对账
+            }
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
+            e.printStackTrace();
+        }
+        return "redirect:/accounting/checkedAcct/dateList";
+    }
 }

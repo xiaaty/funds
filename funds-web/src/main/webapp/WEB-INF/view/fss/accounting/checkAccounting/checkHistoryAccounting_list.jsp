@@ -127,21 +127,21 @@
                                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
                                                     </div>
                                                     <div class="widget-body">
-                                                        <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1450px;">
+                                                        <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2000px;">
                                                             <col width="50" />
-                                                            <col width="100" />
-                                                            <col width="100" />
                                                             <col width="150" />
-                                                            <col width="100" />
-                                                            <col width="100" />
-                                                            <col width="100" />
-                                                            <col width="100" />
-                                                            <col width="100" />
-                                                            <col width="100" />
                                                             <col width="150" />
-                                                            <col width="100"/>
-                                                            <col width="100"/>
-                                                            <col width="100"/>
+                                                            <col width="150" />
+                                                            <col width="150" />
+                                                            <col width="150" />
+                                                            <col width="150" />
+                                                            <col width="150" />
+                                                            <col width="150" />
+                                                            <col width="150" />
+                                                            <col width="150" />
+                                                            <col width="150"/>
+                                                            <col width="150"/>
+                                                            <col width="150"/>
                                                             <%--<col width="150"/>--%>
                                                             <thead>
                                                             <tr>

@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.ThreadExecutor;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
@@ -25,12 +26,14 @@ import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.quartz.job.accounting.CheckAccountingJob;
 import com.gqhmt.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.jsp.tagext.TryCatchFinally;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -541,5 +544,17 @@ public class FssCheckAccountingService {
         }else {
             return false;
         }
+    }
+
+    public void checkAcctOperate(String orderDate) throws FssException {
+        List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts(orderDate);
+        if(CollectionUtils.isEmpty(checkAccountings)){
+            return;
+        }
+        CheckAccountingJob checkAccountingJob = new CheckAccountingJob();
+        for (FssCheckAccountingEntity check:checkAccountings) {
+            ThreadExecutor.execute(checkAccountingJob.runnableProcess(check));
+        }
+
     }
 }
