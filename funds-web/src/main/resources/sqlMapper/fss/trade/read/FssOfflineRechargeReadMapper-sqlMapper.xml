@@ -41,14 +41,14 @@
 				<if test="applyNo != null and applyNo != ''">
 					AND t.apply_no like CONCAT('%',#{applyNo},'%')
 				</if>
-				<if test="orderNo != null and orderNo != ''">
-					AND t.order_no like CONCAT('%',#{orderNo},'%')
-				</if>
-				<if test="applyType != null and applyType != ''">
-					AND t.apply_type =#{applyType}
-				</if>
 				<if test="busiNo!=null and busiNo!=''">
 					AND t.busi_no like CONCAT('%',#{busiNo},'%')
+				</if>
+				<if test="orderNo!=null and orderNo!=''">
+					AND t.`order_no` like CONCAT('%',#{orderNo},'%')
+				</if>
+				<if test="applyType!=null and applyType!=''">
+					AND t.`apply_type`=#{applyType}
 				</if>
 				<if test="resultState!=null and resultState!=''">
 					AND t.`result_state` = #{resultState}
@@ -106,8 +106,9 @@
 	<select id="getOfflineRechargeResult" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity">
 		<include refid="selectSql"/>
 		WHERE t.`order_no`=#{order_no}
-		AND t.`trade_type`=#{trade_type}
+		<if test="busiNo != null and busiNo!=''">
+			AND t.`busi_no`=#{busiNo}
+		</if>
 	</select>
-
 
 </mapper>

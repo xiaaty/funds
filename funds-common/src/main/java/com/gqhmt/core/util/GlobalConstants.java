@@ -691,11 +691,12 @@ public class GlobalConstants {
         TRADE_APPLY_NO__MAPPING.put("11040006","CJSH");
         TRADE_APPLY_NO__MAPPING.put("11040012","ZJTX");//账户直接提现
         TRADE_APPLY_NO__MAPPING.put("11030015","XXCZ");//线下充值
+        TRADE_APPLY_NO__MAPPING.put("11030017","XXCZ");//线下充值(冠E贷线下充值)
         TRADE_APPLY_NO__MAPPING.put("11030016","FQDK");//手续费分期代扣
         TRADE_APPLY_NO__MAPPING.put("11091003","TBZJ");//归还保证金提现
         TRADE_APPLY_NO__MAPPING.put("11040013","SHTX");//赎回提现
         TRADE_APPLY_NO__MAPPING.put("11040014","XTLX");//续投利息赎回
-        TRADE_APPLY_NO__MAPPING.put("21010004","PSCZ");//pos充值订单创建
+        TRADE_APPLY_NO__MAPPING.put("11030019","PSCZ");//pos充值
         TRADE_APPLY_NO__MAPPING.put("11020018","PSQY");//pos签约
 
         //根据账户类型匹配    1:借款账户，2:线下出借账户，3:线上出借账户，99:冻结金账户

@@ -32,7 +32,7 @@ import javax.annotation.Resource;
 public class PosOrderCreateImpl implements IPosOrderCreate {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
-	@APITradeTypeValid(value = "21010004")//21010004:pos充值
+	@APITradeTypeValid(value = "11030019")//11030019:pos充值
     @Override
     public Response execute(SuperDto dto) {
 		PosCallBackResponse response = new PosCallBackResponse();

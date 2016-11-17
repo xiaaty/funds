@@ -6,9 +6,9 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.PosCallBackDto;
-import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
+import com.gqhmt.extServInter.dto.trade.SignedCallBackDto;
 import com.gqhmt.extServInter.service.trade.IPosCallBack;
-import com.gqhmt.extServInter.service.trade.IRechargeCallback;
+import com.gqhmt.extServInter.service.trade.IPosSignedCallBack;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
@@ -23,25 +23,25 @@ import javax.annotation.Resource;
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   2016年10月20日
- * Description: POS充值成功回调
+ * Description: POS签约成功回调
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年10月20日  keyulai      1.0     1.0 Version
+ * 2016年11月2日  keyulai      1.0     1.0 Version
  */
 @Service
-public class PosCallbackImpl implements IPosCallBack {
+public class PosSignedCallbackImpl implements IPosSignedCallBack {
 	@Resource
 	private IFundsTrade fundsTradeImpl;
 	
-	@APITradeTypeValid(value = "11030020")
+	@APITradeTypeValid(value = "11020018")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
-			PosCallBackDto cDto = (PosCallBackDto) dto;
-			fundsTradeImpl.PosRechargeCallback(cDto.getOrder_no(),cDto.getBusi_no(),cDto.getRespCode());
+			SignedCallBackDto cDto = (SignedCallBackDto) dto;
+			fundsTradeImpl.PosSignedCallback(cDto.getOrder_no(),cDto.getRespCode());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);

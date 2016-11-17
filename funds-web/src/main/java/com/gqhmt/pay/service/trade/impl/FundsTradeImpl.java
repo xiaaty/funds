@@ -779,14 +779,14 @@ public class FundsTradeImpl  implements IFundsTrade {
         primaryAccount = fundAccountService.getFundAccount(customerInfoEntity.getId(),Integer.parseInt(busi_type));
         if(primaryAccount==null) throw new FssException("90002001");
         //创建充值记录信息
-        FssOfflineRechargeEntity  fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge("2101", primaryAccount.getCustId(), primaryAccount.getCustName(),busi_type,amt,trade_type,seq_no,mchn,busi_no);
+        FssOfflineRechargeEntity  fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge("1001", primaryAccount.getCustId(), primaryAccount.getCustName(),busi_type,amt,trade_type,seq_no,mchn,busi_no);
         CommandResponse response = paySuperByFuiou.posOrderCreate(primaryAccount,amt,GlobalConstants.ORDER_CHARGE,fssOfflineRechargeEntity.getId(),0,trade_type);
         //根据返回码判断是否成功
         if("0000".equals(response.getCode())){//成功
             fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),String.valueOf(response.getMap().get("order_no")),"13010001");
             posResponse.setOrder_no(String.valueOf(response.getMap().get("order_no")));
         }else{//失败
-            fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo(),"13010002");
+            fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo()==null?null:response.getFundOrderEntity().getOrderNo(),"13010002");
         }
         return posResponse;
     }
@@ -803,37 +803,59 @@ public class FundsTradeImpl  implements IFundsTrade {
      */
     public PosSignedResponse PosSigned(String mchn, String seq_no, String trade_type, String cust_id, String cust_type) throws FssException {
             PosSignedResponse posResponse=new PosSignedResponse();
-            FundAccountEntity primaryAccount = this.getFundAccount(Integer.parseInt(cust_id),Integer.valueOf(cust_type));
-            if (primaryAccount.getIshangeBankCard()==1){
-                throw new CommandParmException("90004009");
-            }
+            FundAccountEntity primaryAccount = this.getFundAccount(Integer.parseInt(cust_id),GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+            if(primaryAccount==null) throw new FssException("90002001");
             FssOfflineRechargeEntity fssOfflineRechargeEntity=fssOfflineRechargeService.createOfflineRecharge("1102",primaryAccount.getCustId(), primaryAccount.getCustName(),cust_type,null,trade_type,seq_no,mchn,null);
             CommandResponse response = paySuperByFuiou.posSigned(primaryAccount,GlobalConstants.ORDER_POS_SIGNED,fssOfflineRechargeEntity.getId(),0,trade_type);
             if("0000".equals(response.getCode())){//签约订单创建成功
                 fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),String.valueOf(response.getMap().get("order_no")),"13010003");
-                posResponse.setLogin_id(String.valueOf(response.getMap().get("login_id")));
+//                posResponse.setLogin_id(String.valueOf(response.getMap().get("login_id")));
                 posResponse.setOrder_no(String.valueOf(response.getMap().get("order_no")));
             }else{//失败
-                fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo(),"13010004");
+                fssOfflineRechargeService.updateState(fssOfflineRechargeEntity.getId(),response.getFundOrderEntity().getOrderNo()==null?null:response.getFundOrderEntity().getOrderNo(),"13010004");
             }
             return posResponse;
     }
 
     /**
-     * 回调业务系统
-     * @param trade_type
-     * @param order_no
+     * 根据pos富友返回结果，进行入账出理
+     * @param orderNo
+     * @param busiNo
+     * @param respCode
      * @throws FssException
      */
-    public Response PosRechargeCallback(String trade_type, String order_no) throws FssException{
-        Response response = new Response();
-        FssOfflineRechargeEntity fssOfflineRechargeEntity=fssOfflineRechargeService.getOffineRechargeByParam(trade_type,order_no);
-        boolean flag=true;
-        if(fssOfflineRechargeEntity!=null && "10120003".equals(fssOfflineRechargeEntity.getResultState())){//充值成功
-            response.setResp_code("0000");
-        }else{//失败
-            throw new FssException("90004003");
+    public void PosRechargeCallback(String orderNo,String busiNo,String respCode) throws FssException{
+        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+        if(fundOrderEntity == null){
+            LogUtil.info(this.getClass(),"未找到订单号:"+orderNo);
+            throw new FssException(orderNo+"订单获取失败");
         }
-        return response;
+        tradeRecordService.asynCommand(fundOrderEntity,"0000".equals(respCode) ? "success" : "failed");
     }
+
+    /**
+     * pos签约回调
+     * @param orderNo
+     * @param respCode
+     * @throws FssException
+     */
+    public void PosSignedCallback(String orderNo,String respCode) throws FssException{
+        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+        FssOfflineRechargeEntity entity=fssOfflineRechargeService.getOffineRechargeByParam(null,orderNo);
+        if(fundOrderEntity == null){
+            LogUtil.info(this.getClass(),"未找到订单号:"+orderNo);
+            throw new FssException(orderNo+"订单获取失败");
+        }
+        if("0000".equals(respCode)){
+            customerInfoService.updateCustThirdAgreement(fundOrderEntity.getCustId());
+            fundOrderService.updateOrder(fundOrderEntity,2,"0000","成功");
+            if(entity!=null){
+                fssOfflineRechargeService.updateState(entity.getId(),orderNo,"13010005");
+            }
+        }else{
+            fundOrderService.updateOrder(fundOrderEntity,3,respCode,"失败");
+            fssOfflineRechargeService.updateState(entity.getId(),orderNo,"13010006");
+        }
+    }
+
 }

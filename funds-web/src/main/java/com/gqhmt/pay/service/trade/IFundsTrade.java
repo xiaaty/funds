@@ -263,7 +263,6 @@ public interface IFundsTrade {
     public void sendNotice(String tempCode, NoticeService.NoticeType noticeType, FundAccountEntity entity, BigDecimal amount, BigDecimal chargeAmount) ;
     /**
      * 线下充值
-     * @param dto
      * @param mchn
      * @param seq_no
      * @param trade_type
@@ -321,6 +320,8 @@ public interface IFundsTrade {
      */
     public PosSignedResponse PosSigned(String mchn,String seq_no,String trade_type,String cust_id,String cust_type) throws FssException;
 
-    public Response PosRechargeCallback(String trade_type, String order_no) throws FssException;
+    public void PosRechargeCallback(String order_no,String busiNo,String respCode) throws FssException;
+
+    public void PosSignedCallback(String order_no,String respCode) throws FssException;
 
 }

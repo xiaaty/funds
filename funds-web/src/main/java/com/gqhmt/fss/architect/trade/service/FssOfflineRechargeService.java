@@ -56,9 +56,9 @@ public class FssOfflineRechargeService {
 			String startTime = map.get("startTime");
 			String endTime = map.get("endTime");
 			map2.put("applyNo", map.get("applyNo"));
-			map2.put("orderNo", map.get("orderNo"));
-			map2.put("applyType", map.get("applyType"));
 			map2.put("busiNo", map.get("busiNo"));
+			map2.put("orderNo", map.get("orderNo")!=null?map.get("orderNo"):null);
+			map2.put("applyType", map.get("applyType"));
 			map2.put("resultState", map.get("resultState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
@@ -200,8 +200,6 @@ public class FssOfflineRechargeService {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put("custId",custId);
 		map.put("custType", custType);
-//		map.put("startTime", startTime != null ? startTime.replace("-", "") : null);
-//		map.put("endTime", endTime != null ? endTime.replace("-", "") : null);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		return fssOfflineRechargeReadMapper.getRecharegByCustId(map);
@@ -229,9 +227,9 @@ public class FssOfflineRechargeService {
 		}
 	}
 
-	public FssOfflineRechargeEntity getOffineRechargeByParam(String trade_type,String order_no){
+	public FssOfflineRechargeEntity getOffineRechargeByParam(String busiNo,String order_no){
 		Map map=new HashMap();
-		map.put("trade_type",trade_type);
+		map.put("busiNo",busiNo);
 		map.put("order_no",order_no);
 		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.getOfflineRechargeResult(map);
 		return entity;
