@@ -11,6 +11,7 @@ import com.gqhmt.util.ConvertReportEnum;
 import com.gqhmt.util.ConvertUtils;
 import com.gqhmt.util.XmlUtil;
 import org.springframework.stereotype.Service;
+import sun.org.mozilla.javascript.internal.regexp.SubString;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -319,14 +320,11 @@ public class ConversionService {
     /**
      * 统一报文发送到MQ
      * @param bean
-     * @param flag 同步或异步（同步：ture，异步：false）
      * @return
      */
-    public ReqContentResponse sendAndReceiveMsg(ConverBean bean,boolean flag) throws FssException {
-//        AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送
-//        AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//解析
-        AmqSendAndReceive asr = new AmqSender(null, "ACC.QB");//发送
-        AmqSendAndReceive receiver = new AmqReceiver("ACC.QD");//解析
+    public ReqContentResponse sendAndReceiveMsg(ConverBean bean) throws FssException {
+        AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送
+        AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//解析
         ReqContentResponse transContentResponse=null;
         String sendMessage = "";
         try {
@@ -343,5 +341,8 @@ public class ConversionService {
         }
         return transContentResponse;
     }
+
+
+
 
 }
