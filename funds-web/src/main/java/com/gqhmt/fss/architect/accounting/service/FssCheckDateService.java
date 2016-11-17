@@ -133,4 +133,11 @@ public class FssCheckDateService {
         return fssCheckDateReadMapper.selectFssCheckDateList(map2);
     }
 
+    public FssCheckDate queryDate() {
+        return fssCheckDateReadMapper.queryOrderDate();
+    }
+
+    public FssCheckDate getFssCheckDate(String orderDate) {
+        return fssCheckDateReadMapper.getFssCheckDate(orderDate);
+    }
 }

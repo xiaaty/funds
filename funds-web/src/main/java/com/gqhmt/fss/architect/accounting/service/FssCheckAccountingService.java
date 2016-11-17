@@ -329,7 +329,7 @@ public class FssCheckAccountingService {
     public void checkHistoryAccounting() throws FssException {
         FssCheckDate fssCheckDate;
         try {
-            fssCheckDate = fssCheckDateService.getOrderDate(); //20150601之后的日期
+            fssCheckDate = fssCheckDateService.queryDate(); //20150601之后的日期
             if (null == fssCheckDate) {
                 return;
             }
@@ -541,15 +541,28 @@ public class FssCheckAccountingService {
         }
     }
 
+    /**
+     * wanggp
+     * 一般交易对账
+     * @param orderDate
+     * @throws FssException
+     */
     public void checkAcctOperate(String orderDate) throws FssException {
-        List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts(orderDate);
-        if(CollectionUtils.isEmpty(checkAccountings)){
+        FssCheckDate fssCheckDate = fssCheckDateService.getFssCheckDate(orderDate);
+        if (null == fssCheckDate)
             return;
+        fssCheckDate.setOrderUserState("98010001");
+        fssCheckDateService.update(fssCheckDate);
+        try {
+            List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts(orderDate);
+            if(CollectionUtils.isEmpty(checkAccountings)){
+                return;
+            }
+            for (FssCheckAccountingEntity check:checkAccountings) {
+                this.checkFundOrder(check);
+            }
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
         }
-        CheckAccountingJob checkAccountingJob = new CheckAccountingJob();
-        for (FssCheckAccountingEntity check:checkAccountings) {
-            ThreadExecutor.execute(checkAccountingJob.runnableProcess(check));
-        }
-
     }
 }

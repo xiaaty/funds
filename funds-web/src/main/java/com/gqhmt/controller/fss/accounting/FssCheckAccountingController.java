@@ -417,22 +417,21 @@ public class FssCheckAccountingController {
 
     /**
      * wanggp
-     * 一般交易对账操作
+     * 对账操作
      * @param orderDate
      * @return
      */
     @RequestMapping(value = "/checkAccounting/checkAccountOperate/{orderDate}/{checkFlag}", method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
-    public String checkAcct(@PathVariable String orderDate, @PathVariable String checkFlag) {
+    public String checkAcct(@PathVariable String orderDate, @PathVariable String checkFlag) throws FssException {
         try {
             if ("0".equals(checkFlag)) {
-                fssCheckAccountingService.checkAcctOperate(orderDate); // 一般交易对账操作
+                fssCheckAccountingService.checkAcctOperate(orderDate); // 一般交易对账
             } else if ("1".equals(checkFlag)) {
                 fssCheckAccountingService.checkHistoryAccount(orderDate); // 历史标的对账
             }
         } catch (FssException e) {
             LogUtil.error(this.getClass(),e.getMessage());
-            e.printStackTrace();
         }
         return "redirect:/accounting/checkedAcct/dateList";
     }
