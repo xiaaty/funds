@@ -2,10 +2,6 @@ package com.gqhmt.pay.service;
 
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
-import com.gqhmt.conversion.bean.request.CdtrAcct;
-import com.gqhmt.conversion.bean.request.ConverBean;
-import com.gqhmt.conversion.bean.response.PmtIdResponse;
-import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -129,7 +125,7 @@ public class TyzfTradeService {
         if (entity == null){
             entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo);
         }
-        if("0".equals(entity.getStatus())){//未开通统一支付账户
+        if("0".equals(entity.getStatus())){//未开通统一支付账户账户类型：互联网账户待定
           entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,String.valueOf(busi_type),entity,mchn);
           fssAccountBindService.updateBindAccount(entity);
         }
@@ -157,7 +153,7 @@ public class TyzfTradeService {
         if (entity == null){//绑定
             entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo);
         }
-        if("0".equals(entity.getStatus())){//未开通统一支付账户
+        if("0".equals(entity.getStatus())){//未开通统一支付账户 委托出借账户：10010002
             entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,String.valueOf(busi_type),entity,mchn);
             fssAccountBindService.updateBindAccount(entity);
         }
@@ -166,7 +162,7 @@ public class TyzfTradeService {
         if (entity2 == null){//绑定
             entity2 = fssAccountBindService.createFssAccountMapping(custId,96,tradeType,seq_no,busiNo);
         }
-        if("0".equals(entity2.getStatus())){//未开通统一支付账户
+        if("0".equals(entity2.getStatus())){//未开通统一支付账户 出借应付款账户:
             entity2 = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"96",entity2,mchn);
             fssAccountBindService.updateBindAccount(entity2);
         }
@@ -218,6 +214,7 @@ public class TyzfTradeService {
     public FssAccountBindEntity createBidAcocunt(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn) throws FssException{
         //开通标的账户
         Long bid_id=null;
+        if(busiNo==null || "".equals(busiNo)) throw new FssException("90002016");
         Bid bid = bidService.getBidByContractNo(busiNo);//根据借款合同号查询标的id
         if (bid != null) {
             bid_id = Long.valueOf(bid.getId());
@@ -328,7 +325,7 @@ public class TyzfTradeService {
         bean.setCdtrIdNumber(certNo);//证件号
         bean.setCdtrPoFlag(GlobalConstants.TYZF_PERSON);//账户主体类型
         bean.setLoanContractNo(busiNo == null ? "" : busiNo);//借款合同号
-        bean.setCdtrAcctIdtp(String.valueOf(busi_type));//账户类型
+        bean.setCdtrAcctIdtp(busi_type);//账户类型
         bean.setCdtrAcctCcy("30080001");//货币类型
         bean.setMerchId(mchn);//商户号
         try {
@@ -359,40 +356,31 @@ public class TyzfTradeService {
      */
     public void tyzfRecharge(Long custId,Integer busiType,BigDecimal amount,String fundType,String tradeType,String seqNo) throws FssException {
         FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
+        MessageConvertDto bean = new MessageConvertDto();
         String chnlId=null;
         if("11030006".equals(tradeType) || "11030015".equals(tradeType) || "11030017".equals(tradeType)){
             chnlId="30040002";//线下
         }else {
             chnlId="30040001";
         }
-        ConverBean bean = new ConverBean();
         //参数传入
-        bean.setRespCode("0000");
-        String capTm= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        bean.setService_id("0001");
-        bean.setTxnTp(GlobalConstants.TYZF_RECHARGE);//交易类型
+        bean.setServiceId("0001");
+        bean.setIsActual("N");//是否同步交易
+        bean.setIsBatch("N");//是否批量开户
+        bean.setServiceId("0001");
+        bean.setTxnType(GlobalConstants.TYZF_RECHARGE);//交易类型
         bean.setOrderId(seqNo);//业务订单号
-        bean.setCapTm(capTm);
-        bean.setCdtrId("90070001");//通道编号
-        bean.setChnlID(chnlId);//线上线下类型
-        bean.setCdtrAcct_Tp(String.valueOf(bindEntity.getBusiType()));//充值账户类型
-        bean.setCdtrAcct_Id(bindEntity.getAccNo());//充值账户号
-        bean.setDbtrAcct_Ccy("30080001");//货币类型
-        bean.setIntrBkSttlmAmt(String.valueOf(amount));//交易金额
+        bean.setCdtMop("97010001");//通道编号
+        bean.setChanId(chnlId);//渠道编号(WEB交易，POS交易还是APP交易等)
+        bean.setCdtrAcctTp(String.valueOf(bindEntity.getBusiType()));//充值账户类型
+        bean.setCdtrAcctId(bindEntity.getAccNo());//充值账户号
+        bean.setDbtrAcctCcy("30080001");//货币类型
+        bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
         try{
-//            ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean);
-//            conversionService.sendAndReceiveMsg(bean);
-            //返回结果
-            /*List<PmtIdResponse> PmtIdlist = transContentResponse.getRequestMsg().getPmtID();
-            String respCode = null;
-            if (PmtIdlist.size() > 0) {
-                for (PmtIdResponse pmtIdResponse : PmtIdlist) {
-                    respCode = pmtIdResponse.getRespCode();//统一支付返回码0000成功，其他失败
-                }
-            }
-            if(!"0000".equals(respCode)) throw new FssException("90004035");*/
+            MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
+            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
@@ -410,31 +398,23 @@ public class TyzfTradeService {
      */
     public void tyzfWithDraw(Long custId,Integer busiType,BigDecimal amount,Integer fundType,String tradeType,String seqNo) throws FssException {
         FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
-        ConverBean bean = new ConverBean();
+        MessageConvertDto bean = new MessageConvertDto();
         //参数传入
-        String capTm= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        bean.setService_id("0001");
-        bean.setTxnTp(GlobalConstants.TYZF_WITHDRAW);//交易类型
+        bean.setServiceId("0001");
+        bean.setIsActual("N");//是否同步交易
+        bean.setIsBatch("N");//是否批量
+        bean.setServiceId("0001");
+        bean.setTxnType(GlobalConstants.TYZF_WITHDRAW);//交易类型
         bean.setOrderId(seqNo);//业务订单号
-        bean.setCapTm(capTm);
-        bean.setCdtrId("90070001");//通道编号
-        bean.setDbtrAcct_Id(bindEntity.getAccNo());//提现账户
-        bean.setDbtrAcct_Ccy("RMB");//货币类型
-        bean.setIntrBkSttlmAmt(String.valueOf(amount));//交易金额
+        bean.setCdtMop("97010001");//通道编号
+        bean.setDbtrAcctId(bindEntity.getAccNo());//提现账户
+        bean.setDbtrAcctCcy("30080001");//货币类型
+        bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_JIE);//个人账户记账借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
         try{
-//            ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean);
-//            conversionService.sendAndReceiveMsg(bean);
-            //返回结果
-            /*List<PmtIdResponse> PmtIdlist = transContentResponse.getRequestMsg().getPmtID();
-            String respCode = null;
-            if (PmtIdlist.size() > 0) {
-                for (PmtIdResponse pmtIdResponse : PmtIdlist) {
-                    respCode = pmtIdResponse.getRespCode();//统一支付返回码0000成功，其他失败
-                }
-            }
-            if(!"0000".equals(respCode)) throw new FssException("90004035");*/
+            MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
+            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
@@ -458,36 +438,27 @@ public class TyzfTradeService {
      */
     public void tyzfTransfer(FssAccountBindEntity fromEntity,FssAccountBindEntity toEntity,BigDecimal amount,String tradeType,String seqNo) throws FssException {
         if(fromEntity==null || toEntity==null) throw new FssException("90004034");
-        ConverBean bean = new ConverBean();
-        //参数传入
-        String capTm= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        bean.setService_id("0001");
-        bean.setTxnTp(GlobalConstants.TYZF_TRANSFER);//交易类型
-        bean.setCapTm(capTm);//交易日期
+        MessageConvertDto bean = new MessageConvertDto();
+        bean.setServiceId("0001");
+        bean.setIsActual("N");//是否同步交易
+        bean.setIsBatch("N");//是否批量
+        bean.setServiceId("0001");
+        bean.setTxnType(GlobalConstants.TYZF_TRANSFER);//交易类型
         bean.setOrderId(seqNo== null ? "" : seqNo);//业务订单号
-        bean.setCdtrId("90070001");//通道编号
-        bean.setDbtrAcct_Id(fromEntity.getAccNo());//转出账户
-        bean.setCdtrAcct_Id(toEntity.getAccNo());//转入账户
-        bean.setIntrBkSttlmCcy("30080001");//货币类型
-        bean.setIntrBkSttlmAmt(String.valueOf(amount));
+        bean.setCdtMop("97010001");//通道编号
+        bean.setDbtrAcctId(fromEntity.getAccNo());//转出账户
+        bean.setCdtrAcctId(toEntity.getAccNo());//转入账户
+        bean.setSttlAmtCcy("30080001");//货币类型
+        bean.setRSttlAmt(amount);
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识 借：02020001 贷：02020002
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);
-        /*try{
-            ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean);
-            ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean);
-            //返回结果
-            List<PmtIdResponse> PmtIdlist = transContentResponse.getRequestMsg().getPmtID();
-            String respCode = null;
-            if (PmtIdlist.size() > 0) {
-                for (PmtIdResponse pmtIdResponse : PmtIdlist) {
-                    respCode = pmtIdResponse.getRespCode();//统一支付返回码0000成功，其他失败
-                }
-            }
-            if(!"0000".equals(respCode)) throw new FssException("90004035");
+        try{
+            MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
+            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
-        }*/
+        }
     }
 
     /**
@@ -501,34 +472,26 @@ public class TyzfTradeService {
      */
     public void tyzfFroze(Long custId,Integer busiType,BigDecimal amount,String fundType,String tradeType,String seqNo) throws FssException {
         FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
-        ConverBean bean = new ConverBean();
-        //参数传入
-        String capTm= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        bean.setService_id("0001");
-        bean.setTxnTp(GlobalConstants.TYZF_FRZEN);//交易类型
+        MessageConvertDto bean = new MessageConvertDto();
+        bean.setServiceId("0001");
+        bean.setIsActual("N");//是否同步交易
+        bean.setIsBatch("N");//是否批量
+        bean.setServiceId("0001");
+        bean.setTxnType(GlobalConstants.TYZF_FRZEN);//交易类型
         bean.setOrderId(seqNo);//业务订单号
-        bean.setCapTm(capTm);//交易日期
-        bean.setCdtrId("90010007");//通道编号
-        bean.setCdtrAcct_Id(bindEntity.getAccNo());//提现账户
-        bean.setDbtrAcct_Ccy("30080001");//货币类型
-        bean.setIntrBkSttlmAmt(String.valueOf(amount));//交易金额
+        bean.setCdtMop("97010001");//通道编号
+        bean.setCdtrAcctId(bindEntity.getAccNo());//提现账户
+        bean.setDbtrAcctCcy("30080001");//货币类型
+        bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_JIE);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        /*try{
-            ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean);
-            //返回结果
-            List<PmtIdResponse> PmtIdlist = transContentResponse.getRequestMsg().getPmtID();
-            String respCode = null;
-            if (PmtIdlist.size() > 0) {
-                for (PmtIdResponse pmtIdResponse : PmtIdlist) {
-                    respCode = pmtIdResponse.getRespCode();//统一支付返回码0000成功，其他失败
-                }
-            }
-            if(!"0000".equals(respCode)) throw new FssException("90004035");
+        try{
+            MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
+            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
-        }*/
+        }
     }
 
     /**
@@ -542,34 +505,26 @@ public class TyzfTradeService {
      */
     public void tyzfUnFroze(Long custId,Integer busiType,BigDecimal amount,String fundType, String tradeType,String seqNo) throws FssException {
         FssAccountBindEntity bindEntity = this.checkBindAccount(custId,busiType);
-        ConverBean bean = new ConverBean();
-        //参数传入
-        bean.setService_id("0001");
-        String capTm= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        bean.setTxnTp(GlobalConstants.TYZF_UNFRZEN);//交易类型
+        MessageConvertDto bean = new MessageConvertDto();
+        bean.setServiceId("0001");
+        bean.setIsActual("N");//是否同步交易
+        bean.setIsBatch("N");//是否批量
+        bean.setServiceId("0001");
+        bean.setTxnType(GlobalConstants.TYZF_UNFRZEN);//交易类型
         bean.setOrderId(seqNo);//业务订单号
-        bean.setCapTm(capTm);//交易日期
-        bean.setCdtrId("90010007");//通道编号
-        bean.setCdtrAcct_Id(bindEntity.getAccNo());//提现账户
-        bean.setDbtrAcct_Ccy("30080001");//货币类型
-        bean.setIntrBkSttlmAmt(String.valueOf(amount));//交易金额
+        bean.setCdtMop("97010001");//通道编号
+        bean.setCdtrAcctId(bindEntity.getAccNo());//提现账户
+        bean.setDbtrAcctCcy("30080001");//货币类型
+        bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        /*try{
-            ReqContentResponse transContentResponse=conversionService.sendAndReceiveMsg(bean);
-            //返回结果
-            List<PmtIdResponse> PmtIdlist = transContentResponse.getRequestMsg().getPmtID();
-            String respCode = null;
-            if (PmtIdlist.size() > 0) {
-                for (PmtIdResponse pmtIdResponse : PmtIdlist) {
-                    respCode = pmtIdResponse.getRespCode();//统一支付返回码0000成功，其他失败
-                }
-            }
-            if(!"0000".equals(respCode)) throw new FssException("90004035");
+        try{
+            MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
+            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
-        }*/
+        }
     }
 
     /**
@@ -581,7 +536,7 @@ public class TyzfTradeService {
         FssAccountBindEntity bindEntity = fssAccountBindService.getBindAccountByParam(busiId, busiType);
         if (bindEntity == null) throw new FssException("90004034");//账户未绑定
         if (bindEntity != null) {
-            if ("1".equals(bindEntity.getStatus())) throw new FssException("90004034");
+            if (!"1".equals(bindEntity.getStatus())) throw new FssException("90004034");
         }
         return bindEntity;
     }
