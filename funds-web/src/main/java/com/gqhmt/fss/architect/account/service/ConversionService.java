@@ -45,7 +45,7 @@ public class ConversionService {
             sendMessage=mo.toString();
             System.out.println(mo.toString());
             asr.sendMsg(sendMessage);//发送报文
-            TextMessage resiveMsg=(TextMessage)receiver.receiveMessage();//监听队列中的报文
+           TextMessage resiveMsg=(TextMessage)receiver.receiveMessage();//监听队列中的报文
             String msg=resiveMsg.getText();//读取报文内容
             System.out.print("返回报文："+msg);
             MsgObject mo2 = new MsgObject(msg);
