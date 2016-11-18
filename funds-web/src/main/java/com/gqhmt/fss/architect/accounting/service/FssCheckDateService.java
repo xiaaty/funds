@@ -73,6 +73,17 @@ public class FssCheckDateService {
     }
     /**
      * jhz
+     * 根据日期修改状态
+     * @param checkDate
+     * @throws FssException
+     */
+    public int updateOrderUserState(FssCheckDate checkDate)throws FssException{
+        FssCheckDate fssCheckDate = new FssCheckDate();
+        fssCheckDate.setOrderDate(checkDate.getOrderDate());
+        return fssCheckDateWriteMapper.updateOrderUserState(checkDate);
+    }
+    /**
+     * jhz
      * 获得订单表跑批日期
      * @return
      */

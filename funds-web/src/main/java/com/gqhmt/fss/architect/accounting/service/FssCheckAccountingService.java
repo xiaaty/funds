@@ -458,11 +458,11 @@ public class FssCheckAccountingService {
      */
     public void  checkFundOrder(FssCheckAccountingEntity account)throws FssException{
 
-        LogUtil.info(this.getClass(), "核对订单");
 
         if(account == null){
             return;
         }
+        LogUtil.info(this.getClass(), "核对订单号为："+account.getOrderNo()+"的队长数据");
         FundOrderEntity order=fundOrderService.findfundOrder(account.getOrderNo());
         if(order == null){
             return;
@@ -493,15 +493,15 @@ public class FssCheckAccountingService {
                     int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
                     if(size==1){
                         fundOrderService.updateFundsOrder(order,"98080001","98010001");
-                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值提现数据正常");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值或提现数据正常");
                     }else if(size>1){
                         fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值提现流水记录大于1条数据异常");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值或提现流水记录大于1条数据异常");
 
                     }else{
                         //流水表无记录的话进行流水添加
                         fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值提现流水记录不存在数据异常");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值或提现流水记录不存在数据异常");
                     }
                 }
             }
