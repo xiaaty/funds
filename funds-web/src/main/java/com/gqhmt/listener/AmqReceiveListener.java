@@ -21,18 +21,15 @@ public class AmqReceiveListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("AmqReceiveListener.contextInitialized() 开始 flag="+AmqReceiveListener.flag);
-
-
+        System.out.println("AmqReceiveListener.contextInitialized() 开始");
         Thread t = new Thread() {
             @Override
             public void run() {
-                while(true){
-                    AmqSendAndReceive asr = new AmqReceiver("AMQ.TEST03");
-
+                AmqSendAndReceive asr = new AmqReceiver("AMQ.TEST03");
+                while (true) {
                     try {
                         Message msg = asr.receiveMessage();
-                        TextMessage tm = (TextMessage)msg;
+                        TextMessage tm = (TextMessage) msg;
                         System.out.println(tm.getText());
                     } catch (AmqException e) {
                         e.printStackTrace();
@@ -44,15 +41,10 @@ public class AmqReceiveListener implements ServletContextListener {
         };
         t.setDaemon(true);
         t.start();
-
-//        while(1==AmqReceiveListener.flag){
-//            System.out.println("执行");
-//        }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        AmqReceiveListener.flag = 0;
-        System.out.println("AmqReceiveListener.contextInitialized() 结束 flag="+AmqReceiveListener.flag);
+        System.out.println("AmqReceiveListener.contextInitialized() 结束 ");
     }
 }
