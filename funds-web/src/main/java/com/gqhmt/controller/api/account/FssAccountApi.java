@@ -1,6 +1,5 @@
 package com.gqhmt.controller.api.account;
 
-import com.gqhmt.conversion.bean.request.ConverBean;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;

@@ -1,13 +1,9 @@
 package com.gqhmt.event.account;
 
-import com.gqhmt.conversion.bean.request.CdtrAcct;
-import com.gqhmt.conversion.bean.response.PmtIdResponse;
-import com.gqhmt.conversion.bean.response.ReqContentResponse;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
-import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.service.FssCustBankCardService;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
@@ -150,13 +146,8 @@ public class CreateAccountEvent {
         }else{
             bankCardInfoEntity=bankCardInfoList.get(0);
         }
-        try{
-            //调用统一支付开户
-            FssAccountBindEntity entity=tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,mchn);
-            if (!"1".equals(entity.getStatus())) throw new FssException("91005344");
-        }catch (Exception e){
-            throw new FssException("91005344");
-        }
-         return bankCardInfoEntity.getId();
+        //调用统一支付开户
+        FssAccountBindEntity entity=tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,mchn);
+        return bankCardInfoEntity.getId();
     }
 }
