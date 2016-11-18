@@ -249,11 +249,17 @@ public class FundOrderService  {
             typeList.add(12);
             //普通转账
         }else if(StringUtils.equals("1108",type)){
+            typeList.add(3);
             typeList.add(5);
+            typeList.add(10);
+            typeList.add(31);
+            typeList.add(33);
+            typeList.add(34);
+            typeList.add(1001);
+            typeList.add(2198);
             //满标和回款转账
         }else if(StringUtils.equals("1199",type)){
-            typeList.add(11990048);
-            typeList.add(11990049);
+            typeList.add(1190020);
         }
         Map<String, String> map2= Maps.newHashMap();
         String startTime = map.get("startTime");

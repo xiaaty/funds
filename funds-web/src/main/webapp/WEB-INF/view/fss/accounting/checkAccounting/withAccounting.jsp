@@ -233,7 +233,7 @@
                                                     <td><fss:dictView key="${t.handleState}" /></td>
                                                     <td>
                                                         <a href="${contextPath}/checkAccounting/fundsOrder/${type}/${t.orderNo}">查看</a>
-                                                        <a href="${contextPath}/checkAccounting/addAccounting/${type}/${t.orderNo}">入账</a>
+                                                        <%--<a href="${contextPath}/checkAccounting/addAccounting/${type}/${t.orderNo}">入账</a>--%>
                                                     </td>
                                                 </tr>
                                         </c:forEach>
