@@ -7,10 +7,14 @@ import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
 import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
 import com.gqhmt.tyzf.common.frame.amq.AmqSender;
 import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
+import com.gqhmt.tyzf.common.frame.exception.FrameException;
+import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
+import com.gqhmt.tyzf.common.frame.message.MsgObject;
 import com.gqhmt.util.ConvertReportEnum;
 import com.gqhmt.util.ConvertUtils;
 import com.gqhmt.util.XmlUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import sun.org.mozilla.javascript.internal.regexp.SubString;
 
 import javax.jms.JMSException;
@@ -322,24 +326,34 @@ public class ConversionService {
      * @param bean
      * @return
      */
-    public ReqContentResponse sendAndReceiveMsg(ConverBean bean) throws FssException {
-        AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送
-        AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//解析
-        ReqContentResponse transContentResponse=null;
-        String sendMessage = "";
+    public MessageConvertDto sendAndReceiveMsg(MessageConvertDto bean) throws FssException {
+        MessageConvertDto bm=null;
         try {
-                sendMessage = this.ObjConversionXml(bean);//转换成XML统一报文
-                asr.sendMsg(sendMessage);
-                TextMessage resiveMsg=(TextMessage)receiver.receiveMessage();//监听队列中的报文
-                String msg=resiveMsg.getText();
-                System.out.print("返回报文："+msg);
-                transContentResponse = XmlUtil.xmlStringToObject(msg==null?null:msg,ReqContentResponse.class);//返回结果解析成对象
+            AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送
+            AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//解析
+            String sendMessage = "";
+            //将bean转换成xml统一报文
+            MsgObject mo = new MsgObject(MsgObject.initSR);
+            bean = mo.getBean4Message(bean);
+            sendMessage=mo.toString();
+            System.out.println(mo.toString());
+            //发送报文
+            asr.sendMsg(sendMessage);
+            TextMessage resiveMsg=(TextMessage)receiver.receiveMessage();//监听队列中的报文
+            //接收报文
+            String msg=resiveMsg.getText();
+            System.out.print("返回报文："+msg);
+
+            MsgObject mo2 = new MsgObject(msg);
+            bm = mo2.getMessge4Bean(MessageConvertDto.class);
         } catch (JMSException e){
             throw new FssException(e.getMessage());
+        } catch (FrameException e){
+            throw new FssException("");
         } catch (Exception e) {
             throw new FssException(e.getMessage());
         }
-        return transContentResponse;
+        return bm;
     }
 
 
