@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
 import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
 import com.gqhmt.tyzf.common.frame.amq.AmqSender;
@@ -36,8 +37,8 @@ public class ConversionService {
     public MessageConvertDto sendAndReceiveMsg(MessageConvertDto bean) throws FssException {
         MessageConvertDto bm=null;
         try {
-            AmqSendAndReceive asr = new AmqSender(null, "tradeCheck");//发送到该队列
-            AmqSendAndReceive receiver = new AmqReceiver("AMQ.TTT3");//从该队列接收
+            AmqSendAndReceive asr = new AmqSender(null, CoreConstants.MQ_SEND_NAME);//发送到该队列
+            AmqSendAndReceive receiver = new AmqReceiver(CoreConstants.MQ_RESIVE_NAME);//从该队列接收
             String sendMessage = "";
             //将bean转换成xml统一报文
             MsgObject mo = new MsgObject(MsgObject.initSR);

@@ -25,7 +25,7 @@ public class FssAccountBindEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "busi_id")
     private Long busiId;//个人结算账户（冠E通客户id），标的账户（bid_id）
@@ -66,11 +66,11 @@ public class FssAccountBindEntity {
     @Column(name = "moblie")
     private String moblie;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

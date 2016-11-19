@@ -94,7 +94,7 @@ public class FssAccountBindService {
      * @throws FssException
      */
    public void updateBindAccount(Long id,String status,String accNo,String seqNo) throws FssException {
-       FssAccountBindEntity fssAccountBindEntity = null;
+       FssAccountBindEntity fssAccountBindEntity = fssAccountBindReadMapper.selectByPrimaryKey(id);
        try {
             fssAccountBindEntity.setAccNo(accNo);
             fssAccountBindEntity.setStatus(status);
