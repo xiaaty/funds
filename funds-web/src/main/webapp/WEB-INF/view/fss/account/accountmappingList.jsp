@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>系统配置--统一支付映射账户信息--冠群驰骋投资管理(北京)有限公司</title>
+    <title>系统配置--统一支付绑定账户信息--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -36,7 +36,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>系统配置</li>
-            <li>统一支付映射账户信息</li>
+            <li>统一支付绑定账户信息</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -132,7 +132,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="menu-id-7971"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>统一支付映射账户信息</h2>
+                            <h2>统一支付绑定账户信息</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -143,8 +143,10 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1800px;">
                                         <col width="50" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
@@ -160,6 +162,8 @@
                                         <tr>
                                             <td>序号</td>
                                             <td>客户编号</td>
+                                            <td>客户姓名</td>
+                                            <td>手机号码</td>
                                             <td>账户类型</td>
                                             <td>账户编号</td>
                                             <td>是否有效</td>
@@ -175,9 +179,11 @@
                                             <tr class="">
                                                 <td>${t.id}</td>
                                                 <td>${t.busiId}</td>
+                                                <td>${t.custName}</td>
+                                                <td>${t.moblie}</td>
                                                 <td>${t.busiType}</td>
                                                 <td>${t.accNo}</td>
-                                                <td>${t.isValid=="0"?"有效":"无效"}</td>
+                                                <td>${t.isValid=="0"?"未绑定":"已绑定"}</td>
                                                 <td>${t.seqNo}</td>
                                                 <td>${t.tradeType}</td>
                                                 <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

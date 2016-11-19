@@ -467,7 +467,7 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertList(list);
         this.fundTradeService.addFundTrade(frozenEntiry, amount, BigDecimal.ZERO, accountType,memo,BigDecimal.ZERO);
         //        --------------------解冻调用统一支付处理-----------------------
-        tyzfTradeService.tyzfUnFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,"2008",tradeType,seqNo);
+        tyzfTradeService.tyzfUnFroze(frozenEntiry.getCustId(),frozenEntiry.getBusiType(),amount,"2008",tradeType,seqNo);
     }
 
 
