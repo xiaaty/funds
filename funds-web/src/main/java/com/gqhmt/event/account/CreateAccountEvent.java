@@ -147,7 +147,7 @@ public class CreateAccountEvent {
             bankCardInfoEntity=bankCardInfoList.get(0);
         }
         //调用统一支付开户
-        FssAccountBindEntity entity=tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,mchn);
+        FssAccountBindEntity entity=tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,mchn,customerInfoEntity.getMobilePhone());
         return bankCardInfoEntity.getId();
     }
 }

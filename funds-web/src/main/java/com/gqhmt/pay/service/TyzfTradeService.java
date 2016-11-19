@@ -12,13 +12,10 @@ import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.tyzf.common.frame.exception.FrameException;
 import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
-import com.gqhmt.tyzf.common.frame.message.MsgObject;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -66,7 +63,7 @@ public class TyzfTradeService {
      * @return
      * @throws FssException
      */
-    public FssAccountBindEntity createTyzfAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mchn) throws FssException{
+    public FssAccountBindEntity createTyzfAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mchn,String mobile) throws FssException{
         FssAccountBindEntity entity=null;
         String accType= GlobalConstants.TRADE_ACCOUNT_TYPE_MAPPING.get(tradeType);//设置账户类型
         //如果,线下出借,借款,保理,则业务编号不能为空
@@ -85,11 +82,11 @@ public class TyzfTradeService {
         //11020017:新版wap开户
         //11029100:数据迁移
         if("11020001".equals(tradeType) || "11020002".equals(tradeType) || "11020003".equals(tradeType)|| "11020004".equals(tradeType)|| "11020005".equals(tradeType) || "11020014".equals(tradeType) || "11020015".equals(tradeType) || "11020017".equals(tradeType) || "11029100".equals(tradeType)){
-            entity=this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,3,mchn);
+            entity=this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,3,mchn,mobile);
         }
         //委托出借开户 2
         if("11020006".equals(tradeType)){
-            entity=this.createInvstmentAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,2,mchn);
+            entity=this.createInvstmentAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,2,mchn,mobile);
         }
         //11020007:借款人开户（冠e通）
         //11020008:代偿人开户
@@ -98,11 +95,11 @@ public class TyzfTradeService {
         //11020012:借款人开户（借款系统）
         //11020013:借款代还人开户
         if("11020007".equals(tradeType) || "11020008".equals(tradeType) || "11020009".equals(tradeType) || "11020011".equals(tradeType) || "11020012".equals(tradeType) || "11020013".equals(tradeType)){
-            entity=this.createLoanAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,1,mchn);
+            entity=this.createLoanAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,1,mchn,mobile);
         }
         //创建对公账户 收费账户：11020021、其他开户：11020022
         if("11020020".equals(tradeType) || "11020021".equals(tradeType) || "11020022".equals(tradeType)){
-            entity=this.createBusiAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,mchn);
+            entity=this.createBusiAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,mchn,mobile);
         }
         return entity;
     }
@@ -119,14 +116,14 @@ public class TyzfTradeService {
      * @param seq_no
      * @param busi_type
      */
-    public FssAccountBindEntity createInternetAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn) throws FssException{
+    public FssAccountBindEntity createInternetAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn,String mobile) throws FssException{
         //开通互联网账户(线上账户)
         FssAccountBindEntity entity = fssAccountBindService.getBindAccountByParam(custId,busi_type);
         if (entity == null){
-            entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo);
+            entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo,custName,mobile);
         }
-        if("0".equals(entity.getStatus())){//未开通统一支付账户账户类型：互联网账户待定
-          entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,String.valueOf(busi_type),entity,mchn);
+        if("0".equals(entity.getStatus())){//未开通统一支付账户账户类型：互联网账户：30010001
+          entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"30010001",entity,mchn);
           fssAccountBindService.updateBindAccount(entity);
         }
         return entity;
@@ -145,25 +142,25 @@ public class TyzfTradeService {
      * @param busi_type
      * @throws FssException
      */
-    public FssAccountBindEntity createInvstmentAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn) throws FssException{
+    public FssAccountBindEntity createInvstmentAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn,String mobile) throws FssException{
         //判断互联账户是否开通，如没有，开通互联网账户
-        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,3,mchn);
+        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,3,mchn,mobile);
         //开通线下出借账户
         FssAccountBindEntity entity = fssAccountBindService.getBindAccountByParam(custId,busi_type);
         if (entity == null){//绑定
-            entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo);
+            entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo,custName,mobile);
         }
-        if("0".equals(entity.getStatus())){//未开通统一支付账户 委托出借账户：10010002
-            entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,String.valueOf(busi_type),entity,mchn);
+        if("0".equals(entity.getStatus())){//未开通统一支付账户类型， 线下出借账户：30010013
+            entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"30010013",entity,mchn);
             fssAccountBindService.updateBindAccount(entity);
         }
         //开通线下出借应付款账户
         FssAccountBindEntity entity2 = fssAccountBindService.getBindAccountByParam(custId,96);
         if (entity2 == null){//绑定
-            entity2 = fssAccountBindService.createFssAccountMapping(custId,96,tradeType,seq_no,busiNo);
+            entity2 = fssAccountBindService.createFssAccountMapping(custId,96,tradeType,seq_no,busiNo,custName,mobile);
         }
         if("0".equals(entity2.getStatus())){//未开通统一支付账户 出借应付款账户:
-            entity2 = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"96",entity2,mchn);
+            entity2 = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"30010016",entity2,mchn);
             fssAccountBindService.updateBindAccount(entity2);
         }
         return entity2;
@@ -181,20 +178,20 @@ public class TyzfTradeService {
      * @param seq_no
      * @param busi_type
      */
-    public FssAccountBindEntity createLoanAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn) throws FssException{
+    public FssAccountBindEntity createLoanAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn,String mobile) throws FssException{
         //判断互联账户是否开通，如没有，开通互联网账户
-        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,3,mchn);
+        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,3,mchn,mobile);
         //开通借款人信贷账户
         FssAccountBindEntity entity = fssAccountBindService.getBindAccountByParam(custId,busi_type);
         if (entity == null){//绑定
-            entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo);
+            entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo,custName,mobile);
         }
-        if("0".equals(entity.getStatus())){//未开通统一支付账户
-            entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,String.valueOf(busi_type),entity,mchn);
+        if("0".equals(entity.getStatus())){//未开通统一支付账户 统一支付账户类型，借款账户：30010003
+            entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"30010003",entity,mchn);
             fssAccountBindService.updateBindAccount(entity);
         }
         //开通标的账户
-        this.createBidAcocunt(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,90,mchn);
+        this.createBidAcocunt(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,90,mchn,mobile);
         return entity;
     }
 
@@ -211,7 +208,7 @@ public class TyzfTradeService {
      * @param busi_type
      * @throws FssException
      */
-    public FssAccountBindEntity createBidAcocunt(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn) throws FssException{
+    public FssAccountBindEntity createBidAcocunt(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn,String mobile) throws FssException{
         //开通标的账户
         Long bid_id=null;
         if(busiNo==null || "".equals(busiNo)) throw new FssException("90002016");
@@ -222,10 +219,10 @@ public class TyzfTradeService {
         //标的账户是否开通
         FssAccountBindEntity entity = fssAccountBindService.getBindAccountByParam(bid_id,90);
         if (entity == null){//账户绑定
-            entity = fssAccountBindService.createFssAccountMapping(bid_id,90,tradeType,seq_no,busiNo);
+            entity = fssAccountBindService.createFssAccountMapping(bid_id,90,tradeType,seq_no,busiNo,custName,mobile);
         }
         if("0".equals(entity.getStatus())){//统一支付账户开标的账户
-            entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"90",entity,mchn);
+            entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,"30010015",entity,mchn);
             fssAccountBindService.updateBindAccount(entity);
         }
         return entity;
@@ -244,19 +241,23 @@ public class TyzfTradeService {
      * @param mchn
      * @throws FssException
      */
-    public FssAccountBindEntity createBusiAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mchn) throws FssException{
+    public FssAccountBindEntity createBusiAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mchn,String mobile) throws FssException{
         //开通对公账户
         Integer busi_type=null;
+        String accType=null;//统一支付8位账户类型
         if("11020020".equals(tradeType)){//运营账户开户：11020020
             busi_type=70;
+            accType="30010009";
         }
         if("11020021".equals(tradeType)){//收费账户开户：11020021
             busi_type=60;
+            accType="30010006";
         }
         if("11020022".equals(tradeType)){//其他开户：11020022
             busi_type=50;
+            accType="30010017";
         }
-        FssAccountBindEntity entity= this.createOnThePublicAcocunt(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,busi_type,mchn);
+        FssAccountBindEntity entity= this.createOnThePublicAcocunt(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,busi_type,mchn,mobile,accType);
         return entity;
     }
 
@@ -275,13 +276,13 @@ public class TyzfTradeService {
      * @return
      * @throws FssException
      */
-     public FssAccountBindEntity createOnThePublicAcocunt(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn) throws FssException{
-         FssAccountBindEntity entity = fssAccountBindService.getBindAccountByParam(custId,50);
+     public FssAccountBindEntity createOnThePublicAcocunt(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mchn,String mobile,String accType) throws FssException{
+         FssAccountBindEntity entity = fssAccountBindService.getBindAccountByParam(custId,busi_type);
          if (entity == null){
-             entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo);
+             entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo,custName,mobile);
          }
          if("0".equals(entity.getStatus())){//未开通统一支付账户
-             entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,String.valueOf(busi_type),entity,mchn);
+             entity = this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,accType,entity,mchn);
              fssAccountBindService.updateBindAccount(entity);
          }
         return entity;
@@ -372,7 +373,7 @@ public class TyzfTradeService {
         bean.setOrderId(seqNo);//业务订单号
         bean.setCdtMop("97010001");//通道编号
         bean.setChanId(chnlId);//渠道编号(WEB交易，POS交易还是APP交易等)
-        bean.setCdtrAcctTp(String.valueOf(bindEntity.getBusiType()));//充值账户类型
+        bean.setCdtrAcctTp("30010001");//充值账户类型
         bean.setCdtrAcctId(bindEntity.getAccNo());//充值账户号
         bean.setDbtrAcctCcy("30080001");//货币类型
         bean.setSttlAmt(amount);//交易金额
