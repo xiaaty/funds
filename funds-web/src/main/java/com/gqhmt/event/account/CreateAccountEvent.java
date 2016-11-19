@@ -1,6 +1,5 @@
 package com.gqhmt.event.account;
 
-
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
@@ -146,13 +145,8 @@ public class CreateAccountEvent {
         }else{
             bankCardInfoEntity=bankCardInfoList.get(0);
         }
-        try{
-            //调用统一支付开户
-            FssAccountBindEntity entity=tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,mchn);
-            if (!"1".equals(entity.getStatus())) throw new FssException("91005344");
-        }catch (Exception e){
-            throw new FssException("91005344");
-        }
-         return bankCardInfoEntity.getId();
+        //调用统一支付开户
+        FssAccountBindEntity entity=tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),String.valueOf(customerInfoEntity.getCustomerType()),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,mchn,customerInfoEntity.getMobilePhone());
+        return bankCardInfoEntity.getId();
     }
 }

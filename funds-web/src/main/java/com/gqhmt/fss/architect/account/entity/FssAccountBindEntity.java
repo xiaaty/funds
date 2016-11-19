@@ -60,6 +60,12 @@ public class FssAccountBindEntity {
     @Column(name = "chnl")
     private String chnl;
 
+    @Column(name = "cust_name")
+    private String custName;
+
+    @Column(name = "moblie")
+    private String moblie;
+
     public int getId() {
         return id;
     }
@@ -154,5 +160,21 @@ public class FssAccountBindEntity {
 
     public void setChnl(String chnl) {
         this.chnl = chnl;
+    }
+
+    public String getCustName() {
+        return custName;
+    }
+
+    public void setCustName(String custName) {
+        this.custName = custName;
+    }
+
+    public String getMoblie() {
+        return moblie;
+    }
+
+    public void setMoblie(String moblie) {
+        this.moblie = moblie;
     }
 }

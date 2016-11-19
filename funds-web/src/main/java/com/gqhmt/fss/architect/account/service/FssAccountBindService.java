@@ -51,13 +51,15 @@ public class FssAccountBindService {
      * @return
      * @throws FssException                                busi_Id,Integer.valueOf(busi_type.toString()),tradeType,seq_no,null,busiNo
      */
-    public FssAccountBindEntity createFssAccountMapping(Long busi_id,Integer busi_type,String tradeType,String seqNo,String contractNo) throws FssException{
+    public FssAccountBindEntity createFssAccountMapping(Long busi_id,Integer busi_type,String tradeType,String seqNo,String contractNo,String custName,String mobile) throws FssException{
         FssAccountBindEntity mappingEntity=null;
         try {
             mappingEntity= GenerateBeanUtil.GenerateClassInstance(FssAccountBindEntity.class);;
             mappingEntity.setBusiId(busi_id);
             mappingEntity.setBusiType(busi_type);
             mappingEntity.setStatus("0");
+            mappingEntity.setCustName(custName);
+            mappingEntity.setMoblie(mobile);
             mappingEntity.setSeqNo(seqNo);
             mappingEntity.setTradeType(tradeType);
             mappingEntity.setContractNo(contractNo);
