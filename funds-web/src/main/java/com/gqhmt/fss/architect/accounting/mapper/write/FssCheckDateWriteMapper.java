@@ -26,4 +26,6 @@ public interface FssCheckDateWriteMapper extends ReadAndWriteMapper<FssCheckDate
 
     public int updateInputUserState(FssCheckDate fssCheckDate);
 
+    public int updateOrderUserState(FssCheckDate fssCheckDate);
+
 }
