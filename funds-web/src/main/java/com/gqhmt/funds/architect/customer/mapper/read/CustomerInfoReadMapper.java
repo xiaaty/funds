@@ -46,4 +46,7 @@ public interface CustomerInfoReadMapper extends ReadMapper<CustomerInfoEntity>{
 	 * @return
 	 */
 	public CustomerInfoDetialBean queryCustomerinfoById(@Param("id") Integer id);
+
+
+	public List<CustomerInfoEntity> queryCustomerInfoByDate(@Param("date") String date);
 }

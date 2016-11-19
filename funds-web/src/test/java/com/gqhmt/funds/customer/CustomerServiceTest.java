@@ -6,6 +6,7 @@ import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.sys.service.MenuServiceTest
@@ -34,6 +35,13 @@ public class CustomerServiceTest extends TestService {
     	CustomerInfoEntity queryCustomeById = customerInfoService.queryCustomeById(1l);
 
     	assert queryCustomeById.getId().intValue() == 2;
+    }
+
+    @Test
+    public void queryCustomerInfoBYDate(){
+        List<CustomerInfoEntity> customerInfoEntities = customerInfoService.queryCustomerInfoByDate("20161107");
+
+        assert customerInfoEntities.size()>0;
     }
 
 

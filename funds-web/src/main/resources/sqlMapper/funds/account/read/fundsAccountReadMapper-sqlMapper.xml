@@ -182,4 +182,19 @@
 			t.cust_id custId
 		FROM `t_gq_fund_account` t LEFT JOIN `t_gq_customer_info`c on c.id=t.cust_id
 	</select>
+
+	<select id="findFundAccountByDate" resultType="com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean">
+		SELECT
+			c.id id,
+			c.customer_name customerName,
+			c.customer_type customerType,
+			c.cert_no certNo,
+			c.cert_type certType,
+			t.account_type accountType,
+			t.busi_type busiType,
+			t.cust_id custId
+		FROM `t_gq_fund_account` t LEFT JOIN `t_gq_customer_info`c on c.id=t.cust_id
+		WHERE date_format(t.create_time,'%Y%m%d') = #{date} and t.busi_type BETWEEN 0 and 99 ORDER BY c.id,t.busi_type
+
+	</select>
 </mapper>

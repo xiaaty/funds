@@ -3,11 +3,8 @@ package com.gqhmt.pay.service.cost.impl;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.cost.CostDto;
 import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
-import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.trade.entity.FssChargeRecordEntity;
@@ -22,13 +19,10 @@ import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
-import com.gqhmt.util.ThirdPartyType;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -396,7 +390,7 @@ public class CostImpl  implements ICost{
             fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amt,fundType,"资金转出:"+amt+"元",BigDecimal.ZERO);
             fundTradeService.addFundTrade(toEntity,amt, BigDecimal.ZERO,fundType,"资金转入:"+amt+"元");
         }catch (Exception e){
-            throw new FssException("费用收取失败");
+            throw new FssException("90004044",e);
             //fssChargeRecordService.updateChargeRecord(chargeRecordEntity,null,"10080010");
         }
         return true;

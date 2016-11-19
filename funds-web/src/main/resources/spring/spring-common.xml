@@ -93,7 +93,8 @@
 				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/fssAccount/*/read/*-sqlMapper.xml</value>
-			</list>
+
+				<value>classpath:sqlMapper/business/loan/read/*-sqlMapper.xml</value>			</list>
 		</property>
 		<property name="plugins">
 			<array>
@@ -143,7 +144,7 @@
 	</bean>
 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper;com.gqhmt.*.mapper.*="/>
+		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper;com.gqhmt.*.mapper.*"/>
 		<property name="properties">
 			<value>
 				mappers=com.gqhmt.core.mybatis.ReadAndWriteMapper,com.gqhmt.core.mybatis.ReadMapper
