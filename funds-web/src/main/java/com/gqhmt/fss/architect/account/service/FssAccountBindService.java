@@ -52,6 +52,11 @@ public class FssAccountBindService {
      * @throws FssException                                busi_Id,Integer.valueOf(busi_type.toString()),tradeType,seq_no,null,busiNo
      */
     public FssAccountBindEntity createFssAccountMapping(Long busi_id,Integer busi_type,String tradeType,String seqNo,String contractNo,String custName,String mobile) throws FssException{
+        FssAccountBindEntity entity = this.getBindAccountByParam(busi_id,busi_type);
+        if( entity != null){
+            return entity;
+        }
+
         FssAccountBindEntity mappingEntity=null;
         try {
             mappingEntity= GenerateBeanUtil.GenerateClassInstance(FssAccountBindEntity.class);;
@@ -86,11 +91,15 @@ public class FssAccountBindService {
 
     /**
      * 修改客户编号与统一支付账号绑定
-     * @param fssAccountBindEntity
      * @throws FssException
      */
-   public void updateBindAccount(FssAccountBindEntity fssAccountBindEntity) throws FssException {
-        try {
+   public void updateBindAccount(Long id,String status,String accNo,String seqNo) throws FssException {
+       FssAccountBindEntity fssAccountBindEntity = null;
+       try {
+            fssAccountBindEntity.setAccNo(accNo);
+            fssAccountBindEntity.setStatus(status);
+            fssAccountBindEntity.setSeqNo(seqNo);
+            fssAccountBindEntity.setModifyTime(new Date());
             fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
         }catch (Exception e){
             throw new FssException("91009804");
