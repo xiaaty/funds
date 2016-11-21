@@ -48,10 +48,10 @@ public class FssCheckDateService {
      * @param orderDate
      * @return
      */
-    public int updateInputUserState(String orderDate) {
+    public void updateInputUserState(String orderDate) throws FssException {
         FssCheckDate fssCheckDate = new FssCheckDate();
         fssCheckDate.setOrderDate(orderDate);
-        return fssCheckDateWriteMapper.updateInputUserState(fssCheckDate);
+        fssCheckDateWriteMapper.updateInputUserState(fssCheckDate);
     }
     /**
      * jhz
