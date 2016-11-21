@@ -4,7 +4,6 @@ import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
 import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
 import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
-import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.jms.JMSException;
