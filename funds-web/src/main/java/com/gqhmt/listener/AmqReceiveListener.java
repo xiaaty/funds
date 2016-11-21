@@ -31,7 +31,7 @@ public class AmqReceiveListener implements ServletContextListener {
             public void run() {
                 AmqSendAndReceive asr = new AmqReceiver("AMQ.TEST03");
                 System.out.println("接收线程启动");
-                while (1 == 1) {
+                while (AmqReceiveListener.flag == 1) {
                     try {
                         Message msg = asr.receiveMessage();
                         TextMessage tm = (TextMessage) msg;
@@ -53,11 +53,17 @@ public class AmqReceiveListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        AmqReceiveListener.flag=0;
         System.out.println("AmqReceiveListener.contextInitialized() 结束 ");
         System.out.println("daemons.size="+daemons.size());
         for (int i = daemons.size() - 1; i >= 0; i--) {
             Thread t = (Thread) daemons.get(i);
+            try {
+                t.join(2*1000);
                 t.interrupt();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
