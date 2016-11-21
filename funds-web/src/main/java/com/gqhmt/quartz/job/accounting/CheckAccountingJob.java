@@ -63,6 +63,8 @@ public class CheckAccountingJob extends SupperJob {
             int i=0;
             for (FssCheckAccountingEntity check:checkAccountings) {
                 fssCheckAccountingService.checkFundOrder(check);
+                check.setAccountingStatus("98010001");
+                fssCheckAccountingService.update(check);
                 i++;
             }
             LogUtil.info(this.getClass(),"本批次共核对"+i+"条对账信息");
