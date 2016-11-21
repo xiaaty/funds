@@ -74,17 +74,15 @@ public class ConversionService {
      * @return
      * @throws FssException
      */
-    public MessageConvertDto ReceiveMqMsg(String msg) throws Exception {
-        MessageConvertDto bm = null;
+    public void ReceiveMqMsg(String msg) throws Exception {
         try {
             System.out.print("返回报文：" + msg);
             MsgObject mo2 = new MsgObject(msg);
-            bm = mo2.getMessge4Bean(MessageConvertDto.class);
+            MessageConvertDto bm = mo2.getMessge4Bean(MessageConvertDto.class);
             tyzfTradeService.asyncallBack(bm);
         } catch (FrameException e) {
             e.printStackTrace();
         }
-            return bm;
         }
 
 
