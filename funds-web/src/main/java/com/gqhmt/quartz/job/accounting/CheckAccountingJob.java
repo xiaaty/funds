@@ -50,6 +50,7 @@ public class CheckAccountingJob extends SupperJob {
         if (orderDate==null){
             return;
         }
+        LogUtil.info(this.getClass(),"核对"+orderDate.getOrderDate()+"的对账");
         isRunning = true;
         try {
             //查询所有充值体现转账新版满标新版回款数据
@@ -59,15 +60,18 @@ public class CheckAccountingJob extends SupperJob {
             if(CollectionUtils.isEmpty(checkAccountings)){
                 return;
             }
+            int i=0;
             for (FssCheckAccountingEntity check:checkAccountings) {
                 fssCheckAccountingService.checkFundOrder(check);
+                i++;
             }
+            LogUtil.info(this.getClass(),"本批次共核对"+i+"条对账信息");
+
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);
 
         }finally {
-            orderDate.setOrderUserState("98010001");
-            fssCheckDateService.update(orderDate);
+            fssCheckDateService.updateOrderUserState(orderDate);
             isRunning = false;
         }
 

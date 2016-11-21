@@ -53,7 +53,7 @@
                     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="jarviswidget" id="bloan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                             <header>
-                                <h2>快速搜索</h2>
+                                <h2>对账表数据</h2>
                             </header>
                             <!-- widget div-->
                             <div>
@@ -81,105 +81,80 @@
                                                 <tbody>
                                                 <tr></tr>
                                                 <tr>
-                                                    <td class="tr">订单编号：</td>
+                                                    <td class="tr">交易流水号：</td>
                                                     <td  >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                ${orderEntity.orderNo}
+                                                                ${ckEntity.orderNo}
                                                             </label>
                                                         </section>
                                                     </td>
-                                                    <td class="tr">出账账户编号：</td>
+                                                    <td class="tr">交易时间：</td>
                                                     <td  >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                ${orderEntity.accountId}
+                                                                ${ckEntity.tradeTime}
                                                             </label>
                                                         </section>
                                                     </td>
-                                                    <td class="tr">入账账户编号：</td>
-                                                    <td  >
+                                                    <td class="tr">交易金额(元)：</td>
+                                                    <td >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                ${orderEntity.toAccountId}
+                                                                <fss:money money="${ckEntity.amount}"/>
                                                             </label>
                                                         </section>
                                                     </td>
-                                                    <td class="tr">订单金额：</td>
+                                                    <td class="tr">账户名：</td>
                                                     <td  >
                                                         <section class="fl">
-                                                            <label class="input" >
-                                                                <fss:money money="${orderEntity.orderAmount}"/>
-                                                            </label>
-                                                        </section>
+                                                        <label class="input" >
+                                                        ${ckEntity.accName}
+                                                        </label>
+                                                         </section>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="tr">订单状态：</td>
+                                                    <td class="tr">客户姓名：</td>
                                                     <td  >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                ${orderEntity.orderState}
+                                                                ${ckEntity.userName}
                                                             </label>
                                                         </section>
                                                     </td>
-                                                    <td class="tr">第三方返回代码：</td>
+                                                    <td class="tr">入账账户名：</td>
                                                     <td  >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                ${orderEntity.retCode}
+                                                                ${ckEntity.toAccName}
                                                             </label>
                                                         </section>
                                                     </td>
 
-                                                    <td class="tr">第三方返回信息：</td>
+                                                    <td class="tr">入账客户名：</td>
                                                     <td  >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                ${orderEntity.retMessage}
+                                                                ${ckEntity.toUserName}
                                                             </label>
                                                         </section>
                                                     </td>
-                                                    <td class="tr">订单创建时间：</td>
+                                                    <td class="tr">状态：</td>
                                                     <td  >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                <fss:fmtDate value="${orderEntity.createTime}" />
+                                                                ${ckEntity.status}
                                                             </label>
                                                         </section>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="tr">最后更新时间：</td>
-                                                    <td  >
-                                                        <section class="fl">
-                                                            <label class="input" >
-                                                                <fss:fmtDate value="${orderEntity.lastModifyTime}" />
-                                                            </label>
-                                                        </section>
-                                                    </td>
                                                     <td class="tr">交易类型：</td>
                                                     <td  >
                                                         <section class="fl">
                                                             <label class="input" >
-                                                                <fss:dictView key="${orderEntity.tradeType}" />
-                                                            </label>
-                                                        </section>
-                                                    </td>
-
-                                                    <td class="tr">异常状态：</td>
-                                                    <td  >
-                                                        <section class="fl">
-                                                            <label class="input" >
-                                                                <fss:dictView key="${orderEntity.abnormalState}" />
-                                                            </label>
-                                                        </section>
-                                                    </td>
-                                                    <td class="tr">是否已处理：</td>
-                                                    <td  >
-                                                        <section class="fl">
-                                                            <label class="input" >
-                                                                <fss:dictView key="${orderEntity.handleState}" />
+                                                                <fss:dictView key="${ckEntity.tradeType}" />
                                                             </label>
                                                         </section>
                                                     </td>
@@ -188,11 +163,20 @@
                                             </table>
 
                                         </div>
+                                        <footer>
+                                            <c:if test="${type== '1104'}">
+                                                <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="enterAccount(${ckEntity.orderNo});" value="入&nbsp;&nbsp;&nbsp;账"/>
+                                            </c:if>
+                                            <c:if test="${type== '1119' || type=='1108'}">
+                                                <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="returnTrade(${ckEntity.orderNo});" value="反交易"/>
+                                            </c:if>
+
+                                            <input type="button" id="export" class="btn btn-default" onclick="handleState(${ckEntity.orderNo});" value="修改为已处理"/>
+                                        </footer>
                                     </div>
                                     <!-- end widget content -->
                                 </form>
                             </div>
-
 
                         </div>
                         <%--<div class="jarviswidget-editbox">--%>
@@ -207,13 +191,11 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>交易对账</h2>
+                            <h2>流水记录</h2>
                         </header>
                         <!-- widget div-->
                         <div>
                             <form class="smart-form" id="">
-                                <div class="jarviswidget-editbox">
-                                </div>
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
@@ -222,57 +204,30 @@
                                         <%-- <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_detail"><i class="fa fa-list-ul"></i>&nbsp;详情</button>--%>
                                     </div>
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4550px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2050px;">
                                         <col width="50" />
-                                        <col width="200" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="150" />
                                         <col width="200"/>
                                         <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="150"/>
+                                        <col width="100"/>
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="150"/>
-                                        <col width="200"/>
+                                        <col width="300"/>
                                         <col width="200"/>
                                         <col width="200"/>
                                         <thead>
                                         <tr>
-                                            <td></td> 
+                                            <td></td>
+                                            <td>订单号</td>
                                             <td>交易流水号</td>
-                                            <td>交易时间</td>
-                                            <td>记账流水  </td>
-                                            <td>记账日期   </td>
-                                            <td>充值方式</td>
-                                            <td>交易金额(元) </td>
-                                            <td>客户ID</td>
-                                            <td>账户</td>
-                                            <td>用户名 </td>
-                                            <td>用户名称 </td>
-                                            <td>入账客户ID </td>
-                                            <td>入账账户 </td>
-                                            <td>入账用户名 </td>
-                                            <td>入账用户名称 </td>
-                                            <td>业务合同号 </td>
-                                            <td>项目号 </td>
-                                            <td>备注 </td>
-                                            <td>状态 </td>
-                                            <td>交易类型 </td>
-                                            <td>是否对账 </td>
-                                            <td>对账结果 </td>
-                                            <td>异常状态 </td>
-                                            <td>导入日期 </td>
+                                            <td>操作类型</td>
+                                            <td>账户ID</td>
+                                            <td>来源账户id</td>
+                                            <td>交易类型  </td>
+                                            <td>变动金额  </td>
+                                            <td>摘要</td>
+                                            <td>创建时间 </td>
                                             <td>修改日期 </td>
                                         </tr>
                                         </thead>
@@ -280,41 +235,16 @@
                                         <c:forEach items="${page.list}" var="t"  varStatus="l">
                                                 <tr>
                                                     <td>${l.index+1}</td>
-                                                    <%--<td>${t.mortgageeAccNo}</td>
-                                                    <td>${t.accNo}</td>--%>
                                                     <td>${t.orderNo}</td>
-                                                    <td>${t.tradeTime}</td>
-                                                    <td>${t.accountingNo}</td>
-                                                    <td>${t.accountingTime}</td>
-                                                    <td>${t.rechargeWay}</td>
+                                                    <td>${t.sOrderNo}</td>
+                                                    <td>${t.actionType}</td>
+                                                    <td>${t.accountId}</td>
+                                                    <td>${t.oAccountId}</td>
+                                                    <td>${t.fundType}</td>
                                                     <td>
                                                         <fss:money money="${t.amount}"/>
                                                     </td>
-                                                    <td>${t.custId}</td>
-                                                    <td>${t.accNo}</td>
-                                                    <td>${t.accName}</td>
-                                                    <td>${t.userName}</td>
-                                                    <td>${t.toCustId}</td>
-                                                    <td>${t.toAccNo}</td>
-                                                    <td>${t.toAccName}</td>
-                                                    <td>${t.toUserName}</td>
-                                                    <td>${t.contractNo}</td>
-                                                    <td>${t.itemNo}</td>
-                                                    <td>${t.remark}</td>
-                                                    <td>${t.status}</td>
-                                                    <td>
-                                                        <fss:dictView key="${t.tradeType}" />
-                                                    </td>
-                                                    <td>
-	                                                    <fss:dictView key="${t.accountingStatus}" />
-                                                    </td>
-                                                    <td>
-	                                                    <fss:dictView key="${t.accountingResult}" />
-                                                    </td>
-                                                    <td>
-	                                                    <fss:dictView key="${t.abnormalState}" />
-                                                    </td>
-
+                                                    <td>${t.sumary}</td>
                                                     <td><fss:fmtDate value="${t.createTime}" /></td>
                                                     <td><fss:fmtDate value="${t.modifyTime}" /></td>
                                                 </tr>
@@ -322,6 +252,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                    </div>
                                 <!-- end widget content -->
                             </form>
                         </div>
@@ -352,7 +283,32 @@
     $('#return').click(function () {
         location.href="${contextPath}/checkAccounting/fundsOrder/${type}";
     })
-
+    function enterAccount(orderNo){
+        location.href="${contextPath}/checkAccounting/addAccounting/${type}/"+orderNo;
+    }
+    function handleState(orderNo){
+        location.href="${contextPath}/checkAccounting/addAccounting/${type}/"+orderNo;
+    }
+    function returnTrade(orderNo) {
+        if(confirm("您确认进行此操作码？")){
+            $.ajax({
+                url:"${contextPath}/checkAccounting/queryForFuiou",
+                method:"post",
+                data:{orderNo:orderNo},
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                dateType:"json",
+                success : function (data){
+                    if (data.code == '0000') {
+                        alert(data.msg);
+                    }else{
+                        alert(data.msg);
+                    }
+                },
+                error : function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            })
+        }
+    }
 
 
 </script>
