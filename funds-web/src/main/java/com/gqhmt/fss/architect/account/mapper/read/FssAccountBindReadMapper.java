@@ -16,4 +16,6 @@ public interface FssAccountBindReadMapper extends ReadMapper<FssAccountBindEntit
 
 	public FssAccountBindEntity getBindAccByParam(@Param("busiId")Long busiId,@Param("busiType")Integer busiType);
 
+	public FssAccountBindEntity getBindAccountBySeqNo(@Param("seqNo") String seqNo);
+
 }

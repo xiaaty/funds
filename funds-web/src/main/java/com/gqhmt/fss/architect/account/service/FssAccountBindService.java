@@ -116,5 +116,17 @@ public class FssAccountBindService {
         if (bindEntity == null) throw new FssException("90004034");//账户未绑定
         return bindEntity;
     }
+
+    /**
+     * 根据业务订单号查询绑定账户信息
+     * @param seqNo
+     * @return
+     */
+    public FssAccountBindEntity getBindAccountBySeqNo(String seqNo){
+        FssAccountBindEntity bindEntity = fssAccountBindReadMapper.getBindAccountBySeqNo(seqNo);
+        return bindEntity;
+    }
+
+
 }
 

@@ -28,4 +28,9 @@
         WHERE t.`busi_id`=#{busiId}
 		AND t.`busi_type`=#{busiType}
     </select>
+
+    <select id="getBindAccountBySeqNo" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBindEntity">
+        <include refid="selectSql"/>
+        WHERE t.`seq_no`=#{seqNo}
+    </select>
 </mapper>

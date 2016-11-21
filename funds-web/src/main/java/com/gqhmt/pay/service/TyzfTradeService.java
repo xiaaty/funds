@@ -244,8 +244,11 @@ public class TyzfTradeService {
       public FssAccountBindEntity createAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String  mobile,String chnlId,String accType) throws FssException{
            FssAccountBindEntity entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo,custName,mobile);
            if("1".equals(entity.getStatus())) return entity;
-           String accNO = this.createAccount(tradeType,custName,certNo,certType,busiNo,seq_no,accType,chnlId,mobile,custType);
-           fssAccountBindService.updateBindAccount(entity.getId(),"1",accNO,seq_no);
+//           String accNO = this.createAccount(tradeType,custName,certNo,certType,busiNo,seq_no,accType,chnlId,mobile,custType);
+//           fssAccountBindService.updateBindAccount(entity.getId(),"1",accNO,seq_no);
+
+//          -----------------------------------------------------------
+           this.createAccount(tradeType,custName,certNo,certType,busiNo,seq_no,accType,chnlId,mobile,custType);
            return entity;
       }
 
@@ -263,7 +266,7 @@ public class TyzfTradeService {
      * @return
      * @throws FssException
      */
-    public String createAccount(String tradeType,String custName,String certNo,String certType,String busiNo,String seq_no,String accType,String chnlId,String mobile,String custType) throws FssException{
+    public void createAccount(String tradeType,String custName,String certNo,String certType,String busiNo,String seq_no,String accType,String chnlId,String mobile,String custType) throws FssException{
         MessageConvertDto bean = new MessageConvertDto();
         //发送报文调用统一支付开户
         bean.setServiceId("0001");
@@ -287,11 +290,11 @@ public class TyzfTradeService {
         try {
             MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
             //统一支付开户成功返回结果
-            if("0000".equals(bm.getRespCode())){//开户成功
+            /* if("0000".equals(bm.getRespCode())){//开户成功
                 return bm.getCdtrAcctId();//统一支付返回的账号
             }else{
                 throw new FssException("90002044");
-            }
+            }*/
         } catch (Exception e) {
             throw new FssException("90002044");
         }
@@ -331,7 +334,7 @@ public class TyzfTradeService {
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
         try{
             MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
-            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
+//            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
@@ -364,7 +367,7 @@ public class TyzfTradeService {
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
         try{
             MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
-            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
+//            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
@@ -403,7 +406,7 @@ public class TyzfTradeService {
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);
         try{
             MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
-            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
+//            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
@@ -435,7 +438,7 @@ public class TyzfTradeService {
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
         try{
             MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
-            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
+//            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
@@ -467,7 +470,7 @@ public class TyzfTradeService {
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
         try{
             MessageConvertDto bm=conversionService.sendAndReceiveMsg(bean);
-            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
+//            if("!0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("90004035");
@@ -535,5 +538,44 @@ public class TyzfTradeService {
     //// TODO: 2016/11/14
 
     }
+
+    /**
+     * 异步回调结果通知
+     * @param bm
+     * @throws FssException
+     */
+    public void asyncallBack(MessageConvertDto bm) throws FssException{//业务流水号
+        if(GlobalConstants.TYZF_ACCTYPE.equals(bm.getTxnType())){//开户
+             if("0000".equals(bm.getRespCode())){//开户成功
+                 String seq_no=bm.getOrderId();
+                 String accNO=bm.getCdtrAcctId();//统一支付返回的账号
+                 FssAccountBindEntity entity = fssAccountBindService.getBindAccountBySeqNo(seq_no);
+                 fssAccountBindService.updateBindAccount(entity.getId(),"1",accNO,seq_no);
+            }
+        }
+        if(GlobalConstants.TYZF_RECHARGE.equals(bm.getTxnType())){//充值
+            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+        }
+        if(GlobalConstants.TYZF_WITHDRAW.equals(bm.getTxnType())){//提现
+            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+        }
+        if(GlobalConstants.TYZF_TRANSFER.equals(bm.getTxnType())){//转账
+            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+        }
+        if(GlobalConstants.TYZF_FRZEN.equals(bm.getTxnType())){//冻结
+            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+        }
+        if(GlobalConstants.TYZF_UNFRZEN.equals(bm.getTxnType())){//解冻
+            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+        }
+    }
+
+
+
+
+
+
+
+
 
 }
