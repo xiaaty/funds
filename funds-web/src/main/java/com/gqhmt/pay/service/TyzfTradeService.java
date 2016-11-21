@@ -319,7 +319,6 @@ public class TyzfTradeService {
         bean.setServiceId("0001");
         bean.setIsActual("N");//是否同步交易
         bean.setIsBatch("N");//是否批量
-        bean.setServiceId("0001");
         bean.setTxnType(GlobalConstants.TYZF_RECHARGE);//交易类型
         bean.setOrderId(seqNo);//业务订单号
         bean.setCdtMop("97010001");//通道编号
@@ -355,7 +354,6 @@ public class TyzfTradeService {
         bean.setServiceId("0001");
         bean.setIsActual("N");//是否同步交易
         bean.setIsBatch("N");//是否批量
-        bean.setServiceId("0001");
         bean.setTxnType(GlobalConstants.TYZF_WITHDRAW);//交易类型
         bean.setOrderId(seqNo);//业务订单号
         bean.setCdtMop("97010001");//通道编号
@@ -394,7 +392,6 @@ public class TyzfTradeService {
         bean.setServiceId("0001");
         bean.setIsActual("N");//是否同步交易
         bean.setIsBatch("N");//是否批量
-        bean.setServiceId("0001");
         bean.setTxnType(GlobalConstants.TYZF_TRANSFER);//交易类型
         bean.setOrderId(seqNo== null ? "" : seqNo);//业务订单号
         bean.setCdtMop("97010001");//通道编号
@@ -428,7 +425,6 @@ public class TyzfTradeService {
         bean.setServiceId("0001");
         bean.setIsActual("N");//是否同步交易
         bean.setIsBatch("N");//是否批量
-        bean.setServiceId("0001");
         bean.setTxnType(GlobalConstants.TYZF_FRZEN);//交易类型
         bean.setOrderId(seqNo);//业务订单号
         bean.setCdtMop("97010001");//通道编号
@@ -461,7 +457,6 @@ public class TyzfTradeService {
         bean.setServiceId("0001");
         bean.setIsActual("N");//是否同步交易
         bean.setIsBatch("N");//是否批量
-        bean.setServiceId("0001");
         bean.setTxnType(GlobalConstants.TYZF_UNFRZEN);//交易类型
         bean.setOrderId(seqNo);//业务订单号
         bean.setCdtMop("97010001");//通道编号
