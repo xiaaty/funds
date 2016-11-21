@@ -842,5 +842,14 @@ public class FundSequenceService {
     public List<FundSequenceEntity>  queryByOrderNo(String orderNo) throws FssException{
     	return fundSequenceReadMapper.queryByOrderNo(orderNo);
     }
+    /**
+     * jhz
+     * 查询提现次数
+     * @param accountId
+     * @return
+     */
+    public int  queryWithDrawCount(Long accountId) throws FssException{
+    	return fundSequenceReadMapper.queryWithDrawCount(accountId);
+    }
 
 }

@@ -171,5 +171,14 @@
 		<include refid="filedSql"/>
 		 WHERE t.order_no =#{orderNo}
 	 </select>
+	<!--查询提现次数-->
+	 <select id="queryWithDrawCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(id)
+		FROM t_gq_fund_sequence t
+		WHERE t.ACCOUNT_ID = #{accountId}
+		AND (t.fund_type = 1003 OR t.fund_type = 2003 OR t.fund_type = 1012)
+		AND DATE_FORMAT(t.create_time, '%Y%m') = DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m')
+	 </select>
 
 </mapper>
