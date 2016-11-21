@@ -32,26 +32,19 @@ public interface FundOrderReadMapper extends ReadMapper<FundOrderEntity> {
 
     /**
      * jhz
-     * 根据处长帐号查询所有交易订单
+     * 根据出账帐号查询所有交易订单
      * @param map
      * @param accNos
      * @return
      */
     public List<FundOrderEntity> findfundOrdesrs(@Param("map")Map map,@Param("accNos") List<Long> accNos);
 
-    public List<FundOrderEntity> queryFundOrder(Map<Object,Object> map);
 
     public int getWithdrawNum(@Param("accountID") Long accountId);
 
     public List<FundOrderBean> getFundOrderRechargeAndWithdraw(@Param("custId") Integer custId,@Param("order_type")int orderType,@Param("strTime")String strTime,@Param("endTime")String endTime);
 
     public FundOrderEntity getFundOrderByAccountId(@Param("accountId") Long accountId);
-    /**
-     * jhz
-     * 查询前一天的充值提现订单
-     * @return
-     */
-    public List<FundOrderEntity> getOrders(@Param("orderDate") String orderDate);
     /**
      * jhz
      * 查询异常订单列表

@@ -6,20 +6,17 @@ import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.bean.FundOrderBean;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
-import com.gqhmt.pay.exception.CommandParmException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -159,21 +156,6 @@ public class FundOrderService  {
         return year+month+dateString+String.format("%010d",d.longValue());
     }
 
-    public List<FundOrderEntity> queryFundOrder(int orderType,int orderSource,int orderFromId){
-    	Map<Object,Object> map=new HashMap<>();
-    	map.put("orderType", orderType);
-    	map.put("orderSource", orderSource);
-    	map.put("orderFromId", orderFromId);
-        return fundOrderReadMapper.queryFundOrder(map);
-    }
-
-    public boolean checkWithdrawNumber(Long accountId){
-//        int num = fundOrderReadMapper.getWithdrawNum(accountId);
-//        if(num > GlobalConstants.CHECK_WITHRAW_NUM)
-            return true;
-//        return false;
-    }
-    
     /**
      * 修改订单
      * @param fundOrderEntity
@@ -199,14 +181,6 @@ public class FundOrderService  {
 
     public FundOrderEntity getOrderNoByAccountId(Long accountId){
         return fundOrderReadMapper.getFundOrderByAccountId(accountId);
-    }
-    /**
-     * jhz
-     * 查询前一天的充值提现订单
-     * @return
-     */
-    public List<FundOrderEntity> getOrders(String orderDate)throws FssException{
-        return  fundOrderReadMapper.getOrders(orderDate);
     }
     /**
      * 订单list转map
