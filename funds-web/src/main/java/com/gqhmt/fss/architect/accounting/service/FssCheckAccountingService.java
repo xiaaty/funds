@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.core.util.ThreadExecutor;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
@@ -25,15 +24,12 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
-import com.gqhmt.pay.service.TradeRecordService;
-import com.gqhmt.quartz.job.accounting.CheckAccountingJob;
 import com.gqhmt.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.jsp.tagext.TryCatchFinally;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,7 +89,7 @@ public class FssCheckAccountingService {
     private FundOrderService fundOrderService;
 
     @Resource
-    private TradeRecordService tradeRecordService;
+    private FssCheckAccountingService fssCheckAccountingService;
 
     /**
      * jhz
@@ -463,14 +459,13 @@ public class FssCheckAccountingService {
     /**
      * jhz
      * 核对订单表状态和对账文件状态是否一致
+     * 98080001:正常;98080002:异常
      */
     public void  checkFundOrder(FssCheckAccountingEntity account)throws FssException{
-
-
         if(account == null){
             return;
         }
-        LogUtil.info(this.getClass(), "核对订单号为："+account.getOrderNo()+"的队长数据");
+        LogUtil.info(this.getClass(), "核对订单号为："+account.getOrderNo()+"的对账数据");
         FundOrderEntity order=fundOrderService.findfundOrder(account.getOrderNo());
         if(order == null){
             return;
@@ -490,10 +485,12 @@ public class FssCheckAccountingService {
                         int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
                         if (size == 2) {
                             fundOrderService.updateFundsOrder(order, "98080001", "98010001");
+                            account.setAbnormalState("98080001");
                             LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",转账数据正常");
                         } else {
                             fundOrderService.updateFundsOrder(order, "98080002", "98010002");
-                            LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",转账流水记录大于2条数据异常");
+                            account.setAbnormalState("98080002");
+                            LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",数据异常：转账流水记录大于2条");
                         }
                         }
                 //充值提现对账
@@ -501,15 +498,18 @@ public class FssCheckAccountingService {
                     int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
                     if(size==1){
                         fundOrderService.updateFundsOrder(order,"98080001","98010001");
+                        account.setAbnormalState("98080001");
                         LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值或提现数据正常");
                     }else if(size>1){
                         fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值或提现流水记录大于1条数据异常");
+                        account.setAbnormalState("98080002");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",数据异常：充值或提现流水记录大于1条");
 
                     }else{
                         //流水表无记录的话进行流水添加
                         fundOrderService.updateFundsOrder(order,"98080002","98010002");
-                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值或提现流水记录不存在数据异常");
+                        account.setAbnormalState("98080002");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",数据异常：充值或提现流水记录不存在");
                     }
                 }
             }
@@ -518,6 +518,7 @@ public class FssCheckAccountingService {
             order.setRetCode("0000");
             order.setOrderState(2 );
             fundOrderService.updateFundsOrder(order,"98080002","98010002");
+            account.setAbnormalState("98080002");
             LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+"数据异常");
         }
     }
@@ -530,18 +531,21 @@ public class FssCheckAccountingService {
      * @throws FssException
      */
     public void checkRepayment(FundOrderEntity order,FssCheckAccountingEntity account) throws FssException{
-        int size=fundSequenceService.getSizeBySOrderNo(order.getOrderNo());
+//        int size=fundSequenceService.getSizeBySOrderNo(order.getOrderNo());
         List<FundSequenceEntity> sequenceEntities=fundSequenceService.queryBySOrderNo(order.getOrderNo());
         if(sequenceEntities.size()==0){
             fundOrderService.updateFundsOrder(order, "98080002", "98010002");
-            LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",回款流水不存在数据异常");
+            account.setAbnormalState("98080002");
+            LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",数据异常：满标或回款流水不存在");
         } else {
             if(order.getOrderAmount().compareTo(sequenceEntities.get(0).getAmount().abs())==0){
                 fundOrderService.updateFundsOrder(order, "98080001", "98010001");
-                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",回款数据正常");
+                account.setAbnormalState("98080001");
+                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",满标或回款数据正常");
             } else {
                 fundOrderService.updateFundsOrder(order, "98080002", "98010002");
-                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",回款流水和订单金额不一致数据异常");
+                account.setAbnormalState("98080002");
+                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",数据异常：满标或回款流水和订单金额不一致");
             }
         }
     }
