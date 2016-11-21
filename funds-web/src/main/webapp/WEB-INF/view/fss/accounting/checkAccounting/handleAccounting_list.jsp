@@ -171,7 +171,7 @@
                                                 <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="returnTrade(${ckEntity.orderNo});" value="反交易"/>
                                             </c:if>
 
-                                            <input type="button" id="export" class="btn btn-default" onclick="handleState(${ckEntity.orderNo});" value="修改为已处理"/>
+                                            <input type="button" id="export" class="btn btn-default" onclick="handleState(${ckEntity.orderNo});" value="标记为已处理"/>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -287,7 +287,7 @@
         location.href="${contextPath}/checkAccounting/addAccounting/${type}/"+orderNo;
     }
     function handleState(orderNo){
-        location.href="${contextPath}/checkAccounting/addAccounting/${type}/"+orderNo;
+        location.href="${contextPath}/checkAccounting/handleState/${type}/"+orderNo;
     }
     function returnTrade(orderNo) {
         if(confirm("您确认进行此操作码？")){
