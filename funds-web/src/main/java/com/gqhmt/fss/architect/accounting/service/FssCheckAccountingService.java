@@ -430,7 +430,11 @@ public class FssCheckAccountingService {
      */
     public void updateFieldStatus(String orderNo) throws FssException {
         LogUtil.info(this.getClass(),"满标回款历史对账，更新ftpField对账异常状态，订单号：" + orderNo);
-        fuiouFtpColomFieldWriteMapper.updateStatusByorderNo(orderNo);
+        try {
+            fuiouFtpColomFieldWriteMapper.updateStatusByorderNo(orderNo);
+        } catch (Exception e) {
+            throw new FssException("更新ftpField对账异常状态失败，订单号为：[" + orderNo + "]", e);
+        }
     }
     /**
      * jhz
