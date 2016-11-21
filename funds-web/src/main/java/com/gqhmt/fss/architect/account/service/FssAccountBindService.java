@@ -94,7 +94,7 @@ public class FssAccountBindService {
      * @throws FssException
      */
    public void updateBindAccount(Long id,String status,String accNo,String seqNo) throws FssException {
-       FssAccountBindEntity fssAccountBindEntity = null;
+       FssAccountBindEntity fssAccountBindEntity = fssAccountBindReadMapper.selectByPrimaryKey(id);
        try {
             fssAccountBindEntity.setAccNo(accNo);
             fssAccountBindEntity.setStatus(status);
@@ -106,5 +106,15 @@ public class FssAccountBindService {
         }
     }
 
+    /**
+     * 校验账户是否已经绑定
+     * @param busiId
+     * @param busiType
+     */
+    public FssAccountBindEntity checkBindAccount(Long busiId,Integer busiType) throws FssException {
+        FssAccountBindEntity bindEntity = this.getBindAccountByParam(busiId, busiType);
+        if (bindEntity == null) throw new FssException("90004034");//账户未绑定
+        return bindEntity;
+    }
 }
 
