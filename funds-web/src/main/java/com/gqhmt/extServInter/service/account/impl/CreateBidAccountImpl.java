@@ -41,7 +41,7 @@ public class CreateBidAccountImpl implements ICreateBidAccount {
 		Response response=new Response();
     	try {
 			BidAccountDto cDto = (BidAccountDto)dto;
-			createAccountEvent.createBidAcocunt(cDto.getTrade_type(),cDto.getCust_no(),cDto.getCust_name(),cDto.getCert_no(),cDto.getMobile_phone(),cDto.getContract_no(),cDto.getSeq_no());
+			createAccountEvent.createBidAcocunt(cDto.getTrade_type(),cDto.getCust_no(),cDto.getCust_name(),cDto.getCert_no(),cDto.getMobile_phone(),cDto.getContract_no(),cDto.getSeq_no(),cDto.getBid_id());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.debug(this.getClass(), e);

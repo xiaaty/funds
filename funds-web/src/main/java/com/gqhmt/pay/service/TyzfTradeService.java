@@ -164,12 +164,11 @@ public class TyzfTradeService {
      * @param seq_no
      * @throws FssException
      */
-    public void createBidAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String contractNo,String seq_no,String mobile) throws FssException{
-        //开通标的账户
+    public void createBidAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String contractNo,String seq_no,String mobile,Long bid_id) throws FssException{
+        if(bid_id==null) throw new FssException("90002045");
         if(contractNo==null || "".equals(contractNo)) throw new FssException("90002016");
         //判断是否开通借款账户
         this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,mobile);
-        Long bid_id = bidService.getBidByContractNo(contractNo);//根据借款合同号查询标的id
         this.createAccount(tradeType,bid_id,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,90,mobile,"30130001","30010015");
     }
 
