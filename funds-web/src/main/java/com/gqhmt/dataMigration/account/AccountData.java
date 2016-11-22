@@ -60,24 +60,25 @@ public class AccountData {
         //获取客户信息
         List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
         for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
-            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
+            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
             if(priEntity.getHasThirdAccount() == 2){
-                //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
-                this.createInternetAccount(customerInfoEntity);  //开通互联网账户
-
-                //验证是否存在线下出借合同，如有，开通线下出借账户
-                int count = investmentService.queryByCustId(customerInfoEntity.getId().intValue());
-                if(count>0) {
-                    this.createInvestmentAccount(customerInfoEntity);  //开通线下出借账户
-                }
-                //验证是否存在借款合同
-                int res = bidService.queryBidByCustId(customerInfoEntity.getId().intValue());
-                if ( res>0) {
-                    this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
-                }
                 //处理对公账户
                 if(customerInfoEntity.getId()<=100){
                     this.createBusiAccount(customerInfoEntity);
+                }else{
+                    //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
+                    this.createInternetAccount(customerInfoEntity);  //开通互联网账户
+
+                    //验证是否存在线下出借合同，如有，开通线下出借账户
+                    int count = investmentService.queryByCustId(customerInfoEntity.getId().intValue());
+                    if(count>0) {
+                        this.createInvestmentAccount(customerInfoEntity);  //开通线下出借账户
+                    }
+                    //验证是否存在借款合同
+                    int res = bidService.queryBidByCustId(customerInfoEntity.getId().intValue());
+                    if ( res>0) {
+                        this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
+                    }
                 }
             }
 
