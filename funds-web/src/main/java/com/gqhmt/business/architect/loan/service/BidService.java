@@ -92,7 +92,7 @@ public class BidService {
 	 */
     public Long getBidByContractNo(String contractNo) throws FssException {
 		Bid bid =  bidReadMapper.getBidByContractNo(contractNo);
-		if(bid == null ) throw new FssException("");
+		if(bid == null ) throw new FssException("90002045");
 		return bid.getId().longValue();
 	}
 }

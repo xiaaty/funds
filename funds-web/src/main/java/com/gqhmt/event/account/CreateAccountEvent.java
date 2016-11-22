@@ -165,12 +165,15 @@ public class CreateAccountEvent {
     /**
      * 标的开户
      * @param trade_type
-     * @param busi_no
-     * @param busi_no
+     * @param cust_no
+     * @param cust_name
+     * @param cert_no
+     * @param mobile_phone
+     * @param contract_no
      * @param seq_no
      * @throws FssException
      */
-    public void createBidAcocunt(String trade_type,String cust_no,String cust_name,String cert_no,String mobile_phone,String bid_id,String busi_no,String seq_no) throws FssException {
-        tyzfTradeService.createBidAcocunt(trade_type, null, null, null, null, "01", busi_no, seq_no,null);
+    public void createBidAcocunt(String trade_type,String cust_no,String cust_name,String cert_no,String mobile_phone,String contract_no,String seq_no) throws FssException {
+        tyzfTradeService.createBidAcocunt(trade_type,Long.valueOf(cust_no),cust_name,cert_no,"1",contract_no,seq_no,mobile_phone);
     }
 }

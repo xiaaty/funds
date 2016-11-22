@@ -158,20 +158,19 @@ public class TyzfTradeService {
      * @param tradeType
      * @param custId
      * @param custName
-     * @param custType
      * @param certNo
      * @param certType
-     * @param busiNo
+     * @param contractNo
      * @param seq_no
      * @throws FssException
      */
-    public void createBidAcocunt(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile) throws FssException{
+    public void createBidAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String contractNo,String seq_no,String mobile) throws FssException{
         //开通标的账户
-        if(busiNo==null || "".equals(busiNo)) throw new FssException("90002016");
+        if(contractNo==null || "".equals(contractNo)) throw new FssException("90002016");
         //判断是否开通借款账户
-        this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,busiNo,seq_no,mobile);
-        Long bid_id = bidService.getBidByContractNo(busiNo);//根据借款合同号查询标的id
-        this.createAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,busiNo,seq_no,90,mobile,"30130001","30010015");
+        this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,mobile);
+        Long bid_id = bidService.getBidByContractNo(contractNo);//根据借款合同号查询标的id
+        this.createAccount(tradeType,bid_id,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,90,mobile,"30130001","30010015");
     }
 
     /**
