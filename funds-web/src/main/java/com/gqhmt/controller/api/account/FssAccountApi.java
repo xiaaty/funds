@@ -3,7 +3,10 @@ package com.gqhmt.controller.api.account;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.VerifiedAccountDto;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.ICreateBidAccount;
+import com.gqhmt.extServInter.service.account.IVerifiedCreateAccount;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.context.ApplicationContext;
@@ -47,8 +50,12 @@ public class FssAccountApi {
 
     @Resource
     private ConversionService conversionService;
-    
-    
+
+    @Resource
+    private IVerifiedCreateAccount verifiedCreateAccountImpl;
+
+    @Resource
+    private ICreateBidAccount createBidAccount;
     /**
      * 富友开户,通用接口
      * @param createAccountByFuiou
@@ -112,5 +119,42 @@ public class FssAccountApi {
         response.setResp_code(e.getMessage());
         return response;
     }
+
+
+    /**
+     *调用实名认证开户接口
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/createVerifiedAccount",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object createVerifiedAccount(VerifiedAccountDto dto){
+        Response response= new Response();
+        try {
+            response = verifiedCreateAccountImpl.execute(dto);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
+
+    /**
+     * 标的开户
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/createBidAccount",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object createBidAccount(VerifiedAccountDto dto){
+        Response response= new Response();
+        try {
+            response = verifiedCreateAccountImpl.execute(dto);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
+
+
+
+
 
 }

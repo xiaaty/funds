@@ -8,9 +8,8 @@ import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.CreateAccountResponse;
-import com.gqhmt.extServInter.service.account.ICreateAccount;
-import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.extServInter.dto.account.VerifiedAccountDto;
+import com.gqhmt.extServInter.service.account.IVerifiedCreateAccount;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,25 +19,24 @@ import javax.annotation.Resource;
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
- * @author 于泳
+ * @author keyulai
  * @version: 1.0
  * @since: JDK 1.7
  * Create at:   16/2/19 16:02
- * Description:
+ * Description: 实名认证开户
  * <p/>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 16/2/19  于泳      1.0     1.0 Version
+ * 16/11/22  keyulai      1.0     1.0 Version
  */
 @Service
-public class CreateAccountImpl implements ICreateAccount{
+public class VerifiedCreateAccountImpl implements IVerifiedCreateAccount {
 	@Resource
 	private CreateAccountEvent createAccountEvent;
-	
 
 	/**
-	 * 11020001:wap开户r
+	 * 11020001:wap开户
 	 * 11020002:web开户
 	 * 11020003:安卓开户
 	 * 11020004:微信开户
@@ -52,17 +50,16 @@ public class CreateAccountImpl implements ICreateAccount{
 	 * 11020015:app开户
 	 * 11020017:新版wap开户
 	 * 11020019:标的开户
-	 * 11029100:数据迁移
+	 *
+	 *
 	 */
 	@APITradeTypeValid(value = "11020001,11020002,11020003,11020004,11020005,11020006,11020007,11020008,11020009,11020010,11020014,11020015,11020017,11020019,11029100,11020020,11020021,11020022")
     @Override
     public Response execute(SuperDto dto) {
-    	CreateAccountResponse response = new CreateAccountResponse();
+		Response response=new Response();
     	try {
-			CreateAccountDto cDto = (CreateAccountDto)dto;
-			Integer bankId = createAccountEvent.createAccount(cDto.getTrade_type(),cDto.getName(),cDto.getMobile(),cDto.getCert_no(),
-					Long.parseLong(cDto.getCust_no()),cDto.getMchn(),cDto.getBank_id(),cDto.getBank_card(),cDto.getCity_id(),cDto.getBusi_no(),null,cDto.getSeq_no());
-    		response.setId(bankId);
+			VerifiedAccountDto cDto = (VerifiedAccountDto)dto;
+			createAccountEvent.createVerifiedAccount(cDto.getTrade_type(),cDto.getCust_no(),cDto.getCust_name(),cDto.getCert_no(),cDto.getMobile_phone(),cDto.getBusi_no(),cDto.getSeq_no());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.debug(this.getClass(), e);
