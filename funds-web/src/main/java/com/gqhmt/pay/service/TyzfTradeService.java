@@ -96,7 +96,7 @@ public class TyzfTradeService {
         }
         //创建对公账户 收费账户：11020021、其他开户：11020022
         if("11020020".equals(tradeType) || "11020021".equals(tradeType) || "11020022".equals(tradeType)){
-            this.createBusiAccount(tradeType,custId,custName,GlobalConstants.TYZF_COMPCUST,certNo,certType,busiNo,seq_no,mobile);
+            this.createBusiAccount(tradeType,custId,custName,certNo,certType,seq_no,mobile);
         }
     }
 
@@ -158,20 +158,18 @@ public class TyzfTradeService {
      * @param tradeType
      * @param custId
      * @param custName
-     * @param custType
      * @param certNo
      * @param certType
-     * @param busiNo
+     * @param contractNo
      * @param seq_no
      * @throws FssException
      */
-    public void createBidAcocunt(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile) throws FssException{
-        //开通标的账户
-        if(busiNo==null || "".equals(busiNo)) throw new FssException("90002016");
+    public void createBidAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String contractNo,String seq_no,String mobile,Long bid_id) throws FssException{
+        if(bid_id==null) throw new FssException("90002045");
+        if(contractNo==null || "".equals(contractNo)) throw new FssException("90002016");
         //判断是否开通借款账户
-        this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,busiNo,seq_no,mobile);
-        Long bid_id = bidService.getBidByContractNo(busiNo);//根据借款合同号查询标的id
-        this.createAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,busiNo,seq_no,90,mobile,"30130001","30010015");
+        this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,mobile);
+        this.createAccount(tradeType,bid_id,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,90,mobile,"30130001","30010015");
     }
 
     /**
@@ -179,14 +177,12 @@ public class TyzfTradeService {
      * @param tradeType
      * @param custId
      * @param custName
-     * @param custType
      * @param certNo
      * @param certType
-     * @param busiNo
      * @param seq_no
      * @throws FssException
      */
-    public void createBusiAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile) throws FssException{
+    public void createBusiAccount(String tradeType,Long custId,String custName,String certNo,String certType,String seq_no,String mobile) throws FssException{
         //开通对公账户
         Integer busi_type=null;
         String accType=null;//统一支付8位账户类型
@@ -202,7 +198,7 @@ public class TyzfTradeService {
             busi_type=50;
             accType="30010017";
         }
-        this.createOnThePublicAcocunt(tradeType,custId,custName,certNo,certType,busiNo,seq_no,busi_type,mobile,accType);
+        this.createOnThePublicAcocunt(tradeType,custId,custName,certNo,certType,seq_no,busi_type,mobile,accType);
     }
 
     /**
@@ -212,14 +208,13 @@ public class TyzfTradeService {
      * @param custName
      * @param certNo
      * @param certType
-     * @param busiNo
      * @param seq_no
      * @param busi_type
      * @return
      * @throws FssException
      */
-     public void createOnThePublicAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String mobile,String accType) throws FssException{
-         this.createAccount(tradeType,custId,custName,GlobalConstants.TYZF_COMPCUST,certNo,certType,busiNo,seq_no,busi_type,mobile,"30040002",accType);
+     public void createOnThePublicAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String seq_no,Integer busi_type,String mobile,String accType) throws FssException{
+         this.createAccount(tradeType,custId,custName,GlobalConstants.TYZF_COMPCUST,certNo,certType,null,seq_no,busi_type,mobile,"30040002",accType);
      }
 
     /**

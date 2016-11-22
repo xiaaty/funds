@@ -13,6 +13,8 @@ import com.gqhmt.pay.service.TyzfTradeService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,7 +55,7 @@ public class AccountData {
         //获取客户信息
         List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
         for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
-            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
+            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
             if(priEntity.getHasThirdAccount() == 2){
                 //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
                 this.createInternetAccount(customerInfoEntity);  //开通互联网账户
@@ -69,7 +71,10 @@ public class AccountData {
                     this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
                 }
             }
-
+            //处理对公账户
+            if(customerInfoEntity.getId()<=100){
+                this.createBusiAccount(customerInfoEntity);
+            }
         }
 
         //处理标的账户
@@ -80,14 +85,16 @@ public class AccountData {
             this.createLoanBidAccount(bid.getId().longValue(),bid.getContractNo(),customerInfoEntity);
         }
 
+
     }
 
     /**
      * 开通互联网账户
      * @param customerInfoEntity
      */
-    public void createInternetAccount(CustomerInfoEntity customerInfoEntity){
-//        tyzfTradeService.createInternetAccount()
+    public void createInternetAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+        String seq_no=this.createSeqNo("11029100");
+        tyzfTradeService.createInternetAccount("11029100",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(),seq_no,customerInfoEntity.getMobilePhone());
     }
 
 
@@ -95,26 +102,48 @@ public class AccountData {
      * 开通线下出借账户
      * @param customerInfoEntity
      */
-    public void createInvestmentAccount(CustomerInfoEntity customerInfoEntity){
-
+    public void createInvestmentAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+        String seq_no=this.createSeqNo("11020006");
+        tyzfTradeService.createInvstmentAccount("11020006",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), null, seq_no, customerInfoEntity.getMobilePhone());
     }
 
     /**
      * 开通借款人信贷账户
      * @param customerInfoEntity
      */
-    public void createLoanAccount(CustomerInfoEntity customerInfoEntity){
-
+    public void createLoanAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+        String seq_no=this.createSeqNo("11020007");
+        tyzfTradeService.createLoanAccount("11020007",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), null, seq_no, customerInfoEntity.getMobilePhone());
     }
 
     /**
      * 开通借款人标的账户
      * @param customerInfoEntity
      */
-    public void createLoanBidAccount(Long bid_id,String contract_no,CustomerInfoEntity customerInfoEntity){
-
+    public void createLoanBidAccount(Long bid_id,String contract_no,CustomerInfoEntity customerInfoEntity) throws FssException{
+        String seq_no=this.createSeqNo("11020019");
+        tyzfTradeService.createBidAcocunt("11020019",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), contract_no, seq_no, customerInfoEntity.getMobilePhone(),bid_id);
     }
 
+    /**
+     * 创建对公账户
+      * @param customerInfoEntity
+     * @throws FssException
+     */
+    public void createBusiAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+       String seq_no=this.createSeqNo("11020022");
+       tyzfTradeService.createBusiAccount("11020022",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(),seq_no, customerInfoEntity.getMobilePhone());
+    }
+
+    /**
+     * 生成一个流水号
+     * @return
+     */
+    public String createSeqNo(String tradeType){
+        String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String seq_no=tradeType+date;
+        return seq_no;
+    }
 
 
 }
