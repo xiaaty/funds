@@ -358,9 +358,7 @@ public class FssCheckAccountingService {
         List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(orderDate);
         //当天每一笔订单对账
         for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
-            int ret = fssCheckDateService.updateInputUserState(orderDate);//更新对账日期为已对账
-            if (ret !=1)
-                throw new FssException("更新对账日期失败！");
+            fssCheckDateService.updateInputUserState(orderDate);//更新对账日期为已对账
 
             orderNo = fuiouFtpOrder.getOrderNo();
             LogUtil.info(this.getClass(),"满标回款历史对账，查询ftpField和FtpOrder订单号" + orderNo);
@@ -432,9 +430,11 @@ public class FssCheckAccountingService {
      */
     public void updateFieldStatus(String orderNo) throws FssException {
         LogUtil.info(this.getClass(),"满标回款历史对账，更新ftpField对账异常状态，订单号：" + orderNo);
-        int result = fuiouFtpColomFieldWriteMapper.updateStatusByorderNo(orderNo);
-        if (1 != result)
-            throw new FssException("差异帐处理更新异常失败！订单号：[" + orderNo + "]");
+        try {
+            fuiouFtpColomFieldWriteMapper.updateStatusByorderNo(orderNo);
+        } catch (Exception e) {
+            throw new FssException("更新ftpField对账异常状态失败，订单号为：[" + orderNo + "]", e);
+        }
     }
     /**
      * jhz
