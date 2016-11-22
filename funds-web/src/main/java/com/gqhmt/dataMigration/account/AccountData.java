@@ -55,7 +55,7 @@ public class AccountData {
         //获取客户信息
         List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
         for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
-            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PAYMENT);
+            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
             if(priEntity.getHasThirdAccount() == 2){
                 //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
                 this.createInternetAccount(customerInfoEntity);  //开通互联网账户
@@ -71,7 +71,10 @@ public class AccountData {
                     this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
                 }
             }
-
+            //处理对公账户
+            if(customerInfoEntity.getId()<=100){
+                this.createBusiAccount(customerInfoEntity);
+            }
         }
 
         //处理标的账户
@@ -81,6 +84,7 @@ public class AccountData {
             CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(bid.getCustomerId().longValue());
             this.createLoanBidAccount(bid.getId().longValue(),bid.getContractNo(),customerInfoEntity);
         }
+
 
     }
 
@@ -119,6 +123,16 @@ public class AccountData {
     public void createLoanBidAccount(Long bid_id,String contract_no,CustomerInfoEntity customerInfoEntity) throws FssException{
         String seq_no=this.createSeqNo("11020019");
         tyzfTradeService.createBidAcocunt("11020019",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), contract_no, seq_no, customerInfoEntity.getMobilePhone(),bid_id);
+    }
+
+    /**
+     * 创建对公账户
+      * @param customerInfoEntity
+     * @throws FssException
+     */
+    public void createBusiAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+       String seq_no=this.createSeqNo("11020022");
+       tyzfTradeService.createBusiAccount("11020022",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(),seq_no, customerInfoEntity.getMobilePhone());
     }
 
     /**
