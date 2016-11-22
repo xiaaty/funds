@@ -149,4 +149,28 @@ public class CreateAccountEvent {
         tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,customerInfoEntity.getMobilePhone());
         return bankCardInfoEntity.getId();
     }
+
+    /**
+     * 实名认证开户
+     * @param trade_type
+     * @param cert_no
+     * @param cust_name
+     * @param seq_no
+     * @throws FssException
+     */
+    public void createVerifiedAccount(String trade_type,String cust_no,String cust_name,String cert_no,String mobile_phone,String busi_no,String seq_no) throws FssException {
+        tyzfTradeService.createTyzfAccount(trade_type,Long.valueOf(cust_no),cust_name,cert_no,"01",busi_no,seq_no,mobile_phone);
+    }
+
+    /**
+     * 标的开户
+     * @param trade_type
+     * @param busi_no
+     * @param busi_no
+     * @param seq_no
+     * @throws FssException
+     */
+    public void createBidAcocunt(String trade_type,String cust_no,String cust_name,String cert_no,String mobile_phone,String bid_id,String busi_no,String seq_no) throws FssException {
+        tyzfTradeService.createBidAcocunt(trade_type, null, null, null, null, "01", busi_no, seq_no,null);
+    }
 }

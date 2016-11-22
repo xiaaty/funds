@@ -1,6 +1,9 @@
 package com.gqhmt.listener;
 
+import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.service.ConversionService;
+import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
 import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
 import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
@@ -32,21 +35,20 @@ public class AmqReceiveListener implements ServletContextListener {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                AmqSendAndReceive asr = new AmqReceiver("AMQ.TTT3");
+                AmqSendAndReceive asr = new AmqReceiver(CoreConstants.MQ_RESIVE_NAME);
                 System.out.println("接收线程启动");
                 while (AmqReceiveListener.flag == 1) {
                     try {
                         Message msg = asr.receiveMessage();
                         TextMessage tm = (TextMessage) msg;
-                        System.out.println("接收道的报文："+tm.getText());
+                        LogUtil.info(this.getClass(),"接收到的报文信息:"+tm.getText());
                         conversionService.ReceiveMqMsg(tm.getText());
                     } catch (AmqException e) {
-                        e.printStackTrace();
+                        LogUtil.error(this.getClass(), e.getMessage());
                     } catch (JMSException e) {
-                        e.printStackTrace();
+                        LogUtil.error(this.getClass(), e.getMessage());
                     }catch (Exception e){
-                        System.out.println(e.getMessage());
-                        e.printStackTrace();
+                        LogUtil.error(this.getClass(), e.getMessage());
                     }
                 }
             }
