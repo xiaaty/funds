@@ -19,7 +19,6 @@ import com.gqhmt.extServInter.dto.SuperDto;
  */
 public class BidAccountDto extends SuperDto {
 
-
     @APIValidNull(errorCode = "90002006")
     private String cust_no;//借款人客户编号
 
@@ -28,6 +27,9 @@ public class BidAccountDto extends SuperDto {
 
     @APIValidNull(errorCode = "90002010")
     private String cert_no;	//身份证号
+
+    @APIValidNull(errorCode = "90002045")
+    private String bid_id;//标的号
 
     @APIValidNull(errorCode = "90002022")
 	private String contract_no;//借款合同号
@@ -73,5 +75,13 @@ public class BidAccountDto extends SuperDto {
 
     public void setContract_no(String contract_no) {
         this.contract_no = contract_no;
+    }
+
+    public String getBid_id() {
+        return bid_id;
+    }
+
+    public void setBid_id(String bid_id) {
+        this.bid_id = bid_id;
     }
 }
