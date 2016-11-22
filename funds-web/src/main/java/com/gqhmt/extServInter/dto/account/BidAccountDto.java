@@ -29,11 +29,8 @@ public class BidAccountDto extends SuperDto {
     @APIValidNull(errorCode = "90002010")
     private String cert_no;	//身份证号
 
-    @APIValidNull(errorCode = "90002045")
-	private String bid_id;//标的id
-
     @APIValidNull(errorCode = "90002022")
-	private String busi_no;//借款合同号
+	private String contract_no;//借款合同号
 
     @APIValidNull(errorCode = "90002009")
     private String mobile_phone;//手机号
@@ -70,19 +67,11 @@ public class BidAccountDto extends SuperDto {
         this.mobile_phone = mobile_phone;
     }
 
-    public String getBid_id() {
-        return bid_id;
+    public String getContract_no() {
+        return contract_no;
     }
 
-    public void setBid_id(String bid_id) {
-        this.bid_id = bid_id;
-    }
-
-    public String getBusi_no() {
-        return busi_no;
-    }
-
-    public void setBusi_no(String busi_no) {
-        this.busi_no = busi_no;
+    public void setContract_no(String contract_no) {
+        this.contract_no = contract_no;
     }
 }
