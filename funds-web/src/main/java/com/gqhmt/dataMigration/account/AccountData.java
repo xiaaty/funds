@@ -5,8 +5,6 @@ import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.architect.account.bean.FssMappingBean;
-import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
@@ -52,9 +50,6 @@ public class AccountData {
 
     @Resource
     private BidService bidService;
-
-    @Resource
-    private FssMappingService fssMappingService;
 
     public void accountData(String createDate) throws FssException {
         //获取客户信息
