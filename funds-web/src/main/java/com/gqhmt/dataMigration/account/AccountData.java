@@ -5,6 +5,8 @@ import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.fss.architect.account.bean.FssMappingBean;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
@@ -51,6 +53,9 @@ public class AccountData {
     @Resource
     private BidService bidService;
 
+    @Resource
+    private FssMappingService fssMappingService;
+
     public void accountData(String createDate) throws FssException {
         //获取客户信息
         List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
@@ -70,6 +75,10 @@ public class AccountData {
                 if ( res>0) {
                     this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
                 }
+                //处理对公账户
+                if(customerInfoEntity.getId()<=100){
+                    this.createBusiAccount(customerInfoEntity);
+                }
             }
 
         }
@@ -81,6 +90,7 @@ public class AccountData {
             CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(bid.getCustomerId().longValue());
             this.createLoanBidAccount(bid.getId().longValue(),bid.getContractNo(),customerInfoEntity);
         }
+
 
     }
 
@@ -119,6 +129,16 @@ public class AccountData {
     public void createLoanBidAccount(Long bid_id,String contract_no,CustomerInfoEntity customerInfoEntity) throws FssException{
         String seq_no=this.createSeqNo("11020019");
         tyzfTradeService.createBidAcocunt("11020019",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), contract_no, seq_no, customerInfoEntity.getMobilePhone(),bid_id);
+    }
+
+    /**
+     * 创建对公账户
+      * @param customerInfoEntity
+     * @throws FssException
+     */
+    public void createBusiAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+       String seq_no=this.createSeqNo("11020022");
+       tyzfTradeService.createBusiAccount("11020022",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(),seq_no, customerInfoEntity.getMobilePhone());
     }
 
     /**
