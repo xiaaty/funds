@@ -55,6 +55,12 @@ public class AccountData {
         //获取客户信息
         List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
         for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
+            //处理对公账户
+            if(customerInfoEntity.getId()<99){
+                this.createBusiAccount(customerInfoEntity);
+                continue;
+            }
+
             FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
             if(priEntity.getHasThirdAccount() == 2){
                 //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
@@ -71,10 +77,7 @@ public class AccountData {
                     this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
                 }
             }
-            //处理对公账户
-            if(customerInfoEntity.getId()<=100){
-                this.createBusiAccount(customerInfoEntity);
-            }
+
         }
 
         //处理标的账户

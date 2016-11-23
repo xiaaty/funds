@@ -62,13 +62,13 @@ public class DataAccount extends SupperJob {
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         Calendar calendar = new GregorianCalendar(2015,01,01);
         Calendar now = Calendar.getInstance();
-        int nowTime = Integer.parseInt(df.format(now));
-        int startTime = Integer.parseInt(df.format(calendar));
+        int nowTime = Integer.parseInt(df.format(now.getTime()));
+        int startTime = Integer.parseInt(df.format(calendar.getTime()));
         while(startTime<=nowTime){
             try {
                 accountData.accountData(String.valueOf(startTime));
                 calendar.add(Calendar.DATE,1);
-                startTime = Integer.parseInt(df.format(calendar));
+                startTime = Integer.parseInt(df.format(calendar.getTime()));
             } catch (FssException e) {
                 LogUtil.error(this.getClass(),e);
                 continue;
