@@ -86,6 +86,7 @@
                                                         <section class="fl">
                                                             <label class="input" >
                                                                 ${ckEntity.orderNo}
+                                                                    <input  id="order" type="hidden"  value="${ckEntity.orderNo}"/>
                                                             </label>
                                                         </section>
                                                     </td>
@@ -165,13 +166,14 @@
                                         </div>
                                         <footer>
                                             <c:if test="${type== '1104'}">
-                                                <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="enterAccount(${ckEntity.orderNo});" value="入&nbsp;&nbsp;&nbsp;账"/>
+                                                <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="enterAccount();" value="入&nbsp;&nbsp;&nbsp;账"/>
                                             </c:if>
                                             <c:if test="${type== '1119' || type=='1108'}">
-                                                <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="returnTrade(${ckEntity.orderNo});" value="反交易"/>
+                                                <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="returnTrade();" value="反交易"/>
                                             </c:if>
 
-                                            <input type="button" id="export" class="btn btn-default" onclick="handleState(${ckEntity.orderNo});" value="标记为已处理"/>
+                                            <input type="button" id="export" class="btn btn-default" onclick="handleState();" value="不处理"/>
+
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -283,13 +285,14 @@
     $('#return').click(function () {
         location.href="${contextPath}/checkAccounting/fundsOrder/${type}";
     })
-    function enterAccount(orderNo){
-        location.href="${contextPath}/checkAccounting/addAccounting/${type}/"+orderNo;
+    function enterAccount(){
+        location.href="${contextPath}/checkAccounting/addAccounting/${type}/"+$("#order").val();
     }
-    function handleState(orderNo){
-        location.href="${contextPath}/checkAccounting/handleState/${type}/"+orderNo;
+    function handleState(){
+        location.href="${contextPath}/checkAccounting/handleState/${type}/"+$("#order").val();
     }
-    function returnTrade(orderNo) {
+    function returnTrade() {
+        var orderNo=$("#order").val();
         if(confirm("您确认进行此操作码？")){
             $.ajax({
                 url:"${contextPath}/checkAccounting/queryForFuiou",
