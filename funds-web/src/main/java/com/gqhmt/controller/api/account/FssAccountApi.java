@@ -3,9 +3,11 @@ package com.gqhmt.controller.api.account;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.LogOutAccountDto;
 import com.gqhmt.extServInter.dto.account.VerifiedAccountDto;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
 import com.gqhmt.extServInter.service.account.ICreateBidAccount;
+import com.gqhmt.extServInter.service.account.ILogOutAccount;
 import com.gqhmt.extServInter.service.account.IVerifiedCreateAccount;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.pay.service.account.IFundsAccount;
@@ -55,7 +57,10 @@ public class FssAccountApi {
     private IVerifiedCreateAccount verifiedCreateAccountImpl;
 
     @Resource
-    private ICreateBidAccount createBidAccount;
+    private ICreateBidAccount createBidAccountImpl;
+
+    @Resource
+    private ILogOutAccount logOutAccountImpl;
     /**
      * 富友开户,通用接口
      * @param createAccountByFuiou
@@ -146,15 +151,26 @@ public class FssAccountApi {
     public Object createBidAccount(VerifiedAccountDto dto){
         Response response= new Response();
         try {
-            response = verifiedCreateAccountImpl.execute(dto);
+            response = createBidAccountImpl.execute(dto);
         } catch (Exception e) {
             response = this.execute(e);
         }
         return response;
     }
 
-
-
-
-
+    /**
+     *账户注销
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/logOutAccount",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object logOutAccount(LogOutAccountDto dto){
+        Response response= new Response();
+        try {
+            response = logOutAccountImpl.execute(dto);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
 }
