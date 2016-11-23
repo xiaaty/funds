@@ -176,4 +176,20 @@ public class CreateAccountEvent {
     public void createBidAcocunt(String trade_type,String cust_no,String cust_name,String cert_no,String mobile_phone,String contract_no,String seq_no,String bid_id) throws FssException {
         tyzfTradeService.createBidAcocunt(trade_type,Long.valueOf(cust_no),cust_name,cert_no,"1",contract_no,seq_no,mobile_phone,Long.valueOf(bid_id));
     }
+
+    /**
+     * 账户注销
+     * @param trade_type
+     * @param cust_no
+     * @param cust_name
+     * @param cert_no
+     * @param mobile_phone
+     * @param seq_no
+     * @throws FssException
+     */
+    public void LogOutAccount(String trade_type,String cust_no,String cust_name,String cert_no,String mobile_phone,String seq_no) throws FssException {
+        tyzfTradeService.logOutAccount(trade_type,cust_no,cust_name,cert_no,seq_no,mobile_phone);
+    }
+
+
 }
