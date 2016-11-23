@@ -84,5 +84,10 @@
 		</if>
 		ORDER BY  t.create_time DESC
 	</select>
+
+	<select id="getFundOrderByFromId" parameterType="java.lang.Long" resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
+		<include refid="filedSql"/>
+		WHERE t.order_frorm_id = #{orderFrormId}
+	</select>
 </mapper>
  
