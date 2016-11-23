@@ -477,7 +477,13 @@ public class FssCheckAccountingService {
         if(StringUtils.equals("交易成功",account.getStatus())){
             account.setStatus("0000");
         }
-
+        if(order.getOrderState()==2){
+            order.setRetCode("0000");
+        }else{
+            if(order.getRetCode()==null){
+                order.setRetCode("0001");
+            }
+        }
         if(order.getRetCode().equals(account.getStatus())){
             if(StringUtils.equals("0000",order.getRetCode())){
                 if(StringUtils.equals("10980004",account.getTradeType())){
