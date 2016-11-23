@@ -79,7 +79,7 @@
                                                 <tbody>
                                                     <tr></tr>
                                                     <tr>
-                                                        <td class="tr" nowrap="nowrap">交易流水号：</td>
+                                                        <td class="tr" nowrap="nowrap">订单号：</td>
                                                         <td nowrap="nowrap">
                                                             <label class="input">
                                                                 <input type="text" style="width:210px" name="orderNo" value="${map.orderNo}">
@@ -96,8 +96,8 @@
                                                             <label>
                                                                 <select id = "handleState" name = "handleState" style="width:150px;height: 30px;">
                                                                     <option value="">所有</option>
-                                                                    <option  <c:if test="${map.applyState=='98010001'}"> selected="selected" </c:if> value="98010001" >已处理</option>
-                                                                    <option  <c:if test="${map.applyState=='98010002'}"> selected="selected" </c:if> value="98010002" >未处理</option>
+                                                                    <option  <c:if test="${map.handleState=='98010001'}"> selected="selected" </c:if> value="98010001" >已处理</option>
+                                                                    <option  <c:if test="${map.handleState=='98010002'}"> selected="selected" </c:if> value="98010002" >未处理</option>
                                                                 </select>
                                                             </label>
                                                         </td>
