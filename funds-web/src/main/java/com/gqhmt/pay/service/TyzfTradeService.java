@@ -237,7 +237,7 @@ public class TyzfTradeService {
       public FssAccountBindEntity createAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String  mobile,String chnlId,String accType) throws FssException{
            FssAccountBindEntity entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo,custName,mobile);
            if("1".equals(entity.getStatus())) return entity;
-           this.createAccount(tradeType,custName,certNo,certType,busiNo,seq_no,accType,chnlId,mobile,custType);
+           this.createAccount(tradeType,custName,certNo,certType,busiNo,entity.getSeqNo(),accType,chnlId,mobile,custType);
            return entity;
       }
 
@@ -547,5 +547,14 @@ public class TyzfTradeService {
         if(GlobalConstants.TYZF_UNFRZEN.equals(bm.getTxnType())){//解冻
             if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
         }
+    }
+
+    /**
+     * 账户注销
+     * @throws FssException
+     */
+    public void logOutAccount(String trade_type,String cust_no,String cust_name,String cert_no,String seq_no,String mobile_phone) throws FssException{
+        //// TODO: 2016/11/23 调用统一支付做销户处理
+
     }
 }
