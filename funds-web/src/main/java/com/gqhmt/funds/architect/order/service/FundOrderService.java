@@ -198,4 +198,9 @@ public class FundOrderService  {
     public FundOrderEntity getOrderNoByAccountId(Long accountId){
         return fundOrderReadMapper.getFundOrderByAccountId(accountId);
     }
+
+    public FundOrderEntity getFundOrderByFormId(Long orderFrormId){
+        return fundOrderReadMapper.getFundOrderByFromId(orderFrormId);
+    }
+
 }

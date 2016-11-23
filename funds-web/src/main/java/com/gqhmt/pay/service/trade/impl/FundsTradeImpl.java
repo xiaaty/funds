@@ -820,12 +820,12 @@ public class FundsTradeImpl  implements IFundsTrade {
     /**
      * 根据pos富友返回结果，进行入账出理
      * @param orderNo
-     * @param busiNo
      * @param respCode
      * @throws FssException
      */
-    public void PosRechargeCallback(String orderNo,String busiNo,String respCode) throws FssException{
-        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+    public void PosRechargeCallback(String orderNo,String respCode) throws FssException{
+       FssOfflineRechargeEntity offlineRechargeEntity = fssOfflineRechargeService.getOffineRechargeByParam(null,orderNo);
+       FundOrderEntity fundOrderEntity = fundOrderService.getFundOrderByFormId(offlineRechargeEntity.getId());
         if(fundOrderEntity == null){
             LogUtil.info(this.getClass(),"未找到订单号:"+orderNo);
             throw new FssException(orderNo+"订单获取失败");

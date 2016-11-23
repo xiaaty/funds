@@ -320,7 +320,7 @@ public interface IFundsTrade {
      */
     public PosSignedResponse PosSigned(String mchn,String seq_no,String trade_type,String cust_id,String cust_type) throws FssException;
 
-    public void PosRechargeCallback(String order_no,String busiNo,String respCode) throws FssException;
+    public void PosRechargeCallback(String order_no,String respCode) throws FssException;
 
     public void PosSignedCallback(String order_no,String respCode) throws FssException;
 

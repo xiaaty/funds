@@ -41,7 +41,7 @@ public class PosCallbackImpl implements IPosCallBack {
     	Response response = new Response();
     	try {
 			PosCallBackDto cDto = (PosCallBackDto) dto;
-			fundsTradeImpl.PosRechargeCallback(cDto.getOrder_no(),cDto.getBusi_no(),cDto.getRespCode());
+			fundsTradeImpl.PosRechargeCallback(cDto.getOrder_no(),cDto.getRespCode());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
