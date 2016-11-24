@@ -80,7 +80,7 @@
 			AND t.`order_no` =#{map.orderNo}
 		</if>
 		<if test="map.handleState != null and map.handleState != '' ">
-			AND t.`handle_state` ={map.handleState}
+			AND t.`handle_state` =#{map.handleState}
 		</if>
 		<if test="map.startTime != null and map.startTime != '' ">
 			and date_format(t.create_time,'%Y%m%d') &gt;= #{map.startTime}

@@ -49,11 +49,10 @@
 		AND t.order_user_state ='98010002'
 	</select>
 	<select id="selectOrderDate"  resultType="java.lang.Integer">
-		<include refid="field"/>
 		select
 		count(t.order_date)
 		FROM t_gq_fss_check_date t
-		WHERE t.order_date =#{selectOrderDate}
+		WHERE t.order_date =#{orderDate}
 	</select>
 	<select id="getFssCheckDate" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
 		<include refid="field"/>

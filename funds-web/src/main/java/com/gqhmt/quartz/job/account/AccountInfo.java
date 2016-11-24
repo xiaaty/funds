@@ -4,7 +4,6 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
-import com.gqhmt.fss.architect.accounting.service.FssCheckDateService;
 import com.gqhmt.quartz.job.SupperJob;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -35,15 +34,13 @@ import java.util.Map;
 @Component
 public class AccountInfo extends SupperJob {
 
-    @Resource
-    private FssCheckDateService fssCheckDateService;
 
     @Resource
     private FuiouAccountInfoFileService fuiouAccountInfoFileService;
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron = "0 15 18 * * *")
+    @Scheduled(cron = "45 15 18 * * *")
     public void execute() throws FssException {
 
         if(!isIp("upload")){
@@ -53,7 +50,7 @@ public class AccountInfo extends SupperJob {
         if (isRunning) return;
 
         startLog("金账户对账文件ftp批量处理 下载及导入文件");
-        fssCheckDateService.insertDate();
+
         isRunning = true;
 
         Date date = new Date();

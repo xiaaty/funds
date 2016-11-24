@@ -239,6 +239,7 @@ public class FundOrderService  {
         String startTime = map.get("startTime");
         String endTime = map.get("endTime");
         map2.put("orderNo",map.get("orderNo"));
+        map2.put("handleState",map.get("handleState"));
         map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
         map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
         return fundOrderReadMapper.findOrderList(map2,typeList);

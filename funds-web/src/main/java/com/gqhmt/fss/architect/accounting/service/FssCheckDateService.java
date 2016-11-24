@@ -149,5 +149,4 @@ public class FssCheckDateService {
     public FssCheckDate getFssCheckDate(String orderDate) {
         return fssCheckDateReadMapper.getFssCheckDate(orderDate);
     }
-
 }
