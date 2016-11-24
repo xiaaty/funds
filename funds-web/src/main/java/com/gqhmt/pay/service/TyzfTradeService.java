@@ -533,19 +533,19 @@ public class TyzfTradeService {
             }
         }
         if(GlobalConstants.TYZF_RECHARGE.equals(bm.getTxnType())){//充值
-            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+            if(!"0000".equals(bm.getRespCode())) throw new FssException(bm.getRespCode());
         }
         if(GlobalConstants.TYZF_WITHDRAW.equals(bm.getTxnType())){//提现
-            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+            if(!"0000".equals(bm.getRespCode())) throw new FssException(bm.getRespCode());
         }
         if(GlobalConstants.TYZF_TRANSFER.equals(bm.getTxnType())){//转账
-            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+            if(!"0000".equals(bm.getRespCode())) throw new FssException(bm.getRespCode());
         }
         if(GlobalConstants.TYZF_FRZEN.equals(bm.getTxnType())){//冻结
-            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+            if(!"0000".equals(bm.getRespCode())) throw new FssException(bm.getRespCode());
         }
         if(GlobalConstants.TYZF_UNFRZEN.equals(bm.getTxnType())){//解冻
-            if(!"0000".equals(bm.getRespCode())) throw new FssException("90004035");
+            if(!"0000".equals(bm.getRespCode())) throw new FssException(bm.getRespCode());
         }
     }
 

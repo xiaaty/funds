@@ -95,7 +95,7 @@ public class CreateAccountEvent {
         FundAccountEntity primaryAccount = null;
             Integer userId = null;
             try {
-                customerInfoEntity= customerInfoService.searchCustomerInfoByCertNo(certNo);//旧版客户信息
+                customerInfoEntity = customerInfoService.getCustomerById(custId);//旧版客户信息
                 if(customerInfoEntity == null){
                     customerInfoEntity=customerInfoService.createCustomer(certNo,name,mobile);
                 }
@@ -107,8 +107,10 @@ public class CreateAccountEvent {
                 customerInfoEntity.setBankNo(bankNo);
                 customerInfoEntity.setCityCode(area);
                 customerInfoEntity.setCertNo(certNo);
+                customerInfoEntity.setCertType(1);
                 customerInfoEntity.setMobilePhone(mobile);
                 customerInfoEntity.setCustomerName(name);
+                customerInfoService.update(customerInfoEntity);
                 primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
                 if(primaryAccount == null){
                     primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
@@ -131,6 +133,7 @@ public class CreateAccountEvent {
                     fundAccountService.update(primaryAccount);
                 }
                 //更新新所有与该cust_id相同的账户名称
+//                fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
                 fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
         } catch (FssException e) {
             if(!e.getMessage().contains("busi_no_uk")) {
@@ -145,6 +148,8 @@ public class CreateAccountEvent {
         }else{
             bankCardInfoEntity=bankCardInfoList.get(0);
         }
+        customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+        customerInfoService.update(customerInfoEntity);
         //调用统一支付开户
         tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,customerInfoEntity.getMobilePhone());
         return bankCardInfoEntity.getId();
