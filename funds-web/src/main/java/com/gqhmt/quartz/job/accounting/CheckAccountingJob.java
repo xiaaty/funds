@@ -37,7 +37,7 @@ public class CheckAccountingJob extends SupperJob {
         }
         if(isRunning) return;
 
-		startLog("充值体现转账对账跑批");
+		startLog("充值提现满标回款转账对账跑批");
         FssCheckDate orderDate= fssCheckDateService.getOrderDate();
         if (orderDate==null){
             return;

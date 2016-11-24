@@ -168,7 +168,7 @@
                                             <c:if test="${type== '1104'}">
                                                 <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="enterAccount();" value="入&nbsp;&nbsp;&nbsp;账"/>
                                             </c:if>
-                                            <c:if test="${type== '1119' || type=='1108'}">
+                                            <c:if test="${type== '1199' || type=='1108'}">
                                                 <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="returnTrade();" value="反交易"/>
                                             </c:if>
 

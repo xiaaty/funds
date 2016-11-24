@@ -42,7 +42,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>对账管理</li>
-            <li>掉单管理</li>
+            <li>满标回款对账</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -229,7 +229,7 @@
                                                     <td>${t.tradeType}</td>
                                                     <td><fss:dictView key="${t.abnormalState}" /></td>
                                                     <td><fss:dictView key="${t.handleState}" /></td>
-                                                    <td><a href="${contextPath}/checkAccounting/repayment/${type}/${t.orderNo}">查看</a></td>
+                                                    <td><a href="${contextPath}/checkAccounting/fundsOrder/${type}/${t.orderNo}">查看</a></td>
                                                 </tr>
                                         </c:forEach>
                                         </tbody>
