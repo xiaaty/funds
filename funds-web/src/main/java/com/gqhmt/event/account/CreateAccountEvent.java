@@ -133,7 +133,6 @@ public class CreateAccountEvent {
                     fundAccountService.update(primaryAccount);
                 }
                 //更新新所有与该cust_id相同的账户名称
-//                fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
                 fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
         } catch (FssException e) {
             if(!e.getMessage().contains("busi_no_uk")) {
