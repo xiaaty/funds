@@ -105,7 +105,7 @@
 
 	<select id="getOfflineRechargeResult" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity">
 		<include refid="selectSql"/>
-		WHERE t.`order_no`=#{order_no}
+		WHERE t.`order_no`=#{orderNo}
 		<if test="busiNo != null and busiNo!=''">
 			AND t.`busi_no`=#{busiNo}
 		</if>
