@@ -96,13 +96,9 @@ public class CreateAccountEvent {
             Integer userId = null;
             try {
                 customerInfoEntity = customerInfoService.getCustomerById(custId);//旧版客户信息
-                if(customerInfoEntity == null){
-                    customerInfoEntity=customerInfoService.createCustomer(certNo,name,mobile);
-                }
                 if(customerInfoEntity==null) throw  new FssException("90002007");
                 custId = customerInfoEntity.getId();
                 userId = customerInfoEntity.getUserId();
-                //设置值
                 customerInfoEntity.setParentBankCode(bankType);
                 customerInfoEntity.setBankNo(bankNo);
                 customerInfoEntity.setCityCode(area);
