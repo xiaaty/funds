@@ -62,6 +62,10 @@ public class AccountData {
             }
 
             FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+            if(priEntity == null ){
+                continue;
+            }
+
             if(priEntity.getHasThirdAccount() == 2){
                 //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
                 this.createInternetAccount(customerInfoEntity);  //开通互联网账户
