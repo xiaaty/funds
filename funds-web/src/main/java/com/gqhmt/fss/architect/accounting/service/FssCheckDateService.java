@@ -45,13 +45,11 @@ public class FssCheckDateService {
     /**
      * wanggp
      * 更新已对账日期状态
-     * @param orderDate
+     * @param checkDate
      * @return
      */
-    public void updateInputUserState(String orderDate) throws FssException {
-        FssCheckDate fssCheckDate = new FssCheckDate();
-        fssCheckDate.setOrderDate(orderDate);
-        fssCheckDateWriteMapper.updateInputUserState(fssCheckDate);
+    public void updateInputUserState(FssCheckDate checkDate) throws FssException {
+        fssCheckDateWriteMapper.updateInputUserState(checkDate);
     }
     /**
      * jhz
@@ -151,4 +149,5 @@ public class FssCheckDateService {
     public FssCheckDate getFssCheckDate(String orderDate) {
         return fssCheckDateReadMapper.getFssCheckDate(orderDate);
     }
+
 }

@@ -320,25 +320,6 @@ public class FssCheckAccountingService {
 
     /**
      * wanggp
-     * 满标回款查询对账定时任务
-     */
-    public void checkHistoryAccounting() throws FssException {
-        FssCheckDate fssCheckDate;
-        try {
-            fssCheckDate = fssCheckDateService.queryDate(); //20150601之后的日期
-            if (null == fssCheckDate) {
-                return;
-            }
-            LogUtil.info(this.getClass(),"满标回款历史对账，当前查询批次日期为：" + fssCheckDate.getOrderDate());
-            if (StringUtils.isNotEmpty(fssCheckDate.getOrderDate()))
-                checkHistoryAccount(fssCheckDate.getOrderDate());
-        } catch (FssException e) {
-            throw new FssException("满标回款查询对账定时任务异常，当前查询批次日期为[]", e);
-        }
-    }
-
-    /**
-     * wanggp
      * 查询历史标的当日对账数据对账
      * @param orderDate
      * @throws FssException
@@ -358,8 +339,6 @@ public class FssCheckAccountingService {
         List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(orderDate);
         //当天每一笔订单对账
         for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
-            fssCheckDateService.updateInputUserState(orderDate);//更新对账日期为已对账
-
             orderNo = fuiouFtpOrder.getOrderNo();
             LogUtil.info(this.getClass(),"满标回款历史对账，查询ftpField和FtpOrder订单号" + orderNo);
             if (StringUtils.isEmpty(orderNo))
