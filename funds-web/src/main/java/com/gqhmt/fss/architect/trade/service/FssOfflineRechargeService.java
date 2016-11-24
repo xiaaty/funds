@@ -227,10 +227,10 @@ public class FssOfflineRechargeService {
 		}
 	}
 
-	public FssOfflineRechargeEntity getOffineRechargeByParam(String busiNo,String order_no){
+	public FssOfflineRechargeEntity getOffineRechargeByParam(String busiNo,String orderNo){
 		Map map=new HashMap();
 		map.put("busiNo",busiNo);
-		map.put("order_no",order_no);
+		map.put("orderNo",orderNo);
 		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.getOfflineRechargeResult(map);
 		return entity;
 	}
