@@ -569,9 +569,9 @@ public class FssCheckAccountingService {
         FssCheckDate fssCheckDate = fssCheckDateService.getFssCheckDate(orderDate);
         if (null == fssCheckDate)
             return;
-        fssCheckDate.setOrderUserState("98010001");
-        fssCheckDateService.update(fssCheckDate);
         try {
+            fssCheckDate.setOrderUserState("98010001");
+            fssCheckDateService.update(fssCheckDate);
             List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts(orderDate);
             if(CollectionUtils.isEmpty(checkAccountings)){
                 return;
@@ -579,6 +579,25 @@ public class FssCheckAccountingService {
             for (FssCheckAccountingEntity check:checkAccountings) {
                 this.checkFundOrder(check);
             }
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
+        }
+    }
+
+    /**
+     * wanggp
+     * 历史标的对账操作
+     * @param orderDate
+     * @throws FssException
+     */
+    public void checkHistoryAcctOperate(String orderDate) throws FssException {
+        FssCheckDate fssCheckDate = fssCheckDateService.getFssCheckDate(orderDate);
+        if (null == fssCheckDate)
+            return;
+        try {
+            fssCheckDate.setInputUserState("98010001");
+            fssCheckDateService.update(fssCheckDate);
+            this.checkHistoryAccount(orderDate);
         } catch (FssException e) {
             LogUtil.error(this.getClass(),e.getMessage());
         }

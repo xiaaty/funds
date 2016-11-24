@@ -446,7 +446,7 @@ public class FssCheckAccountingController {
             if ("0".equals(checkFlag)) {
                 fssCheckAccountingService.checkAcctOperate(orderDate); // 一般交易对账
             } else if ("1".equals(checkFlag)) {
-                fssCheckAccountingService.checkHistoryAccount(orderDate); // 历史标的对账
+                fssCheckAccountingService.checkHistoryAcctOperate(orderDate); // 历史标的对账
             }
         } catch (FssException e) {
             LogUtil.error(this.getClass(),e.getMessage());
