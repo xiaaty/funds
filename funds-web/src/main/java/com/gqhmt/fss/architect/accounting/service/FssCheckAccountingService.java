@@ -328,7 +328,6 @@ public class FssCheckAccountingService {
         List<FuiouFtpColomField> fuiouFtpColomFieldList = new ArrayList<FuiouFtpColomField>();
         List<FundSequenceEntity> sequenceList = new ArrayList<FundSequenceEntity>();
         String orderNo = "";
-        String sequenceOrderNo = "";
         BigDecimal sumSequenceAmount = new BigDecimal("0");
         BigDecimal sumFieldAmount = new BigDecimal("0");
 
@@ -367,34 +366,35 @@ public class FssCheckAccountingService {
                                 updateFieldStatus(orderNo);
                                 break;
                             }
-                        } else {
-                            sequenceOrderNo = fuiouFtpColomField.getOrderNo();
+                        } else {//
                             LogUtil.info(this.getClass(),
                                     "满标回款历史对账，与checkAccounting对账无误，ftpField订单号：" + fuiouFtpColomField.getOrderNo());
+                            for (FuiouFtpColomField fuiouFtpField : fuiouFtpColomFieldList) {
+                                //获取field总金额
+                                if (fuiouFtpField.getAmt() != null && fuiouFtpField.getAmt().compareTo(new BigDecimal("0")) > 0)
+                                    sumFieldAmount = sumFieldAmount.add(fuiouFtpField.getAmt());
+                            }
+                            //2.核对sequence总金额
+                            if (!StringUtils.isEmpty(orderNo)) {
+                                sequenceList  = sequenceReadMapper.queryByOrderNo(orderNo);
+                                if (null == sequenceList && sequenceList.isEmpty()) {
+                                    continue;
+                                }
+                                LogUtil.info(this.getClass(),"满标回款历史对账，ftpField与sequence 对账start：" + orderDate + "，订单号：" + orderNo);
+                                for (FundSequenceEntity sequence : sequenceList) {
+                                    if (sequence.getAmount() != null && sequence.getAmount().compareTo(new BigDecimal("0")) > 0)
+                                        sumSequenceAmount = sumSequenceAmount.add(sequence.getAmount());
+                                }
+                                LogUtil.info(this.getClass(), "ftpField总金额：" + sumFieldAmount + "sequence总金额：" + sumSequenceAmount);
+                                if (sumFieldAmount.compareTo(sumSequenceAmount) != 0) { //校验总金额
+                                    updateFieldStatus(orderNo);
+                                } else {
+                                    LogUtil.info(this.getClass(),
+                                            "满标回款历史对账，field与对sequence账无误，ftpField订单号：" + orderNo);
+                                }
+                            }
                             break;
                         }
-                    }
-                    //获取field总金额
-                    if (fuiouFtpColomField.getAmt() != null && fuiouFtpColomField.getAmt().compareTo(new BigDecimal("0")) > 0)
-                        sumFieldAmount = sumFieldAmount.add(fuiouFtpColomField.getAmt());
-                }
-                //2.核对sequence总金额
-                if (!StringUtils.isEmpty(sequenceOrderNo)) {
-                    sequenceList  = sequenceReadMapper.queryByOrderNo(sequenceOrderNo);
-                    if (null == sequenceList && sequenceList.isEmpty()) {
-                        continue;
-                    }
-                    LogUtil.info(this.getClass(),"满标回款历史对账，ftpField与sequence 对账start：" + orderDate + "，订单号：" + sequenceOrderNo);
-                    for (FundSequenceEntity sequence : sequenceList) {
-                        if (sequence.getAmount() != null && sequence.getAmount().compareTo(new BigDecimal("0")) > 0)
-                            sumSequenceAmount = sumSequenceAmount.add(sequence.getAmount());
-                    }
-                    LogUtil.info(this.getClass(), "ftpField总金额：" + sumFieldAmount + "sequence总金额：" + sumSequenceAmount);
-                    if (sumFieldAmount.compareTo(sumSequenceAmount) != 0) { //校验总金额
-                        updateFieldStatus(sequenceOrderNo);
-                    } else {
-                        LogUtil.info(this.getClass(),
-                                "满标回款历史对账，field与对sequence账无误，ftpField订单号：" + sequenceOrderNo);
                     }
                 }
             }
