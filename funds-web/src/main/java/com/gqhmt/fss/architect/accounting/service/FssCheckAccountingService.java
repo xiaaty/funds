@@ -366,7 +366,7 @@ public class FssCheckAccountingService {
                                 updateFieldStatus(orderNo);
                                 break;
                             }
-                        } else {//
+                        } else {
                             LogUtil.info(this.getClass(),
                                     "满标回款历史对账，与checkAccounting对账无误，ftpField订单号：" + fuiouFtpColomField.getOrderNo());
                             for (FuiouFtpColomField fuiouFtpField : fuiouFtpColomFieldList) {
