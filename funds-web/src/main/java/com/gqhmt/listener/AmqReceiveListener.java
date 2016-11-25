@@ -1,15 +1,14 @@
 package com.gqhmt.listener;
 
-import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
 import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
 import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
-import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
+import com.gqhmt.util.LogUtil;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;

@@ -128,11 +128,11 @@ public class TyzfTradeService {
      */
     public void createInvstmentAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile) throws FssException{
         //判断互联账户是否开通，如没有，开通互联网账户
-        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,seq_no,mobile);
+        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,seq_no+"_"+1,mobile);
         //开通线下出借账户
-        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,2,mobile,"30130002","30010013");
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+2,2,mobile,"30130002","30010013");
         //开通线下出借应付款账户
-        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,96,mobile,"30130002","30010016");
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+3,96,mobile,"30130002","30010016");
     }
 
     /**
@@ -148,9 +148,9 @@ public class TyzfTradeService {
      */
     public void createLoanAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile) throws FssException{
         //判断互联账户是否开通，如没有，开通互联网账户
-        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,seq_no,mobile);
+        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,seq_no+"_"+1,mobile);
         //开通借款人信贷账户统一支付账户类型，借款账户：30010003
-        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no,3,mobile,"30130001","30010003");
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+2,3,mobile,"30130001","30010003");
     }
 
     /**
@@ -169,7 +169,7 @@ public class TyzfTradeService {
         if(contractNo==null || "".equals(contractNo)) throw new FssException("90002016");
         //判断是否开通借款账户
         this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,mobile);
-        this.createAccount(tradeType,bid_id,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,90,mobile,"30130001","30010015");
+        this.createAccount(tradeType,bid_id,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no+"_"+3,90,mobile,"30130001","30010015");
     }
 
     /**
@@ -529,7 +529,7 @@ public class TyzfTradeService {
                  String seq_no=bm.getOrderId();
                  String accNO=bm.getCdtrAcctId();//统一支付返回的账号
                  FssAccountBindEntity entity = fssAccountBindService.getBindAccountBySeqNo(seq_no);
-                 fssAccountBindService.updateBindAccount(entity.getId(),"1",accNO,seq_no);
+                 fssAccountBindService.updateBindAccount(entity.getId(),"1",accNO);
             }
         }
         if(GlobalConstants.TYZF_RECHARGE.equals(bm.getTxnType())){//充值

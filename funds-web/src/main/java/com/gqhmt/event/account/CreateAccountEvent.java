@@ -3,7 +3,6 @@ package com.gqhmt.event.account;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.customer.service.FssCustBankCardService;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
@@ -85,56 +84,68 @@ public class CreateAccountEvent {
      * @throws FssException
      */
     public Integer createAccount(String tradeType,String name,String mobile,String certNo,Long custId,String mchn,String bankType,String bankNo,String area,String busiNo,Date createTime,String seq_no) throws FssException {
-        CustomerInfoEntity customerInfoEntity = null;
+
+        //基础不规则数据转换
         if(area.length()==6){
             area= Application.getInstance().getFourCode(area);
         }
         if(bankType.length()==3){
             bankType="0"+bankType;
         }
-        FundAccountEntity primaryAccount = null;
-            Integer userId = null;
-            try {
-                customerInfoEntity = customerInfoService.getCustomerById(custId);//旧版客户信息
-                if(customerInfoEntity==null) throw  new FssException("90002007");
-                custId = customerInfoEntity.getId();
-                userId = customerInfoEntity.getUserId();
-                customerInfoEntity.setParentBankCode(bankType);
-                customerInfoEntity.setBankNo(bankNo);
-                customerInfoEntity.setCityCode(area);
-                customerInfoEntity.setCertNo(certNo);
-                customerInfoEntity.setCertType(1);
-                customerInfoEntity.setMobilePhone(mobile);
-                customerInfoEntity.setCustomerName(name);
-                customerInfoService.update(customerInfoEntity);
-                primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-                if(primaryAccount == null){
-                    primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
-                }
-            } catch (FssException e) {
-                if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
-                    primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
-                }else{
-                    throw e;
-                }
-            }
+
+        //客户信息验证
+        CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(custId);//旧版客户信息
+        if(customerInfoEntity==null) throw  new FssException("90002007");
+
+        //客户信息整理
+        Integer userId  = customerInfoEntity.getUserId();
+
+        customerInfoEntity.setParentBankCode(bankType);
+        customerInfoEntity.setBankNo(bankNo);
+        customerInfoEntity.setCityCode(area);
+        customerInfoEntity.setCertNo(certNo);
+        customerInfoEntity.setCertType(1);
+        customerInfoEntity.setMobilePhone(mobile);
+        customerInfoEntity.setCustomerName(name);
+
+
+        //账户校验
+        FundAccountEntity primaryAccount;
         try {
-                if (primaryAccount.getHasThirdAccount() ==1){//生成富有账户
-                    primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-                    FundOrderEntity fundOrderEntity=paySuperByFuiou.createAccountByPersonal(primaryAccount,"","",tradeType);
-                    primaryAccount.setHasThirdAccount(2);
-                    //富友开户成功,更新开户时间和开户订单号
-                    primaryAccount.setAccountOrderNo(fundOrderEntity!=null ? fundOrderEntity.getOrderNo():null);
-                    primaryAccount.setAccountTime(fundOrderEntity!=null ? fundOrderEntity.getCreateTime():null);
-                    fundAccountService.update(primaryAccount);
-                }
-                //更新新所有与该cust_id相同的账户名称
-                fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
+            primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+            if(primaryAccount == null){
+                primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
+            }
         } catch (FssException e) {
-            if(!e.getMessage().contains("busi_no_uk")) {
-                throw new FssException(e.getMessage(), e);
+            if(e.getMessage() != null && "90002003".equals(e.getMessage()) ) {
+                primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
+            }else{
+                throw e;
             }
         }
+
+
+        if(primaryAccount.getHasThirdAccount() == 2){
+            customerInfoEntity.setHasAcount(1);
+            customerInfoEntity.setNameIdentification(1);
+            customerInfoService.update(customerInfoEntity);
+
+            throw new FssException("");
+        }
+
+        if (primaryAccount.getHasThirdAccount() ==1){//生成富有账户
+            primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+            FundOrderEntity fundOrderEntity=paySuperByFuiou.createAccountByPersonal(primaryAccount,"","",tradeType);
+            primaryAccount.setHasThirdAccount(2);
+            //富友开户成功,更新开户时间和开户订单号
+            primaryAccount.setAccountOrderNo(fundOrderEntity!=null ? fundOrderEntity.getOrderNo():null);
+            primaryAccount.setAccountTime(fundOrderEntity!=null ? fundOrderEntity.getCreateTime():null);
+            fundAccountService.update(primaryAccount);
+        }
+
+        //更新新所有与该cust_id相同的账户名称
+        fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
+
         //创建银行卡信息
         BankCardInfoEntity bankCardInfoEntity=null;
         List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
@@ -144,6 +155,8 @@ public class CreateAccountEvent {
             bankCardInfoEntity=bankCardInfoList.get(0);
         }
         customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+        customerInfoEntity.setHasAcount(1);
+        customerInfoEntity.setNameIdentification(1);
         customerInfoService.update(customerInfoEntity);
         //调用统一支付开户
         tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,customerInfoEntity.getMobilePhone());
