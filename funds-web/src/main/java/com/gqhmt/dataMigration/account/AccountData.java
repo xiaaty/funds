@@ -4,6 +4,7 @@ import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -147,8 +148,8 @@ public class AccountData {
      * @return
      */
     public String createSeqNo(String tradeType){
-        String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        String seq_no=tradeType+date;
+//        String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String seq_no=tradeType+CommonUtil.getRandomString(8);
         return seq_no;
     }
 

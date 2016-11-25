@@ -95,20 +95,18 @@ public class CreateAccountEvent {
         FundAccountEntity primaryAccount = null;
             Integer userId = null;
             try {
-                customerInfoEntity= customerInfoService.searchCustomerInfoByCertNo(certNo);//旧版客户信息
-                if(customerInfoEntity == null){
-                    customerInfoEntity=customerInfoService.createCustomer(certNo,name,mobile);
-                }
+                customerInfoEntity = customerInfoService.getCustomerById(custId);//旧版客户信息
                 if(customerInfoEntity==null) throw  new FssException("90002007");
                 custId = customerInfoEntity.getId();
                 userId = customerInfoEntity.getUserId();
-                //设置值
                 customerInfoEntity.setParentBankCode(bankType);
                 customerInfoEntity.setBankNo(bankNo);
                 customerInfoEntity.setCityCode(area);
                 customerInfoEntity.setCertNo(certNo);
+                customerInfoEntity.setCertType(1);
                 customerInfoEntity.setMobilePhone(mobile);
                 customerInfoEntity.setCustomerName(name);
+                customerInfoService.update(customerInfoEntity);
                 primaryAccount = fundAccountService.getFundAccount(custId, GlobalConstants.ACCOUNT_TYPE_PRIMARY);
                 if(primaryAccount == null){
                     primaryAccount = fundAccountService.createAccount(customerInfoEntity, userId);
@@ -145,6 +143,8 @@ public class CreateAccountEvent {
         }else{
             bankCardInfoEntity=bankCardInfoList.get(0);
         }
+        customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+        customerInfoService.update(customerInfoEntity);
         //调用统一支付开户
         tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,customerInfoEntity.getMobilePhone());
         return bankCardInfoEntity.getId();
