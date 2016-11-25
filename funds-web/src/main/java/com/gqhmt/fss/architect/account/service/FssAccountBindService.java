@@ -93,12 +93,12 @@ public class FssAccountBindService {
      * 修改客户编号与统一支付账号绑定
      * @throws FssException
      */
-   public void updateBindAccount(Long id,String status,String accNo,String seqNo) throws FssException {
+   public void updateBindAccount(Long id,String status,String accNo) throws FssException {
        FssAccountBindEntity fssAccountBindEntity = fssAccountBindReadMapper.selectByPrimaryKey(id);
+       com.gqhmt.core.util.LogUtil.info(this.getClass(),"开户成功更新："+fssAccountBindEntity.getBusiId()+ fssAccountBindEntity.getSeqNo()+"："+fssAccountBindEntity.getAccNo());
        try {
             fssAccountBindEntity.setAccNo(accNo);
             fssAccountBindEntity.setStatus(status);
-            fssAccountBindEntity.setSeqNo(seqNo);
             fssAccountBindEntity.setModifyTime(new Date());
             fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
         }catch (Exception e){
