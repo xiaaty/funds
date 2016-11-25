@@ -7,6 +7,9 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.accounting.entity.*;
 import com.gqhmt.fss.architect.accounting.service.*;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -57,6 +60,10 @@ public class FssCheckAccountingController {
     private FundSequenceService fundSequenceService;
     @Resource
     private FssImportDataService fssImportDataService;
+    @Resource
+    private FuiouFtpColomFieldService fuiouFtpColomFieldService;
+    @Resource
+    private FssCheckDateService fssCheckDateService;
 
     /**
      * jhz
@@ -79,6 +86,24 @@ public class FssCheckAccountingController {
         model.put("map", map);
 
         return "fss/accounting/checkAccounting/checkAccounting_list";
+    }
+
+    /**
+     * wanggp
+     * 满标回款历史数据对账
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/checkAccounting/checkHistoryAccountList", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String queryHistoryCheckAccounting(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
+        List<FuiouFtpColomField> checkFuiouFtpColomFieldList = fuiouFtpColomFieldService.getgetFuiouFtpByInputDate(map);
+        model.addAttribute("page", checkFuiouFtpColomFieldList);
+        model.put("map", map);
+        return "fss/accounting/checkAccounting/checkHistoryAccounting_list";
     }
 
     /**
@@ -120,9 +145,9 @@ public class FssCheckAccountingController {
             List<FssCheckAccountingEntity> list = excelUtil.getExcelData(multipartFile,columns, 0);
 //            List<FssCheckAccountingEntity> list = fssImportDataService.readExcelWithTitle(multipartFile,basePath,type);
             LogUtil.info(this.getClass(),"需要导入的对账信息有："+list.size()+"条");
-            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list);
+            List<FssCheckAccountingEntity> ckList=fssImportDataService.repeatClear(list,type);
             //循环便利集合得到客户表id并添加进对象
-            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList,type);
+            List<FssCheckAccountingEntity> enList= fssImportDataService.list(ckList);
             i=list.size();
             j=fssCheckAccountingService.insertCheckList(enList);
             LogUtil.info(this.getClass(),"成功导入数据库"+j+"条");
@@ -246,5 +271,186 @@ public class FssCheckAccountingController {
         return returnMap;
     }
 
+    /**
+     * jhz
+     * 查询对账出现的异常订单信息
+     * @param request
+     * @param model
+     * @param type
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/checkAccounting/fundsOrder/{type}", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String checkOrder(HttpServletRequest request, ModelMap model,@PathVariable String type, @RequestParam Map<String, String> map) throws FssException {
+        List<FundOrderEntity> orderEntities= fundOrderService.findOrderList(map,type);
+        model.addAttribute("page", orderEntities);
+        model.put("map", map);
+        if(StringUtils.equals("1104",type)){
+            return "fss/accounting/checkAccounting/withAccounting";
+            //普通转账
+        }else if(StringUtils.equals("1108",type)){
+            return "fss/accounting/checkAccounting/transferAccounting";
+            //满标和回款转账
+        }else {
+            return "fss/accounting/checkAccounting/repaymentAccounting";
+        }
+    }
 
+    /**
+     * jhz
+     * 充值提现转账查询对账文件
+     * @param request
+     * @param model
+     * @param type
+     * @param orderNo
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/checkAccounting/fundsOrder/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
+   @AutoPage
+    public String queryOrder(HttpServletRequest request, ModelMap model,@PathVariable String type,@PathVariable String orderNo) throws FssException {
+        List<FundSequenceEntity> seList=fundSequenceService.queryByOrderNo(orderNo);
+        //通过orderNo查询对账数据
+        FssCheckAccountingEntity checkAccountingEntity= fssCheckAccountingService.queryByOrderNo(orderNo);
+       //通过orderNo查询订单数据
+//        FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(orderNo);
+        model.put("ckEntity",checkAccountingEntity);
+        model.addAttribute("page", seList);
+        return "fss/accounting/checkAccounting/handleAccounting_list";
+    }
+
+    /**
+     * jhz
+     * 根据流水号进行反交易
+     * @param request
+     * @param model
+     * @param orderNo
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/checkAccounting/returnTrade", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public Object returnTrade(HttpServletRequest request, ModelMap model,String orderNo) throws FssException {
+        Map<String, String> map =Maps.newHashMap();
+        Boolean b= fssCheckAccountingService.returnTrade(orderNo);
+        if(b){
+            map.put("code","0000");
+            map.put("msg","成功");
+        }else {
+            map.put("code","0001");
+            map.put("msg","失败");
+
+        }
+        return map;
+    }
+    @RequestMapping(value = "/checkAccounting/repayment/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public Object repayment(HttpServletRequest request, ModelMap model,@PathVariable String type,@PathVariable String orderNo) throws FssException {
+        List<FundSequenceEntity> seList=fundSequenceService.queryByOrderNo(orderNo);
+        Map<String, String> map =Maps.newHashMap();
+        for (FundSequenceEntity entity: seList) {
+            map.put(entity.getsOrderNo(),entity.getsOrderNo());
+        }
+        map.put("orderNo",orderNo);
+        return  new ModelAndView("redirect:/checkAccounting/queryRepayOrder/"+type,map);
+    }
+    /**
+     * jhz
+     * 充值提现转账查询对账文件
+     * @param request
+     * @param model
+     * @param type
+     * @param  map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/checkAccounting/queryRepayOrder/{type}", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String queryRepayOrder(HttpServletRequest request, ModelMap model,@PathVariable String type,@RequestParam Map<String, String> map) throws FssException {
+        List<String> orderNo=new ArrayList<>(map.values());
+        //通过orderNo查询对账数据
+        List<FssCheckAccountingEntity> checkAccountingEntity= fssCheckAccountingService.getCheckList(orderNo);
+        //通过orderNo查询订单数据
+        FundOrderEntity fundOrderEntity=fundOrderService.findfundOrder(map.get("orderNo"));
+        model.put("orderEntity",fundOrderEntity);
+        model.addAttribute("page", checkAccountingEntity);
+        return "fss/accounting/checkAccounting/handleAccounting_list";
+    }
+
+    /**
+     * wanggp
+     * 充值提现入账
+     * @param request
+     * @param model
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping(value = "/checkAccounting/addAccounting/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String addAccounting(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
+        FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
+        tradeRecordService.asynCommand(orderEntity, "success");
+        orderEntity.setHandleState("98010001");
+        fundOrderService.update(orderEntity);
+
+        return "redirect:/checkAccounting/fundsOrder/" + type;
+    }
+    /**
+     * jhz
+     * 修改order状态为已处理
+     * @param request
+     * @param model
+     * @param orderNo
+     * @return
+     */
+    @RequestMapping(value = "/checkAccounting/handleState/{type}/{orderNo}", method = {RequestMethod.GET, RequestMethod.POST})
+    @AutoPage
+    public String handleState(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
+        FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
+        orderEntity.setHandleState("98010001");
+        fundOrderService.update(orderEntity);
+        return "redirect:/checkAccounting/fundsOrder/" + type;
+    }
+
+
+    /**
+     * wannggp
+     * 对账记录列表
+     * @param request
+     * @param model
+     * @param map
+     * @return
+     * @throws FssException
+     */
+    @RequestMapping(value = "/accounting/checkedAcct/dateList",method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String queryCheckAccountDate(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws FssException {
+        List<FssCheckDate> fssCheckDateList = fssCheckDateService.getFssCheckDate(map);
+        model.addAttribute("page", fssCheckDateList);
+        model.put("map", map);
+        return "fss/accounting/checkAccounting/checkedAccountingDate_list";
+    }
+
+    /**
+     * wanggp
+     * 对账操作
+     * @param orderDate
+     * @return
+     */
+    @RequestMapping(value = "/checkAccounting/checkAccountOperate/{orderDate}/{checkFlag}", method = {RequestMethod.GET,RequestMethod.POST})
+    @AutoPage
+    public String checkAcct(@PathVariable String orderDate, @PathVariable String checkFlag) throws FssException {
+        try {
+            if ("0".equals(checkFlag)) {
+                fssCheckAccountingService.checkAcctOperate(orderDate); // 一般交易对账
+            } else if ("1".equals(checkFlag)) {
+                fssCheckAccountingService.checkHistoryAcctOperate(orderDate); // 历史标的对账
+            }
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
+        }
+        return "redirect:/accounting/checkedAcct/dateList";
+    }
 }

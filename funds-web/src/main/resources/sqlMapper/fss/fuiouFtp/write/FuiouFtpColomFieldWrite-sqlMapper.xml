@@ -13,6 +13,12 @@
             and t.state = '10890004'
      	 	and t.return_Code in ('91003018','91009999')
     </update>
+    
+    <update id="updateStatusByorderNo" parameterType="String">
+        update t_fuiou_ftp_field t
+            set t.state = '98080002'
+          where t.order_no = #{orderNo}
+    </update>
 
 
 </mapper>

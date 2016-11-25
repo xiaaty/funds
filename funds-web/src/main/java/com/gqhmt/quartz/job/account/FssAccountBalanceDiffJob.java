@@ -2,6 +2,8 @@ package com.gqhmt.quartz.job.account;
 
 import javax.annotation.Resource;
 
+import com.gqhmt.core.exception.FssException;
+import com.gqhmt.fss.architect.accounting.service.FssCheckDateService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,9 @@ import com.gqhmt.quartz.job.SupperJob;
  */
 @Component
 public class FssAccountBalanceDiffJob extends SupperJob {
-	
+
+    @Resource
+    private FssCheckDateService fssCheckDateService;
 	@Resource
 	private FssAccountBalanceDiffService fssAccountBalanceDiffService;
 
@@ -25,7 +29,7 @@ public class FssAccountBalanceDiffJob extends SupperJob {
 
     //每天00:10执行
     @Scheduled(cron="0 10 3 * * ?")
-    public void executeJob() throws PayChannelNotSupports {
+    public void executeJob() throws PayChannelNotSupports,FssException {
     	
     	LogUtil.info(getClass(), "init账户余额校验定时任务");
     	
@@ -39,7 +43,7 @@ public class FssAccountBalanceDiffJob extends SupperJob {
         
         startLog("账户余额校验");
         isRunning = true;
-
+        fssCheckDateService.insertDate();
         try {
         	fssAccountBalanceDiffService.validateBalance();
         }catch (Exception e){
