@@ -118,6 +118,9 @@ public class TradeRecordService {
 
     public void refundFeozzen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, BigDecimal chargeAmount, String tradeType,String seqNo) throws FssException {
         sequenceService.frozenAmtByRefund(fromEntity, toEntity, amount, chargeAmount, tradeType,seqNo);
+        //            -----------------------调用统一支付进行记账----------------
+        tyzfTradeService.tyzfRecharge(fromEntity.getCustId(),fromEntity.getBusiType(),amount,String.valueOf(tradeType),tradeType,seqNo);
+
     }
 
     /**
