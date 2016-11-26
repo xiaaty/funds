@@ -107,8 +107,6 @@ public class CreateAccountEvent {
         customerInfoEntity.setCertType(1);
         customerInfoEntity.setMobilePhone(mobile);
         customerInfoEntity.setCustomerName(name);
-
-
         //账户校验
         FundAccountEntity primaryAccount;
         try {
@@ -133,31 +131,34 @@ public class CreateAccountEvent {
             throw new FssException("");
         }
 
-        if (primaryAccount.getHasThirdAccount() ==1){//生成富有账户
-            primaryAccount.setCustomerInfoEntity(customerInfoEntity);
-            FundOrderEntity fundOrderEntity=paySuperByFuiou.createAccountByPersonal(primaryAccount,"","",tradeType);
-            primaryAccount.setHasThirdAccount(2);
-            //富友开户成功,更新开户时间和开户订单号
-            primaryAccount.setAccountOrderNo(fundOrderEntity!=null ? fundOrderEntity.getOrderNo():null);
-            primaryAccount.setAccountTime(fundOrderEntity!=null ? fundOrderEntity.getCreateTime():null);
-            fundAccountService.update(primaryAccount);
-        }
-
-        //更新新所有与该cust_id相同的账户名称
-        fundAccountService.updateAccountCustomerName(custId,customerInfoEntity.getCustomerName(),customerInfoEntity.getCityCode(),customerInfoEntity.getParentBankCode(),customerInfoEntity.getBankNo());
-
-        //创建银行卡信息
         BankCardInfoEntity bankCardInfoEntity=null;
         List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
-        if(CollectionUtils.isEmpty(bankCardInfoList)){
-            bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
-        }else{
-            bankCardInfoEntity=bankCardInfoList.get(0);
+        if (primaryAccount.getHasThirdAccount() ==1) {//生成富有账户
+            primaryAccount.setCustomerInfoEntity(customerInfoEntity);
+            FundOrderEntity fundOrderEntity = paySuperByFuiou.createAccountByPersonal(primaryAccount, "", "", tradeType);
+            primaryAccount.setHasThirdAccount(2);
+            //富友开户成功,更新开户时间和开户订单号
+            primaryAccount.setAccountOrderNo(fundOrderEntity != null ? fundOrderEntity.getOrderNo() : null);
+            primaryAccount.setAccountTime(fundOrderEntity != null ? fundOrderEntity.getCreateTime() : null);
+            fundAccountService.update(primaryAccount);
+
+            //更新新所有与该cust_id相同的账户名称
+            fundAccountService.updateAccountCustomerName(custId, customerInfoEntity.getCustomerName(), customerInfoEntity.getCityCode(), customerInfoEntity.getParentBankCode(), customerInfoEntity.getBankNo());
+
+            //创建银行卡信息
+            if (CollectionUtils.isEmpty(bankCardInfoList)) {
+                bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+            }
+
+            customerInfoEntity.setBankId(bankCardInfoEntity.getId());
+            customerInfoEntity.setHasAcount(1);
+            customerInfoEntity.setNameIdentification(1);
+            customerInfoService.update(customerInfoEntity);
+
         }
-        customerInfoEntity.setBankId(bankCardInfoEntity.getId());
-        customerInfoEntity.setHasAcount(1);
-        customerInfoEntity.setNameIdentification(1);
-        customerInfoService.update(customerInfoEntity);
+        if(bankCardInfoEntity == null) {
+            bankCardInfoEntity = bankCardInfoList.get(0);
+        }
         //调用统一支付开户
         tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,customerInfoEntity.getMobilePhone());
         return bankCardInfoEntity.getId();
