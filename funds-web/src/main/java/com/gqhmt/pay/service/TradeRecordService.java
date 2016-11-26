@@ -159,9 +159,11 @@ public class TradeRecordService {
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
     }
 
-//    public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType) throws FssException {
-//        sequenceService.transfer(fromAcc, toAcc, amount, actionType, fundType, null, ThirdPartyType.FUIOU, fundOrderEntity);
-//           }
+    public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType) throws FssException {
+        sequenceService.transfer(fromAcc, toAcc, amount, actionType, fundType, null, ThirdPartyType.FUIOU, fundOrderEntity);
+        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,"1106",fundOrderEntity.getOrderNo());
+
+    }
 
     /**
      * 转账接口重载
