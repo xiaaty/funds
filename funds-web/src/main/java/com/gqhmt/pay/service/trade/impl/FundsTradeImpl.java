@@ -9,14 +9,12 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssBondTransferService;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
 import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -37,6 +35,7 @@ import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -164,7 +163,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         //校验账户无问题，则进行真正的交易，发送提现指令到富友
         try {
             FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
-            tradeRecordService.withdrawByFroze(freezeEntity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003,withdrawDto.getSeq_no());
+            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003,withdrawDto.getSeq_no(),withdrawDto.getTrade_type());
             this.chargeAmount(fundOrderEntity);
         }catch(Exception e) {
             //资金处理
@@ -290,7 +289,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.cashWithSetReq(entity.getCustId(),selletType);
         FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_AGENT_WITHDRAW,busiId,GlobalConstants.BUSINESS_WITHHOLDING,null,null,null,null);
         //资金处理
-        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003,seqNo);
+        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003,seqNo,"11040099");
         return true;
     }
 
@@ -656,7 +655,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
         fundOrderEntity = paySuperByFuiou.withdraw(entity,amount,BigDecimal.ZERO,GlobalConstants.ORDER_AGENT_WITHDRAW,busiId,GlobalConstants.BUSINESS_WITHHOLDING,String.valueOf(newOrderType),String.valueOf(tradeType),lendNo,loanNo);
         //资金处理
-        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003,seqNo);
+        tradeRecordService.withdrawByFroze(entity,amount,fundOrderEntity,2003,seqNo,String.valueOf(tradeType));
         return fundOrderEntity;
     }
 

@@ -129,8 +129,7 @@ public class FundSequenceService {
             throw new FssException("90004013");
         }
         this.fundTradeService.addFundTrade(entity, amount, BigDecimal.ZERO, accountType, "充值成功，充值金额 " + amount + "元");
-        //            -----------------------调用统一支付进行记账----------------
-         tyzfTradeService.tyzfRecharge(entity.getCustId(),entity.getBusiType(),amount,String.valueOf(actionType),tradeType,seqNo);
+
     }
 
     /**
@@ -184,8 +183,6 @@ public class FundSequenceService {
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
-//                  ---------------------------异步调用统一支付---------------------------
-          tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),amount,accountType,tradeType,seqNo);
     }
 
 
@@ -235,7 +232,7 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
         this.fundTradeService.addFundTrade(frozeEntity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
         //---------------------------调用统一支付冻结-----------------
-        tyzfTradeService.tyzfFroze(entity.getCustId(),entity.getBusiType(),amount,String.valueOf(accountType),tradeType,seqNo);
+       // tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),amount,accountType,tradeType,seqNo);
     }
 
     /**
@@ -327,10 +324,10 @@ public class FundSequenceService {
 //      this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
 //      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
         //----------------------------当交易类型不为满标类型和回款类型时调用统一支付转账------------------
-        if( !StringUtils.equals("11090004",tradeType) && !StringUtils.equals("11090005",tradeType) &&  !StringUtils.equals("11090006",tradeType)
-         && !StringUtils.equals("11101001",tradeType) && !StringUtils.equals("11101002",tradeType)){
-            tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),amount,tradeType,orderNo);
-        }
+//        if( !StringUtils.equals("11090004",tradeType) && !StringUtils.equals("11090005",tradeType) &&  !StringUtils.equals("11090006",tradeType)
+//         && !StringUtils.equals("11101001",tradeType) && !StringUtils.equals("11101002",tradeType)){
+//
+//        }
     }
 
     public void frozenAmtByRefund(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,BigDecimal chargeAmount,String tradeType,String seqNo) throws FssException {
@@ -406,10 +403,10 @@ public class FundSequenceService {
         this.fundTradeService.addFundTrade(orgEntity, BigDecimal.ZERO, amount, accountType,memo,bounsAmount);
 //        createFundTrade(fromEntity, BigDecimal.ZERO, amount, 3001, "出借" + title + "，冻结账户资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO));
         //        ---------------------------异步调用统一支付处理冻结-------------------------
-        if(!StringUtils.equals("11050001",tradeType) &&  !StringUtils.equals("11050002",tradeType) &&  !StringUtils.equals("11050003",tradeType) &&  !StringUtils.equals("11050004",tradeType) &&  !StringUtils.equals("11050005",tradeType) &&  !StringUtils.equals("11050006",tradeType) &&  !StringUtils.equals("11050007",tradeType)
-        && !StringUtils.equals("11051001",tradeType) &&  !StringUtils.equals("11051002",tradeType) &&  !StringUtils.equals("11051003",tradeType) &&  !StringUtils.equals("11051004",tradeType) &&  !StringUtils.equals("11051005",tradeType) &&  !StringUtils.equals("11051006",tradeType) &&  !StringUtils.equals("11051007",tradeType)){
-            tyzfTradeService.tyzfFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,String.valueOf(frozenType),tradeType,seqNo);
-        }
+//        if(!StringUtils.equals("11050001",tradeType) &&  !StringUtils.equals("11050002",tradeType) &&  !StringUtils.equals("11050003",tradeType) &&  !StringUtils.equals("11050004",tradeType) &&  !StringUtils.equals("11050005",tradeType) &&  !StringUtils.equals("11050006",tradeType) &&  !StringUtils.equals("11050007",tradeType)
+//        && !StringUtils.equals("11051001",tradeType) &&  !StringUtils.equals("11051002",tradeType) &&  !StringUtils.equals("11051003",tradeType) &&  !StringUtils.equals("11051004",tradeType) &&  !StringUtils.equals("11051005",tradeType) &&  !StringUtils.equals("11051006",tradeType) &&  !StringUtils.equals("11051007",tradeType)){
+//            tyzfTradeService.tyzfFroze(orgEntity.getCustId(),orgEntity.getBusiType(),amount,String.valueOf(frozenType),tradeType,seqNo);
+//        }
     }
 
     /**
@@ -467,7 +464,7 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertList(list);
         this.fundTradeService.addFundTrade(frozenEntiry, amount, BigDecimal.ZERO, accountType,memo,BigDecimal.ZERO);
         //        --------------------解冻调用统一支付处理-----------------------
-        tyzfTradeService.tyzfUnFroze(frozenEntiry.getCustId(),frozenEntiry.getBusiType(),amount,"2008",tradeType,seqNo);
+
     }
 
 
