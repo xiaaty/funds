@@ -5,7 +5,6 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.dataMigration.account.AccountData;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -43,7 +42,7 @@ public class DataAccount extends SupperJob {
 
     private boolean isRunning = false;
 
-    @Scheduled(cron="0 0/1 * * * ?")
+//    @Scheduled(cron="0 0/1 * * * ?")
     public void executeJob() throws PayChannelNotSupports {
 
         LogUtil.info(getClass(), "账户数据迁移job");
