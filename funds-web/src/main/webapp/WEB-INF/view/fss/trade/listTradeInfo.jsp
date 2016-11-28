@@ -196,16 +196,16 @@
 
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15"
-                                           style="min-width:1550px;">
+                                           style="min-width:1450px;">
                                         <col width="50"/>
                                         <col width="100"/>
                                         <col width="100"/>
-                                        <col width="150"/>
+                                        <col width="100"/>
                                         <col width="100"/>
                                         <col width="200"/>
                                         <col width="200"/>
                                         <col width="100"/>
-                                        <col width="150"/>
+                                        <col width="100"/>
                                         <col width="100"/>
                                         <col width="100"/>
                                         <col width="100"/>
@@ -229,7 +229,7 @@
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t" varStatus="vs">
-                                            <tr class="success">
+                                            <tr class="">
                                                 <td>${vs.index+1}</td>
                                                 <td>${t.dataSource}</td>
                                                 <td>${t.sysCode}</td>

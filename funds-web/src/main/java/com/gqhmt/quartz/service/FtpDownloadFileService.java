@@ -1,11 +1,15 @@
 package com.gqhmt.quartz.service;
 
+import com.google.common.collect.Lists;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
+import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
+import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
+import com.gqhmt.fss.architect.accounting.service.FssImportDataService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
@@ -20,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,6 +58,12 @@ public class FtpDownloadFileService {
 
     @Resource
     private FuiouAccountInfoFileService fuiouAccountInfoFileService;
+
+    @Resource
+    private FssCheckAccountingService fssCheckAccountingService;
+
+    @Resource
+    private FssImportDataService fssImportDataService;
 
     //判断文件是否存在
     private boolean haveFile = true;
@@ -381,22 +390,22 @@ public class FtpDownloadFileService {
         }
 
         List<FuiouAccountInfoEntity> accInfoList = new ArrayList<FuiouAccountInfoEntity>();
-
+        List<FssCheckAccountingEntity> checkLists= Lists.newArrayList();
         for(String str:list){
             FuiouAccountInfoEntity accountInfo = new FuiouAccountInfoEntity();
-
             accountInfo.setAccountInfo(str, file.getTradeType());
-
             if(fileId!=0){
                 accountInfo.setFileId(fileId);
             }
+            FssCheckAccountingEntity checkAccountingEntity= fssCheckAccountingService.createChecking(accountInfo,file.getTradeType());
 
             accInfoList.add(accountInfo);
-
+            checkLists.add(checkAccountingEntity);
         }
-
+        //循环便利集合得到客户表id并添加进对象
+        List<FssCheckAccountingEntity> enList= fssImportDataService.list(checkLists);
         fuiouAccountInfoService.addFuiouAccountInfoList(accInfoList);
-
+        fssCheckAccountingService.insertCheckList(checkLists);
         file.setBooleanType("1");
         fuiouAccountInfoFileService.updateFuiouAccountInfoFileEntity(file);
         LogUtil.info(this.getClass(),"抓取文件：" + file.getTradeType() + new SimpleDateFormat("yyyyMMdd").format(file.getCreateTime())+".txt 成功");

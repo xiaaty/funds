@@ -62,7 +62,7 @@ public class FssLoan {
     * time:2016年2月22日
     * function：流标
     */
-    @RequestMapping(value = "/loan/failedBid",method = RequestMethod.POST)
+//    @RequestMapping(value = "/loan/failedBid",method = RequestMethod.POST)
     public Object ceeateAccount(@RequestBody FailedBidDto failedBidDto){
     	
     	Response response= null;
@@ -81,7 +81,7 @@ public class FssLoan {
      * function：借款人放款
      * @throws FssException 
      */
-    @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
+//    @RequestMapping(value = "/loan/lending",method = RequestMethod.POST)
     public Object lending(@RequestBody LendingDto lendingDto) throws FssException{
     	//抵押权人对象
 //    	if("11090001".equals(lendingDto.getTrade_type())){
@@ -107,7 +107,7 @@ public class FssLoan {
      * function：抵押权人提现
      * @throws FssException 
      */
-    @RequestMapping(value = "/loan/mortgageeWithDraw",method = RequestMethod.POST)
+//    @RequestMapping(value = "/loan/mortgageeWithDraw",method = RequestMethod.POST)
     public Object MortgageeWithDraw(@RequestBody MortgageeWithDrawDto mortgageeWithDrawDto) throws FssException{
     	//抵押权人对象
     	/*FssAccountEntity mortgageeAccount = fssAccountService.getFssAccountByAccNo(mortgageeWithDrawDto.getMortgagee_acc_no());

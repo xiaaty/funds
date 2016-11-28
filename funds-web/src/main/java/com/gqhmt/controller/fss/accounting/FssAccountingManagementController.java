@@ -42,8 +42,6 @@ public class FssAccountingManagementController {
     @Resource
     private FssLendAssetService fssLendAssetSetrvice;
     @Resource
-    private FssAccountingCompensatoryService fssAccountingCompensatoryService;
-    @Resource
     private FssAccountingCompanyIncomeService fssAccountingCompanyIncomeService;
     @Resource
     private FssFreezeService fssFreezeService;

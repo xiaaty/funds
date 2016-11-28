@@ -25,6 +25,7 @@ import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.core.util.Encriptor;
 import com.gqhmt.util.ThirdPartyType;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -221,13 +222,13 @@ public class FundSequenceService {
         if(amount.multiply(new BigDecimal("100")).longValue()<0){
             throw new AmountFailException("传入金额不能小于0");
         }
-        amount = new BigDecimal("-"+amount.toPlainString());
+        BigDecimal refundAmount = new BigDecimal("-"+amount.toPlainString());
 //      FundSequenceEntity fundSequenceEntity = this.getFundSequenceEntity(frozeEntity.getId(), 2, accountType, amount,  orderEntity, entity.getId(),frozeEntity.getCustId());
-        FundSequenceEntity fundSequenceEntity=this.getFundSequenceEntity(frozeEntity.getId(),actionType,accountType,amount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),oAccountId,newFundsType,tradeType,frozeEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
+        FundSequenceEntity fundSequenceEntity=this.getFundSequenceEntity(frozeEntity.getId(),actionType,accountType,refundAmount,orderEntity == null ? "":orderEntity.getOrderNo(),orderEntity == null ?"":orderEntity.getOrderNo(),oAccountId,newFundsType,tradeType,frozeEntity.getCustId(),lendNo,toCustId,toLendNo,loanCustId,loanNo);
         fundSequenceEntity.setSumary("提现");
         fundSequenceEntity.setToken(getToken(orderEntity,accountType));
         this.fundSequenceWriteMapper.insertSelective(fundSequenceEntity);
-        this.fundTradeService.addFundTrade(entity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
+        this.fundTradeService.addFundTrade(frozeEntity,  BigDecimal.ZERO, amount,accountType, "提现成功，提现金额 " + amount + "元");
     }
 
     /**
@@ -318,6 +319,14 @@ public class FundSequenceService {
         this.fundSequenceWriteMapper.insertList(list);
 //      this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amount,accountType, memo == null && "".equals(memo)?"转账转出":memo,BigDecimal.ZERO);
 //      this.fundTradeService.addFundTrade(toEntity,amount, BigDecimal.ZERO,accountType, memo == null && "".equals(memo)?"转账转入":memo);
+    }
+
+    public void frozenAmtByRefund(FundAccountEntity orgEntity,FundAccountEntity frozenEntiry,BigDecimal amount,BigDecimal chargeAmount,String tradeType) throws FssException {
+//        tradeRecordService.frozen(entity,freezeEntity,withdrawAmt ,1012,null,"提现成功，提现金额 " + withdrawDto.getAmt() + "元,收取提现手续费"+withdrawDto.getCharge_amt(),BigDecimal.ZERO,withdrawDto.getTrade_type());
+        frozenAmt(orgEntity, frozenEntiry, amount, 1012, "提现成功，提现金额 " + amount, ThirdPartyType.FUIOU,null,null,tradeType);
+        if(chargeAmount.compareTo(BigDecimal.ZERO)>0){
+            frozenAmt(orgEntity, frozenEntiry, chargeAmount, 4010, "收取提现手续费 " + chargeAmount, ThirdPartyType.FUIOU,null,null,tradeType);
+        }
     }
 
     /**
@@ -504,7 +513,24 @@ public class FundSequenceService {
     public int getSizeByOrderNo(String orderNo){
         return fundSequenceReadMapper.getSizeByOrderNo(orderNo);
     }
-
+    /**
+     * jhz
+     * 通过s_order_no获取订单入账数量
+     * @param sOrderNo
+     * @return
+     */
+    public int getSizeBySOrderNo(String sOrderNo)throws FssException{
+        return fundSequenceReadMapper.getSizeBySOrderNo(sOrderNo);
+    }
+    /**
+     * jhz
+     * 通过s_order_no查询流水列表
+     * @param sOrderNo
+     * @return
+     */
+    public List<FundSequenceEntity> queryBySOrderNo(String sOrderNo)throws FssException{
+        return fundSequenceReadMapper.queryBySOrderNo(sOrderNo);
+    }
     /**
      * 获取订单入账金额，转账 冻结 0，充值 提现 不等于0
      * @param orderNo
@@ -753,16 +779,20 @@ public class FundSequenceService {
                         LogUtil.error(this.getClass(), e);
                     }
                 }
-                if (bean.getRepaymentExtrinterest().compareTo(BigDecimal.ZERO) > 0) {
+                if (bean.getRepaymentExtrinterest().compareTo(BigDecimal.ZERO) > 0) {//额外利息
                     try {
                        // this.transfer(fromEntity, toEntity, bean.getRepaymentExtrinterest(), 7, 3004,null,thirdPartyType, fundOrderEntity);
-                        this.transfer(fromEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
-
+                        //查询红包金额从哪个运营商的红包账户出
+                        FuiouFtpColomField fuiouFtpColomField= fuiouFtpColomFieldService.getFuiouFtpFiledByParam(fundOrderEntity.getOrderNo(),bean.getId());
+                        if(fuiouFtpColomField!=null){
+                            FundAccountEntity  BondAccountEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
+                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                        }
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }
                     try {
-                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentExtrinterest(), BigDecimal.ZERO, 3012, title + " 收到提前还款利息补偿 " + bean.getRepaymentInterest() + "元");
+                        fundTradeService.addFundTrade(toEntity, bean.getRepaymentExtrinterest(), BigDecimal.ZERO, 3013, title + " 收款加息收益 " + bean.getRepaymentExtrinterest() + "元");
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
                     }

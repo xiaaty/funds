@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.fuiouFtp.service;
 
+import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
@@ -207,4 +208,25 @@ public class FuiouFtpColomFieldService {
     public FuiouFtpColomField getFuiouFtpFiledByOrderNo(String orderNo){
         return fuiouFtpColomFieldReadMapper.getFuiouFtpByOrderNo(orderNo);
     }
+
+    public FuiouFtpColomField getFuiouFtpFiledByParam(String orderNo,Long tenderId){
+        return fuiouFtpColomFieldReadMapper.getFuiouFtpByParam(orderNo,tenderId);
+    }
+
+    /**
+     * 查询异常对账信息列表
+     * @param map
+     * @return
+     */
+    public List<FuiouFtpColomField> getgetFuiouFtpByInputDate(Map<String, String> map) {
+        Map<String, String> map2= Maps.newHashMap();
+        if (map != null) {
+            String orderDate = map.get("orderDate");
+            map2.put("orderNo",map.get("orderNo"));
+            map2.put("inputDate", orderDate);
+            map2.put("state", map.get("state"));
+        }
+        return fuiouFtpColomFieldReadMapper.getFuiouFtpByInputDate(map2);
+    }
+
 }

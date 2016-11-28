@@ -4,7 +4,7 @@ import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import org.apache.ibatis.annotations.Param;
-
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +33,8 @@ public interface FssMappingReadMapper extends ReadMapper<FssMappingEntity> {
 	public List<FssMappingEntity> queryRedAccountList(Map map);
 	public List<FssMappingEntity> findAllMapping();
 	public List<FssMappingBean> getMappingByType(@Param("mappingType") String mappingType);
-	public FssMappingEntity getMappingByCustId(@Param("custId") String custId);
+	public FssMappingEntity getMappingByCustId(Map map);
 	public FssMappingEntity getMappingBySort(@Param("sort") String sort);
+	public BigDecimal getBondSumAmount(@Param("mappingType") String mappingType);
+	public List<FssMappingBean> getMobileList(@Param("mappingType") String mappingType);
 }

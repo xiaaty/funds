@@ -1,25 +1,40 @@
 package com.gqhmt.fss.architect.accounting.service;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
+import com.gqhmt.fss.architect.accounting.entity.FssCheckDate;
 import com.gqhmt.fss.architect.accounting.mapper.read.FssCheckAccountingReadMapper;
 import com.gqhmt.fss.architect.accounting.mapper.write.FssCheckAccountingWriteMapper;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
+import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpColomFieldReadMapper;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.read.FuiouFtpOrderReadMapper;
+import com.gqhmt.fss.architect.fuiouFtp.mapper.write.FuiouFtpColomFieldWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
+import com.gqhmt.funds.architect.account.mapper.read.FundSequenceReadMapper;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filename:    com.gqhmt.fss.architect.trade.service.FssTradeApplyService
@@ -47,6 +62,18 @@ public class FssCheckAccountingService {
     private FssCheckAccountingWriteMapper fssCheckAccountingWriteMapper;
 
     @Resource
+    private FuiouFtpOrderReadMapper fuiouFtpOrderReadMapper;
+
+    @Resource
+    private FuiouFtpColomFieldReadMapper fuiouFtpColomFieldReadMapper;
+
+    @Resource
+    private FuiouFtpColomFieldWriteMapper fuiouFtpColomFieldWriteMapper;
+
+    @Resource
+    private FundSequenceReadMapper sequenceReadMapper;
+
+    @Resource
     private FundSequenceService fundSequenceService;
 
     @Resource
@@ -54,6 +81,15 @@ public class FssCheckAccountingService {
 
     @Resource
     private FundAccountService fundAccountService;
+
+    @Resource
+    private FssCheckDateService fssCheckDateService;
+
+    @Resource
+    private FundOrderService fundOrderService;
+
+    @Resource
+    private FssCheckAccountingService fssCheckAccountingService;
 
     /**
      * jhz
@@ -87,6 +123,9 @@ public class FssCheckAccountingService {
      * @param list
      */
     public int insertList(List<FssCheckAccountingEntity> list)throws FssException{
+        if(CollectionUtils.isEmpty(list)){
+            return 0;
+        }
         return fssCheckAccountingWriteMapper.insertList(list);
     }
     /**
@@ -123,7 +162,7 @@ public class FssCheckAccountingService {
     public FssCheckAccountingEntity createChecking(String orderNo, String tradeTime, String accountingNo,
                                                    String accountingTime, String amount,String custId,String accNo,
                                                    String accName,String userName,String remark,String status,String tradeType,
-                                                   String accountingResult,String accountingState)throws FssException{
+                                                   String accountingResult,String accountingState){
         FssCheckAccountingEntity entity=new FssCheckAccountingEntity();
         entity.setOrderNo(orderNo);
         entity.setTradeTime(tradeTime);
@@ -146,12 +185,49 @@ public class FssCheckAccountingService {
 
     /**
      * jhz
+     * 通过orderNo查询对账数据
+     * @param orderNo
+     * @return
+     * @throws FssException
+     */
+    public FssCheckAccountingEntity queryByOrderNo(String orderNo)throws FssException{
+        return fssCheckAccountingReadMapper.queryByOrderNo(orderNo);
+    }
+
+    public List<FssCheckAccountingEntity> getCheckList(List<String> orderNos){
+        return fssCheckAccountingReadMapper.getCheckList(orderNos);
+    }
+    public FssCheckAccountingEntity createChecking(FuiouAccountInfoEntity accountInfo, String tradeType){
+//        String state="";
+//        if(StringUtils.equals("0000",accountInfo.getState())){
+//            state="交易成功";
+//        }else{
+//            state="交易失败";
+//        }
+        FssCheckAccountingEntity entity= this.createChecking(accountInfo.getSeqNo(), DateUtil.dateTostring(accountInfo.getTradeTime()),
+                accountInfo.getBatchFoiuFinance(),DateUtil.dateTostring(accountInfo.getTradeTime()),
+                accountInfo.getBalance().toString(),null,null,accountInfo.getUserAccount(),accountInfo.getUserName(),
+                accountInfo.getRemark(),accountInfo.getState(),"","10130001","98010002");
+        entity.setToAccName(accountInfo.getInAccount());
+        entity.setToUserName(accountInfo.getInUserName());
+        entity.setContractNo(accountInfo.getContractNum());
+        if(StringUtils.equals("ZZ",tradeType) || StringUtils.equals("HB",tradeType)){
+            entity.setTradeType("10980004");
+        }else if(StringUtils.equals("WTCZ",tradeType)){
+            entity.setTradeType("10980003");
+        }else if(StringUtils.equals("WTTX",tradeType)){
+            entity.setTradeType("10980001");
+        }
+        return entity;
+
+    }
+    /**
+     * jhz
      * @param entity
      * @return
      * @throws FssException
      */
-    public FssCheckAccountingEntity createChecking(FssCheckAccountingEntity entity,String type)throws FssException{
-        entity.setTradeType(type);
+    public FssCheckAccountingEntity createChecking(FssCheckAccountingEntity entity)throws FssException{
         entity.setCreateTime(new Date());
         entity.setModifyTime(new Date());
         entity.setAccountingStatus("98010002");//98010002未对帐，98010001已对账
@@ -240,5 +316,290 @@ public class FssCheckAccountingService {
         }
 
         return null;
+    }
+
+    /**
+     * wanggp
+     * 查询历史标的当日对账数据对账
+     * @param orderDate
+     * @throws FssException
+     */
+    public void checkHistoryAccount(String orderDate) throws FssException {
+        List<FuiouFtpColomField> fuiouFtpColomFieldList = new ArrayList<FuiouFtpColomField>();
+        List<FundSequenceEntity> sequenceList = new ArrayList<FundSequenceEntity>();
+        String orderNo = "";
+        String sequenceOrderNo = "";
+        BigDecimal sumSequenceAmount = new BigDecimal("0");
+        BigDecimal sumFieldAmount = new BigDecimal("0");
+
+        List<FssCheckAccountingEntity> checkAccountingList = fssCheckAccountingReadMapper.queryCheckAcctListByDate(orderDate);
+        int checkAcctSize = checkAccountingList.size() - 1;
+
+        FssCheckAccountingEntity checkAccounting = new FssCheckAccountingEntity();
+        List<FuiouFtpOrder> fuiouFtpOrderList = fuiouFtpOrderReadMapper.queryOrderNoListByDate(orderDate);
+        //当天每一笔订单对账
+        for (FuiouFtpOrder fuiouFtpOrder : fuiouFtpOrderList) {
+            orderNo = fuiouFtpOrder.getOrderNo();
+            LogUtil.info(this.getClass(),"满标回款历史对账，查询ftpField和FtpOrder订单号" + orderNo);
+            if (StringUtils.isEmpty(orderNo))
+                continue;
+
+            fuiouFtpColomFieldList = fuiouFtpColomFieldReadMapper.getByOrderNo(orderNo);
+            if (null == fuiouFtpColomFieldList && fuiouFtpColomFieldList.isEmpty()) {
+                continue;
+            } else {
+                LogUtil.info(this.getClass(),"满标回款历史对账，ftpField与checkAccounting 对账start：" + orderDate);
+                //遍历field，1.匹配checkAccounting
+                for (FuiouFtpColomField fuiouFtpColomField : fuiouFtpColomFieldList) {
+                    //是否旧数据
+                    if (StringUtils.isNotEmpty(fuiouFtpColomField.getFeildOrderNo()))
+                        continue;
+                    LogUtil.info(this.getClass(),"满标回款历史对账，ftpField订单号：" + fuiouFtpColomField.getOrderNo()
+                            + "ftpField id:" + fuiouFtpColomField.getId());
+                    for (int i=0; i<checkAccountingList.size(); i++) {
+                        checkAccounting = checkAccountingList.get(i);
+                        if (!fuiouFtpColomField.getFromUserName().equals(checkAccounting.getAccName()) &&
+                                !fuiouFtpColomField.getToUserName().equals(checkAccounting.getToAccName()) &&
+                                fuiouFtpColomField.getAmt().compareTo(new BigDecimal(checkAccounting.getAmount())) != 0) {
+                            if (checkAcctSize == i) { //对比最后一条，无符合数据，则更新为异常
+                                LogUtil.info(this.getClass(),
+                                        "满标回款历史对账，与checkAccounting最后一条对账无符合数据，记录异常，ftpField订单号：" + fuiouFtpColomField.getOrderNo());
+                                updateFieldStatus(orderNo);
+                                break;
+                            }
+                        } else {
+                            sequenceOrderNo = fuiouFtpColomField.getOrderNo();
+                            LogUtil.info(this.getClass(),
+                                    "满标回款历史对账，与checkAccounting对账无误，ftpField订单号：" + fuiouFtpColomField.getOrderNo());
+                            break;
+                        }
+                    }
+                    //获取field总金额
+                    if (fuiouFtpColomField.getAmt() != null && fuiouFtpColomField.getAmt().compareTo(new BigDecimal("0")) > 0)
+                        sumFieldAmount = sumFieldAmount.add(fuiouFtpColomField.getAmt());
+                }
+                //2.核对sequence总金额
+                if (!StringUtils.isEmpty(sequenceOrderNo)) {
+                    sequenceList  = sequenceReadMapper.queryByOrderNo(sequenceOrderNo);
+                    if (null == sequenceList && sequenceList.isEmpty()) {
+                        continue;
+                    }
+                    LogUtil.info(this.getClass(),"满标回款历史对账，ftpField与sequence 对账start：" + orderDate + "，订单号：" + sequenceOrderNo);
+                    for (FundSequenceEntity sequence : sequenceList) {
+                        if (sequence.getAmount() != null && sequence.getAmount().compareTo(new BigDecimal("0")) > 0)
+                            sumSequenceAmount = sumSequenceAmount.add(sequence.getAmount());
+                    }
+                    LogUtil.info(this.getClass(), "ftpField总金额：" + sumFieldAmount + "sequence总金额：" + sumSequenceAmount);
+                    if (sumFieldAmount.compareTo(sumSequenceAmount) != 0) { //校验总金额
+                        updateFieldStatus(sequenceOrderNo);
+                    } else {
+                        LogUtil.info(this.getClass(),
+                                "满标回款历史对账，field与对sequence账无误，ftpField订单号：" + sequenceOrderNo);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * wanggp
+     * 更新field差异状态
+     * @param orderNo
+     * @throws FssException
+     */
+    public void updateFieldStatus(String orderNo) throws FssException {
+        LogUtil.info(this.getClass(),"满标回款历史对账，更新ftpField对账异常状态，订单号：" + orderNo);
+        try {
+            fuiouFtpColomFieldWriteMapper.updateStatusByorderNo(orderNo);
+        } catch (Exception e) {
+            throw new FssException("更新ftpField对账异常状态失败，订单号为：[" + orderNo + "]", e);
+        }
+    }
+    /**
+     * jhz
+     * 查询前一天未对帐的充值体现
+     * @return
+     */
+    public List<FssCheckAccountingEntity> getCheckAccounts(String orderDate){
+        return  fssCheckAccountingReadMapper.getCheckAccounts(orderDate);
+    }
+    /**
+     * 对账list转map
+     * @param checkAccountings
+     * @return
+     */
+    public Map<String, FssCheckAccountingEntity> convertToFundSOrderMap(List<FssCheckAccountingEntity> checkAccountings)throws FssException{
+        Map<String, FssCheckAccountingEntity> checkAccMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(checkAccountings)) {
+            checkAccMap = Maps.uniqueIndex(checkAccountings, new Function<FssCheckAccountingEntity, String>() {
+                public String apply(FssCheckAccountingEntity item) {
+                    return item.getOrderNo();
+                }
+            });
+        }
+        return checkAccMap;
+    }
+    /**
+     * jhz
+     * 核对订单表状态和对账文件状态是否一致
+     * 98080001:正常;98080002:异常
+     */
+    public void  checkFundOrder(FssCheckAccountingEntity account)throws FssException{
+        if(account == null){
+            return;
+        }
+        LogUtil.info(this.getClass(), "核对订单号为："+account.getOrderNo()+"的对账数据");
+        FundOrderEntity order=fundOrderService.findfundOrder(account.getOrderNo());
+        if(order == null){
+            return;
+        }
+        if(StringUtils.equals("交易成功",account.getStatus())){
+            account.setStatus("0000");
+        }
+        if(order.getOrderState()==2){
+            order.setRetCode("0000");
+        }else{
+            if(order.getRetCode()==null){
+                order.setRetCode("0001");
+            }
+        }
+        if(order.getRetCode().equals(account.getStatus())){
+            if(StringUtils.equals("0000",order.getRetCode())){
+                if(StringUtils.equals("10980004",account.getTradeType())){
+                        //满标转账回款转账对账
+                    if (order.getOrderType()==1190020){
+                        this.checkRepayment(order,account);
+                    //普通转账对账
+                    }else {
+                        int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
+                        if (size == 2) {
+                            fundOrderService.updateFundsOrder(order, "98080001", "98010001");
+                            account.setAbnormalState("98080001");
+                            LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",转账数据正常");
+                        } else {
+                            fundOrderService.updateFundsOrder(order, "98080002", "98010002");
+                            account.setAbnormalState("98080002");
+                            LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",数据异常：转账流水记录大于2条");
+                        }
+                        }
+                //充值提现对账
+                }else{
+                    int size=fundSequenceService.getSizeByOrderNo(order.getOrderNo());
+                    if(size==1){
+                        fundOrderService.updateFundsOrder(order,"98080001","98010001");
+                        account.setAbnormalState("98080001");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",充值或提现数据正常");
+                    }else if(size>1){
+                        fundOrderService.updateFundsOrder(order,"98080002","98010002");
+                        account.setAbnormalState("98080002");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",数据异常：充值或提现流水记录大于1条");
+
+                    }else{
+                        //流水表无记录的话进行流水添加
+                        fundOrderService.updateFundsOrder(order,"98080002","98010002");
+                        account.setAbnormalState("98080002");
+                        LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+",数据异常：充值或提现流水记录不存在");
+                    }
+                }
+            }
+        //富友成功，本地失败
+        }else if(!"0000".equals(order.getRetCode()) && "0000".equals(account.getStatus())){
+            order.setRetCode("0000");
+            order.setOrderState(2 );
+            fundOrderService.updateFundsOrder(order,"98080002","98010002");
+            account.setAbnormalState("98080002");
+            LogUtil.info(this.getClass(),"订单号为"+account.getOrderNo()+"数据异常");
+        }
+    }
+
+    /**
+     * jhz
+     * 满标转账回款转账对账
+     * @param order
+     * @param account
+     * @throws FssException
+     */
+    public void checkRepayment(FundOrderEntity order,FssCheckAccountingEntity account) throws FssException{
+//        int size=fundSequenceService.getSizeBySOrderNo(order.getOrderNo());
+        List<FundSequenceEntity> sequenceEntities=fundSequenceService.queryBySOrderNo(order.getOrderNo());
+        if(sequenceEntities.size()==0){
+            fundOrderService.updateFundsOrder(order, "98080002", "98010002");
+            account.setAbnormalState("98080002");
+            LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",数据异常：满标或回款流水不存在");
+        } else {
+            if(order.getOrderAmount().compareTo(sequenceEntities.get(0).getAmount().abs())==0){
+                fundOrderService.updateFundsOrder(order, "98080001", "98010001");
+                account.setAbnormalState("98080001");
+                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",满标或回款数据正常");
+            } else {
+                fundOrderService.updateFundsOrder(order, "98080002", "98010002");
+                account.setAbnormalState("98080002");
+                LogUtil.info(this.getClass(), "订单号为" + account.getOrderNo() + ",数据异常：满标或回款流水和订单金额不一致");
+            }
+        }
+    }
+    /**
+     * jhz
+     * 进行反交易
+     * @param orderNo
+     * @throws FssException
+     */
+    public Boolean returnTrade(String orderNo) throws FssException{
+        FundOrderEntity order=fundOrderService.findfundOrder(orderNo);
+        if (order==null){
+            LogUtil.error(this.getClass(),"未查询到订单信息");
+        }
+        FundAccountEntity toAcc= fundAccountService.select(order.getAccountId());
+        FundAccountEntity acc= fundAccountService.select(order.getToAccountId());
+        FundOrderEntity orderEntity=paySuperByFuiou.transerer(acc,toAcc,order.getOrderAmount(),order.getOrderType(),order.getOrderFrormId(),order.getOrderSource(),order.getNewOrderType(),order.getTradeType(),order.getLendNo(),order.getToLendNo(),order.getLoanCustId(),order.getLoanNo());
+        if(StringUtils.equals("0000",orderEntity.getRetCode())){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * wanggp
+     * 一般交易对账
+     * @param orderDate
+     * @throws FssException
+     */
+    public void checkAcctOperate(String orderDate) throws FssException {
+        FssCheckDate fssCheckDate = fssCheckDateService.getFssCheckDate(orderDate);
+        if (null == fssCheckDate)
+            return;
+        try {
+            fssCheckDate.setOrderUserState("98010001");
+            fssCheckDateService.update(fssCheckDate);
+            List<FssCheckAccountingEntity> checkAccountings=this.getCheckAccounts(orderDate);
+            if(CollectionUtils.isEmpty(checkAccountings)){
+                return;
+            }
+            for (FssCheckAccountingEntity check:checkAccountings) {
+                this.checkFundOrder(check);
+            }
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
+        }
+    }
+
+    /**
+     * wanggp
+     * 历史标的对账操作
+     * @param orderDate
+     * @throws FssException
+     */
+    public void checkHistoryAcctOperate(String orderDate) throws FssException {
+        FssCheckDate fssCheckDate = fssCheckDateService.getFssCheckDate(orderDate);
+        if (null == fssCheckDate)
+            return;
+        try {
+            fssCheckDate.setInputUserState("98010001");
+            fssCheckDateService.update(fssCheckDate);
+            this.checkHistoryAccount(orderDate);
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
+        }
     }
 }
