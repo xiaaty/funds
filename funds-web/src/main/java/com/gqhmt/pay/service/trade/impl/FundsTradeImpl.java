@@ -174,7 +174,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         //校验账户无问题，则进行真正的交易，发送提现指令到富友
         try {
             FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
-            tradeRecordService.withdrawByFroze(freezeEntity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);
+            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);
             this.chargeAmount(fundOrderEntity);
         }catch(Exception e) {
             //资金处理

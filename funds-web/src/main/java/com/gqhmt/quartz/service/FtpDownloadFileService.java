@@ -1,15 +1,11 @@
 package com.gqhmt.quartz.service;
 
-import com.google.common.collect.Lists;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoEntity;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
-import com.gqhmt.fss.architect.accounting.entity.FssCheckAccountingEntity;
-import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
-import com.gqhmt.fss.architect.accounting.service.FssImportDataService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpColomField;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouUploadFile;
 import com.gqhmt.fss.architect.fuiouFtp.service.FuiouFtpColomFieldService;
@@ -24,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -58,12 +55,6 @@ public class FtpDownloadFileService {
 
     @Resource
     private FuiouAccountInfoFileService fuiouAccountInfoFileService;
-
-    @Resource
-    private FssCheckAccountingService fssCheckAccountingService;
-
-    @Resource
-    private FssImportDataService fssImportDataService;
 
     //判断文件是否存在
     private boolean haveFile = true;
@@ -292,9 +283,7 @@ public class FtpDownloadFileService {
         String pwd = (String)config.getValue("ftp.pwd.value");
         FtpClient ftp = new FtpClient(Integer.parseInt(port),userName,pwd,url);
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
-        Date createTime = file.getCreateTime();
-        String dateStr = sdf.format(createTime);
+        String dateStr = file.getCreatefileDate();
 
         String fileName = file.getTradeType()  + dateStr +  ".txt";
         String filePath = "/account/" + dateStr + "/" + fileName;
@@ -326,10 +315,8 @@ public class FtpDownloadFileService {
         boolean parseType = false;
 
         List<String> returnList = new ArrayList();
-        Date createTime = file.getCreateTime();
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 
-        String date = sdf.format(createTime);
+        String date = file.getCreatefileDate();
 
         String path = getClassPath();
         File filepath  = new File(path+"/tmp/account/"+date);
@@ -385,30 +372,30 @@ public class FtpDownloadFileService {
 
                 // 如果不是存在的对象， 数据库也查不到则添加
                 file.setBooleanType("-1");
+                file.setCreateTime(new Date());
                 fuiouAccountInfoFileService.addFuiouAccountInfoFileEntity(file);
                 fileId = file.getId();
         }
 
         List<FuiouAccountInfoEntity> accInfoList = new ArrayList<FuiouAccountInfoEntity>();
-        List<FssCheckAccountingEntity> checkLists= Lists.newArrayList();
+
         for(String str:list){
             FuiouAccountInfoEntity accountInfo = new FuiouAccountInfoEntity();
+
             accountInfo.setAccountInfo(str, file.getTradeType());
+
             if(fileId!=0){
                 accountInfo.setFileId(fileId);
             }
-            FssCheckAccountingEntity checkAccountingEntity= fssCheckAccountingService.createChecking(accountInfo,file.getTradeType());
 
             accInfoList.add(accountInfo);
-            checkLists.add(checkAccountingEntity);
+
         }
-        //循环便利集合得到客户表id并添加进对象
-        List<FssCheckAccountingEntity> enList= fssImportDataService.list(checkLists);
-        fuiouAccountInfoService.addFuiouAccountInfoList(accInfoList);
-        fssCheckAccountingService.insertCheckList(checkLists);
         file.setBooleanType("1");
+        fuiouAccountInfoService.addFuiouAccountInfoList(accInfoList);
+
         fuiouAccountInfoFileService.updateFuiouAccountInfoFileEntity(file);
-        LogUtil.info(this.getClass(),"抓取文件：" + file.getTradeType() + new SimpleDateFormat("yyyyMMdd").format(file.getCreateTime())+".txt 成功");
+        LogUtil.info(this.getClass(),"抓取文件：" + file.getTradeType() + file.getCreatefileDate() +".txt 成功");
     }
 
 }

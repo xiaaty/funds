@@ -8,6 +8,7 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
 import com.gqhmt.funds.architect.customer.entity.BankCardInfoEntity;
+import com.gqhmt.funds.architect.customer.entity.BankEntity;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.funds.architect.customer.mapper.read.CustomerInfoReadMapper;
@@ -16,6 +17,7 @@ import com.gqhmt.funds.architect.customer.mapper.write.GqUserWriteMapper;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -1250,5 +1252,38 @@ public class CustomerInfoService {
 		entity.setIsvalid(1);
 		entity.setModifyTime(new Date());
 		this.update(entity);
+	}
+
+	/**
+	 * jhz
+	 * 修改客户表签约状态
+	 * @param mobile
+	 * @param state
+	 * @param bankNo
+     */
+	public void updateCustomerState(String mobile,String state,String bankNo)throws FssException{
+		if(!"1".equals(state)){
+			return;
+		}
+		//通过手机号查询客户信息
+		CustomerInfoEntity entity=this.searchCustomerInfoByMobile(mobile);
+		if(entity==null){
+			return;
+		}
+		if(entity.getHasThirdAgreement()==1){
+			return;
+		}
+		if(entity.getBankId()==null){
+			return;
+		}
+		BankCardInfoEntity bankCardInfoEntity=bankCardinfoService.getBankCardById(entity.getBankId());
+		if(bankCardInfoEntity==null){
+			return;
+		}
+		if(StringUtils.equals(bankNo,bankCardInfoEntity.getBankNo()) && bankCardInfoEntity.getChangeState()==0){
+			entity.setModifyTime(new Date());
+			entity.setHasThirdAgreement(1);
+			this.update(entity);
+		}
 	}
 }
