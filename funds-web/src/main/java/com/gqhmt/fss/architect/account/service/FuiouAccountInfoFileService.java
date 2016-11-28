@@ -76,13 +76,8 @@ public class FuiouAccountInfoFileService {
     }
 
     public List<FuiouAccountInfoFileEntity> queryFailAccInfoFileList(Map<String, String> map) {
-        String booleanType = null;
-        if(map.get("booleanType")!=null){
-            booleanType = map.get("booleanType");
-        }
         map.put("booleanType","-1");
         List<FuiouAccountInfoFileEntity> listFileEntity = this.queryAccountInfoFileList(map);
-        map.put("booleanType",booleanType);
 
         return listFileEntity;
     }
