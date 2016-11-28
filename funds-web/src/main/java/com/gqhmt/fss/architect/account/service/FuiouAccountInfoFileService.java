@@ -55,13 +55,8 @@ public class FuiouAccountInfoFileService {
 
     //查询 查询成功的对账文件
     public List<FuiouAccountInfoFileEntity> querySucceedAccInfoFiltList(Map<String, String> map) {
-        String booleanType = null;
-        if(map.get("booleanType")!=null){
-            booleanType = map.get("booleanType");
-        }
         map.put("booleanType","1");
         List<FuiouAccountInfoFileEntity> listFileEntity = this.queryAccountInfoFileList(map);
-        map.put("booleanType",booleanType);
 
         return listFileEntity;
 
