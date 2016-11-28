@@ -418,7 +418,7 @@ public class FssTradeApplyController {
 				to_cust_no=String.valueOf(accEntity.getCustId());
 				to_cust_type=Integer.valueOf(accType);
 			}
-				fundsTradeImpl.bondTransfer(null,null,tradeType,null,null,null,from_cust_no,null,amt,null,to_cust_no,null,from_cust_type,to_cust_type,1005,3);
+				fundsTradeImpl.bondTransfer(null,null,tradeType,null,null,null,from_cust_no,null,amt,null,to_cust_no,null,from_cust_type,to_cust_type,1005,3,null);
 				map.put("code", "0000");
 				map.put("message", "success");
 		}catch (FssException e){

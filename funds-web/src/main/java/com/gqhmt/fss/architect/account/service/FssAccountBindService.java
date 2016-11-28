@@ -4,12 +4,14 @@ package com.gqhmt.fss.architect.account.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountBindReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountBindWriteMapper;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,12 +38,25 @@ public class FssAccountBindService {
     private FssAccountBindWriteMapper fssAccountBindWriteMapper;
 
     /**
-     * 统一支付账户映射表数据查询
+     * 统一支付账户绑定表数据查询
      * @param map
      * @return
      */
     public List<FssAccountBindEntity> queryAccountBindList(Map<String,String> map){
-       return fssAccountBindReadMapper.queryAccountBindList(map);
+        Map<String, String> map2=new HashMap<String, String>();
+        if(map!=null){
+            String startTime = map.get("startTime");
+            String endTime = map.get("endTime");
+            map2.put("busiId", map.get("busiId"));
+            map2.put("busiType", map.get("busiType"));
+            map2.put("accNo", map.get("accNo"));
+            map2.put("status", map.get("status"));
+            map2.put("contractNo", map.get("contractNo"));
+            map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+            map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+        }
+        List<FssAccountBindEntity> bindlist= fssAccountBindReadMapper.queryAccountBindList(map2);
+        return bindlist;
     }
 
     /**

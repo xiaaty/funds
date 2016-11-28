@@ -21,6 +21,31 @@
 
     <select id="queryAccountBindList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBindEntity">
         <include refid="selectSql"/>
+        <where>
+            <if test="busiId!=null and busiId!=''">
+                AND t.`busi_id`=#{busiId}
+            </if>
+            <if test="busiType!=null and busiType!=''">
+                AND t.`busi_type`=#{busiType}
+            </if>
+            <if test="accNo!=null and accNo!=''">
+                AND t.`acc_no`=#{accNo}
+            </if>
+            <if test="status!=null and status!=''">
+                AND t.`status`=#{status}
+            </if>
+            <if test="contractNo!=null and contractNo!=''">
+                AND t.`contract_no`=#{contractNo}
+            </if>
+            <if test="startTime != null and startTime != '' ">
+                and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' ">
+                and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+            </if>
+        </where>
+
+
     </select>
 
     <select id="getBindAccByParam" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBindEntity">
