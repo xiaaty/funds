@@ -33,6 +33,7 @@ import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.pay.fuiou.util.HttpClientUtil;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.pay.service.TyzfTradeService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
 
@@ -79,6 +80,9 @@ public class FundsTradeImpl  implements IFundsTrade {
     private ConversionService conversionService;
     @Resource
     private FssAccountBindService fssAccountBindService;
+    @Resource
+    private TyzfTradeService tyzfTradeService;
+
     /**
      * 生成web提现订单
      * @param withdrawOrderDto            支付渠道
@@ -448,6 +452,8 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.hasEnoughBanlance(fromEntity,amt);
         FundAccountEntity toEntity = this.getFundAccount(Integer.valueOf(custId.toString()), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"资金冻结，冻结金额："+amt+"元",BigDecimal.ZERO,tradeType,seqNo);
+        //----------调用统一支付进行资金冻结-----------------
+        tyzfTradeService.tyzfFroze(custId,busiType,amt,"1007",tradeType,seqNo);
         return true;
     }
 
@@ -463,6 +469,8 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.hasEnoughBanlance(fromEntity,amt);
         FundAccountEntity toEntity = this.getFundAccount(Integer.parseInt(cust_no), busi_type);
         tradeRecordService.unFrozen(fromEntity,toEntity,amt,1007,null,"资金解冻，解冻金额："+amt+"元",BigDecimal.ZERO,trade_type,seqNo);
+        //----------调用统一支付进行资金解冻-----------------
+        tyzfTradeService.tyzfUnFroze(Long.valueOf(cust_no),busi_type,amt,"1007",trade_type,seqNo);
         return true;
     }
 
