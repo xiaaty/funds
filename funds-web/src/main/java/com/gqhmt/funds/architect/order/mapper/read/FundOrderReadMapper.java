@@ -28,22 +28,31 @@ import java.util.Map;
 
 public interface FundOrderReadMapper extends ReadMapper<FundOrderEntity> {
 
-    public FundOrderEntity getFundOrder(@Param("orderNo") String orderNo);
+    public FundOrderEntity getByOrderNo(@Param("orderNo") String orderNo);
 
     /**
      * jhz
-     * 根据处长帐号查询所有交易订单
+     * 根据出账帐号查询所有交易订单
      * @param map
      * @param accNos
      * @return
      */
     public List<FundOrderEntity> findfundOrdesrs(@Param("map")Map map,@Param("accNos") List<Long> accNos);
 
-    public List<FundOrderEntity> queryFundOrder(Map<Object,Object> map);
 
     public int getWithdrawNum(@Param("accountID") Long accountId);
 
     public List<FundOrderBean> getFundOrderRechargeAndWithdraw(@Param("custId") Integer custId,@Param("order_type")int orderType,@Param("strTime")String strTime,@Param("endTime")String endTime);
 
     public FundOrderEntity getFundOrderByAccountId(@Param("accountId") Long accountId);
-}
+    /**
+     * jhz
+     * 查询异常订单列表
+     * @param map
+     * @param typeList
+     * @return
+     */
+    public List<FundOrderEntity> findOrderList(@Param("map")Map<String,String> map,@Param("typeList")List<Integer> typeList);
+
+
+    }

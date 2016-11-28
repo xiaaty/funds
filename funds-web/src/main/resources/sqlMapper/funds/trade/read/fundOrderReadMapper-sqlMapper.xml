@@ -25,7 +25,9 @@
 			t.loan_cust_id loanCustId,
 			t.loan_no loanNo,
 			t.new_order_type newOrderType,
-			t.trade_type tradeType
+			t.trade_type tradeType,
+			t.abnormal_state abnormalState,
+			t.handle_state handleState
 		FROM t_gq_fund_order t
 	</sql>
 	<select id="getWithdrawNum" parameterType="java.lang.Long" resultType="int">
@@ -65,16 +67,20 @@
 		</if>
 		ORDER BY  t.create_time DESC
 	</select>
-	<select id="queryFundOrdesrs"  resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
+	<select id="findOrderList"  resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
 		 <include refid="filedSql"/>
-		where t.order_type in(1,2,9,11,12) AND t.abnormal_state NOT IN ('98080001','98080002')
-		ORDER BY  t.create_time DESC
-	</select>
-	<select id="getFundOrders"  resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
-		 <include refid="filedSql"/>
-		where t.abnormal_state=98080002
+		where t.abnormal_state='98080002'
+		<if test="typeList != null">
+			and t.order_type in
+			<foreach collection="typeList" item="type" open="(" close=")" separator=",">
+				#{type}
+			</foreach>
+		</if>
 		<if test="map.orderNo != null and map.orderNo != '' ">
-			AND t.`order_no` like CONCAT('%',#{map.orderNo},'%')
+			AND t.`order_no` =#{map.orderNo}
+		</if>
+		<if test="map.handleState != null and map.handleState != '' ">
+			AND t.`handle_state` =#{map.handleState}
 		</if>
 		<if test="map.startTime != null and map.startTime != '' ">
 			and date_format(t.create_time,'%Y%m%d') &gt;= #{map.startTime}
@@ -83,6 +89,48 @@
 			and date_format(t.create_time,'%Y%m%d') &lt;= #{map.endTime}
 		</if>
 		ORDER BY  t.create_time DESC
+	</select>
+	<select id="getByOrderNo"  resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
+		 <include refid="filedSql"/>
+		where t.`order_no`=#{orderNo}
+	</select>
+	<select id="queryFundOrdesrs"  resultType="com.gqhmt.funds.architect.order.entity.FundOrderEntity">
+		 <include refid="filedSql"/>
+		where t.order_type in(1,2,9,11,12) AND t.abnormal_state NOT IN ('98080001','98080002')
+		ORDER BY  t.create_time DESC
+	</select>
+
+	<select id="getFundOrderRechargeAndWithdraw" resultType="com.gqhmt.funds.architect.order.bean.FundOrderBean">
+
+		SELECT t.order_no orderNo,
+		t.order_type orderType,
+		t.order_amount amt,
+		t.charge_amount chargeAmt,
+		t.order_state orderState,
+		t.ret_message retMessage ,
+		t.create_time tradeDate,
+		t.last_modify_time completeTime
+		FROM t_gq_fund_order t , t_gq_fund_account f
+		WHERE t.account_id = f.id
+		AND f.busi_type  = 3
+		AND (t.order_type = -1
+		<if test="order_type==1 ">
+			OR t.order_type = 1
+			OR t.order_type = 2
+		</if>
+		<if test="order_type==2 ">
+			OR t.order_type = 9
+			OR t.order_type = 12
+		</if>
+
+		)
+		<if test="strTime != null and strTime !='' "> <![CDATA[and STR_TO_DATE(t.create_time,'%Y-%m-%d') >= STR_TO_DATE(#{strTime},'%Y-%m-%d')]]> </if>
+		<if test="endTime != null and endTime !='' "><![CDATA[ and STR_TO_DATE(t.create_time,'%Y-%m-%d') <= STR_TO_DATE(#{endTime},'%Y-%m-%d')]]> </if>
+
+
+		AND f.cust_id = #{custId}
+		AND t.order_amount IS NOT NULL
+		ORDER BY t.create_time DESC,t.id DESC
 	</select>
 </mapper>
  

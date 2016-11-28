@@ -8,6 +8,7 @@ import com.gqhmt.extServInter.dto.SuperDto;
 import com.gqhmt.extServInter.dto.trade.BondTransferDto;
 import com.gqhmt.extServInter.service.trade.IBondTransfer;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
@@ -38,19 +39,24 @@ public class BondTransferImpl implements IBondTransfer {
 	 * 11052004:安卓购买债权
 	 * 11052005:微信购买债权
      * 11052006:委托购买债权
+     * 11080005:还款本息转账
      * @param dto
      * @return
      */
-	@APITradeTypeValid(value = "11052001,11052002,11052003,11052004,11052005,11052006")
+	@APITradeTypeValid(value = "11052001,11052002,11052003,11052004,11052005,11052006,11080005")
     @Override
     public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
+			int fundType=3007;
 			BondTransferDto cDto = (BondTransferDto)dto;
+			if(StringUtils.equals("11080005",cDto.getTrade_type())){
+				fundType=3014;
+			}
 			fundsTradeImpl.bondTransfer(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(), cDto.getBid_id(),cDto.getBusi_bid_no(),
                     cDto.getTender_no(),cDto.getCust_no(),cDto.getBusi_no(),cDto.getAmt(),
-                    cDto.getO_tender_no(),cDto.getO_cust_no(),cDto.getO_busi_no(),cDto.getAcc_type(),cDto.getTo_acc_type(),3007,8);
-            response.setResp_code("0000");
+                    cDto.getO_tender_no(),cDto.getO_cust_no(),cDto.getO_busi_no(),cDto.getAcc_type(),cDto.getTo_acc_type(),fundType,8);
+			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());

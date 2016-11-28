@@ -2,6 +2,8 @@ package com.gqhmt.fss.architect.fuiouFtp.mapper.read;
 
 import com.gqhmt.core.mybatis.ReadMapper;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,5 +42,7 @@ public interface FuiouFtpOrderReadMapper extends ReadMapper<FuiouFtpOrder> {
     public List<FuiouFtpOrder> listNoReturnResult();
 
     public List<FuiouFtpOrder> selectFuiouFtpOrderList(Map<String, String> map);
+
+    public List<FuiouFtpOrder> queryOrderNoListByDate(String orderDate);
 
 }
