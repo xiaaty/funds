@@ -52,7 +52,7 @@
                             <h2>快速搜索</h2>
                         </header>
                         <div>
-                            <form class="smart-form" action=""  method="post" id="accMappingForm">
+                            <form class="smart-form" action=""  method="post" id="accBindForm">
                                 <div class="jarviswidget-editbox">
                                 </div>
                                 <div class="widget-body no-padding">
@@ -143,33 +143,31 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1800px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
                                         <col width="50" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
-                                        <col width="100" />
-                                        <col width="100" />
-                                        <col width="150" />
-                                        <col width="100" />
-                                        <col width="100" />
-                                        <col width="150" />
-                                        <col width="200" />
-                                        <col width="150" />
                                         <col width="200" />
                                         <col width="100" />
+                                        <col width="100" />
+                                        <col width="150" />
+                                        <col width="100" />
+                                        <col width="200" />
+                                        <col width="200" />
+                                        <col width="200" />
                                         <thead>
                                         <tr>
                                             <td>序号</td>
                                             <td>客户编号</td>
                                             <td>客户姓名</td>
                                             <td>手机号码</td>
-                                            <td>账户类型</td>
                                             <td>账户编号</td>
-                                            <td>是否有效</td>
+                                            <td>账户类型</td>
+                                            <td>是否绑定</td>
                                             <td>交易流水</td>
                                             <td>交易类型</td>
-                                            <td>开户时间</td>
+                                            <td>实名验证开户日期</td>
                                             <td>创建日期</td>
                                             <td>修改日期</td>
                                         </tr>
@@ -181,10 +179,11 @@
                                                 <td>${t.busiId}</td>
                                                 <td>${t.custName}</td>
                                                 <td>${t.moblie}</td>
-                                                <td>${t.busiType}</td>
                                                 <td>${t.accNo}</td>
+                                                <td>${t.busiType}</td>
                                                 <td>${t.isValid=="0"?"未绑定":"已绑定"}</td>
                                                 <td>${t.seqNo}</td>
+                                                <td>${t.openAccTime}</td>
                                                 <td>${t.tradeType}</td>
                                                 <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                 <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -208,7 +207,7 @@
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         pageSetUp();
-        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#accMappingForm"));
+        DT_page("borrow-rep-table12", true, '${page.JSON}', $("#accBindForm"));
     });
 
     $('.selectdate').datetimepicker({
@@ -228,7 +227,7 @@
             if(a[0].value>b[0].value){
                 alert("请检查您输入的日期");
             }else{
-                $("#accMappingForm").submit();
+                $("#accBindForm").submit();
             }
         }else{
             var d = new Date();
@@ -236,7 +235,7 @@
             if(a[0].value>str){
                 alert("请检查您输入的日期");
             }else{
-                $("#accMappingForm").submit();
+                $("#accBindForm").submit();
             }
         }
     }

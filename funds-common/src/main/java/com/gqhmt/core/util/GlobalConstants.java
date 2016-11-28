@@ -211,6 +211,7 @@ public class GlobalConstants {
     public static final String TYZF_TRANSFER="30120040";
     public static final String TYZF_FRZEN="30120050";
     public static final String TYZF_UNFRZEN="30120060";
+    public static final String TYZF_LOGOUT_ACCOUNT="30120099";//销户
     // -------   客户类型：--------------------------------------
     public static final String TYZF_PERSONCUST="30030001";//个人客户
     public static final String TYZF_COMPCUST="30030002";//企业客户

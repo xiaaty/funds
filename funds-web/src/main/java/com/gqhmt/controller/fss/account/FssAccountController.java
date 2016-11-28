@@ -310,7 +310,7 @@ public class FssAccountController {
 		List<FssAccountBindEntity> list = fssAccountBindService.queryAccountBindList(map);
 		model.addAttribute("page", list);
 		model.put("map", map);
-		return "fss/account/accountmappingList";
+		return "fss/account/accountbindList";
 	}
 
 
