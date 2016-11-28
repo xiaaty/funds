@@ -6,6 +6,7 @@ import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssMappingReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssMappingWriteMapper;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -118,8 +119,11 @@ public class FssMappingService {
         return list;
     }
 
-   public FssMappingEntity getMappingByCustId(String custId){
-       FssMappingEntity entity=fssMappingReadMapper.getMappingByCustId(custId);
+   public FssMappingEntity getMappingByCustId(String custId,String mappingType){
+       Map<String,String> map=new HashMap();
+       map.put("custId",custId);
+       map.put("mappingType",mappingType);
+       FssMappingEntity entity=fssMappingReadMapper.getMappingByCustId(map);
        return entity;
     }
 
@@ -158,4 +162,61 @@ public class FssMappingService {
             throw new FssException("91009805");
         }
     }
+
+    /**
+     * 查询红包账户信息
+     * @return
+     */
+    public BigDecimal getBondSumAmount(String mappingType){
+        BigDecimal sumAmount=fssMappingReadMapper.getBondSumAmount(mappingType);
+        return sumAmount;
+    }
+
+    /**
+     * 验证手机号是否配置
+     * @param mobile
+     * @return
+     */
+  /*  public FssMappingEntity getMappingByMobile(String mobile){
+        FssMappingEntity entity=fssMappingReadMapper.getMappingByMobile(Long.valueOf(mobile));
+        return entity;
+    }*/
+
+    /**
+     * 保存映射手机信息
+     * @param mobile
+     * @param remark
+     * @param creator
+     * @throws FssException
+     */
+    public void saveSmsMobile(String mobile,String remark,String creator,String sort) throws FssException{
+        try{
+            FssMappingEntity redAccountEntity=GenerateBeanUtil.GenerateClassInstance(FssMappingEntity.class);
+            redAccountEntity.setMappingType("12020001");//短信通知映射类型
+            redAccountEntity.setCreater(creator);
+            redAccountEntity.setCreateTime(new Date());
+            redAccountEntity.setUpdater(creator);
+            redAccountEntity.setModifyTime(new Date());
+            redAccountEntity.setIsValid("0");
+            redAccountEntity.setRemark(remark);
+            redAccountEntity.setCustId(Long.valueOf(mobile));
+            redAccountEntity.setSort(sort);
+            redAccountEntity.setTradeType("12020001");
+            fssMappingWriteMapper.insertUseGeneratedKeys(redAccountEntity);
+        }catch (Exception e){
+            LogUtil.error(this.getClass(), e);
+            throw new FssException("91009804");
+        }
+    }
+
+    /**
+     * 获取手机号列表
+     * @param mappingType
+     * @return
+     */
+    public List<FssMappingBean> getMobileList(String mappingType){
+        List<FssMappingBean> list=fssMappingReadMapper.getMobileList(mappingType);
+        return list;
+    }
+
 }

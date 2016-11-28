@@ -63,7 +63,7 @@
 		ORDER BY t.`sort` desc
 	</select>
 
-	<select id="getMappingByCustId" parameterType="java.lang.String" resultType="fssMappingEntity">
+	<select id="getMappingByCustId" parameterType="java.util.Map" resultType="fssMappingEntity">
 		SELECT
 		t.`id` id,
 		t.`cust_id` custId,
@@ -78,6 +78,7 @@
 		t.`remark` remark
 		FROM t_gq_fss_mapping t
 		WHERE t.`cust_id`=#{custId}
+		AND t.`mapping_type`=#{mappingType}
 	</select>
 
 	<select id="getMappingBySort" parameterType="java.lang.String" resultType="fssMappingEntity">
@@ -95,5 +96,46 @@
 		t.`remark` remark
 		FROM t_gq_fss_mapping t
 		WHERE t.`sort`=#{sort}
+	</select>
+
+	<!--<select id="getMappingByMobile" parameterType="java.lang.Long" resultType="fssMappingEntity">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark,
+		FROM t_gq_fss_mapping t
+		WHERE t.`cust_id`=#{custId}
+	</select>-->
+
+	<select id="getBondSumAmount" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+		SELECT
+			sum(acc.amount) amount
+		FROM t_gq_fss_mapping t left join t_gq_fund_account acc on t.cust_id=acc.cust_id
+		WHERE t.mapping_type=#{mappingType} and t.is_valid=0 and acc.busi_type=0
+	</select>
+
+	<select id="getMobileList" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.bean.FssMappingBean">
+		SELECT
+		t.`id` id,
+		t.`cust_id` mobile,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark
+		FROM t_gq_fss_mapping t
+		WHERE t.mapping_type=#{mappingType} and t.is_valid=0
 	</select>
 </mapper>

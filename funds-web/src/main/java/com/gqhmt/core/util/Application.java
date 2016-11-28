@@ -146,7 +146,7 @@ public class Application {
         }
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
-            value = "数据字典未配置";
+            value = "未知错误";
         }
         return value;
     }

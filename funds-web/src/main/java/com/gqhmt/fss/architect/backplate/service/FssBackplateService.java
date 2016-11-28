@@ -9,9 +9,7 @@ import com.gqhmt.fss.architect.backplate.mapper.write.FssFssBackplateWriteMapper
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 
@@ -115,8 +113,17 @@ public class FssBackplateService {
         return this.fssBackplateReadMapper.findBackAllByTime(repayCount,timeType);
     }
 
-	public List<FssBackplateEntity> getBackPlate(FssBackplateEntity fssBackplateEntity){
-		return  this.fssBackplateReadMapper.selectBackPlateByParam(fssBackplateEntity);
+	public List<FssBackplateEntity> getBackPlate(Map<String, String> map){
+		Map<String, String> map2=new HashMap<String, String>();
+		if(map!=null){
+			String startTime = map.get("startTime");
+			String endTime = map.get("endTime");//创建日期
+			map2.put("seqNo", map.get("seqNo"));
+			map2.put("repayResult", map.get("repayResult"));
+			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+		}
+		return  this.fssBackplateReadMapper.selectBackPlateByParam(map2);
 	}
 
 	/**
@@ -129,6 +136,10 @@ public class FssBackplateService {
 		fssBackplateEntity.setRepayCount(0);
 		fssBackplateEntity.setModifyTime(new Date());
 		this.update(fssBackplateEntity);
+	}
+
+	public FssBackplateEntity getBackPlateById(Long id){
+		return fssBackplateReadMapper.selectByPrimaryKey(id);
 	}
 
 }

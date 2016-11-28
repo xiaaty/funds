@@ -76,12 +76,20 @@
                                                        <td class="tr">客户账号：</td>
                                                          <td>
                                                             <label class="input">
-                                                                <input type="text" style="width:300px" name="accNo" value="${map.accNo}" />
+                                                                <input type="text" style="width:200px" name="accNo" value="${map.accNo}" />
                                                             </label>
+                                                        </td>
+                                                        <td class="tr">交易状态：</td>
+                                                        <td>
+                                                            <select id = "tradeState" name = "tradeState" style="width:200px;height: 30px;">
+                                                                <option value="">所有</option>
+                                                                <option  <c:if test="${map.tradeState==98070001}"> selected="selected" </c:if> value="98070001">未执行</option>
+                                                                <option  <c:if test="${map.tradeState==98070002}"> selected="selected" </c:if> value="98070002">已执行</option>
+                                                            </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="tr">交易状态：</td>
+                                                        <td class="tr">交易结果：</td>
                                                         <td>
                                                             <select id = "resultState" name = "resultState" style="width:200px;height: 30px;">
                                                                 <option value="">所有</option>
@@ -92,6 +100,7 @@
                                                                 <option  <c:if test="${map.resultState==98060009}"> selected="selected" </c:if> value="98060009">交易中断</option>
                                                             </select>
                                                         </td>
+
                                                         <td class="tr">创建日期：</td>
                                                         <td colspan="3">
                                                             <section class="fl">

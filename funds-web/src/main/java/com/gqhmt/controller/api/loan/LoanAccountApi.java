@@ -55,7 +55,7 @@ public class LoanAccountApi {
      * time:2016年3月7日
      * function：开户
      */
-    @RequestMapping(value = "/createLoanAccount",method = RequestMethod.POST)
+//    @RequestMapping(value = "/createLoanAccount",method = RequestMethod.POST)
     public Object createLoanAccount(@RequestBody CreateLoanAccountDto loanAccountDto){
     	Response response=new Response();
     	try {
@@ -71,7 +71,7 @@ public class LoanAccountApi {
      * @param
      * @return
      */
-    @RequestMapping(value = "/bankCardChange",method = RequestMethod.POST)
+//    @RequestMapping(value = "/bankCardChange",method = RequestMethod.POST)
     public Object bankCardChange(@RequestBody CardChangeDto changeCardDto){
     	Response response=new Response();
     	try {
@@ -88,7 +88,7 @@ public class LoanAccountApi {
      * @return
      * @throws FssException 
      */
-    @RequestMapping(value = "/createWithDrawApply",method = RequestMethod.POST)
+//    @RequestMapping(value = "/createWithDrawApply",method = RequestMethod.POST)
     public Object createWithDrawApply(@RequestBody LoanWithDrawApplyDto loanWithDrawApplyDto) throws FssException{
     	//借款人对象
 //    	FssAccountEntity lendAccount = fssAccountService.getFssAccountByAccNo(loanWithDrawApplyDto.getAcc_no());

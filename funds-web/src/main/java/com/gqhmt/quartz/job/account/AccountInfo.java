@@ -4,10 +4,7 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity;
 import com.gqhmt.fss.architect.account.service.FuiouAccountInfoFileService;
-import com.gqhmt.fss.architect.account.service.FuiouAccountInfoService;
-import com.gqhmt.pay.exception.PayChannelNotSupports;
 import com.gqhmt.quartz.job.SupperJob;
-import com.gqhmt.quartz.service.FtpDownloadFileService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -37,19 +34,14 @@ import java.util.Map;
 @Component
 public class AccountInfo extends SupperJob {
 
-    @Resource
-    private FtpDownloadFileService ftpDownloadFileService;
-
-    @Resource
-    private FuiouAccountInfoService fuiouAccountInfoService;
 
     @Resource
     private FuiouAccountInfoFileService fuiouAccountInfoFileService;
 
     private static boolean isRunning = false;
 
-    @Scheduled(cron = "0 15 18 * * *")
-    public void execute() throws PayChannelNotSupports {
+    @Scheduled(cron = "45 15 18 * * *")
+    public void execute() throws FssException {
 
         if(!isIp("upload")){
             return;

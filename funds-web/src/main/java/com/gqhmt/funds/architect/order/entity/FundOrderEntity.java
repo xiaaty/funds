@@ -88,6 +88,12 @@ public class FundOrderEntity implements java.io.Serializable {
 	@Column(name="trade_type",updatable = false)
 	private String tradeType; //char(10) DEFAULT '' COMMENT '交易类型',
 
+	@Column(name="abnormal_state")
+	private String abnormalState; //异常状态,98080001,正常;98080002,异常
+
+	@Column(name="handle_state")
+	private String handleState; //是否已处理，98010001，是；98010002，否
+
 
 
 	public Long getId() {
@@ -283,4 +289,23 @@ public class FundOrderEntity implements java.io.Serializable {
 		this.tradeType = tradeType;
 	}
 
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public String getAbnormalState() {
+		return abnormalState;
+	}
+
+	public void setAbnormalState(String abnormalState) {
+		this.abnormalState = abnormalState;
+	}
+
+	public String getHandleState() {
+		return handleState;
+	}
+
+	public void setHandleState(String handleState) {
+		this.handleState = handleState;
+	}
 }
