@@ -409,7 +409,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amt,fundType, "转账成功，资金转出："+amt+"元",BigDecimal.ZERO);
             fundTradeService.addFundTrade(toEntity,amt, BigDecimal.ZERO,fundType,"转账成功，资金转入："+amt+"元");
         }catch (Exception e){
-              fssBondTransferService.updateBandTransfer(bondEntity,amt,null,"10080010",e.getMessage());
+            fssBondTransferService.updateBandTransfer(bondEntity,amt,null,"10080010",e.getMessage());
             throw new FssException(e.getMessage());
         }
         return true;
