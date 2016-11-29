@@ -31,7 +31,10 @@ public class FuiouAccountInfoFileEntity {
     @Column(name = "trade_type")
     private String tradeType;           //交易类型：  1.冻结/解冻 - DJJD . 2 .转账 - zz . 3.划拨 - HB . 4.委托充值 - WTCZ . 5.委托提现 - WTTX . 6.预授权交易 - YSQ
 
-    //不存储创建时间，仅做取文件用， 数据库自动生成创建时间;
+    @Column(name = "createfile_date")
+    private String createfileDate;      //文件生成日期
+
+    @Column(name = "create_time")
     private Date createTime;
 
     @Column(name = "remark")
@@ -57,6 +60,14 @@ public class FuiouAccountInfoFileEntity {
 
     public void setTradeType(String tradeType) {
         this.tradeType = tradeType;
+    }
+
+    public String getCreatefileDate() {
+        return createfileDate;
+    }
+
+    public void setCreatefileDate(String createfileDate) {
+        this.createfileDate = createfileDate;
     }
 
     public Date getCreateTime() {

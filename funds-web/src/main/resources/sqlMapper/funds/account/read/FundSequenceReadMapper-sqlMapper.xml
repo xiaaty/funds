@@ -120,21 +120,13 @@
 			AND a.account_no like CONCAT('%',#{accountNo},'%') 
 		</if>
 	</select>
-	<!--通过order_no获取订单入账数量-->
 	<select id="getSizeByOrderNo" parameterType="java.lang.String" resultType="java.lang.Integer">
 		SELECT 
 			count(*)
 		From t_gq_fund_sequence t
 		where t.order_no=#{orderNo}
 	</select>
-	<!--通过s_order_no获取订单入账数量-->
-	<select id="getSizeBySOrderNo" parameterType="java.lang.String" resultType="java.lang.Integer">
-		SELECT
-			count(*)
-		From t_gq_fund_sequence t
-		where t.s_order_no=#{sOrderNo}
-	</select>
-
+	
 <!-- 	
 	<select id="getSumByDay" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
 		SELECT a.ACCOUNT_ID,cus.MOBILE_PHONE,
@@ -185,5 +177,14 @@
 		 WHERE t.s_order_no =#{sOrderNo}
 	 </select>
 
+	<!--查询提现次数-->
+	 <select id="queryWithDrawCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(id)
+		FROM t_gq_fund_sequence t
+		WHERE t.ACCOUNT_ID = #{accountId}
+		AND (t.fund_type = 1003 OR t.fund_type = 2003 OR t.fund_type = 1012)
+		AND DATE_FORMAT(t.create_time, '%Y%m') = DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m')
+	 </select>
 
 </mapper>

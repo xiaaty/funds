@@ -87,9 +87,9 @@
                                                         </td>
                                                         <%--<td class="tr" nowrap="nowrap">手机号：</td>--%>
                                                         <%--<td nowrap="nowrap">--%>
-                                                            <%--<label class="input" style="width:210px" >--%>
-                                                                <%--<input type="text" name="mobile" id="mobile" value="${map.mobile}">--%>
-                                                            <%--</label>--%>
+                                                        <%--<label class="input" style="width:210px" >--%>
+                                                        <%--<input type="text" name="mobile" id="mobile" value="${map.mobile}">--%>
+                                                        <%--</label>--%>
                                                         <%--</td>--%>
                                                         <td class="tr" nowrap="nowrap">是否已处理：</td>
                                                         <td nowrap="nowrap">
@@ -102,7 +102,7 @@
                                                             </label>
                                                         </td>
                                                         <%--</tr>--%>
-                                                    <%--<tr>--%>
+                                                        <%--<tr>--%>
                                                         <td class="tr">交易日期：</td>
                                                         <td colspan="3">
                                                             <section class="fl">
@@ -140,6 +140,7 @@
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>转账异常列表</h2>
                         </header>
+                        <!-- widget div-->
                         <div>
                             <form class="smart-form" id="">
                                 <div class="jarviswidget-editbox">
@@ -147,60 +148,60 @@
                                 <div class="widget-body">
                                     <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
                                     </div>
-                                <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4400px;">
-                                        <col width="50" />
-                                        <col width="200" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="150" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="200" />
-                                        <col width="150" />
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="150"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <col width="200"/>
-                                        <thead>
-                                        <tr>
-                                            <td></td> 
-                                            <td>出账账户编号</td>
-                                            <td>入账账户编号</td>
-                                            <td>订单编号</td>
-                                            <td>订单类型 </td>
-                                            <td>订单来源编号   </td>
-                                            <td>来源类型</td>
-                                            <td>订单金额(元) </td>
-                                            <td>订单状态</td>
-                                            <td>第三方返回代码</td>
-                                            <td>第三方返回信息 </td>
-                                            <td>订单创建时间 </td>
-                                            <td>最后更新时间 </td>
-                                            <td>第三方支付类型 </td>
-                                            <td>手续费 </td>
-                                            <td>出账客户id </td>
-                                            <td>出账出借编号 </td>
-                                            <td>合同编号 </td>
-                                            <td>新订单类型 </td>
-                                            <td>交易类型 </td>
-                                            <td>异常状态 </td>
-                                            <td>是否已处理 </td>
-                                            <td>操作</td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach items="${page.list}" var="t"  varStatus="l">
+                                    <div class="widget-body">
+                                        <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:4400px;">
+                                            <col width="50" />
+                                            <col width="200" />
+                                            <col width="150" />
+                                            <col width="150" />
+                                            <col width="150" />
+                                            <col width="200" />
+                                            <col width="200" />
+                                            <col width="200" />
+                                            <col width="200" />
+                                            <col width="200" />
+                                            <col width="150" />
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="150"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <col width="200"/>
+                                            <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td>出账账户编号</td>
+                                                <td>入账账户编号</td>
+                                                <td>订单编号</td>
+                                                <td>订单类型 </td>
+                                                <td>订单来源编号   </td>
+                                                <td>来源类型</td>
+                                                <td>订单金额(元) </td>
+                                                <td>订单状态</td>
+                                                <td>第三方返回代码</td>
+                                                <td>第三方返回信息 </td>
+                                                <td>订单创建时间 </td>
+                                                <td>最后更新时间 </td>
+                                                <td>第三方支付类型 </td>
+                                                <td>手续费 </td>
+                                                <td>出账客户id </td>
+                                                <td>出账出借编号 </td>
+                                                <td>合同编号 </td>
+                                                <td>新订单类型 </td>
+                                                <td>交易类型 </td>
+                                                <td>异常状态 </td>
+                                                <td>是否已处理 </td>
+                                                <td>操作</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${page.list}" var="t"  varStatus="l">
                                                 <tr>
                                                     <td>${l.index+1}</td>
                                                     <td>${t.accountId}</td>
@@ -230,13 +231,13 @@
                                                     <td><fss:dictView key="${t.handleState}" /></td>
                                                     <td>
                                                         <a href="${contextPath}/checkAccounting/fundsOrder/${type}/${t.orderNo}">查看</a>
-                                                        <%--<a href="" onclick="returnTrade(${t.orderNo})">反交易</a>--%>
+                                                            <%--<a href="" onclick="returnTrade(${t.orderNo})">反交易</a>--%>
                                                     </td>
                                                 </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
                             </form>
                         </div>
                     </div>
@@ -272,24 +273,6 @@
         minView: 2,
         forceParse: 0
     });
-    function returnTrade(orderNo) {
-        $.ajax({
-            url:"${contextPath}/checkAccounting/queryForFuiou",
-            method:"post",
-            data:{orderNo:orderNo},
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            dateType:"json",
-            success : function (data){
-                if (data.code == '0000') {
-                    alert(data.msg);
-                }else{
-                    alert(data.msg);
-                }
-            },
-            error : function (XMLHttpRequest, textStatus, errorThrown) {
-            }
-        })
-    }
 
 </script>
 

@@ -90,4 +90,11 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
      */
 	public List<FundSequenceEntity> queryBySOrderNo(@Param("sOrderNo") String sOrderNo);
 
+	/**
+	 * jhz
+	 * 查询提现次数接口
+	 * @return
+     */
+	public Integer queryWithDrawCount(@Param("accountId")Long accountId);
+
 }

@@ -87,9 +87,9 @@
                                                         </td>
                                                         <%--<td class="tr" nowrap="nowrap">手机号：</td>--%>
                                                         <%--<td nowrap="nowrap">--%>
-                                                            <%--<label class="input" style="width:210px" >--%>
-                                                                <%--<input type="text" name="mobile" id="mobile" value="${map.mobile}">--%>
-                                                            <%--</label>--%>
+                                                        <%--<label class="input" style="width:210px" >--%>
+                                                        <%--<input type="text" name="mobile" id="mobile" value="${map.mobile}">--%>
+                                                        <%--</label>--%>
                                                         <%--</td>--%>
                                                         <td class="tr" nowrap="nowrap">是否已处理：</td>
                                                         <td nowrap="nowrap">
@@ -102,7 +102,7 @@
                                                             </label>
                                                         </td>
                                                         <%--</tr>--%>
-                                                    <%--<tr>--%>
+                                                        <%--<tr>--%>
                                                         <td class="tr">交易日期：</td>
                                                         <td colspan="3">
                                                             <section class="fl">
@@ -130,7 +130,6 @@
 
 
                         </div>
-                    </article>
     <div id="content">
         <section id="widget-grid" class="">
             <div class="row">
@@ -204,38 +203,38 @@
                                         </thead>
                                         <tbody>
                                         <c:forEach items="${page.list}" var="t"  varStatus="l">
-                                                <tr>
-                                                    <td>${l.index+1}</td>
-                                                    <td>${t.accountId}</td>
-                                                    <td>${t.toAccountId}</td>
-                                                    <td>${t.orderNo}</td>
-                                                    <td>${t.orderType}</td>
-                                                    <td>${t.orderFrormId}</td>
-                                                    <td>${t.orderSource}</td>
-                                                    <td align="left">
-                                                        <fss:money money="${t.orderAmount}"/>
-                                                    </td>
-                                                    <td>${t.orderState}</td>
-                                                    <td>${t.retCode}</td>
-                                                    <td>${t.retMessage}</td>
-                                                    <td><fss:fmtDate value="${t.createTime}" /></td>
-                                                    <td><fss:fmtDate value="${t.lastModifyTime}" /></td>
-                                                    <td>${t.thirdPartyType}</td>
-                                                    <td>
-                                                        <fss:money money="${t.chargeAmount}"/>
-                                                    </td>
-                                                    <td>${t.custId}</td>
-                                                    <td>${t.lendNo}</td>
-                                                    <td>${t.loanNo}</td>
-                                                    <td>${t.newOrderType}</td>
-                                                    <td>${t.tradeType}</td>
-                                                    <td><fss:dictView key="${t.abnormalState}" /></td>
-                                                    <td><fss:dictView key="${t.handleState}" /></td>
-                                                    <td>
-                                                        <a href="${contextPath}/checkAccounting/fundsOrder/${type}/${t.orderNo}">查看</a>
+                                            <tr>
+                                                <td>${l.index+1}</td>
+                                                <td>${t.accountId}</td>
+                                                <td>${t.toAccountId}</td>
+                                                <td>${t.orderNo}</td>
+                                                <td>${t.orderType}</td>
+                                                <td>${t.orderFrormId}</td>
+                                                <td>${t.orderSource}</td>
+                                                <td align="left">
+                                                    <fss:money money="${t.orderAmount}"/>
+                                                </td>
+                                                <td>${t.orderState}</td>
+                                                <td>${t.retCode}</td>
+                                                <td>${t.retMessage}</td>
+                                                <td><fss:fmtDate value="${t.createTime}" /></td>
+                                                <td><fss:fmtDate value="${t.lastModifyTime}" /></td>
+                                                <td>${t.thirdPartyType}</td>
+                                                <td>
+                                                    <fss:money money="${t.chargeAmount}"/>
+                                                </td>
+                                                <td>${t.custId}</td>
+                                                <td>${t.lendNo}</td>
+                                                <td>${t.loanNo}</td>
+                                                <td>${t.newOrderType}</td>
+                                                <td>${t.tradeType}</td>
+                                                <td><fss:dictView key="${t.abnormalState}" /></td>
+                                                <td><fss:dictView key="${t.handleState}" /></td>
+                                                <td>
+                                                    <a href="${contextPath}/checkAccounting/fundsOrder/${type}/${t.orderNo}">查看</a>
                                                         <%--<a href="${contextPath}/checkAccounting/addAccounting/${type}/${t.orderNo}">入账</a>--%>
-                                                    </td>
-                                                </tr>
+                                                </td>
+                                            </tr>
                                         </c:forEach>
                                         </tbody>
                                     </table>
