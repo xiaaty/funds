@@ -100,6 +100,9 @@ public class TradeRecordService {
 
     public void withdraw(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, final String tradeType,final String seqNo) throws FssException {
         sequenceService.refund(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType,seqNo);
+        //                  ---------------------------异步调用统一支付---------------------------
+        tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),amount,fundType,tradeType,seqNo);
+
 
     }
 
@@ -164,6 +167,7 @@ public class TradeRecordService {
 
     public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType) throws FssException {
         sequenceService.transfer(fromAcc, toAcc, amount, actionType, fundType, null, ThirdPartyType.FUIOU, fundOrderEntity);
+        //            -----------------------调用统一支付进行记账----------------
         tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,"1106",fundOrderEntity.getOrderNo());
 
     }
@@ -189,6 +193,7 @@ public class TradeRecordService {
      */
     public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType, String memo, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo) throws FssException {
         sequenceService.transfer(fromAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
+        //            -----------------------调用统一支付进行记账----------------
         tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,tradeType,fundOrderEntity.getOrderNo());
 
     }
