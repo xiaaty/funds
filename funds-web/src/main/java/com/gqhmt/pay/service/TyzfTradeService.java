@@ -384,7 +384,7 @@ public class TyzfTradeService {
         bean.setCdtrAcctId(toEntity.getAccNo());//转入账户
         bean.setSttlAmtCcy("30080001");//货币类型
         bean.setSttlAmt(amount);
-        bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识 借：02020001 贷：02020002
+        bean.setCardTp(GlobalConstants.TYZF_JIE);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);
         try{
             conversionService.sendAndReceiveMsg(bean);
