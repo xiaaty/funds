@@ -324,11 +324,11 @@ public class FssTradeApplyController {
 //	审核通过,先进行处理，处理完成后走回盘
 	@RequestMapping(value = "/trade/tradeApply/moneySplit")
 	@ResponseBody
-	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no) throws FssException {
+	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no,Integer bespokeDate) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
 		int count=1;
 		if(StringUtils.isNotEmptyString(no)){
-			 count=fssTradeApplyService.withNumbers(no);
+			 count=fssTradeApplyService.withNumbers(no,bespokeDate);
 		}
 		if(count==0){
 			map.put("code", "0000");
