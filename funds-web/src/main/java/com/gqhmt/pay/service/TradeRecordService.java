@@ -188,7 +188,7 @@ public class TradeRecordService {
      * @throws FssException
      */
     public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType, String memo, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo,String transf_flag) throws FssException {
-        if("99".equals(transf_flag)){
+        if("1".equals(transf_flag)){
             FundAccountEntity frozenAcc=fundAccountService.getFundAccount(fromAcc.getCustId(),99);
             sequenceService.transfer(frozenAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
         }else{
