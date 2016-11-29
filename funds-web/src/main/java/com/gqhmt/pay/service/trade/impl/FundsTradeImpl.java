@@ -301,8 +301,9 @@ public class FundsTradeImpl  implements IFundsTrade {
      * 转账接口
      */
    @Override
-    public boolean transfer(String mchn,String seq_no,String trade_type,Integer from_cust_no,Integer from_user_no,Integer from_cust_type,Integer to_cust_no,Integer to_user_no,Integer to_cust_type,BigDecimal amt,Integer fund_type,Integer  busi_type,Long  busi_id,Integer actionType,String contract_no,String loan_type) throws FssException {
-
+    public boolean transfer(String mchn,String seq_no,String trade_type,Integer from_cust_no,Integer from_user_no,Integer from_cust_type,Integer to_cust_no,Integer to_user_no,Integer to_cust_type,BigDecimal amt,Integer fund_type,Integer  busi_type,Long  busi_id,Integer actionType,String contract_no,String loan_type,String transf_flag) throws FssException {
+       //账户类型不能为冻结账户类型
+       if("99".equals(from_cust_type)) throw new FssException("90004036");
        String lend_no=null;
        String loan_no=null;
        if("3".equals(loan_type)){//出借 lend_no
@@ -313,7 +314,7 @@ public class FundsTradeImpl  implements IFundsTrade {
            lend_no=null;
            loan_no=null;
        }
-       this.transfer(from_cust_no,from_cust_type,to_cust_no,to_cust_type,amt,GlobalConstants.ORDER_TRANSFER,null,null, "1119", trade_type,lend_no,null,null, loan_no);
+       this.transfer(from_cust_no,from_cust_type,to_cust_no,to_cust_type,amt,GlobalConstants.ORDER_TRANSFER,null,null, "1119", trade_type,lend_no,null,null, loan_no,transf_flag);
        return true;
     }
 
@@ -323,10 +324,9 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Override
     public boolean transefer(Integer fromCusID, Integer fromType, Integer toCusID, Integer toType, BigDecimal amount, Integer orderType, Long busiId, int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException {
        // return this.(null,null,tradeType,null,contractNo,null,String.valueOf(fromCusID),null,amount,null,String.valueOf(toCusID),null,fromType,toType,fund_type,actionType);
-        this.transfer(fromCusID,fromType,toCusID,toType,amount,orderType,busiType,busiId, "1119", tradeType,null,null,null, contractNo);
+        this.transfer(fromCusID,fromType,toCusID,toType,amount,orderType,busiType,busiId, "1119", tradeType,null,null,null, contractNo,null);
         return true;
     }
-
 
     /**
      * 借款系统抵押标转账
@@ -346,7 +346,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         FssAccountEntity toAccount  = this.fssAccountService.getFssAccountByAccNo(toAccno);
         Integer from_acc_type = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(fromAccount.getAccType());
         Integer to_acc_type = GlobalConstants.TRADE_BUSINESS_TYPE__MAPPING.get(toAccount.getAccType());
-        this.transfer(fromAccount.getCustId().intValue(),from_acc_type,toAccount.getCustId().intValue(),to_acc_type, amount,orderType,busiType,busiId, "1119", tradeType,null,null,toAccount.getCustId(), contractNo);
+        this.transfer(fromAccount.getCustId().intValue(),from_acc_type,toAccount.getCustId().intValue(),to_acc_type, amount,orderType,busiType,busiId, "1119", tradeType,null,null,toAccount.getCustId(), contractNo,null);
         return true;
     }
 
@@ -371,12 +371,19 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @return
      * @throws FssException
      */
-    public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no,Integer acc_type,Integer to_acc_type,Integer fundType,Integer actionType) throws FssException {
+    public boolean bondTransfer(String mchn,String seq_no,String trade_type,String bid_id,String busi_bid_no,String tender_no,String cust_no,String busi_no,BigDecimal amt,String o_tender_no,String o_cust_no,String o_busi_no,Integer acc_type,Integer to_acc_type,Integer fundType,Integer actionType,String transf_flag) throws FssException {
+        if("99".equals(acc_type.toString())) throw new FssException("90004036");
         //根据交易类型验证接标人出借业务编号是否为空，线下出借，必须传递此编号，线上客户为空
         if("11052006".equals(trade_type)){//委托购买债权(线下)
             if(busi_no==null || "".equals(busi_no)) throw new FssException("90002021");
         }
-        FundAccountEntity  fromEntity = this.getFundAccount(Integer.valueOf(cust_no),acc_type);//转出账户
+        FundAccountEntity  fromEntity=null;
+        if("99".equals(transf_flag)){//为冻结转账
+            fromEntity = this.getFundAccount(Integer.valueOf(cust_no),99);//转出账户
+        }else{
+            fromEntity = this.getFundAccount(Integer.valueOf(cust_no),acc_type);//转出账户
+        }
+//        FundAccountEntity  fromEntity = this.getFundAccount(Integer.valueOf(cust_no),acc_type);//转出账户
         FundAccountEntity  toEntity = this.getFundAccount(Integer.valueOf(o_cust_no),to_acc_type);//转入账户
         //债权转让的添加债权转让记账信息
         FssBondTransferEntity bondEntity = fssBondTransferService.createBondTransferInfo(mchn,seq_no,trade_type,bid_id,busi_bid_no,cust_no,o_cust_no,busi_no,fromEntity.getCustName(),fromEntity.getAccountNo(),acc_type,to_acc_type,tender_no,o_tender_no,o_busi_no);
@@ -396,7 +403,7 @@ public class FundsTradeImpl  implements IFundsTrade {
                 fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity, toEntity, amt,orderType, bondEntity.getId(), GlobalConstants.ORDER_DEBT, trade_type.substring(0, 4), trade_type, busi_no, o_tender_no, Long.valueOf(cust_no), busi_bid_no);
             }
                 //资金处理
-            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,busi_no,Long.valueOf(o_cust_no),o_tender_no,Long.valueOf(cust_no),busi_bid_no);
+            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,actionType,null,trade_type.substring(0,4),trade_type,busi_no,Long.valueOf(o_cust_no),o_tender_no,Long.valueOf(cust_no),busi_bid_no,acc_type);
             fssBondTransferService.updateBandTransfer(bondEntity,amt,fundOrderEntity==null?null:fundOrderEntity.getOrderNo(),"10080002","0000");
             //添加交易记录
             fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amt,fundType, "转账成功，资金转出："+amt+"元",BigDecimal.ZERO);
@@ -408,11 +415,33 @@ public class FundsTradeImpl  implements IFundsTrade {
         return true;
     }
 
+    /**
+     * 转账
+     * @param fromCustid
+     * @param fromType
+     * @param toCustId
+     * @param toType
+     * @param amt
+     * @param orderType
+     * @param sourceType
+     * @param SourceId
+     * @param newOrderType
+     * @param tradeType
+     * @param lendNo
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
+     * @throws FssException
+     */
+    public void transfer(Integer fromCustid,Integer fromType,Integer toCustId,Integer toType,BigDecimal amt,Integer orderType,Integer sourceType,Long SourceId,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo,String transf_flag) throws FssException {
+        FundAccountEntity  fromEntity=null;
+        if("99".equals(transf_flag)){//为冻结转账
+            fromEntity = this.getFundAccount(fromCustid,99);//转出账户
+        }else{
+            fromEntity = this.getFundAccount(fromCustid,fromType);//转出账户
+        }
 
-    public void transfer(Integer fromCustid,Integer fromType,Integer toCustId,Integer toType,BigDecimal amt,Integer orderType,Integer sourceType,Long SourceId,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo) throws FssException {
-        FundAccountEntity  fromEntity = this.getFundAccount(fromCustid,fromType);//转出账户
         FundAccountEntity  toEntity = this.getFundAccount(toCustId,toType);//转入账户
-
         FundOrderEntity fundOrderEntity=null;
         try {
             this.hasEnoughBanlance(fromEntity, amt);
@@ -434,7 +463,7 @@ public class FundsTradeImpl  implements IFundsTrade {
                 fundType = 1013;
             }
             //资金处理
-            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,8,null,newOrderType,tradeType,lendNo,toCustId != null ? toCustId.longValue():0l,toLendNo,loanCustId,loanNo);
+            tradeRecordService.transfer(fromEntity,toEntity,amt,fundType,fundOrderEntity,8,null,newOrderType,tradeType,lendNo,toCustId != null ? toCustId.longValue():0l,toLendNo,loanCustId,loanNo,fromType);
             //添加交易记录
             fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amt,fundType, "转账成功，资金转出："+amt+" 元",BigDecimal.ZERO);
             fundTradeService.addFundTrade(toEntity,amt, BigDecimal.ZERO,fundType,"转账成功，资金转入："+amt+" 元");

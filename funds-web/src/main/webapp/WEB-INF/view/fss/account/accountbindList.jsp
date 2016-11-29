@@ -72,16 +72,19 @@
                                                         <input type="text" style="width:200px" name="busiId" value="${map.busiId}" />
                                                     </label>
                                                 </td>
-                                                <td class="tr" nowrap="nowrap">账户类型：</td>
+                                                <td class="tr">账户类型：</td>
                                                 <td nowrap="nowrap">
-                                                    <label class="select">
-                                                        <select class="select02" style="width:202px;" name="mappingType" id="mappingType">
+                                                    <select id = "busiType" name = "busiType" style="width:200px;height: 30px;">
                                                             <option value="">所有</option>
-                                                            <fss:dictOrder var="order" dictOrder="mappingType">
-                                                                <option value="${order.key}"  <c:if test="${order.key==map.mappingType}">selected</c:if> >${order.value}</option>
-                                                            </fss:dictOrder>
+                                                            <option  <c:if test="${map.busiType==1}"> selected="selected" </c:if> value="1">借款账户</option>
+                                                            <option  <c:if test="${map.busiType==2}"> selected="selected" </c:if> value="2">线下出借账户</option>
+                                                            <option  <c:if test="${map.busiType==3}"> selected="selected" </c:if> value="3">线上出借账户</option>
+                                                            <option  <c:if test="${map.busiType==50}"> selected="selected" </c:if> value="50">其他账户</option>
+                                                            <option  <c:if test="${map.busiType==60}"> selected="selected" </c:if> value="60">费用账户</option>
+                                                            <option  <c:if test="${map.busiType==70}"> selected="selected" </c:if> value="70">运营账户</option>
+                                                            <option  <c:if test="${map.busiType==90}"> selected="selected" </c:if> value="90">标的账户</option>
+                                                            <option  <c:if test="${map.busiType==96}"> selected="selected" </c:if> value="96">应付款账户</option>
                                                         </select>
-                                                    </label>
                                                 </td>
                                                 <td class="tr">借款合同号：</td>
                                                 <td>
@@ -97,7 +100,14 @@
                                                         <input type="text" style="width:200px" name="accNo" value="${map.accNo}" />
                                                     </label>
                                                 </td>
-
+                                                <td class="tr">是否绑定：</td>
+                                                <td nowrap="nowrap">
+                                                    <select id = "status" name = "status" style="width:200px;height: 30px;">
+                                                        <option value="">所有</option>
+                                                        <option  <c:if test="${map.status=='0'}"> selected="selected" </c:if> value="0">未绑定</option>
+                                                        <option  <c:if test="${map.status=='1'}"> selected="selected" </c:if> value="1">已绑定</option>
+                                                    </select>
+                                                </td>
                                                 <td class="tr">创建时间：</td>
                                                 <td colspan="3">
                                                     <section class="fl">
@@ -129,7 +139,7 @@
 
                     <!-- NEW WIDGET START -->
                     <!-- 	<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> -->
-                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-7971"  data-widget-deletebutton="false" data-widget-editbutton="false">
+                    <div class="jarviswidget jarviswidget-color-darken" id="menu-id-7171"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                             <h2>统一支付绑定账户信息</h2>
@@ -143,7 +153,7 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1600px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:1700px;">
                                         <col width="50" />
                                         <col width="100" />
                                         <col width="100" />
@@ -154,6 +164,7 @@
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="200" />
+                                        <col width="100" />
                                         <col width="200" />
                                         <col width="200" />
                                         <thead>
@@ -167,9 +178,10 @@
                                             <td>是否绑定</td>
                                             <td>交易流水</td>
                                             <td>交易类型</td>
-                                            <td>实名验证开户日期</td>
+                                            <td>借款合同号</td>
                                             <td>创建日期</td>
                                             <td>修改日期</td>
+                                            <td>实名验证开户日期</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -181,12 +193,13 @@
                                                 <td>${t.moblie}</td>
                                                 <td>${t.accNo}</td>
                                                 <td>${t.busiType}</td>
-                                                <td>${t.isValid=="0"?"未绑定":"已绑定"}</td>
+                                                <td>${t.status=="0"?"未绑定":"已绑定"}</td>
                                                 <td>${t.seqNo}</td>
-                                                <td>${t.openAccTime}</td>
                                                 <td>${t.tradeType}</td>
+                                                <td>${t.contractNo}</td>
                                                 <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                 <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                <td>${t.openAccTime}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
