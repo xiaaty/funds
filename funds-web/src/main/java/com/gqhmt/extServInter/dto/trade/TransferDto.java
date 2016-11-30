@@ -45,7 +45,7 @@ public class TransferDto extends SuperDto {
 	private Long  busi_id;//账户类型
 	private String loan_type;//借款、出借、或其他
 	private String contract_no;//合同号
-	private String transfer_flag;//是否冻结转账 99：冻结转账
+	private String transfer_flag;//是否冻结转账 0:一般转账 1：冻结转账
 
 	public Integer getFrom_cust_no() {
 		return from_cust_no;

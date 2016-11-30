@@ -191,12 +191,14 @@ public class TradeRecordService {
      * @param loanNo
      * @throws FssException
      */
-    public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType, String memo, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo,Integer fromType) throws FssException {
-        sequenceService.transfer(fromAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
-
-        //            -----------------------调用统一支付进行记账----------------
-        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType()== 99 ? fromType:fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,tradeType,fundOrderEntity.getOrderNo());
-
+    public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType, String memo, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo,String transf_flag) throws FssException {
+        if("1".equals(transf_flag)){
+            FundAccountEntity frozenAcc=fundAccountService.getFundAccount(fromAcc.getCustId(),99);
+            sequenceService.transfer(frozenAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
+        }else{
+            sequenceService.transfer(fromAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
+        }
+        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,tradeType,fundOrderEntity.getOrderNo());
     }
 
     /**
