@@ -122,7 +122,7 @@ public class TradeRecordService {
     public void refundFeozzen(FundAccountEntity fromEntity, FundAccountEntity toEntity, BigDecimal amount, BigDecimal chargeAmount, String tradeType,String seqNo) throws FssException {
         sequenceService.frozenAmtByRefund(fromEntity, toEntity, amount, chargeAmount, tradeType,seqNo);
         //            -----------------------调用统一支付进行记账----------------
-        tyzfTradeService.tyzfWithDraw(fromEntity.getCustId(),fromEntity.getBusiType(),amount,2003,tradeType,seqNo);
+//        tyzfTradeService.tyzfWithDraw(fromEntity.getCustId(),fromEntity.getBusiType(),amount,2003,tradeType,seqNo);
 
     }
 
@@ -191,10 +191,11 @@ public class TradeRecordService {
      * @param loanNo
      * @throws FssException
      */
-    public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType, String memo, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo) throws FssException {
+    public void transfer(FundAccountEntity fromAcc, FundAccountEntity toAcc, BigDecimal amount, Integer fundType, FundOrderEntity fundOrderEntity, Integer actionType, String memo, String newFundsType, String tradeType, String lendNo, Long toCustId, String toLendNo, Long loanCustId, String loanNo,Integer fromType) throws FssException {
         sequenceService.transfer(fromAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
+
         //            -----------------------调用统一支付进行记账----------------
-        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,tradeType,fundOrderEntity.getOrderNo());
+        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType()== 99 ? fromType:fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,tradeType,fundOrderEntity.getOrderNo());
 
     }
 

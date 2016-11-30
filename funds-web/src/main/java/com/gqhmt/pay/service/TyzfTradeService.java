@@ -384,7 +384,7 @@ public class TyzfTradeService {
         bean.setCdtrAcctId(toEntity.getAccNo());//转入账户
         bean.setSttlAmtCcy("30080001");//货币类型
         bean.setSttlAmt(amount);
-        bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识 借：02020001 贷：02020002
+        bean.setCardTp(GlobalConstants.TYZF_JIE);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);
         try{
             conversionService.sendAndReceiveMsg(bean);
@@ -554,7 +554,27 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void logOutAccount(String trade_type,String cust_no,String cust_name,String cert_no,String seq_no,String mobile_phone) throws FssException{
-        //// TODO: 2016/11/23 调用统一支付做销户处理
+        MessageConvertDto bean = new MessageConvertDto();
+        //发送报文调用统一支付开户
+        bean.setServiceId("0001");
+        bean.setIsActual("N");//是否同步交易
+        bean.setIsBatch("N");//是否批量
+        bean.setTxnType(GlobalConstants.TYZF_LOGOUT_ACCOUNT);//交易类型
+        bean.setBizTp(trade_type);//业务类型
+        bean.setOrderId(seq_no==null?"":seq_no);//业务订单号
+        bean.setCdtrNm(cust_name);//客户姓名
+        bean.setCdtrPoFlag(GlobalConstants.TYZF_PERSONCUST);
+        bean.setCdtrIdTp("1");//证件类型
+        bean.setCdtrIdNumber(cert_no);//证件号
+        bean.setCdtrAcctCcy("30080001");//货币类型
+        bean.setCdtrContactno(mobile_phone);//手机号
+        bean.setMerchId(CoreConstants.TYZF_MERCHID);//商户号
+        try {
+            conversionService.sendAndReceiveMsg(bean);
+        } catch (Exception e) {
+            LogUtil.error(this.getClass(),e.getMessage(),e);
+            throw new FssException("91002005");
+        }
 
     }
 }
