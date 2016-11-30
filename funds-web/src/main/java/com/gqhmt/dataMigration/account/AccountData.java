@@ -90,7 +90,9 @@ public class AccountData {
 
         for(Bid bid : bids){
             CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(bid.getCustomerId().longValue());
-            this.createLoanBidAccount(bid.getId().longValue(),bid.getContractNo(),customerInfoEntity);
+            if(!"".equals(bid.getContractNo())) {
+                this.createLoanBidAccount(bid.getId().longValue(), bid.getContractNo(), customerInfoEntity);
+            }
         }
 
 
