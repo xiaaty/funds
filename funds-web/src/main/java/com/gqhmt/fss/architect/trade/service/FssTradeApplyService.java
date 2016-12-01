@@ -381,6 +381,7 @@ public class FssTradeApplyService {
 					Date a=new Date();
 					String b=DateUtil.dateToString(a);
 					tradeapply.setBespokedate(sdf.parse(b));
+					tradeapply.setSettleType(0);
 				}else if(bespokeDate==1){
 					Calendar calendar=Calendar.getInstance();
 					Date a=new Date();
@@ -388,6 +389,7 @@ public class FssTradeApplyService {
 					calendar.add(calendar.DATE,1);
 					String b=DateUtil.dateToString(calendar.getTime());
 					tradeapply.setBespokedate(sdf.parse(b));
+					tradeapply.setSettleType(1);
 				}
 				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
 				this.updateTradeApply(tradeapply,"10100002","10080001");
