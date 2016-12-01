@@ -3,6 +3,7 @@ package com.gqhmt.event.account;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.card.service.FssPosBackService;
@@ -202,7 +203,11 @@ public class CreateAccountEvent {
             fssCustBankCardEntity = fssCustBankCardService.createFssBankCardEntity(bankType,bankNo,area,mchn,fssCustomerEntity);
         }
         //判断客户在近3天内是否进行过pos签约
-        fssPosBackService.confirmState(customerInfoEntity,bankNo,mobile);
+        try{
+            fssPosBackService.confirmState(customerInfoEntity,bankNo,mobile);
+        }catch (Exception e){
+            LogUtil.error(this.getClass(),e.getMessage());
+        }
         return  fssAccountEntity;
     }
 
