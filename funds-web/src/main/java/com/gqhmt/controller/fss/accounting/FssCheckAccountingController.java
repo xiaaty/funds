@@ -391,7 +391,7 @@ public class FssCheckAccountingController {
     @AutoPage
     public String addAccounting(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
         FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
-        tradeRecordService.asynCommand(orderEntity, "success");
+        tradeRecordService.asynCommand(orderEntity, "success",null);
         orderEntity.setHandleState("98010001");
         fundOrderService.update(orderEntity);
 
