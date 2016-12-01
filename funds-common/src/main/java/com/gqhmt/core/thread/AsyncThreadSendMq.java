@@ -32,11 +32,13 @@ public class AsyncThreadSendMq {
     private static final AsyncThreadSendMq instance = new AsyncThreadSendMq();
     private ConversionService conversionService;
 
+    private final Thread threadDemo;
+
 
     private AsyncThreadSendMq(){
         conversionService = new ConversionService();
         buffer = new AsyncThreadSendMqBuffer();
-        this.startDemo();
+        this.threadDemo = this.startDemo();
     }
 
     public static AsyncThreadSendMq getInstance(){
@@ -67,7 +69,7 @@ public class AsyncThreadSendMq {
     }
 
 
-    private void startDemo(){
+    private Thread startDemo(){
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -75,7 +77,7 @@ public class AsyncThreadSendMq {
                     if(buffer.isEmpty()){
                         this.sleep();
                     }
-                    LogUtil.info(this.getClass(),"异步消息发送守护线程执行");
+                    LogUtil.info(this.getClass(),"异步消息发送守护线程执行中。。。。");
                     if(threadPoolCheck()){
                         try {
                             getExecutor().execute(executor(buffer.get()));
@@ -126,6 +128,8 @@ public class AsyncThreadSendMq {
         Thread t = new Thread(runnable);
         t.setDaemon(true);
         t.start();
+
+        return t;
     }
 
     private final Runnable executor(final MessageConvertDto dto){
@@ -144,5 +148,20 @@ public class AsyncThreadSendMq {
         return runnable;
     }
 
+
+    public void drop(){
+        while (true) {
+            if (buffer.isEmpty()) {
+                try {
+                    threadDemo.join(2 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                threadDemo.interrupt();
+                LogUtil.info(this.getClass(),"异步消息发送守护线程结束");
+                break;
+            }
+        }
+    }
 
 }

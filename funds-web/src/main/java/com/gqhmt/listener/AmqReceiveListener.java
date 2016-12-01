@@ -1,5 +1,6 @@
 package com.gqhmt.listener;
 
+import com.gqhmt.core.thread.AsyncThreadSendMq;
 import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
@@ -26,8 +27,11 @@ public class AmqReceiveListener implements ServletContextListener {
 
     Vector<Thread> daemons = new Vector<Thread>();
 
+    AsyncThreadSendMq asyncThreadSendMq = AsyncThreadSendMq.getInstance();
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
        final ConversionService conversionService = wac.getBean(ConversionService.class);
         System.out.println("AmqReceiveListener.contextInitialized() 开始");
@@ -73,6 +77,7 @@ public class AmqReceiveListener implements ServletContextListener {
                 e.printStackTrace();
             }
         }
+        asyncThreadSendMq.drop();
     }
 
 
