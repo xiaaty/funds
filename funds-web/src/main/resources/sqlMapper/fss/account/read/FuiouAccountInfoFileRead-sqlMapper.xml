@@ -31,4 +31,10 @@
             ORDER BY t.create_time
     </select>
 
+    <select id="queryAccountInfoFile" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FuiouAccountInfoFileEntity" >
+        <include refid="selectSql"/>
+        WHERE t.createfile_date = #{createfileDate}
+        AND  t.trade_type = #{tradeType}
+    </select>
+
 </mapper>

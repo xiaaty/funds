@@ -3,10 +3,10 @@ package com.gqhmt.controller.interactions;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.fss.architect.card.entiry.FssPosBackEntity;
+import com.gqhmt.fss.architect.card.service.FssPosBackService;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
-import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,16 +37,12 @@ public class FuiouCallBack {
 
 	@Resource
 	private TradeRecordService tradeRecordService;
-	@Resource
-	private PaySuperByFuiou paySuperByFuiou;
-	@Resource
-	private FundOrderService fundOrderService;
-	@Resource
-	private FundAccountService fundAccountService;
 
+	@Resource
+	private FssPosBackService fssPosBackService;
 
-//	@Autowired
-//	private ChangeCardService changeCardService;
+	@Resource
+	private CustomerInfoService customerInfoService;
 
 	/**
 	 * 网页充值回调接口
@@ -520,6 +516,42 @@ public class FuiouCallBack {
 		} else {
 			result = "FAIL SIGNVALUE";
 		}
+		return  result;
+	}
+	/**
+	 * 根据据富有有返回结果进行处理
+	 * @param mchntCd
+	 * @param mchntNm
+	 * @param userNm
+	 * @param mobileNo
+	 * @param acntNo
+	 * @param credtNo
+	 * @param contract_st
+	 * @param acntIsVerif1
+	 * @param acntIsVerif2
+	 * @param acntIsVerif3
+	 * @param acntIsVerif4
+     * @return
+     * @throws FssException
+     */
+	@RequestMapping("/returnPosContractResult")
+	@ResponseBody
+	public String returnPosContractResult(String mchntCd,String mchntNm,String userNm,String mobileNo,String acntNo,String credtNo,String contract_st,String acntIsVerif1,String acntIsVerif2,String acntIsVerif3,String acntIsVerif4) throws FssException{
+		//回调明文
+		//验签
+		LogUtil.info(this.getClass(), "pos签约回调："+"客户名："+userNm+"；手机号:"+mobileNo+"；身份证号："+credtNo+";银行卡号："+acntNo+";协议状态:"+contract_st+";卡号户名验证结果:"+acntIsVerif1+";卡号密码验证结果:"+acntIsVerif2+";户名证件号验证结果:"+acntIsVerif3+";手机号验证结果:"+acntIsVerif4);
+		//返回富友接收结果
+		String result = "0";
+		try {
+			FssPosBackEntity entity=fssPosBackService.createPosBack(userNm,mobileNo,acntNo,credtNo,contract_st,acntIsVerif1,acntIsVerif2,acntIsVerif3,acntIsVerif4);
+			Integer a=fssPosBackService.insert(entity);
+			customerInfoService.updateCustomerState(entity,mobileNo,contract_st,acntNo);
+			result=a.toString();
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			result = "0";
+		}
+
 		return  result;
 	}
 }

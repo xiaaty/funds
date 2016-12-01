@@ -3,7 +3,9 @@ package com.gqhmt.controller.api.account;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
+import com.gqhmt.extServInter.dto.account.QueryAccountDto;
 import com.gqhmt.extServInter.service.account.ICreateAccount;
+import com.gqhmt.extServInter.service.account.IQueryAccount;
 import com.gqhmt.pay.service.account.IFundsAccount;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,8 +44,11 @@ public class FssAccountApi {
     private ICreateAccount createAccountImpl;
 
     @Resource
+    private IQueryAccount queryAccountImpl;
+
+    @Resource
     private IFundsAccount fundsAccountImpl;
-    
+
     
     
     /**
@@ -84,7 +89,24 @@ public class FssAccountApi {
         }
         return response;
     }
-    
+
+    /**
+     * jhz
+     * 查询账户开户状态
+     * @param queryAccountDto
+     * @return
+     */
+    @RequestMapping(value = "/queryAccountState",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object createAccount( QueryAccountDto queryAccountDto){
+    	Response response= new Response();
+        try {
+             response = queryAccountImpl.execute(queryAccountDto);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
+
 
 
     /**
