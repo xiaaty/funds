@@ -3,6 +3,7 @@ package com.gqhmt.controller.interactions;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.card.entiry.FssPosBackEntity;
 import com.gqhmt.fss.architect.card.service.FssPosBackService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
@@ -542,8 +543,9 @@ public class FuiouCallBack {
 		//返回富友接收结果
 		String result = "0";
 		try {
-			Integer a=fssPosBackService.createPosBack(userNm,mobileNo,acntNo,credtNo,contract_st,acntIsVerif1,acntIsVerif2,acntIsVerif3,acntIsVerif4);
-			customerInfoService.updateCustomerState(mobileNo,contract_st,acntNo);
+			FssPosBackEntity entity=fssPosBackService.createPosBack(userNm,mobileNo,acntNo,credtNo,contract_st,acntIsVerif1,acntIsVerif2,acntIsVerif3,acntIsVerif4);
+			Integer a=fssPosBackService.insert(entity);
+			customerInfoService.updateCustomerState(entity,mobileNo,contract_st,acntNo);
 			result=a.toString();
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);

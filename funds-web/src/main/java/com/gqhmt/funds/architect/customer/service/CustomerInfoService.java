@@ -4,6 +4,8 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.loan.CreateLoanAccountDto;
+import com.gqhmt.fss.architect.card.entiry.FssPosBackEntity;
+import com.gqhmt.fss.architect.card.service.FssPosBackService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.bean.CustomerInfoDetialBean;
@@ -50,6 +52,8 @@ public class CustomerInfoService {
 	private BankCardInfoService bankCardinfoService;
 	@Resource
 	private PaySuperByFuiou paySuperByFuiou;
+	@Resource
+	private FssPosBackService fssPosBackService;
 /*
 	*//**
 	 * 查询客户管理列表
@@ -1261,7 +1265,7 @@ public class CustomerInfoService {
 	 * @param state
 	 * @param bankNo
      */
-	public void updateCustomerState(String mobile,String state,String bankNo)throws FssException{
+	public void updateCustomerState(FssPosBackEntity posBack,String mobile, String state, String bankNo)throws FssException{
 		if(!"1".equals(state)){
 			return;
 		}
@@ -1284,6 +1288,9 @@ public class CustomerInfoService {
 			entity.setModifyTime(new Date());
 			entity.setHasThirdAgreement(1);
 			this.update(entity);
+			//修改为已使用
+			posBack.setState("98010001");
+			fssPosBackService.update(posBack);
 		}
 	}
 }
