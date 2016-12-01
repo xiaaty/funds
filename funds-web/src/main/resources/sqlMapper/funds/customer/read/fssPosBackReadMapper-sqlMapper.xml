@@ -19,6 +19,6 @@
 	</sql>
 	<select id="selectPosBacks" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.card.entiry.FssPosBackEntity" >
 		<include refid="fieldSql" />
-		where date_format(t.create_time,'%Y%m%d') &gt;=#{startDate}
+		where date_format(t.create_time,'%Y%m%d') &gt;= #{startDate} ORDER BY t.create_time ASC
 	</select>
 </mapper>
