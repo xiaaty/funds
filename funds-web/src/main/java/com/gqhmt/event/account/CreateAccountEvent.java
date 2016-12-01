@@ -204,7 +204,7 @@ public class CreateAccountEvent {
         }
         //判断客户在近3天内是否进行过pos签约
         try{
-            fssPosBackService.confirmState(customerInfoEntity,bankNo,mobile);
+            fssPosBackService.confirmState(customerInfoEntity.getId(),bankNo,mobile);
         }catch (Exception e){
             LogUtil.error(this.getClass(),e.getMessage());
         }

@@ -92,13 +92,15 @@ public class FssPosBackService {
 	/**
 	 * jhz
 	 * 核对该客户在3天内是否进行过pos签约
-	 * @param customerInfoEntity
+	 * @param custId
 	 * @param bankNo
 	 * @param mobileNo
 	 * @throws FssException
      */
-	public void confirmState(CustomerInfoEntity customerInfoEntity,String bankNo,String mobileNo)throws FssException{
+	public void confirmState(Long custId, String bankNo,String mobileNo)throws FssException{
 		List<FssPosBackEntity> lists=this.selectPosBacks();
+		CustomerInfoEntity customerInfoEntity=new CustomerInfoEntity();
+		customerInfoEntity.setId(custId);
 		for (FssPosBackEntity entity:lists) {
 			if(StringUtils.equals("1",entity.getContractSt()) && StringUtils.equals(mobileNo,entity.getMobileNo()) && StringUtils.equals(bankNo,entity.getBankNo())){
 				customerInfoEntity.setModifyTime(new Date());
