@@ -1,7 +1,7 @@
 package com.gqhmt.listener;
 
+import com.gqhmt.core.util.ResourceUtil;
 import com.gqhmt.fss.architect.account.service.ConversionService;
-import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.tyzf.common.frame.amq.AmqReceiver;
 import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
 import com.gqhmt.tyzf.common.frame.amq.exception.AmqException;
@@ -34,7 +34,7 @@ public class AmqReceiveListener implements ServletContextListener {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                AmqSendAndReceive asr = new AmqReceiver(CoreConstants.MQ_RESIVE_NAME);
+                AmqSendAndReceive asr = new AmqReceiver(ResourceUtil.getValue("conf.mq","mq_resive_name"));
                 System.out.println("接收线程启动");
                 while (AmqReceiveListener.flag == 1) {
                     try {

@@ -2,6 +2,7 @@ package com.gqhmt.pay.service;
 
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.thread.AsyncThreadSendMq;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.bean.FssMappingBean;
@@ -14,9 +15,10 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
 
 /**
  * Filename:    com.gqhmt.pay.service.TradeRecordService
@@ -48,6 +50,8 @@ public class TyzfTradeService {
 
     @Resource
     private FssMappingService fssMappingService;
+
+    private AsyncThreadSendMq asyncThreadSendMq;
 
     /**
      *统一支付进行开户
@@ -544,12 +548,17 @@ public class TyzfTradeService {
     }
 
 
-    private void sendMsg(MessageConvertDto bean ) throws FssException {
+    private void sendMsg(MessageConvertDto bean ) {
+//        try {
+//            conversionService.sendAndReceiveMsg(bean);
+//        } catch (Exception e) {
+//            LogUtil.error(this.getClass(),e.getMessage(),e);
+//            throw new FssException("91002005");
+//        }
         try {
-            conversionService.sendAndReceiveMsg(bean);
-        } catch (Exception e) {
-            LogUtil.error(this.getClass(),e.getMessage(),e);
-            throw new FssException("91002005");
+            AsyncThreadSendMq.getInstance().sendMqMsg(bean);
+        } catch (InterruptedException e) {
+            LogUtil.info(this.getClass(),"消息进入队列失败");
         }
     }
 }
