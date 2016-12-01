@@ -89,14 +89,10 @@ public class TyzfTradeService {
         if("11020006".equals(tradeType)){
             this.createInvstmentAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,busiNo,seq_no,mobile);
         }
-        //11020007:借款人开户（冠e通）
-        //11020008:代偿人开户
-        //11020009:抵押权人开户
-        //11020011:借款人（纯线下）开户
-        //11020012:借款人开户（借款系统）
-        //11020013:借款代还人开户
-        if("11020007".equals(tradeType) || "11020008".equals(tradeType) || "11020009".equals(tradeType) || "11020011".equals(tradeType) || "11020012".equals(tradeType) || "11020013".equals(tradeType)){
-            this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,busiNo,seq_no, mobile);
+        //11020007:借款人开户（冠e通）(就是开通标的账户)
+        if("11020007".equals(tradeType)){
+//            this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,busiNo,seq_no, mobile);
+            this.createBidAcocunt(tradeType,custId,custName,certNo,certType,busiNo,seq_no,mobile,null);
         }
         //创建对公账户 收费账户：11020021、其他开户：11020022
         if("11020020".equals(tradeType) || "11020021".equals(tradeType) || "11020022".equals(tradeType)){
@@ -154,7 +150,7 @@ public class TyzfTradeService {
         //判断互联账户是否开通，如没有，开通互联网账户
         this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,seq_no+"_"+1,mobile);
         //开通借款人信贷账户统一支付账户类型，借款账户：30010003
-        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+2,3,mobile,"30130001","30010003");
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+2,1,mobile,"30130001","30010003");
     }
 
     /**
@@ -169,8 +165,8 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void createBidAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String contractNo,String seq_no,String mobile,Long bid_id) throws FssException{
-        if(bid_id==null) throw new FssException("90002045");
         if(contractNo==null || "".equals(contractNo)) throw new FssException("90002016");
+        bid_id = bidService.getBidByContractNo(contractNo);
         //判断是否开通借款账户
         this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,mobile);
         this.createAccount(tradeType,bid_id,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no+"_"+3,90,mobile,"30130001","30010015");
@@ -345,10 +341,21 @@ public class TyzfTradeService {
         this.sendMsg(bean);
     }
 
-    public void tyzfTransfer(Long fromCustId,Integer fromAccountType,Long toCustId,Integer toAccountType,BigDecimal amount,String tradeType,String seqNo) throws FssException {
+    /**
+     * 转账
+     * @param fromCustId
+     * @param fromAccountType
+     * @param toCustId
+     * @param toAccountType
+     * @param amount
+     * @param tradeType
+     * @param seqNo
+     * @throws FssException
+     */
+    public void tyzfTransfer(Long fromCustId,Integer fromAccountType,Long toCustId,Integer toAccountType,BigDecimal amount,String tradeType,String seqNo,String transf_flag) throws FssException {
         FssAccountBindEntity fromBindEntity = fssAccountBindService.getBindAccountByParam(fromCustId,fromAccountType);
         FssAccountBindEntity toBindEntity = fssAccountBindService.getBindAccountByParam(toCustId,toAccountType);
-        this.tyzfTransfer(fromBindEntity,toBindEntity,amount,tradeType,seqNo);
+        this.tyzfTransfer(fromBindEntity,toBindEntity,amount,tradeType,seqNo,transf_flag);
     }
 
     /**
@@ -360,13 +367,17 @@ public class TyzfTradeService {
      * @param seqNo
      * @throws FssException
      */
-    public void tyzfTransfer(FssAccountBindEntity fromEntity,FssAccountBindEntity toEntity,BigDecimal amount,String tradeType,String seqNo) throws FssException {
+    public void tyzfTransfer(FssAccountBindEntity fromEntity,FssAccountBindEntity toEntity,BigDecimal amount,String tradeType,String seqNo,String transf_flag) throws FssException {
+        String txnType=GlobalConstants.TYZF_TRANSFER;
+        if("1".equals(transf_flag)){//冻结转账
+            txnType=GlobalConstants.TYZF_FRZEN_TRANSFER;
+        }
         if(fromEntity==null || toEntity==null) throw new FssException("90004034");
         MessageConvertDto bean = new MessageConvertDto();
         bean.setServiceId("0001");
         bean.setIsActual("N");//是否同步交易
         bean.setIsBatch("N");//是否批量
-        bean.setTxnType(GlobalConstants.TYZF_TRANSFER);//交易类型
+        bean.setTxnType(txnType);//交易类型
         bean.setOrderId(seqNo== null ? "" : seqNo);//业务订单号
         bean.setCdtMop("97010001");//通道编号
         bean.setDbtrAcctId(fromEntity.getAccNo());//转出账户
@@ -441,7 +452,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tender(Long busiId,Integer busiType,BigDecimal amount,BigDecimal boundsAmount,String tradeType,String bidId,String seqNo) throws FssException {
-        this.tyzfTransfer(busiId,busiType,Long.valueOf(bidId),90,amount,tradeType,seqNo);
+        this.tyzfTransfer(busiId,busiType,Long.valueOf(bidId),90,amount,tradeType,seqNo,"0");
         //红包账户
         if (boundsAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity fromEntity=null;
@@ -455,7 +466,7 @@ public class TyzfTradeService {
                     }
                 }
             }
-            this.tyzfTransfer(fromEntity.getCustId(),70,Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo);
+            this.tyzfTransfer(fromEntity.getCustId(),70,Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo,"0");
         }
     }
 
@@ -472,7 +483,7 @@ public class TyzfTradeService {
     public void fullStandard(String bidId,FundAccountEntity toAccEntity,BigDecimal amount,
                              String tradeType,String seqNo) throws FssException {
         //// TODO: 2016/11/14
-        this.tyzfTransfer(Long.valueOf(bidId),90,toAccEntity.getCustId(),toAccEntity.getBusiType(),amount,tradeType,seqNo);
+        this.tyzfTransfer(Long.valueOf(bidId),90,toAccEntity.getCustId(),toAccEntity.getBusiType(),amount,tradeType,seqNo,"0");
     }
 
     /**
