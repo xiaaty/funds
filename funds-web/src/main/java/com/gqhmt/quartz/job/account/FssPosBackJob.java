@@ -46,7 +46,7 @@ public class FssPosBackJob extends SupperJob {
         try {
             for (FssPosBackEntity posBack:lists) {
                 //修改客户表签约状态
-                customerInfoService.updateCustomerState(posBack.getMobileNo(),posBack.getContractSt(),posBack.getBankNo());
+                customerInfoService.updateCustomerState(posBack,posBack.getMobileNo(),posBack.getContractSt(),posBack.getBankNo());
             }
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);

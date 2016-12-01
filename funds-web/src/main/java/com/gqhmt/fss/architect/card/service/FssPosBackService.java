@@ -50,8 +50,8 @@ public class FssPosBackService {
 	 * @param fssPosBackEntity
 	 * @throws FssException
      */
-    public void insert(FssPosBackEntity fssPosBackEntity)throws FssException {
-		fssPosBackWriteMapper.insert(fssPosBackEntity);
+    public Integer insert(FssPosBackEntity fssPosBackEntity)throws FssException {
+		return fssPosBackWriteMapper.insert(fssPosBackEntity);
     }
 	/**
 	 * 修改
@@ -124,7 +124,7 @@ public class FssPosBackService {
      * @return
      * @throws FssException
      */
-	public Integer createPosBack(String userName,String mobileNo,String bankNo,String credtNo,String contractSt,
+	public FssPosBackEntity createPosBack(String userName,String mobileNo,String bankNo,String credtNo,String contractSt,
 							 String userNameAcntIsVerif,String bankNoAcntIsVerif,
 							 String credtNoAcntIsVerif,String mobileNoAcntIsVerif)throws FssException{
 		FssPosBackEntity entity=new FssPosBackEntity();
@@ -137,9 +137,10 @@ public class FssPosBackService {
 		entity.setBankNoAcntIsVerif(Integer.valueOf(bankNoAcntIsVerif));
 		entity.setCredtNoAcntIsVerif(Integer.valueOf(credtNoAcntIsVerif));
 		entity.setMobileNoAcntIsVerif(Integer.valueOf(mobileNoAcntIsVerif));
+		entity.setState("98010002");
 		entity.setCreateTime(new Date());
 		entity.setModifyTime(new Date());
-		return fssPosBackWriteMapper.insert(entity);
+		return entity;
 	}
 
 

@@ -60,6 +60,9 @@ public class FssPosBackEntity implements Serializable {
     @Column(name = "modify_time")
     private Date modifyTime;
 
+    @Column(name = "state")
+    private String state;   //是否已使用；98010001，是；98010002：否
+
     public Long getId() {
         return id;
     }
@@ -154,5 +157,13 @@ public class FssPosBackEntity implements Serializable {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
