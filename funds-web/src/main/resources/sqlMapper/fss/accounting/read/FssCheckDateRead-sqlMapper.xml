@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.accounting.mapper.read.FssCheckDateReadMapper">
+	<sql id="field">
+		SELECT
+		t.id id,
+		t.order_date orderDate,
+		t.input_date inputDate,
+		t.input_user_state inputUserState,
+		t.order_user_state orderUserState
+		FROM t_gq_fss_check_date t
+	</sql>
+
+    <select id="selectFssCheckDateList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
+        <include refid="field"/>
+        <where>
+            <if test="orderDate!=null and orderDate!=''">
+                t.order_date = #{orderDate}
+            </if>
+            <if test="inputUserState!=null and inputUserState!=''">
+                AND t.input_user_state = #{inputUserState}
+            </if>
+            <if test="orderUserState!=null and orderUserState!=''">
+                AND t.order_user_state = #{orderUserState}
+            </if>
+        </where>
+        ORDER BY t.order_date ASC
+    </select>
+	<select id="queryOrderDate" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
+		SELECT
+			t.id id,
+			MIN(t.order_date) orderDate,
+			t.input_user_state inputUserState,
+			t.order_user_state orderUserState
+		FROM
+		    t_gq_fss_check_date t
+		WHERE t.input_user_state = '98010002'
+		AND t.order_date &gt;= '20150601'AND t.order_date IS NOT NULL
+	</select>
+	<select id="getOrderDate"  resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
+		select
+		t.id id,
+		MIN(t.order_date) orderDate,
+		t.input_date inputDate,
+		t.input_user_state inputUserState,
+		t.order_user_state orderUserState
+		FROM t_gq_fss_check_date t
+		WHERE t.order_date IS NOT NULL
+		AND t.order_user_state ='98010002'
+	</select>
+	<select id="selectOrderDate"  resultType="java.lang.Integer">
+		select
+		count(t.order_date)
+		FROM t_gq_fss_check_date t
+		WHERE t.order_date =#{orderDate}
+	</select>
+	<select id="getFssCheckDate" resultType="com.gqhmt.fss.architect.accounting.entity.FssCheckDate">
+		<include refid="field"/>
+		where t.order_date =#{orderDate}
+	</select>
+</mapper>

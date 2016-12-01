@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.card.mapper.read.FssPosBackReadMapper">
+	<sql id="fieldSql">
+		SELECT
+			t.id id,
+			t.user_name userName,
+			t.mobile_no mobileNo,
+			t.bank_no bankNo,
+			t.credt_no credtNo,
+			t.contract_st contractSt,
+			t.user_name_acntIsVerif userNameAcntIsVerif,
+			t.bank_no_acntIsVerif bankNoAcntIsVerif,
+			t.credt_no_acntIsVerif credtNoAcntIsVerif,
+			t.mobile_no_acntIsVerif mobileNoAcntIsVerif,
+			t.state state,
+			t.create_time createTime,
+			t.modify_time modifyTime
+		FROM `t_gq_fss_pos_back` t
+	</sql>
+	<select id="selectPosBacks" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.card.entiry.FssPosBackEntity" >
+		<include refid="fieldSql" />
+		where t.state='98010002' AND
+		date_format(t.create_time,'%Y%m%d') &gt;= #{startDate}
+		ORDER BY t.create_time ASC
+	</select>
+</mapper>

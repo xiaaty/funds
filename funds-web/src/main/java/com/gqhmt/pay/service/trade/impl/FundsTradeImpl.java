@@ -168,6 +168,7 @@ public class FundsTradeImpl  implements IFundsTrade {
         try {
             FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
             tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003,withdrawDto.getSeq_no(),withdrawDto.getTrade_type());
+//            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);
             this.chargeAmount(fundOrderEntity);
         }catch(Exception e) {
             //资金处理
@@ -407,8 +408,8 @@ public class FundsTradeImpl  implements IFundsTrade {
             fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,amt,fundType, "转账成功，资金转出："+amt+"元",BigDecimal.ZERO);
             fundTradeService.addFundTrade(toEntity,amt, BigDecimal.ZERO,fundType,"转账成功，资金转入："+amt+"元");
         }catch (Exception e){
-              fssBondTransferService.updateBandTransfer(bondEntity,amt,null,"10080010",e.getMessage());
-//            throw new FssException(e.getMessage());
+            fssBondTransferService.updateBandTransfer(bondEntity,amt,null,"10080010",e.getMessage());
+            throw new FssException(e.getMessage());
         }
         return true;
     }

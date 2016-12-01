@@ -366,7 +366,7 @@ public class FundAccountService {
 	    * time:2016年2月22日
 	    * function 查询账户余额
 	    */
-	    public FundAccountEntity getAccountBanlance(Long cust_no, int busi_type){
+	    public FundAccountEntity getAccountBanlance(Long cust_no, int busi_type)throws FssException{
 	        return this.fundsAccountReadMapper.getAccountBanlance(cust_no,busi_type);
 	    }
 	    

@@ -4,18 +4,15 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.account.CreateAccountDto;
 import com.gqhmt.extServInter.dto.account.LogOutAccountDto;
+import com.gqhmt.extServInter.dto.account.QueryAccountDto;
 import com.gqhmt.extServInter.dto.account.VerifiedAccountDto;
-import com.gqhmt.extServInter.service.account.ICreateAccount;
-import com.gqhmt.extServInter.service.account.ICreateBidAccount;
-import com.gqhmt.extServInter.service.account.ILogOutAccount;
-import com.gqhmt.extServInter.service.account.IVerifiedCreateAccount;
-import com.gqhmt.fss.architect.account.service.ConversionService;
-import com.gqhmt.pay.service.account.IFundsAccount;
+import com.gqhmt.extServInter.service.account.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 
 /**
@@ -48,10 +45,8 @@ public class FssAccountApi {
     private ICreateAccount createAccountImpl;
 
     @Resource
-    private IFundsAccount fundsAccountImpl;
+    private IQueryAccount queryAccountImpl;
 
-    @Resource
-    private ConversionService conversionService;
 
     @Resource
     private IVerifiedCreateAccount verifiedCreateAccountImpl;
@@ -99,7 +94,24 @@ public class FssAccountApi {
         }
         return response;
     }
-    
+
+    /**
+     * jhz
+     * 查询账户开户状态
+     * @param queryAccountDto
+     * @return
+     */
+    @RequestMapping(value = "/queryAccountState",method = {RequestMethod.GET,RequestMethod.POST})
+    public Object createAccount( QueryAccountDto queryAccountDto){
+    	Response response= new Response();
+        try {
+             response = queryAccountImpl.execute(queryAccountDto);
+        } catch (Exception e) {
+            response = this.execute(e);
+        }
+        return response;
+    }
+
 
 
     /**
