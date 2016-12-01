@@ -2,14 +2,12 @@ package com.gqhmt.fss.architect.account.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.pay.service.TyzfTradeService;
-import com.gqhmt.tyzf.common.frame.amq.AmqSendAndReceive;
-import com.gqhmt.tyzf.common.frame.amq.AmqSender;
 import com.gqhmt.tyzf.common.frame.exception.FrameException;
 import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
 import com.gqhmt.tyzf.common.frame.message.MsgObject;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 
 /**
@@ -32,26 +30,6 @@ public class ConversionService {
     @Resource
     private TyzfTradeService tyzfTradeService;
 
-    /**
-     * 统一报文发送到MQ
-     * @param bean
-     * @return
-     */
-    public void sendAndReceiveMsg(MessageConvertDto bean) throws FssException {
-        try {
-            AmqSendAndReceive asr = new AmqSender(null, CoreConstants.MQ_SEND_NAME);//发送到该队列
-            //将bean转换成xml统一报文
-            MsgObject mo = new MsgObject(MsgObject.initSR);
-            bean = mo.getBean4Message(bean);
-            String sendMessage = mo.toString();
-            LogUtil.info(this.getClass(),"发送报文信息:"+sendMessage);
-            asr.sendMsg(sendMessage);
-        } catch (FrameException e) {
-            LogUtil.error(this.getClass(), e.getMessage());
-        } catch (Exception e) {
-            LogUtil.error(this.getClass(), e.getMessage());
-        }
-    }
 
     /**
      * 接收消息
