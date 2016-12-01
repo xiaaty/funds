@@ -124,7 +124,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	private Integer emailIdentification;
 	
 	//判断当前客户是否是有效客户 0 有效 1无效
-	@Column(name = "isvalid",updatable = false)
+	@Column(name = "isvalid")
 	private Integer isvalid;
 	
 	//是否签署第三方协议 0 没有 1 有
@@ -142,7 +142,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	@Column(name = "CREATE_USER_ID",updatable = false)
 	private Integer createUserId;
 	//修改时间
-	@Column(name = "MODIFY_TIME",updatable = false)
+	@Column(name = "MODIFY_TIME")
 	private Date modifyTime;
 	//修改者
 	@Column(name = "MODIFY_USER_ID",updatable = false)

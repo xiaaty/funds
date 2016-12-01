@@ -26,6 +26,7 @@ import com.gqhmt.core.util.Encriptor;
 import com.gqhmt.pay.service.TyzfTradeService;
 import com.gqhmt.util.ThirdPartyType;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -529,7 +530,24 @@ public class FundSequenceService {
     public int getSizeByOrderNo(String orderNo){
         return fundSequenceReadMapper.getSizeByOrderNo(orderNo);
     }
-
+    /**
+     * jhz
+     * 通过s_order_no获取订单入账数量
+     * @param sOrderNo
+     * @return
+     */
+    public int getSizeBySOrderNo(String sOrderNo)throws FssException{
+        return fundSequenceReadMapper.getSizeBySOrderNo(sOrderNo);
+    }
+    /**
+     * jhz
+     * 通过s_order_no查询流水列表
+     * @param sOrderNo
+     * @return
+     */
+    public List<FundSequenceEntity> queryBySOrderNo(String sOrderNo)throws FssException{
+        return fundSequenceReadMapper.queryBySOrderNo(sOrderNo);
+    }
     /**
      * 获取订单入账金额，转账 冻结 0，充值 提现 不等于0
      * @param orderNo
@@ -873,6 +891,15 @@ public class FundSequenceService {
      */
     public List<FundSequenceEntity>  queryByOrderNo(String orderNo) throws FssException{
     	return fundSequenceReadMapper.queryByOrderNo(orderNo);
+    }
+    /**
+     * jhz
+     * 查询提现次数
+     * @param accountId
+     * @return
+     */
+    public int  queryWithDrawCount(Long accountId) throws FssException{
+    	return fundSequenceReadMapper.queryWithDrawCount(accountId);
     }
 
 }

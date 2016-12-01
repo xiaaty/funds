@@ -278,7 +278,7 @@ public class FuiouAccountInfoEntity {
                 setUserAccount(aStr[5]);
                 setUserName(aStr[6]);
                 setRemark(aStr[7]);
-                setReturnNum(aStr[8]);
+                setState(aStr[8]);
                 break;
             case "ZZ":
                 setTradeSources(aStr[1]);
@@ -290,7 +290,7 @@ public class FuiouAccountInfoEntity {
                 setInAccount(aStr[7]);
                 setInUserName(aStr[8]);
                 setRemark(aStr[9]);
-                setReturnNum(aStr[10]);
+                setState(aStr[10]);
                 break;
             case "HB":
                 setTradeSources(aStr[1]);
@@ -302,7 +302,7 @@ public class FuiouAccountInfoEntity {
                 setInAccount(aStr[7]);
                 setInUserName(aStr[8]);
                 setRemark(aStr[9]);
-                setReturnNum(aStr[10]);
+                setState(aStr[10]);
                 break;
             case "WTCZ":
                 setTradeSources(aStr[1]);
@@ -335,7 +335,7 @@ public class FuiouAccountInfoEntity {
                 setTotalMoney(new BigDecimal(aStr[6]));
                 setBalance(new BigDecimal(aStr[7]));
                 setRemark(aStr[8]);
-                setAccountState(aStr[9]);
+                setState(aStr[9]);
                 break;
             default:
                 new FssException("类型错误,请检查类型是否定义");
