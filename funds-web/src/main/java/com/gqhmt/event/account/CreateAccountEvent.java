@@ -123,13 +123,11 @@ public class CreateAccountEvent {
         }
 
 
-        if(primaryAccount.getHasThirdAccount() == 2){
-            customerInfoEntity.setHasAcount(1);
-            customerInfoEntity.setNameIdentification(1);
-            customerInfoService.update(customerInfoEntity);
-
-            throw new FssException("");
-        }
+//        if(primaryAccount.getHasThirdAccount() == 2){
+//            customerInfoEntity.setHasAcount(1);
+//            customerInfoEntity.setNameIdentification(1);
+//            customerInfoService.update(customerInfoEntity);
+//        }
 
         BankCardInfoEntity bankCardInfoEntity=null;
         List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
