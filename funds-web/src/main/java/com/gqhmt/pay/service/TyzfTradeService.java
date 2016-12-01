@@ -276,12 +276,7 @@ public class TyzfTradeService {
         bean.setCdtrAcctCcy("30080001");//货币类型
         bean.setCdtrContactno(mobile);//手机号
         bean.setMerchId(CoreConstants.TYZF_MERCHID);//商户号
-        try {
-            conversionService.sendAndReceiveMsg(bean);
-        } catch (Exception e) {
-            LogUtil.error(this.getClass(),e.getMessage(),e);
-            throw new FssException("90002044");
-        }
+        this.sendMsg(bean);
     }
 
     /**
@@ -316,12 +311,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        try{
-            conversionService.sendAndReceiveMsg(bean);
-        }catch (Exception e){
-            LogUtil.error(this.getClass(),e.getMessage(),e);
-            throw new FssException("90004035");
-        }
+        this.sendMsg(bean);
     }
 
     /**
@@ -348,12 +338,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_JIE);//个人账户记账借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        try{
-            conversionService.sendAndReceiveMsg(bean);
-        }catch (Exception e){
-            LogUtil.error(this.getClass(),e.getMessage(),e);
-            throw new FssException("90004035");
-        }
+        this.sendMsg(bean);
     }
 
     public void tyzfTransfer(Long fromCustId,Integer fromAccountType,Long toCustId,Integer toAccountType,BigDecimal amount,String tradeType,String seqNo) throws FssException {
@@ -386,12 +371,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);
         bean.setCardTp(GlobalConstants.TYZF_JIE);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);
-        try{
-            conversionService.sendAndReceiveMsg(bean);
-        }catch (Exception e){
-            LogUtil.error(this.getClass(),e.getMessage(),e);
-            throw new FssException("90004035");
-        }
+        this.sendMsg(bean);
     }
 
     /**
@@ -417,12 +397,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_JIE);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        try{
-            conversionService.sendAndReceiveMsg(bean);
-        }catch (Exception e){
-            LogUtil.error(this.getClass(),e.getMessage(),e);
-            throw new FssException("90004035");
-        }
+        this.sendMsg(bean);
     }
 
     /**
@@ -448,12 +423,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        try{
-            conversionService.sendAndReceiveMsg(bean);
-        }catch (Exception e){
-            LogUtil.error(this.getClass(),e.getMessage(),e);
-            throw new FssException("90004035");
-        }
+        this.sendMsg(bean);
     }
 
      /** 投标
@@ -569,12 +539,17 @@ public class TyzfTradeService {
         bean.setCdtrAcctCcy("30080001");//货币类型
         bean.setCdtrContactno(mobile_phone);//手机号
         bean.setMerchId(CoreConstants.TYZF_MERCHID);//商户号
+        this.sendMsg(bean);
+
+    }
+
+
+    private void sendMsg(MessageConvertDto bean ) throws FssException {
         try {
             conversionService.sendAndReceiveMsg(bean);
         } catch (Exception e) {
             LogUtil.error(this.getClass(),e.getMessage(),e);
             throw new FssException("91002005");
         }
-
     }
 }
