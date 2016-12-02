@@ -35,7 +35,7 @@ import java.util.List;
  * 2016/11/8 0008. wanggp         1.0     1.0 Version
  */
 @ContextConfiguration(locations = "classpath:spring/spring-*.xml")
-public class FssCheckAccountingServiceTest extends AbstractTestNGSpringContextTests {
+public class FssCheckAccountingServiceTest {
 
     @Resource
     private FssCheckAccountingService fssCheckAccountingService;
