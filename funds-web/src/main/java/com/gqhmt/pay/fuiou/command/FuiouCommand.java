@@ -44,17 +44,17 @@ public class FuiouCommand extends AbstractThirdpartyCommand implements Thirdpart
         CommandResponse response=null;
         if(!isConnection){
             response = new CommandResponse();
-            long i = (long) (Math.random()*20);
-            System.out.println(i);
-            if(PayCommondConstants.COMMAND_TRADE_WITHHOLDING.equals(apiKey) &&  i  == 11){
-                response.setCode("100017");
-                response.setThirdReturnCode("100017");
-                response.setMsg("余额不足");
-            }else{
+//            long i = (long) (Math.random()*20);
+//            System.out.println(i);
+//            if(PayCommondConstants.COMMAND_TRADE_WITHHOLDING.equals(apiKey) &&  i  == 11){
+//                response.setCode("100017");
+//                response.setThirdReturnCode("100017");
+//                response.setMsg("余额不足");
+//            }else{
                 response.setCode("0000");
                 response.setThirdReturnCode("0000");
                 response.setMsg("成功");
-            }
+//            }
 
             String timeOut = (String) config.getValue("url.testTimeOut.value");
             if(timeOut == null){

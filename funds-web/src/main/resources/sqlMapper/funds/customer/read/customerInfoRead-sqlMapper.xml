@@ -15,6 +15,7 @@
 			t.address address,
 			t.user_id userId,
 			t.isvalid isvalid,
+			t.has_third_agreement hasThirdAgreement,
 			t.has_acount hasAccount,
 			t.bank_id bankId,
 			t.CREATE_TIME createTime,
