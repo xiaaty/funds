@@ -53,8 +53,6 @@ public class FuiouCallBack {
 	private FundOrderService fundOrderService;
 	@Resource
 	private FundAccountService fundAccountService;
-	@Resource
-	private CustomerInfoService customerInfoService;
 
 //	@Autowired
 //	private ChangeCardService changeCardService;
