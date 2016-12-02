@@ -34,6 +34,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -361,7 +362,7 @@ public class FssTradeApplyService {
 	 * @return
 	 * @throws FssException
      */
-	public int withNumbers(String applyNos)throws FssException{
+	public int withNumbers(String applyNos,Integer bespokeDate)throws FssException{
 		FssTradeApplyEntity tradeapply=null;
 		LogUtil.info(this.getClass(),"申请编号字符串为："+applyNos);
 		String[] applyNo = applyNos.split(",");
@@ -373,10 +374,30 @@ public class FssTradeApplyService {
 			if(tradeapply==null){
 				continue;
 			}
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			try {
 			if("10100001".equals(tradeapply.getApplyState())){
+				if(bespokeDate==0){
+					Date a=new Date();
+					String b=DateUtil.dateToString(a);
+					tradeapply.setBespokedate(sdf.parse(b));
+					tradeapply.setSettleType(0);
+				}else if(bespokeDate==1){
+					Calendar calendar=Calendar.getInstance();
+					Date a=new Date();
+					calendar.setTime(a);
+					calendar.add(calendar.DATE,1);
+					String b=DateUtil.dateToString(calendar.getTime());
+					tradeapply.setBespokedate(sdf.parse(b));
+					tradeapply.setSettleType(1);
+				}
 				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
 				this.updateTradeApply(tradeapply,"10100002","10080001");
 				count++;
+			}
+			} catch (ParseException e) {
+				LogUtil.debug(e.getClass(),e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return (applyNo.length-count);

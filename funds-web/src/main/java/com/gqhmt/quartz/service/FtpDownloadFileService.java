@@ -77,7 +77,7 @@ public class FtpDownloadFileService {
     }
 
     public void downFile()  throws NumberFormatException, FssException {
-    	Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+        Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         List<FuiouUploadFile> list = this.fuiouUploadFileService.list(2);
         for(FuiouUploadFile file:list){
             if(config.isConnection() == false){
@@ -123,7 +123,7 @@ public class FtpDownloadFileService {
      * @throws FssException
      */
     private boolean downloadReject(FuiouUploadFile file)  throws FssException {
-    	Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+        Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         String url = (String)config.getValue("ftp.url.value");
         String port = (String)config.getValue("ftp.port.value");
         String userName = (String)config.getValue("ftp.userName.value");
@@ -153,7 +153,7 @@ public class FtpDownloadFileService {
      * @throws FssException
      */
     public boolean downloadReturn(FuiouUploadFile file) throws FssException {
-    	Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
+        Config config= ConfigFactory.getConfigFactory().getConfig(PayCommondConstants.PAY_CHANNEL_FUIOU);
         String url = (String)config.getValue("ftp.url.value");
         String port = (String)config.getValue("ftp.port.value");
         String userName = (String)config.getValue("ftp.userName.value");
@@ -240,11 +240,11 @@ public class FtpDownloadFileService {
             fuiouFtpColomFields.add(field);
         }
         try {
-			fuiouFtpColomFieldService.updateList(fuiouFtpColomFields);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            fuiouFtpColomFieldService.updateList(fuiouFtpColomFields);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -383,10 +383,10 @@ public class FtpDownloadFileService {
             fileId = file.getId();
         }else{
 
-                // 如果不是存在的对象， 数据库也查不到则添加
-                file.setBooleanType("-1");
-                fuiouAccountInfoFileService.addFuiouAccountInfoFileEntity(file);
-                fileId = file.getId();
+            // 如果不是存在的对象， 数据库也查不到则添加
+            file.setBooleanType("-1");
+            fuiouAccountInfoFileService.addFuiouAccountInfoFileEntity(file);
+            fileId = file.getId();
         }
 
         List<FuiouAccountInfoEntity> accInfoList = new ArrayList<FuiouAccountInfoEntity>();
@@ -405,7 +405,7 @@ public class FtpDownloadFileService {
         //循环便利集合得到客户表id并添加进对象
         List<FssCheckAccountingEntity> enList= fssImportDataService.list(checkLists);
         fuiouAccountInfoService.addFuiouAccountInfoList(accInfoList);
-        fssCheckAccountingService.insertCheckList(checkLists);
+        fssCheckAccountingService.insertCheckList(enList);
         file.setBooleanType("1");
         fuiouAccountInfoFileService.updateFuiouAccountInfoFileEntity(file);
         LogUtil.info(this.getClass(),"抓取文件：" + file.getTradeType() + new SimpleDateFormat("yyyyMMdd").format(file.getCreateTime())+".txt 成功");

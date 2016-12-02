@@ -2,6 +2,7 @@ package com.gqhmt.controller.api.trade;
 
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
+import com.gqhmt.extServInter.dto.account.QueryAccountDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.extServInter.service.trade.*;
 import org.springframework.context.ApplicationContext;
@@ -82,6 +83,9 @@ public class FssTradeApi {
 	private IOfflineRechargeApply offRechargeApplyImpl;
 	@Resource
 	private IBondTransfer bondTransferImpl;
+
+	@Resource
+	private IQueryWithDrawCount queryWithDrawCountImpl;
 	@Resource
 	private IPosOrderCreate posOrderCreateImpl;
 	@Resource
@@ -389,6 +393,23 @@ public class FssTradeApi {
 		Response response=new Response();
 		try {
 			response = posSignedCallbackImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+	/**
+	 * jhz
+	 * 查询提现次数接口
+	 * @param dto
+	 * @return
+	 */
+	@RequestMapping(value = "/queryWithDrawCount",method = RequestMethod.POST)
+	public Object queryWithDrawCount(QueryAccountDto dto){
+		Response response=new Response();
+		try {
+			response = queryWithDrawCountImpl.execute(dto);
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
