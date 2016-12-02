@@ -146,6 +146,8 @@ public class CreateAccountEvent {
             //创建银行卡信息
             if (CollectionUtils.isEmpty(bankCardInfoList)) {
                 bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+            }else{
+                bankCardInfoEntity = bankCardInfoList.get(0);
             }
 
             customerInfoEntity.setBankId(bankCardInfoEntity.getId());
