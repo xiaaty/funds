@@ -181,7 +181,7 @@
                                             <td>借款合同号</td>
                                             <td>创建日期</td>
                                             <td>修改日期</td>
-                                            <td>实名验证开户日期</td>
+                                            <td>开户日期</td>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -190,7 +190,7 @@
                                                 <td>${t.id}</td>
                                                 <td>${t.busiId}</td>
                                                 <td>${t.custName}</td>
-                                                <td>${t.moblie}</td>
+                                                <td>${t.mobile}</td>
                                                 <td>${t.accNo}</td>
                                                 <td>${t.busiType}</td>
                                                 <td>${t.status=="0"?"未绑定":"已绑定"}</td>
@@ -199,7 +199,7 @@
                                                 <td>${t.contractNo}</td>
                                                 <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                 <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                <td>${t.openAccTime}</td>
+                                                <td><fmt:formatDate value="${t.openAccTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>

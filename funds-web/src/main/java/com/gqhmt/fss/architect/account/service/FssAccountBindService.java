@@ -79,7 +79,7 @@ public class FssAccountBindService {
             mappingEntity.setBusiType(busi_type);
             mappingEntity.setStatus("0");
             mappingEntity.setCustName(custName);
-            mappingEntity.setMoblie(mobile);
+            mappingEntity.setMobile(mobile);
             mappingEntity.setSeqNo(seqNo);
             mappingEntity.setTradeType(tradeType);
             mappingEntity.setContractNo(contractNo);
@@ -115,6 +115,7 @@ public class FssAccountBindService {
             fssAccountBindEntity.setAccNo(accNo);
             fssAccountBindEntity.setStatus(status);
             fssAccountBindEntity.setModifyTime(new Date());
+            fssAccountBindEntity.setOpenAccTime(new Date());
             fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
         }catch (Exception e){
             throw new FssException("91009804");
