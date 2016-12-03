@@ -34,6 +34,8 @@ public class AsyncThreadSendMq {
 
     private final Thread threadDemo;
 
+    private int executeFlag = 1;
+
 
     private AsyncThreadSendMq(){
         conversionService = new ConversionService();

@@ -4,11 +4,11 @@ package com.gqhmt.fss.architect.account.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
-import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountBindReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountBindWriteMapper;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
@@ -140,6 +140,11 @@ public class FssAccountBindService {
     public FssAccountBindEntity getBindAccountBySeqNo(String seqNo){
         FssAccountBindEntity bindEntity = fssAccountBindReadMapper.getBindAccountBySeqNo(seqNo);
         return bindEntity;
+    }
+
+
+    public List<FssAccountBindEntity> queryBindAccountLimit(){
+        return fssAccountBindReadMapper.queryBindAccountLimit();
     }
 
 

@@ -1,7 +1,6 @@
 package com.gqhmt.dataMigration.account;
 
 import com.gqhmt.business.architect.invest.service.InvestmentService;
-import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
@@ -53,68 +52,106 @@ public class AccountData {
     private BidService bidService;
 
     public void accountData(String createDate) throws FssException {
+
+
+        //开通线上账户（互联网账户）
+        this.createInternetAccount(createDate);
+
+        //开通线下账户（线下出借账户，线下出借应付款账户）
+        this.createInvestmentAccount(createDate);
+
         //获取客户信息
-        List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
-        for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
-            //处理对公账户
-            if(customerInfoEntity.getId()<99){
-                this.createBusiAccount(customerInfoEntity);
-                continue;
-            }
-
-            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-            if(priEntity == null ){
-                continue;
-            }
-
-            if(priEntity.getHasThirdAccount() == 2){
-                //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
-                this.createInternetAccount(customerInfoEntity);  //开通互联网账户
-
-                //验证是否存在线下出借合同，如有，开通线下出借账户
-                int count = investmentService.queryByCustId(customerInfoEntity.getId().intValue());
-                if(count>0) {
-                    this.createInvestmentAccount(customerInfoEntity);  //开通线下出借账户
-                }
-                //验证是否存在借款合同
-                int res = bidService.queryBidByCustId(customerInfoEntity.getId().intValue());
-                if ( res>0) {
-                    this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
-                }
-            }
-
-        }
-
-        //处理标的账户
-        List<Bid> bids = bidService.queryBidByDate(createDate);
-
-        for(Bid bid : bids){
-            CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(bid.getCustomerId().longValue());
-            if(!"".equals(bid.getContractNo())) {
-                this.createLoanBidAccount(bid.getId().longValue(), bid.getContractNo(), customerInfoEntity);
-            }
-        }
+////        List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
+////        for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
+////            //处理对公账户
+////            if(customerInfoEntity.getId()<99){
+////                this.createBusiAccount(customerInfoEntity);
+////                continue;
+////            }
+////
+////            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+////            if(priEntity == null ){
+////                continue;
+////            }
+////
+////            if(priEntity.getHasThirdAccount() == 2){
+////                //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
+////                this.createInternetAccount(customerInfoEntity);  //开通互联网账户
+////
+////                //验证是否存在线下出借合同，如有，开通线下出借账户
+////                int count = investmentService.queryByCustId(customerInfoEntity.getId().intValue());
+////                if(count>0) {
+////                    this.createInvestmentAccount(customerInfoEntity);  //开通线下出借账户
+////                }
+////                //验证是否存在借款合同
+////                int res = bidService.queryBidByCustId(customerInfoEntity.getId().intValue());
+////                if ( res>0) {
+////                    this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
+////                }
+////            }
+////
+////        }
+//
+//        //处理标的账户
+//        List<Bid> bids = bidService.queryBidByDate(createDate);
+//
+//        for(Bid bid : bids){
+//            CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(bid.getCustomerId().longValue());
+//            if(!"".equals(bid.getContractNo())) {
+//                this.createLoanBidAccount(bid.getId().longValue(), bid.getContractNo(), customerInfoEntity);
+//            }
+//        }
 
 
     }
 
+
     /**
      * 开通互联网账户
-     * @param customerInfoEntity
+     * @param createDate
      */
-    public void createInternetAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
-        String seq_no=this.createSeqNo();
-        tyzfTradeService.createInternetAccount("11029100",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(),seq_no,customerInfoEntity.getMobilePhone());
+    public void createInternetAccount(String createDate) throws FssException {
+        List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
+        for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
+            //处理对公账户
+            if(customerInfoEntity.getId()<99){
+                continue;
+            }
+            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+            if(priEntity == null ){
+                continue;
+            }
+            if(priEntity.getHasThirdAccount() == 2){
+                //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
+                String seq_no=this.createSeqNo();
+                tyzfTradeService.createInternetAccount("11029100",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(),seq_no,customerInfoEntity.getMobilePhone());
+            }
+        }
     }
 
 
     /**
      * 开通线下出借账户
-     * @param customerInfoEntity
+     * @param createDate
      */
-    public void createInvestmentAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
-        String seq_no=this.createSeqNo();
-        tyzfTradeService.createInvstmentAccount("11020006",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), null, seq_no, customerInfoEntity.getMobilePhone());
+    public void createInvestmentAccount(String createDate) throws FssException{
+        List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
+        for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
+            //处理对公账户
+            if(customerInfoEntity.getId()<99){
+                continue;
+            }
+            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
+            if(priEntity == null ){
+                continue;
+            }
+            if(priEntity.getHasThirdAccount() == 2){
+                //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
+                String seq_no=this.createSeqNo();
+                tyzfTradeService.createInvstmentAccount("11020006",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), null, seq_no, customerInfoEntity.getMobilePhone());
+
+            }
+        }
     }
 
     /**
