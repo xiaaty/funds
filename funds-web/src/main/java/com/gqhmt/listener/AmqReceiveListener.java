@@ -33,7 +33,7 @@ public class AmqReceiveListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
 
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
-       final ConversionService conversionService = wac.getBean(ConversionService.class);
+        final ConversionService conversionService = wac.getBean(ConversionService.class);
         System.out.println("AmqReceiveListener.contextInitialized() 开始");
         Runnable runnable = new Runnable() {
             @Override

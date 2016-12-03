@@ -122,6 +122,19 @@ public class FssAccountBindService {
         }
     }
 
+
+    public void updateBindAccountSeqNo(Long id,String seqNo) throws FssException {
+        FssAccountBindEntity fssAccountBindEntity = fssAccountBindReadMapper.selectByPrimaryKey(id);
+        com.gqhmt.core.util.LogUtil.info(this.getClass(),"开户成功更新："+fssAccountBindEntity.getBusiId()+ fssAccountBindEntity.getSeqNo()+"："+fssAccountBindEntity.getAccNo());
+        try {
+            fssAccountBindEntity.setSeqNo(seqNo);
+            fssAccountBindEntity.setModifyTime(new Date());
+            fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
+        }catch (Exception e){
+            throw new FssException("91009804");
+        }
+    }
+
     /**
      * 校验账户是否已经绑定
      * @param busiId

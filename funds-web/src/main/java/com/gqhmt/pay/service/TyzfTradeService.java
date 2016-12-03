@@ -7,7 +7,6 @@ import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.bean.FssMappingBean;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
-import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
@@ -40,8 +39,6 @@ import java.util.List;
 public class TyzfTradeService {
 
     @Resource
-    private ConversionService conversionService;
-    @Resource
     private FssAccountBindService fssAccountBindService;
     @Resource
     private BidService bidService;
@@ -51,7 +48,6 @@ public class TyzfTradeService {
     @Resource
     private FssMappingService fssMappingService;
 
-    private AsyncThreadSendMq asyncThreadSendMq;
 
     /**
      *统一支付进行开户
@@ -236,7 +232,11 @@ public class TyzfTradeService {
      */
       public FssAccountBindEntity createAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,Integer busi_type,String  mobile,String chnlId,String accType) throws FssException{
            FssAccountBindEntity entity = fssAccountBindService.createFssAccountMapping(custId,busi_type,tradeType,seq_no,busiNo,custName,mobile);
-           if("1".equals(entity.getStatus())) return entity;
+           if(entity.getSeqNo() == null){
+               entity.setSeqNo(seq_no);
+               fssAccountBindService.updateBindAccountSeqNo(entity.getId(),seq_no);
+           }
+          if("1".equals(entity.getStatus())) return entity;
            this.createAccount(tradeType,custName,certNo,certType,busiNo,entity.getSeqNo(),accType,chnlId,mobile,custType);
            return entity;
       }
@@ -570,6 +570,8 @@ public class TyzfTradeService {
             AsyncThreadSendMq.getInstance().sendMqMsg(bean);
         } catch (InterruptedException e) {
             LogUtil.info(this.getClass(),"消息进入队列失败");
+        } catch (FssException e) {
+            LogUtil.info(this.getClass(),e.getMessage());
         }
     }
 }
