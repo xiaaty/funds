@@ -6,7 +6,7 @@
 		  t.`id` id,
 		  t.`busi_id` busiId,
 		  t.`cust_name` custName,
-		  t.`moblie` moblie,
+		  t.`mobile` mobile,
 		  t.`busi_type` busiType,
 		  t.`acc_no` accNo,
 		  t.`status` status,
