@@ -46,7 +46,7 @@ public class FssAccountBindEntity {
     private String seqNo;
 
     @Column(name = "open_acc_time")
-    private String openAccTime;
+    private Date openAccTime;
 
     @Column(name = "contract_no")
     private String contractNo;
@@ -63,8 +63,8 @@ public class FssAccountBindEntity {
     @Column(name = "cust_name")
     private String custName;
 
-    @Column(name = "moblie")
-    private String moblie;
+    @Column(name = "mobile")
+    private String mobile;
 
     public Long getId() {
         return id;
@@ -122,11 +122,11 @@ public class FssAccountBindEntity {
         this.seqNo = seqNo;
     }
 
-    public String getOpenAccTime() {
+    public Date getOpenAccTime() {
         return openAccTime;
     }
 
-    public void setOpenAccTime(String openAccTime) {
+    public void setOpenAccTime(Date openAccTime) {
         this.openAccTime = openAccTime;
     }
 
@@ -170,11 +170,11 @@ public class FssAccountBindEntity {
         this.custName = custName;
     }
 
-    public String getMoblie() {
-        return moblie;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setMoblie(String moblie) {
-        this.moblie = moblie;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
