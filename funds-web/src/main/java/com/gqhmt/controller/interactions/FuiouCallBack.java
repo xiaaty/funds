@@ -539,7 +539,7 @@ public class FuiouCallBack {
 	public String returnPosContractResult(String mchntCd,String mchntNm,String userNm,String mobileNo,String acntNo,String credtNo,String contract_st,String acntIsVerif1,String acntIsVerif2,String acntIsVerif3,String acntIsVerif4) throws FssException{
 		//回调明文
 		//验签
-		LogUtil.info(this.getClass(), "pos签约回调："+"客户名："+userNm+"；手机号:"+mobileNo+"；身份证号："+credtNo+";银行卡号："+acntNo+";协议状态:"+contract_st+";卡号户名验证结果:"+acntIsVerif1+";卡号密码验证结果:"+acntIsVerif2+";户名证件号验证结果:"+acntIsVerif3+";手机号验证结果:"+acntIsVerif4);
+		LogUtil.info(this.getClass(), "pos签约回调："+"|"+userNm+"|"+mobileNo+"|"+credtNo+"|"+acntNo+"|"+contract_st+"|"+acntIsVerif1+"|"+acntIsVerif2+"|"+acntIsVerif3+"|"+acntIsVerif4);
 		//返回富友接收结果
 		String result = "0";
 		try {
