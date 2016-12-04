@@ -38,7 +38,7 @@ public class AmqReceiveListener implements ServletContextListener {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                AmqSendAndReceive asr = new AmqReceiver(ResourceUtil.getValue("conf.mq","mq_resive_name"));
+                AmqReceiver asr = new AmqReceiver(ResourceUtil.getValue("conf.mq","mq_resive_name"));
                 System.out.println("接收线程启动");
                 while (AmqReceiveListener.flag == 1) {
                     try {
@@ -54,6 +54,10 @@ public class AmqReceiveListener implements ServletContextListener {
                         LogUtil.error(this.getClass(), e.getMessage());
                     }
                 }
+
+                asr.release();
+
+
             }
         };
         Thread t = new Thread(runnable);
@@ -65,6 +69,7 @@ public class AmqReceiveListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        asyncThreadSendMq.drop();
         AmqReceiveListener.flag=0;
         System.out.println("AmqReceiveListener.contextInitialized() 结束 ");
         System.out.println("daemons.size="+daemons.size());
@@ -77,7 +82,7 @@ public class AmqReceiveListener implements ServletContextListener {
                 e.printStackTrace();
             }
         }
-        asyncThreadSendMq.drop();
+
     }
 
 

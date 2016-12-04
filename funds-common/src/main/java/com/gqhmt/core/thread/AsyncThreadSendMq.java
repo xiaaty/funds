@@ -28,7 +28,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public class AsyncThreadSendMq {
     private static final int POOL_SIZE = 50;
-    private final AsyncThreadSendMqBuffer<MessageConvertDto> buffer;
+    private AsyncThreadSendMqBuffer<MessageConvertDto> buffer;
 
     private static final AsyncThreadSendMq instance = new AsyncThreadSendMq();
     private ConversionService conversionService;
@@ -79,26 +79,32 @@ public class AsyncThreadSendMq {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                while(true){
+                LogUtil.info(this.getClass(),"异步消息发送守护线程启动。。。。");
+                while(AsyncThreadSendMq.executeFlag == 1){
                     if(buffer.isEmpty()){
                         this.sleep();
                     }
                     LogUtil.info(this.getClass(),"异步消息发送守护线程执行中。。。。");
                     if(threadPoolCheck()){
                         try {
-                            getExecutor().execute(executor(buffer.get()));
+                            MessageConvertDto dto = null;
+                            if(buffer == null) continue;
+                            dto = buffer.get();
+                            if(dto == null) continue;
+                            Runnable runnable1 = executor(dto);
+                            if(runnable1 == null ) continue;
+                            getExecutor().execute(runnable1);
                             LogUtil.info(AsyncThreadSendMq.class,"消息发送进入多线程池：当前队列数："+buffer.getNum());
                         } catch (InterruptedException e) {
                             LogUtil.error(AsyncThreadSendMq.class,e);
-
                         }
 
                         continue;
                     }
                     LogUtil.info(this.getClass(),"执行失败");
                     this.sleep();
-
                 }
+                LogUtil.info(this.getClass(),"异步消息发送守护线程停止。。。。");
             }
 
             /**
@@ -157,25 +163,27 @@ public class AsyncThreadSendMq {
 
 
     public void drop(){
-        AsyncThreadSendMq.executeFlag = 0;
-        while (true) {
-            if (buffer.isEmpty()) {
-                try {
-                    threadDemo.join(2 * 1000);
-                    threadDemo.interrupt();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                LogUtil.info(this.getClass(),"异步消息发送守护线程结束");
-                break;
-            }
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//        while (true){
+//            if(buffer.isEmpty()){
+//
+//            }
+//        }
+        this.buffer = null;
+        AsyncThreadSendMq.executeFlag = 0;
+
+
+        try {
+
+            threadDemo.join(2 * 1000);
+            Thread.sleep(2*1000);
+            threadDemo.interrupt();
+//            break;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        LogUtil.info(this.getClass(),"异步消息发送守护线程结束");
     }
 
 }
