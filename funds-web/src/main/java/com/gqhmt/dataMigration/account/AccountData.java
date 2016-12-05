@@ -1,13 +1,12 @@
 package com.gqhmt.dataMigration.account;
 
-import com.gqhmt.business.architect.invest.service.InvestmentService;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.TyzfTradeService;
@@ -38,13 +37,11 @@ import java.util.List;
 public class AccountData {
 
     @Resource
+    private FssAccountBindService fssAccountBindService ;
+
+    @Resource
     private CustomerInfoService customerInfoService;
 
-    @Resource
-    private FundAccountService fundAccountService;
-
-    @Resource
-    private InvestmentService investmentService;
 
     @Resource
     private TyzfTradeService tyzfTradeService;
@@ -52,48 +49,39 @@ public class AccountData {
     @Resource
     private BidService bidService;
 
-    public void accountData(String createDate) throws FssException {
+    public void accountData() throws FssException {
         //获取客户信息
-        List<CustomerInfoEntity> customerInfoBeanList = customerInfoService.queryCustomerInfoByDate(createDate);
-        for(CustomerInfoEntity customerInfoEntity : customerInfoBeanList){
-            //处理对公账户
-            if(customerInfoEntity.getId()<99){
-                this.createBusiAccount(customerInfoEntity);
-                continue;
+        List<FssAccountBindEntity> fssAccountBindEntityList = fssAccountBindService.queryBindAccountLimit();
+        for(FssAccountBindEntity fssAccountBindEntity : fssAccountBindEntityList) {
+            Long custId = fssAccountBindEntity.getBusiId();
+            int busiType = fssAccountBindEntity.getBusiType();
+            if (busiType == 90) {
+                Bid bid = bidService.findById(fssAccountBindEntity.getBusiId().intValue());
+                custId = bid.getCustomerId().longValue();
             }
+            CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(custId);
 
-            FundAccountEntity priEntity  = fundAccountService.getFundAccount(customerInfoEntity.getId(), GlobalConstants.ACCOUNT_TYPE_PRIMARY);
-            if(priEntity == null ){
-                continue;
-            }
-
-            if(priEntity.getHasThirdAccount() == 2){
-                //List<FundAccountEntity> fundAccountEntities = fundAccountService.getFundsAccountsByCustId(customerInfoEntity.getId());
-                this.createInternetAccount(customerInfoEntity);  //开通互联网账户
-
-                //验证是否存在线下出借合同，如有，开通线下出借账户
-                int count = investmentService.queryByCustId(customerInfoEntity.getId().intValue());
-                if(count>0) {
-                    this.createInvestmentAccount(customerInfoEntity);  //开通线下出借账户
-                }
-                //验证是否存在借款合同
-                int res = bidService.queryBidByCustId(customerInfoEntity.getId().intValue());
-                if ( res>0) {
-                    this.createLoanAccount(customerInfoEntity);// 开通借款人信贷账户
-                }
+            switch (busiType){
+                case 1:
+                    this.createLoanAccount(customerInfoEntity);
+                    break;
+                case 2:
+                    this.createInvestmentAccount(customerInfoEntity);
+                    break;
+                case 3:
+                    this.createInternetAccount(customerInfoEntity);
+                    break;
+                case 90:
+                    this.createLoanBidAccount(fssAccountBindEntity.getBusiId(),fssAccountBindEntity.getContractNo(),customerInfoEntity);
+                    break;
+                case 96:
+                    this.createInternetAccount(customerInfoEntity);
+                    break;
             }
 
         }
 
-        //处理标的账户
-        List<Bid> bids = bidService.queryBidByDate(createDate);
 
-        for(Bid bid : bids){
-            CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(bid.getCustomerId().longValue());
-            if(!"".equals(bid.getContractNo())) {
-                this.createLoanBidAccount(bid.getId().longValue(), bid.getContractNo(), customerInfoEntity);
-            }
-        }
 
 
     }
@@ -104,7 +92,7 @@ public class AccountData {
      */
     public void createInternetAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
         String seq_no=this.createSeqNo();
-        tyzfTradeService.createInternetAccount("11029100",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(),seq_no,customerInfoEntity.getMobilePhone());
+        tyzfTradeService.createInternetAccount("11029100",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),String.valueOf(customerInfoEntity.getCertType()),seq_no,customerInfoEntity.getMobilePhone());
     }
 
 
@@ -114,7 +102,7 @@ public class AccountData {
      */
     public void createInvestmentAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
         String seq_no=this.createSeqNo();
-        tyzfTradeService.createInvstmentAccount("11020006",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), null, seq_no, customerInfoEntity.getMobilePhone());
+        tyzfTradeService.createInvstmentAccount("11020006",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),String.valueOf(customerInfoEntity.getCertType()), null, seq_no, customerInfoEntity.getMobilePhone());
     }
 
     /**
@@ -123,7 +111,7 @@ public class AccountData {
      */
     public void createLoanAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
         String seq_no=this.createSeqNo();
-        tyzfTradeService.createLoanAccount("11020007",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), null, seq_no, customerInfoEntity.getMobilePhone());
+        tyzfTradeService.createLoanAccount("11020007",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),String.valueOf(customerInfoEntity.getCertType()), null, seq_no, customerInfoEntity.getMobilePhone());
     }
 
     /**
@@ -135,15 +123,15 @@ public class AccountData {
         tyzfTradeService.createBidAcocunt("11020019",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo(),customerInfoEntity.getCertType().toString(), contract_no, seq_no, customerInfoEntity.getMobilePhone(),bid_id);
     }
 
-    /**
-     * 创建对公账户
-      * @param customerInfoEntity
-     * @throws FssException
-     */
-    public void createBusiAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
-       String seq_no=this.createSeqNo();
-       tyzfTradeService.createBusiAccount("11020022",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo()+customerInfoEntity.getId(),customerInfoEntity.getCertType().toString(),seq_no, customerInfoEntity.getMobilePhone());
-    }
+//    /**
+//     * 创建对公账户
+//      * @param customerInfoEntity
+//     * @throws FssException
+//     */
+//    public void createBusiAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+//       String seq_no=this.createSeqNo();
+//       tyzfTradeService.createBusiAccount("11020022",customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),customerInfoEntity.getCertNo()+customerInfoEntity.getId(),customerInfoEntity.getCertType().toString(),seq_no, customerInfoEntity.getMobilePhone());
+//    }
 
     /**
      * 生成一个流水号
