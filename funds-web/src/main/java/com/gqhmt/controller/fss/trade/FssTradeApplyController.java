@@ -329,6 +329,9 @@ public class FssTradeApplyController {
 	public Object WithDrawCheck(HttpServletRequest request, ModelMap model, String no,Integer bespokeDate) throws FssException {
 		Map<String, String> map = new HashMap<String, String>();
 		int count=1;
+		if(bespokeDate==null){
+			bespokeDate=2;
+		}
 		if(StringUtils.isNotEmptyString(no)){
 			 count=fssTradeApplyService.withNumbers(no,bespokeDate);
 		}
