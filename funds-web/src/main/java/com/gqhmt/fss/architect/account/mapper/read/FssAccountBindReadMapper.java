@@ -18,4 +18,6 @@ public interface FssAccountBindReadMapper extends ReadMapper<FssAccountBindEntit
 
 	public FssAccountBindEntity getBindAccountBySeqNo(@Param("seqNo") String seqNo);
 
+	public List<FssAccountBindEntity> queryBindAccountLimit();
+
 }

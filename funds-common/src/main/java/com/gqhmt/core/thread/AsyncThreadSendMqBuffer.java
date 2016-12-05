@@ -1,7 +1,5 @@
 package com.gqhmt.core.thread;
 
-import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
-
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -21,11 +19,11 @@ import java.util.concurrent.BlockingQueue;
  * -----------------------------------------------------------------
  * 2016/12/1  于泳      1.0     1.0 Version
  */
-public class AsyncThreadSendMqBuffer {
+public class AsyncThreadSendMqBuffer<T> {
 
     private static final int DATA_BUFFER_DEF_CAP = 2000;
 
-    private final BlockingQueue<MessageConvertDto> bufferQueue;
+    private final BlockingQueue<T> bufferQueue;
 
     public AsyncThreadSendMqBuffer(){
         bufferQueue = new ArrayBlockingQueue<>(DATA_BUFFER_DEF_CAP);
@@ -47,15 +45,18 @@ public class AsyncThreadSendMqBuffer {
         bufferQueue.clear();
     }
 
-    public MessageConvertDto get() throws InterruptedException {
+    public T get() throws InterruptedException {
         try {
+            if(bufferQueue == null){
+                return null;
+            }
             return bufferQueue.take();
         } catch (InterruptedException e) {
             throw e;
         }
     }
 
-    public void put(MessageConvertDto dto) throws InterruptedException {
+    public void put(T dto) throws InterruptedException {
         try {
             bufferQueue.put(dto);
         } catch (InterruptedException e) {

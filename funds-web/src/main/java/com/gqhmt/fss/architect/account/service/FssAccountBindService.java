@@ -4,11 +4,11 @@ package com.gqhmt.fss.architect.account.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
-import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountBindReadMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountBindWriteMapper;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
@@ -122,6 +122,19 @@ public class FssAccountBindService {
         }
     }
 
+
+    public void updateBindAccountSeqNo(Long id,String seqNo) throws FssException {
+        FssAccountBindEntity fssAccountBindEntity = fssAccountBindReadMapper.selectByPrimaryKey(id);
+        com.gqhmt.core.util.LogUtil.info(this.getClass(),"开户成功更新："+fssAccountBindEntity.getBusiId()+ fssAccountBindEntity.getSeqNo()+"："+fssAccountBindEntity.getAccNo());
+        try {
+            fssAccountBindEntity.setSeqNo(seqNo);
+            fssAccountBindEntity.setModifyTime(new Date());
+            fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
+        }catch (Exception e){
+            throw new FssException("91009804");
+        }
+    }
+
     /**
      * 校验账户是否已经绑定
      * @param busiId
@@ -141,6 +154,11 @@ public class FssAccountBindService {
     public FssAccountBindEntity getBindAccountBySeqNo(String seqNo){
         FssAccountBindEntity bindEntity = fssAccountBindReadMapper.getBindAccountBySeqNo(seqNo);
         return bindEntity;
+    }
+
+
+    public List<FssAccountBindEntity> queryBindAccountLimit(){
+        return fssAccountBindReadMapper.queryBindAccountLimit();
     }
 
 

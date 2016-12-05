@@ -9,10 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * Filename:    com.gqhmt.quartz.job.account.DataAccount
@@ -58,21 +54,10 @@ public class DataAccount extends SupperJob {
 
         startLog("账户数据迁移job");
         isRunning = true;
-
-        DateFormat df = new SimpleDateFormat("yyyyMMdd");
-        Calendar calendar = new GregorianCalendar(2015,01,01);
-        Calendar now = Calendar.getInstance();
-        int nowTime = Integer.parseInt(df.format(now.getTime()));
-        int startTime = Integer.parseInt(df.format(calendar.getTime()));
-        while(startTime<=nowTime){
-            try {
-                accountData.accountData(String.valueOf(startTime));
-                calendar.add(Calendar.DATE,1);
-                startTime = Integer.parseInt(df.format(calendar.getTime()));
-            } catch (FssException e) {
-                LogUtil.error(this.getClass(),e);
-                continue;
-            }
+        try {
+            accountData.accountData();
+        } catch (FssException e) {
+            e.printStackTrace();
         }
 
 

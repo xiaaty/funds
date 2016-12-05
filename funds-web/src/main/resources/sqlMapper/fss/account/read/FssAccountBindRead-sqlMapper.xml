@@ -58,4 +58,9 @@
         <include refid="selectSql"/>
         WHERE t.`seq_no`=#{seqNo}
     </select>
+
+    <select id="queryBindAccountLimit" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBindEntity">
+        <include refid="selectSql"/>
+        WHERE t.status = 0 limit 10000
+    </select>
 </mapper>
