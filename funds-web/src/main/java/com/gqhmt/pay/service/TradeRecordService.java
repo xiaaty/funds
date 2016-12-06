@@ -394,7 +394,8 @@ public class TradeRecordService {
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
                 fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(), 2);
                 //提现手续费收取实现方法
-//                this.chargeAmount(entity.getUserName(),fundOrderEntity);
+                FundAccountEntity toEntity  = fundAccountService.getFundAccount(Long.valueOf(99),0);
+                this.chargeAmount(entity,toEntity,fundOrderEntity,null);
             } catch (FssException e) {
                 boolean isfundUk = false;
                 Throwable t = e.getCause();
