@@ -767,7 +767,7 @@ public class FundSequenceService {
                         this.transfer(fromEntity,toEntity,6,4001, bean.getRepaymentAmount(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1105",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
 
                         //调用统一支付转账接口把借款人应还的手续费转入费用账户
-                        tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),sumAmount,tradeType,seqNo,"0");
+                        tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),bean.getRepaymentAmount(),tradeType,seqNo,"0");
 
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
@@ -817,7 +817,7 @@ public class FundSequenceService {
                             this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
 
                             //调用统一支付转账接口把借款人应还的额外利息和转给出借人
-                            tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),sumAmount,tradeType,seqNo,"0");
+                            tyzfTradeService.tyzfTransfer(BondAccountEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),bean.getRepaymentExtrinterest(),tradeType,seqNo,"0");
 
                         }
                     } catch (FssException e) {
