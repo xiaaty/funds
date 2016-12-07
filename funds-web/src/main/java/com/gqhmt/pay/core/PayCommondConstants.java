@@ -81,8 +81,8 @@ public class PayCommondConstants {
 
     public static final String COMMAND_OFFLINE_RECHARGE_REFUND = "0221";                //线下转账充值
 
-
-
+    public static final String COMMAND_PAYMENT_ORDER = "0222";                //银联卡充值订单创建
+    public static final String COMMAND_SIGNED= "0223";                //签约
 
     //指令配置  03开头 表示 出借投资指令
 
