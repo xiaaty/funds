@@ -175,7 +175,7 @@ public class TyzfTradeService {
             if(bid.getHypothecarius()==null) throw new FssException("90004039");//未获取到抵押权人信息
             CustomerInfoEntity customerInfo = customerInfoService.getCustomerById(Long.valueOf(bid.getHypothecarius()));
             if(customerInfo==null) throw new FssException("90004039");
-            this.createMortgageeAccount("11020009", customerInfo.getId(),customerInfo.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfo.getCertNo(),String.valueOf(customerInfo.getCertType()),contractNo,seq_no+"_"+4, customerInfo.getMobilePhone());
+            this.createMortgageeAccount("11020009", customerInfo.getId(),customerInfo.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfo.getCertNo(),String.valueOf(customerInfo.getCertType()),contractNo,seq_no, customerInfo.getMobilePhone());
         }
         this.createAccount(tradeType,bid.getId().longValue(),custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no+"_"+3,90,mobile,"30130001","30010015");
     }
@@ -194,7 +194,10 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void createMortgageeAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile) throws FssException{
-        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+4,1,mobile,"30130001","30010003");
+        //抵押权人开通互联网账户
+        this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,seq_no+"_"+4,mobile);
+        //抵押权人开通互借款账户
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+5,1,mobile,"30130001","30010003");
     }
     /**
      * 创建对公账户
