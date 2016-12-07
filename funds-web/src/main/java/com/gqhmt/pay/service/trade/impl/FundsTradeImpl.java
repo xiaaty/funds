@@ -3,15 +3,12 @@ package com.gqhmt.pay.service.trade.impl;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.ConversionService;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
 import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
@@ -875,14 +872,14 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @param respCode
      * @throws FssException
      */
-    public void PosRechargeCallback(String orderNo,String respCode) throws FssException{
+    public void PosRechargeCallback(String orderNo,String respCode,String seqNo) throws FssException{
        FssOfflineRechargeEntity offlineRechargeEntity = fssOfflineRechargeService.getOffineRechargeByParam(null,orderNo);
        FundOrderEntity fundOrderEntity = fundOrderService.getFundOrderByFormId(offlineRechargeEntity.getId());
         if(fundOrderEntity == null){
             LogUtil.info(this.getClass(),"未找到订单号:"+orderNo);
             throw new FssException(orderNo+"订单获取失败");
         }
-        tradeRecordService.asynCommand(fundOrderEntity,"0000".equals(respCode) ? "success" : "failed");
+        tradeRecordService.asynCommand(fundOrderEntity,"0000".equals(respCode) ? "success" : "failed",seqNo);
     }
 
     /**
@@ -909,5 +906,4 @@ public class FundsTradeImpl  implements IFundsTrade {
             fssOfflineRechargeService.updateState(entity.getId(),orderNo,"13010006");
         }
     }
-
 }
