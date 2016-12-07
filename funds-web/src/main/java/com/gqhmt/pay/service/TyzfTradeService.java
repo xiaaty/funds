@@ -1,5 +1,6 @@
 package com.gqhmt.pay.service;
 
+import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.thread.AsyncThreadSendMq;
@@ -11,6 +12,8 @@ import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.fuiou.util.CoreConstants;
 import com.gqhmt.tyzf.common.frame.message.MessageConvertDto;
 import org.springframework.stereotype.Service;
@@ -44,9 +47,10 @@ public class TyzfTradeService {
     private BidService bidService;
     @Resource
     private FundAccountService fundAccountService;
-
     @Resource
     private FssMappingService fssMappingService;
+    @Resource
+    private CustomerInfoService customerInfoService;
 
 
     /**
@@ -162,12 +166,36 @@ public class TyzfTradeService {
      */
     public void createBidAcocunt(String tradeType,Long custId,String custName,String certNo,String certType,String contractNo,String seq_no,String mobile,Long bid_id) throws FssException{
         if(contractNo==null || "".equals(contractNo)) throw new FssException("90002016");
-        bid_id = bidService.getBidByContractNo(contractNo);
-        //判断是否开通借款账户
+        Bid bid = bidService.getBidByContractNo(contractNo);
+        //开通借款账户
         this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,mobile);
-        this.createAccount(tradeType,bid_id,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no+"_"+3,90,mobile,"30130001","30010015");
+        //判断标的类型是否为抵押标，如果是抵押标，则开通抵押权人借款账户(loan_type=2 为抵押标)
+        if(bid.getLoanType()==2){
+            //获取抵押权人客户信息
+            if(bid.getHypothecarius()==null) throw new FssException("90004039");//未获取到抵押权人信息
+            CustomerInfoEntity customerInfo = customerInfoService.getCustomerById(Long.valueOf(bid.getHypothecarius()));
+            if(customerInfo==null) throw new FssException("90004039");
+            this.createMortgageeAccount("11020009", customerInfo.getId(),customerInfo.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfo.getCertNo(),String.valueOf(customerInfo.getCertType()),contractNo,seq_no+"_"+4, customerInfo.getMobilePhone());
+        }
+        this.createAccount(tradeType,bid.getId().longValue(),custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no+"_"+3,90,mobile,"30130001","30010015");
     }
 
+    /**
+     * 创建抵押权人账户
+     * @param tradeType
+     * @param custId
+     * @param custName
+     * @param custType
+     * @param certNo
+     * @param certType
+     * @param busiNo
+     * @param seq_no
+     * @param mobile
+     * @throws FssException
+     */
+    public void createMortgageeAccount(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile) throws FssException{
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+4,1,mobile,"30130001","30010003");
+    }
     /**
      * 创建对公账户
      * @param tradeType
