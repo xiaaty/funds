@@ -81,12 +81,20 @@ public class FssTradeApi {
     
 	@Resource
 	private IOfflineRechargeApply offRechargeApplyImpl;
-
 	@Resource
 	private IBondTransfer bondTransferImpl;
 
 	@Resource
 	private IQueryWithDrawCount queryWithDrawCountImpl;
+	@Resource
+	private IPosOrderCreate posOrderCreateImpl;
+	@Resource
+	private IPosSigned posSignedImpl;
+	@Resource
+	private IPosCallBack posCallbackImpl;
+	@Resource
+	private IPosSignedCallBack posSignedCallbackImpl;
+
     /**
      * 
      * author:jhz
@@ -322,6 +330,75 @@ public class FssTradeApi {
 		}
 		return response;
 	}
+
+	/**
+	 * pos充值订单创建接口
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/posOrderCreateApply",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object posOrderCreateApply(PosOrderCreateDto dto){
+
+		Response response=new Response();
+		try {
+			response = posOrderCreateImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+
+	/**
+	 * 回调资金pos充值返回结果
+	 * @param
+	 * @return
+	 */
+	@RequestMapping(value = "/posRechargeCallBack",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object posNotice(PosCallBackDto dto){
+		Response response=new Response();
+		try {
+			response = posCallbackImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+
+	/**
+	 * pos签约订单创建
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/posSigned",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object createSigned(PosSignedDto dto){
+		Response response=new Response();
+		try {
+			response = posSignedImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
+
+	/**
+	 * 回调签约结果
+	 * @param dto
+	 * @return
+     */
+	@RequestMapping(value = "/posSignedCallBack",method = {RequestMethod.GET,RequestMethod.POST})
+	public Object posSignedCallBack(SignedCallBackDto dto){
+		Response response=new Response();
+		try {
+			response = posSignedCallbackImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
 	/**
 	 * jhz
 	 * 查询提现次数接口
@@ -346,5 +423,4 @@ public class FssTradeApi {
 		response.setResp_code(e.getMessage());
 		return response;
 	}
-
 }

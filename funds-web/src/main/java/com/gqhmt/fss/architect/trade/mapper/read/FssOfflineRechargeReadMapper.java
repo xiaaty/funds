@@ -28,4 +28,5 @@ public interface FssOfflineRechargeReadMapper extends ReadMapper<FssOfflineRecha
     public Response getOfflineRechargeResponse(@Param("mchn")String mchn, @Param("seqNo")String seqNo);
     public FssOfflineRechargeEntity queryFssOfflineRecharge(@Param("mchntTxnSsn")String mchntTxnSsn, @Param("mchntCd")String mchntCd);
     public List<FssOfflineRechargeBean> getRecharegByCustId(Map map);
+    public FssOfflineRechargeEntity getOfflineRechargeResult(Map map);
 }

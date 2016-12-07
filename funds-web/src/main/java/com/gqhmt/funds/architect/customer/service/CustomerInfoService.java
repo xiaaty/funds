@@ -271,6 +271,22 @@ public class CustomerInfoService {
 	}
 
 	/**
+	 * 修改客户签约状态
+	 * @param id
+	 * @throws FssException
+     */
+	public void updateCustThirdAgreement(Long id) throws FssException{
+		try{
+			CustomerInfoEntity customerInfoEntity=customerInfoReadMapper.selectByPrimaryKey(id);
+			customerInfoEntity.setHasThirdAgreement(1);
+			customerInfoWriteMapper.updateByPrimaryKey(customerInfoEntity);
+		}catch (Exception e){
+			LogUtil.error(this.getClass(),e.getMessage());
+		}
+	}
+
+
+	/**
 	 * jhz
 	 * 修改客户表签约状态
 	 * @param mobile

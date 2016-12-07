@@ -180,6 +180,21 @@
         <page_notify_url source="properties">${page_notify_url.url}</page_notify_url>
     </api>
 
+    <!-- 银联卡充值订单创建-富友-->
+    <api api_name="500019.action" >
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName"/>
+        <amt source="amountToLong100"/>
+        <rem source="null"/>
+       <page_notify_url source="properties">${pos_page_notify_url.url}</page_notify_url>
+    </api>
+
+    <!-- 签约-->
+    <api api_name="500016.action" >
+        <login_id source="class" class="com.gqhmt.funds.architect.account.entity.FundAccountEntity" key="userName"/>
+        <rem source="null"/>
+        <page_notify_url source="properties">${signed_page_notify_url.url}</page_notify_url>
+    </api>
+
     <!-- 交易查询接口 -->
     <api api_name="queryTxn.action">
         <!-- 交易类型 -->
