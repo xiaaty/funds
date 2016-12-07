@@ -216,7 +216,7 @@ public class BidRepaymentService extends BidSupper{
         //出借人还款本息和
         BigDecimal sumAmount =BigDecimal.ZERO;
         for (RepaymentBean bean:list) {
-            sumAmount.add(bean.getPayableAmount());
+            sumAmount.add(bean.getRepaymentAmount());
         }
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);

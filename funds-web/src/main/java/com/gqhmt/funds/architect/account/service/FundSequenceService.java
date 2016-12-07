@@ -755,7 +755,7 @@ public class FundSequenceService {
         ThirdPartyType thirdPartyType = ThirdPartyType.FUIOU;
 
         //调用统一支付转账接口把借款人应还的本息和转入标的账户
-        tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getAccountType(),Long.valueOf(bid.getId().toString()),90,sumAmount,tradeType,seqNo,"0");
+        tyzfTradeService.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),Long.valueOf(bid.getId().toString()),90,sumAmount,tradeType,seqNo,"0");
 
         for (RepaymentBean bean : list) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(bean.getCustomerId()), bean.getInvestType() == 0 ? GlobalConstants.ACCOUNT_TYPE_PRIMARY : bean.getInvestType() == 1 ? 3 : 2);
