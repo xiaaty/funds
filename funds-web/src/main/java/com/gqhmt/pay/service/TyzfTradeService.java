@@ -466,7 +466,7 @@ public class TyzfTradeService {
                     }
                 }
             }
-            this.tyzfTransfer(fromEntity.getCustId(),70,Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo,"0");
+            this.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo,"0");
         }
     }
 
