@@ -142,8 +142,8 @@ public class FundSequenceService {
      * @param orderEntity
      * @throws FssException
      */
-    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,String tradeType,String seqNo) throws FssException {
-          this.refund(entity,2,accountType,amount,0l,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null,seqNo);
+    public void refund(FundAccountEntity entity,int accountType,BigDecimal amount,ThirdPartyType thirdPartyType,FundOrderEntity orderEntity,String tradeType) throws FssException {
+          this.refund(entity,2,accountType,amount,0l,orderEntity,tradeType==null?null:tradeType.substring(0,4),tradeType,null,null,null,null,null);
     }
 
     /**
@@ -163,7 +163,7 @@ public class FundSequenceService {
      * @param loanNo
      * @throws FssException
      */
-      public void refund(FundAccountEntity entity,int actionType,int accountType,BigDecimal amount,Long oAccountId,FundOrderEntity orderEntity,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo,String seqNo) throws FssException{
+      public void refund(FundAccountEntity entity,int actionType,int accountType,BigDecimal amount,Long oAccountId,FundOrderEntity orderEntity,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException{
         if(entity.getBusiType() == 99){
             throw new FssException("出账账户错误");
         }

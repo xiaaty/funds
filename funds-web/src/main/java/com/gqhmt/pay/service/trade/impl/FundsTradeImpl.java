@@ -879,7 +879,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             LogUtil.info(this.getClass(),"未找到订单号:"+orderNo);
             throw new FssException(orderNo+"订单获取失败");
         }
-        tradeRecordService.asynCommand(fundOrderEntity,"0000".equals(respCode) ? "success" : "failed",seqNo);
+        tradeRecordService.asynCommand(fundOrderEntity,"0000".equals(respCode) ? "success" : "failed");
     }
 
     /**

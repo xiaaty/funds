@@ -85,7 +85,7 @@ public class FuiouCallBack {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, login_id, CommandEnum.FundsCommand.FUNDS_CHARGE, "", remark);
 
-					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id,mchnt_txn_ssn);
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
 
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
@@ -139,7 +139,7 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, login_id, CommandEnum.FundsCommand.FUNDS_WITHDRAW, "", remark);
-					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id,mchnt_txn_ssn);
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -195,7 +195,7 @@ public class FuiouCallBack {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID_NOT_ORDER, ThirdPartyType.FUIOU, mchnt_txn_ssn,
 //						"success", amt, mobile_no, CommandEnum.FundsCommand.FUNDS_CHARGE, remark);
 
-				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no,mchnt_txn_ssn);
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no);
 				plain.append("<resp_code>0000</resp_code>");
 			} catch (Exception e) {
 				plain.append("<resp_code>9999</resp_code>");
@@ -248,7 +248,7 @@ public class FuiouCallBack {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID_NOT_ORDER, ThirdPartyType.FUIOU, mchnt_txn_ssn,
 //						"success", amt, mobile_no, CommandEnum.FundsCommand.FUNDS_WITHDRAW, mchnt_txn_dt, remark);
-				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no,mchnt_txn_ssn);
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn, "success",amt,mobile_no);
 
 				plain.append("<resp_code>0000</resp_code>");
 			} catch (Exception e) {
@@ -302,7 +302,7 @@ public class FuiouCallBack {
 			} else {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, CommandEnum.FundsCommand.FUNDS_WITHHOLDING);
-					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null,mchnt_txn_ssn);
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null);
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -357,7 +357,7 @@ public class FuiouCallBack {
 				try {
 //					AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, "0000".equals(resp_code) ? "success" : "failed", amt, "", CommandEnum.FundsCommand.FUNDS_AGENT_WITHDRAW);
 
-					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null,mchnt_txn_ssn);
+					tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,null);
 					plain.append("<resp_code>0000</resp_code>");
 				} catch (Exception e) {
 					plain.append("<resp_code>9999</resp_code>");
@@ -520,7 +520,7 @@ public class FuiouCallBack {
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_ASYN_VALID, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
-				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,in_cust_no,mchnt_txn_ssn);
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,in_cust_no);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
@@ -592,7 +592,7 @@ public class FuiouCallBack {
 		String result = "SUCCESS";
 		if (flag) {
 			try {
-				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id,mchnt_txn_ssn);
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
