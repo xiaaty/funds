@@ -262,7 +262,7 @@ public class FssCheckAccountingController {
                 if(orderEntity != null && orderEntity.getOrderState() == 2){
                     fundOrderService.updateOrder(orderEntity,3,"0001","交易核对订单无流水记录,改为失败状态");
                 }
-                tradeRecordService.asynCommand(orderEntity,"0000".equals(map.get("txn_rsp_cd")) ? "success" : "failed", orderEntity.getOrderNo());
+                tradeRecordService.asynCommand(orderEntity,"0000".equals(map.get("txn_rsp_cd")) ? "success" : "failed");
                 i++;
             }
         }
@@ -391,7 +391,7 @@ public class FssCheckAccountingController {
     @AutoPage
     public String addAccounting(HttpServletRequest request, ModelMap model, @PathVariable String type,@PathVariable String orderNo) throws FssException {
         FundOrderEntity orderEntity = fundOrderService.findfundOrder(orderNo);
-        tradeRecordService.asynCommand(orderEntity, "success",null);
+        tradeRecordService.asynCommand(orderEntity, "success");
         orderEntity.setHandleState("98010001");
         fundOrderService.update(orderEntity);
 

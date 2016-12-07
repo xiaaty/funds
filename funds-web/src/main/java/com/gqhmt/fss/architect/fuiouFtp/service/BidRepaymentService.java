@@ -117,14 +117,14 @@ public class BidRepaymentService extends BidSupper{
 
 
         //账户资金余额验证   todo
-        if (sumRepay.multiply(new BigDecimal("100")).longValue() < 0) {
-            try {
-                fundsTrade.transfer(3,0,cusId,1,sumRepay,GlobalConstants.ORDER_TRANSFER,0,0l, "1119", null,null,null,bid.getCustomerId().longValue(), bid.getContractNo(),"0");
-            }catch (FssException e){
-                LogUtil.error(this.getClass(),e);
-            }
-
-        }
+//        if (sumRepay.multiply(new BigDecimal("100")).longValue() < 0) {
+//            try {
+//                fundsTrade.transfer(3,0,cusId,1,sumRepay,GlobalConstants.ORDER_TRANSFER,0,0l, "1119", null,null,null,bid.getCustomerId().longValue(), bid.getContractNo());
+//            }catch (FssException e){
+//                LogUtil.error(this.getClass(),e);
+//            }
+//
+//        }
         //利差补偿  todo
 
         //抵押标 还款资金转账
@@ -222,7 +222,6 @@ public class BidRepaymentService extends BidSupper{
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
         this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay,bid,sumAmount,loanEntity.getTradeTypeParent(),loanEntity.getSeqNo());
-
         //修改订单信息
         paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
 

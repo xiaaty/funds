@@ -6,9 +6,9 @@ import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
 import com.gqhmt.fss.architect.fuiouFtp.bean.FuiouFtpOrder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.record.PageBreakRecord;
+import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.Test;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -35,7 +35,7 @@ import java.util.List;
  * 2016/11/8 0008. wanggp         1.0     1.0 Version
  */
 @ContextConfiguration(locations = "classpath:spring/spring-*.xml")
-public class FssCheckAccountingServiceTest extends AbstractTestNGSpringContextTests {
+public class FssCheckAccountingServiceTest {
 
     @Resource
     private FssCheckAccountingService fssCheckAccountingService;

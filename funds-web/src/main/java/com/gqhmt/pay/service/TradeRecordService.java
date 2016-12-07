@@ -99,7 +99,7 @@ public class TradeRecordService {
     }
 
     public void withdraw(final FundAccountEntity entity, final BigDecimal amount, final FundOrderEntity fundOrderEntity, final int fundType, final String tradeType,final String seqNo) throws FssException {
-        sequenceService.refund(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType,seqNo);
+        sequenceService.refund(entity, fundType, amount, ThirdPartyType.FUIOU, fundOrderEntity, tradeType);
         //                  ---------------------------异步调用统一支付---------------------------
         tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),amount,fundType,tradeType,seqNo);
 
@@ -291,7 +291,7 @@ public class TradeRecordService {
      * @param amt
      * @param mobile
      */
-    public void asynNotOrderCommand(String orderNo, String state, String amt, String mobile,String seqNo) throws FssException {
+    public void asynNotOrderCommand(String orderNo, String state, String amt, String mobile) throws FssException {
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
 
         if (fundOrderEntity == null) {
@@ -304,7 +304,7 @@ public class TradeRecordService {
             fundOrderEntity = paySuperByFuiou.createOrder(entity, amount, soruceType, 0, 0, "", "");
             fundOrderEntity.setOrderNo(orderNo);
         }
-        asynCommand(fundOrderEntity, state,seqNo);
+        asynCommand(fundOrderEntity, state);
     }
 
     private void asynCommand(String orderNo, String state, String amt,String seqNo) throws FssException {
@@ -316,18 +316,18 @@ public class TradeRecordService {
         if (fundOrderEntity == null) {
             throw new FssException(orderNo + "订单获取失败");
         }
-        asynCommand(fundOrderEntity, state,seqNo);
+        asynCommand(fundOrderEntity, state);
 
     }
 
-    public void asynCommand(FundOrderEntity fundOrderEntity, String state,String seqNo) throws FssException {
+    public void asynCommand(FundOrderEntity fundOrderEntity, String state) throws FssException {
         if (!"success".equalsIgnoreCase(state)) {
             paySuperByFuiou.updateOrder(fundOrderEntity, 3, "10000", "失败");
             this.asynSequenceFailed(fundOrderEntity);
             throw new FssException("交易失败，请重新交易，如已成功，请勿重读操作");
         }
 
-        this.asynSequence(fundOrderEntity,seqNo);
+        this.asynSequence(fundOrderEntity);
     }
 
     /**
@@ -335,7 +335,7 @@ public class TradeRecordService {
      *
      * @param fundOrderEntity
      */
-    private void asynSequence(FundOrderEntity fundOrderEntity,String seqNo) throws FssException {
+    private void asynSequence(FundOrderEntity fundOrderEntity) throws FssException {
         FundAccountEntity entity = fundAccountService.getFundAccountInfo(fundOrderEntity.getAccountId());
         if (entity == null) {
             throw new FssException("未获取到相关账户信息");
@@ -361,9 +361,9 @@ public class TradeRecordService {
                 if (fundOrderEntity.getOrderFrormId() != null && fundOrderEntity.getOrderFrormId() != 0) {
                     isOffline = true;
                 }
-                sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
+                sequenceService.charge(entity, 1001, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),fundOrderEntity.getOrderNo());
                 //            -----------------------调用统一支付进行记账----------------
-                tyzfTradeService.tyzfRecharge(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),"1001",null,seqNo);
+                tyzfTradeService.tyzfRecharge(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),"1001",null,fundOrderEntity.getOrderNo());
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
 
                 if (isOffline) {
@@ -387,14 +387,15 @@ public class TradeRecordService {
             LogUtil.info(this.getClass(), entity.getCustName() + " 订单:" + fundOrderEntity.getOrderNo() + " 提现成功 " + fundOrderEntity.getOrderAmount().toPlainString());
             //提现
             try {
-                sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
+                sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType());
                 //                  ---------------------------异步调用统一支付---------------------------
-                tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),2003,null,seqNo);
+                tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),2003,null,fundOrderEntity.getOrderNo());
 
                 fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
                 fundWithrawChargeService.updateSrate(fundOrderEntity.getOrderNo(), 2);
                 //提现手续费收取实现方法
-//                this.chargeAmount(entity.getUserName(),fundOrderEntity);
+                FundAccountEntity toEntity  = fundAccountService.getFundAccount(Long.valueOf(99),0);
+                this.chargeAmount(entity,toEntity,fundOrderEntity,null);
             } catch (FssException e) {
                 boolean isfundUk = false;
                 Throwable t = e.getCause();
@@ -416,9 +417,9 @@ public class TradeRecordService {
             LogUtil.info(this.getClass(), entity.getCustName() + " 订单:" + fundOrderEntity.getOrderNo() + " 充值成功 " + fundOrderEntity.getOrderAmount().toPlainString());
 
             //代扣
-            sequenceService.charge(entity, 1002, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
+            sequenceService.charge(entity, 1002, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),fundOrderEntity.getOrderNo());
             //            -----------------------调用统一支付进行记账----------------
-            tyzfTradeService.tyzfRecharge(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),"1001",null,seqNo);
+            tyzfTradeService.tyzfRecharge(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),"1001",null,fundOrderEntity.getOrderNo());
             fundsTradeImpl.sendNotice(CoreConstants.FUND_CHARGE_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
             if (entity.getBusiType().intValue() == GlobalConstants.ACCOUNT_TYPE_LEND_ON) {
                 //首充红包or冠钱派发
@@ -434,9 +435,9 @@ public class TradeRecordService {
             LogUtil.info(this.getClass(), entity.getCustName() + " 订单:" + fundOrderEntity.getOrderNo() + " 提现成功 " + fundOrderEntity.getOrderAmount().toPlainString());
 
             //代付
-            sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
+            sequenceService.refund(entity, 2003, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType());
             //                  ---------------------------异步调用统一支付---------------------------
-            tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),2003,null,seqNo);
+            tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getOrderAmount(),2003,null,fundOrderEntity.getOrderNo());
 
             if (fundOrderEntity.getOrderSource() != null && fundOrderEntity.getOrderSource() == GlobalConstants.BUSINESS_WITHDRAW) {
                 try {
@@ -447,7 +448,7 @@ public class TradeRecordService {
             }
             fundsTradeImpl.sendNotice(CoreConstants.FUND_WITHDRAW_TEMPCODE, NoticeService.NoticeType.FUND_WITHDRAW, entity, fundOrderEntity.getOrderAmount(), BigDecimal.ZERO);
         } else if (fundOrderEntity.getOrderType() == GlobalConstants.ORDER_RECHARGE_OFFLINE) {
-            sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),seqNo);
+            sequenceService.charge(entity, 1014, fundOrderEntity.getOrderAmount(), ThirdPartyType.FUIOU, fundOrderEntity, fundOrderEntity.getTradeType(),fundOrderEntity.getOrderNo());
             fssOfflineRechargeService.fuiouCallBack(fundOrderEntity.getId(), "0000");
 
         }
