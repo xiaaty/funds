@@ -170,15 +170,21 @@ public class TyzfTradeService {
             LogUtil.error(this.getClass(),"90002016:合同号不能为空");
             return;
         }
-        bid_id = bidService.getBidByContractNo(contractNo);
+        Bid bid = bidService.getBidByContractNo(contractNo);
         //判断是否开通借款账户
         this.createLoanAccount(tradeType,custId,custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no,mobile);
         //判断标的类型是否为抵押标，如果是抵押标，则开通抵押权人借款账户(loan_type=2 为抵押标)
         if(bid.getLoanType()==2){
             //获取抵押权人客户信息
-            if(bid.getHypothecarius()==null) throw new FssException("90004039");//未获取到抵押权人信息
+            if(bid.getHypothecarius()==null) {
+                LogUtil.error(this.getClass(),"90004039:未获取到抵押权人信息");
+                return;
+            }
             CustomerInfoEntity customerInfo = customerInfoService.getCustomerById(Long.valueOf(bid.getHypothecarius()));
-            if(customerInfo==null) throw new FssException("90004039");
+            if(customerInfo==null){
+                LogUtil.error(this.getClass(),"90004039:未获取到抵押权人信息");
+                return;
+            }
             this.createMortgageeAccount("11020009", customerInfo.getId(),customerInfo.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfo.getCertNo(),String.valueOf(customerInfo.getCertType()),contractNo,seq_no, customerInfo.getMobilePhone());
         }
         this.createAccount(tradeType,bid.getId().longValue(),custName,GlobalConstants.TYZF_PERSONCUST,certNo,certType,contractNo,seq_no+"_"+3,90,mobile,"30130001","30010015");
@@ -562,10 +568,6 @@ public class TyzfTradeService {
             }
         }
         if(GlobalConstants.TYZF_WITHDRAW.equals(bm.getTxnType())){//提现
-            if (!"0000".equals(bm.getRespCode())) {
-                LogUtil.error(this.getClass(),bm.getRespCode());
-                return;
-            }
             if (!"0000".equals(bm.getRespCode())) {
                 LogUtil.error(this.getClass(),bm.getRespCode());
                 return;
