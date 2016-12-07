@@ -126,7 +126,7 @@ public class ConnectionFuiou {
                 try {
                     in.close();
                 }catch (Exception e){
-                    LogUtil.error(Connection.class,e);
+                    LogUtil.error(ConnectionFuiou.class,e);
                 }
             }
         }
