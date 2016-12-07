@@ -51,7 +51,7 @@ public class AsyncThreadSendMq {
 
     public  void sendMqMsg(MessageConvertDto dto) throws InterruptedException, FssException {
         if(AsyncThreadSendMq.executeFlag !=1 ){
-            throw new FssException("服务即将停止，请稍后");
+            throw new FssException("服务即将停止，请稍后再试。。。。。");
         }
         try {
             buffer.put(dto);
@@ -81,10 +81,12 @@ public class AsyncThreadSendMq {
             public void run() {
                 LogUtil.info(this.getClass(),"异步消息发送守护线程启动。。。。");
                 while(AsyncThreadSendMq.executeFlag == 1){
-                    if(buffer.isEmpty()){
+
+                    if(buffer.getNum() == 0){
+                        LogUtil.info(this.getClass(),"异步消息发送守护线程队列为空，休息一下。。。。");
                         this.sleep();
                     }
-                    LogUtil.info(this.getClass(),"异步消息发送守护线程执行中。。。。");
+                    LogUtil.info(this.getClass(),"异步消息发送守护线程执行发送。。。。 当前队列数："+buffer.getNum());
                     if(threadPoolCheck()){
                         try {
                             MessageConvertDto dto = null;

@@ -58,6 +58,8 @@ public class DataAccount extends SupperJob {
             accountData.accountData();
         } catch (FssException e) {
             e.printStackTrace();
+        }finally {
+            isRunning = false;
         }
 
 
