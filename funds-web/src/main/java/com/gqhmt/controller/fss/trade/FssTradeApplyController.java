@@ -247,6 +247,7 @@ public class FssTradeApplyController {
 	@RequestMapping(value = "/trade/tradeApply/offlineRecharge",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public String getOfflineRechargeApply(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		map.put("applyType","1103");
 		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
 		model.addAttribute("page", offlineRechargeList);
 		model.put("map", map);
@@ -454,6 +455,42 @@ public class FssTradeApplyController {
 
 		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
 
+	}
+
+	/**
+	 * pos充值记录
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/posRechargeRecord",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getPosRecharge(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		map.put("applyType","1001");
+		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
+		model.addAttribute("page", offlineRechargeList);
+		model.put("map", map);
+		return "fss/trade/posRecharge_list";
+	}
+
+	/**
+	 * pos签约记录
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/posSignedRecord",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getPosSigned(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		map.put("applyType","1102");
+		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
+		model.addAttribute("page", offlineRechargeList);
+		model.put("map", map);
+		return "fss/trade/posSigned_list";
 	}
 
 }
