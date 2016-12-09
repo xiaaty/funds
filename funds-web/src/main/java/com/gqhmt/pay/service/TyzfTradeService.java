@@ -207,7 +207,7 @@ public class TyzfTradeService {
         //抵押权人开通互联网账户
         this.createInternetAccount(tradeType,custId,custName,custType,certNo,certType,seq_no+"_"+4,mobile);
         //抵押权人开通互借款账户
-        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+5,1,mobile,"30130001","30010003");
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,null,seq_no+"_"+5,1,mobile,"30130001","30010003");
     }
     /**
      * 创建对公账户
