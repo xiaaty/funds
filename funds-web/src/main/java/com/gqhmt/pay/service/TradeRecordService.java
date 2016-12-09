@@ -223,7 +223,7 @@ public class TradeRecordService {
         this.fundTradeService.addFundTrade(entity, BigDecimal.ZERO, fundOrderEntity.getChargeAmount(), 4010, "收取手续费", BigDecimal.ZERO);
         this.fundTradeService.addFundTrade(toEntity, fundOrderEntity.getChargeAmount(), BigDecimal.ZERO, 4010, "收取手续费");
         // 统一支付收提现手续费
-        tyzfTradeService.tyzfWithDraw(entity.getCustId(),entity.getBusiType(),fundOrderEntity.getChargeAmount(),4010,"11060001",fundOrderEntity.getOrderNo());
+        tyzfTradeService.tyzfWithDraw(entity.getCustId(),3,fundOrderEntity.getChargeAmount(),4010,"11060001",fundOrderEntity.getOrderNo());
     }
 
     /**
