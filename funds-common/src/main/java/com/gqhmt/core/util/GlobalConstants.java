@@ -212,7 +212,7 @@ public class GlobalConstants {
     public static final String TYZF_FRZEN="30120050";
     public static final String TYZF_UNFRZEN="30120060";
     public static final String TYZF_LOGOUT_ACCOUNT="30120099";//销户
-    public static final String TYZF_FRZEN_TRANSFER="30120041";//资金冻结转账（对应与统一支付为解冻转账）
+    public static final String TYZF_FRZEN_TRANSFER="30120042";//资金冻结转账（对应与统一支付为解冻转账）
 
     // -------   客户类型：--------------------------------------
     public static final String TYZF_PERSONCUST="30030001";//个人客户
