@@ -156,9 +156,9 @@ public class CreateAccountEvent {
             customerInfoService.update(customerInfoEntity);
 
         }
-        if(bankCardInfoEntity == null) {
+//        if(bankCardInfoEntity == null) {
             bankCardInfoEntity = bankCardInfoList.get(0);
-        }
+//        }
         //调用统一支付开户
         tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,customerInfoEntity.getMobilePhone());
         return bankCardInfoEntity.getId();
