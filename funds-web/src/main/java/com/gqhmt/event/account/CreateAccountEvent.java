@@ -122,15 +122,14 @@ public class CreateAccountEvent {
             }
         }
 
-
-//        if(primaryAccount.getHasThirdAccount() == 2){
-//            customerInfoEntity.setHasAcount(1);
-//            customerInfoEntity.setNameIdentification(1);
-//            customerInfoService.update(customerInfoEntity);
-//        }
-
         BankCardInfoEntity bankCardInfoEntity=null;
         List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
+        //创建银行卡信息
+        if (CollectionUtils.isEmpty(bankCardInfoList)) {
+            bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
+        }else{
+            bankCardInfoEntity = bankCardInfoList.get(0);
+        }
         if (primaryAccount.getHasThirdAccount() ==1) {//生成富有账户
             primaryAccount.setCustomerInfoEntity(customerInfoEntity);
             FundOrderEntity fundOrderEntity = paySuperByFuiou.createAccountByPersonal(primaryAccount, "", "", tradeType);
@@ -142,23 +141,11 @@ public class CreateAccountEvent {
 
             //更新新所有与该cust_id相同的账户名称
             fundAccountService.updateAccountCustomerName(custId, customerInfoEntity.getCustomerName(), customerInfoEntity.getCityCode(), customerInfoEntity.getParentBankCode(), customerInfoEntity.getBankNo());
-
-            //创建银行卡信息
-            if (CollectionUtils.isEmpty(bankCardInfoList)) {
-                bankCardInfoEntity = bankCardInfoService.createBankCardInfo(customerInfoEntity, tradeType);
-            }else{
-                bankCardInfoEntity = bankCardInfoList.get(0);
-            }
-
             customerInfoEntity.setBankId(bankCardInfoEntity.getId());
             customerInfoEntity.setHasAcount(1);
             customerInfoEntity.setNameIdentification(1);
             customerInfoService.update(customerInfoEntity);
-
         }
-//        if(bankCardInfoEntity == null) {
-            bankCardInfoEntity = bankCardInfoList.get(0);
-//        }
         //调用统一支付开户
         tyzfTradeService.createTyzfAccount(tradeType,customerInfoEntity.getId(),customerInfoEntity.getCustomerName(),certNo,String.valueOf(customerInfoEntity.getCertType()),busiNo,seq_no,customerInfoEntity.getMobilePhone());
         return bankCardInfoEntity.getId();
