@@ -5,12 +5,10 @@ import com.gqhmt.business.architect.loan.entity.Tender;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
-import com.gqhmt.extServInter.fetchService.FetchDataService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
-import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.funds.architect.trade.service.FuiouPreauthService;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.exception.CommandParmException;
@@ -183,6 +181,17 @@ public class FundsTenderImpl  implements IFundsTender {
         FundAccountEntity toEntity = fundAccountService.getFundAccount(tender.getCustomerId().longValue(), GlobalConstants.ACCOUNT_TYPE_FREEZE);
         FundOrderEntity orderEntity = paySuperByFuiou.canclePreAuth(fromEntity,toSFEntity,tender.getRealAmount(),7,tender.getId(),0,contactNo,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue());
         tradeRecordService.unFrozen(toEntity, fromEntity,tender.getRealAmount(), 3011, orderEntity,title + " 流标退款 " + new BigDecimal(tender.getRealAmount().toString()) + "元",BigDecimal.ZERO,tender.getContractNo(),bid.getContractNo(),bid.getCustomerId().longValue(),seqNo);
+        //        ---------------------------异步调用统一支付处理流标转账-------------------------
+        tyzfTradeService.tyzfTransfer(Long.valueOf(bid.getId()),90,fromEntity.getCustId(),fromEntity.getBusiType(),tender.getRealAmount(),"11090012",seqNo,"0");
+        //异步调用统一支付处理流标红包转账
+        BigDecimal bonusAmount = BigDecimal.ZERO;
+        if(tender.getBonusAmount() != null) {
+            bonusAmount = tender.getBonusAmount();
+        }
+        if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
+            //调用统一支付转账接口，把流标红包从标的账户退还给红包账户
+            tyzfTradeService.tyzfTransfer(Long.valueOf(bid.getId().toString()),90,4l,0,bonusAmount,"11090012",seqNo,"0");
+        }
     }
 
 
