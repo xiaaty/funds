@@ -133,6 +133,18 @@ public class FssPosBackService {
 		entity.setBankNo(bankNo);
 		entity.setCredtNo(credtNo);
 		entity.setContractSt(contractSt);
+		if(StringUtils.isEmpty(userNameAcntIsVerif)){
+			userNameAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(bankNoAcntIsVerif)){
+			bankNoAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(credtNoAcntIsVerif)){
+			credtNoAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(mobileNoAcntIsVerif)){
+			mobileNoAcntIsVerif="0";
+		}
 		entity.setUserNameAcntIsVerif(Integer.valueOf(userNameAcntIsVerif));
 		entity.setBankNoAcntIsVerif(Integer.valueOf(bankNoAcntIsVerif));
 		entity.setCredtNoAcntIsVerif(Integer.valueOf(credtNoAcntIsVerif));

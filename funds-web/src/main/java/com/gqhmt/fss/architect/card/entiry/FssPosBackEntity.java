@@ -34,7 +34,7 @@ public class FssPosBackEntity implements Serializable {
     private String mobileNo;        //手机号
 
     @Column(name = "bank_no")
-    private String bankNo;            // 身份证号',
+    private String bankNo;            // 银行卡号',
 
     @Column(name = "credt_no")
     private String credtNo;            // 身份证号',
@@ -166,4 +166,5 @@ public class FssPosBackEntity implements Serializable {
     public void setState(String state) {
         this.state = state;
     }
+
 }
