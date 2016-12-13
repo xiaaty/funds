@@ -724,7 +724,7 @@ public class FundSequenceService {
 
 
         for (Tender tender : list) {
-            FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
+            FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), tender.getInvestType()== 1 ? 3 : 2); // service.getFundAccount(tender.getCustomerId(),99);
             try {
                 this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2011,null, ThirdPartyType.FUIOU, fundOrderEntity);
 
