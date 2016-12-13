@@ -181,7 +181,7 @@ public class BidAbortService {
         } catch (FssException e) {
             LogUtil.error(this.getClass(), e);
         }
-        fundSequenceService.abortSequence(list,toEntity,fundOrderEntity,title);
+        fundSequenceService.abortSequence(list,toEntity,fundOrderEntity,title,bid,loanEntity.getTradeType(),loanEntity.getSeqNo());
         fundOrderService.updateOrder(fundOrderEntity, 2, "0000", "订单完成");
 
         //回盘处理 如果冠e通满标\借款 抵押权人提现 直接回盘,借款信用标满标,修改状态  todo
