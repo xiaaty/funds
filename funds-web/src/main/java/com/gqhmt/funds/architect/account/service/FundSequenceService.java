@@ -717,7 +717,7 @@ public class FundSequenceService {
 //        this.fundTradeService.addFundTrade(fromAccount, BigDecimal.ZERO, amount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + amount + "元");
 //    }
 
-    public void abortSequence(List<Tender> list,FundAccountEntity  fromEntity , FundOrderEntity fundOrderEntity ,String title) throws FssException {
+    public void abortSequence(List<Tender> list,FundAccountEntity  fromEntity , FundOrderEntity fundOrderEntity ,String title,Bid bid,String tradeType,String seqNo) throws FssException {
 
         BigDecimal bonusAmount = BigDecimal.ZERO;
         List<Tender> tenders = new ArrayList<>();		//返现tender集合
@@ -727,6 +727,9 @@ public class FundSequenceService {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(Long.valueOf(tender.getCustomerId()), GlobalConstants.ACCOUNT_TYPE_FREEZE); // service.getFundAccount(tender.getCustomerId(),99);
             try {
                 this.transfer(fromEntity, toEntity, tender.getRealAmount(), 6, 2011,null, ThirdPartyType.FUIOU, fundOrderEntity);
+
+                //调用统一支付转账接口，把投标金额从标的账户退还给红包账户
+                tyzfTradeService.tyzfTransfer(Long.valueOf(bid.getId().toString()),90,toEntity.getCustId(),toEntity.getBusiType(),tender.getRealAmount(),tradeType,seqNo,"0");
             } catch (FssException e) {
                 LogUtil.error(this.getClass(), e.getMessage());
             }
@@ -743,6 +746,9 @@ public class FundSequenceService {
         if (bonusAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity toEntity = fundAccountService.getFundAccount(4l, GlobalConstants.ACCOUNT_TYPE_FREEZE);
             this.transfer(fromEntity, toEntity, bonusAmount, 6, 2006,"",ThirdPartyType.FUIOU, fundOrderEntity);
+
+           //调用统一支付转账接口，把流标红包从标的账户退还给红包账户
+            tyzfTradeService.tyzfTransfer(Long.valueOf(bid.getId().toString()),90,4l,0,bonusAmount,tradeType,seqNo,"0");
             this.fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO, bonusAmount, 4011, "产品" + title + " 已满标，红包金额转给借款人 " + bonusAmount + "元");
         }
 
