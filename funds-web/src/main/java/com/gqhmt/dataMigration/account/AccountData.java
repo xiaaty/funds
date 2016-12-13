@@ -6,6 +6,7 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindHisEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
@@ -51,33 +52,65 @@ public class AccountData {
 
     public void accountData() throws FssException {
         //获取客户信息
-        List<FssAccountBindEntity> fssAccountBindEntityList = fssAccountBindService.queryBindAccountLimit();
-        for(FssAccountBindEntity fssAccountBindEntity : fssAccountBindEntityList) {
-            Long custId = fssAccountBindEntity.getBusiId();
-            int busiType = fssAccountBindEntity.getBusiType();
-            if (busiType == 90) {
-                Bid bid = bidService.findById(fssAccountBindEntity.getBusiId().intValue());
-                custId = bid.getCustomerId().longValue();
-            }
-            CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(custId);
+        List<FssAccountBindHisEntity> fssAccountBindEntityList = fssAccountBindService.queryBindAccountLImit();
+        for(FssAccountBindHisEntity fssAccountBindHisEntity : fssAccountBindEntityList) {
+            FssAccountBindEntity fssAccountBindEntity = fssAccountBindService.getBindAccountByParam(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType());
 
-            switch (busiType){
-                case 1:
-                    this.createLoanAccount(customerInfoEntity);
-                    break;
-                case 2:
-                    this.createInvestmentAccount(customerInfoEntity);
-                    break;
-                case 3:
-                    this.createInternetAccount(customerInfoEntity);
-                    break;
-                case 90:
-                    this.createLoanBidAccount(fssAccountBindEntity.getBusiId(),fssAccountBindEntity.getContractNo(),customerInfoEntity);
-                    break;
-                case 96:
-                    this.createInternetAccount(customerInfoEntity);
-                    break;
+            if(fssAccountBindEntity != null && "1".equals(fssAccountBindEntity.getStatus())){
+                if(fssAccountBindEntity.getBusiType() == 90){
+                    fssAccountBindHisEntity.setAccNo(fssAccountBindEntity.getAccNo());
+                    fssAccountBindHisEntity.setStatus("4");
+                    fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
+                }else{
+                    fssAccountBindHisEntity.setStatus("2");
+                    fssAccountBindHisEntity.setAccNo(fssAccountBindEntity.getAccNo());
+                    fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
+                }
+                continue;
             }
+
+            if("0".equals(fssAccountBindHisEntity.getStatus())){
+                Long custId = fssAccountBindHisEntity.getBusiId();
+                int busiType = fssAccountBindHisEntity.getBusiType();
+                if (busiType == 90) {
+                    Bid bid = bidService.findById(fssAccountBindHisEntity.getBusiId().intValue());
+                    custId = bid.getCustomerId().longValue();
+                }
+                CustomerInfoEntity customerInfoEntity = customerInfoService.getCustomerById(custId);
+
+                switch (busiType){
+                    case 1:
+                        this.createLoanAccount(customerInfoEntity);
+                        break;
+                    case 2:
+                        this.createInvestmentAccount(customerInfoEntity);
+                        break;
+                    case 3:
+                        this.createInternetAccount(customerInfoEntity);
+                        break;
+                    case 90:
+                        this.createLoanBidAccount(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getContractNo(),customerInfoEntity);
+                        break;
+                    case 96:
+                        this.createInternetAccount(customerInfoEntity);
+                        break;
+                }
+                fssAccountBindHisEntity.setStatus("2");
+                fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
+            }else if("2".equals(fssAccountBindHisEntity.getStatus())){
+                tyzfTradeService.tyzfRecharge(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType(),
+                        fssAccountBindHisEntity.getBalanceAmout().add(fssAccountBindHisEntity.getFreezemount()),"1001","11039999",createSeqNo());
+
+                fssAccountBindHisEntity.setStatus("3");
+                fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
+            }else if("3".equals(fssAccountBindHisEntity.getStatus())){
+                tyzfTradeService.tyzfRecharge(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType(),
+                        fssAccountBindHisEntity.getFreezemount(),"1001","11039998",createSeqNo());
+                fssAccountBindHisEntity.setStatus("4");
+                fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
+            }
+
+
 
         }
 
@@ -142,6 +175,8 @@ public class AccountData {
         String seq_no=CommonUtil.getRandomString(8);
         return date+seq_no;
     }
+
+
 
 
 }

@@ -4,7 +4,10 @@ package com.gqhmt.fss.architect.account.service;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GenerateBeanUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindHisEntity;
+import com.gqhmt.fss.architect.account.mapper.read.FssAccountBindHisReadMapper;
 import com.gqhmt.fss.architect.account.mapper.read.FssAccountBindReadMapper;
+import com.gqhmt.fss.architect.account.mapper.write.FssAccountBindHisWriteMapper;
 import com.gqhmt.fss.architect.account.mapper.write.FssAccountBindWriteMapper;
 import com.gqhmt.util.LogUtil;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,11 @@ public class FssAccountBindService {
     private FssAccountBindReadMapper fssAccountBindReadMapper;
     @Resource
     private FssAccountBindWriteMapper fssAccountBindWriteMapper;
+
+    @Resource
+    private FssAccountBindHisReadMapper fssAccountBindHisReadMapper;
+    @Resource
+    private FssAccountBindHisWriteMapper fssAccountBindHisWriteMapper;
 
     /**
      * 统一支付账户绑定表数据查询
@@ -157,10 +165,17 @@ public class FssAccountBindService {
     }
 
 
-    public List<FssAccountBindEntity> queryBindAccountLimit(){
-        return fssAccountBindReadMapper.queryBindAccountLimit();
+//    public List<FssAccountBindEntity> queryBindAccountLimit(){
+//        return fssAccountBindReadMapper.queryBindAccountLimit();
+//    }
+
+    public List<FssAccountBindHisEntity> queryBindAccountLImit(){
+        return fssAccountBindHisReadMapper.queryBindAccountLimit();
     }
 
+    public void updateBindHis(FssAccountBindHisEntity fssAccountBindHisEntity){
+        this.fssAccountBindHisWriteMapper.updateByPrimaryKey(fssAccountBindHisEntity);
+    }
 
 }
 
