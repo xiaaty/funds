@@ -3,16 +3,19 @@ package com.gqhmt.controller.interactions;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
-import com.gqhmt.core.util.XmlUtil;
+import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
+import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
+import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.fss.architect.card.entiry.FssPosBackEntity;
 import com.gqhmt.fss.architect.card.service.FssPosBackService;
-import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
 import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +48,14 @@ public class FuiouCallBack {
 	@Resource
 	private CustomerInfoService customerInfoService;
 
+	private FundOrderService fundOrderService;
+	@Resource
+	private FundAccountService fundAccountService;
+
+//	@Autowired
+//	private ChangeCardService changeCardService;
+	@Resource
+	private FssOfflineRechargeService fssOfflineRechargeService;
 	/**
 	 * 网页充值回调接口
 	 *
@@ -457,7 +468,17 @@ public class FuiouCallBack {
 		return result.toString();
 	}
 
-
+	/**
+	 * 富友退票接口
+	 * @param mchnt_cd
+	 * @param mchnt_txn_ssn
+	 * @param mobile_no
+	 * @param mchnt_txn_dt
+	 * @param amt
+	 * @param remark
+	 * @param signature
+	 * @return
+	 */
 	@RequestMapping("/returnWithdraw")
 	@ResponseBody
 	public String returnWithdraw(String mchnt_cd, String mchnt_txn_ssn, String mobile_no, String mchnt_txn_dt, String amt, String remark, String signature) {
@@ -474,6 +495,8 @@ public class FuiouCallBack {
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_RETRUN_WITHDRAW, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+
+				tradeRecordService.returnWithdraw(mchnt_txn_ssn);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
@@ -521,14 +544,23 @@ public class FuiouCallBack {
 	}
 	/**
 	 * 根据据富有有返回结果进行处理
-	 * @param xml
+	 * @param mchntCd
+	 * @param mchntNm
+	 * @param userNm
+	 * @param mobileNo
+	 * @param acntNo
+	 * @param credtNo
+	 * @param contract_st
+	 * @param acntIsVerif1
+	 * @param acntIsVerif2
+	 * @param acntIsVerif3
+	 * @param acntIsVerif4
      * @return
      * @throws FssException
      */
 	@RequestMapping("/returnPosContractResult")
 	@ResponseBody
-//	public String returnPosContractResult(String mchntCd,String mchntNm,String userNm,String mobileNo,String acntNo,String credtNo,String contract_st,String acntIsVerif1,String acntIsVerif2,String acntIsVerif3,String acntIsVerif4) throws FssException{
-	public String returnPosContractResult(String xml) throws FssException{
+	public String returnPosContractResult(String mchntCd,String mchntNm,String userNm,String mobileNo,String acntNo,String credtNo,String contract_st,String acntIsVerif1,String acntIsVerif2,String acntIsVerif3,String acntIsVerif4) throws FssException{
 		//回调明文
 		LogUtil.info(this.getClass(), "pos签约回调："+xml);
 		//返回富友接收结果
@@ -547,4 +579,84 @@ public class FuiouCallBack {
 
 		return  result;
 	}
+
+	/**
+	 * pos充值成功富友返回结果处理
+	 * @param login_id
+	 * @param amt
+	 * @param resp_code
+	 * @param resp_desc
+	 * @param mchnt_cd
+	 * @param mchnt_txn_ssn
+	 * @param rem
+	 * @param signature
+     * @return
+     * @throws FssException
+     */
+	@RequestMapping("/returnPosRechargeResult")
+	@ResponseBody
+	public String returnPosRechargeResult(String login_id,String amt,String resp_code,String resp_desc,String mchnt_cd,String mchnt_txn_ssn,String rem,String signature) throws FssException{
+		//回调明文
+		String signValue = amt+"|"+login_id+"|"+mchnt_cd+"|"+mchnt_txn_ssn+"|"+rem+"|"+resp_code+"|"+resp_desc;
+		//验签
+		boolean flag = SecurityUtils.verifySign(signValue, signature);
+		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue+":"+signature);
+		//返回富友接收结果
+		String result = "SUCCESS";
+		if (flag) {
+			try {
+				tradeRecordService.asynNotOrderCommand(mchnt_txn_ssn,"0000".equals(resp_code) ? "success" : "failed",amt,login_id);
+			} catch (Exception e) {
+				LogUtil.error(this.getClass(), e);
+				result = "FAIL";
+			}
+		} else {
+			result = "FAIL SIGNVALUE";
+		}
+		return  result;
+	}
+
+	/**
+	 * pos签约
+	 * @param login_id
+	 * @param mchnt_cd
+	 * @param mchnt_txn_ssn
+	 * @param rem
+	 * @param signature
+	 * @param resp_code
+     * @return
+     * @throws FssException
+     */
+	@RequestMapping("/returnSignedResult")
+	@ResponseBody
+	public String returnSignedResult(String login_id,String mchnt_cd,String mchnt_txn_ssn,String rem,String signature,String resp_code,String resp_desc) throws FssException{
+		//回调明文
+		String signValue = login_id+"|"+mchnt_cd+"|"+mchnt_txn_ssn+"|"+rem+"|"+resp_code+"|"+resp_desc;
+		//验签
+		boolean flag = SecurityUtils.verifySign(signValue, signature);
+		LogUtil.info(this.getClass(), "fuiou callback returnWithhold:"+flag+":" + signValue+":"+signature);
+		//返回富友接收结果
+		String result = "SUCCESS";
+		FundOrderEntity fundOrderEntity=null;
+		FssOfflineRechargeEntity entity=null;
+		if (flag) {
+			try {
+				fundOrderEntity = fundOrderService.findfundOrder(mchnt_txn_ssn);
+				if(fundOrderEntity==null) throw new FssException("未获取到交易订单信息");
+				//修改对应的客户表的签约状态
+				customerInfoService.updateCustThirdAgreement(fundOrderEntity.getCustId());
+				entity=fssOfflineRechargeService.getOffineRechargeByParam(null,mchnt_txn_ssn);
+				fssOfflineRechargeService.updateState(entity.getId(),mchnt_txn_ssn,"13010005");
+			} catch (Exception e) {
+				LogUtil.error(this.getClass(), e);
+				result = "FAIL";
+			}
+		} else {
+			fundOrderService.updateOrder(fundOrderEntity,3,resp_code,"失败");
+			fssOfflineRechargeService.updateState(entity.getId(),mchnt_txn_ssn,"13010006");
+			result = "FAIL SIGNVALUE";
+		}
+		return  result;
+	}
+
 }

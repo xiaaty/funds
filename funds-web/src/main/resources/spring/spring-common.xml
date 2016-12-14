@@ -21,7 +21,7 @@
 	<!-- <context:property-placeholder location="classpath:config.properties" /> -->
 
 
-	<context:component-scan base-package="com.gqhmt.*.architect;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter;com.gqhmt.extServInter;com.gqhmt.quartz;com.gqhmt.business.architect;com.gqhmt.event">
+	<context:component-scan base-package="com.gqhmt.*.architect;com.gqhmt.sys.*;com.gqhmt.pay.service;com.gqhmt.extServInter;com.gqhmt.extServInter;com.gqhmt.quartz;com.gqhmt.business.architect;com.gqhmt.event,com.gqhmt.dataMigration">
 
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
 
@@ -93,7 +93,8 @@
 				<value>classpath:sqlMapper/funds/*/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/sys/read/*-sqlMapper.xml</value>
 				<value>classpath:sqlMapper/fssAccount/*/read/*-sqlMapper.xml</value>
-			</list>
+
+				<value>classpath:sqlMapper/business/loan/read/*-sqlMapper.xml</value>			</list>
 		</property>
 		<property name="plugins">
 			<array>
@@ -143,7 +144,7 @@
 	</bean>
 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper;com.gqhmt.*.mapper.*="/>
+		<property name="basePackage" value="com.gqhmt.*.architect.*.mapper;com.gqhmt.*.mapper.*"/>
 		<property name="properties">
 			<value>
 				mappers=com.gqhmt.core.mybatis.ReadAndWriteMapper,com.gqhmt.core.mybatis.ReadMapper

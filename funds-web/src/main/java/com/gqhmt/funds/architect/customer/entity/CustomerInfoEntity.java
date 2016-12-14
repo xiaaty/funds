@@ -33,7 +33,7 @@ public class CustomerInfoEntity implements java.io.Serializable {
 	@Column(name = "NATIONALITY",updatable = false)
 	private String nationality;
 	//证件类型 1：身份证 2：护照 3：驾照 4：军人证
-	@Column(name = "CERT_TYPE",updatable = false)
+	@Column(name = "CERT_TYPE")
 	private Integer certType;
 	//证件号码
 	@Column(name = "CERT_NO")

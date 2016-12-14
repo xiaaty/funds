@@ -35,7 +35,7 @@ public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
 	@Resource
 	private IFundsAccount fundsAccountImpl;
 	
-	@APITradeTypeValid(value = "11029003")//互联网账户银行卡变更
+	@APITradeTypeValid(value = "11029003,11029005,11029006,11029007,11029008,11029009")//互联网账户银行卡变更
 //	@APISignature
     @Override
     public Response execute(SuperDto dto) throws APIExcuteErrorException {

@@ -13,7 +13,6 @@ import com.gqhmt.sys.entity.DictOrderEntity;
 import com.gqhmt.sys.entity.MenuEntity;
 import com.gqhmt.sys.service.BankDealamountLimitService;
 import com.gqhmt.sys.service.SystemService;
-import com.gqhmt.util.ServiceLoader;
 import com.gqhmt.fss.architect.merchant.entity.MerchantRepayConfigEntity;
 
 import java.math.BigDecimal;

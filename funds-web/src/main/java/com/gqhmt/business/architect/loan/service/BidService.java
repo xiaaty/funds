@@ -1,13 +1,16 @@
 package com.gqhmt.business.architect.loan.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.Page;
 import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.mapper.read.BidReadMapper;
 import com.gqhmt.business.architect.loan.mapper.read.TenderReadMapper;
 import com.gqhmt.business.architect.loan.mapper.write.BidWriteMapper;
+import com.gqhmt.core.exception.FssException;
+import com.gqhmt.util.LogUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 标的管理
@@ -34,7 +37,7 @@ public class BidService {
 	 * @return
 	 */
 
-	public Bid findById(Long id) {
+	public Bid findById(Integer id) {
 		Bid bid = bidReadMapper.selectByPrimaryKey(id);
 		return bid;
 	}
@@ -70,6 +73,29 @@ public class BidService {
     public void updateBid(Bid bid){
     	bidWriteMapper.updateByPrimaryKeySelective(bid);
     }
+
+	public int queryBidByCustId(Integer custId){
+		Bid bid=new Bid();
+		bid.setCustomerId(custId);
+		int res = bidReadMapper.selectCount(bid);
+		return res;
+	}
+
+	public List<Bid> queryBidByDate(String date){
+		return bidReadMapper.queryBidByDate(date);
+	}
     
     
+	/**
+	 * 根据合同号查询标的
+	 * @param contractNo
+	 * @return
+	 */
+    public Bid getBidByContractNo(String contractNo)  {
+		Bid bid =  bidReadMapper.getBidByContractNo(contractNo);
+		if(bid == null ) {
+			LogUtil.error(this.getClass(),90002045);
+		}
+		return bid;
+	}
 }

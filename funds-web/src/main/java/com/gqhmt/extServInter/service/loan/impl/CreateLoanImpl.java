@@ -47,18 +47,18 @@ public class CreateLoanImpl implements ICreateLoan{
 	 * 11020013:借款代还人开户
 	 * 11020014:开互联网账户
 	 * 11020015:app开户
+	 * 11020019:标的开户
 	 */
-	@APITradeTypeValid(value = "11020001,11020002,11020003,11020004,11020005,11020006,11020007,11020008,11020009,11020010,11020011,11020012,11020013,11020014,11020015")
+	@APITradeTypeValid(value = "11020001,11020002,11020003,11020004,11020005,11020006,11020007,11020008,11020009,11020010,11020011,11020012,11020013,11020014,11020015,11020019")
 	@APISignature
     @Override
     public Response execute(SuperDto dto) throws APIExcuteErrorException {
     	LoanAccountResponse response = new LoanAccountResponse();
     	try {
 			CreateLoanAccountDto loanDto = 	(CreateLoanAccountDto)dto;
-    		//String accNo=loanImpl.createLoanAccount((CreateLoanAccountDto)dto);
-			FssAccountEntity fssAccountEntity = createAccountEvent.createAccount(loanDto.getTrade_type(),loanDto.getName(),loanDto.getMobile(),loanDto.getCert_no(),
-					null,loanDto.getMchn(),loanDto.getBank_id(),loanDto.getBank_card(),loanDto.getCity_id(),loanDto.getContract_no(),null);
-    		response.setAccNo(fssAccountEntity.getAccNo());
+			Integer bankId  = createAccountEvent.createAccount(loanDto.getTrade_type(),loanDto.getName(),loanDto.getMobile(),loanDto.getCert_no(),
+					null,loanDto.getMchn(),loanDto.getBank_id(),loanDto.getBank_card(),loanDto.getCity_id(),loanDto.getContract_no(),null,loanDto.getSeq_no());
+//    		response.setAccNo(bankId);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

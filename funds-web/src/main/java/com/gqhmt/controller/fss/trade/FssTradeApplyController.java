@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -226,7 +227,8 @@ public class FssTradeApplyController {
 			fssTradeApplyService.updateTradeApply(tradeapply,"10100005","10080010");
 			//审核不通过进行资金解冻
 			if(applyType==1104){
-				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType());
+				String seqNo=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());//流水号
+				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType(),seqNo);
 			}
 			//不通过，添加回盘记录
 			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
@@ -247,6 +249,7 @@ public class FssTradeApplyController {
 	@RequestMapping(value = "/trade/tradeApply/offlineRecharge",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public String getOfflineRechargeApply(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		map.put("applyType","1103");
 		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
 		model.addAttribute("page", offlineRechargeList);
 		model.put("map", map);
@@ -419,7 +422,7 @@ public class FssTradeApplyController {
 				to_cust_no=String.valueOf(accEntity.getCustId());
 				to_cust_type=Integer.valueOf(accType);
 			}
-				fundsTradeImpl.bondTransfer(null,null,tradeType,null,null,null,from_cust_no,null,amt,null,to_cust_no,null,from_cust_type,to_cust_type,1005,3);
+				fundsTradeImpl.bondTransfer(null,null,tradeType,null,null,null,from_cust_no,null,amt,null,to_cust_no,null,from_cust_type,to_cust_type,1005,3,"0");
 				map.put("code", "0000");
 				map.put("message", "success");
 		}catch (FssException e){
@@ -454,6 +457,42 @@ public class FssTradeApplyController {
 
 		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
 
+	}
+
+	/**
+	 * pos充值记录
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/posRechargeRecord",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getPosRecharge(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		map.put("applyType","1001");
+		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
+		model.addAttribute("page", offlineRechargeList);
+		model.put("map", map);
+		return "fss/trade/posRecharge_list";
+	}
+
+	/**
+	 * pos签约记录
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/tradeApply/posSignedRecord",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String getPosSigned(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map) throws Exception{
+		map.put("applyType","1102");
+		List<FssOfflineRechargeEntity> offlineRechargeList=fssOfflineRechargeService.queryFssOfflineRechargeList(map);
+		model.addAttribute("page", offlineRechargeList);
+		model.put("map", map);
+		return "fss/trade/posSigned_list";
 	}
 
 }
