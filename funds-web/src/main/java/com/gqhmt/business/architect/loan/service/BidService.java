@@ -6,6 +6,7 @@ import com.gqhmt.business.architect.loan.mapper.read.BidReadMapper;
 import com.gqhmt.business.architect.loan.mapper.read.TenderReadMapper;
 import com.gqhmt.business.architect.loan.mapper.write.BidWriteMapper;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,9 +91,11 @@ public class BidService {
 	 * @param contractNo
 	 * @return
 	 */
-    public Bid getBidByContractNo(String contractNo) throws FssException {
+    public Bid getBidByContractNo(String contractNo)  {
 		Bid bid =  bidReadMapper.getBidByContractNo(contractNo);
-		if(bid == null ) throw new FssException("90002045");
+		if(bid == null ) {
+			LogUtil.error(this.getClass(),90002045);
+		}
 		return bid;
 	}
 }
