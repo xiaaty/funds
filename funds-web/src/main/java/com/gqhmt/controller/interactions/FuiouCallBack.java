@@ -550,7 +550,7 @@ public class FuiouCallBack {
 		try {
 			Map<String, Object> maps=XmlUtil.getMap(xml);
 			Map<String, String> map=(Map<String, String>)maps.get("custmrBusi");
-			FssPosBackEntity entity=fssPosBackService.createPosBack(map.get("userNm"),map.get("mobileNo"),map.get("acntNo"),map.get("credtNo"),map.get("contract_st"),map.get("acntIsVerif1"),map.get("acntIsVerif2"),map.get("acntIsVerif3"),map.get("acntIsVerif4"));
+			FssPosBackEntity entity=fssPosBackService.createPosBack(map.get("userNm"),map.get("mobileNo"),map.get("acntNo"),map.get("credtNo"),map.get("contractNo"),map.get("contractSt"),map.get("acntIsVerify1"),map.get("acntIsVerify2"),map.get("acntIsVerify3"),map.get("acntIsVerify4"));
 			Integer a=fssPosBackService.insert(entity);
 			customerInfoService.updateCustomerState(entity,map.get("mobileNo"),map.get("contract_st"),map.get("acntNo"));
 			result=a.toString();
