@@ -125,7 +125,7 @@ public class FundsTenderImpl  implements IFundsTender {
         fuiouPreauthService.addFuiouPreauth(fromEntity, null, real_Amount,Integer.parseInt(bid_id),Integer.parseInt(tender_no),"", fundOrderEntity);
         tradeRecordService.frozen(fromEntity,toEntity,amount,3001,fundOrderEntity,"出借" + product_title + " 资金 " + amount + "元" + (boundsAmount !=null ? ",红包抵扣资金 " + boundsAmount + "元" : ""), (boundsAmount != null? boundsAmount : BigDecimal.ZERO),"1105",tradeType,busi_no,null,null,loan_cust_id==null?null:Long.valueOf(loan_cust_id),busi_bid_no,seqNo);
         //        ---------------------------异步调用统一支付处理投标转账-------------------------
-        tyzfTradeService.tender(fromEntity.getCustId(),fromEntity.getBusiType(),amount,boundsAmount,tradeType,bid_id,seqNo);
+        tyzfTradeService.tyzfFroze(fromEntity.getCustId(),fromEntity.getBusiType(),amount,tradeType,tradeType,seqNo);
         return true;
     }
 
