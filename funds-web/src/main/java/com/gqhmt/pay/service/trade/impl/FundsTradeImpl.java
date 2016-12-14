@@ -179,8 +179,8 @@ public class FundsTradeImpl  implements IFundsTrade {
             this.chargeAmount(fundOrderEntity);
         }catch(Exception e) {
             //资金处理
-            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type(),withdrawDto.getSeq_no());
-            throw new FssException("90004007");
+//            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type(),withdrawDto.getSeq_no());
+//            throw new FssException("90004007");
         }
 
 
