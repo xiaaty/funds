@@ -124,15 +124,28 @@ public class FssPosBackService {
      * @return
      * @throws FssException
      */
-	public FssPosBackEntity createPosBack(String userName,String mobileNo,String bankNo,String credtNo,String contractSt,
+	public FssPosBackEntity createPosBack(String userName,String mobileNo,String bankNo,String credtNo,String contractNo,String contractSt,
 							 String userNameAcntIsVerif,String bankNoAcntIsVerif,
 							 String credtNoAcntIsVerif,String mobileNoAcntIsVerif)throws FssException{
 		FssPosBackEntity entity=new FssPosBackEntity();
 		entity.setUserName(userName);
 		entity.setMobileNo(mobileNo);
 		entity.setBankNo(bankNo);
-		entity.setCredtNo(credtNo);
+		entity.setContractNo(contractNo);
 		entity.setContractSt(contractSt);
+		entity.setCredtNo(credtNo);
+		if(StringUtils.isEmpty(userNameAcntIsVerif)){
+			userNameAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(bankNoAcntIsVerif)){
+			bankNoAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(credtNoAcntIsVerif)){
+			credtNoAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(mobileNoAcntIsVerif)){
+			mobileNoAcntIsVerif="0";
+		}
 		entity.setUserNameAcntIsVerif(Integer.valueOf(userNameAcntIsVerif));
 		entity.setBankNoAcntIsVerif(Integer.valueOf(bankNoAcntIsVerif));
 		entity.setCredtNoAcntIsVerif(Integer.valueOf(credtNoAcntIsVerif));
