@@ -1,15 +1,17 @@
-package com.gqhmt.extServInter.service.account.impl;
+package com.gqhmt.extServInter.service.trade.impl;
 
 import com.gqhmt.annotations.APITradeTypeValid;
-import com.gqhmt.core.exception.APIExcuteErrorException;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.SuperDto;
-import com.gqhmt.extServInter.dto.account.UpdateBankCardDto;
-import com.gqhmt.extServInter.service.account.IChangeBankCardAccount;
-import com.gqhmt.pay.service.account.IFundsAccount;
+import com.gqhmt.extServInter.dto.trade.PosCallBackDto;
+import com.gqhmt.extServInter.dto.trade.RechargeSuccessDto;
+import com.gqhmt.extServInter.service.trade.IPosCallBack;
+import com.gqhmt.extServInter.service.trade.IRechargeCallback;
+import com.gqhmt.pay.service.trade.IFundsTrade;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 
 /**
@@ -17,36 +19,34 @@ import javax.annotation.Resource;
  * Filename:    com.gqhmt.extServInter.dto.account.CreateAccountByFuiou
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
- *
- * @author jhz
+ * @author keyulai
  * @version: 1.0
  * @since: JDK 1.7
- * Create at:   2016年2月20日
- * Description:	银行卡变更
+ * Create at:   2016年10月20日
+ * Description: POS充值成功回调
  * <p>
  * Modification History:
  * Date    Author      Version     Description
  * -----------------------------------------------------------------
- * 2016年2月20日  jhz      1.0     1.0 Version
+ * 2016年10月20日  keyulai      1.0     1.0 Version
  */
 @Service
-public class ChangeBankCardAccountImpl implements IChangeBankCardAccount{
-	
+public class PosCallbackImpl implements IPosCallBack {
 	@Resource
-	private IFundsAccount fundsAccountImpl;
+	private IFundsTrade fundsTradeImpl;
 	
-	@APITradeTypeValid(value = "11029003,11029005,11029006,11029007,11029008,11029009")//互联网账户银行卡变更
-//	@APISignature
+	@APITradeTypeValid(value = "11030020")
     @Override
-    public Response execute(SuperDto dto) throws APIExcuteErrorException {
+    public Response execute(SuperDto dto) {
     	Response response = new Response();
     	try {
-			fundsAccountImpl.changeBankCard((UpdateBankCardDto) dto);
+			PosCallBackDto cDto = (PosCallBackDto) dto;
+			fundsTradeImpl.PosRechargeCallback(cDto.getOrder_no(),cDto.getRespCode(),cDto.getSeq_no());
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
 		}
         return response;
-    }
+	}
 }

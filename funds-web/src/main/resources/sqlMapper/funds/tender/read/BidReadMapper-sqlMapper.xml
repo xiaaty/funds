@@ -6,7 +6,10 @@
 		t.`id` id,
 		t.`customer_id` customerId,
 		t.`contract_no` contractNo,
-		t.`bid_no` bidNo
+		t.`bid_no` bidNo,
+		t.`loan_type` loanType,
+		t.`bid_amount` bidAmount,
+		t.`hypothecarius` hypothecarius
 		FROM `t_gq_bid` t WHERE t.`contract_no`=#{contractNo}
 	</select>
 </mapper>

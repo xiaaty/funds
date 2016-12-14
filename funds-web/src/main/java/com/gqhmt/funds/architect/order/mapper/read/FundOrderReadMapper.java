@@ -54,5 +54,6 @@ public interface FundOrderReadMapper extends ReadMapper<FundOrderEntity> {
      */
     public List<FundOrderEntity> findOrderList(@Param("map")Map<String,String> map,@Param("typeList")List<Integer> typeList);
 
+    public FundOrderEntity getFundOrderByFromId(@Param("orderFrormId") Long orderFrormId);
 
     }

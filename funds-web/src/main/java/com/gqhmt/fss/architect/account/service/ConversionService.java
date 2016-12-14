@@ -46,7 +46,6 @@ public class ConversionService {
             LogUtil.error(this.getClass(), e.getMessage());
         }catch (Exception e){
             LogUtil.error(this.getClass(), e.getMessage());
-            throw new FssException("内部异常");
         }
     }
 }

@@ -121,16 +121,8 @@ public class CreateAccountEvent {
                 throw e;
             }
         }
-
-
-//        if(primaryAccount.getHasThirdAccount() == 2){
-//            customerInfoEntity.setHasAcount(1);
-//            customerInfoEntity.setNameIdentification(1);
-//            customerInfoService.update(customerInfoEntity);
-//        }
-
         BankCardInfoEntity bankCardInfoEntity=null;
-        List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.findBankCardByCustNo(custId.toString());
+        List<BankCardInfoEntity> bankCardInfoList = bankCardInfoService.getBankCardByCustNo(String.valueOf(custId));
         if (primaryAccount.getHasThirdAccount() ==1) {//生成富有账户
             primaryAccount.setCustomerInfoEntity(customerInfoEntity);
             FundOrderEntity fundOrderEntity = paySuperByFuiou.createAccountByPersonal(primaryAccount, "", "", tradeType);
