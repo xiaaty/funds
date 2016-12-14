@@ -68,10 +68,10 @@ public class FssAccountBindHisEntity {
     private String mobile;
 
     @Column(name = "balance_amount",updatable = false)
-    private BigDecimal balanceAmout;
+    private BigDecimal balanceAmount;
 
     @Column(name = "freeze_amount",updatable = false)
-    private BigDecimal freezemount;
+    private BigDecimal freezeAmount;
 
     public Long getId() {
         return id;
@@ -185,19 +185,21 @@ public class FssAccountBindHisEntity {
         this.mobile = mobile;
     }
 
-    public BigDecimal getBalanceAmout() {
-        return balanceAmout;
+
+
+    public BigDecimal getBalanceAmount() {
+        return balanceAmount;
     }
 
-    public void setBalanceAmout(BigDecimal balanceAmout) {
-        this.balanceAmout = balanceAmout;
+    public void setBalanceAmount(BigDecimal balanceAmount) {
+        this.balanceAmount = balanceAmount;
     }
 
-    public BigDecimal getFreezemount() {
-        return freezemount;
+    public BigDecimal getFreezeAmount() {
+        return freezeAmount;
     }
 
-    public void setFreezemount(BigDecimal freezemount) {
-        this.freezemount = freezemount;
+    public void setFreezeAmount(BigDecimal freezeAmount) {
+        this.freezeAmount = freezeAmount;
     }
 }

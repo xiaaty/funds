@@ -14,6 +14,7 @@ import com.gqhmt.pay.service.TyzfTradeService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -54,20 +55,8 @@ public class AccountData {
         //获取客户信息
         List<FssAccountBindHisEntity> fssAccountBindEntityList = fssAccountBindService.queryBindAccountLImit();
         for(FssAccountBindHisEntity fssAccountBindHisEntity : fssAccountBindEntityList) {
-            FssAccountBindEntity fssAccountBindEntity = fssAccountBindService.getBindAccountByParam(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType());
 
-            if(fssAccountBindEntity != null && "1".equals(fssAccountBindEntity.getStatus())){
-                if(fssAccountBindEntity.getBusiType() == 90){
-                    fssAccountBindHisEntity.setAccNo(fssAccountBindEntity.getAccNo());
-                    fssAccountBindHisEntity.setStatus("4");
-                    fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
-                }else{
-                    fssAccountBindHisEntity.setStatus("2");
-                    fssAccountBindHisEntity.setAccNo(fssAccountBindEntity.getAccNo());
-                    fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
-                }
-                continue;
-            }
+
 
             if("0".equals(fssAccountBindHisEntity.getStatus())){
                 Long custId = fssAccountBindHisEntity.getBusiId();
@@ -97,15 +86,32 @@ public class AccountData {
                 }
                 fssAccountBindHisEntity.setStatus("2");
                 fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
-            }else if("2".equals(fssAccountBindHisEntity.getStatus())){
-                tyzfTradeService.tyzfRecharge(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType(),
-                        fssAccountBindHisEntity.getBalanceAmout().add(fssAccountBindHisEntity.getFreezemount()),"1001","11039999",createSeqNo());
+            }else if("1".equals(fssAccountBindHisEntity.getStatus())){
+                FssAccountBindEntity fssAccountBindEntity = fssAccountBindService.getBindAccountByParam(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType());
 
+                if(fssAccountBindEntity != null && "1".equals(fssAccountBindEntity.getStatus())){
+                    if(fssAccountBindEntity.getBusiType() == 90){
+                        fssAccountBindHisEntity.setAccNo(fssAccountBindEntity.getAccNo());
+                        fssAccountBindHisEntity.setStatus("4");
+                        fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
+                    }else{
+                        fssAccountBindHisEntity.setStatus("2");
+                        fssAccountBindHisEntity.setAccNo(fssAccountBindEntity.getAccNo());
+                        fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
+                    }
+                }
+            }else if("2".equals(fssAccountBindHisEntity.getStatus())){
+                if(fssAccountBindHisEntity.getBalanceAmount().compareTo(BigDecimal.ZERO)>0){
+                    tyzfTradeService.tyzfRecharge(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType(),
+                            fssAccountBindHisEntity.getBalanceAmount().add(fssAccountBindHisEntity.getFreezeAmount()),"1001","11039999",createSeqNo());
+                }
                 fssAccountBindHisEntity.setStatus("3");
                 fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
             }else if("3".equals(fssAccountBindHisEntity.getStatus())){
-                tyzfTradeService.tyzfRecharge(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getBusiType(),
-                        fssAccountBindHisEntity.getFreezemount(),"1001","11039998",createSeqNo());
+                if(fssAccountBindHisEntity.getFreezeAmount() != null && fssAccountBindHisEntity.getFreezeAmount().compareTo(BigDecimal.ZERO)>0) {
+                    tyzfTradeService.tyzfRecharge(fssAccountBindHisEntity.getBusiId(), fssAccountBindHisEntity.getBusiType(),
+                            fssAccountBindHisEntity.getFreezeAmount(), "1001", "11039998", createSeqNo());
+                }
                 fssAccountBindHisEntity.setStatus("4");
                 fssAccountBindService.updateBindHis(fssAccountBindHisEntity);
             }
