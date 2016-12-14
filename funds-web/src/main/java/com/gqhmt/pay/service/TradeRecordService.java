@@ -12,6 +12,7 @@ import com.gqhmt.fss.architect.trade.mapper.read.FssTransRecordReadMapper;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
@@ -539,6 +540,26 @@ public class TradeRecordService {
         }
 
         return businessType;
+    }
+
+    public void returnWithdraw(String orderNo) throws FssException {
+        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(orderNo);
+        List<FundSequenceEntity> fundSequenceEntities = sequenceService.queryByOrderNo(orderNo);
+        if(fundSequenceEntities.size() != 1){
+            return;
+        }
+
+        FundSequenceEntity fundSequenceEntity = fundSequenceEntities.get(0);
+        Long accId = fundSequenceEntity.getAccountId();
+        FundAccountEntity fundAccountEntity = fundAccountService.getFundAccountById(accId);
+        if(fundAccountEntity.getBusiType() == 99){
+            accId = fundSequenceEntity.getoAccountId();
+            fundAccountEntity = fundAccountService.getFundAccountById(accId);
+        }
+
+        this.recharge(fundAccountEntity,fundOrderEntity.getOrderAmount(),fundOrderEntity,1004,null,null);
+
+
     }
 
 

@@ -1,7 +1,7 @@
 package com.gqhmt.fss.architect.account;
 
 import com.gqhmt.TestService;
-import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindHisEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import org.junit.Test;
 
@@ -31,7 +31,10 @@ public class FssAccountBindSweviceTest  extends TestService{
 
     @Test
     public void queryBindAccountLimitTest(){
-        List<FssAccountBindEntity> list = fssAccountBindService.queryBindAccountLimit();
+//        List<FssAccountBindEntity> list = fssAccountBindService.queryAccountBindList();
+        List<FssAccountBindHisEntity> list = fssAccountBindService.queryBindAccountLImit();
         assert list.size()>0;
     }
+
+
 }

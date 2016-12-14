@@ -468,7 +468,17 @@ public class FuiouCallBack {
 		return result.toString();
 	}
 
-
+	/**
+	 * 富友退票接口
+	 * @param mchnt_cd
+	 * @param mchnt_txn_ssn
+	 * @param mobile_no
+	 * @param mchnt_txn_dt
+	 * @param amt
+	 * @param remark
+	 * @param signature
+	 * @return
+	 */
 	@RequestMapping("/returnWithdraw")
 	@ResponseBody
 	public String returnWithdraw(String mchnt_cd, String mchnt_txn_ssn, String mobile_no, String mchnt_txn_dt, String amt, String remark, String signature) {
@@ -485,6 +495,8 @@ public class FuiouCallBack {
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_RETRUN_WITHDRAW, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+
+				tradeRecordService.returnWithdraw(mchnt_txn_ssn);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
