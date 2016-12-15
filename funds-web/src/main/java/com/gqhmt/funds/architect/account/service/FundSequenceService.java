@@ -786,7 +786,7 @@ public class FundSequenceService {
                         FuiouFtpColomField fuiouFtpColomField= fuiouFtpColomFieldService.getFuiouFtpFiledByParam(fundOrderEntity.getOrderNo(),-bean.getId());
                         if(fuiouFtpColomField!=null){
                             FundAccountEntity  BondAccountEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
-                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),fuiouFtpColomField.getFeildOrderNo(),"1110",null,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
                         }
                     } catch (FssException e) {
                         LogUtil.error(this.getClass(), e);
