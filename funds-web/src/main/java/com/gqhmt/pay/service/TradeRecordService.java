@@ -174,7 +174,7 @@ public class TradeRecordService {
             sequenceService.transfer(fromAcc, toAcc, amount, actionType, fundType, null, ThirdPartyType.FUIOU, fundOrderEntity);
         }
         //            -----------------------调用统一支付进行记账----------------
-        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,"1106",fundOrderEntity.getOrderNo(),transf_flag);
+        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,"1106",fundOrderEntity==null ? null:fundOrderEntity.getOrderNo(),transf_flag);
     }
 
     /**
@@ -203,7 +203,7 @@ public class TradeRecordService {
         }else{
             sequenceService.transfer(fromAcc, toAcc, actionType, fundType, amount, memo, fundOrderEntity, newFundsType, tradeType, lendNo, toCustId, toLendNo, loanCustId, loanNo);
         }
-        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,tradeType,fundOrderEntity.getOrderNo(),transf_flag);
+        tyzfTradeService.tyzfTransfer(fromAcc.getCustId(),fromAcc.getBusiType(),toAcc.getCustId(),toAcc.getBusiType(),amount,tradeType,fundOrderEntity==null? null:fundOrderEntity.getOrderNo(),transf_flag);
     }
 
     /**

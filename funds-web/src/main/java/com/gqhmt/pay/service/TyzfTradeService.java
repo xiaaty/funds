@@ -4,6 +4,7 @@ import com.gqhmt.business.architect.loan.entity.Bid;
 import com.gqhmt.business.architect.loan.service.BidService;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.thread.AsyncThreadSendMq;
+import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.bean.FssMappingBean;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -406,6 +409,11 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tyzfTransfer(Long fromCustId,Integer fromAccountType,Long toCustId,Integer toAccountType,BigDecimal amount,String tradeType,String seqNo,String transf_flag)  {
+        if("".equals(seqNo) || seqNo==null){
+            String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String seq_no= CommonUtil.getRandomString(8);
+            seqNo=date+seq_no+"_"+tradeType;
+        }
         FssAccountBindEntity fromBindEntity = fssAccountBindService.getBindAccountByParam(fromCustId,fromAccountType);
         FssAccountBindEntity toBindEntity = fssAccountBindService.getBindAccountByParam(toCustId,toAccountType);
         this.tyzfTransfer(fromBindEntity,toBindEntity,amount,tradeType,seqNo,transf_flag);
