@@ -49,6 +49,10 @@ public class CoreConstants {
    public static final Integer SMS_NOTICE=2;//用到
    public static final String FUND_BOND_TEMPCODE = sysConfig.getProperty("fund_balance_tempCode");//对公红包余额
 
+    //-----------统一支付商户号配置---------------------------
+    public static final String TYZF_MERCHID = sysConfig.getProperty("tyzf_merchid");//商户号
+    public static final String MQ_SEND_NAME = sysConfig.getProperty("mq_send_name");//发送报文名称
+    public static final String MQ_RESIVE_NAME = sysConfig.getProperty("mq_resive_name");//接收报文名称
 
 
 }

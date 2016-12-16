@@ -12,13 +12,11 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.fss.architect.card.entiry.FssPosBackEntity;
 import com.gqhmt.fss.architect.card.service.FssPosBackService;
-import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.fuiou.util.SecurityUtils;
 import com.gqhmt.pay.service.TradeRecordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
@@ -471,7 +469,17 @@ public class FuiouCallBack {
 		return result.toString();
 	}
 
-
+	/**
+	 * 富友退票接口
+	 * @param mchnt_cd
+	 * @param mchnt_txn_ssn
+	 * @param mobile_no
+	 * @param mchnt_txn_dt
+	 * @param amt
+	 * @param remark
+	 * @param signature
+	 * @return
+	 */
 	@RequestMapping("/returnWithdraw")
 	@ResponseBody
 	public String returnWithdraw(String mchnt_cd, String mchnt_txn_ssn, String mobile_no, String mchnt_txn_dt, String amt, String remark, String signature) {
@@ -488,6 +496,8 @@ public class FuiouCallBack {
 		if (flag) {
 			try {
 //				AccountCommand.payCommand.command(CommandEnum.FundsCommand.FUNDS_RETRUN_WITHDRAW, ThirdPartyType.FUIOU, mchnt_txn_ssn, mobile_no, new BigDecimal(amt));
+
+				tradeRecordService.returnWithdraw(mchnt_txn_ssn);
 			} catch (Exception e) {
 				LogUtil.error(this.getClass(), e);
 				result = "FAIL";
@@ -541,7 +551,6 @@ public class FuiouCallBack {
      */
 	@RequestMapping("/returnPosContractResult")
 	@ResponseBody
-//	public String returnPosContractResult(String mchntCd,String mchntNm,String userNm,String mobileNo,String acntNo,String credtNo,String contract_st,String acntIsVerif1,String acntIsVerif2,String acntIsVerif3,String acntIsVerif4) throws FssException{
 	public String returnPosContractResult(String xml) throws FssException{
 		//回调明文
 		LogUtil.info(this.getClass(), "pos签约回调："+xml);
@@ -552,7 +561,7 @@ public class FuiouCallBack {
 			Map<String, String> map=(Map<String, String>)maps.get("custmrBusi");
 			FssPosBackEntity entity=fssPosBackService.createPosBack(map.get("userNm"),map.get("mobileNo"),map.get("acntNo"),map.get("credtNo"),map.get("contractNo"),map.get("contractSt"),map.get("acntIsVerify1"),map.get("acntIsVerify2"),map.get("acntIsVerify3"),map.get("acntIsVerify4"));
 			Integer a=fssPosBackService.insert(entity);
-			customerInfoService.updateCustomerState(entity,map.get("mobileNo"),map.get("contract_st"),map.get("acntNo"));
+			customerInfoService.updateCustomerState(entity,map.get("mobileNo"),map.get("contractSt"),map.get("acntNo"));
 			result=a.toString();
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);

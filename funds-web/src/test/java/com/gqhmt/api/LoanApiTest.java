@@ -11,6 +11,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class LoanApiTest extends SupperAPI {
             /*
            {"mchn":"88721657SUKQ","seq_no":"2016042114075876306","trade_type":"11020009","signature":"2016042114075876306","contract_no":null,"bank_card":"6228480402564890018","name":"红楼梦","mobile":"15933213123","cert_no":"630101190303220010","bank_id":"0103","city_id":"110101","contractNo":null,"tradeType":"11020009","bankId":"0103","cityId":"110101","bankCard":"6228480402564890018","certNo":"630101190303220010"}
              */
-            CreateLoanAccountDto dto = super.getSuperDto(CreateLoanAccountDto.class,"11020009","88721657SUKQ");
+            CreateLoanAccountDto dto = super.getSuperDto(CreateLoanAccountDto.class,"11020009","04543666UDHF");
             dto.setBank_card("6228480402564890018");
             dto.setBank_id("0105");
             dto.setCert_no("630101190303220010");
@@ -47,7 +48,7 @@ public class LoanApiTest extends SupperAPI {
             dto.setContract_no("1");
             dto.setMobile("123232222221");
             dto.setName("dy1");
-            LoanAccountResponse response = UrlConnectUtil.sendJsonDataReturnObjectUrl(LoanAccountResponse.class,"http://localhost:8080/api/createLoanAccount", JsonUtil.getInstance().getJson(dto))  ;
+            LoanAccountResponse response = UrlConnectUtil.sendJsonDataReturnObject(LoanAccountResponse.class," http://10.100.200.103:8105/api/createAccount",JsonUtil.getInstance().parseJson(JsonUtil.getInstance().getJson(dto), HashMap.class))  ;
             System.out.println(response.getResp_code()+":"+response.getResp_msg());
 
             assert "00000000".equals(response.getResp_code());

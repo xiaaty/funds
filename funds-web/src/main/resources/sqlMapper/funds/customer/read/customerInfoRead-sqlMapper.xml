@@ -145,5 +145,10 @@
 		<include refid="selectSql"/>
 		WHERE t.id=#{id}
 	</select>
+	
+	<select id="queryCustomerInfoByDate"   parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity">
+	 <include refid="fieldSql"/>
+	 WHERE date_format(create_time,'%Y%m%d') = #{date}
+	</select>
 
 </mapper>
