@@ -303,7 +303,7 @@ public class FssTradeApplyController {
 			if("11030014".equals(tradeType)){//委托充值(账户直接充值)
 				fssTradeApplyService.whithholdingApply(custNo,accNo,tradeType,amt,null, CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,false);
 			}else if("11040012".equals(tradeType)){//账户直接提现(账户类型)
-				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,1);
+				fssTradeApplyService.whithdrawApply(custNo,accNo,tradeType,amt,null,CommonUtil.getSeqNo(),customerInfoEntity.getId(),custType,null,null,null,1 );
 			}else if("11030015".equals(tradeType)){//线下充值
 				fundsTradeImpl.OfflineRechargeApply(null,CommonUtil.getSeqNo(),tradeType,String.valueOf(customerInfoEntity.getId()),String.valueOf(custType),null,amt);
 			}
