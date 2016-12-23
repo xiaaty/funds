@@ -56,11 +56,17 @@ public class FssLoanEntity implements Serializable {
 
     @Column(name = "pay_amt",updatable = false)
     private BigDecimal payAmt  ;                                  //放款（提现）金额           YES             (NULL)                   select,insert,update,references  账户可用余额
-   
+
+	@Column(name = "first_amt")
+    private BigDecimal firstAmt  ;                                  //首次（提现）金额           YES             (NULL)                   select,insert,update,references  账户可用余额
+
+     @Column(name = "second_amt")
+    private BigDecimal secondAmt  ;                                  //二次（提现）金额           YES             (NULL)                   select,insert,update,references  账户可用余额
+
 //    @Column(name = "bail_amt")
 //    private BigDecimal bailAmt  ;                                  //保证金退还        YES             (NULL)                   select,insert,update,references  账户可用余额
 
-    @Column(name = "bespoke_date",updatable = false)
+    @Column(name = "bespoke_date")
     private Date bespokeDate  ;                               //预约到账日期       (NULL)           YES             (NULL)                   select,insert,update,references
     
     @Column(name = "trade_type_parent",updatable = false)
@@ -322,5 +328,26 @@ public class FssLoanEntity implements Serializable {
 	public void setContractInterest(BigDecimal contractInterest) {
 		this.contractInterest = contractInterest;
 	}
-    
+
+	public BigDecimal getFirstAmt() {
+		return firstAmt;
 	}
+
+	public void setFirstAmt(BigDecimal firstAmt) {
+		if(firstAmt==null){
+			firstAmt=BigDecimal.ZERO;
+		}
+		this.firstAmt = firstAmt;
+	}
+
+	public BigDecimal getSecondAmt() {
+		return secondAmt;
+	}
+
+	public void setSecondAmt(BigDecimal secondAmt) {
+		if(secondAmt==null){
+			secondAmt=BigDecimal.ZERO;
+		}
+		this.secondAmt = secondAmt;
+	}
+}
