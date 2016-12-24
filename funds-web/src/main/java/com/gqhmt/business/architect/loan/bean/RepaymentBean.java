@@ -54,7 +54,7 @@ public class RepaymentBean {
 
 	public BigDecimal getRepaymentInterest() {
 		if("".equals(repaymentInterest)||repaymentInterest==null){
-			repaymentPrincipal=BigDecimal.ZERO;
+			repaymentInterest=BigDecimal.ZERO;
 		}
 		return repaymentInterest;
 	}
