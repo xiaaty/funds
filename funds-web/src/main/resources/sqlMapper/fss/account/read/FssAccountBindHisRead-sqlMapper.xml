@@ -24,6 +24,6 @@
 
     <select id="queryBindAccountLimit" resultType="com.gqhmt.fss.architect.account.entity.FssAccountBindHisEntity">
         <include refid="selectSql"/>
-        WHERE t.status &lt;= 4 limit 10000
+        WHERE t.status &lt; 4 limit 10000
     </select>
 </mapper>
