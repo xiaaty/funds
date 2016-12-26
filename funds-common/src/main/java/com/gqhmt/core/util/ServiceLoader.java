@@ -1,12 +1,8 @@
-package com.gqhmt.util;
+package com.gqhmt.core.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.ContextLoader;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 
 /**
  * Filename:    com.gq.util

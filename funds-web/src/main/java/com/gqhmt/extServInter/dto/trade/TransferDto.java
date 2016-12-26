@@ -45,6 +45,8 @@ public class TransferDto extends SuperDto {
 	private Long  busi_id;//账户类型
 	private String loan_type;//借款、出借、或其他
 	private String contract_no;//合同号
+	@APIValidNull(errorCode = "90004037")
+	private String transfer_flag;//是否冻结转账 0:一般转账 1：冻结转账
 
 	public Integer getFrom_cust_no() {
 		return from_cust_no;
@@ -140,5 +142,13 @@ public class TransferDto extends SuperDto {
 
 	public void setLoan_type(String loan_type) {
 		this.loan_type = loan_type;
+	}
+
+	public String getTransfer_flag() {
+		return transfer_flag;
+	}
+
+	public void setTransfer_flag(String transfer_flag) {
+		this.transfer_flag = transfer_flag;
 	}
 }

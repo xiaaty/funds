@@ -115,7 +115,7 @@ public class AbortBidService {
             try {
 //                AccountCommand.payCommand.command(CommandEnum.TenderCommand.TENDER_ABORT_ASYN, ThirdPartyType.FUIOU, tender,fuiouPreauth.getContractNo());
 
-                fundsTender.abortLoop(bid,tender,fuiouPreauth.getContractNo());
+                fundsTender.abortLoop(bid,tender,fuiouPreauth.getContractNo(),fuiouFtpOrder.getOrderNo());
                 fuiouPreauth.setState(2);
                 fuiouPreauthService.update(fuiouPreauth);
                 System.out.println("fuiouFtp:abortBid:success:"+fuiouFtpOrder.getOrderNo());

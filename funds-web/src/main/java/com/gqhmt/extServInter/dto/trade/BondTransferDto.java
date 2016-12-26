@@ -39,6 +39,8 @@ public class BondTransferDto extends SuperDto{
 	private String o_busi_no;//转让人出借业务编号
 	private Integer acc_type;//接标人账户类型
 	private Integer to_acc_type;//转让人账户类型
+	@APIValidNull(errorCode = "90004037")
+	private String transfer_flag;//是否冻结转账
 
 	public String getBid_id() {
 		return bid_id;
@@ -128,4 +130,11 @@ public class BondTransferDto extends SuperDto{
 		this.to_acc_type = to_acc_type;
 	}
 
+	public String getTransfer_flag() {
+		return transfer_flag;
+	}
+
+	public void setTransfer_flag(String transfer_flag) {
+		this.transfer_flag = transfer_flag;
+	}
 }

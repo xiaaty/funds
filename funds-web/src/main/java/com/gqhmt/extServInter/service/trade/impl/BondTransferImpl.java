@@ -55,8 +55,8 @@ public class BondTransferImpl implements IBondTransfer {
 			}
 			fundsTradeImpl.bondTransfer(cDto.getMchn(),cDto.getSeq_no(),cDto.getTrade_type(), cDto.getBid_id(),cDto.getBusi_bid_no(),
                     cDto.getTender_no(),cDto.getCust_no(),cDto.getBusi_no(),cDto.getAmt(),
-                    cDto.getO_tender_no(),cDto.getO_cust_no(),cDto.getO_busi_no(),cDto.getAcc_type(),cDto.getTo_acc_type(),fundType,8);
-			response.setResp_code("0000");
+                    cDto.getO_tender_no(),cDto.getO_cust_no(),cDto.getO_busi_no(),cDto.getAcc_type(),cDto.getTo_acc_type(),3007,8,cDto.getTransfer_flag());
+            response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e);
 			response.setResp_code(e.getMessage());
