@@ -330,8 +330,8 @@ public class FssLoanEntity implements Serializable {
 	}
 
 	public BigDecimal getFirstAmt() {
-		if(secondAmt==null){
-			secondAmt=BigDecimal.ZERO;
+		if(firstAmt==null){
+			firstAmt=BigDecimal.ZERO;
 		}
 		return firstAmt;
 	}
