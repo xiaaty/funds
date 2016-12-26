@@ -325,7 +325,8 @@
 </form>
 </div>
 </div>
-
+<script src="${contextPath}/js/jquery.form.js" ></script>
+<script src="${contextPath}/js/jquery.alerts.js" ></script>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
