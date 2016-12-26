@@ -288,7 +288,7 @@
 <div class="box_pop"  style="display:none;">
 <div class="pop" style="display:block;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
 <form id="uploadForm" method="post"  enctype="multipart/form-data" style="align-content: center">
-    <h1 class="f18" align="center">体现百分比设置</h1>
+    <h1 class="f18" align="center">提现百分比设置</h1>
     <hr/>
     <div class="mb25 pr" style="align-content: center">
         <table class="table  tc mt15" frame="void" >
@@ -325,7 +325,8 @@
 </form>
 </div>
 </div>
-
+<script src="${contextPath}/js/jquery.form.js" ></script>
+<script src="${contextPath}/js/jquery.alerts.js" ></script>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
@@ -384,7 +385,7 @@
     }
     function firstWithDraw(amount,id){
         $("#contractAmount").val(amount);
-        $("#ampont").val(amount*0.7);
+        $("#ampont").val(Number(amount*0.7).toFixed(2));
         $("#id").val(id);
         $('.mask').show();
         $('.box_pop').show();
@@ -392,6 +393,7 @@
     $(".mr30").click(function () {
         $('.mask').show();
         $('.box_pop').hide();
+        $("#scale").val(70);
     })
     function jumpWithDraw(id) {
         if(confirm("您确认跳过本次提现吗？")){
@@ -410,19 +412,20 @@
     }
      function  scales() {
         var scale=$("#scale").val();
-         if(scale<100 && scale>0){
+         if(scale<=100 && scale>0){
             var contractAmount=$("#contractAmount").val();
             var amount=contractAmount*scale/100;
-            $("#ampont").val(amount);
+             var q=Number(amount).toFixed(2);
+            $("#ampont").val(Number(amount).toFixed(2));
          }else {
-             alert("请输入正确的提现比例")
              $("#scale").val("");
+             alert("请输入正确的提现比例");
          }
 
      }
     $("#import").click(function () {
 
-        var url="/loan/trade/${type}/bathWithDraw/"+$("#id").val();
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+$("#id").val();
         $("#uploadForm").ajaxSubmit({
             url:url,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -447,8 +450,11 @@
         }
     }
    function secondWithDraw(payAmt,firstAmt,id) {
+       if(firstAmt==null || firstAmt==""){
+           firstAmt=0;
+       }
         var secondAmt=payAmt-firstAmt;
-        var url="/loan/trade/${type}/bathWithDraw/"+id;
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+id;
         $.ajax({
             type : "POST",
             url:url,
