@@ -213,10 +213,15 @@ public class BidRepaymentService extends BidSupper{
         }
         //还款总额获取   todo
         BigDecimal sumRepay  = BigDecimal.ZERO;
-
+        //出借人还款本息和
+        BigDecimal sumAmount =BigDecimal.ZERO;
+        for (RepaymentBean bean:list) {
+            BigDecimal loanAmt=bean.getRepaymentPrincipal().add(bean.getRepaymentInterest());
+            sumAmount=sumAmount.add(loanAmt);
+        }
         // 批量冻结
         FundAccountEntity fromEntity = fundAccountService.getFundAccount(Long.valueOf(cusId), GlobalConstants.ACCOUNT_TYPE_LOAN);
-        this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay,bid);
+        this.fundSequenceService.repaymentSequence(list,title,fromEntity,fundOrderEntity,sumRepay,bid,sumAmount,loanEntity.getTradeTypeParent(),loanEntity.getSeqNo());
         //修改订单信息
         paySuperByFuiou.updateOrder(fundOrderEntity, 2, "0000", "成功");
 

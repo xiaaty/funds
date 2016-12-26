@@ -97,5 +97,8 @@ public interface FundsAccountReadMapper extends ReadMapper<FundAccountEntity> {
 	public List<FundAccountEntity> getFundsAccountByBusiType(@Param("busi_type") String busi_type);
 
 	public List<FundAccountEntity> getRedAccountList(List list);
+	public List<FundAccountCustomerBean> findAllFundAcountList();
 
+
+	public List<FundAccountCustomerBean> findFundAccountByDate(@Param("date") String date);
 }
