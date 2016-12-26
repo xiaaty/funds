@@ -392,6 +392,7 @@
     $(".mr30").click(function () {
         $('.mask').show();
         $('.box_pop').hide();
+        $("#scale").val(70);
     })
     function jumpWithDraw(id) {
         if(confirm("您确认跳过本次提现吗？")){
@@ -410,19 +411,19 @@
     }
      function  scales() {
         var scale=$("#scale").val();
-         if(scale<100 && scale>0){
+         if(scale<=100 && scale>0){
             var contractAmount=$("#contractAmount").val();
             var amount=contractAmount*scale/100;
             $("#ampont").val(amount);
          }else {
-             alert("请输入正确的提现比例")
              $("#scale").val("");
+             alert("请输入正确的提现比例");
          }
 
      }
     $("#import").click(function () {
 
-        var url="/loan/trade/${type}/bathWithDraw/"+$("#id").val();
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+$("#id").val();
         $("#uploadForm").ajaxSubmit({
             url:url,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -447,8 +448,11 @@
         }
     }
    function secondWithDraw(payAmt,firstAmt,id) {
+       if(firstAmt==null || firstAmt==""){
+           firstAmt=0;
+       }
         var secondAmt=payAmt-firstAmt;
-        var url="/loan/trade/${type}/bathWithDraw/"+id;
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+id;
         $.ajax({
             type : "POST",
             url:url,
