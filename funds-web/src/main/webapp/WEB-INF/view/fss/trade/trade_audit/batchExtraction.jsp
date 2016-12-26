@@ -288,7 +288,7 @@
 <div class="box_pop"  style="display:none;">
 <div class="pop" style="display:block;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
 <form id="uploadForm" method="post"  enctype="multipart/form-data" style="align-content: center">
-    <h1 class="f18" align="center">体现百分比设置</h1>
+    <h1 class="f18" align="center">提现百分比设置</h1>
     <hr/>
     <div class="mb25 pr" style="align-content: center">
         <table class="table  tc mt15" frame="void" >
@@ -384,7 +384,7 @@
     }
     function firstWithDraw(amount,id){
         $("#contractAmount").val(amount);
-        $("#ampont").val(amount*0.7);
+        $("#ampont").val(Number(amount*0.7).toFixed(2));
         $("#id").val(id);
         $('.mask').show();
         $('.box_pop').show();
@@ -414,7 +414,8 @@
          if(scale<=100 && scale>0){
             var contractAmount=$("#contractAmount").val();
             var amount=contractAmount*scale/100;
-            $("#ampont").val(amount);
+             var q=Number(amount).toFixed(2);
+            $("#ampont").val(Number(amount).toFixed(2));
          }else {
              $("#scale").val("");
              alert("请输入正确的提现比例");
