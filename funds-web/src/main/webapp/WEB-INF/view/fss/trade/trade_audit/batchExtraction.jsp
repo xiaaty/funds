@@ -249,7 +249,7 @@
                                                         &nbsp; &nbsp;
                                                     </c:if>
                                                     <c:if test="${t.status == '10050022'}">
-                                                        <a href="javascript:void(0)" onclick="secondWithDraw(${t.id})">二次提现 </a>
+                                                        <a href="javascript:void(0)" onclick="secondWithDraw(${t.payAmt},${t.firstAmt},${t.id})">二次提现 </a>
                                                         &nbsp; &nbsp;
                                                         <a href="javascript:void(0)" onclick="jumpWithDraw(${t.id})">提现跳过</a>
                                                         &nbsp; &nbsp;
@@ -298,7 +298,7 @@
                 <td align="right">合同金额：</td>
                 <td align="left">
                     <input type="hidden" id="id"/>
-                    <input type="text"style="width:100px;height: 28px;border: none" id="contractAmount" ><br/>
+                    <input type="text"style="width:100px;height: 28px;border: none" id="contractAmount" disabled ><br/>
                 </td>
             </tr>
             <tr>
@@ -324,6 +324,36 @@
 </div>
 </form>
 </div>
+</div>
+<div class="pop" id="second" style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
+    <form id="loadForm" method="post"  enctype="multipart/form-data" style="align-content: center">
+        <h1 class="f18" align="center">提现金额设置</h1>
+        <hr/>
+        <div class="mb25 pr" style="align-content: center">
+            <table class="table  tc mt15" frame="void" >
+                <col width="70" />
+                <col width="150" />
+                <tr style="border: none" >
+                    <td align="right">合同金额：</td>
+                    <td align="left">
+                        <input type="hidden" id="tid"/>
+                        <input type="text"style="width:100px;height: 28px;border: none" id="conAmount" disabled><br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"> 二次提现金额：</td>
+                    <td align="left">
+                        <input type="text"style="width:100px;height: 28px;" name="amount" id="secondAmt" />
+                    </td>
+                </tr>
+            </table>
+
+            <div class="mb20" id="wid-id-714" style="">
+                <button class="btn btn-primary " id="withDraw" type="button" title="导入">提&nbsp;现</button>&nbsp;&nbsp;
+                <button class="btn btn-default" id="cancel"  type="button"  title="取消">取&nbsp;消</button>
+            </div>
+        </div>
+    </form>
 </div>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
@@ -395,6 +425,10 @@
         $('.box_pop').hide();
         $("#scale").val(70);
     })
+    $("#cancel").click(function () {
+        $('.mask').show();
+        $('#second').hide();
+    })
     function jumpWithDraw(id) {
         if(confirm("您确认跳过本次提现吗？")){
             location.href= "${contextPath}/loan/trade/${type}/jumpWithDraw/"+id
@@ -449,26 +483,55 @@
             location.href= "${contextPath}/loan/trade/${type}/chargeWithHold/"+id
         }
     }
-   function secondWithDraw(id) {
+   function secondWithDraw(payAmt,firstAmt,id) {
+       $("#second").show();
+       if(firstAmt==null || firstAmt==""){
+           firstAmt=0;
+       }
+       var secondAmt=payAmt-firstAmt;
+       $("#conAmount").val(payAmt);
+       $("#tid").val(id);
+       $("#secondAmt").val(secondAmt);
         var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+id;
-        $.ajax({
-            type : "POST",
+//        $.ajax({
+//            type : "POST",
+//            url:url,
+//            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+//            dataType: "json",
+//            success: function (data) {
+//                if (data.code == '0000') {
+//                    alert(data.msg);
+//                    $('.box_pop').hide();
+//                    location.reload();
+//                } else {
+//                    alert(data.msg);
+//                    $('.box_pop').hide();
+//                }
+//
+//            }
+//        });
+    }
+    $("#withDraw").click(function () {
+
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+$("#tid").val();
+        $("#loadForm").ajaxSubmit({
             url:url,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "json",
             success: function (data) {
                 if (data.code == '0000') {
                     alert(data.msg);
-                    $('.box_pop').hide();
+                    $('.pop').hide();
                     location.reload();
                 } else {
                     alert(data.msg);
-                    $('.box_pop').hide();
+                    $('.pop').hide();
+                    location.reload();
                 }
 
             }
         });
-    }
+    });
 </script>
 
 <%--<%@include file= "../../../../view/include/foot.jsp"%>--%>
