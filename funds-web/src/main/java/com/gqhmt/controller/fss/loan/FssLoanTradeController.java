@@ -564,13 +564,13 @@ public class FssLoanTradeController {
 			if ("10050009".equals(fssLoanEntity.getStatus())) {
 				BigDecimal firstAmt = new BigDecimal(amount);
 				fssLoanEntity.setFirstAmt(firstAmt);
-				fssLoanEntity.setStatus("10050016");
+				fssLoanEntity.setStatus("10050023");
 				fssLoanService.update(fssLoanEntity);
 				fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, type);
 				map.put("code", "0000");
 				map.put("msg", "成功");
 			}else if("10050022".equals(fssLoanEntity.getStatus())){
-				BigDecimal secondtAmt = fssLoanEntity.getPayAmt().subtract(fssLoanEntity.getFirstAmt());
+				BigDecimal secondtAmt = new BigDecimal(amount);
 				fssLoanEntity.setSecondAmt(secondtAmt);
 				fssLoanEntity.setStatus("10050020");
 				fssLoanService.update(fssLoanEntity);

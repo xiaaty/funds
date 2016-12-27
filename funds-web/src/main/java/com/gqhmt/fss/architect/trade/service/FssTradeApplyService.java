@@ -218,7 +218,7 @@ public class FssTradeApplyService {
 		}else if("11090004".equals(tradeType)){
 			BigDecimal amt=BigDecimal.ZERO;
 			//首次提现
-			if("10050016".equals(fssLoanEntity.getStatus())){
+			if("10050023".equals(fssLoanEntity.getStatus())){
 				amt=fssLoanEntity.getFirstAmt();
 				//二次提现
 			}else{
@@ -316,8 +316,8 @@ public class FssTradeApplyService {
 				}else if("11090004".equals(applyEntity.getBusiType())){
 					FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
 					//首次提现成功进行回盘
-					if("10050016".equals(fssLoanEntity.getStatus())){
-					//98060001成功 //10080002交易成功	 //10050016 首次提现中	//10050017 首次提现成功
+					if("10050023".equals(fssLoanEntity.getStatus())){
+					//98060001成功 //10080002交易成功	 //10050023 首次提现中	//10050017 首次提现成功
 					fssLoanService.update(fssLoanEntity,tradeStatus,"10050017");
 					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), fssLoanEntity.getTradeType());
 					//费用代扣成功修改状态
