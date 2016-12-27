@@ -570,7 +570,7 @@ public class FssLoanTradeController {
 				map.put("code", "0000");
 				map.put("msg", "成功");
 			}else if("10050022".equals(fssLoanEntity.getStatus())){
-				BigDecimal secondtAmt = new BigDecimal(amount);
+				BigDecimal secondtAmt = fssLoanEntity.getPayAmt().subtract(fssLoanEntity.getFirstAmt());
 				fssLoanEntity.setSecondAmt(secondtAmt);
 				fssLoanEntity.setStatus("10050020");
 				fssLoanService.update(fssLoanEntity);

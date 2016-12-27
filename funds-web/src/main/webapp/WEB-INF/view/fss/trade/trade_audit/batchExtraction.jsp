@@ -249,7 +249,7 @@
                                                         &nbsp; &nbsp;
                                                     </c:if>
                                                     <c:if test="${t.status == '10050022'}">
-                                                        <a href="javascript:void(0)" onclick="secondWithDraw(${t.payAmt},${t.firstAmt},${t.id})">二次提现 </a>
+                                                        <a href="javascript:void(0)" onclick="secondWithDraw(${t.id})">二次提现 </a>
                                                         &nbsp; &nbsp;
                                                         <a href="javascript:void(0)" onclick="jumpWithDraw(${t.id})">提现跳过</a>
                                                         &nbsp; &nbsp;
@@ -449,16 +449,11 @@
             location.href= "${contextPath}/loan/trade/${type}/chargeWithHold/"+id
         }
     }
-   function secondWithDraw(payAmt,firstAmt,id) {
-       if(firstAmt==null || firstAmt==""){
-           firstAmt=0;
-       }
-        var secondAmt=payAmt-firstAmt;
+   function secondWithDraw(id) {
         var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+id;
         $.ajax({
             type : "POST",
             url:url,
-            data : {"amount" : secondAmt },
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "json",
             success: function (data) {
