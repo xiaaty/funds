@@ -1,11 +1,14 @@
 package com.gqhmt.controller.fss.loan;
 
+import com.beust.jcommander.internal.Maps;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
+import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
+import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.customer.entity.FssCustomerEntity;
@@ -82,6 +85,8 @@ public class FssLoanTradeController {
 	private CustomerInfoService customerInfoService;
 	@Resource
 	private FundAccountService fundAccountService;
+	@Resource
+	private FssMappingService fssMappingService;
 	/**
 	 * 
 	 * author:jhz time:2016年3月11日 function：借款人放款
@@ -116,6 +121,8 @@ public class FssLoanTradeController {
 		}else if("11092001".equals(type)){//抵押标权人提现
 			return "fss/trade/trade_audit/motegreeWithDraw";
 		}else if("11090004".equals(type)){
+			FssMappingEntity fssMap=fssMappingService.selectByTradeType(type);
+			model.addAttribute("scale",fssMap.getCustId());
 			return "fss/trade/trade_audit/batchExtraction";
 		}
 		return "fss/trade/trade_audit/borrowerloan";
@@ -563,6 +570,11 @@ public class FssLoanTradeController {
 			FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
 			if ("10050009".equals(fssLoanEntity.getStatus())) {
 				BigDecimal firstAmt = new BigDecimal(amount);
+				if(firstAmt.compareTo(fssLoanEntity.getPayAmt())>0){
+					map.put("code", "0001");
+					map.put("msg", "请检查提现金额");
+					return map;
+				}
 				fssLoanEntity.setFirstAmt(firstAmt);
 				fssLoanEntity.setStatus("10050023");
 				fssLoanService.update(fssLoanEntity);
@@ -571,6 +583,11 @@ public class FssLoanTradeController {
 				map.put("msg", "成功");
 			}else if("10050022".equals(fssLoanEntity.getStatus())){
 				BigDecimal secondtAmt = new BigDecimal(amount);
+				if(secondtAmt.compareTo(BigDecimal.ZERO)<=0 && secondtAmt.compareTo(fssLoanEntity.getPayAmt().subtract(fssLoanEntity.getFirstAmt()))>0){
+					map.put("code", "0001");
+					map.put("msg", "请检查提现金额");
+					return map;
+				}
 				fssLoanEntity.setSecondAmt(secondtAmt);
 				fssLoanEntity.setStatus("10050020");
 				fssLoanService.update(fssLoanEntity);
@@ -671,6 +688,31 @@ public class FssLoanTradeController {
 
 		return "redirect:/loan/trade/"+type;
 	}
-
+	/**
+	 * jhz
+	 * 修改首次提现比例
+	 * @param request
+	 * @param type
+	 * @return
+	 * @throws FssException
+	 */
+	@RequestMapping("/loan/trade/{type}/updateScale")
+	@ResponseBody
+	public Object updateScale(HttpServletRequest request, @PathVariable String type,String scale) throws FssException {
+		Map<String, String> map = Maps.newHashMap();
+		// 通过交易类型查询对象
+		FssMappingEntity fssMap = fssMappingService.selectByTradeType(type);
+		try{
+			Integer scales=Integer.valueOf(scale);
+			fssMap.setCustId(scales);
+			fssMappingService.update(fssMap);
+			map.put("code", "0000");
+			map.put("msg", "修改成功");
+		}catch (Exception e){
+			map.put("code", "0001");
+			map.put("msg", e.getMessage());
+		}
+		return map;
+	}
 
 }
