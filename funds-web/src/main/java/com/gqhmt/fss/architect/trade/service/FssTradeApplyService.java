@@ -10,6 +10,7 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
@@ -213,11 +214,18 @@ public class FssTradeApplyService {
 			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),1);
 		}else if("11090005".equals(tradeType)){
 			this.whithholdingApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
-		}
-//		else if("11101001".equals(tradeType)||"11101002".equals(tradeType)){
-//			this.whithholdingApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
-//		}
-		else{
+		//信用标借款人提现
+		}else if("11090004".equals(tradeType)){
+			BigDecimal amt=BigDecimal.ZERO;
+			//首次提现
+			if("10050023".equals(fssLoanEntity.getStatus())){
+				amt=fssLoanEntity.getFirstAmt();
+				//二次提现
+			}else{
+				amt=fssLoanEntity.getSecondAmt();
+			}
+			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),amt,fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getAccNo()),GlobalConstants.ACCOUNT_TYPE_LOAN,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
+		}else{
 			FssAccountEntity fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
 			this.whithholdingApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
 		}
@@ -293,26 +301,47 @@ public class FssTradeApplyService {
 				//代付失败进行资金解冻
 				fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType(),applyEntity.getSeqNo());
 			}
-				FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
-				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-					if("11090001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
-						FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-						//98060001成功 //10080002交易成功
-						fssLoanService.update(fssLoanEntityById,tradeStatus);
-					}else if("11092001".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
-						//借款系统和冠e通抵押权人提现不处理
-					}else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
-						//还款代扣
-					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-					 fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
-				    }else {
-					    if (fssBackplateEntity != null) {
-						 fssBackplateService.updatebackplate(fssBackplateEntity);
-					 } else{
-						 //创建回盘信息
-						 fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
-				 	 }
-				 }
+			FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
+			if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
+				if("11090001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
+					FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+					//98060001成功 //10080002交易成功
+					fssLoanService.update(fssLoanEntityById,tradeStatus,tradeStatus);
+				}else if("11092001".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
+					//借款系统和冠e通抵押权人提现不处理
+				}else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
+					//还款代扣
+				 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
+				 fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
+				}else if("11090004".equals(applyEntity.getBusiType())){
+					FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+					//首次提现成功进行回盘
+					if("10050023".equals(fssLoanEntity.getStatus())){
+					//98060001成功 //10080002交易成功	 //10050023 首次提现中	//10050017 首次提现成功
+					fssLoanService.update(fssLoanEntity,tradeStatus,"10050017");
+					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), fssLoanEntity.getTradeType());
+					//费用代扣成功修改状态
+					}else if("10050018".equals(fssLoanEntity.getStatus())){
+						fssLoanService.update(fssLoanEntity,tradeStatus,"10050019");
+						List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(fssLoanEntity.getId());
+						for (FssFeeList fssFeeList : fssFeeLists) {
+							if("10050018".equals(fssFeeList.getTradeStatus())){
+								fssFeeList.setTradeStatus("10050019");
+								fssLoanService.updateFeeList(fssFeeList);
+							}
+						}
+					//二次提现成功修改状态
+					}else if("10050020".equals(fssLoanEntity.getStatus())){
+						fssLoanService.update(fssLoanEntity,tradeStatus,"10050021");
+					}
+				}else {
+					if (fssBackplateEntity != null) {
+					 fssBackplateService.updatebackplate(fssBackplateEntity);
+				 	} else{
+					 //创建回盘信息
+					 fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
+					}
+			 	}
 			 }else{
 					if (fssBackplateEntity != null) {
 						fssBackplateService.updatebackplate(fssBackplateEntity);

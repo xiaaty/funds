@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>交易审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>分批提现--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
@@ -42,7 +42,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>交易管理</li>
-            <li>借款流程</li>
+            <li>信用标放款</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -142,7 +142,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>借款流程</h2>
+                            <h2>信用标放款</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -154,12 +154,14 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
-                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2000px;">
+                                    <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
                                         <col width="50" />
                                         <col width="150" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
+                                        <col width="200" />
+                                        <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
                                         <col width="200" />
@@ -174,8 +176,10 @@
                                             <td>借款人资金平台账号</td>--%>
                                             <td>交易流水号</td>
                                             <td>合同编号</td>
-                                            <td>合同金额  </td>
-                                            <td>放款金额   </td>
+                                            <td>合同金额</td>
+                                            <td>放款金额</td>
+                                            <td>首次提现金额</td>
+                                            <td>二次提现金额</td>
                                             <td>借款平台</td>
                                             <td>交易状态 </td> 
                                             <td>交易类型</td> 
@@ -200,6 +204,12 @@
                                                         <fss:money money="${t.payAmt}"/>
                                                     </td>
                                                     <td>
+                                                        <fss:money money="${t.firstAmt}"/>
+                                                    </td>
+                                                    <td>
+                                                        <fss:money money="${t.secondAmt}"/>
+                                                    </td>
+                                                    <td>
                                                         <fss:dictView key="${t.loanPlatform}" />
                                                     </td>
                                                      <td>
@@ -216,51 +226,35 @@
                                                     <td><fmt:formatDate value="${t.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td><fmt:formatDate value="${t.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                    <c:if test="${t.tradeType != '11092001'}">
                                                     <a href="${contextPath}/loan/trade/${type}/${t.id}/feeList">查看</a>
-                                                    </c:if>
                                                     &nbsp; &nbsp;
-                                                      <c:if test="${t.tradeType == '11090001' ||t.tradeType=='11090005' && t.status != '10050002'}">
-                                                      		<c:if test="${t.status== '10050001'||t.status== '10080003'||t.status== '10080010'}">
-																<a href="${contextPath}/loan/trade/${type}/toWithHold/${t.id}">代扣</a>
-																&nbsp; &nbsp;
-															</c:if>
-															<c:if test="${t.status == '10080002'|| t.status=='10050001'}">
-																<a href="${contextPath}/loan/trade/${type}/transfer/${t.id}">转给借款人</a>
-																&nbsp; &nbsp;
-															</c:if>
-															<c:if test="${t.status == '10050005'}">
-																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp;
-															</c:if>
-													  </c:if>
-                                                      <%--<c:if test="${t.tradeType == '11090002' || t.tradeType == '11090004'}">--%>
-															<%--<c:if test="${t.status == '10050009'}">--%>
-																<%--<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>--%>
-																<%--&nbsp; &nbsp;--%>
-															<%--</c:if>--%>
-													  <%--</c:if>--%>
-                                                      <c:if test="${t.tradeType == '11090011' || t.tradeType=='11090010'}">
-                                                      		<c:if test="${t.status=='10050010'}">
-																<a href="${contextPath}/loan/trade/${type}/recharge/${t.id}">退费 </a>
-                                                      		</c:if>
-																&nbsp; &nbsp;
-															<c:if test="${t.tradeType == '11090010'}">
-															<c:if test="${t.status=='10050010' ||t.status=='10050099'}">
-																<a href="${contextPath}/loan/trade/${type}/retransfer/${t.id}" >转账</a>
-																&nbsp; &nbsp;
-																</c:if>
-															</c:if>
-															<c:if test="${t.tradeType == '11090011'}">
-															<c:if test="${t.status!='10050100' && t.status!='11050011'}">
-																<a href="${contextPath}/loan/trade/${type}/abort/${t.id}">退款 </a>
-																</c:if>
-																&nbsp; &nbsp;
-															</c:if>
-															
-													  </c:if>
+                                                    <c:if test="${t.status == '10050009'}">
+                                                        <a href="javascript:void(0)" onclick="firstWithDraw(${t.payAmt},${t.id})">首次提现 </a>
+                                                        &nbsp; &nbsp;
+                                                        <a href="javascript:void(0)" onclick="jumpWithDraw(${t.id})">提现跳过</a>
+                                                        &nbsp; &nbsp;
+                                                    </c:if>
+                                                    <c:if test="${t.status == '10050017'}">
+                                                        <a href="javascript:void(0)" onclick="chargeWithHold(${t.id})">费用代扣 </a>
+                                                        &nbsp; &nbsp;
+                                                        <a href="javascript:void(0)" onclick="jumpRechargeWithHold(${t.id})">代扣跳过</a>
 
-                                                            <%--查看借款跑批--%>
+                                                        &nbsp; &nbsp;
+
+                                                    </c:if>
+                                                    <c:if test="${t.status == '10050019'}">
+                                                        <a href="${contextPath}/loan/trade/${type}/charge/${t.id}" >收费 </a>
+                                                        &nbsp; &nbsp;
+                                                        <a href="javascript:void(0)" onclick="jumpRecharge(${t.id})">收费跳过</a>
+                                                        &nbsp; &nbsp;
+                                                    </c:if>
+                                                    <c:if test="${t.status == '10050022'}">
+                                                        <a href="javascript:void(0)" onclick="secondWithDraw(${t.payAmt},${t.firstAmt},${t.id})">二次提现 </a>
+                                                        &nbsp; &nbsp;
+                                                        <a href="javascript:void(0)" onclick="jumpWithDraw(${t.id})">提现跳过</a>
+                                                        &nbsp; &nbsp;
+                                                    </c:if>
+                                                        <%--查看借款跑批--%>
                                                         <c:choose>
                                                             <c:when test="${t.orderNo!=null && t.orderNo!=''}">
                                                                 <a href="${contextPath}/trade/tradeRepay/ftpField/${t.orderNo}">
@@ -283,10 +277,86 @@
 
         </section>
     </div>
-<%@include file= "../../../../view/include/common_footer_css_js.jsp"%>
+
 </div>
+                </section>
+        </div>
+    </div>
 
+<script src="${contextPath}/js/jquery.form.js" ></script>
+<%@include file= "../../../../view/include/common_footer_css_js.jsp"%>
+<div class="box_pop"  style="display:none;">
+<div class="pop" style="display:block;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
+<form id="uploadForm" method="post"  enctype="multipart/form-data" style="align-content: center">
+    <h1 class="f18" align="center">提现百分比设置</h1>
+    <hr/>
+    <div class="mb25 pr" style="align-content: center">
+        <table class="table  tc mt15" frame="void" >
+            <col width="70" />
+            <col width="150" />
+            <tr style="border: none" >
+                <td align="right">合同金额：</td>
+                <td align="left">
+                    <input type="hidden" id="id"/>
+                    <input type="text"style="width:100px;height: 28px;border: none" id="contractAmount" disabled ><br/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">提现金额比例：</td>
+                <td align="left">
+                    <input type="text"style="width:100px;height: 28px;" id="scale" onkeyup="scales();" value="70">%
+                </td>
+            </tr>
+            <tr>
+                <td align="right"> 提现金额：</td>
+                <td align="left">
+                    <input type="text"style="width:100px;height: 28px;border: none" name="amount" id="ampont" />
+                </td>
+            </tr>
+        </table>
 
+    <div class="mb20" id="wid-id-713" style="">
+        <button class="btn btn-primary " id="import" type="button" title="导入">提&nbsp;现</button>&nbsp;&nbsp;
+        <button class="btn btn-default fl mr30" id=""  type="button"  title="取消">取&nbsp;消</button>
+        <%--<div class="mt20"><a class="btn_import fl" href="#" id="import" title="导入">导&nbsp;入</a>--%>
+        <%--<a id="aaaaa" class="fl btn_cancel ml30" href="#" title="取消">取&nbsp;消</a>--%>
+    </div>
+</div>
+</form>
+</div>
+</div>
+<div class="pop" id="second" style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
+    <form id="loadForm" method="post"  enctype="multipart/form-data" style="align-content: center">
+        <h1 class="f18" align="center">提现金额设置</h1>
+        <hr/>
+        <div class="mb25 pr" style="align-content: center">
+            <table class="table  tc mt15" frame="void" >
+                <col width="70" />
+                <col width="150" />
+                <tr style="border: none" >
+                    <td align="right">合同金额：</td>
+                    <td align="left">
+                        <input type="hidden" id="tid"/>
+                        <input type="text"style="width:100px;height: 28px;border: none" id="conAmount" disabled><br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"> 二次提现金额：</td>
+                    <td align="left">
+                        <input type="text"style="width:100px;height: 28px;" name="amount" id="secondAmt" />
+                    </td>
+                </tr>
+            </table>
+
+            <div class="mb20" id="wid-id-714" style="">
+                <button class="btn btn-primary " id="withDraw" type="button" title="导入">提&nbsp;现</button>&nbsp;&nbsp;
+                <button class="btn btn-default" id="cancel"  type="button"  title="取消">取&nbsp;消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="${contextPath}/js/jquery.form.js" ></script>
+<script src="${contextPath}/js/jquery.alerts.js" ></script>
  <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
@@ -343,9 +413,128 @@
             }
         });
     }
+    function firstWithDraw(amount,id){
+        $("#contractAmount").val(amount);
+        $("#ampont").val(Number(amount*0.7).toFixed(2));
+        $("#id").val(id);
+        $('.mask').show();
+        $('.box_pop').show();
+    }
+    $(".mr30").click(function () {
+        $('.mask').show();
+        $('.box_pop').hide();
+        $("#scale").val(70);
+    })
+    $("#cancel").click(function () {
+        $('.mask').show();
+        $('#second').hide();
+    })
+    function jumpWithDraw(id) {
+        if(confirm("您确认跳过本次提现吗？")){
+            location.href= "${contextPath}/loan/trade/${type}/jumpWithDraw/"+id
+        }
+    }
+    function jumpRechargeWithHold(id) {
+        if(confirm("您确认跳过费用代扣吗？")){
+            location.href= "${contextPath}/loan/trade/${type}/jumpWithDraw/"+id
+        }
+    }
+    function jumpRecharge(id) {
+        if(confirm("您确认跳过收费吗？")){
+            location.href= "${contextPath}/loan/trade/${type}/jumpWithDraw/"+id
+        }
+    }
+     function  scales() {
+        var scale=$("#scale").val();
+         if(scale<=100 && scale>0){
+            var contractAmount=$("#contractAmount").val();
+            var amount=contractAmount*scale/100;
+             var q=Number(amount).toFixed(2);
+            $("#ampont").val(Number(amount).toFixed(2));
+         }else {
+             $("#scale").val("");
+             alert("请输入正确的提现比例");
+         }
+
+     }
+    $("#import").click(function () {
+
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+$("#id").val();
+        $("#uploadForm").ajaxSubmit({
+            url:url,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == '0000') {
+                    alert(data.msg);
+                    $('.box_pop').hide();
+                    location.reload();
+                } else {
+                    alert(data.msg);
+                    $('.box_pop').hide();
+                    location.reload();
+                }
+
+            }
+        });
+    });
+    function chargeWithHold(id) {
+        if(confirm("您确认代扣费用吗？")){
+            location.href= "${contextPath}/loan/trade/${type}/chargeWithHold/"+id
+        }
+    }
+   function secondWithDraw(payAmt,firstAmt,id) {
+       $("#second").show();
+       if(firstAmt==null || firstAmt==""){
+           firstAmt=0;
+       }
+       var secondAmt=payAmt-firstAmt;
+       $("#conAmount").val(payAmt);
+       $("#tid").val(id);
+       $("#secondAmt").val(secondAmt);
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+id;
+//        $.ajax({
+//            type : "POST",
+//            url:url,
+//            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+//            dataType: "json",
+//            success: function (data) {
+//                if (data.code == '0000') {
+//                    alert(data.msg);
+//                    $('.box_pop').hide();
+//                    location.reload();
+//                } else {
+//                    alert(data.msg);
+//                    $('.box_pop').hide();
+//                }
+//
+//            }
+//        });
+    }
+    $("#withDraw").click(function () {
+
+        var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+$("#tid").val();
+        $("#loadForm").ajaxSubmit({
+            url:url,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == '0000') {
+                    alert(data.msg);
+                    $('.pop').hide();
+                    location.reload();
+                } else {
+                    alert(data.msg);
+                    $('.pop').hide();
+                    location.reload();
+                }
+
+            }
+        });
+    });
 </script>
 
-<%@include file= "../../../../view/include/foot.jsp"%>
+<%--<%@include file= "../../../../view/include/foot.jsp"%>--%>
 </body>
 
 </html>

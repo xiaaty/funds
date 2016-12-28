@@ -396,6 +396,7 @@ public class FssLoanService {
 	 * function：修改
 	 */
 	public void update(FssLoanEntity fssLoanEntity) {
+		fssLoanEntity.setModifyTime(new Date());
 		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntity);
 	}
 	/**.
@@ -404,10 +405,10 @@ public class FssLoanService {
 	 * time:2016年3月16日
 	 * function：修改
 	 */
-	public void update(FssLoanEntity fssLoanEntity,String tradeStatus) {
+	public void update(FssLoanEntity fssLoanEntity,String tradeStatus,String state) {
 		//成功
-			fssLoanEntity.setResult(tradeStatus);
-			fssLoanEntity.setStatus(tradeStatus);
+		fssLoanEntity.setResult(tradeStatus);
+		fssLoanEntity.setStatus(state);
 		fssLoanEntity.setModifyTime(new Date());
 		fssLoanWriteMapper.updateByPrimaryKey(fssLoanEntity);
 	}
@@ -633,6 +634,7 @@ public class FssLoanService {
 	 * function：修改费用状态
 	 */
 	public void updateFeeList(FssFeeList feeList) throws FssException{
+		feeList.setModifyTime(new Date());
 		fssFeeListWriteMapper.updateByPrimaryKey(feeList);
 	}
 	/**

@@ -81,7 +81,7 @@ public class AccountData {
                         this.createLoanBidAccount(fssAccountBindHisEntity.getBusiId(),fssAccountBindHisEntity.getContractNo(),customerInfoEntity);
                         break;
                     case 96:
-                        this.createInternetAccount(customerInfoEntity);
+                        this.createInvestmentAccount1(customerInfoEntity);
                         break;
                 }
                 fssAccountBindHisEntity.setStatus("2");
@@ -140,6 +140,15 @@ public class AccountData {
      * @param customerInfoEntity
      */
     public void createInvestmentAccount(CustomerInfoEntity customerInfoEntity) throws FssException{
+        String seq_no=this.createSeqNo();
+        tyzfTradeService.createInvstmentAccount("11020006",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),String.valueOf(customerInfoEntity.getCertType()), null, seq_no, customerInfoEntity.getMobilePhone());
+    }
+
+    /**
+     * 开通线下出借账户
+     * @param customerInfoEntity
+     */
+    public void createInvestmentAccount1(CustomerInfoEntity customerInfoEntity) throws FssException{
         String seq_no=this.createSeqNo();
         tyzfTradeService.createInvstmentAccount("11020006",customerInfoEntity.getId(), customerInfoEntity.getCustomerName(),GlobalConstants.TYZF_PERSONCUST,customerInfoEntity.getCertNo(),String.valueOf(customerInfoEntity.getCertType()), null, seq_no, customerInfoEntity.getMobilePhone());
     }

@@ -139,6 +139,11 @@ public class TyzfTradeService {
         this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+3,96,mobile,"30130002","30010016");
     }
 
+    public void createInvstmentAccount1(String tradeType,Long custId,String custName,String custType,String certNo,String certType,String busiNo,String seq_no,String mobile){
+        //开通线下出借应付款账户
+        this.createAccount(tradeType,custId,custName,custType,certNo,certType,busiNo,seq_no+"_"+3,96,mobile,"30130002","30010016");
+    }
+
     /**
      * 创建借款人账户
      * @param tradeType

@@ -111,12 +111,12 @@ public class FssLoanTradeController {
 		model.put("status", status);
 		if("11090003".equals(type)){//纯线下放款
 			return "fss/trade/trade_audit/borrowerloan_offline";
-		}
-		else if("11090006".equals(type)){//冠e通抵押标权人提现
+		}else if("11090006".equals(type)){//冠e通抵押标权人提现
 			return "fss/trade/trade_audit/motegreeWithDraw";
-		}
-		else if("11092001".equals(type)){//抵押标权人提现
+		}else if("11092001".equals(type)){//抵押标权人提现
 			return "fss/trade/trade_audit/motegreeWithDraw";
+		}else if("11090004".equals(type)){
+			return "fss/trade/trade_audit/batchExtraction";
 		}
 		return "fss/trade/trade_audit/borrowerloan";
 	}
@@ -318,8 +318,12 @@ public class FssLoanTradeController {
 				}
 			if(i==fssFeeLists.size()){
 				// 如果全部成功,修改记录收费状态并进入回盘记录表中,失败返回页面,继续处理
-				fssLoanEntityById.setStatus("10050007");
-				fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
+				if(!"11090004".equals(type)){
+					fssLoanEntityById.setStatus("10050007");
+					fssBackplateService.createFssBackplateEntity(fssLoanEntityById.getSeqNo(), fssLoanEntityById.getMchnChild(), fssLoanEntityById.getTradeType());
+				}else {
+					fssLoanEntityById.setStatus("10050022 ");
+				}
 				map.put("msg", "0000");
 			}else{
 				//收取失败继续收取费用
@@ -438,21 +442,7 @@ public class FssLoanTradeController {
 		return "fss/trade/backplateList";
 	}
 	
-//
-//	 /*
-//	  点击提现跳转到抵押权人提现页面
-//	 */
-//	@RequestMapping(value = "/fss/loan/trade/{type}/{id}",method = {RequestMethod.GET,RequestMethod.POST})
-//	public String queryMortgageeDetail(HttpServletRequest request, ModelMap model, FssTradeApplyEntity tradeapply, @PathVariable Long  id,@PathVariable String  type) throws Exception {
-//		//账户余额小于提现金额
-//		FssLoanEntity loanEntity= fssLoanService.getFssLoanEntityById(id);
-//		//冻结资金
-//		fssTradeApplyService.insertLoanTradeApply(loanEntity,type);
-//		loanEntity.setModifyTime(new Date());
-//		loanEntity.setWithDrawStatus("1");
-//		fssLoanService.update(loanEntity);
-//		return "redirect:/trade/tradeApply/1104/"+type;
-//	}
+
 	/**
 	 *
 	 * author:jhz time:2016年07月04日 function：点击提现跳转到提现页面
@@ -549,9 +539,138 @@ public class FssLoanTradeController {
 		}catch (FssException e){
 			map.put("code", "0001");
 			map.put("message", e.getMessage());
-			LogUtil.info(this.getClass(), e.getMessage());
+			LogUtil.error(this.getClass(), e.getMessage());
 		}
 		return map;
 	}
+
+	/**
+	 * jhz
+	 * 添加到借款人提现（分批提现）
+	 * @param request
+	 * @param id
+	 * @param type
+	 * @param amount
+	 * @return
+     * @throws FssException
+     */
+	@RequestMapping("/loan/trade/{type}/bathWithDraw/{id}")
+	@ResponseBody
+	public Object bathWithDraw(HttpServletRequest request, @PathVariable Long id, @PathVariable String type,String amount ) throws FssException {
+		Map<String, String> map = new HashMap<String, String>();
+		// 通过id查询交易对象
+		try {
+			FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
+			if ("10050009".equals(fssLoanEntity.getStatus())) {
+				BigDecimal firstAmt = new BigDecimal(amount);
+				fssLoanEntity.setFirstAmt(firstAmt);
+				fssLoanEntity.setStatus("10050023");
+				fssLoanService.update(fssLoanEntity);
+				fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, type);
+				map.put("code", "0000");
+				map.put("msg", "成功");
+			}else if("10050022".equals(fssLoanEntity.getStatus())){
+				BigDecimal secondtAmt = new BigDecimal(amount);
+				fssLoanEntity.setSecondAmt(secondtAmt);
+				fssLoanEntity.setStatus("10050020");
+				fssLoanService.update(fssLoanEntity);
+				fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, type);
+				map.put("code", "0000");
+				map.put("msg", "成功");
+			}else{
+				map.put("code", "0001");
+				map.put("msg", "不符合提现状态");
+			}
+		}catch (Exception e){
+			map.put("code", "0001");
+			map.put("msg", e.getMessage());
+			LogUtil.error(this.getClass(), e.getMessage());
+		}
+
+		return map;
+	}
+
+	/**
+	 * jhz
+	 * 提现或代扣跳过
+	 * @param request
+	 * @param id
+	 * @param type
+	 * @return
+	 * @throws FssException
+     */
+	@RequestMapping("/loan/trade/{type}/jumpWithDraw/{id}")
+	public String jumpWithDraw(HttpServletRequest request, @PathVariable Long id, @PathVariable String type ) throws FssException {
+		// 通过id查询交易对象
+		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
+		//首次提现跳过
+		if("10050009".equals(fssLoanEntity.getStatus())){
+			fssLoanEntity.setStatus("10050017");
+			fssLoanService.update(fssLoanEntity);
+			//首次提现跳过之后进行回盘
+			fssBackplateService.createFssBackplateEntity(fssLoanEntity.getSeqNo(), fssLoanEntity.getMchnChild(), fssLoanEntity.getTradeType());
+		//收费代扣跳过
+		}else if("10050017".equals(fssLoanEntity.getStatus())){
+			fssLoanEntity.setStatus("10050019");
+			fssLoanService.update(fssLoanEntity);
+		//跳过收费
+		}else if("10050019".equals(fssLoanEntity.getStatus())){
+			fssLoanEntity.setStatus("10050022");
+			fssLoanService.update(fssLoanEntity);
+		//跳过二次提现
+		}else if("10050022".equals(fssLoanEntity.getStatus())){
+			fssLoanEntity.setStatus("10050021");
+			fssLoanService.update(fssLoanEntity);
+		}
+		return "redirect:/loan/trade/"+type;
+	}
+
+	/**
+	 * jhz
+	 * 费用代扣
+	 * @param request
+	 * @param id
+	 * @param type
+	 * @return
+	 * @throws FssException
+     */
+	@RequestMapping("/loan/trade/{type}/chargeWithHold/{id}")
+//	@ResponseBody
+	public Object chargeWithHold(HttpServletRequest request, @PathVariable Long id, @PathVariable String type) throws FssException {
+		BigDecimal amount=BigDecimal.ZERO;
+		// 通过id查询交易对象
+		FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(id);
+
+		List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(id);
+		if (fssFeeLists == null || fssFeeLists.size() == 0) {
+			// 处理前台页面消息提示内容
+			return null;
+		} else {
+
+			for (FssFeeList fssFeeList : fssFeeLists) {
+				if("".equals(fssFeeList.getTradeStatus())||fssFeeList.getTradeStatus()==null){
+					if(fssFeeList.getFeeAmt().compareTo(BigDecimal.ZERO)>0&&!"10990004".equals(fssFeeList.getFeeType())){
+						amount=amount.add(fssFeeList.getFeeAmt());
+						// 修改费用状态	收取成功
+						fssFeeList.setModifyTime(new Date());
+						fssFeeList.setTradeStatus("10050018");
+					}else{
+						fssFeeList.setRepCode("10050015");
+						fssFeeList.setModifyTime(new Date());
+						fssFeeList.setTradeStatus("10050015");
+					}
+				}
+				fssLoanService.updateFeeList(fssFeeList);
+			}
+			fssTradeApplyService.whithholdingApply(null,null,fssLoanEntity.getTradeType(),amount,fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getAccNo()),GlobalConstants.ACCOUNT_TYPE_LOAN
+					,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
+			//信用标借款人提现
+			fssLoanEntity.setStatus("10050018");
+			fssLoanService.update(fssLoanEntity);
+		}
+
+		return "redirect:/loan/trade/"+type;
+	}
+
 
 }
