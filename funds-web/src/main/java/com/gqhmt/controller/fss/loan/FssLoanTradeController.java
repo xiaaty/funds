@@ -18,7 +18,6 @@ import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -583,7 +582,7 @@ public class FssLoanTradeController {
 				map.put("msg", "成功");
 			}else if("10050022".equals(fssLoanEntity.getStatus())){
 				BigDecimal secondtAmt = new BigDecimal(amount);
-				if(secondtAmt.compareTo(BigDecimal.ZERO)<=0 && secondtAmt.compareTo(fssLoanEntity.getPayAmt().subtract(fssLoanEntity.getFirstAmt()))>0){
+				if(secondtAmt.compareTo(BigDecimal.ZERO)<=0 || secondtAmt.compareTo(fssLoanEntity.getPayAmt().subtract(fssLoanEntity.getFirstAmt()))>0){
 					map.put("code", "0001");
 					map.put("msg", "请检查提现金额");
 					return map;
