@@ -703,10 +703,15 @@ public class FssLoanTradeController {
 		FssMappingEntity fssMap = fssMappingService.selectByTradeType(type);
 		try{
 			Integer scales=Integer.valueOf(scale);
-			fssMap.setCustId(scales);
-			fssMappingService.update(fssMap);
-			map.put("code", "0000");
-			map.put("msg", "修改成功");
+			if(0<scales && scales<100) {
+				fssMap.setCustId(scales);
+				fssMappingService.update(fssMap);
+				map.put("code", "0000");
+				map.put("msg", "修改成功");
+			}else{
+				map.put("code", "0001");
+				map.put("msg", "请输入正确的提现比例");
+			}
 		}catch (Exception e){
 			map.put("code", "0001");
 			map.put("msg", e.getMessage());

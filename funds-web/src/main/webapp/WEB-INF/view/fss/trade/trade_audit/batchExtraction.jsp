@@ -482,7 +482,7 @@
     }
      function  scales() {
         var scale=$("#scale").val();
-         if(scale<=100 && scale>0){
+         if(scale<100 && scale>0){
             var contractAmount=$("#contractAmount").val();
             var amount=contractAmount*scale/100;
              var q=Number(amount).toFixed(2);
