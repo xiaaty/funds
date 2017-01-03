@@ -3,11 +3,11 @@ package com.gqhmt.controller.fss.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.*;
-import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.customer.service.FssCustomerService;
+import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
+import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
 import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
@@ -72,9 +72,9 @@ public class FssTradeApplyController {
     @Resource
     private FssAccountService fssAccountService;
     @Resource
-    private FssCustomerService fssCustomerService;
-    @Resource
     private FssBondTransferService fssBondTransferService;
+	@Resource
+	private FssLoanService fssLoanService;
 
     /**
 	 * author:柯禹来
@@ -230,8 +230,25 @@ public class FssTradeApplyController {
 				String seqNo=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());//流水号
 				fundsTradeImpl.unFroze(tradeapply.getMchnChild(),tradeapply.getSeqNo(),tradeapply.getBusiType(),String.valueOf(tradeapply.getCustId()),tradeapply.getUserNo(),tradeapply.getTradeAmount(),tradeapply.getCustType(),seqNo);
 			}
-			//不通过，添加回盘记录
-			fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(),tradeapply.getMchnChild(),tradeapply.getBusiType().toString());
+			//分批提现审核不通过
+			if(!"".equals(tradeapply.getFormId()) && tradeapply.getFormId()!=null){
+				if("11090004".equals(tradeapply.getBusiType())){
+					FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(tradeapply.getFormId());
+					//审核失败首次提现中改为可以重新首次提现状态
+					if("10050023".equals(fssLoanEntity.getStatus())){
+						fssLoanEntity.setStatus("10050009");
+						fssLoanService.update(fssLoanEntity);
+						//审核失败二次提现中改为可以重新首次提现状态
+					}else if("10050020".equals(fssLoanEntity.getStatus())){
+						fssLoanEntity.setStatus("10050022");
+						fssLoanService.update(fssLoanEntity);
+					}
+				}
+			}
+			//不是分批提现的，审核不通过，添加回盘记录
+			if(!"11090004".equals(tradeapply.getBusiType())) {
+				fssBackplateService.createFssBackplateEntity(tradeapply.getSeqNo(), tradeapply.getMchnChild(), tradeapply.getBusiType().toString());
+			}
 			map.put("code", "0001");
 			map.put("message", "success");
 		}

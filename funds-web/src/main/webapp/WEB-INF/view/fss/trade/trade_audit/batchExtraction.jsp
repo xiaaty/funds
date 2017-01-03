@@ -134,7 +134,7 @@
 
                         </div>
 
-    <div id="content">
+    <div id="contentss">
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
@@ -154,6 +154,10 @@
                                 <!-- end widget edit box -->
                                 <!-- widget content -->
                                 <div class="widget-body">
+                                    <div class="widget-body-nobg-toolbar" style="overflow:hidden;">
+                                        <button type="button" class="btn btn-default fl table-nobg-btn" id="btn_add">&nbsp;设置首次提现比例&nbsp;</button>
+                                        <%--<input type="hidden" id="parentId" value="${scale}" />--%>
+                                    </div>
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15" style="min-width:2400px;">
                                         <col width="50" />
                                         <col width="150" />
@@ -304,7 +308,7 @@
             <tr>
                 <td align="right">提现金额比例：</td>
                 <td align="left">
-                    <input type="text"style="width:100px;height: 28px;" id="scale" onkeyup="scales();" value="70">%
+                    <input type="text"style="width:100px;height: 28px;" id="scale" onkeyup="scales();" value="${scale}">%
                 </td>
             </tr>
             <tr>
@@ -351,6 +355,29 @@
             <div class="mb20" id="wid-id-714" style="">
                 <button class="btn btn-primary " id="withDraw" type="button" title="导入">提&nbsp;现</button>&nbsp;&nbsp;
                 <button class="btn btn-default" id="cancel"  type="button"  title="取消">取&nbsp;消</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pop" id="updateScale" style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
+    <form id="scaleForm" method="post"  enctype="multipart/form-data" style="align-content: center">
+        <h1 class="f18" align="center">提现比例设置</h1>
+        <hr/>
+        <div class="mb25 pr" style="align-content: center">
+            <table class="table  tc mt15" frame="void" >
+                <col width="70" />
+                <col width="150" />
+                <tr style="border: none" >
+                    <td align="right">比例：</td>
+                    <td align="left">
+                        <input type="text"style="width:100px;height: 28px;" id="ratio" name="scale" value="${scale}"  />%
+                    </td>
+                </tr>
+            </table>
+
+            <div class="mb20" id="wid-id-715" style="">
+                <button class="btn btn-primary " id="update" type="button" title="导入">修&nbsp;改</button>&nbsp;&nbsp;
+                <button class="btn btn-default " id="cancels"  type="button"  title="取消">取&nbsp;消</button>
             </div>
         </div>
     </form>
@@ -415,19 +442,28 @@
     }
     function firstWithDraw(amount,id){
         $("#contractAmount").val(amount);
-        $("#ampont").val(Number(amount*0.7).toFixed(2));
+        $("#ampont").val(Number(amount*${scale}/100).toFixed(2));
         $("#id").val(id);
         $('.mask').show();
         $('.box_pop').show();
     }
     $(".mr30").click(function () {
-        $('.mask').show();
+        $('.mask').hide();
         $('.box_pop').hide();
-        $("#scale").val(70);
+        $("#scale").val(${scale});
     })
     $("#cancel").click(function () {
-        $('.mask').show();
+        $('.mask').hide();
         $('#second').hide();
+    })
+    $("#btn_add").click(function () {
+        $('.mask').show();
+        $('#updateScale').show();
+    })
+    $("#cancels").click(function () {
+        $('.mask').hide();
+        $('#updateScale').hide();
+        $("#ratio").val(${scale});
     })
     function jumpWithDraw(id) {
         if(confirm("您确认跳过本次提现吗？")){
@@ -446,7 +482,7 @@
     }
      function  scales() {
         var scale=$("#scale").val();
-         if(scale<=100 && scale>0){
+         if(scale<100 && scale>0){
             var contractAmount=$("#contractAmount").val();
             var amount=contractAmount*scale/100;
              var q=Number(amount).toFixed(2);
@@ -458,7 +494,6 @@
 
      }
     $("#import").click(function () {
-
         var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+$("#id").val();
         $("#uploadForm").ajaxSubmit({
             url:url,
@@ -515,6 +550,26 @@
 
         var url="${contextPath}/loan/trade/${type}/bathWithDraw/"+$("#tid").val();
         $("#loadForm").ajaxSubmit({
+            url:url,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == '0000') {
+                    alert(data.msg);
+                    $('.pop').hide();
+                    location.reload();
+                } else {
+                    alert(data.msg);
+                    $('.pop').hide();
+                    location.reload();
+                }
+
+            }
+        });
+    });
+    $("#update").click(function () {
+        var url="${contextPath}/loan/trade/${type}/updateScale";
+        $("#scaleForm").ajaxSubmit({
             url:url,
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "json",

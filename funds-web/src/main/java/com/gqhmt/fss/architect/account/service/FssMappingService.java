@@ -219,4 +219,26 @@ public class FssMappingService {
         return list;
     }
 
+    /**
+     * jhz
+     * 查寻设置百分比
+     * @param tradeType
+     * @return
+     * @throws FssException
+     */
+    public FssMappingEntity selectByTradeType(String tradeType)throws FssException{
+        return  fssMappingReadMapper.selectByTradeType(tradeType);
+    }
+
+    /**
+     * jhz
+     * 修改
+     * @param fssMappingEntity
+     * @return
+     * @throws FssException
+     */
+    public int update(FssMappingEntity fssMappingEntity)throws FssException{
+        fssMappingEntity.setModifyTime(new Date());
+        return fssMappingWriteMapper.updateByPrimaryKey(fssMappingEntity);
+    }
 }
