@@ -73,5 +73,5 @@ public interface FssAccountReadMapper extends ReadMapper<FssAccountEntity> {
 	public FssAccountEntity getAccountByBusiNo(@Param("busiNo") String busiNo,@Param("accType") Integer accType);
 
 
-
+    List<Map> queryExcelValue(@Param("accountId") String id, @Param("startTime")String startTime, @Param("endTime")String endTime);
 }

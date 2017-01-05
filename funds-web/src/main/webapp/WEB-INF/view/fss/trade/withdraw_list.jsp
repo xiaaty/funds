@@ -139,6 +139,7 @@
                                         <footer>
                                           <button class="btn btn-primary" onclick="querySub();">查&nbsp;&nbsp;&nbsp;询</button>
                                             <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();" value="导&nbsp;&nbsp;&nbsp;出"/>
+                                            <input type="button" class="btn btn-primary" onclick="exportLoanExcel();" value="新导出"/>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -383,8 +384,16 @@
     });
 
     function exportExcel(){
-
         var url = "${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel";
+        exp(url);
+    }
+
+    function exportLoanExcel(){
+        var url = "${contextPath}/trade/tradeApply/${type}/${bus}/exportLoanExcel";
+        exp(url);
+    }
+
+    function exp(url){
         var form = $('<form></form>');
         var map = "${map}";
 
@@ -399,8 +408,6 @@
         form.append(input);
         // 提交表单
         form.submit();
-
-        //  return false;
     }
 
     function querySub(){

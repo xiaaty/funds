@@ -183,6 +183,9 @@
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>--%>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a> --%>
                                                 <%--<a href="${contextPath}/funds/account/accountWater/${acc.id}">查看流水</a> --%>
+                                                        <if test="${accMap.custId==99}">
+                                                            <a href="javascript:void(0);" onclick="expBiz('${acc.id}');">导出</a>
+                                                        </if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -198,6 +201,34 @@
         </section>
     </div>
     </div>
+
+<div class="pop" id="exportExcel"
+     style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;">
+    <form id="uploadForm" method="post" action="">
+        <h1 class="f18">导入excel</h1>
+        <p class="mt30 mb10">请选择时间范围</p>
+        <input id="popAccId" type="hidden">
+        <div class="mb25 pr">
+            <section class="fl">
+                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                    <input id="popStartTime" type="text" maxlength="10" readonly="readonly" name="startTime"  class="selectdate" placeholder="请选择时间" value="${accMap.startTime}">
+                </label>
+            </section>
+            <span class="fl">&nbsp;至&nbsp;</span>
+            <section class="fl">
+                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
+                    <input id="popEndTime" type="text" maxlength="10" readonly="readonly" name="endTime" class="selectdate" placeholder="请选择时间" value="${accMap.endTime}">
+                </label>
+            </section>
+        </div>
+        <div class="mb20" id="wid-id-713">
+            <button class="btn btn-primary " id="export" type="button" title="导入">导&nbsp;出</button>
+            &nbsp;&nbsp;
+            <button class="btn btn-default fl mr30" id="mr30" type="button" title="取消">取&nbsp;消</button>
+        </div>
+    </form>
+</div>
+
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
@@ -235,7 +266,33 @@
 	    		}
 	    	}
 	    }
-</script>
+
+     $(function () {
+         $(".mr30").click(function () {
+             $('.pop').hide();
+             $("#popAccId").val("");
+         });
+
+         $("#export").click(function () {
+             var accId = $("#popAccId").val();
+             var url = "${contextPath}/account/export/" + accId;
+
+             $("#uploadForm").attr("action", url);
+             $("#uploadForm").submit();
+
+             $('.pop').hide();
+         })
+
+     });
+
+
+
+     function expBiz(accId){
+         $("#popAccId").val(accId);
+         $('.pop').show();
+     }
+
+ </script>
 
 <%@include file="../../../view/include/foot.jsp"%>
 </body>
