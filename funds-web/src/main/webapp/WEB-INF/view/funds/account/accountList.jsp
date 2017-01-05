@@ -183,9 +183,8 @@
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>--%>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a> --%>
                                                 <%--<a href="${contextPath}/funds/account/accountWater/${acc.id}">查看流水</a> --%>
-                                                        <if test="${accMap.custId==99}">
-                                                            <a href="javascript:void(0);" onclick="expBiz('${acc.id}');">导出</a>
-                                                        </if>
+                                                        <!-- 是否需要在此处增加账户类型校验 -->
+                                                        <a href="javascript:void(0);" onclick="expBiz('${acc.id}');">导出</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -205,7 +204,7 @@
 <div class="pop" id="exportExcel"
      style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;">
     <form id="uploadForm" method="post" action="">
-        <h1 class="f18">导入excel</h1>
+        <h1 class="f18">导出excel</h1>
         <p class="mt30 mb10">请选择时间范围</p>
         <input id="popAccId" type="hidden">
         <div class="mb25 pr">
