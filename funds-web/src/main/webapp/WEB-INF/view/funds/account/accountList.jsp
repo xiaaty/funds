@@ -202,23 +202,36 @@
     </div>
 
 <div class="pop" id="exportExcel"
-     style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;">
+     style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 450px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;">
     <form id="uploadForm" method="post" action="">
-        <h1 class="f18">导出excel</h1>
-        <p class="mt30 mb10">请选择时间范围</p>
+
         <input id="popAccId" type="hidden">
         <div class="mb25 pr">
+            <table class="table lh32">
+                <col width="100" />
+                <col width="100" />
+                <col width="100" />
+                <col width="100" />
+                <col />
+                <tbody>
+                <tr></tr>
+                <tr>
+                    <td  colspan="4">
             <section class="fl">
-                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                    <input id="popStartTime" type="text" maxlength="10" readonly="readonly" name="startTime"  class="selectdate" placeholder="请选择时间" value="${accMap.startTime}">
-                </label>
+                <label class="input" style="width:140px;">
+                    <input id="popStartTime" type="text" maxlength="20" readonly="readonly" name="startTime"  class="selectdate" placeholder="开始时间" value="${accMap.startTime}">
+                </label><i class="icon-append fa fa-calendar"></i>
             </section>
-            <span class="fl">&nbsp;至&nbsp;</span>
+            <span class="fl">&nbsp;&nbsp;至&nbsp;&nbsp;</span>
             <section class="fl">
-                <label class="input" style="width:140px;"> <i class="icon-append fa fa-calendar"></i>
-                    <input id="popEndTime" type="text" maxlength="10" readonly="readonly" name="endTime" class="selectdate" placeholder="请选择时间" value="${accMap.endTime}">
-                </label>
+                <label class="input" style="width:140px;">
+                    <input id="popEndTime" type="text" maxlength="20" readonly="readonly" name="endTime" class="selectdate" placeholder="结束时间" value="${accMap.endTime}">
+                </label><i class="icon-append fa fa-calendar"></i>
             </section>
+                </td>
+                </tr>
+                </tbody>
+                </table>
         </div>
         <div class="mb20" id="wid-id-713">
             <button class="btn btn-primary " id="export" type="button" title="导入">导&nbsp;出</button>
