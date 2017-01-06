@@ -762,7 +762,7 @@ public class FssTradeApplyService {
 		// 验证文件夹是否存在
 		File folder = new File(fileFolder);
 		if (!folder.exists()) {
-			folder.mkdir();
+			folder.mkdirs();
 		}
 		String newFileName;
 		if (i != 0) {

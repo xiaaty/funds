@@ -25,15 +25,14 @@
 			FROM t_gq_fss_account t
 	</sql>
 
-
 	<select id="findCustomerAccountByParams" parameterType="fssAccountEntity" resultType="fssAccountEntity">
 		<include refid="selectSql"/>
 		WHERE t.cust_no = #{custNo}
 		order by t.create_time desc
 	</select>
-	
+
 	<select id="getBussinessAccountList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.account.bean.BussAndAccountBean">
-	   SELECT 
+	   SELECT
 		   a.acc_no accNo,
 		   a.state state,
 		   a.acc_type accType,
@@ -77,13 +76,13 @@
        </if>
 	   <if test="certNo!=null and certNo!=''">
 	      AND c.cert_no=#{certNo}
-	   </if> 
+	   </if>
 	   <if test="busiNo!=null and busiNo!=''">
 	      AND a.busi_no=#{busiNo}
-	   </if> 
+	   </if>
 	   <if test="mobile!=null and mobile!=''">
 	      AND c.mobile=#{mobile}
-	   </if> 
+	   </if>
 	   order by c.create_time desc
 	</select>
 
@@ -110,4 +109,54 @@
 		<include refid="selectSql"/>
 		WHERE t.busi_no = #{busiNo} AND t.acc_type=#{accType}
 	</select>
+    <select id="queryExcelValue" resultType="java.util.Map">
+        SELECT
+          a.cust_id 客户id,
+          t.fund_type 费用类型,
+          CASE t.`fund_type`
+          WHEN  1001 THEN '充值'
+          WHEN  1003 THEN '提现'
+          WHEN  1004 THEN '提现退票'
+          WHEN  1005 THEN '一般转账:转出'
+          WHEN  1006 THEN '一般转账:转入'
+          WHEN  1007 THEN '资金冻结'
+          WHEN  1009 THEN '资金收入'
+          WHEN  1012 THEN '实时提现'
+          WHEN  1010 THEN '债权转让手续费'
+          WHEN  2001 THEN '提现'
+          WHEN  2003 THEN '提现'
+          WHEN  2002 THEN '一般冻结解冻'
+          WHEN  3006 THEN '收款利息（出借入）'
+          WHEN  4001 THEN '收取账户管理费'
+          WHEN  4002 THEN '账户管理费'
+          WHEN  4003 THEN '收取保证金'
+          WHEN  4004 THEN '收取保证金'
+          WHEN  4005 THEN '资金补偿'
+          WHEN  4006 THEN '服务费'
+          WHEN  4007 THEN '归还保证金'
+          WHEN  4008 THEN '抵押标借款人转账'
+          WHEN  4010 THEN '提现手续费'
+          WHEN  4011 THEN '账户管理费'
+          WHEN  4014 THEN '归还逆服务费'
+          WHEN  10990003 THEN '咨询服务费'
+          WHEN  10990006 THEN '收取保证金'
+          ELSE '其他'
+          END 费用类型1,
+          t.`amount` 金额,
+          a.`user_name` 费用人手机号,
+          a.`cust_name` 费用人姓名,
+          t.`sumary` 交易描述,
+          t.create_time 入账时间
+        FROM
+          `t_gq_fund_sequence` t
+          LEFT JOIN `t_gq_fund_account` a
+            ON t.`o_ACCOUNT_ID` = a.`id`
+        WHERE t.`ACCOUNT_ID` = #{accountId}
+		<if test="startTime!=null and startTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+		</if>
+    </select>
 </mapper>
