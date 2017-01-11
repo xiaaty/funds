@@ -62,9 +62,17 @@
 			t.channel_no channelNo,
 			c.`CUSTOMER_NAME` custName,
 			c.MOBILE_PHONE custMobile,
-			t.settle_type settleType
+			t.settle_type settleType,
+			tl.contract_amt contractAmt,
+			f1.fee_amt riskSeserveFund,
+			f2.fee_amt paymentDeposit,
+			f3.fee_amt consultingServices
 			FROM t_gq_fss_trade_apply t left join t_gq_customer_info c
 			ON t.cust_id=c.id
+			left join t_gq_fss_loan tl ON t.form_id = tl.id
+			left join t_gq_fss_feelist f1 on f1.loan_id = t.form_id AND f1.fee_type = '21992105'
+			left join t_gq_fss_feelist f2 on f2.loan_id = t.form_id AND f2.fee_type = '10990006'
+			left join t_gq_fss_feelist f3 on f3.loan_id = t.form_id AND f3.fee_type = '10990003'
 	</sql>
 	
 	<!-- 根据申请类型和业务类型查询申请数据 -->

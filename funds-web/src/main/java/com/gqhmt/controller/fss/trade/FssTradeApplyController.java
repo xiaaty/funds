@@ -22,6 +22,7 @@ import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
+import com.gqhmt.util.ExportExcelUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -474,6 +475,34 @@ public class FssTradeApplyController {
 
 		fssTradeApplyService.exportTradeApplyList(tradeApplyList);
 
+	}
+
+	/**
+	 * 导出 newExcle 表
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/trade/tradeApply/{type}/{bus}/exportLoanExcel",method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody void exportLoanExcel(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map, FssTradeApplyBean tradeApply, @PathVariable Integer  type, @PathVariable String bus) throws Exception {
+		Map<String, String> maps = new HashMap<String, String>();
+		String mapStr = map.get("map");
+		if(!StringUtils.isEmpty(mapStr)){
+			maps = StringUtils.transStringToMap(mapStr);
+		}
+
+		maps.put("applyType",type.toString());
+		maps.put("busiType", bus);
+
+		List<FssTradeApplyBean> tradeApplyList = fssTradeApplyService.queryFssTradeApplyList(maps);
+
+		ExportExcelUtil<FssTradeApplyBean> exp = new ExportExcelUtil<>();
+		String[] headers = {"业务编号","申请单号","客户姓名","客户电话","交易金额","合同金额","准时还款保证金","咨询服务费","风险备用金","创建时间","修改时间"};
+		String[] properties = {"businessNo","applyNo","custName","custMobile","tradeAmount","contractAmt","riskSeserveFund","paymentDeposit","consultingServices","createTime","modifyTime"};
+		exp.exportExcel("appleList",headers,tradeApplyList,properties);
 	}
 
 	/**
