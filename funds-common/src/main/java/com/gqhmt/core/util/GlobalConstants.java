@@ -505,7 +505,7 @@ public class GlobalConstants {
         fundsType.put(2003,"提现出账（提现转账到银行卡成功）");
         fundsType.put(2004,"投标冻结");
         fundsType.put(2005,"流标解冻");
-        fundsType.put(2006,"投标成功转账");
+        fundsType.put(2006,"投标成功转账");   //满标
         fundsType.put(2007,"一般冻结");
         fundsType.put(2008,"一般冻结解冻");
         fundsType.put(2009,"应付金转出");
@@ -524,17 +524,17 @@ public class GlobalConstants {
         3008:债权转让转入
         3009:流标退款
          */
-        fundsType.put(3001,"出借");
+        fundsType.put(3001,"出借");     //投标
         fundsType.put(3002,"出借清算成功转入");
-        fundsType.put(3003,"还款本金（借款出）");
-        fundsType.put(3004,"还款利息（借款出）");
+        fundsType.put(3003,"还款本金（借款出）");    //回款
+        fundsType.put(3004,"还款利息（借款出）");    //回款
         fundsType.put(3005,"收款本金（出借入）");
         fundsType.put(3006,"收款利息（出借入）");
         fundsType.put(3007,"购买债权");
-        fundsType.put(3008,"转让债权");
+        fundsType.put(3008,"转让债权"); //转让
         fundsType.put(3009,"投标异常");
         fundsType.put(3010,"债权退回");
-        fundsType.put(3011,"流标");
+        fundsType.put(3011,"流标");     //流标
         fundsType.put(3012,"提前还款补偿利息");
         fundsType.put(3013,"收款加息收益");
         fundsType.put(3014,"还款本息");
