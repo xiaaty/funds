@@ -56,7 +56,7 @@ public class FssProjectInfoEntity implements Serializable {
     private Long loanAmt;       //借款金额
 
     @Column(name = "expected_return")
-    private Long expectedReturn;//预期收益
+    private String expectedReturn;//预期收益
 
     @Column(name = "product_name")
     private String productName; //产品名称
@@ -154,6 +154,12 @@ public class FssProjectInfoEntity implements Serializable {
     @Column(name = "bid_interest")
     private Long bidInterest;     //利息
 
+    @Column(name = "resp_code")
+    private String respCode;     //富友返回码
+
+    @Column(name = "resp_msg")
+    private String respMsg;     //富友返回消息
+
     public Long getId() {
         return id;
     }
@@ -218,11 +224,11 @@ public class FssProjectInfoEntity implements Serializable {
         this.loanAmt = loanAmt;
     }
 
-    public Long getExpectedReturn() {
+    public String getExpectedReturn() {
         return expectedReturn;
     }
 
-    public void setExpectedReturn(Long expectedReturn) {
+    public void setExpectedReturn(String expectedReturn) {
         this.expectedReturn = expectedReturn;
     }
 
@@ -488,5 +494,21 @@ public class FssProjectInfoEntity implements Serializable {
 
     public void setBidInterest(Long bidInterest) {
         this.bidInterest = bidInterest;
+    }
+
+    public String getRespCode() {
+        return respCode;
+    }
+
+    public void setRespCode(String respCode) {
+        this.respCode = respCode;
+    }
+
+    public String getRespMsg() {
+        return respMsg;
+    }
+
+    public void setRespMsg(String respMsg) {
+        this.respMsg = respMsg;
     }
 }

@@ -42,7 +42,9 @@
 		    t.offer_count offerCount,
 		    t.status status,
 		    t.create_time createTime,
-		    t.modify_time modifyTime
+		    t.modify_time modifyTime,
+		    t.`resp_code` respCode,
+		  	t.`resp_msg` respMsg
 		FROM
 			t_gq_fss_depos_fuiou_project_info t 
 			</sql>
