@@ -24,7 +24,7 @@ public interface IBuffer {
      */
     IBufferData get() throws InterruptedException;
 
-    void put(IBufferData object);
+    void put(IBufferData object) throws InterruptedException;
 
     /**
      * 获取缓存中消息数量

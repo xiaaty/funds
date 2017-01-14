@@ -38,17 +38,17 @@ public class Buffer implements IBuffer {
     }
 
     @Override
-    public void put(IBufferData object) {
-
+    public void put(IBufferData object) throws InterruptedException {
+        bufferQueue.put(object);
     }
 
     @Override
     public int getNum() {
-        return 0;
+        return bufferQueue.size();
     }
 
     @Override
     public void clear() {
-
+        bufferQueue.clear();
     }
 }
