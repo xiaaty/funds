@@ -907,5 +907,13 @@ public class FundSequenceService {
     public int  queryWithDrawCount(Long accountId) throws FssException{
     	return fundSequenceReadMapper.queryWithDrawCount(accountId);
     }
-
+    /**
+     * jhz
+     * 查询提现次数
+     * @param accountId
+     * @return
+     */
+    public int  queryWithHoldCount(Long accountId) throws FssException{
+        return fundSequenceReadMapper.queryWithHoldCount(accountId);
+    }
 }
