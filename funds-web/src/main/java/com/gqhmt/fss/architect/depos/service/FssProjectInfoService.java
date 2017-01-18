@@ -16,6 +16,7 @@ import com.gqhmt.pay.core.PayCommondConstants;
 import com.gqhmt.pay.core.configer.Config;
 import com.gqhmt.pay.core.factory.ConfigFactory;
 import com.gqhmt.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.exception.FssException;
@@ -107,7 +108,7 @@ public class FssProjectInfoService {
      */
 	public void insertProjectInfo(String tradeType,String orderNo,String mchnNo,String loanType,
 								  String loanTittle,String organization,String description,
-								  Long loanAmt,Long expectedReturn,String productName,
+								  Long loanAmt,String expectedReturn,String productName,
 								  String repaymentType,String loanTime,String startDate,
 								  Long eachBidAmount,Integer minNum,Long maxAmount,
 								  String loanItemDescription,Long feeType,
@@ -153,7 +154,6 @@ public class FssProjectInfoService {
 		cal.set(Calendar.DAY_OF_YEAR, inputDayOfYear + Integer.parseInt(loanTimes));
 		String pioDate = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
 		fssProjectInfoBean.setLoanTime(pioDate);
-
 		fssProjectInfoBean.setEachBidAmount(eachBidAmount);
 		fssProjectInfoBean.setMinNum(minNum);
 		fssProjectInfoBean.setMaxAmount(maxAmount);
@@ -177,11 +177,9 @@ public class FssProjectInfoService {
 		fssProjectInfoBean.setAccNo(fundAccountEntity.getUserName());
 		fssProjectInfoBean.setAccGoldNo(fundAccountEntity.getUserName());
 
-
 		if (fssProjectInfoBean.getId() != null) {
-			FssProjectCallbackEntity fssProjectCallbackEntity = fssProjectInfoCallBackService.getByItemNo(fssProjectInfoBean.getItemNo());
-			if (fssProjectCallbackEntity == null) throw new FssException("90004011");
-			if ("R".equals(fssProjectCallbackEntity.getStatus())) {
+			//当项目信息处于已回盘状态且富友返回不成功时
+			if(StringUtils.equals(fssProjectInfoBean.getStatus(),"10111003") && !"0000".equals(fssProjectInfoBean.getRespCode())){
 				this.updateProjectInfo(fssProjectInfoBean);
 			} else {
 				throw new FssException("90004011");
