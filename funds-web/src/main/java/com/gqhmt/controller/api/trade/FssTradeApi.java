@@ -86,6 +86,10 @@ public class FssTradeApi {
 
 	@Resource
 	private IQueryWithDrawCount queryWithDrawCountImpl;
+
+	@Resource
+	private IQueryWithHoldCount queryWithHoldCountImpl;
+
 	@Resource
 	private IPosOrderCreate posOrderCreateImpl;
 	@Resource
@@ -416,7 +420,23 @@ public class FssTradeApi {
 		}
 		return response;
 	}
-
+	/**
+	 * jhz
+	 * 查询充值次数接口
+	 * @param dto
+	 * @return
+	 */
+	@RequestMapping(value = "/queryWithHoldCount",method = RequestMethod.POST)
+	public Object queryWithHoldCount(QueryAccountDto dto){
+		Response response=new Response();
+		try {
+			response = queryWithHoldCountImpl.execute(dto);
+		} catch (Exception e) {
+			LogUtil.error(this.getClass(), e);
+			response.setResp_code(e.getMessage());
+		}
+		return response;
+	}
 	private Response execute(Exception e){
 		LogUtil.error(this.getClass(), e);
 		Response response = new Response();

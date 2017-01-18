@@ -96,5 +96,11 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	 * @return
      */
 	public Integer queryWithDrawCount(@Param("accountId")Long accountId);
+	/**
+	 * jhz
+	 * 查询充值次数接口
+	 * @return
+	 */
+	Integer queryWithHoldCount(@Param("accountId")Long accountId);
 
 }
