@@ -659,7 +659,7 @@ public class FundsTradeImpl  implements IFundsTrade {
 
 
     private void chargeAmount(FundAccountEntity entity,FundOrderEntity fundOrderEntity) throws FssException {
-        FundAccountEntity toEntity  = this.getFundAccount(99,0);
+        FundAccountEntity toEntity  = this.getFundAccount(15,0);
         //this.unfreezeByThird(entity.getCustId(),fundOrderEntity.getChargeAmount());
         FundOrderEntity fundOrderEntityCharge =  paySuperByFuiou.chargeAmount(entity,toEntity,fundOrderEntity.getChargeAmount());
 //        sequenceService.transfer(entity, 2003, fundOrderEntity.getOrderAmount(), null,ThirdPartyType.FUIOU,fundOrderEntity);
