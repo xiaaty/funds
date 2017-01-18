@@ -193,7 +193,6 @@
 		FROM t_gq_fund_sequence t
 		WHERE t.ACCOUNT_ID = #{accountId}
 		AND (t.fund_type = 1001 OR t.fund_type = 1002 OR t.fund_type = 1014)
-		AND DATE_FORMAT(t.create_time, '%Y%m') = DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m')
 	 </select>
 
 </mapper>
