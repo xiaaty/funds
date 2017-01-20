@@ -17,7 +17,7 @@
 	<scm>
 		<connection>scm:git:http://git-jk:git-jk@bitbucket.gqihome.com/scm/fss/fund.git</connection>
 		<developerConnection>scm:git:http://git-jk:git-jk@bitbucket.gqihome.com/scm/fss/fund.git</developerConnection>
-		<tag>funds-1.0.8-07</tag>
+		<tag>funds-1.0.8-14</tag>
 	</scm>
 	<distributionManagement>
 		<site>
