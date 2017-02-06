@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.business.architect.loan.mapper.read.BidReadMapper">
+
+	<select id="queryBidByDate" parameterType="java.lang.String" resultMap="bid">
+
+		SELECT * FROM t_gq_bid where date_format(create_time,'%Y%m%d') = #{date}
+	</select>
+
+	<resultMap id="bid" type="com.gqhmt.business.architect.loan.entity.Bid">
+		<result column="id" property="id" />
+		<result column="customer_id" property="customerId" />
+		<result column="bid_title" property="bidTitle" />
+		<result column="contract_no" property="contractNo" />
+		<result column="bid_no" property="bidNo" />
+		<result column="loan_type" property="loanType" />
+		<result column="bid_amount" property="bidAmount" />
+	</resultMap>
+</mapper>

@@ -42,6 +42,13 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
     public Page queryFundSequenceList(FundsAccountBean accountBean);
 
     public int getSizeByOrderNo(String orderNo);
+	/**
+	 * jhz
+	 * 通过s_order_no获取订单入账数量
+	 * @param sOrderNo
+	 * @return
+	 */
+    public int getSizeBySOrderNo(@Param("sOrderNo") String sOrderNo);
 
     public BigDecimal getSumByOrderNo(String orderNo);
 
@@ -75,5 +82,25 @@ public interface FundSequenceReadMapper extends ReadMapper<FundSequenceEntity> {
 	 * @return
      */
 	public List<FundSequenceEntity> queryByOrderNo(@Param("orderNo") String orderNo);
+	/**
+	 * jhz
+	 * 通过s_order_no查询流水列表
+	 * @param sOrderNo
+	 * @return
+     */
+	public List<FundSequenceEntity> queryBySOrderNo(@Param("sOrderNo") String sOrderNo);
+
+	/**
+	 * jhz
+	 * 查询提现次数接口
+	 * @return
+     */
+	public Integer queryWithDrawCount(@Param("accountId")Long accountId);
+	/**
+	 * jhz
+	 * 查询充值次数接口
+	 * @return
+	 */
+	Integer queryWithHoldCount(@Param("accountId")Long accountId);
 
 }

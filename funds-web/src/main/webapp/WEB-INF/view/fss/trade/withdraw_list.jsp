@@ -139,6 +139,7 @@
                                         <footer>
                                           <button class="btn btn-primary" onclick="querySub();">查&nbsp;&nbsp;&nbsp;询</button>
                                             <input type="button" id="exportExcelBtn" class="btn btn-primary" onclick="exportExcel();" value="导&nbsp;&nbsp;&nbsp;出"/>
+                                            <input type="button" class="btn btn-primary" onclick="exportLoanExcel();" value="新导出"/>
                                         </footer>
                                     </div>
                                     <!-- end widget content -->
@@ -261,6 +262,42 @@
         </section>
     </div>
     </div>
+<div class="pop" style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 400px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;" >
+    <form id="uploadForm" >
+        <h1 class="f18">请选择提现到账日期</h1>
+        <div class="mb25 pr">
+            <div class="radio">
+                <label>
+                    <input type="radio" name="bespokeDate" id="optionsRadios1"
+                           value="0" > T+0
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="bespokeDate" id="optionsRadios2"
+                           value="1">  T+1
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="bespokeDate" id="optionsRadios3"
+                           value="2" checked>  默认
+                </label>
+            </div>
+            <%--<input type="radio" name="bespokeDate" value="0"/>--%>
+            <%--<input type="radio" name="bespokeDate" value="1"/>--%>
+            <%--<input type="radio" name="bespokeDate" value="2"/>--%>
+            <input type="hidden" id="orderNos" />
+
+        </div>
+        <div class="mb20" id="wid-id-713">
+            <button class="btn btn-primary " id="import" type="button" title="提现">提&nbsp;现</button>&nbsp;&nbsp;
+            <button class="btn btn-default fl mr30" id="cancel"  type="button"  title="取消">取&nbsp;消</button>
+            <%--<div class="mt20"><a class="btn_import fl" href="#" id="import" title="导入">导&nbsp;入</a>--%>
+            <%--<a id="aaaaa" class="fl btn_cancel ml30" href="#" title="取消">取&nbsp;消</a>--%>
+        </div>
+    </form>
+</div>
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
 </div>
  <script type="text/javascript" charset="utf-8">
@@ -305,7 +342,7 @@
     		}
     	}
     }
-    //批量代付按钮
+    //批量提现按钮
     $('#btn_rech').click(function () {
         var no = $('#borrow-rep-table12 tbody :checkbox:checked');
         if (no.size() == 0) {
@@ -316,27 +353,47 @@
         no.each(function () {
             param.push($(this).val());
         })
+        $("#orderNos").val(param.toString());
+        $('.pop').show();
 //        alert(param.toString());
-        if(confirm("您确认全部审核成功吗？")){
-        $.post("${contextPath}/trade/tradeApply/moneySplit", {'no': param.toString()}, function (data) {
+
+    $('#import').click(function () {
+       var bespokeDate= $("input[name='bespokeDate']:checked").val();
+//        alert(bespokeDate);
+//        alert($("#orderNos").val());
+        $.post("${contextPath}/trade/tradeApply/moneySplit", {'no': $("#orderNos").val(),'bespokeDate':bespokeDate}, function (data) {
             if (data.code == '0000') {
                 alert("成功", '消息提示');
+                $('.pop').hide();
                 $("#withDrawForm").submit();
                 $("#checkAll").removeAttr("checked");
                 return false;
             }else if(data.code == '0001'){
                 alert(data.message, '消息提示');
+                $('.pop').hide();
                 $("#withDrawForm").submit();
                 $("#checkAll").removeAttr("checked");
                 return false;
             }
         }, "json");
-        }
+    });
+
+    });
+    $('#cancel').click(function () {
+        $('.pop').hide();
     });
 
     function exportExcel(){
-
         var url = "${contextPath}/trade/tradeApply/${type}/${bus}/exportExcel";
+        exp(url);
+    }
+
+    function exportLoanExcel(){
+        var url = "${contextPath}/trade/tradeApply/${type}/${bus}/exportLoanExcel";
+        exp(url);
+    }
+
+    function exp(url){
         var form = $('<form></form>');
         var map = "${map}";
 
@@ -351,14 +408,32 @@
         form.append(input);
         // 提交表单
         form.submit();
-
-        //  return false;
     }
 
     function querySub(){
         $("#withDrawForm").attr('action',"${contextPath}/trade/tradeApply/${type}/${bus}");
     }
+    <%--/**--%>
+     <%--* 遮罩栏--%>
+     <%--* @param msg--%>
+     <%--*/--%>
+    <%--function wait(msg){--%>
+        <%--$.blockUI({--%>
+            <%--css: {--%>
+                <%--border: 'none',--%>
+                <%--padding: '15px',--%>
+                <%--// backgroundColor: '#000',--%>
+                <%--'-webkit-border-radius': '10px',--%>
+                <%--'-moz-border-radius': '10px',--%>
+                <%--//   opacity: .7,--%>
+                <%--bindEvents: true,--%>
+                <%--constrainTabKey: false,--%>
+                <%--color: '#000'--%>
 
+            <%--},baseZ:999999,--%>
+            <%--message: '<img src="${contextPath}/img/loading.gif" />&nbsp;' + msg--%>
+        <%--});--%>
+    <%--}--%>
  </script>
 
 <%@include file= "../../../view/include/foot.jsp"%>

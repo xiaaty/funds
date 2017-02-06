@@ -85,4 +85,23 @@
 		</if>
 		ORDER BY t.input_date
 	</select>
+	
+	<select id="queryOrderNoListByDate" parameterType="FuiouFtpOrder" resultType="FuiouFtpOrder">
+		SELECT DISTINCT
+			t.id id,
+			t.order_no orderNo,
+			t.file_size fileSize,
+			t.file_status fileStatus,
+			t.upload_status uploadStatus,
+			t.download_status downloadStatus,
+			t.result_status resultStatus,
+			t.result result,
+			t.type,
+			t.input_date inputDate,
+			t.return_result_status retrunResultStatus
+		FROM
+			t_fuiou_ftp_order t
+		WHERE
+			date_format(t.input_date,'%Y%m%d') = #{orderDate}
+	</select>
  </mapper>

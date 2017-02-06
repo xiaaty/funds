@@ -4,20 +4,24 @@ import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
 import com.gqhmt.fss.architect.account.bean.BussAndAccountBean;
+import com.gqhmt.fss.architect.account.entity.FssAccountBindEntity;
 import com.gqhmt.fss.architect.account.entity.FssMappingEntity;
+import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.account.service.FssMappingService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.customer.entity.UserEntity;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.service.SystemService;
+import com.gqhmt.util.ExportExcelUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +51,8 @@ public class FssAccountController {
 	private FundAccountService fundAccountService;
 	@Resource
 	private SystemService systemService;
+	@Resource
+	private FssAccountBindService fssAccountBindService;
     /**
      * 账户信息
      * @param request
@@ -72,6 +78,7 @@ public class FssAccountController {
 	@RequestMapping(value = "/account/redaccountlist",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
 	public Object redAccountList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+		map.put("mappingType","10010006");
 		List<FssMappingEntity> list = fssMappingService.queryRedAccountList(map);
 		model.addAttribute("page", list);
 		model.put("map", map);
@@ -85,12 +92,16 @@ public class FssAccountController {
 	 * @return
 	 * @throws FssException
      */
-	@RequestMapping(value = "/account/addRedAccount", method = {RequestMethod.GET, RequestMethod.POST})
-	public Object AddAccountInfo(HttpServletRequest request, ModelMap model) throws FssException {
+	@RequestMapping(value = "/account/addRedAccount/{type}", method = {RequestMethod.GET, RequestMethod.POST})
+	public Object AddAccountInfo(HttpServletRequest request, ModelMap model,@PathVariable String  type) throws FssException {
 		List<DictEntity> list= systemService.getDictList();
 		//获取商户列表
 		model.addAttribute("list",list);
-		return "fss/account/addMapping";
+		if(Integer.parseInt(type)==1){
+			return "fss/account/addMapping";
+		}else {
+			return "fss/account/addSms";
+		}
 	}
 
 	/**
@@ -138,7 +149,7 @@ public class FssAccountController {
 		try {
 			FundAccountEntity account = fundAccountService.getFundAccount(Long.valueOf(custId),0);
 			if(account!=null){
-				FssMappingEntity entity=fssMappingService.getMappingByCustId(custId);
+				FssMappingEntity entity=fssMappingService.getMappingByCustId(custId,"10010006");
 				if(entity==null){
 					//判断排序号是否存在
 					FssMappingEntity mappingEntity=fssMappingService.getMappingBySort(sort);
@@ -236,4 +247,85 @@ public class FssAccountController {
 		}
 		return map2;
 	}
+
+	/**
+	 * 短信通知配置列表
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+	 * @throws FssException
+     */
+	@RequestMapping(value = "/account/smsNotification",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public Object smsSendList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+		map.put("mappingType","12020001");
+		List<FssMappingEntity> list = fssMappingService.queryRedAccountList(map);
+		model.addAttribute("page", list);
+		model.put("map", map);
+		return "fss/account/smsNoticeList";
+	}
+
+	/**
+	 * 添加短信通知的手机号码配置
+	 * @param request
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value = "/account/saveSms", method = {RequestMethod.POST})
+	@ResponseBody
+	public Object addSmsMobile(HttpServletRequest request, @RequestParam Map<String, String> map) throws FssException {
+		HttpSession session=  request.getSession();
+		String creator = (String)session.getAttribute("userName");
+		String custId = map.get("custId");
+		String remark = map.get("remark");
+		String sort = map.get("sort");
+		Map<String, String> map2 = new HashMap<String, String>();
+		try {
+			FssMappingEntity entity=fssMappingService.getMappingByCustId(custId,"12020001");
+			if(entity==null){
+				fssMappingService.saveSmsMobile(custId,remark,creator,sort);
+				map2.put("code", "0000");
+				map2.put("message", "success");
+			}else{
+				map2.put("code", "1002");
+				map2.put("message", "success");
+			}
+		} catch (FssException e) {//保存失败
+			String resp_msg = Application.getInstance().getDictName(e.getMessage());
+			map.put("code", e.getMessage());
+			map.put("message", resp_msg);
+		}
+		return map2;
+	}
+
+	/**
+	 * 统一支付账户映射表数据
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @return
+	 * @throws FssException
+     */
+	@RequestMapping(value = "/account/fssAccountBind",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public Object accountBindList(HttpServletRequest request,ModelMap model,@RequestParam Map<String, String> map) throws FssException {
+		List<FssAccountBindEntity> list = fssAccountBindService.queryAccountBindList(map);
+		model.addAttribute("page", list);
+		model.put("map", map);
+		return "fss/account/accountbindList";
+	}
+
+	@RequestMapping(value = "/account/export/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public void exportExcelToAccountBiz(HttpServletRequest request, String startTime, String endTime, @PathVariable String id) throws IOException, IllegalAccessException {
+		startTime = startTime.replaceAll("-","");
+		endTime = endTime.replaceAll("-","");
+		List<Map> listMap = fssAccountService.queryExcelValue(id,startTime,endTime);
+
+		ExportExcelUtil<Map> exp = new ExportExcelUtil<Map>();
+		String[] headers = {"客户id","费用类型","费用类型1","金额","费用人手机号","费用人姓名","交易描述","入账时间"};
+		exp.exportExcel("accountBiz",headers,listMap,headers);
+	}
+
 }

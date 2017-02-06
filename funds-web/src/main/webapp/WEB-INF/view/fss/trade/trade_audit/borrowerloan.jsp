@@ -234,12 +234,12 @@
 																&nbsp; &nbsp;
 															</c:if>
 													  </c:if>
-                                                      <c:if test="${t.tradeType == '11090002' || t.tradeType == '11090004'}">
-															<c:if test="${t.status == '10050009'}">
-																<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>
-																&nbsp; &nbsp;
-															</c:if>
-													  </c:if>
+                                                      <%--<c:if test="${t.tradeType == '11090002' || t.tradeType == '11090004'}">--%>
+															<%--<c:if test="${t.status == '10050009'}">--%>
+																<%--<a href="${contextPath}/loan/trade/${type}/charge/${t.id}">收费 </a>--%>
+																<%--&nbsp; &nbsp;--%>
+															<%--</c:if>--%>
+													  <%--</c:if>--%>
                                                       <c:if test="${t.tradeType == '11090011' || t.tradeType=='11090010'}">
                                                       		<c:if test="${t.status=='10050010'}">
 																<a href="${contextPath}/loan/trade/${type}/recharge/${t.id}">退费 </a>

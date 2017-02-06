@@ -166,10 +166,33 @@
 			and t.fund_type =2003 
 			and date_format(t.CREATE_TIME,'%Y-%m') = date_format(now(),'%Y-%m')) withdrawTotal
 	</select>
-	 <!-- 统计当月充值、提现总金额 -->
+	<!--通过订单号查询流水列表-->
 	 <select id="queryByOrderNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
 		<include refid="filedSql"/>
 		 WHERE t.order_no =#{orderNo}
+	 </select>
+	<!--通过s_order_no查询流水列表-->
+	 <select id="queryBySOrderNo" parameterType="java.lang.String" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
+		<include refid="filedSql"/>
+		 WHERE t.s_order_no =#{sOrderNo}
+	 </select>
+
+	<!--查询提现次数-->
+	 <select id="queryWithDrawCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(id)
+		FROM t_gq_fund_sequence t
+		WHERE t.ACCOUNT_ID = #{accountId}
+		AND (t.fund_type = 1003 OR t.fund_type = 2003 OR t.fund_type = 1012)
+		AND DATE_FORMAT(t.create_time, '%Y%m') = DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m')
+	 </select>
+	<!--查询提现次数-->
+	 <select id="queryWithHoldCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(id)
+		FROM t_gq_fund_sequence t
+		WHERE t.ACCOUNT_ID = #{accountId}
+		AND (t.fund_type = 1001 OR t.fund_type = 1002 OR t.fund_type = 1014)
 	 </select>
 
 </mapper>

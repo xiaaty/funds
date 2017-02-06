@@ -10,6 +10,7 @@ import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
+import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
@@ -34,6 +35,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -212,11 +214,18 @@ public class FssTradeApplyService {
 			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),1);
 		}else if("11090005".equals(tradeType)){
 			this.whithholdingApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getMortgageeAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
-		}
-//		else if("11101001".equals(tradeType)||"11101002".equals(tradeType)){
-//			this.whithholdingApply(null,null,fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getAccNo()),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
-//		}
-		else{
+		//信用标借款人提现
+		}else if("11090004".equals(tradeType)){
+			BigDecimal amt=BigDecimal.ZERO;
+			//首次提现
+			if("10050023".equals(fssLoanEntity.getStatus())){
+				amt=fssLoanEntity.getFirstAmt();
+				//二次提现
+			}else{
+				amt=fssLoanEntity.getSecondAmt();
+			}
+			this.whithdrawApply(null,null,fssLoanEntity.getTradeType(),amt,fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getAccNo()),GlobalConstants.ACCOUNT_TYPE_LOAN,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),0);
+		}else{
 			FssAccountEntity fssAccountByAccNo=fssAccountService.getFssAccountByAccNo(fssLoanEntity.getMortgageeAccNo());
 			this.whithholdingApply(fssAccountByAccNo.getCustNo(),fssAccountByAccNo.getAccNo(),fssLoanEntity.getTradeType(),fssLoanEntity.getContractAmt(),fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),fssAccountByAccNo.getCustId(),1,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
 		}
@@ -290,28 +299,49 @@ public class FssTradeApplyService {
 			 }
 			if(!"10080002".equals(tradeStatus) && 1104==applyEntity.getApplyType()) {
 				//代付失败进行资金解冻
-				fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType());
+				fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType(),applyEntity.getSeqNo());
 			}
-				FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
-				if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
-					if("11090001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
-						FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
-						//98060001成功 //10080002交易成功
-						fssLoanService.update(fssLoanEntityById,tradeStatus);
-					}else if("11092001".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
-						//借款系统和冠e通抵押权人提现不处理
-					}else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
-						//还款代扣
-					 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
-					 fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
-				    }else {
-					    if (fssBackplateEntity != null) {
-						 fssBackplateService.updatebackplate(fssBackplateEntity);
-					 } else{
-						 //创建回盘信息
-						 fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
-				 	 }
-				 }
+			FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(applyEntity.getMchnChild(), applyEntity.getSeqNo());
+			if(!"".equals(applyEntity.getFormId())&&applyEntity.getFormId()!=null){
+				if("11090001".equals(applyEntity.getBusiType())||"11090005".equals(applyEntity.getBusiType())){
+					FssLoanEntity fssLoanEntityById = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+					//98060001成功 //10080002交易成功
+					fssLoanService.update(fssLoanEntityById,tradeStatus,tradeStatus);
+				}else if("11092001".equals(applyEntity.getBusiType())||"11090006".equals(applyEntity.getBusiType())){
+					//借款系统和冠e通抵押权人提现不处理
+				}else if("11093001".equals(applyEntity.getBusiType())||"11093002".equals(applyEntity.getBusiType())){
+					//还款代扣
+				 FssRepaymentEntity queryRepayment = fssRepaymentService.queryRepaymentById(applyEntity.getFormId());
+				 fssRepaymentService.updateRepaymentEntity(queryRepayment, tradeStatus, realTradeAmt,applyEntity.getSeqNo(),applyEntity.getMchnChild(),applyEntity.getBusiType());
+				}else if("11090004".equals(applyEntity.getBusiType())){
+					FssLoanEntity fssLoanEntity = fssLoanService.getFssLoanEntityById(applyEntity.getFormId());
+					//首次提现成功进行回盘
+					if("10050023".equals(fssLoanEntity.getStatus())){
+					//98060001成功 //10080002交易成功	 //10050023 首次提现中	//10050017 首次提现成功
+					fssLoanService.update(fssLoanEntity,tradeStatus,"10050017");
+					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), fssLoanEntity.getTradeType());
+					//费用代扣成功修改状态
+					}else if("10050018".equals(fssLoanEntity.getStatus())){
+						fssLoanService.update(fssLoanEntity,tradeStatus,"10050019");
+						List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(fssLoanEntity.getId());
+						for (FssFeeList fssFeeList : fssFeeLists) {
+							if("10050018".equals(fssFeeList.getTradeStatus())){
+								fssFeeList.setTradeStatus("10050019");
+								fssLoanService.updateFeeList(fssFeeList);
+							}
+						}
+					//二次提现成功修改状态
+					}else if("10050020".equals(fssLoanEntity.getStatus())){
+						fssLoanService.update(fssLoanEntity,tradeStatus,"10050021");
+					}
+				}else {
+					if (fssBackplateEntity != null) {
+					 fssBackplateService.updatebackplate(fssBackplateEntity);
+				 	} else{
+					 //创建回盘信息
+					 fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
+					}
+			 	}
 			 }else{
 					if (fssBackplateEntity != null) {
 						fssBackplateService.updatebackplate(fssBackplateEntity);
@@ -361,7 +391,7 @@ public class FssTradeApplyService {
 	 * @return
 	 * @throws FssException
      */
-	public int withNumbers(String applyNos)throws FssException{
+	public int withNumbers(String applyNos,Integer bespokeDate)throws FssException{
 		FssTradeApplyEntity tradeapply=null;
 		LogUtil.info(this.getClass(),"申请编号字符串为："+applyNos);
 		String[] applyNo = applyNos.split(",");
@@ -373,10 +403,30 @@ public class FssTradeApplyService {
 			if(tradeapply==null){
 				continue;
 			}
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			try {
 			if("10100001".equals(tradeapply.getApplyState())){
+				if(bespokeDate==0){
+					Date a=new Date();
+					String b=DateUtil.dateToString(a);
+					tradeapply.setBespokedate(sdf.parse(b));
+					tradeapply.setSettleType(0);
+				}else if(bespokeDate==1){
+					Calendar calendar=Calendar.getInstance();
+					Date a=new Date();
+					calendar.setTime(a);
+					calendar.add(calendar.DATE,1);
+					String b=DateUtil.dateToString(calendar.getTime());
+					tradeapply.setBespokedate(sdf.parse(b));
+					tradeapply.setSettleType(1);
+				}
 				tradeapply.setAuditAmount(tradeapply.getTradeAmount());
 				this.updateTradeApply(tradeapply,"10100002","10080001");
 				count++;
+			}
+			} catch (ParseException e) {
+				LogUtil.debug(e.getClass(),e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		return (applyNo.length-count);
@@ -440,7 +490,7 @@ public class FssTradeApplyService {
 			throw new FssException("90004006");
 		}
 		//提现前资金冻结
-		tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO,tradeType);//资金冻结
+		tradeRecordService.frozen(fromEntity,toEntity,amt,1007,null,"",BigDecimal.ZERO,tradeType,seqNo);//资金冻结
 		FssTradeApplyEntity fssTradeApplyEntity = this.createFssTradeApplyEntity(custNo,accNo,tradeType,amt,mchn,seqNo,custId,custType,contractNo,cId,settleType,1104,fromId,false);
 		try {
 			fssTradeApplyWriteMapper.insertSelective(fssTradeApplyEntity);
@@ -712,7 +762,7 @@ public class FssTradeApplyService {
 		// 验证文件夹是否存在
 		File folder = new File(fileFolder);
 		if (!folder.exists()) {
-			folder.mkdir();
+			folder.mkdirs();
 		}
 		String newFileName;
 		if (i != 0) {

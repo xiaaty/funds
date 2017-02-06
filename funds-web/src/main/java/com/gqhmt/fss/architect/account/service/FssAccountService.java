@@ -272,4 +272,7 @@ public class FssAccountService {
     }
 
 
+    public List<Map> queryExcelValue(String id, String startTime, String endTime) {
+        return accountReadMapper.queryExcelValue(id,startTime,endTime);
+    }
 }

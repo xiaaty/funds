@@ -202,7 +202,6 @@ public class FssChangeCardService {
             //发送站内通知短信
             noticeService.packSendNotice(noticeList,CoreConstants.FUND_UPDATE_BANKCARD_SUBMIT_TEMPCODE,CoreConstants.SMS_NOTICE,NoticeService.NoticeType.FUND_UPDATE_BANKCARD_SUBMIT,entity.getCreateUserId().intValue(), entity.getCustId().intValue(),tmCardNo(entity.getCardNo()));
             HttpClientUtil.sendMsgOrNotice(noticeList, CoreConstants.SMS_NOTICE);
-
             this.sendMms(entity.getMobile(), 1);
         }
         
@@ -648,9 +647,9 @@ public class FssChangeCardService {
        map.put("phoneNo", phone);	//手机号，多个用","分开
        list.add(map);
        try {
-           String result = HttpClientUtil.postBody(
-                   CoreConstants.BACKEND_SMS_URL,
-                   JsonUtil.toJson(list));
+//           String result = HttpClientUtil.postBody(CoreConstants.BACKEND_SMS_URL, JsonUtil.toJson(list));
+           String result = HttpClientUtil.sendBody(CoreConstants.BACKEND_SMS_URL,list);
+
            System.out.println(result);
        } catch (Exception e) {
            e.printStackTrace();

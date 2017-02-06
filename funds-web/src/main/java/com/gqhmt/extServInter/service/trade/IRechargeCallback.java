@@ -21,5 +21,4 @@ import com.gqhmt.extServInter.service.ExtService;
  */
 public interface IRechargeCallback extends ExtService {
 
-
 }

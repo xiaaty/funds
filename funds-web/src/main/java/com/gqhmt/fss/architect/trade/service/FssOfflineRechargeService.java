@@ -57,6 +57,8 @@ public class FssOfflineRechargeService {
 			String endTime = map.get("endTime");
 			map2.put("applyNo", map.get("applyNo"));
 			map2.put("busiNo", map.get("busiNo"));
+			map2.put("orderNo", map.get("orderNo")!=null?map.get("orderNo"):null);
+			map2.put("applyType", map.get("applyType"));
 			map2.put("resultState", map.get("resultState"));
 			map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
 			map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
@@ -198,8 +200,6 @@ public class FssOfflineRechargeService {
 		Map<String, String> map=new HashMap<String, String>();
 		map.put("custId",custId);
 		map.put("custType", custType);
-//		map.put("startTime", startTime != null ? startTime.replace("-", "") : null);
-//		map.put("endTime", endTime != null ? endTime.replace("-", "") : null);
 		map.put("startTime", startTime);
 		map.put("endTime", endTime);
 		return fssOfflineRechargeReadMapper.getRecharegByCustId(map);
@@ -209,4 +209,30 @@ public class FssOfflineRechargeService {
 	public FssOfflineRechargeEntity get(Long id){
 		return this.fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
 	}
+
+	/**
+	 * 修改交易状态
+	 * @param id
+	 * @param orderNo
+	 * @throws FssException
+     */
+	public void updateState(Long id,String orderNo,String resultState) throws FssException{
+		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.selectByPrimaryKey(id);
+		entity.setOrderNo(orderNo);
+		entity.setResultState(resultState);
+		try{
+			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+		}catch (Exception e){
+			throw new FssException("91009804");
+		}
+	}
+
+	public FssOfflineRechargeEntity getOffineRechargeByParam(String busiNo,String orderNo){
+		Map map=new HashMap();
+		map.put("busiNo",busiNo);
+		map.put("orderNo",orderNo);
+		FssOfflineRechargeEntity entity=fssOfflineRechargeReadMapper.getOfflineRechargeResult(map);
+		return entity;
+	}
+
 }

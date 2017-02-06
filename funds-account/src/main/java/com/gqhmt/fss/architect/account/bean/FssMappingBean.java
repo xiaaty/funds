@@ -20,6 +20,7 @@ public class FssMappingBean {
     private String sort; //排序
     private Long accountId;//账户Id
     private BigDecimal amount;//账户金额
+    private String mobile;//手机号
 
     public long getId() {
         return id;
@@ -123,5 +124,13 @@ public class FssMappingBean {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

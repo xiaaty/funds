@@ -1,22 +1,22 @@
 package com.gqhmt.funds.architect.order.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
-import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.funds.architect.order.bean.FundOrderBean;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.mapper.read.FundOrderReadMapper;
 import com.gqhmt.funds.architect.order.mapper.write.FundOrderWriteMapper;
-import com.gqhmt.pay.exception.CommandParmException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -121,8 +121,8 @@ public class FundOrderService  {
     	return fundOrderReadMapper.selectByPrimaryKey(id);
     }
 
-    public FundOrderEntity findfundOrder(String order) {
-        return fundOrderReadMapper.getFundOrder(order);
+    public FundOrderEntity findfundOrder(String order)throws FssException {
+        return fundOrderReadMapper.getByOrderNo(order);
     }
 
     /**
@@ -156,21 +156,6 @@ public class FundOrderService  {
         return year+month+dateString+String.format("%010d",d.longValue());
     }
 
-    public List<FundOrderEntity> queryFundOrder(int orderType,int orderSource,int orderFromId){
-    	Map<Object,Object> map=new HashMap<>();
-    	map.put("orderType", orderType);
-    	map.put("orderSource", orderSource);
-    	map.put("orderFromId", orderFromId);
-        return fundOrderReadMapper.queryFundOrder(map);
-    }
-
-    public boolean checkWithdrawNumber(Long accountId){
-//        int num = fundOrderReadMapper.getWithdrawNum(accountId);
-//        if(num > GlobalConstants.CHECK_WITHRAW_NUM)
-            return true;
-//        return false;
-    }
-    
     /**
      * 修改订单
      * @param fundOrderEntity
@@ -194,8 +179,74 @@ public class FundOrderService  {
     }
 
 
-
     public FundOrderEntity getOrderNoByAccountId(Long accountId){
         return fundOrderReadMapper.getFundOrderByAccountId(accountId);
+    }
+
+    public FundOrderEntity getFundOrderByFormId(Long orderFrormId){
+        return fundOrderReadMapper.getFundOrderByFromId(orderFrormId);
+    }
+
+    /**
+     * 订单list转map
+     * @param fundOrderEntities
+     * @return
+     */
+    public Map<String, FundOrderEntity> convertToFundSOrderMap(List<FundOrderEntity> fundOrderEntities)throws FssException{
+        Map<String, FundOrderEntity> fundOrderMapper = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(fundOrderEntities)) {
+            fundOrderMapper = Maps.uniqueIndex(fundOrderEntities, new Function<FundOrderEntity, String>() {
+                public String apply(FundOrderEntity item) {
+                    return item.getOrderNo();
+                }
+            });
+        }
+        return fundOrderMapper;
+    }
+
+    public void updateFundsOrder(FundOrderEntity orderEntity,String abnormalState,String handleState)throws FssException{
+        orderEntity.setAbnormalState(abnormalState);
+        orderEntity.setHandleState(handleState);
+        orderEntity.setLastModifyTime(new Date());
+        this.update(orderEntity);
+    }
+
+    /**
+     * jhz
+     * 查询异常订单列表
+     * @param map
+     * @param type
+     * @return
+     */
+    public List<FundOrderEntity> findOrderList(Map<String,String> map,String type){
+        List<Integer> typeList= Lists.newArrayList();
+        //充值体现
+        if(StringUtils.equals("1104",type)){
+            typeList.add(1);
+            typeList.add(2);
+            typeList.add(9);
+            typeList.add(12);
+            //普通转账
+        }else if(StringUtils.equals("1108",type)){
+            typeList.add(3);
+            typeList.add(5);
+            typeList.add(10);
+            typeList.add(31);
+            typeList.add(33);
+            typeList.add(34);
+            typeList.add(1001);
+            typeList.add(2198);
+            //满标和回款转账
+        }else if(StringUtils.equals("1199",type)){
+            typeList.add(1190020);
+        }
+        Map<String, String> map2= Maps.newHashMap();
+        String startTime = map.get("startTime");
+        String endTime = map.get("endTime");
+        map2.put("orderNo",map.get("orderNo"));
+        map2.put("handleState",map.get("handleState"));
+        map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+        map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+        return fundOrderReadMapper.findOrderList(map2,typeList);
     }
 }

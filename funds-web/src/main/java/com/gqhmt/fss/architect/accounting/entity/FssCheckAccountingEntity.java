@@ -1,7 +1,6 @@
 package com.gqhmt.fss.architect.accounting.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -26,7 +25,7 @@ public class FssCheckAccountingEntity {
     @Column(name = "accounting_no")
     private String accountingNo; 		//记账流水
 
-    @Column(name = "accounting_time")
+	@Column(name = "accounting_time")
     private String accountingTime;    	//记账日期
 
     @Column(name = "recharge_way")
