@@ -217,6 +217,8 @@ public class FssRepaymentService {
 		repaymentEntity.setRespCode("");
 		repaymentEntity.setRespMsg("");
 		repaymentEntity.setParentId(repaymentParent.getId());
+		repaymentEntity.setWithholdType(repyament.getWithhold_type());
+		repaymentEntity.setMidCustId(repyament.getMid_cust_id());
 		return repaymentEntity;
 	}
 	
