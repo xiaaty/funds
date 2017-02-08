@@ -289,6 +289,8 @@ public class FssRepaymentService {
     		repaymentResponse.setResp_msg("成功");
     	}else {
     		repaymentResponse.setResp_code(queryByMchnAndSeqNo.getResultState());
+			String resMsg = Application.getInstance().getDictName(queryByMchnAndSeqNo.getResultState());
+			repaymentResponse.setResp_msg(resMsg);
     	}
     	repaymentResponse.setRepay_list(repaymentChilds);
     	repaymentResponse.setMchn(mchn);

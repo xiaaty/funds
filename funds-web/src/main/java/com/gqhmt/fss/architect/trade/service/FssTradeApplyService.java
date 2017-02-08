@@ -198,7 +198,7 @@ public class FssTradeApplyService {
 		long custId = 0;
 
 		//判断是否中间人代扣
-		if("10180002".equals(fssRepaymentEntity.getWithholdType())){
+		if("".equals(fssRepaymentEntity.getWithholdType())){
 			custId = Long.parseLong(fssRepaymentEntity.getMidCustId());
 		}else{
 			custId = Long.parseLong(fssRepaymentEntity.getAccNo());
@@ -356,7 +356,7 @@ public class FssTradeApplyService {
 					if (fssBackplateEntity != null) {
 						fssBackplateService.updatebackplate(fssBackplateEntity);
 					} else {
-						//创建回盘信息
+						//创建回盘信
 						fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), applyEntity.getBusiType());
 					}
 			  }
