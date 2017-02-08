@@ -6,14 +6,13 @@ import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
-import com.gqhmt.fss.architect.account.service.ConversionService;
-import com.gqhmt.fss.architect.account.service.FssAccountBindService;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
-import com.gqhmt.fss.architect.customer.service.FssCustomerService;
 import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
+import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.service.FssBondTransferService;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
+import com.gqhmt.fss.architect.trade.service.FssTradeProcessService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
@@ -80,16 +79,13 @@ public class FundsTradeImpl  implements IFundsTrade {
     @Resource
     private FssBondTransferService fssBondTransferService;
     @Resource
-    private ConversionService conversionService;
-    @Resource
-    private FssAccountBindService fssAccountBindService;
-    @Resource
     private TyzfTradeService tyzfTradeService;
 
     @Resource
     private CustomerInfoService customerInfoService;
+
     @Resource
-    private FssCustomerService fssCustomerService;
+    private FssTradeProcessService fssTradeProcessService;
     /**
      * 生成web提现订单
      * @param withdrawOrderDto            支付渠道
@@ -146,7 +142,7 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @return OrderNo
      */
     @Override
-    public boolean withdraw(WithdrawDto withdrawDto) throws FssException {
+    public boolean  withdraw(WithdrawDto withdrawDto) throws FssException {
         FundAccountEntity primaryAccount = this.getPrimaryAccount(Integer.parseInt(withdrawDto.getCust_no()));
         if (primaryAccount.getIshangeBankCard()==1){
             throw new CommandParmException("90004004");
@@ -160,6 +156,7 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new FssException("90004014");
         }
         this.hasEnoughBanlance(entity,withdrawAmt);
+        //提现前进行资金冻结
         tradeRecordService.refundFeozzen(entity,freezeEntity,withdrawDto.getAmt(),withdrawDto.getCharge_amt(),withdrawDto.getTrade_type(),withdrawDto.getSeq_no());
 //        if(withdrawDto.getCharge_amt().compareTo(BigDecimal.ZERO)>0) {//处理提现手续费
 //            tradeRecordService.frozen(entity, freezeEntity, withdrawDto.getCharge_amt(), 4010, null, "收取提现手续费", BigDecimal.ZERO, withdrawDto.getTrade_type());
@@ -171,12 +168,25 @@ public class FundsTradeImpl  implements IFundsTrade {
             throw new FssException("90004007");
         }
 
-        //校验账户无问题，则进行真正的交易，发送提现指令到富友
         try {
-            FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
-            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003,withdrawDto.getSeq_no(),withdrawDto.getTrade_type());
-//            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);
-            this.chargeAmount(fundOrderEntity);
+            //账户校验无问题，添加提现流程表数据
+            TradeProcessEntity tradeProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getTrade_type(),freezeEntity,null);
+            tradeProcess=fssTradeProcessService.creatTradeProcess(tradeProcess,null,"互联网账户提现，提现金额为"+withdrawDto.getAmt()+"元",withdrawDto.getAmt(),"1104",withdrawDto.getTrade_type(),"11160002","11170002");
+            tradeProcess.setParnetId(0l);
+            fssTradeProcessService.save(tradeProcess);
+            //判断收费金额不为零，添加收费流程表数据
+            if((withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt()).compareTo(BigDecimal.ZERO)>0){
+                FundAccountEntity toEntity  = this.getFundAccount(15,0);
+                TradeProcessEntity tradeProcess1= fssTradeProcessService.general(withdrawDto.getSeq_no(),"11060001",freezeEntity,toEntity);
+                tradeProcess1=fssTradeProcessService.creatTradeProcess(tradeProcess1,null,"互联网账户提现收费，收费金额为"+withdrawDto.getCharge_amt(),withdrawDto.getCharge_amt(),"1106","11060001","11160002","11170002");
+                tradeProcess1.setParnetId(tradeProcess.getId());
+                fssTradeProcessService.save(tradeProcess1);
+            }
+
+//            FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
+//            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003,withdrawDto.getSeq_no(),withdrawDto.getTrade_type());
+////            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);
+//            this.chargeAmount(fundOrderEntity);
         }catch(Exception e) {
             //资金处理
 //            tradeRecordService.unFrozen(freezeEntity,entity,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,withdrawDto.getTrade_type(),withdrawDto.getSeq_no());

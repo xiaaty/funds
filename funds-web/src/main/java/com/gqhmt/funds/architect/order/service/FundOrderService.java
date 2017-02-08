@@ -83,12 +83,15 @@ public class FundOrderService  {
     }
 
     public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, Long sourceID, Integer sourceType,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo) throws FssException {
+        return this.createOrder(primaryAccount,toAccountEntity,amount,chargeAmount,orderType,sourceID,sourceType,newOrderType,tradeType,lendNo,toLendNo,loanCustId,loanNo,this.getOrderNo());
+    }
+    public FundOrderEntity createOrder(FundAccountEntity primaryAccount, FundAccountEntity toAccountEntity, BigDecimal amount, BigDecimal chargeAmount, int orderType, Long sourceID, Integer sourceType,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo,String orderNo) throws FssException {
         FundOrderEntity fundOrderEntity = new FundOrderEntity();
         fundOrderEntity.setAccountId(primaryAccount.getId());
         if (toAccountEntity != null) {
             fundOrderEntity.setToAccountId(toAccountEntity.getId());
         }
-        fundOrderEntity.setOrderNo(this.getOrderNo());
+        fundOrderEntity.setOrderNo(orderNo);
         fundOrderEntity.setCreateTime(new Date());
         fundOrderEntity.setLastModifyTime(new Date());
         fundOrderEntity.setOrderAmount(amount);
