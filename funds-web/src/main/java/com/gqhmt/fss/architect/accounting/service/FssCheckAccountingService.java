@@ -204,7 +204,13 @@ public class FssCheckAccountingService {
 //        }else{
 //            state="交易失败";
 //        }
-        FssCheckAccountingEntity entity= this.createChecking(accountInfo.getSeqNo(), DateUtil.dateTostring(accountInfo.getTradeTime()),
+        String seqNo = "";
+        if("YSQ".equalsIgnoreCase(accountInfo.getTradeType())){
+            seqNo = accountInfo.getContractNum();
+        }else{
+            seqNo = accountInfo.getSeqNo();
+        }
+        FssCheckAccountingEntity entity= this.createChecking(seqNo, DateUtil.dateTostring(accountInfo.getTradeTime()),
                 accountInfo.getBatchFoiuFinance(),DateUtil.dateTostring(accountInfo.getTradeTime()),
                 accountInfo.getBalance().toString(),null,null,accountInfo.getUserAccount(),accountInfo.getUserName(),
                 accountInfo.getRemark(),accountInfo.getState(),"","10130001","98010002");

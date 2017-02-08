@@ -160,7 +160,7 @@ public class FuiouAccountInfoEntity {
     }
 
     public BigDecimal getTradeAmount() {
-        return tradeAmount;
+        return tradeAmount != null ? tradeAmount : BigDecimal.ZERO;
     }
 
     public void setTradeAmount(BigDecimal tradeAmount) {
@@ -208,7 +208,7 @@ public class FuiouAccountInfoEntity {
     }
 
     public BigDecimal getBalance() {
-        return balance;
+        return balance != null ? balance : BigDecimal.ZERO;
     }
 
     public void setBalance(BigDecimal balance) {
