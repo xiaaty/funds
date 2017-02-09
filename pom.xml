@@ -30,8 +30,9 @@
 		<module>funds-web</module>
         <module>funds-account</module>
         <module>funds-common</module>
-        <module>common-frame</module>
-    </modules>
+        <module>funds-test</module>
+		<module>common</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
