@@ -165,7 +165,6 @@
                                               <td>交易代码</td>
                                               <td>返回信息</td>
                                               <td>备注</td>
-                                              <td>操作</td>
                                         </tr>
                                         </thead>
                                          <tbody>
@@ -187,12 +186,6 @@
                                                     <td>${repayment.respCode}</td>
                                                     <td>${repayment.respMsg}</td>
                                                     <td>${repayment.remark}</td>
-                                                    <td>
-                                                        <!-- 10180002中间人代扣 ，10080010 执行成功  -->
-                                                        <c:if test="${repayment.withholdType=='10180002' && repayment.status=='10080010'}">
-                                                            &nbsp;&nbsp;&nbsp;<a href="${contextPath}/loan/trade/${type}/retransfer/${t.id}" >转账</a>
-                                                        </c:if>
-                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

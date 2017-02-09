@@ -743,7 +743,12 @@ public class FssLoanTradeController {
 					GlobalConstants.NEW_BUSINESS_MT,type,repayment.getContractNo(),1005,3);
 			repayment.setState("10050105");
 			fssRepaymentService.updateRepaymentEntity(repayment);
-			fssBackplateService.createFssBackplateEntity(repayment.getSeqNo(), repayment.getMchnChild(), repayment.getTradeType());
+
+			FssBackplateEntity backplateEntity = fssBackplateService.selectByMchnAndseqNo(repayment.getMchnChild(), repayment.getSeqNo());
+			backplateEntity.setRepayCount(0);
+
+			fssBackplateService.updatebackplate(backplateEntity);
+
 		} catch (FssException e) {
 			LogUtil.error(this.getClass(), e.getMessage());
 			model.addAttribute("erroMsg", e.getMessage());
