@@ -18,6 +18,8 @@ import com.gqhmt.fss.architect.loan.entity.FssFeeList;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.ExportAndImpService;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
+import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
+import com.gqhmt.fss.architect.trade.service.FssRepaymentService;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -86,6 +88,9 @@ public class FssLoanTradeController {
 	private FundAccountService fundAccountService;
 	@Resource
 	private FssMappingService fssMappingService;
+	@Resource
+	private FssRepaymentService fssRepaymentService;
+
 	/**
 	 * 
 	 * author:jhz time:2016年3月11日 function：借款人放款
@@ -717,6 +722,39 @@ public class FssLoanTradeController {
 			map.put("msg", e.getMessage());
 		}
 		return map;
+	}
+
+
+	/**
+	 * 中间人转账借款人
+	 * @param id
+	 * @param type
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/loan/trade/midCust/{type}/retransfer/{id}")
+	public String midCustretransfer(HttpServletRequest request, @PathVariable Long id, @PathVariable String type, ModelMap model) {
+		// 通过id查询交易对象
+		FssRepaymentEntity repayment = fssRepaymentService.queryRepaymentById(id);
+
+		try {
+			fundsTradeImpl.transefer(repayment.getAccNo(),repayment.getMidCustId(),
+					repayment.getAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, repayment.getId(),
+					GlobalConstants.NEW_BUSINESS_MT,type,repayment.getContractNo(),1005,3);
+			repayment.setState("10050105");
+			fssRepaymentService.updateRepaymentEntity(repayment);
+
+			FssBackplateEntity backplateEntity = fssBackplateService.selectByMchnAndseqNo(repayment.getMchnChild(), repayment.getSeqNo());
+			backplateEntity.setRepayCount(0);
+
+			fssBackplateService.updatebackplate(backplateEntity);
+
+		} catch (FssException e) {
+			LogUtil.error(this.getClass(), e.getMessage());
+			model.addAttribute("erroMsg", e.getMessage());
+		}
+
+		return "redirect:/loan/trade/"+type;
 	}
 
 }

@@ -71,6 +71,12 @@ public class FssRepaymentEntity implements Serializable {
 
     @Column(name = "mchn_child",updatable = false)
     private String mchnChild ;  //子商户号
+
+	@Column(name = "mid_cust_id")
+	private String midCustId;    //中间人客户ID
+
+	@Column(name = "withhold_type")
+	private String withholdType;    //代扣类型字段
     
     @Column(name = "remark")
     private String remark ;  //备注
@@ -224,6 +230,20 @@ public class FssRepaymentEntity implements Serializable {
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
 	}
-	
-	
+
+	public String getMidCustId() {
+		return midCustId;
+	}
+
+	public void setMidCustId(String midCustId) {
+		this.midCustId = midCustId;
+	}
+
+	public String getWithholdType() {
+		return withholdType;
+	}
+
+	public void setWithholdType(String withholdType) {
+		this.withholdType = withholdType;
+	}
 }

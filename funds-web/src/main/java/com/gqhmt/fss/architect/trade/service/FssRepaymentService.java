@@ -2,6 +2,7 @@ package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.Application;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.loan.RepaymentChildDto;
@@ -16,6 +17,7 @@ import com.gqhmt.fss.architect.trade.mapper.read.FssRepaymentReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentParentWriteMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.FssRepaymentWriteMapper;
 import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
+import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.DateUtil;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +62,8 @@ public class FssRepaymentService {
 	private FssBackplateService fssBackplateService;
 	@Resource
 	private FssTradeApplyService fssTradeApplyService;
-
+	@Resource
+	private FundsTradeImpl fundsTradeImpl;
 	
 	/**
 	 * 创建借款人提现申请
@@ -217,6 +220,8 @@ public class FssRepaymentService {
 		repaymentEntity.setRespCode("");
 		repaymentEntity.setRespMsg("");
 		repaymentEntity.setParentId(repaymentParent.getId());
+		repaymentEntity.setWithholdType(repyament.getWithhold_type());
+		repaymentEntity.setMidCustId(repyament.getMid_cust_id());
 		return repaymentEntity;
 	}
 	
@@ -280,13 +285,29 @@ public class FssRepaymentService {
 			repaymentChild.setComplete_time(DateUtil.dateToString(fssRepaymentEntity.getMotifyTime()));
     		repaymentChild.setSerial_number(fssRepaymentEntity.getSerialNumber());
     		repaymentChilds.add(repaymentChild);
+
+    		//判断是否属于中间人代扣
+    		if("10180002".equals(fssRepaymentEntity.getWithholdType())){
+				if("10050105".equals(fssRepaymentEntity.getResultState())){
+					repaymentResponse.setTransfer_resp_code("0000");
+					repaymentResponse.setResp_msg("中间人转账成功");
+				}else {
+					//repaymentResponse.setResp_code(queryByMchnAndSeqNo.getResultState());
+					repaymentResponse.setTransfer_resp_code("9999");
+					String resMsg = Application.getInstance().getDictName(queryByMchnAndSeqNo.getResultState());
+					repaymentResponse.setResp_msg(resMsg);
+				}
+			}
 		}
     	
     	if("10080002".equals(queryByMchnAndSeqNo.getResultState())){
     		repaymentResponse.setResp_code("0000");
     		repaymentResponse.setResp_msg("成功");
     	}else {
-    		repaymentResponse.setResp_code(queryByMchnAndSeqNo.getResultState());
+    		//repaymentResponse.setResp_code(queryByMchnAndSeqNo.getResultState());
+			repaymentResponse.setResp_code("9999");
+			String resMsg = Application.getInstance().getDictName(queryByMchnAndSeqNo.getResultState());
+			repaymentResponse.setResp_msg(resMsg);
     	}
     	repaymentResponse.setRepay_list(repaymentChilds);
     	repaymentResponse.setMchn(mchn);
@@ -357,7 +378,7 @@ public class FssRepaymentService {
 	 * @throws FssException 
 	 */
 	//todo
-	public void changeRepaymentParentStatus(FssRepaymentEntity queryRepayment,String seqNo,String mchn,String tradeType) throws FssException{
+	public void changeRepaymentParentStatus(FssRepaymentEntity queryRepayment,String seqNo,String mchn,String tradeType) throws FssException {
 		FssRepaymentParentEntity queryRepaymentParentById = this.queryRepaymentParentById(queryRepayment.getParentId());
 		if(queryRepaymentParentById.getTradeCount()<=queryRepaymentParentById.getSuccessCount()){
 			int successCount = getSuccessCount(queryRepayment.getParentId());
@@ -372,13 +393,58 @@ public class FssRepaymentService {
 				this.updateRepaymentParent(queryRepaymentParentById,"10080003","10090003");
 			}
 			FssBackplateEntity fssBackplateEntity=fssBackplateService.selectByMchnAndseqNo(mchn,seqNo);
+
+			//判断是否中间人代扣
+			boolean isMidCust = false;
+			List<FssRepaymentEntity> repaymentlist = this.searRepaymentByparam(seqNo,mchn);
+			if(repaymentlist!=null && repaymentlist.size()>0){
+				if("10180002".equals(repaymentlist.get(0).getWithholdType()))isMidCust = true;
+			}
+
+			//中间人代扣并且状态是成功、部分成功， 调用转账
+			if(isMidCust && successCount!=0){
+				for(FssRepaymentEntity repayment:repaymentlist){
+					//判断成功的代扣， 进行交易
+					if("10080002".equals(repayment.getResultState())){
+						try {
+							midCustTransefer(repayment);
+							repayment.setResultState("10050105");
+						} catch (FssException e) {
+							repayment.setResultState("10080010");
+							LogUtil.error(this.getClass(),repayment.getSeqNo() + "_" + repayment.getMchnChild() + "转账失败");
+						}
+					}
+				}
+				if(fssBackplateEntity!=null){
+					fssBackplateEntity.setRepayCount(0);
+				}
+			}
+
 			if (fssBackplateEntity!=null){
 				fssBackplateService.updatebackplate(fssBackplateEntity);
 			}else {
 				//创建回盘信息
 				fssBackplateService.createFssBackplateEntity(seqNo, mchn, tradeType);
 			}
+
 		}
 	}
-	
+
+	//中间人转账
+	public void midCustTransefer(FssRepaymentEntity repayment) throws FssException {
+		// 通过id查询交易对象
+
+			fundsTradeImpl.transefer(repayment.getAccNo(),repayment.getMidCustId(),
+					repayment.getAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, repayment.getId(),
+					GlobalConstants.NEW_BUSINESS_MT,null,repayment.getContractNo(),1005,3);
+			repayment.setState("10050105");
+			this.updateRepaymentEntity(repayment);
+
+			FssBackplateEntity backplateEntity = fssBackplateService.selectByMchnAndseqNo(repayment.getMchnChild(), repayment.getSeqNo());
+			backplateEntity.setRepayCount(0);
+
+			fssBackplateService.updatebackplate(backplateEntity);
+
+	}
+
 }

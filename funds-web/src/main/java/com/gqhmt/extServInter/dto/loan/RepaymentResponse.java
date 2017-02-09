@@ -23,6 +23,10 @@ public class RepaymentResponse  extends Response {
 	
 	private List<RepaymentChildDto> repay_list;
 
+	private String transfer_resp_code;
+
+	private String transfer_resp_msg;
+
 	public List<RepaymentChildDto> getRepay_list() {
 		return repay_list;
 	}
@@ -31,5 +35,19 @@ public class RepaymentResponse  extends Response {
 		this.repay_list = repay_list;
 	}
 
-	
+	public String getTransfer_resp_code() {
+		return transfer_resp_code;
+	}
+
+	public void setTransfer_resp_code(String transfer_resp_code) {
+		this.transfer_resp_code = transfer_resp_code;
+	}
+
+	public String getTransfer_resp_msg() {
+		return transfer_resp_msg;
+	}
+
+	public void setTransfer_resp_msg(String transfer_resp_msg) {
+		this.transfer_resp_msg = transfer_resp_msg;
+	}
 }
