@@ -1,5 +1,6 @@
 package com.gqhmt.quartz.job.trade;
 
+import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
@@ -11,7 +12,6 @@ import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
-import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
 import com.gqhmt.quartz.job.SupperJob;
@@ -49,8 +49,6 @@ public class FailWithDrawJob extends SupperJob{
     @Resource
     private FssTradeProcessService tradeProcessService;
     @Resource
-    private PaySuperByFuiou paySuperByFuiou;
-    @Resource
     private TradeRecordService tradeRecordService;
 
     @Resource
@@ -80,52 +78,51 @@ public class FailWithDrawJob extends SupperJob{
             List<TradeProcessEntity> list= tradeProcessService.getFailWithDrawProcess();
             if(CollectionUtils.isNotEmpty(list)){
                 for (TradeProcessEntity entity:list) {
+                    //查询出该笔交易的提现子交易
+                    TradeProcessEntity withDraw=tradeProcessService.findByParentIdAndActionType("1104",entity.getId().toString()).get(0);
                     //查询出账账户
-                    FundAccountEntity fromEntity=fundAccountService.select(entity.getFromAccId());
+                    FundAccountEntity fromEntity=fundAccountService.select(withDraw.getFromAccId());
+                    //查询出账账户
+                    String repCode=this.getResult(withDraw);
+                        if(StringUtils.isNotEmpty(repCode)){
 
-                    String startTime=DateUtil.dateToString_24(entity.getCreateTime());
-                    String endTime=DateUtil.dateToString_24(new Date());
-
-                    if(StringUtils.isEmpty(entity.getOrderNo())) continue;
-
-                    //查询富友查看得到该客户提现数据
-                    List<Map<String,String>> listMap=fssCheckAccountingService.getFuiouTradeCz(fromEntity,startTime,endTime);
-                    for (Map<String,String> map: listMap ) {
-                        if(StringUtils.equals(map.get("mchnt_txn_ssn"),entity.getOrderNo())){
-
-                            FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(entity.getOrderNo());
-                            //查询提现收费子交易
-                            List<TradeProcessEntity> chilList=tradeProcessService.findByParentIdAndActionType("1106",String.valueOf(fromEntity.getId()));
-                            TradeProcessEntity chargeEntity=null;
-                            if(CollectionUtils.isNotEmpty(chilList)){
-                                //收费子交易只有一条
-                                 chargeEntity=chilList.get(0);
-                            }
-                            BigDecimal chargeAmt=BigDecimal.ZERO;
-                            if(chargeEntity!=null){
-                                chargeAmt=chargeEntity.getAmt();
-                            }
+                            FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(withDraw.getOrderNo());
+//                            //查询提现收费子交易
+//                            List<TradeProcessEntity> chilList=tradeProcessService.findByParentIdAndActionType("1106",String.valueOf(entity.getId()));
+//                            TradeProcessEntity chargeEntity=null;
+//                            if(CollectionUtils.isNotEmpty(chilList)){
+//                                //收费子交易只有一条
+//                                 chargeEntity=chilList.get(0);
+//                            }
+//                            BigDecimal chargeAmt=BigDecimal.ZERO;
+//                            if(chargeEntity!=null){
+//                                chargeAmt=chargeEntity.getAmt();
+//                            }
                             //富友成功
-                            if(StringUtils.equals(map.get("txn_rsp_cd"),"0000")){
+                            if(StringUtils.equals(repCode,"0000")){
                                 //查询订单表修改订单状态
                                 fundOrderEntity.setOrderState(2);
                                 fundOrderEntity.setRetCode("0000");
                                 fundOrderEntity.setRetMessage("成功");
                                 fundOrderService.update(fundOrderEntity);
+
+                                withDraw.setProcessState("10050030");//处理完成
+                                withDraw.setStatus("10030002");//交易成功
                                 //修改流程表状态
-                                entity.setProcessState("10170003");//处理完成
+                                entity.setProcessState("10050030");//处理完成
                                 entity.setStatus("10030002");//交易成功
+                                //进行收费
+                                tradeProcessService.charge(entity,fundOrderEntity);
                             }else {
-                                BigDecimal withdrawAmt=entity.getAmt().add(chargeAmt);
                                 //得到线上账户
                                 FundAccountEntity account = fundsTradeImpl.getFundAccount(Integer.parseInt(entity.getFromCustNo()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
                                 //进行资金解冻
-                                tradeRecordService.unFrozen(fromEntity,account,withdrawAmt,1004,null,"提现失败，退回金额"+ withdrawAmt + "元",BigDecimal.ZERO,entity.getTradeType(),entity.getSeqNo());
+                                tradeRecordService.unFrozen(fromEntity,account,entity.getAmt(),1004,null,"提现失败，退回金额"+ entity.getAmt() + "元",BigDecimal.ZERO,entity.getTradeType(),entity.getSeqNo());
                                 //修改流程表状态
-                                entity.setProcessState("10170003");//处理完成
+                                entity.setProcessState("10050088");//处理完成
+                                entity.setStatus("10030003");
                             }
                              tradeProcessService.updateTradeProcessEntity(entity);
-                        }
                     }
                 }
             }
@@ -136,7 +133,25 @@ public class FailWithDrawJob extends SupperJob{
 		}
         endtLog();
     }
+    //查询富友，查看该笔交易是成功还是失败
+    public String getResult(TradeProcessEntity entity) throws FssException {
+        //查询出账账户
+        FundAccountEntity fromEntity=fundAccountService.select(entity.getFromAccId());
 
+        String startTime=DateUtil.dateToString_24(entity.getCreateTime());
+        String endTime=DateUtil.dateToString_24(new Date());
+
+        if(StringUtils.isEmpty(entity.getOrderNo())) return null;
+
+        //查询富友查看得到该客户提现数据
+        List<Map<String,String>> listMap=fssCheckAccountingService.getFuiouTradeCz(fromEntity,startTime,endTime);
+        for (Map<String,String> map: listMap ) {
+            if(StringUtils.equals(map.get("mchnt_txn_ssn"),entity.getOrderNo())){
+                return map.get("txn_rsp_cd");
+            }
+        }
+        return null;
+    }
 
     @Override
     public boolean isRunning() {

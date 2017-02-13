@@ -1,5 +1,6 @@
 package com.gqhmt.pay.service.trade.impl;
 
+import com.beust.jcommander.internal.Lists;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
@@ -169,20 +170,26 @@ public class FundsTradeImpl  implements IFundsTrade {
         }
 
         try {
-            //账户校验无问题，添加提现流程表数据
+            //账户校验无问题，添加提现流程表数据,创建主订单
             TradeProcessEntity tradeProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getTrade_type(),freezeEntity,null);
-            tradeProcess=fssTradeProcessService.creatTradeProcess(tradeProcess,null,"互联网账户提现，提现金额为"+withdrawDto.getAmt()+"元",withdrawDto.getAmt(),"1104",withdrawDto.getTrade_type(),"11160002","11170002");
+            tradeProcess=fssTradeProcessService.creatTradeProcess(tradeProcess,null,"互联网账户提现，提现收费总金额为"+withdrawAmt+"元",withdrawAmt,"1104",withdrawDto.getTrade_type(),"11160002","11170002");
             tradeProcess.setParnetId(0l);
-            fssTradeProcessService.save(tradeProcess);
-            //判断收费金额不为零，添加收费流程表数据
+            List<TradeProcessEntity> list= Lists.newArrayList();
+
+            //创建提现子订单
+            TradeProcessEntity withDrawProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getTrade_type(),freezeEntity,null);
+            withDrawProcess=fssTradeProcessService.creatTradeProcess(withDrawProcess,null,"互联网账户提现，提现金额为"+withdrawDto.getAmt()+"元",withdrawDto.getAmt(),"1104",withdrawDto.getTrade_type(),"11160002","11170002");
+            list.add(withDrawProcess);
+
+            //判断收费金额不为零时，创建收费子订单
             if((withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt()).compareTo(BigDecimal.ZERO)>0){
                 FundAccountEntity toEntity  = this.getFundAccount(15,0);
                 TradeProcessEntity tradeProcess1= fssTradeProcessService.general(withdrawDto.getSeq_no(),"11060001",freezeEntity,toEntity);
-                tradeProcess1=fssTradeProcessService.creatTradeProcess(tradeProcess1,null,"互联网账户提现收费，收费金额为"+withdrawDto.getCharge_amt(),withdrawDto.getCharge_amt(),"1106","11060001","11160002","11170002");
-                tradeProcess1.setParnetId(tradeProcess.getId());
-                fssTradeProcessService.save(tradeProcess1);
+                tradeProcess1=fssTradeProcessService.creatTradeProcess(tradeProcess1,null,"互联网账户提现收费，收费金额为"+withdrawDto.getCharge_amt()+"元",withdrawDto.getCharge_amt(),"1106","11060001","11160002","11170002");
+                list.add(tradeProcess1);
             }
-
+            tradeProcess.setList(list);
+            fssTradeProcessService.saveTradeProcess(tradeProcess);
 //            FundOrderEntity fundOrderEntity = paySuperByFuiou.withdraw(freezeEntity, withdrawDto.getAmt(), withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", withdrawDto.getTrade_type(), null, null);
 //            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003,withdrawDto.getSeq_no(),withdrawDto.getTrade_type());
 ////            tradeRecordService.withdrawByFroze(entity,fundOrderEntity.getOrderAmount(),fundOrderEntity,2003);

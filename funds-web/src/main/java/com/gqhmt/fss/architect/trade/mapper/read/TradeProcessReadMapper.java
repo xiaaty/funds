@@ -51,11 +51,12 @@ public interface TradeProcessReadMapper extends ReadMapper<TradeProcessEntity> {
      * @return
      */
     public List<TradeProcessEntity> getWithDrawProcess();
- /**
+    /**
      * jhz
      * 查询所有未进行提现交易的数据
      * @return
      */
     public List<TradeProcessEntity> getFailWithDrawProcess();
+     List<TradeProcessEntity> childTradeProcess(@Param("parentId") Long parentId);
 
 }

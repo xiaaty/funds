@@ -30,6 +30,7 @@
           t.`trade_type` tradeType,
           t.`action_type` actionType,
           t.`fund_type` fundType,
+          t.`process_state` processState,
           t.`status` status,
           t.`memo` memo,
           t.`sync` sync,
@@ -48,14 +49,29 @@
     <select id="listTradeProcess" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
         <include refid="fieldSql"/>
         WHERE 1 = 1
-        <if test="fundType != null and fundType != ''">
-            AND fund_type = #{fundType}
+        <if test="type != null and type != ''">
+            AND t.action_type = #{type}
         </if>
         <if test="tradeType != null and tradeType != ''">
-            AND trade_type = #{tradeType}
+            AND t.trade_type = #{tradeType}
         </if>
         <if test="status != null and status != ''">
-            AND status = #{status}
+            AND t.status = #{status}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND t.from_cust_mobile = #{mobile}
+        </if>
+        <if test="custName != null and custName != ''">
+            AND t.from_cust_name = #{custName}
+        </if>
+        <if test="processState != null and processState != ''">
+            AND t.process_state = #{processState}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != '' ">
+            and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
         </if>
     </select>
 
@@ -72,15 +88,20 @@
     </select>
   <select id="getWithDrawProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
       <include refid="fieldSql"/>
-      where t.action_type = 1104 AND t.process_state = '10170002' AND t.status = '10030001' AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
+      where t.action_type = 1104 AND t.parnet_id=0 AND t.process_state = '10170002' AND t.status = '10030001' AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
   </select>
     <select id="getFailWithDrawProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
       <include refid="fieldSql"/>
       where t.action_type = 1104
-        AND t.process_state = '10170002'
+        AND t.parnet_id=0
+        AND t.process_state = '10050031'
         AND t.status = '10030003'
         AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
         AND TIMESTAMPDIFF(MINUTE, t.modify_time,now()) >10
+  </select>
+ <select id="childTradeProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+      <include refid="fieldSql"/>
+      where t.parnet_id = #{parentId}
   </select>
 
 

@@ -38,7 +38,7 @@ public class RepaymentChildDto{
 	private BigDecimal real_repay_amt;       //还款金额
     
     private String remark;    //还款备注
-    
+
     private String complete_time;		//完成时间
     
     private String accounting_no;	//账务流水号

@@ -16,14 +16,11 @@
             margin: 7px 7px 7px 0;
             padding: 0 22px;
         }
-        .dt-wrapper {
-            overflow: auto;
-        }
+
         .button-icon i{
             line-height:32px;
         }
-        #footer{position: absolute;bottom: 10px;z-index: 100px;}
-        .footer-bottom{font-size:13px}
+
         .footer-bottom ul>li{padding:0}
         .footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
     </style>
@@ -246,7 +243,7 @@
                                                         &nbsp; &nbsp;
 
                                                     </c:if>
-                                                    <c:if test="${t.status == '10050019'}">
+                                                    <c:if test="${t.status == '10050019' || t.status == '10050025'}">
                                                         <a href="${contextPath}/loan/trade/${type}/charge/${t.id}" >收费 </a>
                                                         &nbsp; &nbsp;
                                                         <a href="javascript:void(0)" onclick="jumpRecharge(${t.id})">收费跳过</a>

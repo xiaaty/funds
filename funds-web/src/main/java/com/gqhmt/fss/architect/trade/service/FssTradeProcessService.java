@@ -6,13 +6,20 @@ import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.TradeProcessReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.TradeProcessWriteMapper;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
+import com.gqhmt.funds.architect.account.service.FundAccountService;
+import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
+import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.pay.service.PaySuperByFuiou;
+import com.gqhmt.pay.service.TradeRecordService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +52,16 @@ public class FssTradeProcessService {
 
     @Resource
     private FundOrderService fundOrderService;
+    @Resource
+    private PaySuperByFuiou paySuperByFuiou;
+    @Resource
+    private TradeRecordService tradeRecordService;
+
+    @Resource
+    private FundAccountService fundAccountService;
+
+    @Resource
+    private FundWithrawChargeService fundWithrawChargeService;
 
     /**
      * 保存交易数据
@@ -112,8 +129,22 @@ public class FssTradeProcessService {
      * @return
      */
     public List<TradeProcessEntity> listTradeProcess(Map<String, String> map){
+        Map<String, String> map2=new HashMap<String, String>();
+        if (map != null) {
+            String startTime = map.get("startTime");
+            String endTime = map.get("endTime");
 
-        return tradeProcessReadMapper.listTradeProcess(map);
+            map2.put("type",map.get("type"));
+            map2.put("status",map.get("status"));
+            map2.put("mobile",map.get("mobile"));
+            map2.put("custName", map.get("custName"));
+            map2.put("tradeType", map.get("tradeType"));
+            map2.put("status", map.get("status"));
+            map2.put("processState", map.get("processState"));
+            map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+            map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+        }
+        return tradeProcessReadMapper.listTradeProcess(map2);
     }
 
     public TradeProcessEntity findById(Long id){
@@ -203,5 +234,48 @@ public class FssTradeProcessService {
      */
     public List<TradeProcessEntity> getFailWithDrawProcess(){
         return tradeProcessReadMapper.getFailWithDrawProcess();
+    }
+    public List<TradeProcessEntity> childTradeProcess(Long parentId){
+        return tradeProcessReadMapper.childTradeProcess(parentId);
+    }
+    //收费
+    public void charge(TradeProcessEntity entity,FundOrderEntity fundOrderEntity) throws FssException {
+        //提现订单不存在，返回
+        if(fundOrderEntity==null) return;
+        //查询提现收费子交易
+        List<TradeProcessEntity> chilList=this.findByParentIdAndActionType("1106",String.valueOf(entity.getId()));
+        if(CollectionUtils.isEmpty(chilList)) return;
+        TradeProcessEntity charge=chilList.get(0);
+        //主交易处于提现成功是继续收费操作
+        if(StringUtils.equals("",entity.getStatus())){
+            //查询出账账户
+            FundAccountEntity accEntity=fundAccountService.select(charge.getFromAccId());
+            FundAccountEntity toEntity=fundAccountService.select(charge.getToAccId());
+            try {
+                //访问第三方进行收费
+                FundOrderEntity fundOrderEntityCharge =  paySuperByFuiou.chargeAmount(accEntity,toEntity,charge.getAmt(),charge.getOrderNo());
+                if(fundOrderEntityCharge != null) {
+                    //添加收费交易记录
+                    fundWithrawChargeService.add(fundOrderEntity.getOrderNo(), accEntity, fundOrderEntity.getOrderAmount(), fundOrderEntity.getChargeAmount());
+                    tradeRecordService.chargeAmount(accEntity,toEntity,fundOrderEntity,fundOrderEntityCharge);
+                }
+                //修改收费子交易状态
+                charge.setProcessState("10050007");//处理完成
+                charge.setStatus("10030002");//交易成功
+
+                entity.setProcessState("10050007");//收费成功
+                entity.setStatus("10030002");//收费成功
+            }catch (Exception e){
+                LogUtil.info(this.getClass(),e.getMessage());
+                charge.setProcessState("10050032");//费用收取失败
+                charge.setStatus("10030003");//交易失败
+
+                entity.setProcessState("10050032");//费用收取失败
+                entity.setStatus("10030003");//费用收取失败
+            }
+            this.updateTradeProcessEntity(charge);
+            this.updateTradeProcessEntity(entity);
+
+        }
     }
 }
