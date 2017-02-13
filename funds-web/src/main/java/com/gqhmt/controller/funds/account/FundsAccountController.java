@@ -5,6 +5,7 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.funds.architect.account.bean.FundAccountCustomerBean;
 import com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean;
+import com.gqhmt.funds.architect.account.entity.FundSequenceEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.account.service.FundSequenceService;
 import com.gqhmt.pay.service.trade.IFundsTrade;
@@ -73,28 +74,31 @@ public class FundsAccountController {
 	 * time:2016年2月16日
 	 * function：查看流水详情
 	 */
-	@RequestMapping(value = "/funds/account/accountWater/{id}", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/funds/account/accountWater/{custId}", method = {RequestMethod.GET, RequestMethod.POST})
 	@AutoPage
-	public Object accountWater(HttpServletRequest request, ModelMap model, @PathVariable Integer id, Integer accountType, Integer busiType,
-							   Integer actionType, String startDate, String endDate) {
-		Map<Object, Object> fasMap = new HashMap<>();
-		if (startDate != null && !startDate.equals("")) {
-			startDate = startDate + " 00:00:00";
-		}
-		if (endDate != null && !endDate.equals("")) {
-			endDate = endDate + " 23:59:59";
-		}
-		fasMap.put("busiType", busiType);
-		fasMap.put("id", id);
-		fasMap.put("accountType", accountType);
-		fasMap.put("actionType", actionType);
-		fasMap.put("startDate", startDate);
-		fasMap.put("endDate", endDate);
-		List<FundAccountSequenceBean> selectAccountSequenceList = fundSequenceService.selectAccountSequenceList(fasMap);
+	public Object accountWater(HttpServletRequest request, ModelMap model, @PathVariable Integer custId,@RequestParam Map<String, String> map) {
+		map.put("custId",String.valueOf(custId));
+		List<FundSequenceEntity> list = fundSequenceService.selectAccountSequenceList(map);
+		model.addAttribute("page", list);
+		model.addAttribute("custId", custId);
+		return "funds/account/accountWater";
+	}
 
-
-		model.addAttribute("fasMap", fasMap);
-		model.addAttribute("page", selectAccountSequenceList);
+	/**
+	 * 根据条件查询账户交易流水
+ 	 * @param request
+	 * @param model
+	 * @param custId
+	 * @param map
+     * @return
+     */
+	@RequestMapping(value = "/funds/account/accSequence/{custId}", method = {RequestMethod.GET, RequestMethod.POST})
+	@AutoPage
+	public Object accSequences(HttpServletRequest request, ModelMap model, @PathVariable Integer custId,@RequestParam Map<String, String> map) {
+		map.put("custId",String.valueOf(custId));
+		List<FundSequenceEntity> list = fundSequenceService.getSequenceByParam(map);
+		model.addAttribute("page", list);
+		model.addAttribute("map", map);
 		return "funds/account/accountWater";
 	}
 

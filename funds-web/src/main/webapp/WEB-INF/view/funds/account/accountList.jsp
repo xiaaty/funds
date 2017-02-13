@@ -177,13 +177,14 @@
                                                     <td>${acc.hasThirdAccount==2?"已创建":"未创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/4/${accMap.custId}">转账转入</a>
-                                                        &nbsp;
-                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/5/${accMap.custId}">转账转出</a>
+                                                        <a href="${contextPath}/funds/account/accountWater/${acc.custId}">查看流水</a>
+                                                     <%--   <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/4/${accMap.custId}">转账转入</a>--%>
+                                                     <%--   <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/5/${accMap.custId}">转账转出</a>--%>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>--%>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a> --%>
-                                                <%--<a href="${contextPath}/funds/account/accountWater/${acc.id}">查看流水</a> --%>
+
                                                         <!-- 是否需要在此处增加账户类型校验 -->
+                                                         &nbsp;
                                                         <a href="javascript:void(0);" onclick="expBiz('${acc.id}');">导出</a>
                                                     </td>
                                                 </tr>
