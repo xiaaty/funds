@@ -39,7 +39,7 @@ public class RepaymentChildDto{
 
 	private String mid_cust_id;    //中间人客户ID
 
-	private String withhold_type;    //代扣类型字段
+	private String withHold_type;    //代扣类型字段
     
     private String remark;    //还款备注
     
@@ -117,11 +117,11 @@ public class RepaymentChildDto{
 		this.mid_cust_id = mid_cust_id;
 	}
 
-	public String getWithhold_type() {
-		return withhold_type;
+	public String getWithHold_type() {
+		return withHold_type;
 	}
 
-	public void setWithhold_type(String withhold_type) {
-		this.withhold_type = withhold_type;
+	public void setWithHold_type(String withHold_type) {
+		this.withHold_type = withHold_type;
 	}
 }
