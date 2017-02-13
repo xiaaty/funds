@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gqhmt.fss.architect.trade.mapper.read.TradeProcessReadMapper">
+    <sql id="fieldSql">
+        SELECT
+          t.`id` id,
+          t.`parnet_id` parnetId,
+          t.`seq_no` seqNo,
+          t.`order_no` orderNo,
+          t.`from_cust_no` fromCustNo,
+          t.`from_cust_type` fromCustType,
+          t.`from_acc_no` fromAccNo,
+          t.`from_acc_id` fromAccId,
+          t.`from_cust_mobile` fromCustMobile,
+          t.`from_cust_name` fromCustName,
+          t.`to_cust_no` toCustNo,
+          t.`to_cust_type` toCustType,
+          t.`to_acc_no` toAccNo,
+          t.`to_acc_id` toAccId,
+          t.`to_cust_mobile` toCustMobile,
+          t.`to_cust_name` toCustName,
+          t.`amt` amt,
+          t.`bid_id` bidId,
+          t.`tender_id` tenderId,
+          t.`new_tender_id` newTenderId,
+          t.`loan_contract_no` loanContractNo,
+          t.`lend_contract_no` lendContractNo,
+          t.`product_name` productName,
+          t.`trade_type_parent` tradeTypeParent,
+          t.`trade_type` tradeType,
+          t.`action_type` actionType,
+          t.`fund_type` fundType,
+          t.`process_state` processState,
+          t.`status` status,
+          t.`memo` memo,
+          t.`sync` sync,
+          t.`callback` callback,
+          t.`create_time` createTime,
+          t.`modify_time` modifyTime
+        FROM
+        t_gq_fss_trade_process t
+    </sql>
+
+    <select id="getTradeProcessByOrderNo" parameterType="java.lang.String"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity">
+        <include refid="fieldSql"/>
+        where t.`order_no` = #{orderNo}
+    </select>
+
+    <select id="listTradeProcess" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+        <include refid="fieldSql"/>
+        WHERE 1 = 1
+        <if test="type != null and type != ''">
+            AND t.action_type = #{type}
+        </if>
+        <if test="tradeType != null and tradeType != ''">
+            AND t.trade_type = #{tradeType}
+        </if>
+        <if test="status != null and status != ''">
+            AND t.status = #{status}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            AND t.from_cust_mobile = #{mobile}
+        </if>
+        <if test="custName != null and custName != ''">
+            AND t.from_cust_name = #{custName}
+        </if>
+        <if test="processState != null and processState != ''">
+            AND t.process_state = #{processState}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            and date_format(t.create_time,'%Y%m%d') &gt;= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != '' ">
+            and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
+        </if>
+    </select>
+
+    <select id="findByParentIdAndActionType" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+        <include refid="fieldSql"/>
+        WHERE parnet_id = #{parentId}
+        AND action_type = #{actionType}
+    </select>
+
+    <select id="getChargeAmount" parameterType="java.lang.Long" resultType="java.math.BigDecimal" >
+        SELECT t.`amt` amt
+        FROM t_gq_fss_record_trade_process t
+        WHERE parnet_id = #{parentId}
+    </select>
+  <select id="getWithDrawProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+      <include refid="fieldSql"/>
+      where t.action_type = 1104 AND t.parnet_id=0 AND t.process_state = '10170002' AND t.status = '10030001' AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
+  </select>
+    <select id="getFailWithDrawProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+      <include refid="fieldSql"/>
+      where t.action_type = 1104
+        AND t.parnet_id=0
+        AND t.process_state = '10050031'
+        AND t.status = '10030003'
+        AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
+        AND TIMESTAMPDIFF(MINUTE, t.modify_time,now()) >10
+  </select>
+ <select id="childTradeProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+      <include refid="fieldSql"/>
+      where t.parnet_id = #{parentId}
+  </select>
+
+
+
+
+</mapper>
