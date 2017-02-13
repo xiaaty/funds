@@ -36,6 +36,10 @@ public class RepaymentChildDto{
     private BigDecimal amt;       //还款金额
 	
 	private BigDecimal real_repay_amt;       //还款金额
+
+	private String mid_cust_id;    //中间人客户ID
+
+	private String withHold_type;    //代扣类型字段
     
     private String remark;    //还款备注
 
@@ -104,6 +108,20 @@ public class RepaymentChildDto{
 	public void setReal_repay_amt(BigDecimal real_repay_amt) {
 		this.real_repay_amt = real_repay_amt;
 	}
-    
-	
+
+	public String getMid_cust_id() {
+		return mid_cust_id;
+	}
+
+	public void setMid_cust_id(String mid_cust_id) {
+		this.mid_cust_id = mid_cust_id;
+	}
+
+	public String getWithHold_type() {
+		return withHold_type;
+	}
+
+	public void setWithHold_type(String withHold_type) {
+		this.withHold_type = withHold_type;
+	}
 }

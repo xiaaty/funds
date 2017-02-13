@@ -260,7 +260,7 @@ public class UrlConnectUtil {
 
     private void postData(URLConnection conn,String param) throws IOException {
         LogUtil.info(this.getClass(),"post发送数据:"+conn.getURL()+"参数:"+param);
-        PrintWriter out = new PrintWriter(conn.getOutputStream());
+        PrintWriter out = new PrintWriter(new OutputStreamWriter(conn.getOutputStream(),"utf-8"));
         // 发送请求参数
         out.print(param);
         // 输出流缓冲
