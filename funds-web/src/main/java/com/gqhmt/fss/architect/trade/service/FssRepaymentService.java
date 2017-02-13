@@ -152,6 +152,7 @@ public class FssRepaymentService {
 	 * function：修改借款代扣交易状态
 	 */
 	public int updateRepaymentEntity(FssRepaymentEntity repayment){
+		repayment.setMotifyTime(new Date());
 		return fssRepaymentWriteMapper.updateByPrimaryKey(repayment);
 	}
 	/**
@@ -220,7 +221,7 @@ public class FssRepaymentService {
 		repaymentEntity.setRespCode("");
 		repaymentEntity.setRespMsg("");
 		repaymentEntity.setParentId(repaymentParent.getId());
-		repaymentEntity.setWithholdType(repyament.getWithhold_type());
+		repaymentEntity.setWithholdType(repyament.getWithHold_type());
 		repaymentEntity.setMidCustId(repyament.getMid_cust_id());
 		return repaymentEntity;
 	}
@@ -290,12 +291,12 @@ public class FssRepaymentService {
     		if("10180002".equals(fssRepaymentEntity.getWithholdType())){
 				if("10050105".equals(fssRepaymentEntity.getResultState())){
 					repaymentResponse.setTransfer_resp_code("0000");
-					repaymentResponse.setResp_msg("中间人转账成功");
+					repaymentResponse.setTransfer_resp_msg("中间人转账成功");
 				}else {
 					//repaymentResponse.setResp_code(queryByMchnAndSeqNo.getResultState());
 					repaymentResponse.setTransfer_resp_code("9999");
 					String resMsg = Application.getInstance().getDictName(queryByMchnAndSeqNo.getResultState());
-					repaymentResponse.setResp_msg(resMsg);
+					repaymentResponse.setTransfer_resp_msg(resMsg);
 				}
 			}
 		}
@@ -398,7 +399,7 @@ public class FssRepaymentService {
 			boolean isMidCust = false;
 			List<FssRepaymentEntity> repaymentlist = this.searRepaymentByparam(seqNo,mchn);
 			if(repaymentlist!=null && repaymentlist.size()>0){
-				if("10180002".equals(repaymentlist.get(0).getWithholdType()))isMidCust = true;
+				if("10180002".equals(repaymentlist.get(0).getWithholdType())) isMidCust = true;
 			}
 
 			//中间人代扣并且状态是成功、部分成功， 调用转账
@@ -413,10 +414,8 @@ public class FssRepaymentService {
 							repayment.setResultState("10080010");
 							LogUtil.error(this.getClass(),repayment.getSeqNo() + "_" + repayment.getMchnChild() + "转账失败");
 						}
+						this.updateRepaymentEntity(repayment);
 					}
-				}
-				if(fssBackplateEntity!=null){
-					fssBackplateEntity.setRepayCount(0);
 				}
 			}
 
@@ -434,16 +433,13 @@ public class FssRepaymentService {
 	public void midCustTransefer(FssRepaymentEntity repayment) throws FssException {
 		// 通过id查询交易对象
 
-			fundsTradeImpl.transefer(repayment.getAccNo(),repayment.getMidCustId(),
-					repayment.getAmt(), GlobalConstants.ORDER_MORTGAGEE_TRANS_ACC, repayment.getId(),
-					GlobalConstants.NEW_BUSINESS_MT,null,repayment.getContractNo(),1005,3);
-			repayment.setState("10050105");
-			this.updateRepaymentEntity(repayment);
-
-			FssBackplateEntity backplateEntity = fssBackplateService.selectByMchnAndseqNo(repayment.getMchnChild(), repayment.getSeqNo());
-			backplateEntity.setRepayCount(0);
-
-			fssBackplateService.updatebackplate(backplateEntity);
+			fundsTradeImpl.transefer(Integer.valueOf(repayment.getMidCustId()),GlobalConstants.ACCOUNT_TYPE_LOAN,Integer.valueOf(repayment.getAccNo()),
+					GlobalConstants.ACCOUNT_TYPE_LOAN,repayment.getAmt(), GlobalConstants.ORDER_TRANSFER, repayment.getId(),GlobalConstants.BUSINESS_TRANSFER,
+					repayment.getTradeType(),repayment.getContractNo(),1005,3);
+//			FssBackplateEntity backplateEntity = fssBackplateService.selectByMchnAndseqNo(repayment.getMchnChild(), repayment.getSeqNo());
+//			backplateEntity.setRepayCount(0);
+//
+//			fssBackplateService.updatebackplate(backplateEntity);
 
 	}
 
