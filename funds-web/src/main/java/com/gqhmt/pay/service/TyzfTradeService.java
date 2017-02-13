@@ -309,7 +309,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void createAccount(String tradeType,String custName,String certNo,String certType,String busiNo,String seq_no,String accType,String chnlId,String mobile,String custType) {
-        MessageConvertDto bean = new MessageConvertDto();
+      /*  MessageConvertDto bean = new MessageConvertDto();
         //发送报文调用统一支付开户
         bean.setServiceId("0001");
         bean.setIsActual("N");//是否同步交易
@@ -329,7 +329,7 @@ public class TyzfTradeService {
         bean.setCdtrAcctCcy("30080001");//货币类型
         bean.setCdtrContactno(mobile);//手机号
         bean.setMerchId(CoreConstants.TYZF_MERCHID);//商户号
-        this.sendMsg(bean);
+        this.sendMsg(bean);*/
     }
 
     /**
@@ -342,7 +342,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tyzfRecharge(Long custId,Integer busiType,BigDecimal amount,String fundType,String tradeType,String seqNo) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
+        /*FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
         if(bindEntity==null){
             LogUtil.error(this.getClass(),"90004034");
             return;
@@ -368,7 +368,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        this.sendMsg(bean);
+        this.sendMsg(bean);*/
     }
 
     /**
@@ -381,7 +381,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tyzfWithDraw(Long custId,Integer busiType,BigDecimal amount,Integer fundType,String tradeType,String seqNo) throws FssException {
-        FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
+        /*FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
         if(bindEntity==null){
             LogUtil.error(this.getClass(),"90004034");
             return;
@@ -399,7 +399,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_JIE);//个人账户记账借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        this.sendMsg(bean);
+        this.sendMsg(bean);*/
     }
 
     /**
@@ -414,14 +414,14 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tyzfTransfer(Long fromCustId,Integer fromAccountType,Long toCustId,Integer toAccountType,BigDecimal amount,String tradeType,String seqNo,String transf_flag)  {
-        if("".equals(seqNo) || seqNo==null){
+        /*if("".equals(seqNo) || seqNo==null){
             String date = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
             String seq_no= CommonUtil.getRandomString(8);
             seqNo=date+seq_no+"_"+tradeType;
         }
         FssAccountBindEntity fromBindEntity = fssAccountBindService.getBindAccountByParam(fromCustId,fromAccountType);
         FssAccountBindEntity toBindEntity = fssAccountBindService.getBindAccountByParam(toCustId,toAccountType);
-        this.tyzfTransfer(fromBindEntity,toBindEntity,amount,tradeType,seqNo,transf_flag);
+        this.tyzfTransfer(fromBindEntity,toBindEntity,amount,tradeType,seqNo,transf_flag);*/
     }
 
     /**
@@ -434,7 +434,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tyzfTransfer(FssAccountBindEntity fromEntity,FssAccountBindEntity toEntity,BigDecimal amount,String tradeType,String seqNo,String transf_flag) {
-        String txnType=GlobalConstants.TYZF_TRANSFER;
+        /*String txnType=GlobalConstants.TYZF_TRANSFER;
         if("1".equals(transf_flag)){//冻结转账
             txnType=GlobalConstants.TYZF_FRZEN_TRANSFER;
         }
@@ -455,7 +455,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);
         bean.setCardTp(GlobalConstants.TYZF_JIE);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);
-        this.sendMsg(bean);
+        this.sendMsg(bean);*/
     }
 
     /**
@@ -468,7 +468,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tyzfFroze(Long custId,Integer busiType,BigDecimal amount,String fundType,String tradeType,String seqNo) {
-        FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
+        /*FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
         if(bindEntity==null){
             LogUtil.error(this.getClass(),"90004034");
             return;
@@ -485,7 +485,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_JIE);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        this.sendMsg(bean);
+        this.sendMsg(bean);*/
     }
 
     /**
@@ -498,7 +498,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tyzfUnFroze(Long custId,Integer busiType,BigDecimal amount,String fundType, String tradeType,String seqNo) {
-        FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
+        /*FssAccountBindEntity bindEntity = fssAccountBindService.checkBindAccount(custId,busiType);
         if(bindEntity==null){
             LogUtil.error(this.getClass(),"90004034");
             return;
@@ -515,7 +515,7 @@ public class TyzfTradeService {
         bean.setSttlAmt(amount);//交易金额
         bean.setCardTp(GlobalConstants.TYZF_DAI);//借贷标识
         bean.setOperateType(GlobalConstants.TYZF_NORMAL_ACCOUNTING);//记账类型
-        this.sendMsg(bean);
+        this.sendMsg(bean);*/
     }
 
      /** 投标
@@ -529,7 +529,7 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tender(Long busiId,Integer busiType,BigDecimal amount,BigDecimal boundsAmount,String tradeType,String bidId,String seqNo){
-        this.tyzfTransfer(busiId,busiType,Long.valueOf(bidId),90,amount,tradeType,seqNo,"0");
+        /*this.tyzfTransfer(busiId,busiType,Long.valueOf(bidId),90,amount,tradeType,seqNo,"0");
         //红包账户
         if (boundsAmount.compareTo(BigDecimal.ZERO) > 0) {
             FundAccountEntity fromEntity=null;
@@ -544,7 +544,7 @@ public class TyzfTradeService {
                 }
             }
             this.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo,"0");
-        }
+        }*/
     }
 
     /**
@@ -560,7 +560,7 @@ public class TyzfTradeService {
     public void fullStandard(String bidId,FundAccountEntity toAccEntity,BigDecimal amount,
                              String tradeType,String seqNo) {
         //// TODO: 2016/11/14
-        this.tyzfTransfer(Long.valueOf(bidId),90,toAccEntity.getCustId(),toAccEntity.getBusiType(),amount,tradeType,seqNo,"0");
+//        this.tyzfTransfer(Long.valueOf(bidId),90,toAccEntity.getCustId(),toAccEntity.getBusiType(),amount,tradeType,seqNo,"0");
     }
 
     /**
@@ -652,18 +652,12 @@ public class TyzfTradeService {
 
 
     private void sendMsg(MessageConvertDto bean ) {
-//        try {
-//            conversionService.sendAndReceiveMsg(bean);
-//        } catch (Exception e) {
-//            LogUtil.error(this.getClass(),e.getMessage(),e);
-//            throw new FssException("91002005");
-//        }
-        try {
+        /*try {
             AsyncThreadSendMq.getInstance().sendMqMsg(bean);
         } catch (InterruptedException e) {
             LogUtil.info(this.getClass(),"消息进入队列失败");
         } catch (FssException e) {
             LogUtil.info(this.getClass(),e.getMessage());
-        }
+        }*/
     }
 }

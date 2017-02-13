@@ -31,7 +31,7 @@ public class AmqReceiveListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-
+        /*
         WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sce.getServletContext());
         final ConversionService conversionService = wac.getBean(ConversionService.class);
         System.out.println("AmqReceiveListener.contextInitialized() 开始");
@@ -64,12 +64,13 @@ public class AmqReceiveListener implements ServletContextListener {
         t.setDaemon(true);
         t.start();
         daemons.add(t);
+    */
 
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        asyncThreadSendMq.drop();
+       /* asyncThreadSendMq.drop();
         AmqReceiveListener.flag=0;
         System.out.println("AmqReceiveListener.contextInitialized() 结束 ");
         System.out.println("daemons.size="+daemons.size());
@@ -81,7 +82,7 @@ public class AmqReceiveListener implements ServletContextListener {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
     }
 
