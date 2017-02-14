@@ -683,11 +683,18 @@ public class FssLoanTradeController {
 				}
 				fssLoanService.updateFeeList(fssFeeList);
 			}
-			fssTradeApplyService.whithholdingApply(null,null,fssLoanEntity.getTradeType(),amount,fssLoanEntity.getMchnChild(),fssLoanEntity.getSeqNo(),Long.valueOf(fssLoanEntity.getAccNo()),GlobalConstants.ACCOUNT_TYPE_LOAN
-					,fssLoanEntity.getContractNo(),fssLoanEntity.getContractId(),fssLoanEntity.getId(),true);
-			//信用标借款人提现
-			fssLoanEntity.setStatus("10050018");
-			fssLoanService.update(fssLoanEntity);
+			//代扣费用金额大于0时进行代扣收费
+			if(amount.compareTo(BigDecimal.ZERO)>0) {
+				fssTradeApplyService.whithholdingApply(null, null, fssLoanEntity.getTradeType(), amount, fssLoanEntity.getMchnChild(), fssLoanEntity.getSeqNo(), Long.valueOf(fssLoanEntity.getAccNo()), GlobalConstants.ACCOUNT_TYPE_LOAN
+						, fssLoanEntity.getContractNo(), fssLoanEntity.getContractId(), fssLoanEntity.getId(), true);
+				//信用标借款人费用代扣中
+				fssLoanEntity.setStatus("10050018");
+				fssLoanService.update(fssLoanEntity);
+			}else {
+				//信用标借款人费用代扣成功
+				fssLoanEntity.setStatus("10050019");
+				fssLoanService.update(fssLoanEntity);
+			}
 		}
 
 		return "redirect:/loan/trade/"+type;

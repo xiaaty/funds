@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -71,11 +72,6 @@ public class WithDrawJob extends SupperJob{
                     FundOrderEntity fundOrderEntity=this.withdraw(entity);
                     //进行提现费用收取
                     tradeProcessService.charge(entity,fundOrderEntity);
-                    //修改主订单流程状态
-                    entity.setProcessState("10170003");
-                    tradeProcessService.updateTradeProcessEntity(entity);
-
-
                 }
             }
 		} catch (Exception e) {
@@ -104,10 +100,12 @@ public class WithDrawJob extends SupperJob{
         FundOrderEntity fundOrderEntity=null;
         try {
             //调用富友提现接口
-            fundOrderEntity = paySuperByFuiou.withdraw(fromEntity, entity.getAmt(), withdraw.getAmt(), GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", entity.getTradeType(), null, null, entity.getOrderNo());
+            fundOrderEntity = paySuperByFuiou.withdraw(fromEntity, withdraw.getAmt(), BigDecimal.ZERO, GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", entity.getTradeType(), null, null, entity.getOrderNo());
             //创建交易流水
             tradeRecordService.withdrawByFroze(account, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003, entity.getSeqNo(), entity.getTradeType());
             //提现成功修改提现子交易状态
+            withdraw.setRespCode(fundOrderEntity.getRetCode());
+            withdraw.setRespMsg(fundOrderEntity.getRetMessage());
             withdraw.setProcessState("10050030");//处理完成
             withdraw.setStatus("10030002");//交易成功
             //修改主交易状态
@@ -115,6 +113,10 @@ public class WithDrawJob extends SupperJob{
             entity.setStatus("10030002");//交易成功
         }catch (Exception e){
             //提现失败修改提现子交易状态
+            if(fundOrderEntity!=null) {
+                withdraw.setRespCode(fundOrderEntity.getRetCode());
+                withdraw.setRespMsg(fundOrderEntity.getRetMessage());
+            }
             withdraw.setProcessState("10050031");//处理完成
             withdraw.setStatus("10030003");//交易失败
             //修改主交易状态

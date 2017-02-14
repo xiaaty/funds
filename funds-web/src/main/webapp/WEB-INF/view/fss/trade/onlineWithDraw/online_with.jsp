@@ -4,14 +4,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>交易审核--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>线上提现--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
     <style>
+        .table-nobg-btn {
+            font: 15/29px;
+            height: 31px;
+            line-height: 31px;
+            margin: 7px 7px 7px 0;
+            padding: 0 22px;
+        }
+        .dt-wrapper {
+            overflow: auto;
+        }
         .button-icon i{
             line-height:32px;
         }
+        #footer{position: absolute;bottom: 10px;z-index: 100px;}
+        .footer-bottom{font-size:13px}
         .footer-bottom ul>li{padding:0}
         .footer-bottom ul>li+li:before{padding:0 10px;color:#ccc;content:"|"}
     </style>
@@ -30,7 +42,7 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>交易管理</li>
-            <li>借款流程</li>
+            <li>线上提现</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
@@ -109,7 +121,7 @@
                                                         <td>
                                                             <select id = "processState" name = "processState" style="width:150px;height: 30px;">
                                                                 <option value="">所有</option>
-                                                                <fss:dictOrder var="order" dictOrder="">
+                                                                <fss:dictOrder var="order" dictOrder="processState">
                                                                     <option value="${order.key}"  <c:if test="${order.key==map.processState}">selected</c:if> >${order.value}</option>
                                                                 </fss:dictOrder>
                                                             </select>
@@ -153,7 +165,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>借款流程</h2>
+                            <h2>线上提现</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -267,7 +279,27 @@
     		}
     	}
     }
-
+    function recharg(type,id){
+    	$.ajax({
+        	url : "${contextPath}/loan/trade/"+type+"/charge/"+id,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.msg == '0000') {
+                  jAlert("收费成功!", '确认信息');
+                } else if(data.msg == '0001'){
+                	jAlert("该条信息不存在!", '确认信息');
+                    return;
+                }else if(data.msg == '0002'){
+                  jAlert("没有收费信息!", '确认信息');
+                    return;
+                }else if(data.msg == '0003'){
+                  jAlert("请重新收取费用!", '确认信息');
+                    return;
+                }
+            }
+        });
+    }
 </script>
 
 <%@include file= "../../../../view/include/foot.jsp"%>

@@ -1,6 +1,7 @@
 package com.gqhmt.fss.architect.trade.entity;
 
 import com.gqhmt.annotations.AutoDate;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -407,10 +408,16 @@ public class TradeProcessEntity implements java.io.Serializable{
     }
 
     public String getSettleType() {
+        if(StringUtils.isEmpty(settleType)){
+            return "0";
+        }
         return settleType;
     }
 
     public void setSettleType(String settleType) {
+        if(StringUtils.isEmpty(settleType)){
+            settleType="0";
+        }
         this.settleType = settleType;
     }
 

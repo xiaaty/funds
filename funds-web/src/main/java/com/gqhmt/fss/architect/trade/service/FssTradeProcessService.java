@@ -246,20 +246,26 @@ public class FssTradeProcessService {
         List<TradeProcessEntity> chilList=this.findByParentIdAndActionType("1106",String.valueOf(entity.getId()));
         if(CollectionUtils.isEmpty(chilList)) return;
         TradeProcessEntity charge=chilList.get(0);
+        //收费子交易存在，更新提现订单收费金额
+        fundOrderEntity.setChargeAmount(charge.getAmt());
+        fundOrderService.update(fundOrderEntity);
         //主交易处于提现成功是继续收费操作
-        if(StringUtils.equals("",entity.getStatus())){
+        if(StringUtils.equals("10050030",entity.getProcessState())){
             //查询出账账户
             FundAccountEntity accEntity=fundAccountService.select(charge.getFromAccId());
             FundAccountEntity toEntity=fundAccountService.select(charge.getToAccId());
+            FundOrderEntity fundOrderEntityCharge=null;
             try {
                 //访问第三方进行收费
-                FundOrderEntity fundOrderEntityCharge =  paySuperByFuiou.chargeAmount(accEntity,toEntity,charge.getAmt(),charge.getOrderNo());
+                fundOrderEntityCharge =  paySuperByFuiou.chargeAmount(accEntity,toEntity,charge.getAmt(),charge.getOrderNo());
                 if(fundOrderEntityCharge != null) {
                     //添加收费交易记录
                     fundWithrawChargeService.add(fundOrderEntity.getOrderNo(), accEntity, fundOrderEntity.getOrderAmount(), fundOrderEntity.getChargeAmount());
                     tradeRecordService.chargeAmount(accEntity,toEntity,fundOrderEntity,fundOrderEntityCharge);
                 }
                 //修改收费子交易状态
+                charge.setRespCode(fundOrderEntityCharge.getRetCode());
+                charge.setRespMsg(fundOrderEntityCharge.getRetMessage());
                 charge.setProcessState("10050007");//处理完成
                 charge.setStatus("10030002");//交易成功
 
@@ -267,6 +273,10 @@ public class FssTradeProcessService {
                 entity.setStatus("10030002");//收费成功
             }catch (Exception e){
                 LogUtil.info(this.getClass(),e.getMessage());
+                if(fundOrderEntityCharge != null) {
+                    charge.setRespCode(fundOrderEntityCharge.getRetCode());
+                    charge.setRespMsg(fundOrderEntityCharge.getRetMessage());
+                }
                 charge.setProcessState("10050032");//费用收取失败
                 charge.setStatus("10030003");//交易失败
 
