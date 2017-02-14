@@ -8,7 +8,6 @@ import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeProcessService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
-import com.gqhmt.funds.architect.account.service.FundWithrawChargeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.exception.PayChannelNotSupports;
@@ -61,11 +60,9 @@ public class FailWithDrawJob extends SupperJob{
     private FssCheckAccountingService fssCheckAccountingService;
 
     @Resource
-    private FundWithrawChargeService fundWithrawChargeService;
-    @Resource
     private FundOrderService fundOrderService;
     private static boolean isRunning = false;
-    @Scheduled(cron="36 0/10 * * * * ")
+    @Scheduled(cron="36 0/5 * * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
@@ -106,11 +103,13 @@ public class FailWithDrawJob extends SupperJob{
                                 fundOrderEntity.setRetMessage("成功");
                                 fundOrderService.update(fundOrderEntity);
 
-                                withDraw.setProcessState("10050030");//处理完成
+                                withDraw.setProcessState("10050030");//提现成功
                                 withDraw.setStatus("10030002");//交易成功
+                                tradeProcessService.updateTradeProcessEntity(withDraw);
                                 //修改流程表状态
-                                entity.setProcessState("10050030");//处理完成
+                                entity.setProcessState("10050030");//提现成功
                                 entity.setStatus("10030002");//交易成功
+                                tradeProcessService.updateTradeProcessEntity(entity);
                                 //进行收费
                                 tradeProcessService.charge(entity,fundOrderEntity);
                             }else {
@@ -121,8 +120,8 @@ public class FailWithDrawJob extends SupperJob{
                                 //修改流程表状态
                                 entity.setProcessState("10050088");//处理完成
                                 entity.setStatus("10030003");
+                                tradeProcessService.updateTradeProcessEntity(entity);
                             }
-                             tradeProcessService.updateTradeProcessEntity(entity);
                     }
                 }
             }

@@ -60,7 +60,7 @@ public class FssOnlineWithDrawController {
 		List<TradeProcessEntity> list=fssTradeProcessService.listTradeProcess(map);
         model.addAttribute("page", list);
         model.put("map", map);
-		return "/fss/trade/onlineWithDraw/online_withDraw";
+		return "/fss/trade/onlineWithDraw/online_with";
     }
 
 	/**
@@ -78,7 +78,7 @@ public class FssOnlineWithDrawController {
 		// 增加数据展示
 		List<TradeProcessEntity> list=fssTradeProcessService.childTradeProcess(parentId);
         model.addAttribute("page", list);
-        return "/fss/trade/onlineWithDraw/trade_process_child";
+        return "/fss/trade/onlineWithDraw/trade_child";
     }
 	/**
 	 * jhz
