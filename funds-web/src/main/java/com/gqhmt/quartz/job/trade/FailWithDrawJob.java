@@ -102,7 +102,12 @@ public class FailWithDrawJob extends SupperJob{
                                 fundOrderEntity.setRetCode("0000");
                                 fundOrderEntity.setRetMessage("成功");
                                 fundOrderService.update(fundOrderEntity);
+                                //创建交易流水
+                                tradeRecordService.withdrawByFroze(account, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003, entity.getSeqNo(), entity.getTradeType());
 
+                                //提现成功修改提现子交易状态
+                                withdraw.setRespCode(fundOrderEntity.getRetCode());
+                                withdraw.setRespMsg(fundOrderEntity.getRetMessage());
                                 withDraw.setProcessState("10050030");//提现成功
                                 withDraw.setStatus("10030002");//交易成功
                                 tradeProcessService.updateTradeProcessEntity(withDraw);
