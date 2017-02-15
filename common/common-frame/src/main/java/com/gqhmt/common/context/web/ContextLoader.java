@@ -1,5 +1,7 @@
 package com.gqhmt.common.context.web;
 
+import javax.servlet.ServletContext;
+
 /**
  * Filename:    com.gqhmt.common.context.web.ContextLoader
  * Copyright:   Copyright (c)2015
@@ -18,5 +20,8 @@ package com.gqhmt.common.context.web;
  */
 public class ContextLoader {
 
+    public void initWebApplicaionContext(ServletContext servletContext){
+
+    }
 
 }
