@@ -1,7 +1,9 @@
 package com.gqhmt.fss.architect.trade.service;
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
 import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.TradeProcessReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.TradeProcessWriteMapper;
@@ -12,6 +14,8 @@ import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
+import com.gqhmt.pay.service.trade.IFundsTrade;
+import com.gqhmt.util.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -62,7 +66,10 @@ public class FssTradeProcessService {
 
     @Resource
     private FundWithrawChargeService fundWithrawChargeService;
-
+    @Resource
+    private IFundsTrade fundsTradeImpl;
+    @Resource
+    private FssCheckAccountingService fssCheckAccountingService;
     /**
      * 保存交易数据
      * @param entity
@@ -287,5 +294,67 @@ public class FssTradeProcessService {
             this.updateTradeProcessEntity(entity);
 
         }
+    }
+
+    /**
+     * jhz
+     * 核对交易在富有成功失败情况
+     * @param entity
+     * @throws FssException
+     */
+    public void checkResult(TradeProcessEntity entity)throws FssException{
+        //查询出该笔交易的提现子交易
+        TradeProcessEntity withDraw=this.findByParentIdAndActionType("1104",entity.getId().toString()).get(0);
+        //查询出账账户
+        FundAccountEntity fromEntity=fundAccountService.select(withDraw.getFromAccId());
+        //查询出账账户
+        String repCode=this.getResult(withDraw);
+        if(StringUtils.isNotEmpty(repCode)){
+            FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(withDraw.getOrderNo());
+            //富友成功
+            if(StringUtils.equals(repCode,"0000")){
+                //创建交易流水
+                tradeRecordService.asynNotOrderCommand(fundOrderEntity.getOrderNo(), "success",withDraw.getAmt().toString(),withDraw.getFromCustMobile());
+
+                //提现成功修改提现子交易状态
+                withDraw.setProcessState("10050030");//提现成功
+                withDraw.setStatus("10030002");//交易成功
+                this.updateTradeProcessEntity(withDraw);
+                //修改流程表状态
+                entity.setProcessState("10050030");//提现成功
+                entity.setStatus("10030002");//交易成功
+                this.updateTradeProcessEntity(entity);
+                //进行收费
+                this.charge(entity,fundOrderEntity);
+            }else {
+                //得到线上账户
+                FundAccountEntity account = fundsTradeImpl.getFundAccount(Integer.parseInt(entity.getFromCustNo()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
+                //进行资金解冻
+                tradeRecordService.unFrozen(fromEntity,account,entity.getAmt(),1004,null,"提现失败，退回金额"+ entity.getAmt() + "元",BigDecimal.ZERO,entity.getTradeType(),entity.getSeqNo());
+                //修改流程表状态
+                entity.setProcessState("10050088");//处理完成
+                entity.setStatus("10030003");
+                this.updateTradeProcessEntity(entity);
+            }
+        }
+    }
+    //查询富友，查看该笔交易是成功还是失败
+    public String getResult(TradeProcessEntity entity) throws FssException {
+        //查询出账账户
+        FundAccountEntity fromEntity=fundAccountService.select(entity.getFromAccId());
+
+        String startTime= DateUtil.dateToString_24(entity.getCreateTime());
+        String endTime=DateUtil.dateToString_24(new Date());
+
+        if(StringUtils.isEmpty(entity.getOrderNo())) return null;
+
+        //查询富友查看得到该客户提现数据
+        List<Map<String,String>> listMap=fssCheckAccountingService.getFuiouTradeResult(fromEntity,startTime,endTime,"PWTX");
+        for (Map<String,String> map: listMap ) {
+            if(StringUtils.equals(map.get("mchnt_txn_ssn"),entity.getOrderNo())){
+                return map.get("txn_rsp_cd");
+            }
+        }
+        return null;
     }
 }
