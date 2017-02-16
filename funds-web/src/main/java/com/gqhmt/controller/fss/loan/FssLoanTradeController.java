@@ -127,7 +127,7 @@ public class FssLoanTradeController {
 		}else if("11090004".equals(type)){
 			FssMappingEntity fssMap=fssMappingService.selectByTradeType(type);
 			model.addAttribute("scale",fssMap.getCustId());
-			return "fss/trade/trade_audit/batchExtraction";
+			return "fss/trade/trade_audit/batchExtractions";
 		}
 		return "fss/trade/trade_audit/borrowerloan";
 	}
