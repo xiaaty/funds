@@ -1,7 +1,7 @@
-package com.gqhmt.log;
+package com.gqhmt.common.log;
 
 /**
- * Filename:    com.gqhmt.log.LogConstants
+ * Filename:    LogConstants
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *

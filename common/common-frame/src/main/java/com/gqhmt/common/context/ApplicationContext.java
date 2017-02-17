@@ -2,8 +2,11 @@ package com.gqhmt.common.context;
 
 import com.gqhmt.common.log.Logger;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * Filename:    com.gqhmt.common.context.XmlApplicationContext
+ * Filename:    com.gqhmt.common.context.AppliacationContext
  * Copyright:   Copyright (c)2015
  * Company:     冠群驰骋投资管理(北京)有限公司
  *
@@ -18,19 +21,14 @@ import com.gqhmt.common.log.Logger;
  * -----------------------------------------------------------------
  * 2017/2/13  于泳      1.0     1.0 Version
  */
-public class XmlApplicationContext extends ApplicationContext {
+public abstract class ApplicationContext implements IApplicationContext {
+    protected final static Map<String,String> configureMap = new ConcurrentHashMap<>();
 
 
-
-    public void init(String path){
-        Logger.info(this.getClass()," System init starting ......");
-
-        Logger.info(this.getClass()," loadConfigurations ["+path+"]");
-
-//        Exception
-
-
-
+    protected final void loadConfigure(final String fileName){
+        Logger.info("系统初始化",this.getClass(),"解析配置文件");
     }
+
+
 
 }

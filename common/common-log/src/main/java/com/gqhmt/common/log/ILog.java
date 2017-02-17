@@ -1,4 +1,4 @@
-package com.gqhmt.log;
+package com.gqhmt.common.log;
 
 /**
  * Filename:    com.gqhmt.log.Ilogger
@@ -20,7 +20,6 @@ public interface ILog {
 
      void logMes(String Model,Class tClass,Object object,int logLevel);
 
-     void logMes(String Model,Object object,int logLevel);
 
 //    void info(Object object);
 //

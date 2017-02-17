@@ -16,4 +16,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.gqhmt</groupId>
+            <artifactId>common-log</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>

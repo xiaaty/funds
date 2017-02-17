@@ -17,4 +17,7 @@ package com.gqhmt.common.context;
  * 2017/2/8  于泳      1.0     1.0 Version
  */
 public interface IApplicationContext {
+
+    void init(String configFileName);
+
 }
