@@ -39,7 +39,7 @@ public class DataAccount extends SupperJob {
 
     private boolean isRunning = false;
 
-    @Scheduled(cron="0 0/1 * * * ?")
+//    @Scheduled(cron="0 0/1 * * * ?")
     public void executeJob() throws PayChannelNotSupports {
 
         LogUtil.info(getClass(), "账户数据迁移job");

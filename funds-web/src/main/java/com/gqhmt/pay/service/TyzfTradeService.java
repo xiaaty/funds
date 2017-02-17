@@ -658,12 +658,12 @@ public class TyzfTradeService {
 //            LogUtil.error(this.getClass(),e.getMessage(),e);
 //            throw new FssException("91002005");
 //        }
-        try {
-            AsyncThreadSendMq.getInstance().sendMqMsg(bean);
-        } catch (InterruptedException e) {
-            LogUtil.info(this.getClass(),"消息进入队列失败");
-        } catch (FssException e) {
-            LogUtil.info(this.getClass(),e.getMessage());
-        }
+//        try {
+//            AsyncThreadSendMq.getInstance().sendMqMsg(bean);
+//        } catch (InterruptedException e) {
+//            LogUtil.info(this.getClass(),"消息进入队列失败");
+//        } catch (FssException e) {
+//            LogUtil.info(this.getClass(),e.getMessage());
+//        }
     }
 }

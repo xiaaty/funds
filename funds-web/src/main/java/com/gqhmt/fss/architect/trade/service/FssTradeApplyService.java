@@ -194,8 +194,18 @@ public class FssTradeApplyService {
 		fssRepaymentEntity.setState("10090002");
 		fssRepaymentEntity.setMotifyTime(new Date());
 		fssRepaymentService.updateRepaymentEntity(fssRepaymentEntity);
+
+		long custId = 0;
+
+		//判断是否中间人代扣
+		if("10180002".equals(fssRepaymentEntity.getWithholdType())){
+			custId = Long.parseLong(fssRepaymentEntity.getMidCustId());
+		}else{
+			custId = Long.parseLong(fssRepaymentEntity.getAccNo());
+		}
+
 		//添加代扣申请
-		this.whithholdingApply(null,null,fssRepaymentEntity.getTradeType(),fssRepaymentEntity.getAmt(),fssRepaymentEntity.getMchnChild(),fssRepaymentEntity.getSeqNo(),Long.valueOf(fssRepaymentEntity.getAccNo()),1,fssRepaymentEntity.getContractNo(),fssRepaymentEntity.getContractId(),fssRepaymentEntity.getId(),true);
+		this.whithholdingApply(null,null,fssRepaymentEntity.getTradeType(),fssRepaymentEntity.getAmt(),fssRepaymentEntity.getMchnChild(),fssRepaymentEntity.getSeqNo(),custId,1,fssRepaymentEntity.getContractNo(),fssRepaymentEntity.getContractId(),fssRepaymentEntity.getId(),true);
 	}
 	/**
 	 *
@@ -322,13 +332,18 @@ public class FssTradeApplyService {
 					fssBackplateService.createFssBackplateEntity(applyEntity.getSeqNo(), applyEntity.getMchnChild(), fssLoanEntity.getTradeType());
 					//费用代扣成功修改状态
 					}else if("10050018".equals(fssLoanEntity.getStatus())){
-						fssLoanService.update(fssLoanEntity,tradeStatus,"10050019");
-						List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(fssLoanEntity.getId());
-						for (FssFeeList fssFeeList : fssFeeLists) {
-							if("10050018".equals(fssFeeList.getTradeStatus())){
-								fssFeeList.setTradeStatus("10050019");
-								fssLoanService.updateFeeList(fssFeeList);
+						//费用代扣成功修改状态
+						if("10080002".equals(tradeStatus)){
+							fssLoanService.update(fssLoanEntity,tradeStatus,"10050019");
+							List<FssFeeList> fssFeeLists = fssLoanService.getFeeList(fssLoanEntity.getId());
+							for (FssFeeList fssFeeList : fssFeeLists) {
+								if("10050018".equals(fssFeeList.getTradeStatus())){
+									fssFeeList.setTradeStatus("10050019");
+									fssLoanService.updateFeeList(fssFeeList);
+								}
 							}
+						}else{
+							fssLoanService.update(fssLoanEntity,tradeStatus,"10050025");//费用代扣失败
 						}
 					//二次提现成功修改状态
 					}else if("10050020".equals(fssLoanEntity.getStatus())){

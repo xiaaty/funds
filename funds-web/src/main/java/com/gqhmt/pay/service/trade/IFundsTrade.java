@@ -2,13 +2,14 @@ package com.gqhmt.pay.service.trade;
 
 
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
+import com.gqhmt.pay.exception.CommandParmException;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -323,4 +324,6 @@ public interface IFundsTrade {
     public void PosRechargeCallback(String order_no,String respCode,String seqNo) throws FssException;
 
     public void PosSignedCallback(String order_no,String respCode) throws FssException;
+
+    public FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException;
 }
