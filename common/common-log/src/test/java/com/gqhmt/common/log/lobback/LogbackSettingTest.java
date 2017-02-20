@@ -1,7 +1,6 @@
 package com.gqhmt.common.log.lobback;
 
 import ch.qos.logback.classic.Level;
-import com.gqhmt.common.log.Logger;
 import com.gqhmt.common.log.logback.LogbackSetting;
 import org.testng.annotations.Test;
 
@@ -26,22 +25,22 @@ public class LogbackSettingTest {
 
     @Test
     public void setLevelTest(){
-        LogbackSetting.setLogContext("<configuration>" +
-                "    <appender name=\"STDOUT\" class=\"ch.qos.logback.core.ConsoleAppender\">" +
-                "        <encoder>" +
-                "            <pattern>%d %5p [%t] %c{1}:%M:%L - %m%n</pattern>" +
-                "        </encoder>" +
-                "    </appender>" +
-                "" +
-                "    <root level=\"info\">" +
-                "        <appender-ref ref=\"STDOUT\" />" +
-                "    </root>" +
-                "</configuration>");
+//        LogbackSetting.setLogContext("<configuration>" +
+//                "    <appender name=\"STDOUT\" class=\"ch.qos.logback.core.ConsoleAppender\">" +
+//                "        <encoder>" +
+//                "            <pattern>%d %5p [%t] %c{1}:%M:%L - %m%n</pattern>" +
+//                "        </encoder>" +
+//                "    </appender>" +
+//                "" +
+//                "    <root level=\"info\">" +
+//                "        <appender-ref ref=\"STDOUT\" />" +
+//                "    </root>" +
+//                "</configuration>");
         LogbackSetting.setLevel(Level.INFO_INT);
 
-        Logger.info("text",this.getClass(),"info");
+        LogbackSetting.logtest();
 
-        Logger.debug("test",this.getClass(),"debug");
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.gqhmt.common.log.logback;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
@@ -31,8 +32,9 @@ public class LogbackSetting {
 
     public static void setLevel(int level){
         Logger logger = LoggerFactory.getLogger("ROOT");
-        if(logger == null){
-
+        if(logger instanceof ch.qos.logback.classic.Logger){
+            ch.qos.logback.classic.Logger logger1 = (ch.qos.logback.classic.Logger)logger;
+            logger1.setLevel(Level.DEBUG);
         }
 
 
@@ -54,5 +56,13 @@ public class LogbackSetting {
         }
 
         StatusPrinter.printInCaseOfErrorsOrWarnings(loggerContext);
+    }
+
+
+    public static void logtest(){
+        com.gqhmt.common.log.Logger.info("text",LogbackSetting.class,"info");
+
+        com.gqhmt.common.log.Logger.debug("test",LogbackSetting.class,"debug");
+
     }
 }
