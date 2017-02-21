@@ -308,9 +308,10 @@ public class FssTradeProcessService {
         //查询出账账户
         FundAccountEntity fromEntity=fundAccountService.select(withDraw.getFromAccId());
         //查询出账账户
-        String repCode=this.getResult(withDraw);
+        FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(withDraw.getOrderNo());
+        String startTime= DateUtil.dateToString(fundOrderEntity.getCreateTime());
+        String repCode=this.getResult(withDraw,startTime);
         if(StringUtils.isNotEmpty(repCode)){
-            FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(withDraw.getOrderNo());
             //富友成功
             if(StringUtils.equals(repCode,"0000")){
                 //创建交易流水
@@ -339,12 +340,12 @@ public class FssTradeProcessService {
         }
     }
     //查询富友，查看该笔交易是成功还是失败
-    public String getResult(TradeProcessEntity entity) throws FssException {
-        //查询出账账户
+    public String getResult(TradeProcessEntity entity,String startTime) throws FssException {
+               //查询出账账户
         FundAccountEntity fromEntity=fundAccountService.select(entity.getFromAccId());
 
-        String startTime= DateUtil.dateToString_24(entity.getCreateTime());
-        String endTime=DateUtil.dateToString_24(new Date());
+
+        String endTime=DateUtil.dateToString(new Date());
 
         if(StringUtils.isEmpty(entity.getOrderNo())) return null;
 

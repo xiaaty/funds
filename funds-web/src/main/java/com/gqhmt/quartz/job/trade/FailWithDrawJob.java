@@ -36,7 +36,7 @@ public class FailWithDrawJob extends SupperJob{
 
 
     private static boolean isRunning = false;
-//    @Scheduled(cron="36 0/5 * * * * ")
+    @Scheduled(cron="36 0/5 * * * * ")
     public void execute() throws PayChannelNotSupports {
         if(!isIp("upload")){
             return;
