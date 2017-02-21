@@ -1,10 +1,8 @@
 package com.gqhmt.common.hook;
 
 
-import com.gqhmt.tyzf.common.frame.common.AbstractMultiThread;
-import com.gqhmt.tyzf.common.frame.common.IConfigurable;
-import com.gqhmt.tyzf.common.frame.config.ConfigCommand;
-import com.gqhmt.tyzf.common.frame.config.ConfigManager;
+import com.gqhmt.common.base.AbstractMultiThread;
+import com.gqhmt.common.base.IConfigurable;
 
 import java.util.Vector;
 
@@ -34,17 +32,17 @@ public class ConfigShutdownHook extends Thread {
 
 	public void run() {
 		try {
-			ConfigManager.getInstance().execute(new ConfigCommand(ConfigManager.COMMAND_SHUTDOWN));
+//			ConfigManager.getInstance().execute(new ConfigCommand(ConfigManager.COMMAND_SHUTDOWN));
 		} catch (Exception e) {
 			for (int i = daemons.size() - 1; i >= 0; i--) {
-				AbstractMultiThread daemon = (AbstractMultiThread) daemons
+				AbstractMultiThread daemon =  daemons
 						.get(i);
 				if (daemon != null&& AbstractMultiThread.RUN == daemon.getStatus()) {
 					daemon.askStop();
 				}
 			}
 			for (int i = components.size() - 1; i >= 0; i--) {
-				IConfigurable component = (IConfigurable) components.get(i);
+				IConfigurable component = components.get(i);
 				if (component != null) {
 					component.release();
 				}

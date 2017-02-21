@@ -1,8 +1,8 @@
 package com.gqhmt.common.context;
 
 import com.gqhmt.common.exception.XmlParseException;
+import com.gqhmt.common.hook.ConfigShutdownHook;
 import com.gqhmt.common.log.Logger;
-import com.gqhmt.tyzf.common.frame.config.ConfigShutdownHook;
 
 /**
  * Filename:    com.gqhmt.common.context.XmlApplicationContext
@@ -39,19 +39,16 @@ public class XmlApplicationContext extends ApplicationContext {
 
         try {
 
-            /** 第一步：设置shutdown钩子 */
-            Runtime.getRuntime().addShutdownHook(hook);
-
-            /** 第二步：加载所有配置到内存从配置文件 */
+            /** 第一步：加载所有配置到内存从配置文件 */
             xmlConfigureParse = new XMLConfigureParse(path,hook);
 
             Logger.info(this.getClass(),"loadConfigurations succeed!");
 
 
-            Logger.info(this.getClass(),"addShutdownHook succeed!");
-
         } catch (XmlParseException e) {
             Logger.error(getClass(),e);
+
+//            stop();
         }
 
 

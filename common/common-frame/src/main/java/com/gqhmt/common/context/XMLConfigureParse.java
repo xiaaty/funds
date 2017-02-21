@@ -1,14 +1,21 @@
 package com.gqhmt.common.context;
 
+import com.gqhmt.common.base.AbstractMultiThread;
+import com.gqhmt.common.base.Constants;
+import com.gqhmt.common.base.IConfigurable;
+import com.gqhmt.common.exception.FrameException;
 import com.gqhmt.common.exception.XmlParseException;
+import com.gqhmt.common.hook.ConfigShutdownHook;
 import com.gqhmt.common.log.Logger;
-import com.gqhmt.tyzf.common.frame.config.ConfigShutdownHook;
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
@@ -30,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * -----------------------------------------------------------------
  * 2017/2/20  于泳      1.0     1.0 Version
  */
-public class XMLConfigureParse {
+public class XMLConfigureParse implements ContextConstants {
 
     /** 配置文件属性键值 */
     private Map<String, String> property = new ConcurrentHashMap<>();
@@ -55,17 +62,39 @@ public class XMLConfigureParse {
      * @param configFileName config.xml配置文件
      * @return 文件加载是否成功
      */
-    public XMLConfigureParse(String configFileName,ConfigShutdownHook hook) throws XmlParseException {
+    public XMLConfigureParse(String configFileName,ConfigShutdownHook hook) throws XmlParseException, FrameException {
         Logger.info(getClass(),"loadConfigurations starting .....");
         this.hook = hook;
         try {
+            /** 第一步：加载所有配置到内存从配置文件 */
             parser.parse(configFileName);
             document = parser.getDocument();
             root = document.getDocumentElement();
+            Logger.info(getClass(),"loadConfigurations succeed!");
 
+
+            /** 第二步：设置shutdown钩子 */
+            Runtime.getRuntime().addShutdownHook(hook);
+            Logger.info(getClass(),"addShutdownHook succeed");
+
+
+            /** 第三步：加载Common标签下的内容 */
             generateSequence();
-        } catch (Exception e) {
+            Logger.info(getClass(),"generateSequence succeed!");
+
+            loadInstances();
+            Logger.info(getClass(),"loadInstances succeed!");
+
+            startDaemons();
+            Logger.info(getClass(),"startDaemons succeed!");
+
+
+        } catch (FrameException e) {
             Logger.info(getClass(),"loadConfigurations fail : " + configFileName);
+            throw e;
+        } catch (SAXException e) {
+            throw new XmlParseException("loadConfigurations fail : " + configFileName,e);
+        } catch (IOException e) {
             throw new XmlParseException("loadConfigurations fail : " + configFileName,e);
         }
     }
@@ -94,6 +123,74 @@ public class XMLConfigureParse {
         return true;
     }
 
+
+
+    /**
+     * 加载所有类实例
+     * @return boolean
+     */
+    private boolean loadInstances() throws FrameException {
+        for (int i = 0, s = sequence.size(); i < s; i++) {
+            String name = sequence.get(i);
+            try {
+                System.out.println("load config node : " + name);
+                String className = getValueProperty(name + Constants.KEY_SPLIT + Constants.KEY_SUFFIX_CLASSNAME);
+                className = className.trim();//防止在配置文件中结尾的标签换行导致className换行
+                Logger.info(this.getClass(),"load config node class : " + className);
+                Object instance = null;
+                Constructor<?> constructor = null;
+                try {
+                    constructor = Class.forName(className).getConstructor(String.class);
+                } catch (Exception ex) {
+                    Logger.info(this.getClass(),"No String structure parameters : "+className);
+                }
+
+                if (constructor != null) {
+                    instance = constructor.newInstance(name);
+                } else {
+                    instance = Class.forName(className).newInstance();
+                }
+
+                String instanceName = name + Constants.KEY_SPLIT + Constants.KEY_SUFFIX_INSTANCE;
+                instances.put(instanceName, instance);
+                if (instance instanceof IConfigurable) {
+                    hook.registerComponent((IConfigurable) instance);
+                }
+
+                String infoMessage = MSG_COMPONENT_LOAD + name;
+                Logger.info(this.getClass(),infoMessage);
+            } catch (Exception ex) {
+                Logger.error(this.getClass(),MSG_ERROR_COMPONENT + name);
+                Logger.error(this.getClass(),MSG_START_ERROR);
+                Logger.error(this.getClass(),ex);
+                throw new FrameException("load instance error",ex,"1");
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 启动守护线程
+     * @return
+     */
+    private boolean startDaemons() {
+        for (int i = 0, s = sequence.size(); i < s; i++) {
+            String name = sequence.get(i);
+            String instanceName = name + Constants.KEY_SPLIT + Constants.KEY_SUFFIX_INSTANCE;
+            Object instance = instances.get(instanceName);
+            if ((instance != null) && (instance instanceof AbstractMultiThread)) {
+                AbstractMultiThread daemon = (AbstractMultiThread) instance;
+                Thread thread = new Thread(daemon);
+                daemon.setThread(thread);
+                thread.setDaemon(true);
+                thread.start();
+                hook.registerDaemon(daemon);
+                String infoMessage = MSG_DAEMON_START + name;
+                Logger.info(getClass(),infoMessage);
+            }
+        }
+        return true;
+    }
 
 
     /**
