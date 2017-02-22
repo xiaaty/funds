@@ -1,5 +1,6 @@
 package com.gqhmt.common.context;
 
+import com.gqhmt.common.exception.FrameException;
 import com.gqhmt.common.exception.XmlParseException;
 import com.gqhmt.common.hook.ConfigShutdownHook;
 import com.gqhmt.common.log.Logger;
@@ -23,8 +24,7 @@ import com.gqhmt.common.log.Logger;
 public class XmlApplicationContext extends ApplicationContext {
 
 
-    /*** 配置文件解析对象***/
-    private XMLConfigureParse xmlConfigureParse;
+
 
     /** 系统关闭时的hook*/
     private ConfigShutdownHook hook = new ConfigShutdownHook();
@@ -40,19 +40,33 @@ public class XmlApplicationContext extends ApplicationContext {
         try {
 
             /** 第一步：加载所有配置到内存从配置文件 */
-            xmlConfigureParse = new XMLConfigureParse(path,hook);
-
+            xmlConfigureInitContext = new XMLConfigureInitContext(path,hook);
             Logger.info(this.getClass(),"loadConfigurations succeed!");
 
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Logger.error(getClass(),e);
+            }
 
-        } catch (XmlParseException e) {
+            xmlConfigureCloseContext = new XmlConfigureCloseContext(xmlConfigureInitContext);
+
+
+        } catch (XmlParseException  | FrameException e) {
             Logger.error(getClass(),e);
+
 
 //            stop();
         }
 
 
+    }
 
+
+    public void stop(){
+        if(xmlConfigureCloseContext != null) {
+            xmlConfigureCloseContext.stop();
+        }
     }
 
 }

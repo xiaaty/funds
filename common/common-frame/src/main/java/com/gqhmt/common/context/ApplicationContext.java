@@ -22,6 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * 2017/2/13  于泳      1.0     1.0 Version
  */
 public abstract class ApplicationContext implements IApplicationContext {
+    /*** 配置文件解析对象***/
+    protected XMLConfigureInitContext xmlConfigureInitContext;
+
+    protected XmlConfigureCloseContext xmlConfigureCloseContext;
+
     protected final static Map<String,String> configureMap = new ConcurrentHashMap<>();
 
 

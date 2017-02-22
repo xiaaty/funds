@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,12 +38,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * -----------------------------------------------------------------
  * 2017/2/20  于泳      1.0     1.0 Version
  */
-public class XMLConfigureParse implements ContextConstants {
+public class XMLConfigureInitContext implements ContextConstants {
 
     /** 配置文件属性键值 */
     private Map<String, String> property = new ConcurrentHashMap<>();
     /** 标签组集合 */
     private ArrayList<String> sequence = new ArrayList<String>();
+
+
     /** 类实例 */
     private Properties instances = new Properties();
     /*** 配置文件解析对象***/
@@ -62,7 +65,7 @@ public class XMLConfigureParse implements ContextConstants {
      * @param configFileName config.xml配置文件
      * @return 文件加载是否成功
      */
-    public XMLConfigureParse(String configFileName,ConfigShutdownHook hook) throws XmlParseException, FrameException {
+    public XMLConfigureInitContext(String configFileName, ConfigShutdownHook hook) throws XmlParseException, FrameException {
         Logger.info(getClass(),"loadConfigurations starting .....");
         this.hook = hook;
         try {
@@ -82,11 +85,17 @@ public class XMLConfigureParse implements ContextConstants {
             generateSequence();
             Logger.info(getClass(),"generateSequence succeed!");
 
+            /** 第四步：加载类实例 */
             loadInstances();
             Logger.info(getClass(),"loadInstances succeed!");
 
+            /** 第五步：启动守护线程 */
             startDaemons();
             Logger.info(getClass(),"startDaemons succeed!");
+
+            /** 第六步：Execute compensate action of every component */
+            executeCompensate();
+            Logger.info(getClass(),"executeCompensate succeed!");
 
 
         } catch (FrameException e) {
@@ -194,11 +203,35 @@ public class XMLConfigureParse implements ContextConstants {
 
 
     /**
+     * 执行组件的补偿方法
+     * @return
+     */
+    private boolean executeCompensate() throws FrameException {
+        for (int i = 0, s = sequence.size(); i < s; i++) {
+            String name = sequence.get(i);
+            String instanceName = name + Constants.KEY_SPLIT + Constants.KEY_SUFFIX_INSTANCE;
+            Object instance = instances.get(instanceName);
+            if ((instance != null) && (instance instanceof IConfigurable)) {
+                try {
+                    ((IConfigurable) instance).compensate();
+                } catch (FrameException e) {
+                    Logger.error(getClass(),MSG_ERROR_COMPENSATE + name);
+                    Logger.error(getClass(),MSG_START_ERROR);
+                    Logger.error(getClass(),e);
+                    throw e;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    /**
      * 获取节点内容
      * @param name 节点名称
      * @return boolean
      */
-    private String getValueProperty(String name) {
+    public String getValueProperty(String name) {
         String rs = getValueFromNode(name);
         if ((rs != null) && !"".equals(rs.trim())) {
             property.put(name, rs);
@@ -249,4 +282,13 @@ public class XMLConfigureParse implements ContextConstants {
         }
         return nd;
     }
+
+    public Properties getInstances() {
+        return instances;
+    }
+
+    public List<String> sequence() {
+        return sequence;
+    }
+
 }
