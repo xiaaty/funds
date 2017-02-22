@@ -37,7 +37,12 @@ public interface TradeProcessReadMapper extends ReadMapper<TradeProcessEntity> {
      * @return
      */
     List<TradeProcessEntity> findByParentIdAndActionType(@Param("actionType") String actionType, @Param("parentId") String parentId);
-
+    /**
+     * 根据ParentId 查询子交易
+     * @param parentId
+     * @return
+     */
+    public List<TradeProcessEntity> findByParentId(@Param("parentId")Long parentId);
     /**
      * 查询提现手续费
       * @param parentId
@@ -51,6 +56,14 @@ public interface TradeProcessReadMapper extends ReadMapper<TradeProcessEntity> {
      * @return
      */
     public List<TradeProcessEntity> getWithDrawProcess();
+
+    /**
+     * jhz
+     * 查询未进行交易的流程
+     * @param actionType
+     * @return
+     */
+    public List<TradeProcessEntity> getTradeProcess(@Param("actionType")String actionType);
     /**
      * jhz
      * 查询所有未进行提现交易的数据
@@ -58,5 +71,26 @@ public interface TradeProcessReadMapper extends ReadMapper<TradeProcessEntity> {
      */
     public List<TradeProcessEntity> getFailWithDrawProcess();
      List<TradeProcessEntity> childTradeProcess(@Param("parentId") Long parentId);
+    /**
+     * jhz
+     * 通过父ID查询条数
+     * @param parentId
+     * @return
+     */
+    int getCountByParentId(@Param("parentId")Long parentId);
+    /**
+     * jhz
+     * 通过父ID查询已执行条数
+     * @param parentId
+     * @return
+     */
+    int getSuccessCountByParentId(@Param("parentId")Long parentId);
+    /**
+     * jhz
+     * 通过父ID查询执行成功金额
+     * @param parentId
+     * @return
+     */
+    BigDecimal getSuccessAmt(@Param("parentId")Long parentId);
 
 }

@@ -139,6 +139,13 @@ public class PaySuperByFuiou {
         execExction(response,fundOrderEntity);
         return fundOrderEntity;
     }
+    public FundOrderEntity withholding(FundAccountEntity entity,BigDecimal amount,int orderType,long busiId,int  busiType,final String newOrderType,final String tradeType,final String lendNo,final String loanNo,final String orderNo) throws FssException {
+        LogUtil.info(this.getClass(),"第三方充值:"+entity.getAccountNo()+":"+amount+":"+orderType+":"+busiId+":"+busiType);
+        FundOrderEntity fundOrderEntity = this.createOrder(entity,null,amount,orderType,busiId,busiType,newOrderType,tradeType,lendNo,null,null,loanNo,orderNo);
+        CommandResponse response = ThirdpartyFactory.command(thirdPartyType, PayCommondConstants.COMMAND_TRADE_WITHHOLDING, fundOrderEntity, entity, amount,"充值 "+amount.toPlainString()+"元");
+        execExction(response,fundOrderEntity);
+        return fundOrderEntity;
+    }
 
     /*=============================================充值结束==============================================*/
 

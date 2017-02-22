@@ -82,6 +82,7 @@ public interface IFundsTrade {
     public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException;
 
     public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException ;
+    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo,String orderNo) throws FssException ;
 
     public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException ;
 
@@ -95,6 +96,7 @@ public interface IFundsTrade {
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
 
     public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException;
+    public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType,Integer tradeType,Integer tradeTypeChild,String seqNo,String orderNo) throws FssException;
 
 //    public FundOrderEntity withdrawApplyNew(int custID, int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
 

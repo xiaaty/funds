@@ -20,6 +20,8 @@
           t.`to_cust_mobile` toCustMobile,
           t.`to_cust_name` toCustName,
           t.`amt` amt,
+          t.`audit_amount` audiAmount,
+          t.`real_trade_amount` realTradeAmount,
           t.`bid_id` bidId,
           t.`tender_id` tenderId,
           t.`new_tender_id` newTenderId,
@@ -34,6 +36,7 @@
           t.`status` status,
           t.`settle_type` settleType,
           t.`serial_number` serialNumber,
+          t.`withhold_type` withHoldType,
           t.`memo` memo,
           t.`sync` sync,
           t.`callback` callback,
@@ -85,6 +88,10 @@
         WHERE parnet_id = #{parentId}
         AND action_type = #{actionType}
     </select>
+  <select id="findByParentId"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+        <include refid="fieldSql"/>
+        WHERE parnet_id = #{parentId}
+    </select>
 
     <select id="getChargeAmount" parameterType="java.lang.Long" resultType="java.math.BigDecimal" >
         SELECT t.`amt` amt
@@ -94,6 +101,10 @@
   <select id="getWithDrawProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
       <include refid="fieldSql"/>
       where t.action_type = 1104 AND t.parnet_id=0 AND t.process_state = '10170002' AND t.status = '10030001' AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
+  </select>
+    <select id="getRepaymentProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+      <include refid="fieldSql"/>
+      where t.action_type = #{actionType} AND t.parnet_id=0 AND t.process_state = '10170002' AND t.status = '10030001' AND t.fund_type =#{fundType}
   </select>
     <select id="getFailWithDrawProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
       <include refid="fieldSql"/>
@@ -107,6 +118,23 @@
  <select id="childTradeProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
       <include refid="fieldSql"/>
       where t.parnet_id = #{parentId}
+  </select>
+    <select id="getTradeProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+      <include refid="fieldSql"/>
+      where t.process_state = '10170002' t.action_type = #{actionType}
+
+  </select>
+    <select id="getCountByParentId" parameterType="java.lang.Long" resultType="java.lang.Long" >
+      <include refid="fieldSql"/>
+      where t.parnet_id = #{parentId}
+  </select>
+    <select id="getSuccessCountByParentId" parameterType="java.lang.Long" resultType="java.lang.Long" >
+      <include refid="fieldSql"/>
+      where t.parnet_id = #{parentId} AND t.process_state='10170003'
+  </select>
+ <select id="getSuccessAmt" parameterType="java.lang.Long" resultType="java.lang.Long" >
+      <include refid="fieldSql"/>
+      where t.parnet_id = #{parentId} AND t.process_state='10170003'AND t.status='10030002'
   </select>
 
 
