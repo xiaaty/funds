@@ -57,6 +57,7 @@ public class FssOnlineWithDrawController {
 		}else{
 			map.put("type", type);
 		}
+		map.put("parentId", "0");
 		List<TradeProcessEntity> list=fssTradeProcessService.listTradeProcess(map);
         model.addAttribute("page", list);
         model.put("map", map);
