@@ -56,7 +56,7 @@ public class WithDrawJob extends SupperJob{
     @Resource
     private FundWithrawChargeService fundWithrawChargeService;
     private static boolean isRunning = false;
-    @Scheduled(cron="32 0/1 * * * * ")
+    @Scheduled(cron="*/3 * * * * * ")
     public void execute() throws FssException {
         if(!isIp("upload")){
             return;

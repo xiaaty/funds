@@ -280,6 +280,8 @@ public class FssRepaymentService {
 			fssTradeApplyEntity=fssTradeApplyService.queryForFromId(fssRepaymentEntity.getId(),fssRepaymentEntity.getTradeType());
 			repaymentChild.setReal_repay_amt(fssTradeApplyEntity.getRealTradeAmount());
 			repaymentChild.setAccounting_no(fssTradeApplyEntity.getApplyNo());
+			repaymentChild.setMid_cust_id(fssRepaymentEntity.getMidCustId());
+			repaymentChild.setWithHold_type(fssRepaymentEntity.getWithholdType());
 			repaymentChild.setContract_id(fssRepaymentEntity.getContractId());
     		repaymentChild.setContract_no(fssRepaymentEntity.getContractNo());
     		repaymentChild.setRemark(fssRepaymentEntity.getRemark());
@@ -432,15 +434,9 @@ public class FssRepaymentService {
 	//中间人转账
 	public void midCustTransefer(FssRepaymentEntity repayment) throws FssException {
 		// 通过id查询交易对象
-
-			fundsTradeImpl.transefer(Integer.valueOf(repayment.getMidCustId()),GlobalConstants.ACCOUNT_TYPE_LOAN,Integer.valueOf(repayment.getAccNo()),
-					GlobalConstants.ACCOUNT_TYPE_LOAN,repayment.getAmt(), GlobalConstants.ORDER_TRANSFER, repayment.getId(),GlobalConstants.BUSINESS_TRANSFER,
-					repayment.getTradeType(),repayment.getContractNo(),1005,3);
-//			FssBackplateEntity backplateEntity = fssBackplateService.selectByMchnAndseqNo(repayment.getMchnChild(), repayment.getSeqNo());
-//			backplateEntity.setRepayCount(0);
-//
-//			fssBackplateService.updatebackplate(backplateEntity);
-
+		fundsTradeImpl.transefer(Integer.valueOf(repayment.getMidCustId()),GlobalConstants.ACCOUNT_TYPE_LOAN,Integer.valueOf(repayment.getAccNo()),
+			GlobalConstants.ACCOUNT_TYPE_LOAN,repayment.getAmt(), GlobalConstants.ORDER_TRANSFER, repayment.getId(),GlobalConstants.BUSINESS_TRANSFER,
+			repayment.getTradeType(),repayment.getContractNo(),1005,3);
 	}
 
 }
