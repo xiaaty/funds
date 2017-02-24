@@ -3,6 +3,7 @@ package com.gqhmt.extServInter.callback.loan;
 
 import javax.annotation.Resource;
 
+import com.gqhmt.fss.architect.trade.service.FssTradeProcessService;
 import org.springframework.stereotype.Service;
 
 import com.gqhmt.core.exception.FssException;
@@ -27,12 +28,14 @@ public class PaymentCallback implements GetCallBack{
 //	完成划扣流程后，通知借款系统 
 	@Resource
 	private FssRepaymentService fssRepaymentService;
-    
+	@Resource
+	private FssTradeProcessService fssTradeProcessService;
+
     public RepaymentResponse getCallBack(String mchn,String seqNo) throws FssException{
     	RepaymentResponse response = new RepaymentResponse();
     	try {
-    		response = fssRepaymentService.rePaymentCallBack(seqNo,mchn);
-//			response.setResp_code("0000");
+//    		response = fssRepaymentService.rePaymentCallBack(seqNo,mchn);
+    		response = fssTradeProcessService.rePaymentCallBack(seqNo);
 		} catch (FssException e) {
 			response.setResp_code(e.getMessage());
 		}

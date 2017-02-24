@@ -5,15 +5,14 @@ import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeProcessService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,10 +52,12 @@ public class FssOnlineWithDrawController {
     @RequestMapping(value = "/trade/{type}",method = {RequestMethod.GET,RequestMethod.POST})
     @AutoPage
     public String queryMortgageeList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map, @PathVariable String  type) throws Exception {
-    	if(map.size()==0){//默认交易状态为新增
-			map.put("tradeState","10080001");
+    	if(StringUtils.equals("1104",type)){
+			map.put("type", "1402");
+		}else{
+			map.put("type", type);
 		}
-		map.put("type", type);
+		map.put("parentId", "0");
 		List<TradeProcessEntity> list=fssTradeProcessService.listTradeProcess(map);
         model.addAttribute("page", list);
         model.put("map", map);
@@ -82,6 +83,31 @@ public class FssOnlineWithDrawController {
     }
 	/**
 	 * jhz
+	 * 提现失败，进行退票
+	 * @param request
+	 * @param model
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/trade/processChild/{id}/reWithDraw",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public Object reWithDraw(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		//查询提现流程
+		TradeProcessEntity reWithDraw=fssTradeProcessService.findById(id);
+		try {
+			fssTradeProcessService.checkResult(reWithDraw);
+			map.put("code","0000");
+			map.put("msg","操作成功");
+		}catch (Exception e){
+			map.put("code","0001");
+			map.put("msg",e.getMessage());
+		}
+		return map;
+	}
+	/**
+	 * jhz
 	 * 重新收取提现手续费
 	 * @param request
 	 * @param model
@@ -96,7 +122,7 @@ public class FssOnlineWithDrawController {
 		//查询总流程
 		TradeProcessEntity parent=fssTradeProcessService.findById(charge.getParnetId());
 		//提现流程
-		TradeProcessEntity withDraw=fssTradeProcessService.findByParentIdAndActionType("1104",String.valueOf(parent.getId())).get(0);
+		TradeProcessEntity withDraw=fssTradeProcessService.findByParentIdAndActionType("1403",String.valueOf(parent.getId())).get(0);
 		//得到提现订单
 		FundOrderEntity orderEntity=fundOrderService.findfundOrder(withDraw.getOrderNo());
 		//生成新的订单号

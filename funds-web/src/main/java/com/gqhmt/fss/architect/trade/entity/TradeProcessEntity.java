@@ -37,6 +37,9 @@ public class TradeProcessEntity implements java.io.Serializable{
     @Column(name = "parnet_id",updatable = false)
     private Long parnetId        ; //bigint(19)       上级目标
 
+    @Column(name = "mchn_no",updatable = false)
+    private String mchnNo           ; //varchar(45)      与业务系统交互商户号
+
     @Column(name = "seq_no",updatable = false)
     private String seqNo           ; //varchar(45)      与业务系统交互流水号
 
@@ -82,6 +85,12 @@ public class TradeProcessEntity implements java.io.Serializable{
     @Column(name = "amt",updatable = false)
     private BigDecimal amt              ; //decimal(19,2)    交易金额
 
+    @Column(name = "audit_amount",updatable = false)
+    private BigDecimal audiAmount              ; //decimal(19,2)    审核金额
+
+   @Column(name = "real_trade_amount")
+    private BigDecimal realTradeAmount              ; //decimal(19,2)    实际交易成功金额
+
     @Column(name = "bid_id",updatable = false)
     private String bidId           ; //varchar(45)      标的id
 
@@ -118,7 +127,7 @@ public class TradeProcessEntity implements java.io.Serializable{
     @Column(name = "process_state")
     private String processState           ; //流程状态
 
-    @Column(name = "memo",updatable = false)
+    @Column(name = "memo")
     private String memo             ; //varchar(2000)    交易备注
 
     @Column(name = "sync")
@@ -137,6 +146,9 @@ public class TradeProcessEntity implements java.io.Serializable{
 
     @Column(name = "settle_type")
     private String settleType;//提现时效
+
+    @Column(name = "withhold_type")
+    private String withHoldType;//代扣类型字段
 
     @Column(name = "serial_number")
     private String serialNumber;//序列号
@@ -467,5 +479,37 @@ public class TradeProcessEntity implements java.io.Serializable{
 
     public void setToAccId(Long toAccId) {
         this.toAccId = toAccId;
+    }
+
+    public String getWithHoldType() {
+        return withHoldType;
+    }
+
+    public void setWithHoldType(String withHoldType) {
+        this.withHoldType = withHoldType;
+    }
+
+    public BigDecimal getAudiAmount() {
+        return audiAmount;
+    }
+
+    public void setAudiAmount(BigDecimal audiAmount) {
+        this.audiAmount = audiAmount;
+    }
+
+    public BigDecimal getRealTradeAmount() {
+        return realTradeAmount;
+    }
+
+    public void setRealTradeAmount(BigDecimal realTradeAmount) {
+        this.realTradeAmount = realTradeAmount;
+    }
+
+    public String getMchnNo() {
+        return mchnNo;
+    }
+
+    public void setMchnNo(String mchnNo) {
+        this.mchnNo = mchnNo;
     }
 }
