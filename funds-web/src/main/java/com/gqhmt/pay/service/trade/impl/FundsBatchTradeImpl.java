@@ -157,7 +157,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
      * @throws FssException
      */
     public FundOrderEntity batchWithholding(TradeProcessEntity entity) throws FssException {
-        FundOrderEntity   orderEntity = this.fundsTrade.withholdingApplyNew(Integer.valueOf(entity.getToCustNo()),Integer.valueOf(entity.getToCustType()),entity.getLoanContractNo(),entity.getAmt(),entity.getId(),Integer.valueOf(entity.getTradeTypeParent()),Integer.valueOf(entity.getTradeType()),entity.getSeqNo());
+        FundOrderEntity   orderEntity = this.fundsTrade.withholdingApplyNew(Integer.valueOf(entity.getToCustNo()),Integer.valueOf(entity.getToCustType()),entity.getLoanContractNo(),entity.getAmt(),entity.getId(),Integer.valueOf(entity.getTradeTypeParent()),Integer.valueOf(entity.getTradeType()),entity.getSeqNo(),entity.getOrderNo());
         return  orderEntity;
     }
     /**
@@ -168,7 +168,7 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     public FundOrderEntity batchWithdraw(TradeProcessEntity entity) throws FssException{
         FundOrderEntity orderEntity = null;
         if(entity.getFromAccId()!=null && !"".equals(entity.getFromAccId())){
-            orderEntity = this.fundsTrade.withdrawApplyNew(null,entity.getFromAccId().toString(), Integer.valueOf(entity.getFromCustType()),entity.getLoanContractNo(), entity.getAmt(), entity.getId(), Integer.valueOf(entity.getSettleType()),Integer.valueOf(entity.getTradeTypeParent()),Integer.valueOf(entity.getTradeType()),entity.getSeqNo());
+            orderEntity = this.fundsTrade.withdrawApplyNew(null,entity.getFromAccId().toString(), Integer.valueOf(entity.getFromCustType()),entity.getLoanContractNo(), entity.getAmt(), entity.getId(), Integer.valueOf(entity.getSettleType()),Integer.valueOf(entity.getTradeTypeParent()),Integer.valueOf(entity.getTradeType()),entity.getSeqNo(),entity.getOrderNo());
         }else{
             throw new FssException("90002006");
         }

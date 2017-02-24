@@ -53,7 +53,7 @@ public class RepaymentImpl implements IRepayment{
 			//是中间人代扣
 			if("10180002".equals(child.getWithHold_type())){
 				//得到中间人出账账户
-				FundAccountEntity midAcc=fundAccountService.getFundsAccount(Long.valueOf(child.getAcc_no()), GlobalConstants.ACCOUNT_TYPE_LOAN);
+				FundAccountEntity midAcc=fundAccountService.getFundsAccount(Long.valueOf(child.getMid_cust_id()), GlobalConstants.ACCOUNT_TYPE_LOAN);
 				//创建代扣子订单
 				TradeProcessEntity withHoldProcess= fssTradeProcessService.general(rDto.getSeq_no(),rDto.getMchn(),rDto.getTrade_type(),null,midAcc,true);
 				withHoldProcess=fssTradeProcessService.creatTradeProcess(withHoldProcess,null,"借款人还款代扣，中间人代扣金额为"+child.getAmt()+"元",child.getAmt(),"1401","14010007","11160002","11170001",child.getSerial_number(),child.getWithHold_type(),child.getContract_no());
@@ -71,7 +71,7 @@ public class RepaymentImpl implements IRepayment{
     		entity.setParnetId(0l);
 			entity.setList(list);
 			fssTradeProcessService.saveTradeProcess(entity);
-			response=fssRepaymentService.createRefundDraw(rDto);
+//			response=fssRepaymentService.createRefundDraw(rDto);
 			response.setResp_code("0000");
 		} catch (FssException e) {
 			LogUtil.info(this.getClass(), e.getMessage());

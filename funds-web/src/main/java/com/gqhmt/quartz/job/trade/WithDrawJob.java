@@ -53,8 +53,6 @@ public class WithDrawJob extends SupperJob{
     @Resource
     private IFundsTrade fundsTradeImpl;
 
-    @Resource
-    private FundWithrawChargeService fundWithrawChargeService;
     private static boolean isRunning = false;
     @Scheduled(cron="*/3 * * * * * ")
     public void execute() throws FssException {
@@ -106,10 +104,10 @@ public class WithDrawJob extends SupperJob{
             //提现成功修改提现子交易状态
             withdraw.setRespCode(fundOrderEntity.getRetCode());
             withdraw.setRespMsg(fundOrderEntity.getRetMessage());
-            withdraw.setProcessState("10050030");//处理完成
+            withdraw.setProcessState("10170030");//处理完成
             withdraw.setStatus("10030002");//交易成功
             //修改主交易状态
-            entity.setProcessState("10050030");//提现成功
+            entity.setProcessState("10170030");//提现成功
             entity.setStatus("10030002");//交易成功
         }catch (Exception e){
             //提现失败修改提现子交易状态
@@ -117,11 +115,11 @@ public class WithDrawJob extends SupperJob{
                 withdraw.setRespCode(fundOrderEntity.getRetCode());
                 withdraw.setRespMsg(fundOrderEntity.getRetMessage());
             }
-            withdraw.setProcessState("10050031");//处理完成
+            withdraw.setProcessState("10170031");//提现失败
             withdraw.setStatus("10030003");//交易失败
             //修改主交易状态
 
-            entity.setProcessState("10050031");//提现失败
+            entity.setProcessState("10170031");//提现失败
             entity.setStatus("10030003");//交易失败
         }
         tradeProcessService.updateTradeProcessEntity(withdraw);

@@ -5,6 +5,7 @@
         SELECT
           t.`id` id,
           t.`parnet_id` parnetId,
+          t.`mchn_no` mchnNo,
           t.`seq_no` seqNo,
           t.`order_no` orderNo,
           t.`from_cust_no` fromCustNo,
@@ -55,12 +56,18 @@
 
     <select id="listTradeProcess" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
         <include refid="fieldSql"/>
-        WHERE 1 = 1 AND t.parnet_id = 0
+        WHERE 1 = 1
+        <if test="parentId != null and parentId != ''">
+            AND  t.parnet_id = #{parentId}
+        </if>
         <if test="type != null and type != ''">
             AND t.action_type = #{type}
         </if>
         <if test="tradeType != null and tradeType != ''">
             AND t.trade_type = #{tradeType}
+        </if>
+        <if test="fundType != null and fundType != ''">
+            AND t.fund_type = #{fundType}
         </if>
         <if test="status != null and status != ''">
             AND t.status = #{status}
@@ -69,7 +76,13 @@
             AND t.from_cust_mobile = #{mobile}
         </if>
         <if test="custName != null and custName != ''">
-            AND t.from_cust_name = #{custName}
+            AND t.from_cust_name like concat('%',#{custName},'%')
+        </if>
+        <if test="toMobile != null and toMobile != ''">
+            AND t.to_cust_mobile = #{toMobile}
+        </if>
+        <if test="toCustName != null and toCustName != ''">
+            AND t.to_cust_name like concat('%',#{toCustName},'%')
         </if>
         <if test="processState != null and processState != ''">
             AND t.process_state = #{processState}
@@ -88,6 +101,13 @@
         WHERE parnet_id = #{parentId}
         AND action_type = #{actionType}
     </select>
+    <select id="repaymentList" resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
+        <include refid="fieldSql"/>
+        WHERE parnet_id = 0
+        AND t.process_state='10170002'
+        AND fund_type = #{fundType}
+
+    </select>
   <select id="findByParentId"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
         <include refid="fieldSql"/>
         WHERE parnet_id = #{parentId}
@@ -95,12 +115,12 @@
 
     <select id="getChargeAmount" parameterType="java.lang.Long" resultType="java.math.BigDecimal" >
         SELECT t.`amt` amt
-        FROM t_gq_fss_record_trade_process t
+        FROM t_gq_fss_trade_process t
         WHERE parnet_id = #{parentId}
     </select>
   <select id="getWithDrawProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
       <include refid="fieldSql"/>
-      where t.action_type = 1104 AND t.parnet_id=0 AND t.process_state = '10170002' AND t.status = '10030001' AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
+      where t.action_type = 1402 AND t.parnet_id=0 AND t.process_state = '10170002' AND t.status = '10030001' AND t.fund_type = 14020001
   </select>
     <select id="getRepaymentProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
       <include refid="fieldSql"/>
@@ -110,9 +130,9 @@
       <include refid="fieldSql"/>
       where t.action_type = 1104
         AND t.parnet_id = 0
-        AND t.process_state = '10050031'
+        AND t.process_state = '10170031'
         AND t.status = '10030003'
-        AND t.trade_type IN (11040002,11040003,11040004,11040005,11040015)
+        AND t.fund_type = '14020001'
         AND TIMESTAMPDIFF(MINUTE, t.modify_time,now()) >10
   </select>
  <select id="childTradeProcess"  resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
@@ -124,16 +144,17 @@
       where t.process_state = '10170002' t.action_type = #{actionType}
 
   </select>
-    <select id="getCountByParentId" parameterType="java.lang.Long" resultType="java.lang.Long" >
-      <include refid="fieldSql"/>
+    <select id="getCountByParentId" parameterType="java.lang.Long" resultType="java.lang.Integer" >
+     SELECT COUNT(*) FROM t_gq_fss_trade_process t
       where t.parnet_id = #{parentId}
   </select>
-    <select id="getSuccessCountByParentId" parameterType="java.lang.Long" resultType="java.lang.Long" >
-      <include refid="fieldSql"/>
+    <select id="getSuccessCountByParentId" parameterType="java.lang.Long" resultType="java.lang.Integer" >
+       SELECT COUNT(*) FROM t_gq_fss_trade_process t
       where t.parnet_id = #{parentId} AND t.process_state='10170003'
   </select>
- <select id="getSuccessAmt" parameterType="java.lang.Long" resultType="java.lang.Long" >
-      <include refid="fieldSql"/>
+ <select id="getSuccessAmt" parameterType="java.lang.Long" resultType="java.math.BigDecimal" >
+      SELECT sum(amt)
+        FROM t_gq_fss_trade_process t
       where t.parnet_id = #{parentId} AND t.process_state='10170003'AND t.status='10030002'
   </select>
 

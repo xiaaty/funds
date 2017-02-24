@@ -195,7 +195,7 @@
                                                 <td><fss:money money="${t.amt}"/></td>
                                                 <td><fss:money money="${t.realTradeAmount}"/></td>
                                                 <td><fss:dictView key="${t.tradeType}" /></td>
-                                                <td><fss:dictView key="${t.withholdType}" /></td>
+                                                <td><fss:dictView key="${t.withHoldType}" /></td>
                                                 <td><fss:dictView key="${t.fundType}" /></td>
                                                 <td><fss:dictView key="${t.status}" /></td>
                                                 <td><fss:dictView key="${t.processState}" /></td>

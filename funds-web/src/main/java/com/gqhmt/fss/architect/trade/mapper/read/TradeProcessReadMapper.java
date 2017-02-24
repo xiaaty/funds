@@ -38,6 +38,13 @@ public interface TradeProcessReadMapper extends ReadMapper<TradeProcessEntity> {
      */
     List<TradeProcessEntity> findByParentIdAndActionType(@Param("actionType") String actionType, @Param("parentId") String parentId);
     /**
+     * jhz
+     * 查询所有处于处理中的交易
+     * @param fundType
+     * @return
+     */
+    List<TradeProcessEntity> repaymentList(@Param("fundType") String fundType);
+    /**
      * 根据ParentId 查询子交易
      * @param parentId
      * @return

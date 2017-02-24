@@ -173,20 +173,20 @@ public class FundsTradeImpl  implements IFundsTrade {
         try {
             //账户校验无问题，添加提现流程表数据,创建主订单
             TradeProcessEntity tradeProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),withdrawDto.getTrade_type(),freezeEntity,null,true);
-            tradeProcess=fssTradeProcessService.creatTradeProcess(tradeProcess,null,"互联网账户提现，提现收费总金额为"+withdrawAmt+"元",withdrawAmt,"1104",withdrawDto.getTrade_type(),"11160002","11170002",null,null,null);
+            tradeProcess=fssTradeProcessService.creatTradeProcess(tradeProcess,null,"互联网账户提现，提现收费总金额为"+withdrawAmt+"元",withdrawAmt,"1402","14020001","11160002","11170002",null,null,null);
             tradeProcess.setParnetId(0l);
             List<TradeProcessEntity> list= Lists.newArrayList();
 
             //创建提现子订单
             TradeProcessEntity withDrawProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),withdrawDto.getTrade_type(),freezeEntity,null,true);
-            withDrawProcess=fssTradeProcessService.creatTradeProcess(withDrawProcess,null,"互联网账户提现，提现金额为"+withdrawDto.getAmt()+"元",withdrawDto.getAmt(),"1104",withdrawDto.getTrade_type(),"11160002","11170002",null,null,null);
+            withDrawProcess=fssTradeProcessService.creatTradeProcess(withDrawProcess,null,"互联网账户提现，提现金额为"+withdrawDto.getAmt()+"元",withdrawDto.getAmt(),"1402","14020001","11160002","11170002",null,null,null);
             list.add(withDrawProcess);
 
             //判断收费金额不为零时，创建收费子订单
             if((withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt()).compareTo(BigDecimal.ZERO)>0){
                 FundAccountEntity toEntity  = this.getFundAccount(15,0);
                 TradeProcessEntity tradeProcess1= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),"11060001",freezeEntity,toEntity,true);
-                tradeProcess1=fssTradeProcessService.creatTradeProcess(tradeProcess1,null,"互联网账户提现收费，收费金额为"+withdrawDto.getCharge_amt()+"元",withdrawDto.getCharge_amt(),"1106","11060001","11160002","11170002",null,null,null);
+                tradeProcess1=fssTradeProcessService.creatTradeProcess(tradeProcess1,null,"互联网账户提现收费，收费金额为"+withdrawDto.getCharge_amt()+"元",withdrawDto.getCharge_amt(),"1403","14030004","11160002","11170002",null,null,null);
                 list.add(tradeProcess1);
             }
             tradeProcess.setList(list);
@@ -374,6 +374,15 @@ public class FundsTradeImpl  implements IFundsTrade {
         this.transfer(fromCusID,fromType,toCusID,toType,amount,orderType,busiType,busiId, "1119", tradeType,null,null,null, contractNo,"0");
         return true;
     }
+    /**
+     *资金后台转账处理
+     */
+    @Override
+    public boolean transefer(Integer fromCusID, Integer fromType, Integer toCusID, Integer toType, BigDecimal amount, Integer orderType, Long busiId, int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType,String orderNo) throws FssException {
+       // return this.(null,null,tradeType,null,contractNo,null,String.valueOf(fromCusID),null,amount,null,String.valueOf(toCusID),null,fromType,toType,fund_type,actionType);
+        this.transfer(fromCusID,fromType,toCusID,toType,amount,orderType,busiType,busiId, "1119", tradeType,null,null,null, contractNo,"0",orderNo);
+        return true;
+    }
 
     /**
      * 借款系统抵押标转账
@@ -483,6 +492,27 @@ public class FundsTradeImpl  implements IFundsTrade {
      * @throws FssException
      */
     public void transfer(Integer fromCustid,Integer fromType,Integer toCustId,Integer toType,BigDecimal amt,Integer orderType,Integer sourceType,Long SourceId,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo,String transf_flag) throws FssException {
+       this.transfer(fromCustid,fromType,toCustId,toType,amt,orderType,sourceType,SourceId,newOrderType,tradeType,lendNo,toLendNo,loanCustId,loanNo,transf_flag,null);
+    }
+    /**
+     * 转账
+     * @param fromCustid
+     * @param fromType
+     * @param toCustId
+     * @param toType
+     * @param amt
+     * @param orderType
+     * @param sourceType
+     * @param SourceId
+     * @param newOrderType
+     * @param tradeType
+     * @param lendNo
+     * @param toLendNo
+     * @param loanCustId
+     * @param loanNo
+     * @throws FssException
+     */
+    public void transfer(Integer fromCustid,Integer fromType,Integer toCustId,Integer toType,BigDecimal amt,Integer orderType,Integer sourceType,Long SourceId,String newOrderType,String tradeType,String lendNo,String toLendNo,Long loanCustId,String loanNo,String transf_flag,String orderNo) throws FssException {
         if("99".equals(fromType.toString())) throw new FssException("90004036");
         FundAccountEntity  fromEntity = this.getFundAccount(fromCustid,fromType);//转出账户
         FundAccountEntity  toEntity = this.getFundAccount(toCustId,toType);//转入账户
@@ -491,7 +521,11 @@ public class FundsTradeImpl  implements IFundsTrade {
             this.hasEnoughBanlance(fromEntity, amt);
             //第三方交易
             if(fromEntity.getCustId().longValue() != toEntity.getCustId().longValue()) {
-                fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity, toEntity, amt, orderType, SourceId, sourceType,newOrderType, tradeType, lendNo, toLendNo,loanCustId, loanNo);
+                if(StringUtils.isEmpty(orderNo)) {
+                    fundOrderEntity = this.paySuperByFuiou.transerer(fromEntity, toEntity, amt, orderType, SourceId, sourceType, newOrderType, tradeType, lendNo, toLendNo, loanCustId, loanNo);
+                }else{
+                    fundOrderEntity = this.paySuperByFuiou.transefer(fromEntity, toEntity, amt, orderType, SourceId, sourceType, newOrderType, tradeType, lendNo, toLendNo, loanCustId, loanNo, orderNo);
+                }
             }
             int fundType = 1005;
             if(GlobalConstants.ORDER_DEBT == orderType){

@@ -59,11 +59,11 @@ public class RepaymentJob extends SupperJob{
         if(!isIp("upload")){
             return;
         }
-        if(isRunning) return;
+       if(isRunning) return;
         startLog("借款人还款代扣");
         isRunning = true;
         try {
-            List<TradeProcessEntity> list= tradeProcessService.findByParentIdAndActionType("1401","14010007");
+            List<TradeProcessEntity> list= tradeProcessService.processList("14010007");
             if(CollectionUtils.isNotEmpty(list)){
                 for (TradeProcessEntity entity:list) {
                     //修改主交易状态，防止数据被下次定时任务重新扫到的情况出现
@@ -74,8 +74,9 @@ public class RepaymentJob extends SupperJob{
 
                     for (TradeProcessEntity reEntity:replist) {
                         //得到充值子交易
-                        if(StringUtils.equals("14010007",reEntity.getTradeType())){
+                        if(StringUtils.equals("14010007",reEntity.getFundType())){
                             //启动线程池执行多线程任务
+//                            executeprocess(reEntity);
                             ThreadExecutor.execute(runnableProcess(reEntity));
                         }
                     }
@@ -99,23 +100,40 @@ public class RepaymentJob extends SupperJob{
      * @param entity
      * @return
      */
-    public Runnable runnableProcess(final TradeProcessEntity entity){
+    public Runnable runnableProcess(final TradeProcessEntity entity) {
         Runnable thread = new Runnable() {
             @Override
             public void run() {
                 try {
-                    int count= tradeProcessService.getCountByParentId(entity.getId());
-                    int successCount= tradeProcessService.getSuccessCountByParentId(entity.getId());
+                    int count = tradeProcessService.getCountByParentId(entity.getId());
+                    int successCount = tradeProcessService.getSuccessCountByParentId(entity.getId());
 
-                    if (count!=0 && count<=successCount) {
+                    if (count != 0 && count <= successCount) {
                         return;
                     }
-                    List<TradeProcessEntity> moList= tradeProcessService.moneySplit(entity);
+                    List<TradeProcessEntity> moList = tradeProcessService.moneySplit(entity);
                     this.batch(moList);
                 } catch (Exception e) {
-                    LogUtil.error(getClass(),e);
+                    LogUtil.error(getClass(), e);
                 }
             }
+//        }
+//        return null;
+//    }
+//    public void executeprocess(TradeProcessEntity entity) {
+//        try {
+//            int count = tradeProcessService.getCountByParentId(entity.getId());
+//            int successCount = tradeProcessService.getSuccessCountByParentId(entity.getId());
+//
+//            if (count != 0 && count <= successCount) {
+//                return;
+//            }
+//            List<TradeProcessEntity> moList = tradeProcessService.moneySplit(entity);
+//            this.batch(moList);
+//        } catch (Exception e) {
+//            LogUtil.error(getClass(), e);
+//        }
+//    }
 
             private void batch(List<TradeProcessEntity> moList){
                 int flag = 0;  //是否中断

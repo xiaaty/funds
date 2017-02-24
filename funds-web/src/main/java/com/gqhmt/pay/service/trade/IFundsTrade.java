@@ -133,6 +133,9 @@ public interface IFundsTrade {
      */
     public boolean transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException;
 
+    //添加订单号
+    public boolean transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType,String orderNo) throws FssException;
+
 
     public boolean transefer(String fromAccNo,String toAccno,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException;
 

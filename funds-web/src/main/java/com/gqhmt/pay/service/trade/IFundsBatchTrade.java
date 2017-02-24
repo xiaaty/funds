@@ -24,5 +24,5 @@ public interface IFundsBatchTrade {
 
     public void batchTrade(FssTradeRecordEntity entity,String contractNo,int custType,String seqNo) throws FssException;
 
-    public void batchTrade(TradeProcessEntity entity) throws FssException;
+    void batchTrade(TradeProcessEntity entity) throws FssException;
 }

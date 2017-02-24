@@ -88,7 +88,7 @@ public class TradeProcessEntity implements java.io.Serializable{
     @Column(name = "audit_amount",updatable = false)
     private BigDecimal audiAmount              ; //decimal(19,2)    审核金额
 
-   @Column(name = "real_trade_amount",updatable = false)
+   @Column(name = "real_trade_amount")
     private BigDecimal realTradeAmount              ; //decimal(19,2)    实际交易成功金额
 
     @Column(name = "bid_id",updatable = false)
@@ -127,7 +127,7 @@ public class TradeProcessEntity implements java.io.Serializable{
     @Column(name = "process_state")
     private String processState           ; //流程状态
 
-    @Column(name = "memo",updatable = false)
+    @Column(name = "memo")
     private String memo             ; //varchar(2000)    交易备注
 
     @Column(name = "sync")
