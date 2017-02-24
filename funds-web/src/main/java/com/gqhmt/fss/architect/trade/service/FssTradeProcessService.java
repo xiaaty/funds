@@ -785,7 +785,7 @@ public class FssTradeProcessService {
 
         repaymentChilds.add(repaymentChild);
 
-        if(StringUtils.equals("10170010",repayment.getProcessState())){
+        if(!StringUtils.equals("10030003",repayment.getStatus())){
             repaymentResponse.setResp_code("0000");
             repaymentResponse.setResp_msg("成功");
         }else {
