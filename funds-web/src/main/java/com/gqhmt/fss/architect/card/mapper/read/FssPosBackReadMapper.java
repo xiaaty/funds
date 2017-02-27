@@ -33,5 +33,6 @@ public interface FssPosBackReadMapper extends ReadMapper<FssPosBackEntity>{
      * @return
      */
    List<FssPosBackEntity> selectPosBacks(@Param("startDate") String startDate);
+   List<FssPosBackEntity> findPosBackByTime(@Param("count") int count,@Param("timeType") int timeType,@Param("startDate") String startDate);
 
 }

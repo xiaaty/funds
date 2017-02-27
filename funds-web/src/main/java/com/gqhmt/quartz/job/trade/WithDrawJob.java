@@ -88,7 +88,7 @@ public class WithDrawJob extends SupperJob{
     //提现
     public FundOrderEntity withdraw(TradeProcessEntity entity) throws FssException {
         //查询提现子交易
-        List<TradeProcessEntity> withList=tradeProcessService.findByParentIdAndActionType("1104",String.valueOf(entity.getId()));
+        List<TradeProcessEntity> withList=tradeProcessService.findByParentIdAndActionType("1402",String.valueOf(entity.getId()));
         if(CollectionUtils.isEmpty(withList)) return null;
         TradeProcessEntity withdraw=withList.get(0);
         //查询提现出账账户

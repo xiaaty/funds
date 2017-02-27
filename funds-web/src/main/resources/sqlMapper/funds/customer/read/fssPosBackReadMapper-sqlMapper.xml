@@ -15,13 +15,22 @@
 			t.mobile_no_acntIsVerif mobileNoAcntIsVerif,
 			t.state state,
 			t.create_time createTime,
-			t.modify_time modifyTime
+			t.modify_time modifyTime,
+			t.re_count reCount
 		FROM `t_gq_fss_pos_back` t
 	</sql>
 	<select id="selectPosBacks" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.card.entiry.FssPosBackEntity" >
 		<include refid="fieldSql" />
-		where t.state='98010002' AND
-		date_format(t.create_time,'%Y%m%d') &gt;= #{startDate}
+		where t.state='98010002'
+		AND t.re_count=0
+		AND date_format(t.create_time,'%Y%m%d') &gt;= #{startDate}
 		ORDER BY t.create_time ASC
+	</select>
+	<select id="findPosBackByTime"  resultType="com.gqhmt.fss.architect.card.entiry.FssPosBackEntity" >
+		<include refid="fieldSql" />
+		where t.state='98010002'
+		AND t.re_count = #{count}
+		AND date_format(t.create_time,'%Y%m%d') &gt;= #{startDate}
+		AND DATE_ADD(t.modify_time,INTERVAL ${timeType} MINUTE) &lt; NOW()
 	</select>
 </mapper>
