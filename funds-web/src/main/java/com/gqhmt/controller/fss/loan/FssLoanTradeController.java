@@ -3,6 +3,7 @@ package com.gqhmt.controller.fss.loan;
 import com.beust.jcommander.internal.Maps;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -595,8 +596,8 @@ public class FssLoanTradeController {
 				}
 				fssLoanEntity.setSecondAmt(secondtAmt);
 				fssLoanEntity.setStatus("10050020");
-				fssLoanService.update(fssLoanEntity);
 				fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, type);
+				fssLoanService.update(fssLoanEntity);
 				map.put("code", "0000");
 				map.put("msg", "成功");
 			}else{
@@ -605,7 +606,7 @@ public class FssLoanTradeController {
 			}
 		}catch (Exception e){
 			map.put("code", "0001");
-			map.put("msg", e.getMessage());
+			map.put("msg", Application.getInstance().getDictName(e.getMessage()));
 			LogUtil.error(this.getClass(), e.getMessage());
 		}
 

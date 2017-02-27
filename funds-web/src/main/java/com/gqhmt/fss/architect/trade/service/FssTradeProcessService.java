@@ -660,9 +660,9 @@ public class FssTradeProcessService {
         //得到出账账户
         FundAccountEntity fromEntity=fundAccountService.select(entity.getFromAccId());
         //起始时间
-        String startTime= DateUtil.dateToString(entity.getCreateTime());
+        String startTime= DateUtil.dateTostring(entity.getCreateTime());
         //终止时间
-        String endTime=DateUtil.dateToString(new Date());
+        String endTime=DateUtil.dateTostring(new Date());
         //查询富友,得到转账集合
         List<Map<String,String>> listMap=this.getFuiouTransfers("PWPC",fromEntity,entity.getOrderNo(),startTime,endTime);
 
@@ -734,6 +734,7 @@ public class FssTradeProcessService {
                     GlobalConstants.ACCOUNT_TYPE_LOAN, transferEntity.getAmt(), GlobalConstants.ORDER_TRANSFER, transferEntity.getId(), GlobalConstants.BUSINESS_TRANSFER,
                     transferEntity.getTradeType(), transferEntity.getLoanContractNo(), 1005, 3,transferEntity.getOrderNo());
             //转账成功更新转账流程状态
+            transferEntity.setRealTradeAmount(transferEntity.getAmt());
             this.update(transferEntity,"10030002","10170020","0000","中间人转账成功");
             //转账成功更新主流程状态
             entity.setProcessState("10170020");

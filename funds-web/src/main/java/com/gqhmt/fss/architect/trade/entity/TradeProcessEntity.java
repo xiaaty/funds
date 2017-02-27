@@ -490,6 +490,9 @@ public class TradeProcessEntity implements java.io.Serializable{
     }
 
     public BigDecimal getAudiAmount() {
+        if(audiAmount==null){
+            audiAmount=BigDecimal.ZERO;
+        }
         return audiAmount;
     }
 
@@ -498,6 +501,9 @@ public class TradeProcessEntity implements java.io.Serializable{
     }
 
     public BigDecimal getRealTradeAmount() {
+        if(realTradeAmount==null){
+            realTradeAmount=BigDecimal.ZERO;
+        }
         return realTradeAmount;
     }
 

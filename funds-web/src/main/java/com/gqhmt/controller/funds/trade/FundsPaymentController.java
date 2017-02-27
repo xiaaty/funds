@@ -97,7 +97,7 @@ public class FundsPaymentController {
 		TradeProcessEntity entity=fssTradeProcessService.findById(id);
 		//查询富友，看该笔交易成功失败状态
 		fssTradeProcessService.reTransfer(entity);
-		return "/fss/trade/repayment/repayment_detail";
+		return  "redirect:/repayment/processChild/"+entity.getParnetId();
 	}
 //	/**
 //	 * author:柯禹来
