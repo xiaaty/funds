@@ -650,7 +650,7 @@ public class FssTradeProcessService {
 
     /**
      * jhz
-     * 重新转账
+     * 中间人重新转账
      * @param entity
      * @throws FssException
      */
@@ -664,15 +664,19 @@ public class FssTradeProcessService {
         //终止时间
         String endTime=DateUtil.dateTostring(new Date());
         //查询富友,得到转账集合
-        List<Map<String,String>> listMap=this.getFuiouTransfers("PWPC",fromEntity,entity.getOrderNo(),startTime,endTime);
+        List<Map<String,String>> listMap=this.getFuiouTransfers("PW03",fromEntity,entity.getOrderNo(),startTime,endTime);
 
         if(CollectionUtils.isEmpty(listMap)){//富友不存在转账记录，重新转账
+            //更新订单号
+            entity.setOrderNo(fundOrderService.getOrderNo());
+            this.updateTradeProcessEntity(entity);
             this.transfer(entity,parentEntity);
         }else {
             for (Map<String, String> map : listMap) {
                 if (StringUtils.equals(map.get("mchnt_txn_ssn"), entity.getOrderNo())) {
                     if(StringUtils.equals(map.get("txn_rsp_cd"),"0000")){//富友返回成功
-                        //更新转账交易流程状态和主状态
+                        //更新转账交易流程状态和主状态.
+                        entity.setRealTradeAmount(entity.getAmt());
                         this.update(entity,"10030002","10170020","0000","中间人转账成功");
                         //转账成功更新主流程状态
                         parentEntity.setProcessState("10170020");
