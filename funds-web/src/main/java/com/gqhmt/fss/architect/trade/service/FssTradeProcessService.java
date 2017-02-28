@@ -601,7 +601,7 @@ public class FssTradeProcessService {
         //查询出账账户
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(withDraw.getOrderNo());
         String startTime= DateUtil.dateToString(fundOrderEntity.getCreateTime());
-        String repCode="0000";
+        String repCode=getResult(withDraw,startTime);
         if(StringUtils.isNotEmpty(repCode)){
             //富友成功
             if(StringUtils.equals(repCode,"0000")){
