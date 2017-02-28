@@ -313,7 +313,7 @@ public class FssTradeProcessService {
         fundOrderEntity.setChargeAmount(charge.getAmt());
         fundOrderService.update(fundOrderEntity);
         //主交易处于提现成功是继续收费操作
-        if(StringUtils.equals("10170030",entity.getProcessState())){
+        if(StringUtils.equals("10170030",entity.getProcessState()) || StringUtils.equals("10170041",entity.getProcessState())){
             //查询出账账户
             FundAccountEntity accEntity=fundAccountService.getFundAccount(Long.valueOf(charge.getFromCustNo()),GlobalConstants.ACCOUNT_TYPE_FREEZE);
 
@@ -324,7 +324,7 @@ public class FssTradeProcessService {
                 fundOrderEntityCharge =  paySuperByFuiou.chargeAmount(accEntity,toEntity,charge.getAmt(),charge.getOrderNo());
                 if(fundOrderEntityCharge != null) {
                     //添加收费交易记录
-                    fundWithrawChargeService.add(fundOrderEntity.getOrderNo(), accEntity, fundOrderEntity.getOrderAmount(), fundOrderEntity.getChargeAmount());
+                    fundWithrawChargeService.add(fundOrderEntityCharge.getOrderNo(), accEntity, fundOrderEntity.getOrderAmount(), fundOrderEntity.getChargeAmount());
                     tradeRecordService.chargeAmount(accEntity,toEntity,fundOrderEntity,fundOrderEntityCharge);
                 }
                 //修改收费子交易状态
