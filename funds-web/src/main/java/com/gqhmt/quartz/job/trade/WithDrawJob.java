@@ -98,7 +98,7 @@ public class WithDrawJob extends SupperJob{
         FundOrderEntity fundOrderEntity=null;
         try {
             //调用富友提现接口
-            fundOrderEntity = paySuperByFuiou.withdraw(fromEntity, withdraw.getAmt(), BigDecimal.ZERO, GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", entity.getTradeType(), null, null, entity.getOrderNo());
+            fundOrderEntity = paySuperByFuiou.withdraw(fromEntity, withdraw.getAmt(), BigDecimal.ZERO, GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", entity.getTradeType(), null, null, withdraw.getOrderNo());
             //创建交易流水
             tradeRecordService.withdrawByFroze(account, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003, entity.getSeqNo(), entity.getTradeType());
             //提现成功修改提现子交易状态
