@@ -119,7 +119,7 @@ public class FssOnlineWithDrawController {
 		//查询总流程
 		TradeProcessEntity parent=fssTradeProcessService.findById(charge.getParnetId());
 		//提现流程
-		TradeProcessEntity withDraw=fssTradeProcessService.findByParentIdAndActionType("1403",String.valueOf(parent.getId())).get(0);
+		TradeProcessEntity withDraw=fssTradeProcessService.findByParentIdAndActionType(parent.getActionType(),String.valueOf(parent.getId())).get(0);
 		//得到提现订单
 		FundOrderEntity orderEntity=fundOrderService.findfundOrder(withDraw.getOrderNo());
 		//生成新的订单号
