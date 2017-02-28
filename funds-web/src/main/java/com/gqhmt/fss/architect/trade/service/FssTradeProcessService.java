@@ -641,7 +641,7 @@ public class FssTradeProcessService {
             return "0001";
         }
         for (Map<String,String> map: listMap ) {
-            if(StringUtils.equals(map.get("mchnt_txn_ssn"),entity.getOrderNo())){
+            if(StringUtils.equals(map.get("mchnt_ssn"),entity.getOrderNo())){
                 return map.get("txn_rsp_cd");
             }
         }
