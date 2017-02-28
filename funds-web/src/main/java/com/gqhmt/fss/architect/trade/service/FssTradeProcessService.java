@@ -25,6 +25,7 @@ import com.gqhmt.funds.architect.customer.service.BankCardInfoService;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.order.service.FundOrderService;
+import com.gqhmt.funds.architect.trade.service.FundTradeService;
 import com.gqhmt.pay.core.command.CommandResponse;
 import com.gqhmt.pay.service.PaySuperByFuiou;
 import com.gqhmt.pay.service.TradeRecordService;
@@ -89,6 +90,8 @@ public class FssTradeProcessService {
     private IFundsTrade fundsTradeImpl;
     @Resource
     private FssCheckAccountingService fssCheckAccountingService;
+    @Resource
+    private FundTradeService fundTradeService;
     /**
      * 保存交易数据
      * @param entity
@@ -678,6 +681,16 @@ public class FssTradeProcessService {
                 if (StringUtils.equals(map.get("mchnt_ssn"), entity.getOrderNo())) {
                     if(StringUtils.equals(map.get("txn_rsp_cd"),"0000")){//富友返回成功
                         //更新转账交易流程状态和主状态.
+                       FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(entity.getOrderNo());
+                        fundOrderService.updateOrder(fundOrderEntity,2,"0000","成功");
+                        //得到出账账户
+                        FundAccountEntity toEntity=fundAccountService.select(entity.getToAccId());
+                        //添加流水记录
+                        tradeRecordService.transfer(fromEntity,toEntity,entity.getAmt(),1005,fundOrderEntity,8,null,"1005",entity.getTradeType(),entity.getLoanContractNo(),entity.getToAccId() != null ? entity.getToAccId().longValue():0l,null,entity.getToAccId(),entity.getLoanContractNo(),"0");
+                        //添加交易记录
+                        fundTradeService.addFundTrade(fromEntity, BigDecimal.ZERO,entity.getAmt(),1005, "转账成功，资金转出："+entity.getAmt()+" 元",BigDecimal.ZERO);
+                        fundTradeService.addFundTrade(toEntity,entity.getAmt(), BigDecimal.ZERO,1005,"转账成功，资金转入："+entity.getAmt()+" 元");
+
                         entity.setRealTradeAmount(entity.getAmt());
                         this.update(entity,"10030002","10170020","0000","中间人转账成功");
                         //转账成功更新主流程状态
