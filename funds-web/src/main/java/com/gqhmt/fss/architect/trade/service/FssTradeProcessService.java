@@ -641,7 +641,7 @@ public class FssTradeProcessService {
             return "0001";
         }
         for (Map<String,String> map: listMap ) {
-            if(StringUtils.equals(map.get("mchnt_txn_ssn"),entity.getOrderNo())){
+            if(StringUtils.equals(map.get("mchnt_ssn"),entity.getOrderNo())){
                 return map.get("txn_rsp_cd");
             }
         }
@@ -673,7 +673,7 @@ public class FssTradeProcessService {
             this.transfer(entity,parentEntity);
         }else {
             for (Map<String, String> map : listMap) {
-                if (StringUtils.equals(map.get("mchnt_txn_ssn"), entity.getOrderNo())) {
+                if (StringUtils.equals(map.get("mchnt_ssn"), entity.getOrderNo())) {
                     if(StringUtils.equals(map.get("txn_rsp_cd"),"0000")){//富友返回成功
                         //更新转账交易流程状态和主状态.
                         entity.setRealTradeAmount(entity.getAmt());
