@@ -590,7 +590,7 @@ public class FssTradeProcessService {
      */
     public void checkResult(TradeProcessEntity entity)throws FssException{
         //查询出该笔交易的提现子交易
-        TradeProcessEntity withDraw=this.findByParentIdAndActionType("1104",entity.getId().toString()).get(0);
+        TradeProcessEntity withDraw=this.findByParentIdAndActionType(entity.getActionType(),entity.getId().toString()).get(0);
         //查询出账账户
         FundAccountEntity fromEntity=fundAccountService.select(withDraw.getFromAccId());
         //查询出账账户
