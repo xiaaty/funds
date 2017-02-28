@@ -96,8 +96,9 @@ public class FssOnlineWithDrawController {
 		Map<String, String> map = new HashMap<String, String>();
 		//查询提现流程
 		TradeProcessEntity reWithDraw=fssTradeProcessService.findById(id);
+		TradeProcessEntity paWithDraw=fssTradeProcessService.findById(reWithDraw.getParnetId());
 		try {
-			fssTradeProcessService.checkResult(reWithDraw);
+			fssTradeProcessService.checkResult(paWithDraw);
 			map.put("code","0000");
 			map.put("msg","操作成功");
 		}catch (Exception e){
