@@ -1,6 +1,7 @@
 package com.gqhmt.controller.fss.trade;
 
 import com.gqhmt.annotations.AutoPage;
+import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeProcessService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
@@ -91,21 +92,16 @@ public class FssOnlineWithDrawController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/trade/processChild/{id}/reWithDraw",method = {RequestMethod.GET,RequestMethod.POST})
-	@ResponseBody
-	public Object reWithDraw(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws Exception {
-		Map<String, String> map = new HashMap<String, String>();
+	public String reWithDraw(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws Exception {
 		//查询提现流程
 		TradeProcessEntity reWithDraw=fssTradeProcessService.findById(id);
 		TradeProcessEntity paWithDraw=fssTradeProcessService.findById(reWithDraw.getParnetId());
 		try {
 			fssTradeProcessService.checkResult(paWithDraw);
-			map.put("code","0000");
-			map.put("msg","操作成功");
 		}catch (Exception e){
-			map.put("code","0001");
-			map.put("msg",e.getMessage());
+			LogUtil.error(this.getClass(),e.getMessage());
 		}
-		return map;
+		return "redirect:/trade/processChild/"+paWithDraw.getId();
 	}
 	/**
 	 * jhz

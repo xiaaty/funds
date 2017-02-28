@@ -123,7 +123,7 @@
                                                 <td>
                                                     <c:if test="${(t.processState == 10050032 || t.processState == 10170041) && t.status == 10030003}"><a href="${contextPath}/trade/processChild/${t.id}/charge">重新收费</a></c:if>
 
-                                                    <c:if test="${(t.processState == 10050031 || t.processState == 10170031) && t.status == 10030003}"><a href="javaScript:void(0)" onclick="reWithDraw(${t.id})">提现退票</a></c:if>
+                                                    <c:if test="${(t.processState == 10050031 || t.processState == 10170031) && t.status == 10030003}"><a href="${contextPath}/trade/processChild/${t.id}/reWithDraw" >提现退票</a></c:if>
                                                 </td>
                                             </tr>
                                         </c:forEach>

@@ -172,20 +172,20 @@ public class FundsTradeImpl  implements IFundsTrade {
 
         try {
             //账户校验无问题，添加提现流程表数据,创建主订单
-            TradeProcessEntity tradeProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),withdrawDto.getTrade_type(),freezeEntity,null,true);
+            TradeProcessEntity tradeProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),withdrawDto.getTrade_type(),entity,null,true);
             tradeProcess=fssTradeProcessService.creatTradeProcess(tradeProcess,null,"互联网账户提现，提现收费总金额为"+withdrawAmt+"元",withdrawAmt,"1402","14020001","11160002","11170002",null,null,null);
             tradeProcess.setParnetId(0l);
             List<TradeProcessEntity> list= Lists.newArrayList();
 
             //创建提现子订单
-            TradeProcessEntity withDrawProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),withdrawDto.getTrade_type(),freezeEntity,null,true);
+            TradeProcessEntity withDrawProcess= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),withdrawDto.getTrade_type(),entity,null,true);
             withDrawProcess=fssTradeProcessService.creatTradeProcess(withDrawProcess,null,"互联网账户提现，提现金额为"+withdrawDto.getAmt()+"元",withdrawDto.getAmt(),"1402","14020001","11160002","11170002",null,null,null);
             list.add(withDrawProcess);
 
             //判断收费金额不为零时，创建收费子订单
             if((withdrawDto.getCharge_amt() == null ? BigDecimal.ZERO : withdrawDto.getCharge_amt()).compareTo(BigDecimal.ZERO)>0){
                 FundAccountEntity toEntity  = this.getFundAccount(15,0);
-                TradeProcessEntity tradeProcess1= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),"11060001",freezeEntity,toEntity,true);
+                TradeProcessEntity tradeProcess1= fssTradeProcessService.general(withdrawDto.getSeq_no(),withdrawDto.getMchn(),"11060001",entity,toEntity,true);
                 tradeProcess1=fssTradeProcessService.creatTradeProcess(tradeProcess1,null,"互联网账户提现收费，收费金额为"+withdrawDto.getCharge_amt()+"元",withdrawDto.getCharge_amt(),"1403","14030004","11160002","11170002",null,null,null);
                 list.add(tradeProcess1);
             }

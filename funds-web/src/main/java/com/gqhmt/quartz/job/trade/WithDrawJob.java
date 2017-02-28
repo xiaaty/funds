@@ -92,7 +92,7 @@ public class WithDrawJob extends SupperJob{
         if(CollectionUtils.isEmpty(withList)) return null;
         TradeProcessEntity withdraw=withList.get(0);
         //查询提现出账账户
-        FundAccountEntity fromEntity=fundAccountService.select(entity.getFromAccId());
+        FundAccountEntity fromEntity=fundAccountService.getFundAccount(Long.valueOf(withdraw.getFromCustNo()),GlobalConstants.ACCOUNT_TYPE_FREEZE);
         //得到线上账户
         FundAccountEntity account = fundsTradeImpl.getFundAccount(Integer.parseInt(entity.getFromCustNo()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity=null;

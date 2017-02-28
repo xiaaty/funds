@@ -312,7 +312,8 @@ public class FssTradeProcessService {
         //主交易处于提现成功是继续收费操作
         if(StringUtils.equals("10170030",entity.getProcessState())){
             //查询出账账户
-            FundAccountEntity accEntity=fundAccountService.select(charge.getFromAccId());
+            FundAccountEntity accEntity=fundAccountService.getFundAccount(Long.valueOf(charge.getFromCustNo()),GlobalConstants.ACCOUNT_TYPE_FREEZE);
+
             FundAccountEntity toEntity=fundAccountService.select(charge.getToAccId());
             FundOrderEntity fundOrderEntityCharge=null;
             try {
@@ -591,12 +592,13 @@ public class FssTradeProcessService {
     public void checkResult(TradeProcessEntity entity)throws FssException{
         //查询出该笔交易的提现子交易
         TradeProcessEntity withDraw=this.findByParentIdAndActionType(entity.getActionType(),entity.getId().toString()).get(0);
-        //查询出账账户
-        FundAccountEntity fromEntity=fundAccountService.select(withDraw.getFromAccId());
+        //查询冻结账户
+        FundAccountEntity fromEntity=fundAccountService.getFundAccount(Long.valueOf(withDraw.getFromCustNo()),GlobalConstants.ACCOUNT_TYPE_FREEZE);
+        ;
         //查询出账账户
         FundOrderEntity fundOrderEntity = fundOrderService.findfundOrder(withDraw.getOrderNo());
         String startTime= DateUtil.dateToString(fundOrderEntity.getCreateTime());
-        String repCode=this.getResult(withDraw,startTime);
+        String repCode="0000";
         if(StringUtils.isNotEmpty(repCode)){
             //富友成功
             if(StringUtils.equals(repCode,"0000")){
