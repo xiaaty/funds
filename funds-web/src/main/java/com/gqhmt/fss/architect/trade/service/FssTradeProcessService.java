@@ -10,9 +10,6 @@ import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
 import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.TradeProcessReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.TradeProcessWriteMapper;
@@ -519,7 +516,6 @@ public class FssTradeProcessService {
 //                    //代付失败进行资金解冻
 ////                    fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType(),applyEntity.getSeqNo());
 //                }
-                FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(parentProcess.getMchnNo(), parentProcess.getOrderNo());
                 if("11090001".equals(parentProcess.getTradeType())||"11090005".equals(parentProcess.getTradeType())){
                 }else if("11092001".equals(parentProcess.getTradeType())||"11090006".equals(parentProcess.getTradeType())){
                     //借款系统和冠e通抵押权人提现不处理
