@@ -2,6 +2,7 @@ package com.gqhmt.pay.service.trade;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 
 /**
  * Filename:    com.gqhmt.pay.service.trade.IFundsBatchTrade
@@ -22,4 +23,6 @@ import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
 public interface IFundsBatchTrade {
 
     public void batchTrade(FssTradeRecordEntity entity,String contractNo,int custType,String seqNo) throws FssException;
+
+    void batchTrade(TradeProcessEntity entity) throws FssException;
 }
