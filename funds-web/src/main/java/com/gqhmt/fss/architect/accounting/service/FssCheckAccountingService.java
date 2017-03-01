@@ -204,7 +204,13 @@ public class FssCheckAccountingService {
 //        }else{
 //            state="交易失败";
 //        }
-        FssCheckAccountingEntity entity= this.createChecking(accountInfo.getSeqNo(), DateUtil.dateTostring(accountInfo.getTradeTime()),
+        String seqNo = "";
+        if("YSQ".equalsIgnoreCase(accountInfo.getTradeType())){
+            seqNo = accountInfo.getContractNum();
+        }else{
+            seqNo = accountInfo.getSeqNo();
+        }
+        FssCheckAccountingEntity entity= this.createChecking(seqNo, DateUtil.dateTostring(accountInfo.getTradeTime()),
                 accountInfo.getBatchFoiuFinance(),DateUtil.dateTostring(accountInfo.getTradeTime()),
                 accountInfo.getBalance().toString(),null,null,accountInfo.getUserAccount(),accountInfo.getUserName(),
                 accountInfo.getRemark(),accountInfo.getState(),"","10130001","98010002");
@@ -291,10 +297,13 @@ public class FssCheckAccountingService {
     }
 
     public List<Map<String,String>> getFuiouTradeCz(FundAccountEntity entity,String startTime,String endTime)throws  FssException{
+          return getFuiouTradeResult(entity,startTime,endTime,"PW11");
+    }
+    public List<Map<String,String>> getFuiouTradeResult(FundAccountEntity entity,String startTime,String endTime,String queryType)throws  FssException{
         List<Map<String,String>> list = null;
         CommandResponse response=null;
         try{
-            response =paySuperByFuiou.tradeCZZTXQuery("PW11",entity,startTime,endTime,1);
+            response =paySuperByFuiou.tradeCZZTXQuery(queryType,entity,startTime,endTime,1);
             Map<String, Object> map=response.getMap();
             if(map == null || map.get("results") == null || map.get("total_number") == null ||  Integer.parseInt(map.get("total_number").toString())==0){
                 return null;

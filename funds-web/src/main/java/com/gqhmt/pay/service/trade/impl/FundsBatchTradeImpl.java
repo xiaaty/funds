@@ -3,7 +3,9 @@ package com.gqhmt.pay.service.trade.impl;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
+import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
+import com.gqhmt.fss.architect.trade.service.FssTradeProcessService;
 import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -42,6 +44,8 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
     private IFundsTrade fundsTrade;
     @Resource
     private FundAccountService fundAccountService;
+    @Resource
+    private FssTradeProcessService fssTradeProcessService;
     @Override
     public void batchTrade(FssTradeRecordEntity entity,String contractNo,int custType,String seqNo) throws FssException {
         FundOrderEntity orderEntity = null;
@@ -116,6 +120,58 @@ public class FundsBatchTradeImpl implements IFundsBatchTrade {
         		throw new FssException("90002006");
         	}
     	}
+        return  orderEntity;
+    }
+
+    @Override
+    public void batchTrade(TradeProcessEntity entity) throws FssException {
+        FundOrderEntity orderEntity = null;
+        try {
+            if(!entity.getActionType().equals("1401") && !entity.getActionType().equals("1402")){//
+                fssTradeProcessService.updateTradeProcessExecuteState(entity,2,"90099011");
+                return;
+            }
+            if(entity.getActionType().equals("1401")){//充值
+                orderEntity = this.batchWithholding(entity);
+            }else if(entity.getActionType().equals("1402")){//提现
+                orderEntity = this.batchWithdraw(entity);
+            }
+            entity.setOrderNo(orderEntity.getOrderNo());
+            fssTradeProcessService.updateTradeProcessExecuteState(entity,1,"0000");
+
+        } catch (FssException e) {
+            LogUtil.error(this.getClass(),e.getMessage());
+            fssTradeProcessService.updateTradeProcessExecuteState(entity,2,e.getMessage());
+            throw e;
+        }catch (Exception e){
+            LogUtil.error(this.getClass(),e.getMessage());
+            fssTradeProcessService.updateTradeProcessExecuteState(entity,2,e.getMessage());
+            throw e;
+        }
+
+    }
+    /**
+     * 批量代扣
+     * @param entity
+     * @return
+     * @throws FssException
+     */
+    public FundOrderEntity batchWithholding(TradeProcessEntity entity) throws FssException {
+        FundOrderEntity   orderEntity = this.fundsTrade.withholdingApplyNew(Integer.valueOf(entity.getToCustNo()),Integer.valueOf(entity.getToCustType()),entity.getLoanContractNo(),entity.getAmt(),entity.getId(),Integer.valueOf(entity.getTradeTypeParent()),Integer.valueOf(entity.getTradeType()),entity.getSeqNo(),entity.getOrderNo());
+        return  orderEntity;
+    }
+    /**
+     * 批量代付
+     * @param entity
+     * @return
+     */
+    public FundOrderEntity batchWithdraw(TradeProcessEntity entity) throws FssException{
+        FundOrderEntity orderEntity = null;
+        if(entity.getFromAccId()!=null && !"".equals(entity.getFromAccId())){
+            orderEntity = this.fundsTrade.withdrawApplyNew(null,entity.getFromAccId().toString(), Integer.valueOf(entity.getFromCustType()),entity.getLoanContractNo(), entity.getAmt(), entity.getId(), Integer.valueOf(entity.getSettleType()),Integer.valueOf(entity.getTradeTypeParent()),Integer.valueOf(entity.getTradeType()),entity.getSeqNo(),entity.getOrderNo());
+        }else{
+            throw new FssException("90002006");
+        }
         return  orderEntity;
     }
 }

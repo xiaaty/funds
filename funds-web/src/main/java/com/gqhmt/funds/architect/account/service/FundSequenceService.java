@@ -164,9 +164,9 @@ public class FundSequenceService {
      * @throws FssException
      */
       public void refund(FundAccountEntity entity,int actionType,int accountType,BigDecimal amount,Long oAccountId,FundOrderEntity orderEntity,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException{
-        if(entity.getBusiType() == 99){
-            throw new FssException("出账账户错误");
-        }
+//        if(entity.getBusiType() == 99){
+//            throw new FssException("出账账户错误");
+//        }
         //校验账户信息
         if(entity == null || entity.getId() == null){
             throw new FundAccountNullException();
@@ -571,10 +571,29 @@ public class FundSequenceService {
      * time:2016年2月17日
      * function：查询流水列表
      */
-    public List<FundAccountSequenceBean> selectAccountSequenceList(Map fasMap) {
-    	return fundSequenceReadMapper.selectAccountSequenceList(fasMap);
+    public List<FundSequenceEntity> selectAccountSequenceList(Map<String,String> map) {
+        List<FundSequenceEntity> list = fundSequenceReadMapper.selectAccountSequenceList(map);
+    	return list;
     }
-    
+
+    /**
+     * 按条件查询交易流水
+     * @param map
+     * @return
+     */
+    public List<FundSequenceEntity> getSequenceByParam(Map<String,String> map) {
+        Map<String, String> map2=new HashMap<String, String>();
+        if(map!=null) {
+            String startTime = map.get("startTime");
+            String endTime = map.get("endTime");
+            map2.put("custId",map.get("custId"));
+            map2.put("actionType", map.get("actionType"));
+            map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
+            map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
+        }
+        List<FundSequenceEntity> list = fundSequenceReadMapper.querySeqList(map2);
+    	return list;
+    }
     /**
      * 账户资金流水查询
      * @return
@@ -820,7 +839,7 @@ public class FundSequenceService {
                         FuiouFtpColomField fuiouFtpColomField= fuiouFtpColomFieldService.getFuiouFtpFiledByParam(fundOrderEntity.getOrderNo(),-bean.getId());
                         if(fuiouFtpColomField!=null){
                             FundAccountEntity  BondAccountEntity =fundAccountService.getFundAccountById(fuiouFtpColomField.getFromAccountId());
-                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),map.get(bean.getId()),"1110",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
+                            this.transfer(BondAccountEntity,toEntity,7,3004, bean.getRepaymentExtrinterest(),null,fundOrderEntity.getOrderNo(),fuiouFtpColomField.getFeildOrderNo(),"1110",tradeType,bean.getContractNo(),null,null,bid.getCustomerId().longValue(),bid.getContractNo());
 
                             //调用统一支付转账接口把借款人应还的额外利息和转给出借人
                             tyzfTradeService.tyzfTransfer(BondAccountEntity.getCustId(),fromEntity.getBusiType(),toEntity.getCustId(),toEntity.getBusiType(),bean.getRepaymentExtrinterest(),tradeType,seqNo,"0");
@@ -907,5 +926,13 @@ public class FundSequenceService {
     public int  queryWithDrawCount(Long accountId) throws FssException{
     	return fundSequenceReadMapper.queryWithDrawCount(accountId);
     }
-
+    /**
+     * jhz
+     * 查询提现次数
+     * @param accountId
+     * @return
+     */
+    public int  queryWithHoldCount(Long accountId) throws FssException{
+        return fundSequenceReadMapper.queryWithHoldCount(accountId);
+    }
 }

@@ -2,13 +2,14 @@ package com.gqhmt.pay.service.trade;
 
 
 import com.gqhmt.core.exception.FssException;
-import com.gqhmt.extServInter.dto.Response;
 import com.gqhmt.extServInter.dto.asset.FundTradeDto;
 import com.gqhmt.extServInter.dto.trade.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.NoticeService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.funds.architect.trade.bean.FundTradeBean;
+import com.gqhmt.pay.exception.CommandParmException;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -81,6 +82,7 @@ public interface IFundsTrade {
     public boolean withholdingApply(RechargeApplyDto rechargeApplyDto) throws FssException;
 
     public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException ;
+    public FundOrderEntity withholdingApplyNew(int custID, int businessType, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo,String orderNo) throws FssException ;
 
     public FundOrderEntity withholdingApplyNew(String accNo, String contractNo, BigDecimal amount, Long busiId,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException ;
 
@@ -94,6 +96,7 @@ public interface IFundsTrade {
     public boolean withdrawApply(WithdrawApplyDto withdrawApplyDto) throws FssException;
 
     public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType,Integer tradeType,Integer tradeTypeChild,String seqNo) throws FssException;
+    public FundOrderEntity withdrawApplyNew(String accNo,String custId,Integer businessType, String contractNo, BigDecimal amount,Long busiId,int selletType,Integer tradeType,Integer tradeTypeChild,String seqNo,String orderNo) throws FssException;
 
 //    public FundOrderEntity withdrawApplyNew(int custID, int businessType, String contractNo, BigDecimal amount,Long busiId,int selletType) throws FssException;
 
@@ -129,6 +132,9 @@ public interface IFundsTrade {
      * @throws FssException
      */
     public boolean transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException;
+
+    //添加订单号
+    public boolean transefer(Integer fromCusID,Integer  fromType, Integer  toCusID,Integer toType,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType,String orderNo) throws FssException;
 
 
     public boolean transefer(String fromAccNo,String toAccno,BigDecimal amount,Integer orderType,Long busiId,int busiType,String tradeType,String contractNo,Integer fund_type,Integer actionType) throws FssException;
@@ -323,4 +329,6 @@ public interface IFundsTrade {
     public void PosRechargeCallback(String order_no,String respCode,String seqNo) throws FssException;
 
     public void PosSignedCallback(String order_no,String respCode) throws FssException;
+
+    public FundAccountEntity getFundAccount(int cusID, int type) throws CommandParmException;
 }

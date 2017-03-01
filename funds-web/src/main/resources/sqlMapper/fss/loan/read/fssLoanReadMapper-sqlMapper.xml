@@ -17,6 +17,9 @@
 		    t.contract_no contractNo,
 		    t.acc_no accNo,
 			t.contract_amt contractAmt,
+			t.pay_amt payAmt,
+			t.first_amt firstAmt,
+			t.second_amt secondAmt,
 			t.rep_code repCode,
 			t.seq_no seqNo,
 			t.user_no userNo,
@@ -30,7 +33,6 @@
 			t.trade_type tradeType,
 			t.status status,
 			t.rep_msg repMsg,
-			t.pay_amt payAmt,
 			t.rep_code repCode,
 			t.trade_type_parent tradeTypeParent,
 			t.rep_msg repMsg, 
@@ -105,6 +107,18 @@
 			t.status='10050013' then '0000'
 			WHEN 
 			t.status='10050100' then '0000'
+			WHEN
+			t.status='10050017' then '0000'
+			WHEN
+			t.status='10050018' then '0000'
+			WHEN
+			t.status='10050019' then '0000'
+			WHEN
+			t.status='10050020' then '0000'
+			WHEN
+			t.status='10050021' then '0000'
+			WHEN
+			t.status='10050022' then '0000'
 			else t.status  end resp_code
 			FROM t_gq_fss_loan t 
 			where 1=1 
@@ -205,34 +219,7 @@
 			</if> -->
 	</select>
 	<select id="selectFssLoanList" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.loan.entity.FssLoanEntity">
-		SELECT
-			t.id id,
-			t.cust_no custNo,
-			t.user_no userNo,
-			t.contract_no contractNo,
-			t.contract_interest contractInterest,
-			t.contract_id contractId,
-			t.acc_no accNo,
-			t.contract_amt contractAmt,
-			t.pay_amt payAmt,
-			t.bespoke_date bespokeDate,
-			t.trade_type_parent tradeTypeParent,
-			t.trade_type tradeType,
-			t.mortgagee_acc_no mortgageeAccNo,
-			t.seq_no seqNo,
-			t.create_time createTime,
-			t.modify_time modifyTime,
-			t.mchn_parent mchnParent,
-			t.mchn_child mchnChild,
-			t.loan_platform loanPlatform,
-			t.status,
-			t.result,
-			t.rep_code repCode,
-			t.rep_msg repMsg,
-			t.busi_no busiNo,
-			t.withDraw_status withDrawStatus,
-			t.order_no orderNo
-		FROM t_gq_fss_loan t
+		<include refid="selectSql" />
 		WHERE 1 = 1
 		<if test="id != null and id != ''">
 			AND t.id = cast(#{id} as signed int)

@@ -3,6 +3,7 @@ package com.gqhmt.controller.interactions;
 
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.LogUtil;
+import com.gqhmt.core.util.XmlUtil;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
@@ -544,32 +545,23 @@ public class FuiouCallBack {
 	}
 	/**
 	 * 根据据富有有返回结果进行处理
-	 * @param mchntCd
-	 * @param mchntNm
-	 * @param userNm
-	 * @param mobileNo
-	 * @param acntNo
-	 * @param credtNo
-	 * @param contract_st
-	 * @param acntIsVerif1
-	 * @param acntIsVerif2
-	 * @param acntIsVerif3
-	 * @param acntIsVerif4
+	 * @param xml
      * @return
      * @throws FssException
      */
 	@RequestMapping("/returnPosContractResult")
 	@ResponseBody
-	public String returnPosContractResult(String mchntCd,String mchntNm,String userNm,String mobileNo,String acntNo,String credtNo,String contract_st,String acntIsVerif1,String acntIsVerif2,String acntIsVerif3,String acntIsVerif4) throws FssException{
+	public String returnPosContractResult(String xml) throws FssException{
 		//回调明文
-		//验签
-		LogUtil.info(this.getClass(), "pos签约回调："+"客户名："+userNm+"；手机号:"+mobileNo+"；身份证号："+credtNo+";银行卡号："+acntNo+";协议状态:"+contract_st+";卡号户名验证结果:"+acntIsVerif1+";卡号密码验证结果:"+acntIsVerif2+";户名证件号验证结果:"+acntIsVerif3+";手机号验证结果:"+acntIsVerif4);
+		LogUtil.info(this.getClass(), "pos签约回调："+xml);
 		//返回富友接收结果
 		String result = "0";
 		try {
-			FssPosBackEntity entity=fssPosBackService.createPosBack(userNm,mobileNo,acntNo,credtNo,contract_st,acntIsVerif1,acntIsVerif2,acntIsVerif3,acntIsVerif4);
+			Map<String, Object> maps=XmlUtil.getMap(xml);
+			Map<String, String> map=(Map<String, String>)maps.get("custmrBusi");
+			FssPosBackEntity entity=fssPosBackService.createPosBack(map.get("userNm"),map.get("mobileNo"),map.get("acntNo"),map.get("credtNo"),map.get("contractNo"),map.get("contractSt"),map.get("acntIsVerify1"),map.get("acntIsVerify2"),map.get("acntIsVerify3"),map.get("acntIsVerify4"));
 			Integer a=fssPosBackService.insert(entity);
-			customerInfoService.updateCustomerState(entity,mobileNo,contract_st,acntNo);
+			customerInfoService.updateCustomerState(entity,map.get("mobileNo"),map.get("contractSt"),map.get("acntNo"));
 			result=a.toString();
 		} catch (Exception e) {
 			LogUtil.error(this.getClass(), e);

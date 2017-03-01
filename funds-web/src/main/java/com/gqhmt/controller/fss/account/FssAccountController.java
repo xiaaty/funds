@@ -13,12 +13,15 @@ import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.sys.entity.DictEntity;
 import com.gqhmt.sys.service.SystemService;
+import com.gqhmt.util.ExportExcelUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -313,5 +316,16 @@ public class FssAccountController {
 		return "fss/account/accountbindList";
 	}
 
+	@RequestMapping(value = "/account/export/{id}",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public void exportExcelToAccountBiz(HttpServletRequest request, String startTime, String endTime, @PathVariable String id) throws IOException, IllegalAccessException {
+		startTime = startTime.replaceAll("-","");
+		endTime = endTime.replaceAll("-","");
+		List<Map> listMap = fssAccountService.queryExcelValue(id,startTime,endTime);
+
+		ExportExcelUtil<Map> exp = new ExportExcelUtil<Map>();
+		String[] headers = {"客户id","费用类型","费用类型1","金额","费用人手机号","费用人姓名","交易描述","入账时间"};
+		exp.exportExcel("accountBiz",headers,listMap,headers);
+	}
 
 }

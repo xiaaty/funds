@@ -177,12 +177,15 @@
                                                     <td>${acc.hasThirdAccount==2?"已创建":"未创建"}</td>
                                                     <td><fmt:formatDate value="${acc.creatTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/4/${accMap.custId}">转账转入</a>
-                                                        &nbsp;
-                                                        <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/5/${accMap.custId}">转账转出</a>
+                                                        <a href="${contextPath}/funds/account/accountWater/${acc.custId}">查看流水</a>
+                                                     <%--   <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/4/${accMap.custId}">转账转入</a>--%>
+                                                     <%--   <a href="${contextPath}/trade/tradeApply/createTransfer/${acc.custId}/${acc.busiType}/${acc.customerName}/${acc.mobilePhone}/5/${accMap.custId}">转账转出</a>--%>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithdraw/${acc.id}">代付</a>--%>
                                                 <%--<a href="${contextPath}/funds/acount/custAccountWithhold/${acc.id}">代扣</a> --%>
-                                                <%--<a href="${contextPath}/funds/account/accountWater/${acc.id}">查看流水</a> --%>
+
+                                                        <!-- 是否需要在此处增加账户类型校验 -->
+                                                         &nbsp;
+                                                        <a href="javascript:void(0);" onclick="expBiz('${acc.id}');">导出</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -198,6 +201,47 @@
         </section>
     </div>
     </div>
+
+<div class="pop" id="exportExcel"
+     style="display:none;position: absolute;z-index:9999;left:50%;top:50%;margin-left:-200px;margin-top:-200px;width: 450px;padding: 30px;border:solid 2px #008299;border-radius:2px;background: white;">
+    <form id="uploadForm" method="post" action="">
+
+        <input id="popAccId" type="hidden">
+        <div class="mb25 pr">
+            <table class="table lh32">
+                <col width="100" />
+                <col width="100" />
+                <col width="100" />
+                <col width="100" />
+                <col />
+                <tbody>
+                <tr></tr>
+                <tr>
+                    <td  colspan="4">
+            <section class="fl">
+                <label class="input" style="width:140px;">
+                    <input id="popStartTime" type="text" maxlength="20" readonly="readonly" name="startTime"  class="selectdate" placeholder="开始时间" value="${accMap.startTime}">
+                </label><i class="icon-append fa fa-calendar"></i>
+            </section>
+            <span class="fl">&nbsp;&nbsp;至&nbsp;&nbsp;</span>
+            <section class="fl">
+                <label class="input" style="width:140px;">
+                    <input id="popEndTime" type="text" maxlength="20" readonly="readonly" name="endTime" class="selectdate" placeholder="结束时间" value="${accMap.endTime}">
+                </label><i class="icon-append fa fa-calendar"></i>
+            </section>
+                </td>
+                </tr>
+                </tbody>
+                </table>
+        </div>
+        <div class="mb20" id="wid-id-713">
+            <button class="btn btn-primary " id="export" type="button" title="导入">导&nbsp;出</button>
+            &nbsp;&nbsp;
+            <button class="btn btn-default fl mr30" id="mr30" type="button" title="取消">取&nbsp;消</button>
+        </div>
+    </form>
+</div>
+
 <%@include file="../../../view/include/common_footer_css_js.jsp"%>
 <script src="${contextPath}/js/jquery.form.js" ></script>
 <script src="${contextPath}/js/jquery.alerts.js" ></script>
@@ -235,7 +279,33 @@
 	    		}
 	    	}
 	    }
-</script>
+
+     $(function () {
+         $(".mr30").click(function () {
+             $('.pop').hide();
+             $("#popAccId").val("");
+         });
+
+         $("#export").click(function () {
+             var accId = $("#popAccId").val();
+             var url = "${contextPath}/account/export/" + accId;
+
+             $("#uploadForm").attr("action", url);
+             $("#uploadForm").submit();
+
+             $('.pop').hide();
+         })
+
+     });
+
+
+
+     function expBiz(accId){
+         $("#popAccId").val(accId);
+         $('.pop').show();
+     }
+
+ </script>
 
 <%@include file="../../../view/include/foot.jsp"%>
 </body>

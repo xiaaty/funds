@@ -34,10 +34,13 @@ public class FssPosBackEntity implements Serializable {
     private String mobileNo;        //手机号
 
     @Column(name = "bank_no")
-    private String bankNo;            // 身份证号',
+    private String bankNo;            // 银行卡号',
 
     @Column(name = "credt_no")
     private String credtNo;            // 身份证号',
+
+    @Column(name = "contract_no")
+    private String contractNo;            //回调编号，在富友是唯一的,
 
     @Column(name = "contract_st")
     private String contractSt;            //协议状态；0未生效（注：签约失败）；1已生效（注：签约成功）；2 待验证（注：等待确认）',
@@ -62,6 +65,9 @@ public class FssPosBackEntity implements Serializable {
 
     @Column(name = "state")
     private String state;   //是否已使用；98010001，是；98010002：否
+
+    @Column(name = "re_count")
+    private  int reCount;
 
     public Long getId() {
         return id;
@@ -165,5 +171,21 @@ public class FssPosBackEntity implements Serializable {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getContractNo() {
+        return contractNo;
+    }
+
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+
+    public int getReCount() {
+        return reCount;
+    }
+
+    public void setReCount(int reCount) {
+        this.reCount = reCount;
     }
 }

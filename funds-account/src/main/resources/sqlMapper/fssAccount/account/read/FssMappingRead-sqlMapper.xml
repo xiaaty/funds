@@ -138,4 +138,20 @@
 		FROM t_gq_fss_mapping t
 		WHERE t.mapping_type=#{mappingType} and t.is_valid=0
 	</select>
+	<select id="selectByTradeType" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.account.entity.FssMappingEntity">
+		SELECT
+		t.`id` id,
+		t.`cust_id` custId,
+		t.`mapping_type` mappingType,
+		t.`trade_type` tradeType,
+		t.`create_time` createTime,
+		t.`creater` creater,
+		t.`modify_time` modifyTime,
+		t.`updater` updater,
+		t.`is_valid` isValid,
+		t.`sort` sort,
+		t.`remark` remark
+		FROM t_gq_fss_mapping t
+		WHERE t.trade_type=#{tradeType}
+	</select>
 </mapper>

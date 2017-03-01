@@ -1,5 +1,6 @@
 package com.gqhmt.fss.architect.trade.bean;
 
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 public class FssTradeApplyBean implements java.io.Serializable {
@@ -34,6 +35,11 @@ public class FssTradeApplyBean implements java.io.Serializable {
 	    private String custMobile;        //客户手机
 	    private String certNo;            //证件号码
 		private String settleType;//提现时效
+
+		private String contractAmt;    //合同保证金， loan表的 contractAmt
+		private String riskSeserveFund;   //风险备用金  feelist表 fee_type=21992105
+		private String paymentDeposit;	  //准时还款保证金  feelist表 fee_type=10990006
+		private String consultingServices;   //咨询服务费  feelist表 fee_type=10990003
 		public Long getId() {
 			return id;
 		}
@@ -209,5 +215,37 @@ public class FssTradeApplyBean implements java.io.Serializable {
 
 	public void setAuditAmount(BigDecimal auditAmount) {
 		this.auditAmount = auditAmount;
+	}
+
+	public String getContractAmt() {
+		return contractAmt;
+	}
+
+	public void setContractAmt(String contractAmt) {
+		this.contractAmt = contractAmt;
+	}
+
+	public String getRiskSeserveFund() {
+		return riskSeserveFund;
+	}
+
+	public void setRiskSeserveFund(String riskSeserveFund) {
+		this.riskSeserveFund = riskSeserveFund;
+	}
+
+	public String getPaymentDeposit() {
+		return paymentDeposit;
+	}
+
+	public void setPaymentDeposit(String paymentDeposit) {
+		this.paymentDeposit = paymentDeposit;
+	}
+
+	public String getConsultingServices() {
+		return consultingServices;
+	}
+
+	public void setConsultingServices(String consultingServices) {
+		this.consultingServices = consultingServices;
 	}
 }

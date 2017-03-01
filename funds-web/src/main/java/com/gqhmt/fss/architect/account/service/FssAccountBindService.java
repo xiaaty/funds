@@ -74,15 +74,14 @@ public class FssAccountBindService {
      * @return
      * @throws FssException                                busi_Id,Integer.valueOf(busi_type.toString()),tradeType,seq_no,null,busiNo
      */
-    public FssAccountBindEntity createFssAccountMapping(Long busi_id,Integer busi_type,String tradeType,String seqNo,String contractNo,String custName,String mobile) throws FssException{
+    public FssAccountBindEntity createFssAccountMapping(Long busi_id,Integer busi_type,String tradeType,String seqNo,String contractNo,String custName,String mobile) {
         FssAccountBindEntity entity = this.getBindAccountByParam(busi_id,busi_type);
         if( entity != null){
             return entity;
         }
-
         FssAccountBindEntity mappingEntity=null;
         try {
-            mappingEntity= GenerateBeanUtil.GenerateClassInstance(FssAccountBindEntity.class);;
+            mappingEntity= new FssAccountBindEntity();
             mappingEntity.setBusiId(busi_id);
             mappingEntity.setBusiType(busi_type);
             mappingEntity.setStatus("0");
@@ -96,7 +95,7 @@ public class FssAccountBindService {
             fssAccountBindWriteMapper.insertUseGeneratedKeys(mappingEntity);
         }catch (Exception e){
             LogUtil.debug(this.getClass(),mappingEntity+":"+mappingEntity.getId());
-            throw new FssException("91009804");
+            LogUtil.error(this.getClass(),"91009804");
         }
         return mappingEntity;
     }
@@ -116,9 +115,9 @@ public class FssAccountBindService {
      * 修改客户编号与统一支付账号绑定
      * @throws FssException
      */
-   public void updateBindAccount(Long id,String status,String accNo) throws FssException {
+   public void updateBindAccount(Long id,String status,String accNo)  {
        FssAccountBindEntity fssAccountBindEntity = fssAccountBindReadMapper.selectByPrimaryKey(id);
-       com.gqhmt.core.util.LogUtil.info(this.getClass(),"开户成功更新："+fssAccountBindEntity.getBusiId()+ fssAccountBindEntity.getSeqNo()+"："+fssAccountBindEntity.getAccNo());
+       LogUtil.info(this.getClass(),"开户成功更新："+fssAccountBindEntity.getBusiId()+ fssAccountBindEntity.getSeqNo()+"："+fssAccountBindEntity.getAccNo());
        try {
             fssAccountBindEntity.setAccNo(accNo);
             fssAccountBindEntity.setStatus(status);
@@ -126,20 +125,21 @@ public class FssAccountBindService {
             fssAccountBindEntity.setOpenAccTime(new Date());
             fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
         }catch (Exception e){
-            throw new FssException("91009804");
+           LogUtil.error(this.getClass(),"91009804");
+           return;
         }
     }
 
 
-    public void updateBindAccountSeqNo(Long id,String seqNo) throws FssException {
+    public void updateBindAccountSeqNo(Long id,String seqNo) {
         FssAccountBindEntity fssAccountBindEntity = fssAccountBindReadMapper.selectByPrimaryKey(id);
-        com.gqhmt.core.util.LogUtil.info(this.getClass(),"开户成功更新："+fssAccountBindEntity.getBusiId()+ fssAccountBindEntity.getSeqNo()+"："+fssAccountBindEntity.getAccNo());
+        LogUtil.info(this.getClass(),"开户成功更新："+fssAccountBindEntity.getBusiId()+ fssAccountBindEntity.getSeqNo()+"："+fssAccountBindEntity.getAccNo());
         try {
             fssAccountBindEntity.setSeqNo(seqNo);
             fssAccountBindEntity.setModifyTime(new Date());
             fssAccountBindWriteMapper.updateByPrimaryKey(fssAccountBindEntity);
         }catch (Exception e){
-            throw new FssException("91009804");
+            LogUtil.error(this.getClass(),"91009804");
         }
     }
 
@@ -148,9 +148,12 @@ public class FssAccountBindService {
      * @param busiId
      * @param busiType
      */
-    public FssAccountBindEntity checkBindAccount(Long busiId,Integer busiType) throws FssException {
+    public FssAccountBindEntity checkBindAccount(Long busiId,Integer busiType)  {
         FssAccountBindEntity bindEntity = this.getBindAccountByParam(busiId, busiType);
-        if (bindEntity == null) throw new FssException("90004034");//账户未绑定
+        if (bindEntity == null){
+            LogUtil.error(this.getClass(),"90004034");
+            return null;
+        }
         return bindEntity;
     }
 

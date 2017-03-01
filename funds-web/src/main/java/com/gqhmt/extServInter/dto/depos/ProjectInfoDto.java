@@ -36,7 +36,7 @@ public class ProjectInfoDto extends SuperDto{
 
     private Long loanAmt;        //借款金额
 
-    private Long expectedReturn;        //预期收益
+    private String expectedReturn;        //预期收益
 
     private String productName;            //产品名称
 
@@ -141,11 +141,11 @@ public class ProjectInfoDto extends SuperDto{
         this.loanAmt = loanAmt;
     }
 
-    public Long getExpectedReturn() {
+    public String getExpectedReturn() {
         return expectedReturn;
     }
 
-    public void setExpectedReturn(Long expectedReturn) {
+    public void setExpectedReturn(String expectedReturn) {
         this.expectedReturn = expectedReturn;
     }
 

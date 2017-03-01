@@ -3,6 +3,7 @@ package com.gqhmt.fss.architect.card.service;/**
  */
 
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.card.entiry.FssPosBackEntity;
 import com.gqhmt.fss.architect.card.mapper.read.FssPosBackReadMapper;
 import com.gqhmt.fss.architect.card.mapper.write.FssPosBackWriteMapper;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -88,7 +90,30 @@ public class FssPosBackService {
 
 		return fssPosBackReadMapper.selectPosBacks(startDate);
 	}
-
+	public List<FssPosBackEntity> findPosBackAll()throws FssException{
+		List<FssPosBackEntity> list= this.selectPosBacks();
+		if(list==null && list.size()==0){
+			list=new ArrayList<FssPosBackEntity>();
+		}
+		list.addAll(this.findPosBackByTime(1, 10));
+		list.addAll(this.findPosBackByTime(2, 30));
+		list.addAll(this.findPosBackByTime(3, 60));
+		list.addAll(this.findPosBackByTime(4, 120));
+		list.addAll(this.findPosBackByTime(5, 360));
+		list.addAll(this.findPosBackByTime(6, 1440));
+		list.addAll(this.findPosBackByTime(7, 2880));
+		list.addAll(this.findPosBackByTime(8, 4320));
+		return list;
+	}
+	public List<FssPosBackEntity> findPosBackByTime(int count,int timeType){
+		//获得今天之前3天的日期
+		Calendar calendar=Calendar.getInstance();
+		Date date=new Date();
+		calendar.setTime(date);
+		calendar.add(calendar.DATE,-3);
+		String startDate=DateUtil.dateTostring(calendar.getTime());
+		return fssPosBackReadMapper.findPosBackByTime(count, timeType,startDate);
+	}
 	/**
 	 * jhz
 	 * 核对该客户在3天内是否进行过pos签约
@@ -124,15 +149,28 @@ public class FssPosBackService {
      * @return
      * @throws FssException
      */
-	public FssPosBackEntity createPosBack(String userName,String mobileNo,String bankNo,String credtNo,String contractSt,
+	public FssPosBackEntity createPosBack(String userName,String mobileNo,String bankNo,String credtNo,String contractNo,String contractSt,
 							 String userNameAcntIsVerif,String bankNoAcntIsVerif,
 							 String credtNoAcntIsVerif,String mobileNoAcntIsVerif)throws FssException{
 		FssPosBackEntity entity=new FssPosBackEntity();
 		entity.setUserName(userName);
 		entity.setMobileNo(mobileNo);
 		entity.setBankNo(bankNo);
-		entity.setCredtNo(credtNo);
+		entity.setContractNo(contractNo);
 		entity.setContractSt(contractSt);
+		entity.setCredtNo(credtNo);
+		if(StringUtils.isEmpty(userNameAcntIsVerif)){
+			userNameAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(bankNoAcntIsVerif)){
+			bankNoAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(credtNoAcntIsVerif)){
+			credtNoAcntIsVerif="0";
+		}
+		if(StringUtils.isEmpty(mobileNoAcntIsVerif)){
+			mobileNoAcntIsVerif="0";
+		}
 		entity.setUserNameAcntIsVerif(Integer.valueOf(userNameAcntIsVerif));
 		entity.setBankNoAcntIsVerif(Integer.valueOf(bankNoAcntIsVerif));
 		entity.setCredtNoAcntIsVerif(Integer.valueOf(credtNoAcntIsVerif));
@@ -140,6 +178,7 @@ public class FssPosBackService {
 		entity.setState("98010002");
 		entity.setCreateTime(new Date());
 		entity.setModifyTime(new Date());
+		entity.setReCount(0);
 		return entity;
 	}
 

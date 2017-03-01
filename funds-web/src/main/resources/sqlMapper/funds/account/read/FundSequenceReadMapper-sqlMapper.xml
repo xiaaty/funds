@@ -27,47 +27,97 @@
 			t.trade_type tradeType
 		  FROM  t_gq_fund_sequence t
 	</sql>
-	<select id="selectAccountSequenceList" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.bean.FundAccountSequenceBean">
-		SELECT 
-		b.id id,
-		b.account_no accountNo,
-		a.CUSTOMER_NAME	customerName,
-		b.account_type accountType,
-		b.busi_type busiType,
-		b.cust_id custId,
-		c.actionType actionType,
-		c.amount amount,
-		c.CREATE_TIME creatTime,
-		c.thirdparty_type thirdPartyType
-		FROM `t_gq_customer_info` a ,`t_gq_fund_account` b ,t_gq_fund_sequence c 
-		where a.ID=b.user_id AND c.ACCOUNT_ID=b.id and  b.id=#{id}
-        <if test="customerName != null and customerName != ''">
-        and a.CUSTOMER_NAME like concat('%',#{customerName},'%') 
-        </if>
-        <if test="accountType != null and accountType != ''">
-        and b.account_type=#{accountType}
-        </if>
-        <if test="busiType != null and busiType != ''">
-        and b.busi_type=#{busiType}
-        </if>
-        <if test="actionType != null and actionType != ''">
-        and c.actionType=#{actionType}
-        </if>
-		<choose>
-             <when test="startDate == null or startDate == '' and endDate==null or endDate==''">
-               AND 1=1
-              </when>
-                <when test="startDate != null and startDate != '' and endDate==null or endDate=='' ">
-                AND c.create_time BETWEEN #{startDate} AND SYSDATE()
-              </when>
-              <when test="startDate != null and startDate != '' and endDate!=null and endDate!=''">
-               AND c.create_time BETWEEN #{startDate} AND #{endDate}
-              </when>
-              <when test="startDate == null or startDate == '' and endDate!=null and endDate!=''">
-               AND c.create_time &lt; #{endDate}
-              </when>
-         </choose>
+	<select id="selectAccountSequenceList" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
+		 SELECT
+		  t.`id` id,
+		  t.`actionType` actionType,
+		  t.`ACCOUNT_ID` accountId,
+		  t.`fund_type` fundType,
+		  t.`amount` amount,
+		  t.`currency` currency,
+		  t.`CREATE_TIME` createTime,
+		  t.`MODIFY_TIME` modifyTime,
+		  t.`sumary` sumary,
+		  t.`order_no` orderNo,
+		  t.`thirdparty_type` thirdPartyType,
+		  t.`O_ACCOUNT_ID` oAccountId,
+		  t.`token` token,
+		  t.`s_order_no` sOrderNo,
+		  t.`cust_id` custId,
+		  t.`lend_no` lendNo,
+		  t.`to_cust_id` toCustId,
+		  t.`to_lend_no` toLendNo,
+		  t.`loan_cust_id` loanCustId,
+		  t.`loan_no` loanNo,
+		  t.`new_fund_type` newFundType,
+		  t.`trade_type` tradeType
+		FROM t_gq_fund_sequence t
+		WHERE t.`cust_id` = #{custId}
+		OR t.`to_cust_id`= #{custId}
 	</select>
+
+	<!-- 根据条件查询交易流水 -->
+	<select id="querySeqList" parameterType="java.util.Map" resultType="com.gqhmt.funds.architect.account.entity.FundSequenceEntity">
+		SELECT
+		t.`id` id,
+		t.`actionType` actionType,
+		t.`ACCOUNT_ID` accountId,
+		t.`fund_type` fundType,
+		t.`amount` amount,
+		t.`currency` currency,
+		t.`CREATE_TIME` createTime,
+		t.`MODIFY_TIME` modifyTime,
+		t.`sumary` sumary,
+		t.`order_no` orderNo,
+		t.`thirdparty_type` thirdPartyType,
+		t.`O_ACCOUNT_ID` oAccountId,
+		t.`token` token,
+		t.`s_order_no` sOrderNo,
+		t.`cust_id` custId,
+		t.`lend_no` lendNo,
+		t.`to_cust_id` toCustId,
+		t.`to_lend_no` toLendNo,
+		t.`loan_cust_id` loanCustId,
+		t.`loan_no` loanNo,
+		t.`new_fund_type` newFundType,
+		t.`trade_type` tradeType
+		FROM
+		(SELECT
+		id,
+		actionType,
+		ACCOUNT_ID,
+		fund_type,
+		amount,
+		currency,
+		CREATE_TIME,
+		MODIFY_TIME,
+		sumary,
+		order_no,
+		thirdparty_type,
+		O_ACCOUNT_ID,
+		token,
+		s_order_no,
+		cust_id,
+		lend_no,
+		to_cust_id,
+		to_lend_no,
+		loan_cust_id,
+		loan_no,
+		new_fund_type,
+		trade_type
+		FROM `t_gq_fund_sequence` where cust_id=#{custId} OR to_cust_id=#{custId}) as t
+		WHERE 1=1
+		<if test="actionType!=null and actionType!=''">
+			AND t.`actionType`=#{actionType}
+		</if>
+		<if test="startTime != null and startTime != '' ">
+			AND date_format(t.CREATE_TIME,'%Y%m%d') &gt;= #{startTime}
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			AND date_format(t.CREATE_TIME,'%Y%m%d') &lt;= #{endTime}
+		</if>
+	</select>
+
 	<!-- 查询账户资金流水 -->
 	<select id="getFundSequence" parameterType="java.util.Map" resultType="com.gqhmt.fss.architect.trade.bean.FundFlowBean">
 		SELECT 
@@ -185,6 +235,14 @@
 		WHERE t.ACCOUNT_ID = #{accountId}
 		AND (t.fund_type = 1003 OR t.fund_type = 2003 OR t.fund_type = 1012)
 		AND DATE_FORMAT(t.create_time, '%Y%m') = DATE_FORMAT(CURRENT_TIMESTAMP(), '%Y%m')
+	 </select>
+	<!--查询提现次数-->
+	 <select id="queryWithHoldCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(id)
+		FROM t_gq_fund_sequence t
+		WHERE t.ACCOUNT_ID = #{accountId}
+		AND (t.fund_type = 1001 OR t.fund_type = 1002 OR t.fund_type = 1014)
 	 </select>
 
 </mapper>
