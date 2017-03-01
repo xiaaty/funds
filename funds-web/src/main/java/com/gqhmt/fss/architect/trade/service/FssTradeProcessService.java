@@ -779,6 +779,7 @@ public class FssTradeProcessService {
         if("10180002".equals(entity.getWithHoldType())){//中间人代扣
             List<TradeProcessEntity> chilList=this.findByParentIdAndActionType("1403",String.valueOf(entity.getId()));
             TradeProcessEntity transfer=chilList.get(0);
+            repaymentChild.setMid_cust_id(transfer.getFromCustNo());
             if(StringUtils.equals("10170020",transfer.getProcessState())){//转账成功
                 repaymentResponse.setTransfer_resp_code("0000");
                 repaymentResponse.setTransfer_resp_msg("中间人转账成功");
@@ -791,10 +792,9 @@ public class FssTradeProcessService {
         repaymentChild.setAmt(entity.getAmt());
         repaymentChild.setReal_repay_amt(entity.getRealTradeAmount());
         repaymentChild.setAccounting_no(repayment.getOrderNo());
-        repaymentChild.setMid_cust_id(entity.getFromCustNo());
         repaymentChild.setWithHold_type(entity.getWithHoldType());
         repaymentChild.setContract_id(null);
-        repaymentChild.setContract_no(entity.getLendContractNo());
+        repaymentChild.setContract_no(entity.getLoanContractNo());
         repaymentChild.setRemark(entity.getMemo());
         repaymentChild.setComplete_time(DateUtil.dateToString(entity.getModifyTime()));
         repaymentChild.setSerial_number(repayment.getSerialNumber());
