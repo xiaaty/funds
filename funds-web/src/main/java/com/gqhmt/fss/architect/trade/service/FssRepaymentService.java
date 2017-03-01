@@ -183,8 +183,8 @@ public class FssRepaymentService {
 	 public Response createRefundDraw(RepaymentDto repaymentDto) throws FssException {
 		Response response=new Response();
     	try {
-    		//创建主表信息
-			FssRepaymentParentEntity repaymentParent = this.createRepaymentParentEntity(repaymentDto);
+    			//创建主表信息
+				this.createRepaymentParentEntity(repaymentDto);
 				response.setMchn(repaymentDto.getMchn());
 				response.setSeq_no(repaymentDto.getSeq_no());
 				response.setTrade_type(repaymentDto.getTrade_type());
@@ -266,6 +266,7 @@ public class FssRepaymentService {
     public RepaymentResponse rePaymentCallBack(String seqNo,String mchn) throws FssException{
     	RepaymentResponse repaymentResponse=new RepaymentResponse();
     	FssRepaymentParentEntity queryByMchnAndSeqNo = this.queryByMchnAndSeqNo(mchn, seqNo);
+		if(queryByMchnAndSeqNo==null) throw  new FssException("9999");
     	List<FssRepaymentEntity> repaymentlist=this.searRepaymentByparam(seqNo,mchn);
     	if(repaymentlist==null){
     		throw new FssException("还款划扣失败");
