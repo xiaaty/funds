@@ -164,9 +164,9 @@ public class FundSequenceService {
      * @throws FssException
      */
       public void refund(FundAccountEntity entity,int actionType,int accountType,BigDecimal amount,Long oAccountId,FundOrderEntity orderEntity,String newFundsType,String tradeType,String lendNo,Long toCustId, String toLendNo,Long loanCustId,String loanNo) throws FssException{
-        if(entity.getBusiType() == 99){
-            throw new FssException("出账账户错误");
-        }
+//        if(entity.getBusiType() == 99){
+//            throw new FssException("出账账户错误");
+//        }
         //校验账户信息
         if(entity == null || entity.getId() == null){
             throw new FundAccountNullException();

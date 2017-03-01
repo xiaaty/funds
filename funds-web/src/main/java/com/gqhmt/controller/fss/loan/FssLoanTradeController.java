@@ -3,6 +3,7 @@ package com.gqhmt.controller.fss.loan;
 import com.beust.jcommander.internal.Maps;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
+import com.gqhmt.core.util.Application;
 import com.gqhmt.core.util.GlobalConstants;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
@@ -28,6 +29,7 @@ import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.funds.architect.order.entity.FundOrderEntity;
 import com.gqhmt.pay.service.cost.ICost;
 import com.gqhmt.pay.service.trade.IFundsTrade;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -594,8 +596,8 @@ public class FssLoanTradeController {
 				}
 				fssLoanEntity.setSecondAmt(secondtAmt);
 				fssLoanEntity.setStatus("10050020");
-				fssLoanService.update(fssLoanEntity);
 				fssTradeApplyService.insertLoanTradeApply(fssLoanEntity, type);
+				fssLoanService.update(fssLoanEntity);
 				map.put("code", "0000");
 				map.put("msg", "成功");
 			}else{
@@ -604,7 +606,7 @@ public class FssLoanTradeController {
 			}
 		}catch (Exception e){
 			map.put("code", "0001");
-			map.put("msg", e.getMessage());
+			map.put("msg", Application.getInstance().getDictName(e.getMessage()));
 			LogUtil.error(this.getClass(), e.getMessage());
 		}
 
@@ -631,7 +633,7 @@ public class FssLoanTradeController {
 			//首次提现跳过之后进行回盘
 			fssBackplateService.createFssBackplateEntity(fssLoanEntity.getSeqNo(), fssLoanEntity.getMchnChild(), fssLoanEntity.getTradeType());
 		//收费代扣跳过
-		}else if("10050017".equals(fssLoanEntity.getStatus())){
+		}else if("10050017".equals(fssLoanEntity.getStatus()) || "10050025".equals(fssLoanEntity.getStatus())){
 			fssLoanEntity.setStatus("10050019");
 			fssLoanService.update(fssLoanEntity);
 		//跳过收费
@@ -669,7 +671,7 @@ public class FssLoanTradeController {
 		} else {
 
 			for (FssFeeList fssFeeList : fssFeeLists) {
-				if("".equals(fssFeeList.getTradeStatus())||fssFeeList.getTradeStatus()==null){
+				if(StringUtils.isEmpty(fssFeeList.getTradeStatus()) || StringUtils.equals("10050018",fssFeeList.getTradeStatus())){
 					if(fssFeeList.getFeeAmt().compareTo(BigDecimal.ZERO)>0&&!"10990004".equals(fssFeeList.getFeeType())){
 						amount=amount.add(fssFeeList.getFeeAmt());
 						// 修改费用状态	收取成功
