@@ -1,0 +1,82 @@
+<Configuration>
+    <Zookeeper>
+        <useful>true</useful>
+        <url></url>
+    </Zookeeper>
+    <AppId>
+        <name>fss</name>
+    </AppId>
+
+    <!-- COMMON CONFIG -->
+    <Common>
+        <LoadSequence>
+            Logger,
+            MsgSendBuffer,
+            MsgReceiveBuffer,
+            MQServers.MQServer.MsgReceive,
+            MQServers.MQServer.MsgSend,
+            FundsServerHandlerPool
+        </LoadSequence>
+    </Common>
+
+    <!-- 日志 -->
+    <Logger>
+        <ClassName>com.gqhmt.tyzf.common.frame.util.log.LogUtil</ClassName>
+        <SysLogger>SysLog</SysLogger>
+    </Logger>
+
+    <BASESpring>
+        <ClassName>com.gqhmt.tyzf.common.frame.spring.BaseSpring</ClassName>
+        <Switch>ON</Switch>
+    </BASESpring>
+
+    <!-- daemonLogger -->
+    <Heart>
+        <LogInterval>600</LogInterval>
+        <LogContent>Daemon is running normally.</LogContent>
+    </Heart>
+
+    <!-- MQ服务连接配置 -->
+    <MQServers>
+        <MQUrl></MQUrl>
+        <MQServer>
+            <Name>MQServer</Name>
+            <MsgReceive>
+                <ClassName>com.gqhmt.tyzf.common.frame.mqserver.MQMsgReceive</ClassName>
+                <receiveQueueName>FUND_ASYN_NOTIC</receiveQueueName>
+                <ConnectMQTryCount>2</ConnectMQTryCount>
+                <ConnectTryInterval>5</ConnectTryInterval>
+                <Timeout>60</Timeout>
+                <ReceiveBuffer>MsgReceiveBuffer</ReceiveBuffer>
+            </MsgReceive>
+            <MsgSend>
+                <ClassName>com.gqhmt.tyzf.common.frame.mqserver.MQMsgSend</ClassName>
+                <sendQueueName>UP_TRADE_ROUTE</sendQueueName>
+                <ConnectMQTryCount>2</ConnectMQTryCount>
+                <ConnectTryInterval>5</ConnectTryInterval>
+                <Timeout>60</Timeout>
+                <SendBuffer>MsgSendBuffer</SendBuffer>
+            </MsgSend>
+        </MQServer>
+    </MQServers>
+
+
+    <!-- 消息接收和发送配置 -->
+    <MsgReceiveBuffer>
+        <ClassName>com.gqhmt.tyzf.common.frame.buffer.ESBMsgBuffer</ClassName>
+        <BufferSize>200</BufferSize>
+    </MsgReceiveBuffer>
+    <MsgSendBuffer>
+        <ClassName>com.gqhmt.tyzf.common.frame.buffer.ESBMsgBuffer</ClassName>
+        <BufferSize>200</BufferSize>
+    </MsgSendBuffer>
+
+    <!--&lt;!&ndash;业务处理线程配置&ndash;&gt;-->
+    <FundsServerHandlerPool>
+        <ClassName>com.gqhmt.funds.tyzf.handle.FundsServerHandlerPool</ClassName>
+        <HandlerClassName>com.gqhmt.funds.tyzf.handle.FundsServerHandler</HandlerClassName>
+        <HandlerNum>50</HandlerNum>
+        <StopWaitTime>20</StopWaitTime>
+    </FundsServerHandlerPool>
+
+</Configuration>

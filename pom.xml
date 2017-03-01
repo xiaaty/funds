@@ -30,6 +30,8 @@
 		<module>funds-web</module>
         <module>funds-account</module>
         <module>funds-common</module>
+        <module>funds-test</module>
+		<module>common</module>
 	</modules>
 
 	<properties>
@@ -500,16 +502,16 @@
 			<classifier>jdk15</classifier>
 		</dependency>
 
-		<dependency>
-			<groupId>com.gqhmt</groupId>
-			<artifactId>gq-tyzf-common-frame</artifactId>
-			<version>0.0.1</version>
-			<!--<exclusions>-->
-				<!--<exclusion>-->
-					<!--<groupId>ch.qos.logback</groupId>-->
-					<!--<artifactId>logback-classic</artifactId>-->
-				<!--</exclusion>-->
-			<!--</exclusions>-->
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.gqhmt</groupId>-->
+			<!--<artifactId>gq-tyzf-common-frame</artifactId>-->
+			<!--<version>0.0.1</version>-->
+			<!--&lt;!&ndash;<exclusions>&ndash;&gt;-->
+				<!--&lt;!&ndash;<exclusion>&ndash;&gt;-->
+					<!--&lt;!&ndash;<groupId>ch.qos.logback</groupId>&ndash;&gt;-->
+					<!--&lt;!&ndash;<artifactId>logback-classic</artifactId>&ndash;&gt;-->
+				<!--&lt;!&ndash;</exclusion>&ndash;&gt;-->
+			<!--&lt;!&ndash;</exclusions>&ndash;&gt;-->
+		<!--</dependency>-->
 	</dependencies>
 </project>
