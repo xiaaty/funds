@@ -183,8 +183,8 @@ public class FssRepaymentService {
 	 public Response createRefundDraw(RepaymentDto repaymentDto) throws FssException {
 		Response response=new Response();
     	try {
-    		//创建主表信息
-			FssRepaymentParentEntity repaymentParent = this.createRepaymentParentEntity(repaymentDto);
+    			//创建主表信息
+				this.createRepaymentParentEntity(repaymentDto);
 				response.setMchn(repaymentDto.getMchn());
 				response.setSeq_no(repaymentDto.getSeq_no());
 				response.setTrade_type(repaymentDto.getTrade_type());

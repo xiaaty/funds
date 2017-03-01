@@ -37,7 +37,7 @@ public class FssPosBackJob extends SupperJob {
 
 		startLog("pos签约回调JOB跑批");
 //        获得今天之前3天所有pos签约回调
-        List<FssPosBackEntity> lists=fssPosBackService.selectPosBacks();
+        List<FssPosBackEntity> lists=fssPosBackService.findPosBackAll();
 
         if(CollectionUtils.isEmpty(lists)){
             return;
@@ -47,6 +47,8 @@ public class FssPosBackJob extends SupperJob {
             for (FssPosBackEntity posBack:lists) {
                 //修改客户表签约状态
                 customerInfoService.updateCustomerState(posBack,posBack.getMobileNo(),posBack.getContractSt(),posBack.getBankNo());
+                posBack.setReCount(posBack.getReCount()+1);
+                fssPosBackService.update(posBack);
             }
         }catch (Exception e){
             LogUtil.error(this.getClass(),e);

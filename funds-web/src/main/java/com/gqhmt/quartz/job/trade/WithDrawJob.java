@@ -53,8 +53,6 @@ public class WithDrawJob extends SupperJob{
     @Resource
     private IFundsTrade fundsTradeImpl;
 
-    @Resource
-    private FundWithrawChargeService fundWithrawChargeService;
     private static boolean isRunning = false;
     @Scheduled(cron="*/3 * * * * * ")
     public void execute() throws FssException {
@@ -90,26 +88,26 @@ public class WithDrawJob extends SupperJob{
     //提现
     public FundOrderEntity withdraw(TradeProcessEntity entity) throws FssException {
         //查询提现子交易
-        List<TradeProcessEntity> withList=tradeProcessService.findByParentIdAndActionType("1104",String.valueOf(entity.getId()));
+        List<TradeProcessEntity> withList=tradeProcessService.findByParentIdAndActionType("1402",String.valueOf(entity.getId()));
         if(CollectionUtils.isEmpty(withList)) return null;
         TradeProcessEntity withdraw=withList.get(0);
         //查询提现出账账户
-        FundAccountEntity fromEntity=fundAccountService.select(entity.getFromAccId());
+        FundAccountEntity fromEntity=fundAccountService.getFundAccount(Long.valueOf(withdraw.getFromCustNo()),GlobalConstants.ACCOUNT_TYPE_FREEZE);
         //得到线上账户
         FundAccountEntity account = fundsTradeImpl.getFundAccount(Integer.parseInt(entity.getFromCustNo()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
         FundOrderEntity fundOrderEntity=null;
         try {
             //调用富友提现接口
-            fundOrderEntity = paySuperByFuiou.withdraw(fromEntity, withdraw.getAmt(), BigDecimal.ZERO, GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", entity.getTradeType(), null, null, entity.getOrderNo());
+            fundOrderEntity = paySuperByFuiou.withdraw(fromEntity, withdraw.getAmt(), BigDecimal.ZERO, GlobalConstants.ORDER_AGENT_WITHDRAW, 0l, 0, "1104", entity.getTradeType(), null, null, withdraw.getOrderNo());
             //创建交易流水
             tradeRecordService.withdrawByFroze(account, fundOrderEntity.getOrderAmount(), fundOrderEntity, 2003, entity.getSeqNo(), entity.getTradeType());
             //提现成功修改提现子交易状态
             withdraw.setRespCode(fundOrderEntity.getRetCode());
             withdraw.setRespMsg(fundOrderEntity.getRetMessage());
-            withdraw.setProcessState("10050030");//处理完成
+            withdraw.setProcessState("10170030");//处理完成
             withdraw.setStatus("10030002");//交易成功
             //修改主交易状态
-            entity.setProcessState("10050030");//提现成功
+            entity.setProcessState("10170030");//提现成功
             entity.setStatus("10030002");//交易成功
         }catch (Exception e){
             //提现失败修改提现子交易状态
@@ -117,11 +115,11 @@ public class WithDrawJob extends SupperJob{
                 withdraw.setRespCode(fundOrderEntity.getRetCode());
                 withdraw.setRespMsg(fundOrderEntity.getRetMessage());
             }
-            withdraw.setProcessState("10050031");//处理完成
+            withdraw.setProcessState("10170031");//提现失败
             withdraw.setStatus("10030003");//交易失败
             //修改主交易状态
 
-            entity.setProcessState("10050031");//提现失败
+            entity.setProcessState("10170031");//提现失败
             entity.setStatus("10030003");//交易失败
         }
         tradeProcessService.updateTradeProcessEntity(withdraw);

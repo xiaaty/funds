@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>线上提现--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
+    <title>交易管理--借款人还款代扣--资金清结算系统--冠群驰骋投资管理(北京)有限公司</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%@include file= "../../../../view/include/common_css_js.jsp"%>
@@ -42,12 +42,51 @@
         <!-- breadcrumb -->
         <ol class="breadcrumb">
             <li>交易管理</li>
-            <li>线上提现</li>
+            <li>借款人还款代扣</li>
         </ol>
         <!-- end breadcrumb -->
     </div>
 
     <div id="content">
+        <div class="jarviswidget" id="RepaymentList"  data-widget-deletebutton="false" data-widget-editbutton="false">
+            <header>
+                <h2>快速搜索</h2>
+            </header>
+            <div>
+                <form class="smart-form" action=""  method="post" id="mortgageePayment">
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body no-padding">
+                        <div class="mt10 mb10">
+                            <table class="table lh32">
+                                <col width="100" />
+                                <col width="220" />
+                                <col />
+                                <tbody>
+                                <tr></tr>
+                                 <tr>
+                                    <td class="tr">交易流程：</td>
+                                    <td>
+                                        <label>
+                                            <select id = "status" name = "fundType" style="width:150px;height: 30px;">
+                                                <option value="">所有</option>
+                                                <option  <c:if test="${map.fundType==14010007}"> selected="selected" </c:if> value="14010001">借款人还款代扣</option>
+                                                <option  <c:if test="${map.fundType==14030013}"> selected="selected" </c:if> value="14030013">普通转账</option>
+                                            </select>
+                                        </label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <footer>
+                            <button type="submit" class="btn btn-primary">查&nbsp;&nbsp;&nbsp;询</button>
+                        </footer>
+                    </div>
+                    <!-- end widget content -->
+                </form>
+            </div>
+        </div>
         <section id="widget-grid" class="">
             <div class="row">
                 <!-- NEW WIDGET START -->
@@ -55,7 +94,7 @@
                     <div class="jarviswidget jarviswidget-color-darken" id="borrowerLoan"  data-widget-deletebutton="false" data-widget-editbutton="false">
                         <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>提现详情</h2>
+                            <h2>代扣详情</h2>
                         </header>
                         <!-- widget div-->
                         <div>
@@ -68,30 +107,39 @@
                                 <!-- widget content -->
                                 <div class="widget-body">
                                     <table id="borrow-rep-table12" class="table table-bordered tc mt15"
-                                           style="min-width:2500px;">
+                                           style="min-width:3100px;">
+                                        <col width="200" />
+                                        <col width="200" />
                                         <col width="200" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
                                         <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
+                                        <col width="100" />
                                         <col width="200" />
+                                        <col width="200" />
+                                        <col width="250" />
                                         <col width="150" />
-                                        <col width="100" />
-                                        <col width="100" />
-                                        <col width="200" />
-                                        <col width="100" />
-                                        <col width="100" />
-                                        <col width="250" />
-                                        <col width="250" />
                                         <col width="150" />
                                         <thead>
                                         <tr>
                                             <td>交易流水号</td>
+                                            <td>订单号</td>
+                                            <td>合同号</td>
                                             <td>客户姓名</td>
                                             <td>客户电话</td>
                                             <td>客户账户</td>
                                             <td>交易金额</td>
+                                            <td>实际成功金额</td>
                                             <td>交易类型</td>
+                                            <td>进程类型</td>
                                             <td>入账客户姓名</td>
                                             <td>入账客户电话</td>
                                             <td>入账客户账户</td>
@@ -100,6 +148,7 @@
                                             <td>创建时间</td>
                                             <td>修改时间</td>
                                             <td>备注</td>
+                                            <td>交易备注</td>
                                             <td>操作</td>
                                         </tr>
                                         </thead>
@@ -107,11 +156,15 @@
                                         <c:forEach items="${page.list}" var="t">
                                             <tr>
                                                 <td>${t.seqNo}</td>
+                                                <td>${t.orderNo}</td>
+                                                <td>${t.loanContractNo}</td>
                                                 <td>${t.fromCustName}</td>
                                                 <td>${t.fromCustMobile}</td>
                                                 <td>${t.fromAccId}</td>
                                                 <td><fss:money money="${t.amt}"/></td>
+                                                <td><fss:money money="${t.realTradeAmount}"/></td>
                                                 <td><fss:dictView key="${t.tradeType}" /></td>
+                                                <td><fss:dictView key="${t.fundType}" /></td>
                                                 <td>${t.toCustName}</td>
                                                 <td>${t.toCustMobile}</td>
                                                 <td>${t.toAccId}</td>
@@ -120,10 +173,11 @@
                                                 <td><fss:fmtDate value="${t.createTime}"/></td>
                                                 <td><fss:fmtDate value="${t.modifyTime}"/></td>
                                                 <td>${t.memo}</td>
+                                                <td>${t.respMsg}</td>
                                                 <td>
-                                                    <c:if test="${(t.processState == 10050032 || t.processState == 10170041) && t.status == 10030003}"><a href="${contextPath}/trade/processChild/${t.id}/charge">重新收费</a></c:if>
+                                                    <c:if test="${t.processState == 10170021}"><a href="${contextPath}/trade/repayment/${t.id}/transfer">重新转账</a></c:if>
+                                                    <c:if test="${t.status == '10030002' && t.fundType == '14010007'}"> <a href="${contextPath}/repayment/processChild/${t.id}">查看详细</a></c:if>
 
-                                                    <c:if test="${(t.processState == 10050031 || t.processState == 10170031) && t.status == 10030003}"><a href="${contextPath}/trade/processChild/${t.id}/reWithDraw" >提现退票</a></c:if>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -139,11 +193,11 @@
 
         </section>
     </div>
-<%@include file= "../../../../view/include/common_footer_css_js.jsp"%>
+    <%@include file= "../../../../view/include/common_footer_css_js.jsp"%>
 </div>
 
 
- <script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         pageSetUp();
         DT_page("borrow-rep-table12", true, '${page.JSON}', $("#mortgageePayment"));
@@ -159,42 +213,45 @@
         forceParse: 0
     });
     function verify(){
-    	var a=document.getElementsByName("startTime");
-    	var b=document.getElementsByName("endTime");
-    	if(b[0].value!=null&&b[0].value!=''){
-    		
-    		if(a[0].value>b[0].value){
-    			JAlert("请检查您输入的日期","提示消息");
-    		}else{
-    			$("#mortgageePayment").submit();
-    		}
-    	}else{
-    		var d = new Date();
-    		var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
-    		if(a[0].value>str){
-    			JAlert("请检查您输入的日期","提示消息");
-    		}else{
-    			$("#mortgageePayment").submit();
-    		}
-    	}
-    }
-    function reWithDraw(id){
-        if(confirm("您确认要执行此操作吗？")){
-            $.ajax({
-                url : "${contextPath}/trade/processChild/"+id+"/reWithDraw",
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                dataType: "json",
-                success: function (data) {
-                    if (data.code == '0000') {
-                      jAlert(data.msg, '确认信息');
-                        location.reload();
-                    } else {
-                        jAlert(data.msg, '确认信息');
-                        location.reload();
-                    }
-                }
-            });
+        var a=document.getElementsByName("startTime");
+        var b=document.getElementsByName("endTime");
+        if(b[0].value!=null&&b[0].value!=''){
+
+            if(a[0].value>b[0].value){
+                JAlert("请检查您输入的日期","提示消息");
+            }else{
+                $("#mortgageePayment").submit();
+            }
+        }else{
+            var d = new Date();
+            var str = d.getFullYear()+"-"+((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1)+"-"+(d.getDate()<10?"0":"")+d.getDate();
+            if(a[0].value>str){
+                JAlert("请检查您输入的日期","提示消息");
+            }else{
+                $("#mortgageePayment").submit();
+            }
         }
+    }
+    function recharg(type,id){
+        $.ajax({
+            url : "${contextPath}/loan/trade/"+type+"/charge/"+id,
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                if (data.msg == '0000') {
+                    jAlert("收费成功!", '确认信息');
+                } else if(data.msg == '0001'){
+                    jAlert("该条信息不存在!", '确认信息');
+                    return;
+                }else if(data.msg == '0002'){
+                    jAlert("没有收费信息!", '确认信息');
+                    return;
+                }else if(data.msg == '0003'){
+                    jAlert("请重新收取费用!", '确认信息');
+                    return;
+                }
+            }
+        });
     }
 </script>
 
