@@ -145,7 +145,7 @@ public class Application {
         }
         String value = this.dict.get(key);
         if(value == null || "".equals(value)){
-            value = "未知错误";
+            value = "未知错误["+key+"]";
         }
         return value;
     }
