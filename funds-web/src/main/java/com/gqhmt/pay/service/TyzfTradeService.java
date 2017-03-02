@@ -529,22 +529,22 @@ public class TyzfTradeService {
      * @throws FssException
      */
     public void tender(Long busiId,Integer busiType,BigDecimal amount,BigDecimal boundsAmount,String tradeType,String bidId,String seqNo){
-        this.tyzfTransfer(busiId,busiType,Long.valueOf(bidId),90,amount,tradeType,seqNo,"0");
-        //红包账户
-        if (boundsAmount.compareTo(BigDecimal.ZERO) > 0) {
-            FundAccountEntity fromEntity=null;
-            //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
-            List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType("10010006");
-            if(mappinglist.size()>0){
-                for(FssMappingBean  entity:mappinglist){
-                    if (entity.getAmount().compareTo(boundsAmount)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
-                        fromEntity=fundAccountService.getFundAccountById(entity.getAccountId());
-                        break;
-                    }
-                }
-            }
-            this.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo,"0");
-        }
+//        this.tyzfTransfer(busiId,busiType,Long.valueOf(bidId),90,amount,tradeType,seqNo,"0");
+//        //红包账户
+//        if (boundsAmount.compareTo(BigDecimal.ZERO) > 0) {
+//            FundAccountEntity fromEntity=null;
+//            //获取所有运营商的红包账户，（通过custId关联红包账户表查询）
+//            List<FssMappingBean> mappinglist=fssMappingService.getMappingListByType("10010006");
+//            if(mappinglist.size()>0){
+//                for(FssMappingBean  entity:mappinglist){
+//                    if (entity.getAmount().compareTo(boundsAmount)>=0){//账户余额大于红包金额，则从该账户扣除红包金额
+//                        fromEntity=fundAccountService.getFundAccountById(entity.getAccountId());
+//                        break;
+//                    }
+//                }
+//            }
+//            this.tyzfTransfer(fromEntity.getCustId(),fromEntity.getBusiType(),Long.valueOf(bidId),90,boundsAmount,tradeType,seqNo,"0");
+//        }
     }
 
     /**
