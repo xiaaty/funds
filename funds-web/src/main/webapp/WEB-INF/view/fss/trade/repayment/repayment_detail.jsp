@@ -70,7 +70,7 @@
                                         <label>
                                             <select id = "status" name = "fundType" style="width:150px;height: 30px;">
                                                 <option value="">所有</option>
-                                                <option  <c:if test="${map.fundType==14010007}"> selected="selected" </c:if> value="14010001">借款人还款代扣</option>
+                                                <option  <c:if test="${map.fundType==14010007}"> selected="selected" </c:if> value="14010007">借款人还款代扣</option>
                                                 <option  <c:if test="${map.fundType==14030013}"> selected="selected" </c:if> value="14030013">普通转账</option>
                                             </select>
                                         </label>
