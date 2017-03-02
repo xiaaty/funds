@@ -10,9 +10,6 @@ import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
 import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.TradeProcessReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.TradeProcessWriteMapper;
@@ -519,7 +516,6 @@ public class FssTradeProcessService {
 //                    //代付失败进行资金解冻
 ////                    fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType(),applyEntity.getSeqNo());
 //                }
-                FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(parentProcess.getMchnNo(), parentProcess.getOrderNo());
                 if("11090001".equals(parentProcess.getTradeType())||"11090005".equals(parentProcess.getTradeType())){
                 }else if("11092001".equals(parentProcess.getTradeType())||"11090006".equals(parentProcess.getTradeType())){
                     //借款系统和冠e通抵押权人提现不处理
@@ -783,6 +779,7 @@ public class FssTradeProcessService {
         if("10180002".equals(entity.getWithHoldType())){//中间人代扣
             List<TradeProcessEntity> chilList=this.findByParentIdAndActionType("1403",String.valueOf(entity.getId()));
             TradeProcessEntity transfer=chilList.get(0);
+            repaymentChild.setMid_cust_id(transfer.getFromCustNo());
             if(StringUtils.equals("10170020",transfer.getProcessState())){//转账成功
                 repaymentResponse.setTransfer_resp_code("0000");
                 repaymentResponse.setTransfer_resp_msg("中间人转账成功");
@@ -795,10 +792,9 @@ public class FssTradeProcessService {
         repaymentChild.setAmt(entity.getAmt());
         repaymentChild.setReal_repay_amt(entity.getRealTradeAmount());
         repaymentChild.setAccounting_no(repayment.getOrderNo());
-        repaymentChild.setMid_cust_id(entity.getFromCustNo());
         repaymentChild.setWithHold_type(entity.getWithHoldType());
         repaymentChild.setContract_id(null);
-        repaymentChild.setContract_no(entity.getLendContractNo());
+        repaymentChild.setContract_no(entity.getLoanContractNo());
         repaymentChild.setRemark(entity.getMemo());
         repaymentChild.setComplete_time(DateUtil.dateToString(entity.getModifyTime()));
         repaymentChild.setSerial_number(repayment.getSerialNumber());
