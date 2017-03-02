@@ -143,11 +143,12 @@ public class RepaymentJob extends SupperJob{
                     try {
                         if(StringUtils.equals("10180003",entity.getWithHoldType())){
                             tradeProcessService.updateTradeProcessExecuteState(entity,2,"10170003");
-                        }
-                        if(flag == 0) {
-                            fundsBatchTrade.batchTrade(entity);
-                        }else{
-                            tradeProcessService.updateTradeProcessExecuteState(entity,3,"10170003");//todo 增加失败原因ss
+                        }else {
+                            if (flag == 0) {
+                                fundsBatchTrade.batchTrade(entity);
+                            } else {
+                                tradeProcessService.updateTradeProcessExecuteState(entity, 3, "10170003");//todo 增加失败原因ss
+                            }
                         }
                     } catch (FssException e) {
                         msg = e.getMessage();
