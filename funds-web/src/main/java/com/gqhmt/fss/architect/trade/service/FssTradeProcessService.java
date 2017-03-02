@@ -160,8 +160,8 @@ public class FssTradeProcessService {
             String startTime = map.get("startTime");
             String endTime = map.get("endTime");
             map2.put("type",map.get("type"));
-            if(StringUtils.equals("0",map.get("parentId"))){
-                map2.put("parentId","0");
+            if(StringUtils.isNotEmpty(map.get("parentId"))){
+                map2.put("parentId",map.get("parentId"));
             }else{
                 map2.put("parentId",null);
             }
