@@ -141,14 +141,10 @@ public class RepaymentJob extends SupperJob{
                 for (TradeProcessEntity entity : moList) {
                     long startTime = Calendar.getInstance().getTimeInMillis();
                     try {
-                        if(StringUtils.equals("10180003",entity.getWithHoldType())){
-                            tradeProcessService.updateTradeProcessExecuteState(entity,2,"10170003");
-                        }else {
-                            if (flag == 0) {
-                                fundsBatchTrade.batchTrade(entity);
-                            } else {
-                                tradeProcessService.updateTradeProcessExecuteState(entity, 3, "10170003");//todo 增加失败原因ss
-                            }
+                        if(flag == 0) {
+                            fundsBatchTrade.batchTrade(entity);
+                        }else{
+                            tradeProcessService.updateTradeProcessExecuteState(entity,3,"10170003");//todo 增加失败原因ss
                         }
                     } catch (FssException e) {
                         msg = e.getMessage();

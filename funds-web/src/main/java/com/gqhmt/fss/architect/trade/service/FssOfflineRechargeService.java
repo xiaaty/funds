@@ -4,7 +4,6 @@ import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.CommonUtil;
 import com.gqhmt.core.util.LogUtil;
 import com.gqhmt.extServInter.dto.Response;
-import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.trade.bean.FssOfflineRechargeBean;
 import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.FssOfflineRechargeReadMapper;
@@ -42,8 +41,6 @@ public class FssOfflineRechargeService {
 	private FssOfflineRechargeReadMapper fssOfflineRechargeReadMapper;
 	@Resource
 	private FssOfflineRechargeWriteMapper fssOfflineRechargeWriteMapper;
-	@Resource
-	private FssBackplateService fssBackplateService;
 
 	/**
 	 * 查询线下充值记录
@@ -121,12 +118,15 @@ public class FssOfflineRechargeService {
 		entity.setOrderNo(orderNo);
 		entity.setResultState("10120002");//充值码获取成功，待客户充值
 		try{
-			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+			this.update(entity);
 		}catch (Exception e){
 			throw new FssException("91009804");
 		}
 	}
-
+	public void update(FssOfflineRechargeEntity entity)throws FssException{
+		entity.setModifyTime(new Date());
+		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+	}
 	/**
 	 * 失败修改充值状态
 	 * @param id
@@ -138,7 +138,7 @@ public class FssOfflineRechargeService {
 		entity.setOrderNo(orderNo);
 		entity.setResultState("10120004");//充值码获取失败
 		try{
-			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+			this.update(entity);
 		}catch (Exception e){
 			throw new FssException("91009804");
 		}
@@ -185,7 +185,7 @@ public class FssOfflineRechargeService {
 		if("0000".equals(result)){
 			entity.setResultState("10120003");
 		}
-		fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+		this.update(entity);
 		//创建回盘信息
 		//fssBackplateService.createFssBackplateEntity(entity.getSeqNo(),entity.getMchn(),entity.getTradeType());
 	}
@@ -221,7 +221,7 @@ public class FssOfflineRechargeService {
 		entity.setOrderNo(orderNo);
 		entity.setResultState(resultState);
 		try{
-			fssOfflineRechargeWriteMapper.updateByPrimaryKey(entity);
+			this.update(entity);
 		}catch (Exception e){
 			throw new FssException("91009804");
 		}
