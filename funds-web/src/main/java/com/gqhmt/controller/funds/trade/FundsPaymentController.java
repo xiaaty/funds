@@ -90,7 +90,7 @@ public class FundsPaymentController {
 	public String queryProcessRepaymentDetail(HttpServletRequest request, ModelMap model,@PathVariable Long parentId,@RequestParam Map<String, String> map) throws Exception {
 		map.put("parentId",parentId.toString());
 		// 增加数据展示
-		List<TradeProcessEntity> list=fssTradeProcessService.findByParentId(parentId);
+		List<TradeProcessEntity> list=fssTradeProcessService.listTradeProcess(map);
 		model.addAttribute("page", list);
 		model.put("map", map);
 		return "/fss/trade/repayment/repayment_detail";
