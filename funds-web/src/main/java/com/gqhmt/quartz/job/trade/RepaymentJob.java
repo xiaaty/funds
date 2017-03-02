@@ -141,6 +141,9 @@ public class RepaymentJob extends SupperJob{
                 for (TradeProcessEntity entity : moList) {
                     long startTime = Calendar.getInstance().getTimeInMillis();
                     try {
+                        if(StringUtils.equals("10180003",entity.getWithHoldType())){
+                            tradeProcessService.updateTradeProcessExecuteState(entity,2,"10170003");
+                        }
                         if(flag == 0) {
                             fundsBatchTrade.batchTrade(entity);
                         }else{
