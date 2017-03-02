@@ -619,6 +619,10 @@ public class FssTradeProcessService {
                 FundAccountEntity account = fundsTradeImpl.getFundAccount(Integer.parseInt(entity.getFromCustNo()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
                 //进行资金解冻
                 tradeRecordService.unFrozen(fromEntity,account,entity.getAmt(),1004,null,"提现失败，退回金额"+ entity.getAmt() + "元",BigDecimal.ZERO,entity.getTradeType(),entity.getSeqNo());
+                //提现成功修改提现子交易状态
+                withDraw.setProcessState("10170039");//提现成功
+                withDraw.setStatus("10030003");//交易成功
+                this.updateTradeProcessEntity(withDraw);
                 //修改流程表状态
                 entity.setProcessState("10170039");//处理完成
                 entity.setStatus("10030003");
