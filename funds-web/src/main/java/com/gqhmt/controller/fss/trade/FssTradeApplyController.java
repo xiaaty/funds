@@ -3,26 +3,22 @@ package com.gqhmt.controller.fss.trade;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.core.exception.FssException;
 import com.gqhmt.core.util.*;
+import com.gqhmt.core.util.StringUtils;
 import com.gqhmt.fss.architect.account.entity.FssAccountEntity;
 import com.gqhmt.fss.architect.account.service.FssAccountService;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
 import com.gqhmt.fss.architect.loan.entity.FssLoanEntity;
 import com.gqhmt.fss.architect.loan.service.FssLoanService;
 import com.gqhmt.fss.architect.trade.bean.FssTradeApplyBean;
-import com.gqhmt.fss.architect.trade.entity.FssBondTransferEntity;
-import com.gqhmt.fss.architect.trade.entity.FssOfflineRechargeEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeRecordEntity;
-import com.gqhmt.fss.architect.trade.service.FssBondTransferService;
-import com.gqhmt.fss.architect.trade.service.FssOfflineRechargeService;
-import com.gqhmt.fss.architect.trade.service.FssTradeApplyService;
-import com.gqhmt.fss.architect.trade.service.FssTradeRecordService;
+import com.gqhmt.fss.architect.trade.entity.*;
+import com.gqhmt.fss.architect.trade.service.*;
 import com.gqhmt.funds.architect.account.entity.FundAccountEntity;
 import com.gqhmt.funds.architect.account.service.FundAccountService;
 import com.gqhmt.funds.architect.customer.entity.CustomerInfoEntity;
 import com.gqhmt.funds.architect.customer.service.CustomerInfoService;
 import com.gqhmt.pay.service.trade.impl.FundsTradeImpl;
 import com.gqhmt.util.ExportExcelUtil;
+import org.apache.commons.lang3.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +72,8 @@ public class FssTradeApplyController {
     private FssBondTransferService fssBondTransferService;
 	@Resource
 	private FssLoanService fssLoanService;
+	@Resource
+	private FssTradeProcessService fssTradeProcessService;
 
     /**
 	 * author:柯禹来
@@ -112,6 +110,47 @@ public class FssTradeApplyController {
     	}
     }
 
+	/**
+	 * jhz
+	 * @param request
+	 * @param model
+	 * @param map
+	 * @param tradeApply
+	 * @param type
+	 * @param fundType
+     * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/trade/process/{type}/{fundType}",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String queryWithHoldList(HttpServletRequest request, ModelMap model,@RequestParam Map<String, String> map,FssTradeApplyBean tradeApply, @PathVariable Integer  type,@PathVariable String fundType) throws Exception {
+		if(map.size()==0){//默认交易状态为新增
+			map.put("status","10030001");
+		}
+		map.put("type",type.toString());
+		map.put("fundType", fundType);
+		if("14010007".equals(fundType)){
+			map.put("memo","借款人还款代扣");
+		}
+		List<TradeProcessEntity> list=fssTradeProcessService.listTradeProcess(map);
+		model.addAttribute("page", list);
+		model.put("map", map);
+		return "/fss/trade/withHold/withHold";
+	}
+	/**
+	 * author:jhz
+	 * function:查看金额拆分列表信息
+	 */
+	@RequestMapping(value = "/trade/process/{id}/detail",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String queryTradeDetail(HttpServletRequest request, ModelMap model,@PathVariable Long id) throws Exception {
+		// 增加数据展示
+		TradeProcessEntity entity=fssTradeProcessService.findById(id);
+		List<TradeProcessEntity> list=fssTradeProcessService.childTradeProcess(id);
+		model.addAttribute("process", entity);
+		model.addAttribute("page", list);
+		return "/fss/trade/withHold/withHold_list";
+	}
     /**
 	 * author:柯禹来
 	 * function:查看金额拆分列表信息

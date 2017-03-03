@@ -159,10 +159,12 @@ public class FssTradeProcessService {
         if (map != null) {
             String startTime = map.get("startTime");
             String endTime = map.get("endTime");
-
             map2.put("type",map.get("type"));
-            map2.put("parentId",map.get("parentId"));
-            map2.put("type",map.get("type"));
+            if(StringUtils.isNotEmpty(map.get("parentId"))){
+                map2.put("parentId",map.get("parentId"));
+            }else{
+                map2.put("parentId",null);
+            }
             map2.put("status",map.get("status"));
             map2.put("mobile",map.get("mobile"));
             map2.put("toMobile",map.get("toMobile"));
@@ -171,6 +173,7 @@ public class FssTradeProcessService {
             map2.put("tradeType", map.get("tradeType"));
             map2.put("fundType", map.get("fundType"));
             map2.put("processState", map.get("processState"));
+            map2.put("memo", map.get("memo"));
             map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
             map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
         }
@@ -563,17 +566,14 @@ public class FssTradeProcessService {
                 //执行转账操作
                 this.transfer(transferProcess,garndProcess);
             }
-            //创建或更新回盘表
-            if (fssBackplateEntity!=null){
-                fssBackplateService.updatebackplate(fssBackplateEntity);
-            }else {
-                //创建回盘信息
-                fssBackplateService.createFssBackplateEntity(garndProcess.getOrderNo(), garndProcess.getMchnNo(), garndProcess.getTradeType());
-            }
         }
-
-
-
+        //创建或更新回盘表
+        if (fssBackplateEntity!=null){
+            fssBackplateService.updatebackplate(fssBackplateEntity);
+        }else {
+            //创建回盘信息
+            fssBackplateService.createFssBackplateEntity(garndProcess.getOrderNo(), garndProcess.getMchnNo(), garndProcess.getTradeType());
+        }
     }
     public void update(TradeProcessEntity entity,String status,String processStatus,String respCode,String respMsg)throws FssException{
         entity.setStatus(status);
@@ -619,6 +619,10 @@ public class FssTradeProcessService {
                 FundAccountEntity account = fundsTradeImpl.getFundAccount(Integer.parseInt(entity.getFromCustNo()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
                 //进行资金解冻
                 tradeRecordService.unFrozen(fromEntity,account,entity.getAmt(),1004,null,"提现失败，退回金额"+ entity.getAmt() + "元",BigDecimal.ZERO,entity.getTradeType(),entity.getSeqNo());
+                //提现成功修改提现子交易状态
+                withDraw.setProcessState("10170039");//提现成功
+                withDraw.setStatus("10030003");//交易成功
+                this.updateTradeProcessEntity(withDraw);
                 //修改流程表状态
                 entity.setProcessState("10170039");//处理完成
                 entity.setStatus("10030003");
