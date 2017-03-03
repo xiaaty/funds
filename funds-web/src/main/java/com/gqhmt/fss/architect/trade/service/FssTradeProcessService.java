@@ -10,9 +10,6 @@ import com.gqhmt.extServInter.dto.loan.RepaymentResponse;
 import com.gqhmt.fss.architect.accounting.service.FssCheckAccountingService;
 import com.gqhmt.fss.architect.backplate.entity.FssBackplateEntity;
 import com.gqhmt.fss.architect.backplate.service.FssBackplateService;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
-import com.gqhmt.fss.architect.trade.entity.FssTradeApplyEntity;
 import com.gqhmt.fss.architect.trade.entity.TradeProcessEntity;
 import com.gqhmt.fss.architect.trade.mapper.read.TradeProcessReadMapper;
 import com.gqhmt.fss.architect.trade.mapper.write.TradeProcessWriteMapper;
@@ -162,10 +159,12 @@ public class FssTradeProcessService {
         if (map != null) {
             String startTime = map.get("startTime");
             String endTime = map.get("endTime");
-
             map2.put("type",map.get("type"));
-            map2.put("parentId",map.get("parentId"));
-            map2.put("type",map.get("type"));
+            if(StringUtils.isNotEmpty(map.get("parentId"))){
+                map2.put("parentId",map.get("parentId"));
+            }else{
+                map2.put("parentId",null);
+            }
             map2.put("status",map.get("status"));
             map2.put("mobile",map.get("mobile"));
             map2.put("toMobile",map.get("toMobile"));
@@ -174,6 +173,7 @@ public class FssTradeProcessService {
             map2.put("tradeType", map.get("tradeType"));
             map2.put("fundType", map.get("fundType"));
             map2.put("processState", map.get("processState"));
+            map2.put("memo", map.get("memo"));
             map2.put("startTime", startTime != null ? startTime.replace("-", "") : null);
             map2.put("endTime", endTime != null ? endTime.replace("-", "") : null);
         }
@@ -519,7 +519,6 @@ public class FssTradeProcessService {
 //                    //代付失败进行资金解冻
 ////                    fundsTradeImpl.unFroze(applyEntity.getMchnChild(), applyEntity.getSeqNo(), applyEntity.getBusiType(), String.valueOf(applyEntity.getCustId()), applyEntity.getUserNo(), applyEntity.getTradeAmount().subtract(realTradeAmt), applyEntity.getCustType(),applyEntity.getSeqNo());
 //                }
-                FssBackplateEntity fssBackplateEntity = fssBackplateService.selectByMchnAndseqNo(parentProcess.getMchnNo(), parentProcess.getOrderNo());
                 if("11090001".equals(parentProcess.getTradeType())||"11090005".equals(parentProcess.getTradeType())){
                 }else if("11092001".equals(parentProcess.getTradeType())||"11090006".equals(parentProcess.getTradeType())){
                     //借款系统和冠e通抵押权人提现不处理
@@ -567,17 +566,14 @@ public class FssTradeProcessService {
                 //执行转账操作
                 this.transfer(transferProcess,garndProcess);
             }
-            //创建或更新回盘表
-            if (fssBackplateEntity!=null){
-                fssBackplateService.updatebackplate(fssBackplateEntity);
-            }else {
-                //创建回盘信息
-                fssBackplateService.createFssBackplateEntity(garndProcess.getOrderNo(), garndProcess.getMchnNo(), garndProcess.getTradeType());
-            }
         }
-
-
-
+        //创建或更新回盘表
+        if (fssBackplateEntity!=null){
+            fssBackplateService.updatebackplate(fssBackplateEntity);
+        }else {
+            //创建回盘信息
+            fssBackplateService.createFssBackplateEntity(garndProcess.getOrderNo(), garndProcess.getMchnNo(), garndProcess.getTradeType());
+        }
     }
     public void update(TradeProcessEntity entity,String status,String processStatus,String respCode,String respMsg)throws FssException{
         entity.setStatus(status);
@@ -623,6 +619,10 @@ public class FssTradeProcessService {
                 FundAccountEntity account = fundsTradeImpl.getFundAccount(Integer.parseInt(entity.getFromCustNo()), GlobalConstants.ACCOUNT_TYPE_LEND_ON);
                 //进行资金解冻
                 tradeRecordService.unFrozen(fromEntity,account,entity.getAmt(),1004,null,"提现失败，退回金额"+ entity.getAmt() + "元",BigDecimal.ZERO,entity.getTradeType(),entity.getSeqNo());
+                //提现成功修改提现子交易状态
+                withDraw.setProcessState("10170039");//提现成功
+                withDraw.setStatus("10030003");//交易成功
+                this.updateTradeProcessEntity(withDraw);
                 //修改流程表状态
                 entity.setProcessState("10170039");//处理完成
                 entity.setStatus("10030003");
@@ -783,6 +783,7 @@ public class FssTradeProcessService {
         if("10180002".equals(entity.getWithHoldType())){//中间人代扣
             List<TradeProcessEntity> chilList=this.findByParentIdAndActionType("1403",String.valueOf(entity.getId()));
             TradeProcessEntity transfer=chilList.get(0);
+            repaymentChild.setMid_cust_id(transfer.getFromCustNo());
             if(StringUtils.equals("10170020",transfer.getProcessState())){//转账成功
                 repaymentResponse.setTransfer_resp_code("0000");
                 repaymentResponse.setTransfer_resp_msg("中间人转账成功");
@@ -795,10 +796,9 @@ public class FssTradeProcessService {
         repaymentChild.setAmt(entity.getAmt());
         repaymentChild.setReal_repay_amt(entity.getRealTradeAmount());
         repaymentChild.setAccounting_no(repayment.getOrderNo());
-        repaymentChild.setMid_cust_id(entity.getFromCustNo());
         repaymentChild.setWithHold_type(entity.getWithHoldType());
         repaymentChild.setContract_id(null);
-        repaymentChild.setContract_no(entity.getLendContractNo());
+        repaymentChild.setContract_no(entity.getLoanContractNo());
         repaymentChild.setRemark(entity.getMemo());
         repaymentChild.setComplete_time(DateUtil.dateToString(entity.getModifyTime()));
         repaymentChild.setSerial_number(repayment.getSerialNumber());

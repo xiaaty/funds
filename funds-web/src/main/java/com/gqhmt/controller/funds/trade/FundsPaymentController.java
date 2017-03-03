@@ -1,6 +1,5 @@
 package com.gqhmt.controller.funds.trade;
 
-import com.beust.jcommander.internal.Maps;
 import com.gqhmt.annotations.AutoPage;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentEntity;
 import com.gqhmt.fss.architect.trade.entity.FssRepaymentParentEntity;
@@ -33,27 +32,41 @@ public class FundsPaymentController {
 	@Resource
 	private FssTradeProcessService fssTradeProcessService;
 
-	
-	
 	/**
-//	 * author:柯禹来
-//	 * function:借款代扣主表信息
-//	 */
-//	@RequestMapping(value = "/repayment/repaymentlist",method = {RequestMethod.GET,RequestMethod.POST})
-//	@AutoPage
-//	public String queryRepaymentList(HttpServletRequest request,ModelMap model,FssRepaymentParentEntity repayment) throws Exception {
-//		List<FssRepaymentParentEntity> repaymentlist = fssRepaymentService.queryRepaymentParents(repayment);
-//		model.addAttribute("page", repaymentlist);
-//		model.addAttribute("repayment", repayment);
-//		return "fss/trade/repaymentlist";
-//	}
+	 * author:柯禹来
+	 * function:借款代扣主表信息
+	 */
+	@RequestMapping(value = "/repayment/repaymentlist",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String queryRepaymentList(HttpServletRequest request,ModelMap model,FssRepaymentParentEntity repayment) throws Exception {
+		List<FssRepaymentParentEntity> repaymentlist = fssRepaymentService.queryRepaymentParents(repayment);
+		model.addAttribute("page", repaymentlist);
+		model.addAttribute("repayment", repayment);
+		return "fss/trade/repaymentlist";
+	}
+
+	/**
+	 * author:柯禹来
+	 * function:借款代扣明细
+	 */
+	@RequestMapping(value = "/repayment/repaymentdetail/{parentId}",method = {RequestMethod.GET,RequestMethod.POST})
+	@AutoPage
+	public String queryRepaymentDetail(HttpServletRequest request,ModelMap model,FssRepaymentEntity repayment,@PathVariable Long parentId) throws Exception {
+		if(parentId!=null){
+			repayment.setParentId(parentId);
+		}
+		List<FssRepaymentEntity> repaymentlist = fssRepaymentService.queryFssRepaymentEntity(repayment);
+		model.addAttribute("page", repaymentlist);
+		model.addAttribute("repayment", repayment);
+		return "fss/trade/repaymentdetaillist";
+	}
 	/**
 	 * author:jhz
 	 * function:借款人代扣
 	 */
-	@RequestMapping(value = "/repayment/repaymentlist",method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/repayment/processlist",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-	public String queryRepaymentList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws Exception {
+	public String queryProcessRepaymentList(HttpServletRequest request, ModelMap model, @RequestParam Map<String, String> map) throws Exception {
 
 		map.put("fundType","14010007");
 		map.put("parentId","0");
@@ -74,7 +87,7 @@ public class FundsPaymentController {
 	 */
 	@RequestMapping(value = "/repayment/processChild/{parentId}",method = {RequestMethod.GET,RequestMethod.POST})
 	@AutoPage
-	public String queryRepaymentDetail(HttpServletRequest request, ModelMap model,@PathVariable Long parentId,@RequestParam Map<String, String> map) throws Exception {
+	public String queryProcessRepaymentDetail(HttpServletRequest request, ModelMap model,@PathVariable Long parentId,@RequestParam Map<String, String> map) throws Exception {
 		map.put("parentId",parentId.toString());
 		// 增加数据展示
 		List<TradeProcessEntity> list=fssTradeProcessService.listTradeProcess(map);
@@ -99,20 +112,4 @@ public class FundsPaymentController {
 		fssTradeProcessService.reTransfer(entity);
 		return  "redirect:/repayment/processChild/"+entity.getParnetId();
 	}
-//	/**
-//	 * author:柯禹来
-//	 * function:借款代扣明细
-//	 */
-//	@RequestMapping(value = "/repayment/repaymentdetail/{parentId}",method = {RequestMethod.GET,RequestMethod.POST})
-//	@AutoPage
-//	public String queryRepaymentDetail(HttpServletRequest request,ModelMap model,FssRepaymentEntity repayment,@PathVariable Long parentId) throws Exception {
-//		if(parentId!=null){
-//			repayment.setParentId(parentId);
-//		}
-//		List<FssRepaymentEntity> repaymentlist = fssRepaymentService.queryFssRepaymentEntity(repayment);
-//		model.addAttribute("page", repaymentlist);
-//		model.addAttribute("repayment", repayment);
-//		return "fss/trade/repaymentdetaillist";
-//	}
-	
 }

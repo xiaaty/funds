@@ -60,6 +60,9 @@
         <if test="parentId != null and parentId != ''">
             AND  t.parnet_id = #{parentId}
         </if>
+        <if test="parentId == null ">
+            AND  t.parnet_id >0
+        </if>
         <if test="type != null and type != ''">
             AND t.action_type = #{type}
         </if>
@@ -93,8 +96,12 @@
         <if test="endTime != null and endTime != '' ">
             and date_format(t.create_time,'%Y%m%d') &lt;= #{endTime}
         </if>
+        <if test="memo != null and memo != ''">
+            AND t.memo like concat('%',#{memo},'%')
+        </if>
         ORDER BY t.modify_time DESC
     </select>
+
 
     <select id="findByParentIdAndActionType" parameterType="java.lang.String" resultType="com.gqhmt.fss.architect.trade.entity.TradeProcessEntity" >
         <include refid="fieldSql"/>
